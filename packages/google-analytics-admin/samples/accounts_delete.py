@@ -38,9 +38,16 @@ def run_sample():
     delete_account(account_id)
 
 
-def delete_account(account_id: str):
-    """Deletes the Google Analytics account."""
-    client = AnalyticsAdminServiceClient()
+def delete_account(account_id: str, transport: str = None):
+    """
+    Deletes the Google Analytics account.
+
+    Args:
+        account_id(str): The id of the account to be deleted.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_account(name=f"accounts/{account_id}")
     print("Account deleted")
 

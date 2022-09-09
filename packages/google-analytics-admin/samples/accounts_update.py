@@ -42,9 +42,16 @@ def run_sample():
     update_account(account_id)
 
 
-def update_account(account_id: str):
-    """Updates the Google Analytics account."""
-    client = AnalyticsAdminServiceClient()
+def update_account(account_id: str, transport: str = None):
+    """
+    Updates the Google Analytics account.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the display name and region code of the account, as
     # indicated by the value of the `update_mask` field.
     # The account to update is specified in the `name` field of the `Account`

@@ -33,11 +33,18 @@ def run_sample():
     audit_property_user_links(property_id)
 
 
-def audit_property_user_links(property_id):
-    """Lists all user links on the Google Analytics 4 property, including
+def audit_property_user_links(property_id: str, transport: str = None):
+    """
+    Lists all user links on the Google Analytics 4 property, including
     implicit ones that come from effective permissions granted by groups or
-    organization admin roles."""
-    client = AnalyticsAdminServiceClient()
+    organization admin roles.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.audit_user_links(
         AuditUserLinksRequest(parent=f"properties/{property_id}")
     )

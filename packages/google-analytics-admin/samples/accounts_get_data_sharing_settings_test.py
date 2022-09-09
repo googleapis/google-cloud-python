@@ -20,6 +20,10 @@ TEST_ACCOUNT_ID = os.getenv("GA_TEST_ACCOUNT_ID")
 
 
 def test_accounts_get_data_sharing_settings(capsys):
-    accounts_get_data_sharing_settings.get_data_sharing_settings(TEST_ACCOUNT_ID)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        accounts_get_data_sharing_settings.get_data_sharing_settings(
+            TEST_ACCOUNT_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

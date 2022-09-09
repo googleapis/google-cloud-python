@@ -32,10 +32,17 @@ def run_sample():
     list_property_user_links(property_id)
 
 
-def list_property_user_links(property_id):
-    """Lists user links under the specified parent Google Analytics 4
-    property."""
-    client = AnalyticsAdminServiceClient()
+def list_property_user_links(property_id: str, transport: str = None):
+    """
+    Lists user links under the specified parent Google Analytics 4
+    property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.list_user_links(parent=f"properties/{property_id}")
 
     print("Result:")

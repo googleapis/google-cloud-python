@@ -33,9 +33,16 @@ def run_sample():
     list_conversion_events(property_id)
 
 
-def list_conversion_events(property_id):
-    """Lists conversion events for the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def list_conversion_events(property_id: str, transport: str = None):
+    """
+    Lists conversion events for the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.list_conversion_events(parent=f"properties/{property_id}")
 
     print("Result:")

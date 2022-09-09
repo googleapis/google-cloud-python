@@ -21,8 +21,10 @@ TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
 
 
 def test_accounts_search_change_history_events(capsys):
-    accounts_search_change_history_events.search_change_history_events(
-        TEST_ACCOUNT_ID, TEST_PROPERTY_ID
-    )
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        accounts_search_change_history_events.search_change_history_events(
+            TEST_ACCOUNT_ID, TEST_PROPERTY_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

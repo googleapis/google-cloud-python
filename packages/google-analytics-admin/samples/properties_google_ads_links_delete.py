@@ -43,9 +43,19 @@ def run_sample():
     delete_google_ads_link(property_id, google_ads_link_id)
 
 
-def delete_google_ads_link(property_id, google_ads_link_id):
-    """Deletes the Google Ads link."""
-    client = AnalyticsAdminServiceClient()
+def delete_google_ads_link(
+    property_id: str, google_ads_link_id: str, transport: str = None
+):
+    """
+    Deletes the Google Ads link.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        google_ads_link_id(str): The Google Analytics Ads Link Id.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_google_ads_link(
         name=f"properties/{property_id}/googleAdsLinks/{google_ads_link_id}"
     )

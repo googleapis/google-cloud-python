@@ -21,9 +21,11 @@ FAKE_ADS_CUSTOMER_ID = "1234567890"
 
 
 def test_properties_google_ads_links_create():
-    # This test ensures that the call is valid and reaches the server, even
-    # though the operation does not succeed due to permission error.
-    with pytest.raises(Exception, match="403 The caller does not have permission"):
-        properties_google_ads_links_create.create_google_ads_link(
-            FAKE_PROPERTY_ID, FAKE_ADS_CUSTOMER_ID
-        )
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        # This test ensures that the call is valid and reaches the server, even
+        # though the operation does not succeed due to permission error.
+        with pytest.raises(Exception, match="The caller does not have permission"):
+            properties_google_ads_links_create.create_google_ads_link(
+                FAKE_PROPERTY_ID, FAKE_ADS_CUSTOMER_ID, transport=transport
+            )

@@ -44,9 +44,19 @@ def run_sample():
     delete_conversion_event(property_id, conversion_event_id)
 
 
-def delete_conversion_event(property_id, conversion_event_id):
-    """Deletes the conversion event for the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def delete_conversion_event(
+    property_id: str, conversion_event_id: str, transport: str = None
+):
+    """
+    Deletes the conversion event for the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        conversion_event_id(str): The conversion event ID
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_conversion_event(
         name=f"properties/{property_id}/conversionEvents/{conversion_event_id}"
     )

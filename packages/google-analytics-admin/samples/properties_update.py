@@ -39,9 +39,16 @@ def run_sample():
     update_property(property_id)
 
 
-def update_property(property_id):
-    """Updates the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def update_property(property_id: str, transport: str = None):
+    """
+    Updates the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the display name, industry category and time zone of the
     # property, as indicated by the value of the `update_mask` field.
     # The property to update is specified in the `name` field of the `Property`

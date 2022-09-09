@@ -21,8 +21,10 @@ TEST_USER_LINK_ID = os.getenv("GA_TEST_USER_LINK_ID")
 
 
 def test_accounts_user_links_batch_get(capsys):
-    accounts_user_links_batch_get.batch_get_account_user_link(
-        TEST_ACCOUNT_ID, TEST_USER_LINK_ID
-    )
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        accounts_user_links_batch_get.batch_get_account_user_link(
+            TEST_ACCOUNT_ID, TEST_USER_LINK_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

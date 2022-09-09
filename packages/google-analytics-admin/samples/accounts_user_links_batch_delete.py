@@ -47,9 +47,19 @@ def run_sample():
     batch_delete_account_user_link(account_id, account_user_link_id)
 
 
-def batch_delete_account_user_link(account_id, account_user_link_id):
-    """Deletes the user link using a batch call."""
-    client = AnalyticsAdminServiceClient()
+def batch_delete_account_user_link(
+    account_id: str, account_user_link_id: str, transport: str = None
+):
+    """
+    Deletes the user link using a batch call.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        account_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.batch_delete_user_links(
         BatchDeleteUserLinksRequest(
             parent=f"accounts/{account_id}",

@@ -37,9 +37,19 @@ def run_sample():
     get_account_user_link(account_id, account_user_link_id)
 
 
-def get_account_user_link(account_id, account_user_link_id):
-    """Retrieves the account user link details."""
-    client = AnalyticsAdminServiceClient()
+def get_account_user_link(
+    account_id: str, account_user_link_id: str, transport: str = None
+):
+    """
+    Retrieves the account user link details.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        account_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     user_link = client.get_user_link(
         name=f"accounts/{account_id}/userLinks/{account_user_link_id}"
     )

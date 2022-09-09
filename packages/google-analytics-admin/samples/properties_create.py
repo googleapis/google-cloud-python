@@ -39,9 +39,16 @@ def run_sample():
     create_property(account_id)
 
 
-def create_property(account_id):
-    """Creates a Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def create_property(account_id: str, transport: str = None):
+    """
+    Creates a Google Analytics 4 property.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     property_ = client.create_property(
         property=Property(
             parent=f"accounts/{account_id}",

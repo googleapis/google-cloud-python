@@ -21,8 +21,10 @@ TEST_CONVERSION_EVENT_ID = os.getenv("GA_TEST_CONVERSION_EVENT_ID")
 
 
 def test_properties_conversion_events_get(capsys):
-    properties_conversion_events_get.get_conversion_event(
-        TEST_PROPERTY_ID, TEST_CONVERSION_EVENT_ID
-    )
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_conversion_events_get.get_conversion_event(
+            TEST_PROPERTY_ID, TEST_CONVERSION_EVENT_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

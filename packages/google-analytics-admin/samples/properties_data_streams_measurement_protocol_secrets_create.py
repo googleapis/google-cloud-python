@@ -42,9 +42,19 @@ def run_sample():
     create_measurement_protocol_secret(property_id, stream_id)
 
 
-def create_measurement_protocol_secret(property_id, stream_id):
-    """Creates a measurement protocol secret for the data stream."""
-    client = AnalyticsAdminServiceClient()
+def create_measurement_protocol_secret(
+    property_id: str, stream_id: str, transport: str = None
+):
+    """
+    Creates a measurement protocol secret for the data stream.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     measurement_protocol_secret = client.create_measurement_protocol_secret(
         parent=f"properties/{property_id}/dataStreams/{stream_id}",
         measurement_protocol_secret=MeasurementProtocolSecret(

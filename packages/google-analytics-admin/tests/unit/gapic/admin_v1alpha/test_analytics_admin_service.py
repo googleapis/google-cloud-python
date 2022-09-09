@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,12 +35,15 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service import (
     AnalyticsAdminServiceAsyncClient,
@@ -102,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (AnalyticsAdminServiceClient, "grpc"),
         (AnalyticsAdminServiceAsyncClient, "grpc_asyncio"),
+        (AnalyticsAdminServiceClient, "rest"),
     ],
 )
 def test_analytics_admin_service_client_from_service_account_info(
@@ -117,7 +123,11 @@ def test_analytics_admin_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("analyticsadmin.googleapis.com:443")
+        assert client.transport._host == (
+            "analyticsadmin.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://analyticsadmin.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -125,6 +135,7 @@ def test_analytics_admin_service_client_from_service_account_info(
     [
         (transports.AnalyticsAdminServiceGrpcTransport, "grpc"),
         (transports.AnalyticsAdminServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AnalyticsAdminServiceRestTransport, "rest"),
     ],
 )
 def test_analytics_admin_service_client_service_account_always_use_jwt(
@@ -150,6 +161,7 @@ def test_analytics_admin_service_client_service_account_always_use_jwt(
     [
         (AnalyticsAdminServiceClient, "grpc"),
         (AnalyticsAdminServiceAsyncClient, "grpc_asyncio"),
+        (AnalyticsAdminServiceClient, "rest"),
     ],
 )
 def test_analytics_admin_service_client_from_service_account_file(
@@ -172,13 +184,18 @@ def test_analytics_admin_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("analyticsadmin.googleapis.com:443")
+        assert client.transport._host == (
+            "analyticsadmin.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://analyticsadmin.googleapis.com"
+        )
 
 
 def test_analytics_admin_service_client_get_transport_class():
     transport = AnalyticsAdminServiceClient.get_transport_class()
     available_transports = [
         transports.AnalyticsAdminServiceGrpcTransport,
+        transports.AnalyticsAdminServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -198,6 +215,11 @@ def test_analytics_admin_service_client_get_transport_class():
             AnalyticsAdminServiceAsyncClient,
             transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            AnalyticsAdminServiceClient,
+            transports.AnalyticsAdminServiceRestTransport,
+            "rest",
         ),
     ],
 )
@@ -352,6 +374,18 @@ def test_analytics_admin_service_client_client_options(
             AnalyticsAdminServiceAsyncClient,
             transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            AnalyticsAdminServiceClient,
+            transports.AnalyticsAdminServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            AnalyticsAdminServiceClient,
+            transports.AnalyticsAdminServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -557,6 +591,11 @@ def test_analytics_admin_service_client_get_mtls_endpoint_and_cert_source(client
             transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            AnalyticsAdminServiceClient,
+            transports.AnalyticsAdminServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_analytics_admin_service_client_client_options_scopes(
@@ -596,6 +635,12 @@ def test_analytics_admin_service_client_client_options_scopes(
             transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            AnalyticsAdminServiceClient,
+            transports.AnalyticsAdminServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -22368,6 +22413,22547 @@ async def test_run_access_report_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetAccountRequest,
+        dict,
+    ],
+)
+def test_get_account_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Account(
+            name="name_value",
+            display_name="display_name_value",
+            region_code="region_code_value",
+            deleted=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Account.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_account(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Account)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.region_code == "region_code_value"
+    assert response.deleted is True
+
+
+def test_get_account_rest_required_fields(
+    request_type=analytics_admin.GetAccountRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Account()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Account.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_account(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_account_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_account._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_account_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_account"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_account"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetAccountRequest.pb(
+            analytics_admin.GetAccountRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Account.to_json(resources.Account())
+
+        request = analytics_admin.GetAccountRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Account()
+
+        client.get_account(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_account_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetAccountRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_account(request)
+
+
+def test_get_account_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Account()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "accounts/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Account.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_account(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=accounts/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_account_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_account(
+            analytics_admin.GetAccountRequest(),
+            name="name_value",
+        )
+
+
+def test_get_account_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListAccountsRequest,
+        dict,
+    ],
+)
+def test_list_accounts_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListAccountsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListAccountsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_accounts(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAccountsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_accounts_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_accounts"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_accounts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListAccountsRequest.pb(
+            analytics_admin.ListAccountsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListAccountsResponse.to_json(
+            analytics_admin.ListAccountsResponse()
+        )
+
+        request = analytics_admin.ListAccountsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListAccountsResponse()
+
+        client.list_accounts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_accounts_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListAccountsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_accounts(request)
+
+
+def test_list_accounts_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                    resources.Account(),
+                    resources.Account(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                    resources.Account(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListAccountsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_accounts(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Account) for i in results)
+
+        pages = list(client.list_accounts(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteAccountRequest,
+        dict,
+    ],
+)
+def test_delete_account_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_account(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_account_rest_required_fields(
+    request_type=analytics_admin.DeleteAccountRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_account(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_account_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_account._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_account_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_account"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteAccountRequest.pb(
+            analytics_admin.DeleteAccountRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteAccountRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_account(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_account_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteAccountRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_account(request)
+
+
+def test_delete_account_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "accounts/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_account(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=accounts/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_account_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_account(
+            analytics_admin.DeleteAccountRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_account_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateAccountRequest,
+        dict,
+    ],
+)
+def test_update_account_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"account": {"name": "accounts/sample1"}}
+    request_init["account"] = {
+        "name": "accounts/sample1",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "display_name": "display_name_value",
+        "region_code": "region_code_value",
+        "deleted": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Account(
+            name="name_value",
+            display_name="display_name_value",
+            region_code="region_code_value",
+            deleted=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Account.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_account(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Account)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.region_code == "region_code_value"
+    assert response.deleted is True
+
+
+def test_update_account_rest_required_fields(
+    request_type=analytics_admin.UpdateAccountRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_account._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Account()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Account.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_account(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_account_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_account._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "account",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_account_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_account"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_account"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateAccountRequest.pb(
+            analytics_admin.UpdateAccountRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Account.to_json(resources.Account())
+
+        request = analytics_admin.UpdateAccountRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Account()
+
+        client.update_account(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_account_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateAccountRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"account": {"name": "accounts/sample1"}}
+    request_init["account"] = {
+        "name": "accounts/sample1",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "display_name": "display_name_value",
+        "region_code": "region_code_value",
+        "deleted": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_account(request)
+
+
+def test_update_account_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Account()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"account": {"name": "accounts/sample1"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            account=resources.Account(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Account.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_account(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{account.name=accounts/*}" % client.transport._host, args[1]
+        )
+
+
+def test_update_account_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_account(
+            analytics_admin.UpdateAccountRequest(),
+            account=resources.Account(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_account_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ProvisionAccountTicketRequest,
+        dict,
+    ],
+)
+def test_provision_account_ticket_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ProvisionAccountTicketResponse(
+            account_ticket_id="account_ticket_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ProvisionAccountTicketResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.provision_account_ticket(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.ProvisionAccountTicketResponse)
+    assert response.account_ticket_id == "account_ticket_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_provision_account_ticket_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_provision_account_ticket"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_provision_account_ticket"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ProvisionAccountTicketRequest.pb(
+            analytics_admin.ProvisionAccountTicketRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ProvisionAccountTicketResponse.to_json(
+                analytics_admin.ProvisionAccountTicketResponse()
+            )
+        )
+
+        request = analytics_admin.ProvisionAccountTicketRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ProvisionAccountTicketResponse()
+
+        client.provision_account_ticket(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_provision_account_ticket_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ProvisionAccountTicketRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.provision_account_ticket(request)
+
+
+def test_provision_account_ticket_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListAccountSummariesRequest,
+        dict,
+    ],
+)
+def test_list_account_summaries_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListAccountSummariesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListAccountSummariesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_account_summaries(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAccountSummariesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_account_summaries_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_account_summaries"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_account_summaries"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListAccountSummariesRequest.pb(
+            analytics_admin.ListAccountSummariesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListAccountSummariesResponse.to_json(
+                analytics_admin.ListAccountSummariesResponse()
+            )
+        )
+
+        request = analytics_admin.ListAccountSummariesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListAccountSummariesResponse()
+
+        client.list_account_summaries(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_account_summaries_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListAccountSummariesRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_account_summaries(request)
+
+
+def test_list_account_summaries_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListAccountSummariesResponse(
+                account_summaries=[
+                    resources.AccountSummary(),
+                    resources.AccountSummary(),
+                    resources.AccountSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAccountSummariesResponse(
+                account_summaries=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAccountSummariesResponse(
+                account_summaries=[
+                    resources.AccountSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAccountSummariesResponse(
+                account_summaries=[
+                    resources.AccountSummary(),
+                    resources.AccountSummary(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListAccountSummariesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_account_summaries(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.AccountSummary) for i in results)
+
+        pages = list(client.list_account_summaries(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetPropertyRequest,
+        dict,
+    ],
+)
+def test_get_property_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property(
+            name="name_value",
+            property_type=resources.PropertyType.PROPERTY_TYPE_ORDINARY,
+            parent="parent_value",
+            display_name="display_name_value",
+            industry_category=resources.IndustryCategory.AUTOMOTIVE,
+            time_zone="time_zone_value",
+            currency_code="currency_code_value",
+            service_level=resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD,
+            account="account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_property(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Property)
+    assert response.name == "name_value"
+    assert response.property_type == resources.PropertyType.PROPERTY_TYPE_ORDINARY
+    assert response.parent == "parent_value"
+    assert response.display_name == "display_name_value"
+    assert response.industry_category == resources.IndustryCategory.AUTOMOTIVE
+    assert response.time_zone == "time_zone_value"
+    assert response.currency_code == "currency_code_value"
+    assert response.service_level == resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD
+    assert response.account == "account_value"
+
+
+def test_get_property_rest_required_fields(
+    request_type=analytics_admin.GetPropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Property()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Property.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_property(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_property_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_property._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_property_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_property"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_property"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetPropertyRequest.pb(
+            analytics_admin.GetPropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Property.to_json(resources.Property())
+
+        request = analytics_admin.GetPropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Property()
+
+        client.get_property(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_property_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetPropertyRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_property(request)
+
+
+def test_get_property_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_property(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_property_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_property(
+            analytics_admin.GetPropertyRequest(),
+            name="name_value",
+        )
+
+
+def test_get_property_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListPropertiesRequest,
+        dict,
+    ],
+)
+def test_list_properties_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListPropertiesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListPropertiesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_properties(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPropertiesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_properties_rest_required_fields(
+    request_type=analytics_admin.ListPropertiesRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "filter" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_properties._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == request_init["filter"]
+
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_properties._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+            "show_deleted",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListPropertiesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListPropertiesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_properties(request)
+
+            expected_params = [
+                (
+                    "filter",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_properties_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_properties._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+                "showDeleted",
+            )
+        )
+        & set(("filter",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_properties_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_properties"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_properties"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListPropertiesRequest.pb(
+            analytics_admin.ListPropertiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListPropertiesResponse.to_json(
+            analytics_admin.ListPropertiesResponse()
+        )
+
+        request = analytics_admin.ListPropertiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListPropertiesResponse()
+
+        client.list_properties(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_properties_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListPropertiesRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_properties(request)
+
+
+def test_list_properties_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListPropertiesResponse(
+                properties=[
+                    resources.Property(),
+                    resources.Property(),
+                    resources.Property(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListPropertiesResponse(
+                properties=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListPropertiesResponse(
+                properties=[
+                    resources.Property(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListPropertiesResponse(
+                properties=[
+                    resources.Property(),
+                    resources.Property(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListPropertiesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_properties(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Property) for i in results)
+
+        pages = list(client.list_properties(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreatePropertyRequest,
+        dict,
+    ],
+)
+def test_create_property_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request_init["property"] = {
+        "name": "name_value",
+        "property_type": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "parent": "parent_value",
+        "display_name": "display_name_value",
+        "industry_category": 1,
+        "time_zone": "time_zone_value",
+        "currency_code": "currency_code_value",
+        "service_level": 1,
+        "delete_time": {},
+        "expire_time": {},
+        "account": "account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property(
+            name="name_value",
+            property_type=resources.PropertyType.PROPERTY_TYPE_ORDINARY,
+            parent="parent_value",
+            display_name="display_name_value",
+            industry_category=resources.IndustryCategory.AUTOMOTIVE,
+            time_zone="time_zone_value",
+            currency_code="currency_code_value",
+            service_level=resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD,
+            account="account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_property(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Property)
+    assert response.name == "name_value"
+    assert response.property_type == resources.PropertyType.PROPERTY_TYPE_ORDINARY
+    assert response.parent == "parent_value"
+    assert response.display_name == "display_name_value"
+    assert response.industry_category == resources.IndustryCategory.AUTOMOTIVE
+    assert response.time_zone == "time_zone_value"
+    assert response.currency_code == "currency_code_value"
+    assert response.service_level == resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD
+    assert response.account == "account_value"
+
+
+def test_create_property_rest_required_fields(
+    request_type=analytics_admin.CreatePropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Property()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Property.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_property(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_property_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_property._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("property",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_property_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_property"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_property"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreatePropertyRequest.pb(
+            analytics_admin.CreatePropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Property.to_json(resources.Property())
+
+        request = analytics_admin.CreatePropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Property()
+
+        client.create_property(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_property_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreatePropertyRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request_init["property"] = {
+        "name": "name_value",
+        "property_type": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "parent": "parent_value",
+        "display_name": "display_name_value",
+        "industry_category": 1,
+        "time_zone": "time_zone_value",
+        "currency_code": "currency_code_value",
+        "service_level": 1,
+        "delete_time": {},
+        "expire_time": {},
+        "account": "account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_property(request)
+
+
+def test_create_property_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            property=resources.Property(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_property(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/properties" % client.transport._host, args[1]
+        )
+
+
+def test_create_property_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_property(
+            analytics_admin.CreatePropertyRequest(),
+            property=resources.Property(name="name_value"),
+        )
+
+
+def test_create_property_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeletePropertyRequest,
+        dict,
+    ],
+)
+def test_delete_property_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property(
+            name="name_value",
+            property_type=resources.PropertyType.PROPERTY_TYPE_ORDINARY,
+            parent="parent_value",
+            display_name="display_name_value",
+            industry_category=resources.IndustryCategory.AUTOMOTIVE,
+            time_zone="time_zone_value",
+            currency_code="currency_code_value",
+            service_level=resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD,
+            account="account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_property(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Property)
+    assert response.name == "name_value"
+    assert response.property_type == resources.PropertyType.PROPERTY_TYPE_ORDINARY
+    assert response.parent == "parent_value"
+    assert response.display_name == "display_name_value"
+    assert response.industry_category == resources.IndustryCategory.AUTOMOTIVE
+    assert response.time_zone == "time_zone_value"
+    assert response.currency_code == "currency_code_value"
+    assert response.service_level == resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD
+    assert response.account == "account_value"
+
+
+def test_delete_property_rest_required_fields(
+    request_type=analytics_admin.DeletePropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Property()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Property.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_property(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_property_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_property._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_property_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_delete_property"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_property"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.DeletePropertyRequest.pb(
+            analytics_admin.DeletePropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Property.to_json(resources.Property())
+
+        request = analytics_admin.DeletePropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Property()
+
+        client.delete_property(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_property_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeletePropertyRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_property(request)
+
+
+def test_delete_property_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_property(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_property_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_property(
+            analytics_admin.DeletePropertyRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_property_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdatePropertyRequest,
+        dict,
+    ],
+)
+def test_update_property_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": {"name": "properties/sample1"}}
+    request_init["property"] = {
+        "name": "properties/sample1",
+        "property_type": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "parent": "parent_value",
+        "display_name": "display_name_value",
+        "industry_category": 1,
+        "time_zone": "time_zone_value",
+        "currency_code": "currency_code_value",
+        "service_level": 1,
+        "delete_time": {},
+        "expire_time": {},
+        "account": "account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property(
+            name="name_value",
+            property_type=resources.PropertyType.PROPERTY_TYPE_ORDINARY,
+            parent="parent_value",
+            display_name="display_name_value",
+            industry_category=resources.IndustryCategory.AUTOMOTIVE,
+            time_zone="time_zone_value",
+            currency_code="currency_code_value",
+            service_level=resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD,
+            account="account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_property(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Property)
+    assert response.name == "name_value"
+    assert response.property_type == resources.PropertyType.PROPERTY_TYPE_ORDINARY
+    assert response.parent == "parent_value"
+    assert response.display_name == "display_name_value"
+    assert response.industry_category == resources.IndustryCategory.AUTOMOTIVE
+    assert response.time_zone == "time_zone_value"
+    assert response.currency_code == "currency_code_value"
+    assert response.service_level == resources.ServiceLevel.GOOGLE_ANALYTICS_STANDARD
+    assert response.account == "account_value"
+
+
+def test_update_property_rest_required_fields(
+    request_type=analytics_admin.UpdatePropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_property._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Property()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.Property.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_property(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_property_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_property._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "property",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_property_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_property"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_property"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdatePropertyRequest.pb(
+            analytics_admin.UpdatePropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.Property.to_json(resources.Property())
+
+        request = analytics_admin.UpdatePropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Property()
+
+        client.update_property(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_property_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdatePropertyRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": {"name": "properties/sample1"}}
+    request_init["property"] = {
+        "name": "properties/sample1",
+        "property_type": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "parent": "parent_value",
+        "display_name": "display_name_value",
+        "industry_category": 1,
+        "time_zone": "time_zone_value",
+        "currency_code": "currency_code_value",
+        "service_level": 1,
+        "delete_time": {},
+        "expire_time": {},
+        "account": "account_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_property(request)
+
+
+def test_update_property_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Property()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"property": {"name": "properties/sample1"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            property=resources.Property(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.Property.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_property(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{property.name=properties/*}" % client.transport._host, args[1]
+        )
+
+
+def test_update_property_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_property(
+            analytics_admin.UpdatePropertyRequest(),
+            property=resources.Property(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_property_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetUserLinkRequest,
+        dict,
+    ],
+)
+def test_get_user_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/userLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.UserLink(
+            name="name_value",
+            email_address="email_address_value",
+            direct_roles=["direct_roles_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.UserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_user_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.UserLink)
+    assert response.name == "name_value"
+    assert response.email_address == "email_address_value"
+    assert response.direct_roles == ["direct_roles_value"]
+
+
+def test_get_user_link_rest_required_fields(
+    request_type=analytics_admin.GetUserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.UserLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.UserLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_user_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_user_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_user_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_user_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_user_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_user_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetUserLinkRequest.pb(
+            analytics_admin.GetUserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.UserLink.to_json(resources.UserLink())
+
+        request = analytics_admin.GetUserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.UserLink()
+
+        client.get_user_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_user_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetUserLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/userLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_user_link(request)
+
+
+def test_get_user_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.UserLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "accounts/sample1/userLinks/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.UserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_user_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=accounts/*/userLinks/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_user_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_user_link(
+            analytics_admin.GetUserLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_get_user_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.BatchGetUserLinksRequest,
+        dict,
+    ],
+)
+def test_batch_get_user_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.BatchGetUserLinksResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.BatchGetUserLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_get_user_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.BatchGetUserLinksResponse)
+
+
+def test_batch_get_user_links_rest_required_fields(
+    request_type=analytics_admin.BatchGetUserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "names" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_get_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == request_init["names"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["names"] = "names_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_get_user_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("names",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == "names_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.BatchGetUserLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.BatchGetUserLinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_get_user_links(request)
+
+            expected_params = [
+                (
+                    "names",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_get_user_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_get_user_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("names",))
+        & set(
+            (
+                "parent",
+                "names",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_user_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_batch_get_user_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_get_user_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.BatchGetUserLinksRequest.pb(
+            analytics_admin.BatchGetUserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.BatchGetUserLinksResponse.to_json(
+            analytics_admin.BatchGetUserLinksResponse()
+        )
+
+        request = analytics_admin.BatchGetUserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.BatchGetUserLinksResponse()
+
+        client.batch_get_user_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_get_user_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.BatchGetUserLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_get_user_links(request)
+
+
+def test_batch_get_user_links_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListUserLinksRequest,
+        dict,
+    ],
+)
+def test_list_user_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListUserLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListUserLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_user_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUserLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_user_links_rest_required_fields(
+    request_type=analytics_admin.ListUserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_user_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListUserLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListUserLinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_user_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_user_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_user_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_user_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_user_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_user_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListUserLinksRequest.pb(
+            analytics_admin.ListUserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListUserLinksResponse.to_json(
+            analytics_admin.ListUserLinksResponse()
+        )
+
+        request = analytics_admin.ListUserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListUserLinksResponse()
+
+        client.list_user_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_user_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListUserLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_user_links(request)
+
+
+def test_list_user_links_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListUserLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "accounts/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListUserLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_user_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=accounts/*}/userLinks" % client.transport._host, args[1]
+        )
+
+
+def test_list_user_links_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_user_links(
+            analytics_admin.ListUserLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_user_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListUserLinksResponse(
+                user_links=[
+                    resources.UserLink(),
+                    resources.UserLink(),
+                    resources.UserLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListUserLinksResponse(
+                user_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListUserLinksResponse(
+                user_links=[
+                    resources.UserLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListUserLinksResponse(
+                user_links=[
+                    resources.UserLink(),
+                    resources.UserLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListUserLinksResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "accounts/sample1"}
+
+        pager = client.list_user_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.UserLink) for i in results)
+
+        pages = list(client.list_user_links(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.AuditUserLinksRequest,
+        dict,
+    ],
+)
+def test_audit_user_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.AuditUserLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.AuditUserLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.audit_user_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AuditUserLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_audit_user_links_rest_required_fields(
+    request_type=analytics_admin.AuditUserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).audit_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).audit_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.AuditUserLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.AuditUserLinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.audit_user_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_audit_user_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.audit_user_links._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_audit_user_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_audit_user_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_audit_user_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.AuditUserLinksRequest.pb(
+            analytics_admin.AuditUserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.AuditUserLinksResponse.to_json(
+            analytics_admin.AuditUserLinksResponse()
+        )
+
+        request = analytics_admin.AuditUserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.AuditUserLinksResponse()
+
+        client.audit_user_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_audit_user_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.AuditUserLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.audit_user_links(request)
+
+
+def test_audit_user_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.AuditUserLinksResponse(
+                user_links=[
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.AuditUserLinksResponse(
+                user_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.AuditUserLinksResponse(
+                user_links=[
+                    resources.AuditUserLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.AuditUserLinksResponse(
+                user_links=[
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.AuditUserLinksResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "accounts/sample1"}
+
+        pager = client.audit_user_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.AuditUserLink) for i in results)
+
+        pages = list(client.audit_user_links(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateUserLinkRequest,
+        dict,
+    ],
+)
+def test_create_user_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request_init["user_link"] = {
+        "name": "name_value",
+        "email_address": "email_address_value",
+        "direct_roles": ["direct_roles_value1", "direct_roles_value2"],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.UserLink(
+            name="name_value",
+            email_address="email_address_value",
+            direct_roles=["direct_roles_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.UserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_user_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.UserLink)
+    assert response.name == "name_value"
+    assert response.email_address == "email_address_value"
+    assert response.direct_roles == ["direct_roles_value"]
+
+
+def test_create_user_link_rest_required_fields(
+    request_type=analytics_admin.CreateUserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_user_link._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("notify_new_user",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.UserLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.UserLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_user_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_user_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_user_link._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("notifyNewUser",))
+        & set(
+            (
+                "parent",
+                "userLink",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_user_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_user_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_user_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateUserLinkRequest.pb(
+            analytics_admin.CreateUserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.UserLink.to_json(resources.UserLink())
+
+        request = analytics_admin.CreateUserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.UserLink()
+
+        client.create_user_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_user_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateUserLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request_init["user_link"] = {
+        "name": "name_value",
+        "email_address": "email_address_value",
+        "direct_roles": ["direct_roles_value1", "direct_roles_value2"],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_user_link(request)
+
+
+def test_create_user_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.UserLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "accounts/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            user_link=resources.UserLink(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.UserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_user_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=accounts/*}/userLinks" % client.transport._host, args[1]
+        )
+
+
+def test_create_user_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_user_link(
+            analytics_admin.CreateUserLinkRequest(),
+            parent="parent_value",
+            user_link=resources.UserLink(name="name_value"),
+        )
+
+
+def test_create_user_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.BatchCreateUserLinksRequest,
+        dict,
+    ],
+)
+def test_batch_create_user_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.BatchCreateUserLinksResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.BatchCreateUserLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_user_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.BatchCreateUserLinksResponse)
+
+
+def test_batch_create_user_links_rest_required_fields(
+    request_type=analytics_admin.BatchCreateUserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.BatchCreateUserLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.BatchCreateUserLinksResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_create_user_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_create_user_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_create_user_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_user_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_batch_create_user_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_create_user_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.BatchCreateUserLinksRequest.pb(
+            analytics_admin.BatchCreateUserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.BatchCreateUserLinksResponse.to_json(
+                analytics_admin.BatchCreateUserLinksResponse()
+            )
+        )
+
+        request = analytics_admin.BatchCreateUserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.BatchCreateUserLinksResponse()
+
+        client.batch_create_user_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_user_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.BatchCreateUserLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_create_user_links(request)
+
+
+def test_batch_create_user_links_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateUserLinkRequest,
+        dict,
+    ],
+)
+def test_update_user_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"user_link": {"name": "accounts/sample1/userLinks/sample2"}}
+    request_init["user_link"] = {
+        "name": "accounts/sample1/userLinks/sample2",
+        "email_address": "email_address_value",
+        "direct_roles": ["direct_roles_value1", "direct_roles_value2"],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.UserLink(
+            name="name_value",
+            email_address="email_address_value",
+            direct_roles=["direct_roles_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.UserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_user_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.UserLink)
+    assert response.name == "name_value"
+    assert response.email_address == "email_address_value"
+    assert response.direct_roles == ["direct_roles_value"]
+
+
+def test_update_user_link_rest_required_fields(
+    request_type=analytics_admin.UpdateUserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.UserLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.UserLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_user_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_user_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_user_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("userLink",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_user_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_user_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_user_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateUserLinkRequest.pb(
+            analytics_admin.UpdateUserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.UserLink.to_json(resources.UserLink())
+
+        request = analytics_admin.UpdateUserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.UserLink()
+
+        client.update_user_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_user_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateUserLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"user_link": {"name": "accounts/sample1/userLinks/sample2"}}
+    request_init["user_link"] = {
+        "name": "accounts/sample1/userLinks/sample2",
+        "email_address": "email_address_value",
+        "direct_roles": ["direct_roles_value1", "direct_roles_value2"],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_user_link(request)
+
+
+def test_update_user_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.UserLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"user_link": {"name": "accounts/sample1/userLinks/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            user_link=resources.UserLink(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.UserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_user_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{user_link.name=accounts/*/userLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_user_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_user_link(
+            analytics_admin.UpdateUserLinkRequest(),
+            user_link=resources.UserLink(name="name_value"),
+        )
+
+
+def test_update_user_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.BatchUpdateUserLinksRequest,
+        dict,
+    ],
+)
+def test_batch_update_user_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.BatchUpdateUserLinksResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.BatchUpdateUserLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_update_user_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.BatchUpdateUserLinksResponse)
+
+
+def test_batch_update_user_links_rest_required_fields(
+    request_type=analytics_admin.BatchUpdateUserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.BatchUpdateUserLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.BatchUpdateUserLinksResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_update_user_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_update_user_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_update_user_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_update_user_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_batch_update_user_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_update_user_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.BatchUpdateUserLinksRequest.pb(
+            analytics_admin.BatchUpdateUserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.BatchUpdateUserLinksResponse.to_json(
+                analytics_admin.BatchUpdateUserLinksResponse()
+            )
+        )
+
+        request = analytics_admin.BatchUpdateUserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.BatchUpdateUserLinksResponse()
+
+        client.batch_update_user_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_update_user_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.BatchUpdateUserLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_update_user_links(request)
+
+
+def test_batch_update_user_links_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteUserLinkRequest,
+        dict,
+    ],
+)
+def test_delete_user_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/userLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_user_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_user_link_rest_required_fields(
+    request_type=analytics_admin.DeleteUserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_user_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_user_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_user_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_user_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_user_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_user_link"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteUserLinkRequest.pb(
+            analytics_admin.DeleteUserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteUserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_user_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_user_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteUserLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/userLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_user_link(request)
+
+
+def test_delete_user_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "accounts/sample1/userLinks/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_user_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=accounts/*/userLinks/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_user_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_user_link(
+            analytics_admin.DeleteUserLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_user_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.BatchDeleteUserLinksRequest,
+        dict,
+    ],
+)
+def test_batch_delete_user_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_delete_user_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_batch_delete_user_links_rest_required_fields(
+    request_type=analytics_admin.BatchDeleteUserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_delete_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_delete_user_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_delete_user_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_delete_user_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_delete_user_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_delete_user_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_delete_user_links"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.BatchDeleteUserLinksRequest.pb(
+            analytics_admin.BatchDeleteUserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.BatchDeleteUserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.batch_delete_user_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_batch_delete_user_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.BatchDeleteUserLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_delete_user_links(request)
+
+
+def test_batch_delete_user_links_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateFirebaseLinkRequest,
+        dict,
+    ],
+)
+def test_create_firebase_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["firebase_link"] = {
+        "name": "name_value",
+        "project": "project_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FirebaseLink(
+            name="name_value",
+            project="project_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.FirebaseLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_firebase_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FirebaseLink)
+    assert response.name == "name_value"
+    assert response.project == "project_value"
+
+
+def test_create_firebase_link_rest_required_fields(
+    request_type=analytics_admin.CreateFirebaseLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_firebase_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_firebase_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.FirebaseLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.FirebaseLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_firebase_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_firebase_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_firebase_link._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "firebaseLink",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_firebase_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_firebase_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_firebase_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateFirebaseLinkRequest.pb(
+            analytics_admin.CreateFirebaseLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.FirebaseLink.to_json(
+            resources.FirebaseLink()
+        )
+
+        request = analytics_admin.CreateFirebaseLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.FirebaseLink()
+
+        client.create_firebase_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_firebase_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateFirebaseLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["firebase_link"] = {
+        "name": "name_value",
+        "project": "project_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_firebase_link(request)
+
+
+def test_create_firebase_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FirebaseLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            firebase_link=resources.FirebaseLink(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.FirebaseLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_firebase_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/firebaseLinks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_firebase_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_firebase_link(
+            analytics_admin.CreateFirebaseLinkRequest(),
+            parent="parent_value",
+            firebase_link=resources.FirebaseLink(name="name_value"),
+        )
+
+
+def test_create_firebase_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteFirebaseLinkRequest,
+        dict,
+    ],
+)
+def test_delete_firebase_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/firebaseLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_firebase_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_firebase_link_rest_required_fields(
+    request_type=analytics_admin.DeleteFirebaseLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_firebase_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_firebase_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_firebase_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_firebase_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_firebase_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_firebase_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_firebase_link"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteFirebaseLinkRequest.pb(
+            analytics_admin.DeleteFirebaseLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteFirebaseLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_firebase_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_firebase_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteFirebaseLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/firebaseLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_firebase_link(request)
+
+
+def test_delete_firebase_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/firebaseLinks/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_firebase_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/firebaseLinks/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_firebase_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_firebase_link(
+            analytics_admin.DeleteFirebaseLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_firebase_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListFirebaseLinksRequest,
+        dict,
+    ],
+)
+def test_list_firebase_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListFirebaseLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListFirebaseLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_firebase_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFirebaseLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_firebase_links_rest_required_fields(
+    request_type=analytics_admin.ListFirebaseLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_firebase_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_firebase_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListFirebaseLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListFirebaseLinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_firebase_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_firebase_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_firebase_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_firebase_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_firebase_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_firebase_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListFirebaseLinksRequest.pb(
+            analytics_admin.ListFirebaseLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListFirebaseLinksResponse.to_json(
+            analytics_admin.ListFirebaseLinksResponse()
+        )
+
+        request = analytics_admin.ListFirebaseLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListFirebaseLinksResponse()
+
+        client.list_firebase_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_firebase_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListFirebaseLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_firebase_links(request)
+
+
+def test_list_firebase_links_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListFirebaseLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListFirebaseLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_firebase_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/firebaseLinks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_firebase_links_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_firebase_links(
+            analytics_admin.ListFirebaseLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_firebase_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListFirebaseLinksResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_firebase_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.FirebaseLink) for i in results)
+
+        pages = list(client.list_firebase_links(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetGlobalSiteTagRequest,
+        dict,
+    ],
+)
+def test_get_global_site_tag_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataStreams/sample2/globalSiteTag"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GlobalSiteTag(
+            name="name_value",
+            snippet="snippet_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GlobalSiteTag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_global_site_tag(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.GlobalSiteTag)
+    assert response.name == "name_value"
+    assert response.snippet == "snippet_value"
+
+
+def test_get_global_site_tag_rest_required_fields(
+    request_type=analytics_admin.GetGlobalSiteTagRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_global_site_tag._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_global_site_tag._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.GlobalSiteTag()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.GlobalSiteTag.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_global_site_tag(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_global_site_tag_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_global_site_tag._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_global_site_tag_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_global_site_tag"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_global_site_tag"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetGlobalSiteTagRequest.pb(
+            analytics_admin.GetGlobalSiteTagRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.GlobalSiteTag.to_json(
+            resources.GlobalSiteTag()
+        )
+
+        request = analytics_admin.GetGlobalSiteTagRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.GlobalSiteTag()
+
+        client.get_global_site_tag(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_global_site_tag_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetGlobalSiteTagRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataStreams/sample2/globalSiteTag"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_global_site_tag(request)
+
+
+def test_get_global_site_tag_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GlobalSiteTag()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/globalSiteTag"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GlobalSiteTag.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_global_site_tag(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/globalSiteTag}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_global_site_tag_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_global_site_tag(
+            analytics_admin.GetGlobalSiteTagRequest(),
+            name="name_value",
+        )
+
+
+def test_get_global_site_tag_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateGoogleAdsLinkRequest,
+        dict,
+    ],
+)
+def test_create_google_ads_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["google_ads_link"] = {
+        "name": "name_value",
+        "customer_id": "customer_id_value",
+        "can_manage_clients": True,
+        "ads_personalization_enabled": {"value": True},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "creator_email_address": "creator_email_address_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleAdsLink(
+            name="name_value",
+            customer_id="customer_id_value",
+            can_manage_clients=True,
+            creator_email_address="creator_email_address_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleAdsLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_google_ads_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.GoogleAdsLink)
+    assert response.name == "name_value"
+    assert response.customer_id == "customer_id_value"
+    assert response.can_manage_clients is True
+    assert response.creator_email_address == "creator_email_address_value"
+
+
+def test_create_google_ads_link_rest_required_fields(
+    request_type=analytics_admin.CreateGoogleAdsLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_google_ads_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_google_ads_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.GoogleAdsLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.GoogleAdsLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_google_ads_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_google_ads_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_google_ads_link._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "googleAdsLink",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_google_ads_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_google_ads_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_google_ads_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateGoogleAdsLinkRequest.pb(
+            analytics_admin.CreateGoogleAdsLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.GoogleAdsLink.to_json(
+            resources.GoogleAdsLink()
+        )
+
+        request = analytics_admin.CreateGoogleAdsLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.GoogleAdsLink()
+
+        client.create_google_ads_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_google_ads_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateGoogleAdsLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["google_ads_link"] = {
+        "name": "name_value",
+        "customer_id": "customer_id_value",
+        "can_manage_clients": True,
+        "ads_personalization_enabled": {"value": True},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "creator_email_address": "creator_email_address_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_google_ads_link(request)
+
+
+def test_create_google_ads_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleAdsLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            google_ads_link=resources.GoogleAdsLink(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleAdsLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_google_ads_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/googleAdsLinks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_google_ads_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_google_ads_link(
+            analytics_admin.CreateGoogleAdsLinkRequest(),
+            parent="parent_value",
+            google_ads_link=resources.GoogleAdsLink(name="name_value"),
+        )
+
+
+def test_create_google_ads_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateGoogleAdsLinkRequest,
+        dict,
+    ],
+)
+def test_update_google_ads_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "google_ads_link": {"name": "properties/sample1/googleAdsLinks/sample2"}
+    }
+    request_init["google_ads_link"] = {
+        "name": "properties/sample1/googleAdsLinks/sample2",
+        "customer_id": "customer_id_value",
+        "can_manage_clients": True,
+        "ads_personalization_enabled": {"value": True},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "creator_email_address": "creator_email_address_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleAdsLink(
+            name="name_value",
+            customer_id="customer_id_value",
+            can_manage_clients=True,
+            creator_email_address="creator_email_address_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleAdsLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_google_ads_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.GoogleAdsLink)
+    assert response.name == "name_value"
+    assert response.customer_id == "customer_id_value"
+    assert response.can_manage_clients is True
+    assert response.creator_email_address == "creator_email_address_value"
+
+
+def test_update_google_ads_link_rest_required_fields(
+    request_type=analytics_admin.UpdateGoogleAdsLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_google_ads_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_google_ads_link._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.GoogleAdsLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.GoogleAdsLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_google_ads_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_google_ads_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_google_ads_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("updateMask",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_google_ads_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_google_ads_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_google_ads_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateGoogleAdsLinkRequest.pb(
+            analytics_admin.UpdateGoogleAdsLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.GoogleAdsLink.to_json(
+            resources.GoogleAdsLink()
+        )
+
+        request = analytics_admin.UpdateGoogleAdsLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.GoogleAdsLink()
+
+        client.update_google_ads_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_google_ads_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateGoogleAdsLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "google_ads_link": {"name": "properties/sample1/googleAdsLinks/sample2"}
+    }
+    request_init["google_ads_link"] = {
+        "name": "properties/sample1/googleAdsLinks/sample2",
+        "customer_id": "customer_id_value",
+        "can_manage_clients": True,
+        "ads_personalization_enabled": {"value": True},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "creator_email_address": "creator_email_address_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_google_ads_link(request)
+
+
+def test_update_google_ads_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleAdsLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "google_ads_link": {"name": "properties/sample1/googleAdsLinks/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            google_ads_link=resources.GoogleAdsLink(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleAdsLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_google_ads_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{google_ads_link.name=properties/*/googleAdsLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_google_ads_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_google_ads_link(
+            analytics_admin.UpdateGoogleAdsLinkRequest(),
+            google_ads_link=resources.GoogleAdsLink(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_google_ads_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteGoogleAdsLinkRequest,
+        dict,
+    ],
+)
+def test_delete_google_ads_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/googleAdsLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_google_ads_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_google_ads_link_rest_required_fields(
+    request_type=analytics_admin.DeleteGoogleAdsLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_google_ads_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_google_ads_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_google_ads_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_google_ads_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_google_ads_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_google_ads_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_google_ads_link"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteGoogleAdsLinkRequest.pb(
+            analytics_admin.DeleteGoogleAdsLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteGoogleAdsLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_google_ads_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_google_ads_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteGoogleAdsLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/googleAdsLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_google_ads_link(request)
+
+
+def test_delete_google_ads_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/googleAdsLinks/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_google_ads_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/googleAdsLinks/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_google_ads_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_google_ads_link(
+            analytics_admin.DeleteGoogleAdsLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_google_ads_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListGoogleAdsLinksRequest,
+        dict,
+    ],
+)
+def test_list_google_ads_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListGoogleAdsLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListGoogleAdsLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_google_ads_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGoogleAdsLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_google_ads_links_rest_required_fields(
+    request_type=analytics_admin.ListGoogleAdsLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_google_ads_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_google_ads_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListGoogleAdsLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListGoogleAdsLinksResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_google_ads_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_google_ads_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_google_ads_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_google_ads_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_google_ads_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_google_ads_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListGoogleAdsLinksRequest.pb(
+            analytics_admin.ListGoogleAdsLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListGoogleAdsLinksResponse.to_json(
+            analytics_admin.ListGoogleAdsLinksResponse()
+        )
+
+        request = analytics_admin.ListGoogleAdsLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListGoogleAdsLinksResponse()
+
+        client.list_google_ads_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_google_ads_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListGoogleAdsLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_google_ads_links(request)
+
+
+def test_list_google_ads_links_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListGoogleAdsLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListGoogleAdsLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_google_ads_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/googleAdsLinks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_google_ads_links_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_google_ads_links(
+            analytics_admin.ListGoogleAdsLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_google_ads_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListGoogleAdsLinksResponse(
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                    resources.GoogleAdsLink(),
+                    resources.GoogleAdsLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListGoogleAdsLinksResponse(
+                google_ads_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListGoogleAdsLinksResponse(
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListGoogleAdsLinksResponse(
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                    resources.GoogleAdsLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListGoogleAdsLinksResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_google_ads_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.GoogleAdsLink) for i in results)
+
+        pages = list(client.list_google_ads_links(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDataSharingSettingsRequest,
+        dict,
+    ],
+)
+def test_get_data_sharing_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/dataSharingSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataSharingSettings(
+            name="name_value",
+            sharing_with_google_support_enabled=True,
+            sharing_with_google_assigned_sales_enabled=True,
+            sharing_with_google_any_sales_enabled=True,
+            sharing_with_google_products_enabled=True,
+            sharing_with_others_enabled=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataSharingSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_data_sharing_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataSharingSettings)
+    assert response.name == "name_value"
+    assert response.sharing_with_google_support_enabled is True
+    assert response.sharing_with_google_assigned_sales_enabled is True
+    assert response.sharing_with_google_any_sales_enabled is True
+    assert response.sharing_with_google_products_enabled is True
+    assert response.sharing_with_others_enabled is True
+
+
+def test_get_data_sharing_settings_rest_required_fields(
+    request_type=analytics_admin.GetDataSharingSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_sharing_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_sharing_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataSharingSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DataSharingSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_data_sharing_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_data_sharing_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_data_sharing_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_sharing_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_data_sharing_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_sharing_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetDataSharingSettingsRequest.pb(
+            analytics_admin.GetDataSharingSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataSharingSettings.to_json(
+            resources.DataSharingSettings()
+        )
+
+        request = analytics_admin.GetDataSharingSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataSharingSettings()
+
+        client.get_data_sharing_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_data_sharing_settings_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetDataSharingSettingsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/dataSharingSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_data_sharing_settings(request)
+
+
+def test_get_data_sharing_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataSharingSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "accounts/sample1/dataSharingSettings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataSharingSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_data_sharing_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=accounts/*/dataSharingSettings}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_data_sharing_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_sharing_settings(
+            analytics_admin.GetDataSharingSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_data_sharing_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetMeasurementProtocolSecretRequest,
+        dict,
+    ],
+)
+def test_get_measurement_protocol_secret_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.MeasurementProtocolSecret(
+            name="name_value",
+            display_name="display_name_value",
+            secret_value="secret_value_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_measurement_protocol_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.MeasurementProtocolSecret)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.secret_value == "secret_value_value"
+
+
+def test_get_measurement_protocol_secret_rest_required_fields(
+    request_type=analytics_admin.GetMeasurementProtocolSecretRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.MeasurementProtocolSecret()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_measurement_protocol_secret(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_measurement_protocol_secret_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_measurement_protocol_secret._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_measurement_protocol_secret_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_measurement_protocol_secret",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_measurement_protocol_secret",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetMeasurementProtocolSecretRequest.pb(
+            analytics_admin.GetMeasurementProtocolSecretRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.MeasurementProtocolSecret.to_json(
+            resources.MeasurementProtocolSecret()
+        )
+
+        request = analytics_admin.GetMeasurementProtocolSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.MeasurementProtocolSecret()
+
+        client.get_measurement_protocol_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_measurement_protocol_secret_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetMeasurementProtocolSecretRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_measurement_protocol_secret(request)
+
+
+def test_get_measurement_protocol_secret_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.MeasurementProtocolSecret()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_measurement_protocol_secret(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/measurementProtocolSecrets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_measurement_protocol_secret_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_measurement_protocol_secret(
+            analytics_admin.GetMeasurementProtocolSecretRequest(),
+            name="name_value",
+        )
+
+
+def test_get_measurement_protocol_secret_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListMeasurementProtocolSecretsRequest,
+        dict,
+    ],
+)
+def test_list_measurement_protocol_secrets_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListMeasurementProtocolSecretsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListMeasurementProtocolSecretsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_measurement_protocol_secrets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMeasurementProtocolSecretsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_measurement_protocol_secrets_rest_required_fields(
+    request_type=analytics_admin.ListMeasurementProtocolSecretsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_measurement_protocol_secrets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_measurement_protocol_secrets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListMeasurementProtocolSecretsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListMeasurementProtocolSecretsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_measurement_protocol_secrets(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_measurement_protocol_secrets_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_measurement_protocol_secrets._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_measurement_protocol_secrets_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_measurement_protocol_secrets",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_list_measurement_protocol_secrets",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListMeasurementProtocolSecretsRequest.pb(
+            analytics_admin.ListMeasurementProtocolSecretsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListMeasurementProtocolSecretsResponse.to_json(
+                analytics_admin.ListMeasurementProtocolSecretsResponse()
+            )
+        )
+
+        request = analytics_admin.ListMeasurementProtocolSecretsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListMeasurementProtocolSecretsResponse()
+
+        client.list_measurement_protocol_secrets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_measurement_protocol_secrets_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ListMeasurementProtocolSecretsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_measurement_protocol_secrets(request)
+
+
+def test_list_measurement_protocol_secrets_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListMeasurementProtocolSecretsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListMeasurementProtocolSecretsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_measurement_protocol_secrets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*/dataStreams/*}/measurementProtocolSecrets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_measurement_protocol_secrets_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_measurement_protocol_secrets(
+            analytics_admin.ListMeasurementProtocolSecretsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_measurement_protocol_secrets_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListMeasurementProtocolSecretsResponse(
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                    resources.MeasurementProtocolSecret(),
+                    resources.MeasurementProtocolSecret(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListMeasurementProtocolSecretsResponse(
+                measurement_protocol_secrets=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListMeasurementProtocolSecretsResponse(
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListMeasurementProtocolSecretsResponse(
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                    resources.MeasurementProtocolSecret(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListMeasurementProtocolSecretsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        pager = client.list_measurement_protocol_secrets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.MeasurementProtocolSecret) for i in results)
+
+        pages = list(
+            client.list_measurement_protocol_secrets(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateMeasurementProtocolSecretRequest,
+        dict,
+    ],
+)
+def test_create_measurement_protocol_secret_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request_init["measurement_protocol_secret"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "secret_value": "secret_value_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.MeasurementProtocolSecret(
+            name="name_value",
+            display_name="display_name_value",
+            secret_value="secret_value_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_measurement_protocol_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.MeasurementProtocolSecret)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.secret_value == "secret_value_value"
+
+
+def test_create_measurement_protocol_secret_rest_required_fields(
+    request_type=analytics_admin.CreateMeasurementProtocolSecretRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.MeasurementProtocolSecret()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_measurement_protocol_secret(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_measurement_protocol_secret_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.create_measurement_protocol_secret._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "measurementProtocolSecret",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_measurement_protocol_secret_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_measurement_protocol_secret",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_create_measurement_protocol_secret",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateMeasurementProtocolSecretRequest.pb(
+            analytics_admin.CreateMeasurementProtocolSecretRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.MeasurementProtocolSecret.to_json(
+            resources.MeasurementProtocolSecret()
+        )
+
+        request = analytics_admin.CreateMeasurementProtocolSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.MeasurementProtocolSecret()
+
+        client.create_measurement_protocol_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_measurement_protocol_secret_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CreateMeasurementProtocolSecretRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request_init["measurement_protocol_secret"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "secret_value": "secret_value_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_measurement_protocol_secret(request)
+
+
+def test_create_measurement_protocol_secret_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.MeasurementProtocolSecret()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            measurement_protocol_secret=resources.MeasurementProtocolSecret(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_measurement_protocol_secret(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*/dataStreams/*}/measurementProtocolSecrets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_measurement_protocol_secret_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_measurement_protocol_secret(
+            analytics_admin.CreateMeasurementProtocolSecretRequest(),
+            parent="parent_value",
+            measurement_protocol_secret=resources.MeasurementProtocolSecret(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_measurement_protocol_secret_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteMeasurementProtocolSecretRequest,
+        dict,
+    ],
+)
+def test_delete_measurement_protocol_secret_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_measurement_protocol_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_measurement_protocol_secret_rest_required_fields(
+    request_type=analytics_admin.DeleteMeasurementProtocolSecretRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_measurement_protocol_secret(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_measurement_protocol_secret_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.delete_measurement_protocol_secret._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_measurement_protocol_secret_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_measurement_protocol_secret",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteMeasurementProtocolSecretRequest.pb(
+            analytics_admin.DeleteMeasurementProtocolSecretRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteMeasurementProtocolSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_measurement_protocol_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_measurement_protocol_secret_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteMeasurementProtocolSecretRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_measurement_protocol_secret(request)
+
+
+def test_delete_measurement_protocol_secret_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_measurement_protocol_secret(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/measurementProtocolSecrets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_measurement_protocol_secret_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_measurement_protocol_secret(
+            analytics_admin.DeleteMeasurementProtocolSecretRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_measurement_protocol_secret_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateMeasurementProtocolSecretRequest,
+        dict,
+    ],
+)
+def test_update_measurement_protocol_secret_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "measurement_protocol_secret": {
+            "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+        }
+    }
+    request_init["measurement_protocol_secret"] = {
+        "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3",
+        "display_name": "display_name_value",
+        "secret_value": "secret_value_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.MeasurementProtocolSecret(
+            name="name_value",
+            display_name="display_name_value",
+            secret_value="secret_value_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_measurement_protocol_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.MeasurementProtocolSecret)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.secret_value == "secret_value_value"
+
+
+def test_update_measurement_protocol_secret_rest_required_fields(
+    request_type=analytics_admin.UpdateMeasurementProtocolSecretRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_measurement_protocol_secret._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.MeasurementProtocolSecret()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_measurement_protocol_secret(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_measurement_protocol_secret_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_measurement_protocol_secret._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",)) & set(("measurementProtocolSecret",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_measurement_protocol_secret_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_measurement_protocol_secret",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_measurement_protocol_secret",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateMeasurementProtocolSecretRequest.pb(
+            analytics_admin.UpdateMeasurementProtocolSecretRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.MeasurementProtocolSecret.to_json(
+            resources.MeasurementProtocolSecret()
+        )
+
+        request = analytics_admin.UpdateMeasurementProtocolSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.MeasurementProtocolSecret()
+
+        client.update_measurement_protocol_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_measurement_protocol_secret_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateMeasurementProtocolSecretRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "measurement_protocol_secret": {
+            "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+        }
+    }
+    request_init["measurement_protocol_secret"] = {
+        "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3",
+        "display_name": "display_name_value",
+        "secret_value": "secret_value_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_measurement_protocol_secret(request)
+
+
+def test_update_measurement_protocol_secret_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.MeasurementProtocolSecret()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "measurement_protocol_secret": {
+                "name": "properties/sample1/dataStreams/sample2/measurementProtocolSecrets/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            measurement_protocol_secret=resources.MeasurementProtocolSecret(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.MeasurementProtocolSecret.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_measurement_protocol_secret(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{measurement_protocol_secret.name=properties/*/dataStreams/*/measurementProtocolSecrets/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_measurement_protocol_secret_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_measurement_protocol_secret(
+            analytics_admin.UpdateMeasurementProtocolSecretRequest(),
+            measurement_protocol_secret=resources.MeasurementProtocolSecret(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_measurement_protocol_secret_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.AcknowledgeUserDataCollectionRequest,
+        dict,
+    ],
+)
+def test_acknowledge_user_data_collection_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.AcknowledgeUserDataCollectionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.AcknowledgeUserDataCollectionResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.acknowledge_user_data_collection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.AcknowledgeUserDataCollectionResponse)
+
+
+def test_acknowledge_user_data_collection_rest_required_fields(
+    request_type=analytics_admin.AcknowledgeUserDataCollectionRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["property"] = ""
+    request_init["acknowledgement"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).acknowledge_user_data_collection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["property"] = "property_value"
+    jsonified_request["acknowledgement"] = "acknowledgement_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).acknowledge_user_data_collection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "property" in jsonified_request
+    assert jsonified_request["property"] == "property_value"
+    assert "acknowledgement" in jsonified_request
+    assert jsonified_request["acknowledgement"] == "acknowledgement_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.AcknowledgeUserDataCollectionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.AcknowledgeUserDataCollectionResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.acknowledge_user_data_collection(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_acknowledge_user_data_collection_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.acknowledge_user_data_collection._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "property",
+                "acknowledgement",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_acknowledge_user_data_collection_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_acknowledge_user_data_collection",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_acknowledge_user_data_collection",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.AcknowledgeUserDataCollectionRequest.pb(
+            analytics_admin.AcknowledgeUserDataCollectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.AcknowledgeUserDataCollectionResponse.to_json(
+                analytics_admin.AcknowledgeUserDataCollectionResponse()
+            )
+        )
+
+        request = analytics_admin.AcknowledgeUserDataCollectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.AcknowledgeUserDataCollectionResponse()
+
+        client.acknowledge_user_data_collection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_acknowledge_user_data_collection_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.AcknowledgeUserDataCollectionRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.acknowledge_user_data_collection(request)
+
+
+def test_acknowledge_user_data_collection_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.SearchChangeHistoryEventsRequest,
+        dict,
+    ],
+)
+def test_search_change_history_events_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"account": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.SearchChangeHistoryEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.SearchChangeHistoryEventsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_change_history_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchChangeHistoryEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_search_change_history_events_rest_required_fields(
+    request_type=analytics_admin.SearchChangeHistoryEventsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["account"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_change_history_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["account"] = "account_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_change_history_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "account" in jsonified_request
+    assert jsonified_request["account"] == "account_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.SearchChangeHistoryEventsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.SearchChangeHistoryEventsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_change_history_events(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_change_history_events_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_change_history_events._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("account",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_change_history_events_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_search_change_history_events",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_search_change_history_events",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.SearchChangeHistoryEventsRequest.pb(
+            analytics_admin.SearchChangeHistoryEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.SearchChangeHistoryEventsResponse.to_json(
+                analytics_admin.SearchChangeHistoryEventsResponse()
+            )
+        )
+
+        request = analytics_admin.SearchChangeHistoryEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.SearchChangeHistoryEventsResponse()
+
+        client.search_change_history_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_change_history_events_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.SearchChangeHistoryEventsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"account": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_change_history_events(request)
+
+
+def test_search_change_history_events_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.SearchChangeHistoryEventsResponse(
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                    resources.ChangeHistoryEvent(),
+                    resources.ChangeHistoryEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.SearchChangeHistoryEventsResponse(
+                change_history_events=[],
+                next_page_token="def",
+            ),
+            analytics_admin.SearchChangeHistoryEventsResponse(
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.SearchChangeHistoryEventsResponse(
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                    resources.ChangeHistoryEvent(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.SearchChangeHistoryEventsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"account": "accounts/sample1"}
+
+        pager = client.search_change_history_events(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.ChangeHistoryEvent) for i in results)
+
+        pages = list(client.search_change_history_events(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetGoogleSignalsSettingsRequest,
+        dict,
+    ],
+)
+def test_get_google_signals_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/googleSignalsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleSignalsSettings(
+            name="name_value",
+            state=resources.GoogleSignalsState.GOOGLE_SIGNALS_ENABLED,
+            consent=resources.GoogleSignalsConsent.GOOGLE_SIGNALS_CONSENT_CONSENTED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleSignalsSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_google_signals_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.GoogleSignalsSettings)
+    assert response.name == "name_value"
+    assert response.state == resources.GoogleSignalsState.GOOGLE_SIGNALS_ENABLED
+    assert (
+        response.consent
+        == resources.GoogleSignalsConsent.GOOGLE_SIGNALS_CONSENT_CONSENTED
+    )
+
+
+def test_get_google_signals_settings_rest_required_fields(
+    request_type=analytics_admin.GetGoogleSignalsSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_google_signals_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_google_signals_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.GoogleSignalsSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.GoogleSignalsSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_google_signals_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_google_signals_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_google_signals_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_google_signals_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_google_signals_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_google_signals_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetGoogleSignalsSettingsRequest.pb(
+            analytics_admin.GetGoogleSignalsSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.GoogleSignalsSettings.to_json(
+            resources.GoogleSignalsSettings()
+        )
+
+        request = analytics_admin.GetGoogleSignalsSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.GoogleSignalsSettings()
+
+        client.get_google_signals_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_google_signals_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetGoogleSignalsSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/googleSignalsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_google_signals_settings(request)
+
+
+def test_get_google_signals_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleSignalsSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/googleSignalsSettings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleSignalsSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_google_signals_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/googleSignalsSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_google_signals_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_google_signals_settings(
+            analytics_admin.GetGoogleSignalsSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_google_signals_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateGoogleSignalsSettingsRequest,
+        dict,
+    ],
+)
+def test_update_google_signals_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "google_signals_settings": {"name": "properties/sample1/googleSignalsSettings"}
+    }
+    request_init["google_signals_settings"] = {
+        "name": "properties/sample1/googleSignalsSettings",
+        "state": 1,
+        "consent": 2,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleSignalsSettings(
+            name="name_value",
+            state=resources.GoogleSignalsState.GOOGLE_SIGNALS_ENABLED,
+            consent=resources.GoogleSignalsConsent.GOOGLE_SIGNALS_CONSENT_CONSENTED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleSignalsSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_google_signals_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.GoogleSignalsSettings)
+    assert response.name == "name_value"
+    assert response.state == resources.GoogleSignalsState.GOOGLE_SIGNALS_ENABLED
+    assert (
+        response.consent
+        == resources.GoogleSignalsConsent.GOOGLE_SIGNALS_CONSENT_CONSENTED
+    )
+
+
+def test_update_google_signals_settings_rest_required_fields(
+    request_type=analytics_admin.UpdateGoogleSignalsSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_google_signals_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_google_signals_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.GoogleSignalsSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.GoogleSignalsSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_google_signals_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_google_signals_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_google_signals_settings._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "googleSignalsSettings",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_google_signals_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_google_signals_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_google_signals_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateGoogleSignalsSettingsRequest.pb(
+            analytics_admin.UpdateGoogleSignalsSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.GoogleSignalsSettings.to_json(
+            resources.GoogleSignalsSettings()
+        )
+
+        request = analytics_admin.UpdateGoogleSignalsSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.GoogleSignalsSettings()
+
+        client.update_google_signals_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_google_signals_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateGoogleSignalsSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "google_signals_settings": {"name": "properties/sample1/googleSignalsSettings"}
+    }
+    request_init["google_signals_settings"] = {
+        "name": "properties/sample1/googleSignalsSettings",
+        "state": 1,
+        "consent": 2,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_google_signals_settings(request)
+
+
+def test_update_google_signals_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.GoogleSignalsSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "google_signals_settings": {
+                "name": "properties/sample1/googleSignalsSettings"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            google_signals_settings=resources.GoogleSignalsSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.GoogleSignalsSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_google_signals_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{google_signals_settings.name=properties/*/googleSignalsSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_google_signals_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_google_signals_settings(
+            analytics_admin.UpdateGoogleSignalsSettingsRequest(),
+            google_signals_settings=resources.GoogleSignalsSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_google_signals_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateConversionEventRequest,
+        dict,
+    ],
+)
+def test_create_conversion_event_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["conversion_event"] = {
+        "name": "name_value",
+        "event_name": "event_name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "deletable": True,
+        "custom": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.ConversionEvent(
+            name="name_value",
+            event_name="event_name_value",
+            deletable=True,
+            custom=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.ConversionEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_conversion_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.ConversionEvent)
+    assert response.name == "name_value"
+    assert response.event_name == "event_name_value"
+    assert response.deletable is True
+    assert response.custom is True
+
+
+def test_create_conversion_event_rest_required_fields(
+    request_type=analytics_admin.CreateConversionEventRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_conversion_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_conversion_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.ConversionEvent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.ConversionEvent.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_conversion_event(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_conversion_event_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_conversion_event._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "conversionEvent",
+                "parent",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_conversion_event_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_conversion_event"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_conversion_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateConversionEventRequest.pb(
+            analytics_admin.CreateConversionEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.ConversionEvent.to_json(
+            resources.ConversionEvent()
+        )
+
+        request = analytics_admin.CreateConversionEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.ConversionEvent()
+
+        client.create_conversion_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_conversion_event_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateConversionEventRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["conversion_event"] = {
+        "name": "name_value",
+        "event_name": "event_name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "deletable": True,
+        "custom": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_conversion_event(request)
+
+
+def test_create_conversion_event_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.ConversionEvent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            conversion_event=resources.ConversionEvent(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.ConversionEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_conversion_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/conversionEvents"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_conversion_event_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_conversion_event(
+            analytics_admin.CreateConversionEventRequest(),
+            parent="parent_value",
+            conversion_event=resources.ConversionEvent(name="name_value"),
+        )
+
+
+def test_create_conversion_event_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetConversionEventRequest,
+        dict,
+    ],
+)
+def test_get_conversion_event_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/conversionEvents/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.ConversionEvent(
+            name="name_value",
+            event_name="event_name_value",
+            deletable=True,
+            custom=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.ConversionEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_conversion_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.ConversionEvent)
+    assert response.name == "name_value"
+    assert response.event_name == "event_name_value"
+    assert response.deletable is True
+    assert response.custom is True
+
+
+def test_get_conversion_event_rest_required_fields(
+    request_type=analytics_admin.GetConversionEventRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_conversion_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_conversion_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.ConversionEvent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.ConversionEvent.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_conversion_event(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_conversion_event_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_conversion_event._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_conversion_event_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_conversion_event"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_conversion_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetConversionEventRequest.pb(
+            analytics_admin.GetConversionEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.ConversionEvent.to_json(
+            resources.ConversionEvent()
+        )
+
+        request = analytics_admin.GetConversionEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.ConversionEvent()
+
+        client.get_conversion_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_conversion_event_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetConversionEventRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/conversionEvents/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_conversion_event(request)
+
+
+def test_get_conversion_event_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.ConversionEvent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/conversionEvents/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.ConversionEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_conversion_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/conversionEvents/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_conversion_event_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_conversion_event(
+            analytics_admin.GetConversionEventRequest(),
+            name="name_value",
+        )
+
+
+def test_get_conversion_event_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteConversionEventRequest,
+        dict,
+    ],
+)
+def test_delete_conversion_event_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/conversionEvents/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_conversion_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_conversion_event_rest_required_fields(
+    request_type=analytics_admin.DeleteConversionEventRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_conversion_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_conversion_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_conversion_event(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_conversion_event_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_conversion_event._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_conversion_event_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_conversion_event"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteConversionEventRequest.pb(
+            analytics_admin.DeleteConversionEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteConversionEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_conversion_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_conversion_event_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteConversionEventRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/conversionEvents/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_conversion_event(request)
+
+
+def test_delete_conversion_event_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/conversionEvents/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_conversion_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/conversionEvents/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_conversion_event_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_conversion_event(
+            analytics_admin.DeleteConversionEventRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_conversion_event_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListConversionEventsRequest,
+        dict,
+    ],
+)
+def test_list_conversion_events_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListConversionEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListConversionEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_conversion_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListConversionEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_conversion_events_rest_required_fields(
+    request_type=analytics_admin.ListConversionEventsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_conversion_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_conversion_events._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListConversionEventsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListConversionEventsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_conversion_events(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_conversion_events_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_conversion_events._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_conversion_events_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_conversion_events"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_conversion_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListConversionEventsRequest.pb(
+            analytics_admin.ListConversionEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListConversionEventsResponse.to_json(
+                analytics_admin.ListConversionEventsResponse()
+            )
+        )
+
+        request = analytics_admin.ListConversionEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListConversionEventsResponse()
+
+        client.list_conversion_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_conversion_events_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListConversionEventsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_conversion_events(request)
+
+
+def test_list_conversion_events_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListConversionEventsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListConversionEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_conversion_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/conversionEvents"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_conversion_events_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_conversion_events(
+            analytics_admin.ListConversionEventsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_conversion_events_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListConversionEventsResponse(
+                conversion_events=[
+                    resources.ConversionEvent(),
+                    resources.ConversionEvent(),
+                    resources.ConversionEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListConversionEventsResponse(
+                conversion_events=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListConversionEventsResponse(
+                conversion_events=[
+                    resources.ConversionEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListConversionEventsResponse(
+                conversion_events=[
+                    resources.ConversionEvent(),
+                    resources.ConversionEvent(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListConversionEventsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_conversion_events(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.ConversionEvent) for i in results)
+
+        pages = list(client.list_conversion_events(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
+)
+def test_get_display_video360_advertiser_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLink(
+            name="name_value",
+            advertiser_id="advertiser_id_value",
+            advertiser_display_name="advertiser_display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_display_video360_advertiser_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DisplayVideo360AdvertiserLink)
+    assert response.name == "name_value"
+    assert response.advertiser_id == "advertiser_id_value"
+    assert response.advertiser_display_name == "advertiser_display_name_value"
+
+
+def test_get_display_video360_advertiser_link_rest_required_fields(
+    request_type=analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_display_video360_advertiser_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_display_video360_advertiser_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DisplayVideo360AdvertiserLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_display_video360_advertiser_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_display_video360_advertiser_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_display_video360_advertiser_link._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_display_video360_advertiser_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_display_video360_advertiser_link",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_display_video360_advertiser_link",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetDisplayVideo360AdvertiserLinkRequest.pb(
+            analytics_admin.GetDisplayVideo360AdvertiserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DisplayVideo360AdvertiserLink.to_json(
+            resources.DisplayVideo360AdvertiserLink()
+        )
+
+        request = analytics_admin.GetDisplayVideo360AdvertiserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DisplayVideo360AdvertiserLink()
+
+        client.get_display_video360_advertiser_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_display_video360_advertiser_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_display_video360_advertiser_link(request)
+
+
+def test_get_display_video360_advertiser_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_display_video360_advertiser_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/displayVideo360AdvertiserLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_display_video360_advertiser_link_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_display_video360_advertiser_link(
+            analytics_admin.GetDisplayVideo360AdvertiserLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_get_display_video360_advertiser_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
+        dict,
+    ],
+)
+def test_list_display_video360_advertiser_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_display_video360_advertiser_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDisplayVideo360AdvertiserLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_display_video360_advertiser_links_rest_required_fields(
+    request_type=analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_display_video360_advertiser_links._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_display_video360_advertiser_links._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = (
+                analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_display_video360_advertiser_links(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_display_video360_advertiser_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_display_video360_advertiser_links._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_display_video360_advertiser_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_display_video360_advertiser_links",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_list_display_video360_advertiser_links",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest.pb(
+            analytics_admin.ListDisplayVideo360AdvertiserLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.to_json(
+                analytics_admin.ListDisplayVideo360AdvertiserLinksResponse()
+            )
+        )
+
+        request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse()
+
+        client.list_display_video360_advertiser_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_display_video360_advertiser_links_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_display_video360_advertiser_links(request)
+
+
+def test_list_display_video360_advertiser_links_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_display_video360_advertiser_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinks"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_display_video360_advertiser_links_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_display_video360_advertiser_links(
+            analytics_admin.ListDisplayVideo360AdvertiserLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_display_video360_advertiser_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
+                display_video_360_advertiser_links=[
+                    resources.DisplayVideo360AdvertiserLink(),
+                    resources.DisplayVideo360AdvertiserLink(),
+                    resources.DisplayVideo360AdvertiserLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
+                display_video_360_advertiser_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
+                display_video_360_advertiser_links=[
+                    resources.DisplayVideo360AdvertiserLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
+                display_video_360_advertiser_links=[
+                    resources.DisplayVideo360AdvertiserLink(),
+                    resources.DisplayVideo360AdvertiserLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_display_video360_advertiser_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, resources.DisplayVideo360AdvertiserLink) for i in results
+        )
+
+        pages = list(
+            client.list_display_video360_advertiser_links(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
+)
+def test_create_display_video360_advertiser_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["display_video_360_advertiser_link"] = {
+        "name": "name_value",
+        "advertiser_id": "advertiser_id_value",
+        "advertiser_display_name": "advertiser_display_name_value",
+        "ads_personalization_enabled": {"value": True},
+        "campaign_data_sharing_enabled": {},
+        "cost_data_sharing_enabled": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLink(
+            name="name_value",
+            advertiser_id="advertiser_id_value",
+            advertiser_display_name="advertiser_display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_display_video360_advertiser_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DisplayVideo360AdvertiserLink)
+    assert response.name == "name_value"
+    assert response.advertiser_id == "advertiser_id_value"
+    assert response.advertiser_display_name == "advertiser_display_name_value"
+
+
+def test_create_display_video360_advertiser_link_rest_required_fields(
+    request_type=analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_display_video360_advertiser_link._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_display_video360_advertiser_link._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DisplayVideo360AdvertiserLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_display_video360_advertiser_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_display_video360_advertiser_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.create_display_video360_advertiser_link._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "displayVideo360AdvertiserLink",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_display_video360_advertiser_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_display_video360_advertiser_link",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_create_display_video360_advertiser_link",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest.pb(
+            analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DisplayVideo360AdvertiserLink.to_json(
+            resources.DisplayVideo360AdvertiserLink()
+        )
+
+        request = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DisplayVideo360AdvertiserLink()
+
+        client.create_display_video360_advertiser_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_display_video360_advertiser_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["display_video_360_advertiser_link"] = {
+        "name": "name_value",
+        "advertiser_id": "advertiser_id_value",
+        "advertiser_display_name": "advertiser_display_name_value",
+        "ads_personalization_enabled": {"value": True},
+        "campaign_data_sharing_enabled": {},
+        "cost_data_sharing_enabled": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_display_video360_advertiser_link(request)
+
+
+def test_create_display_video360_advertiser_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            display_video_360_advertiser_link=resources.DisplayVideo360AdvertiserLink(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_display_video360_advertiser_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinks"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_display_video360_advertiser_link_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_display_video360_advertiser_link(
+            analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest(),
+            parent="parent_value",
+            display_video_360_advertiser_link=resources.DisplayVideo360AdvertiserLink(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_display_video360_advertiser_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
+)
+def test_delete_display_video360_advertiser_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_display_video360_advertiser_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_display_video360_advertiser_link_rest_required_fields(
+    request_type=analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_display_video360_advertiser_link._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_display_video360_advertiser_link._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_display_video360_advertiser_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_display_video360_advertiser_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.delete_display_video360_advertiser_link._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_display_video360_advertiser_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_display_video360_advertiser_link",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest.pb(
+            analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_display_video360_advertiser_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_display_video360_advertiser_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_display_video360_advertiser_link(request)
+
+
+def test_delete_display_video360_advertiser_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_display_video360_advertiser_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/displayVideo360AdvertiserLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_display_video360_advertiser_link_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_display_video360_advertiser_link(
+            analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_display_video360_advertiser_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
+)
+def test_update_display_video360_advertiser_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "display_video_360_advertiser_link": {
+            "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"
+        }
+    }
+    request_init["display_video_360_advertiser_link"] = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2",
+        "advertiser_id": "advertiser_id_value",
+        "advertiser_display_name": "advertiser_display_name_value",
+        "ads_personalization_enabled": {"value": True},
+        "campaign_data_sharing_enabled": {},
+        "cost_data_sharing_enabled": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLink(
+            name="name_value",
+            advertiser_id="advertiser_id_value",
+            advertiser_display_name="advertiser_display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_display_video360_advertiser_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DisplayVideo360AdvertiserLink)
+    assert response.name == "name_value"
+    assert response.advertiser_id == "advertiser_id_value"
+    assert response.advertiser_display_name == "advertiser_display_name_value"
+
+
+def test_update_display_video360_advertiser_link_rest_required_fields(
+    request_type=analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_display_video360_advertiser_link._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_display_video360_advertiser_link._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DisplayVideo360AdvertiserLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_display_video360_advertiser_link(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_display_video360_advertiser_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_display_video360_advertiser_link._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("updateMask",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_display_video360_advertiser_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_display_video360_advertiser_link",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_display_video360_advertiser_link",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest.pb(
+            analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DisplayVideo360AdvertiserLink.to_json(
+            resources.DisplayVideo360AdvertiserLink()
+        )
+
+        request = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DisplayVideo360AdvertiserLink()
+
+        client.update_display_video360_advertiser_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_display_video360_advertiser_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "display_video_360_advertiser_link": {
+            "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"
+        }
+    }
+    request_init["display_video_360_advertiser_link"] = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2",
+        "advertiser_id": "advertiser_id_value",
+        "advertiser_display_name": "advertiser_display_name_value",
+        "ads_personalization_enabled": {"value": True},
+        "campaign_data_sharing_enabled": {},
+        "cost_data_sharing_enabled": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_display_video360_advertiser_link(request)
+
+
+def test_update_display_video360_advertiser_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "display_video_360_advertiser_link": {
+                "name": "properties/sample1/displayVideo360AdvertiserLinks/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            display_video_360_advertiser_link=resources.DisplayVideo360AdvertiserLink(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_display_video360_advertiser_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{display_video_360_advertiser_link.name=properties/*/displayVideo360AdvertiserLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_display_video360_advertiser_link_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_display_video360_advertiser_link(
+            analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest(),
+            display_video_360_advertiser_link=resources.DisplayVideo360AdvertiserLink(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_display_video360_advertiser_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
+)
+def test_get_display_video360_advertiser_link_proposal_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLinkProposal(
+            name="name_value",
+            advertiser_id="advertiser_id_value",
+            advertiser_display_name="advertiser_display_name_value",
+            validation_email="validation_email_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_display_video360_advertiser_link_proposal(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DisplayVideo360AdvertiserLinkProposal)
+    assert response.name == "name_value"
+    assert response.advertiser_id == "advertiser_id_value"
+    assert response.advertiser_display_name == "advertiser_display_name_value"
+    assert response.validation_email == "validation_email_value"
+
+
+def test_get_display_video360_advertiser_link_proposal_rest_required_fields(
+    request_type=analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_display_video360_advertiser_link_proposal(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_display_video360_advertiser_link_proposal_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_display_video360_advertiser_link_proposal_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_display_video360_advertiser_link_proposal",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_display_video360_advertiser_link_proposal",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest.pb(
+            analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            resources.DisplayVideo360AdvertiserLinkProposal.to_json(
+                resources.DisplayVideo360AdvertiserLinkProposal()
+            )
+        )
+
+        request = analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+
+        client.get_display_video360_advertiser_link_proposal(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_display_video360_advertiser_link_proposal_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_display_video360_advertiser_link_proposal(request)
+
+
+def test_get_display_video360_advertiser_link_proposal_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_display_video360_advertiser_link_proposal(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/displayVideo360AdvertiserLinkProposals/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_display_video360_advertiser_link_proposal_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_display_video360_advertiser_link_proposal(
+            analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest(),
+            name="name_value",
+        )
+
+
+def test_get_display_video360_advertiser_link_proposal_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
+        dict,
+    ],
+)
+def test_list_display_video360_advertiser_link_proposals_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_display_video360_advertiser_link_proposals(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDisplayVideo360AdvertiserLinkProposalsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_display_video360_advertiser_link_proposals_rest_required_fields(
+    request_type=analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_display_video360_advertiser_link_proposals._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_display_video360_advertiser_link_proposals._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = (
+                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_display_video360_advertiser_link_proposals(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_display_video360_advertiser_link_proposals_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_display_video360_advertiser_link_proposals._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_display_video360_advertiser_link_proposals_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_display_video360_advertiser_link_proposals",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_list_display_video360_advertiser_link_proposals",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest.pb(
+                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.to_json(
+                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse()
+            )
+        )
+
+        request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse()
+        )
+
+        client.list_display_video360_advertiser_link_proposals(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_display_video360_advertiser_link_proposals_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_display_video360_advertiser_link_proposals(request)
+
+
+def test_list_display_video360_advertiser_link_proposals_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_display_video360_advertiser_link_proposals(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinkProposals"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_display_video360_advertiser_link_proposals_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_display_video360_advertiser_link_proposals(
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_display_video360_advertiser_link_proposals_rest_pager(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
+                display_video_360_advertiser_link_proposals=[
+                    resources.DisplayVideo360AdvertiserLinkProposal(),
+                    resources.DisplayVideo360AdvertiserLinkProposal(),
+                    resources.DisplayVideo360AdvertiserLinkProposal(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
+                display_video_360_advertiser_link_proposals=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
+                display_video_360_advertiser_link_proposals=[
+                    resources.DisplayVideo360AdvertiserLinkProposal(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
+                display_video_360_advertiser_link_proposals=[
+                    resources.DisplayVideo360AdvertiserLinkProposal(),
+                    resources.DisplayVideo360AdvertiserLinkProposal(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_display_video360_advertiser_link_proposals(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, resources.DisplayVideo360AdvertiserLinkProposal)
+            for i in results
+        )
+
+        pages = list(
+            client.list_display_video360_advertiser_link_proposals(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
+)
+def test_create_display_video360_advertiser_link_proposal_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["display_video_360_advertiser_link_proposal"] = {
+        "name": "name_value",
+        "advertiser_id": "advertiser_id_value",
+        "link_proposal_status_details": {
+            "link_proposal_initiating_product": 1,
+            "requestor_email": "requestor_email_value",
+            "link_proposal_state": 1,
+        },
+        "advertiser_display_name": "advertiser_display_name_value",
+        "validation_email": "validation_email_value",
+        "ads_personalization_enabled": {"value": True},
+        "campaign_data_sharing_enabled": {},
+        "cost_data_sharing_enabled": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLinkProposal(
+            name="name_value",
+            advertiser_id="advertiser_id_value",
+            advertiser_display_name="advertiser_display_name_value",
+            validation_email="validation_email_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_display_video360_advertiser_link_proposal(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DisplayVideo360AdvertiserLinkProposal)
+    assert response.name == "name_value"
+    assert response.advertiser_id == "advertiser_id_value"
+    assert response.advertiser_display_name == "advertiser_display_name_value"
+    assert response.validation_email == "validation_email_value"
+
+
+def test_create_display_video360_advertiser_link_proposal_rest_required_fields(
+    request_type=analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_display_video360_advertiser_link_proposal(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_display_video360_advertiser_link_proposal_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "displayVideo360AdvertiserLinkProposal",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_display_video360_advertiser_link_proposal_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_display_video360_advertiser_link_proposal",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_create_display_video360_advertiser_link_proposal",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest.pb(
+                analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            resources.DisplayVideo360AdvertiserLinkProposal.to_json(
+                resources.DisplayVideo360AdvertiserLinkProposal()
+            )
+        )
+
+        request = analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+
+        client.create_display_video360_advertiser_link_proposal(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_display_video360_advertiser_link_proposal_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["display_video_360_advertiser_link_proposal"] = {
+        "name": "name_value",
+        "advertiser_id": "advertiser_id_value",
+        "link_proposal_status_details": {
+            "link_proposal_initiating_product": 1,
+            "requestor_email": "requestor_email_value",
+            "link_proposal_state": 1,
+        },
+        "advertiser_display_name": "advertiser_display_name_value",
+        "validation_email": "validation_email_value",
+        "ads_personalization_enabled": {"value": True},
+        "campaign_data_sharing_enabled": {},
+        "cost_data_sharing_enabled": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_display_video360_advertiser_link_proposal(request)
+
+
+def test_create_display_video360_advertiser_link_proposal_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            display_video_360_advertiser_link_proposal=resources.DisplayVideo360AdvertiserLinkProposal(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_display_video360_advertiser_link_proposal(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinkProposals"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_display_video360_advertiser_link_proposal_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_display_video360_advertiser_link_proposal(
+            analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest(),
+            parent="parent_value",
+            display_video_360_advertiser_link_proposal=resources.DisplayVideo360AdvertiserLinkProposal(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_display_video360_advertiser_link_proposal_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
+)
+def test_delete_display_video360_advertiser_link_proposal_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_display_video360_advertiser_link_proposal(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_display_video360_advertiser_link_proposal_rest_required_fields(
+    request_type=analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_display_video360_advertiser_link_proposal(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_display_video360_advertiser_link_proposal_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_display_video360_advertiser_link_proposal_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_display_video360_advertiser_link_proposal",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = (
+            analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest.pb(
+                analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_display_video360_advertiser_link_proposal(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_display_video360_advertiser_link_proposal_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_display_video360_advertiser_link_proposal(request)
+
+
+def test_delete_display_video360_advertiser_link_proposal_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_display_video360_advertiser_link_proposal(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/displayVideo360AdvertiserLinkProposals/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_display_video360_advertiser_link_proposal_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_display_video360_advertiser_link_proposal(
+            analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_display_video360_advertiser_link_proposal_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
+)
+def test_approve_display_video360_advertiser_link_proposal_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.approve_display_video360_advertiser_link_proposal(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse
+    )
+
+
+def test_approve_display_video360_advertiser_link_proposal_rest_required_fields(
+    request_type=analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).approve_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).approve_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = (
+                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.approve_display_video360_advertiser_link_proposal(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_approve_display_video360_advertiser_link_proposal_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.approve_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_approve_display_video360_advertiser_link_proposal_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_approve_display_video360_advertiser_link_proposal",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_approve_display_video360_advertiser_link_proposal",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest.pb(
+                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse.to_json(
+            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse()
+        )
+
+        request = analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse()
+        )
+
+        client.approve_display_video360_advertiser_link_proposal(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_approve_display_video360_advertiser_link_proposal_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.approve_display_video360_advertiser_link_proposal(request)
+
+
+def test_approve_display_video360_advertiser_link_proposal_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
+)
+def test_cancel_display_video360_advertiser_link_proposal_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DisplayVideo360AdvertiserLinkProposal(
+            name="name_value",
+            advertiser_id="advertiser_id_value",
+            advertiser_display_name="advertiser_display_name_value",
+            validation_email="validation_email_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_display_video360_advertiser_link_proposal(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DisplayVideo360AdvertiserLinkProposal)
+    assert response.name == "name_value"
+    assert response.advertiser_id == "advertiser_id_value"
+    assert response.advertiser_display_name == "advertiser_display_name_value"
+    assert response.validation_email == "validation_email_value"
+
+
+def test_cancel_display_video360_advertiser_link_proposal_rest_required_fields(
+    request_type=analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DisplayVideo360AdvertiserLinkProposal.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_display_video360_advertiser_link_proposal(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_display_video360_advertiser_link_proposal_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_display_video360_advertiser_link_proposal._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_display_video360_advertiser_link_proposal_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_cancel_display_video360_advertiser_link_proposal",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_cancel_display_video360_advertiser_link_proposal",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest.pb(
+                analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            resources.DisplayVideo360AdvertiserLinkProposal.to_json(
+                resources.DisplayVideo360AdvertiserLinkProposal()
+            )
+        )
+
+        request = analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DisplayVideo360AdvertiserLinkProposal()
+
+        client.cancel_display_video360_advertiser_link_proposal(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_display_video360_advertiser_link_proposal_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/displayVideo360AdvertiserLinkProposals/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_display_video360_advertiser_link_proposal(request)
+
+
+def test_cancel_display_video360_advertiser_link_proposal_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateCustomDimensionRequest,
+        dict,
+    ],
+)
+def test_create_custom_dimension_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["custom_dimension"] = {
+        "name": "name_value",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "scope": 1,
+        "disallow_ads_personalization": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomDimension(
+            name="name_value",
+            parameter_name="parameter_name_value",
+            display_name="display_name_value",
+            description="description_value",
+            scope=resources.CustomDimension.DimensionScope.EVENT,
+            disallow_ads_personalization=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomDimension.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_custom_dimension(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CustomDimension)
+    assert response.name == "name_value"
+    assert response.parameter_name == "parameter_name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.scope == resources.CustomDimension.DimensionScope.EVENT
+    assert response.disallow_ads_personalization is True
+
+
+def test_create_custom_dimension_rest_required_fields(
+    request_type=analytics_admin.CreateCustomDimensionRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CustomDimension()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CustomDimension.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_custom_dimension(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_custom_dimension_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_custom_dimension._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "customDimension",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_custom_dimension_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_dimension"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_dimension"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateCustomDimensionRequest.pb(
+            analytics_admin.CreateCustomDimensionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CustomDimension.to_json(
+            resources.CustomDimension()
+        )
+
+        request = analytics_admin.CreateCustomDimensionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CustomDimension()
+
+        client.create_custom_dimension(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_custom_dimension_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateCustomDimensionRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["custom_dimension"] = {
+        "name": "name_value",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "scope": 1,
+        "disallow_ads_personalization": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_custom_dimension(request)
+
+
+def test_create_custom_dimension_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomDimension()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            custom_dimension=resources.CustomDimension(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomDimension.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_custom_dimension(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/customDimensions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_custom_dimension_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_dimension(
+            analytics_admin.CreateCustomDimensionRequest(),
+            parent="parent_value",
+            custom_dimension=resources.CustomDimension(name="name_value"),
+        )
+
+
+def test_create_custom_dimension_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateCustomDimensionRequest,
+        dict,
+    ],
+)
+def test_update_custom_dimension_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_dimension": {"name": "properties/sample1/customDimensions/sample2"}
+    }
+    request_init["custom_dimension"] = {
+        "name": "properties/sample1/customDimensions/sample2",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "scope": 1,
+        "disallow_ads_personalization": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomDimension(
+            name="name_value",
+            parameter_name="parameter_name_value",
+            display_name="display_name_value",
+            description="description_value",
+            scope=resources.CustomDimension.DimensionScope.EVENT,
+            disallow_ads_personalization=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomDimension.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_custom_dimension(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CustomDimension)
+    assert response.name == "name_value"
+    assert response.parameter_name == "parameter_name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.scope == resources.CustomDimension.DimensionScope.EVENT
+    assert response.disallow_ads_personalization is True
+
+
+def test_update_custom_dimension_rest_required_fields(
+    request_type=analytics_admin.UpdateCustomDimensionRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_dimension._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CustomDimension()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CustomDimension.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_custom_dimension(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_custom_dimension_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_custom_dimension._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("updateMask",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_custom_dimension_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_dimension"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_dimension"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateCustomDimensionRequest.pb(
+            analytics_admin.UpdateCustomDimensionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CustomDimension.to_json(
+            resources.CustomDimension()
+        )
+
+        request = analytics_admin.UpdateCustomDimensionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CustomDimension()
+
+        client.update_custom_dimension(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_custom_dimension_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateCustomDimensionRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_dimension": {"name": "properties/sample1/customDimensions/sample2"}
+    }
+    request_init["custom_dimension"] = {
+        "name": "properties/sample1/customDimensions/sample2",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "scope": 1,
+        "disallow_ads_personalization": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_custom_dimension(request)
+
+
+def test_update_custom_dimension_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomDimension()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "custom_dimension": {"name": "properties/sample1/customDimensions/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            custom_dimension=resources.CustomDimension(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomDimension.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_custom_dimension(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{custom_dimension.name=properties/*/customDimensions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_custom_dimension_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_dimension(
+            analytics_admin.UpdateCustomDimensionRequest(),
+            custom_dimension=resources.CustomDimension(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_custom_dimension_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListCustomDimensionsRequest,
+        dict,
+    ],
+)
+def test_list_custom_dimensions_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListCustomDimensionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListCustomDimensionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_custom_dimensions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomDimensionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_custom_dimensions_rest_required_fields(
+    request_type=analytics_admin.ListCustomDimensionsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_dimensions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_dimensions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListCustomDimensionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListCustomDimensionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_custom_dimensions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_custom_dimensions_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_custom_dimensions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_custom_dimensions_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_dimensions"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_dimensions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListCustomDimensionsRequest.pb(
+            analytics_admin.ListCustomDimensionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListCustomDimensionsResponse.to_json(
+                analytics_admin.ListCustomDimensionsResponse()
+            )
+        )
+
+        request = analytics_admin.ListCustomDimensionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListCustomDimensionsResponse()
+
+        client.list_custom_dimensions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_custom_dimensions_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListCustomDimensionsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_custom_dimensions(request)
+
+
+def test_list_custom_dimensions_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListCustomDimensionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListCustomDimensionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_custom_dimensions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/customDimensions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_custom_dimensions_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_custom_dimensions(
+            analytics_admin.ListCustomDimensionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_custom_dimensions_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListCustomDimensionsResponse(
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                    resources.CustomDimension(),
+                    resources.CustomDimension(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListCustomDimensionsResponse(
+                custom_dimensions=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListCustomDimensionsResponse(
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListCustomDimensionsResponse(
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                    resources.CustomDimension(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListCustomDimensionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_custom_dimensions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.CustomDimension) for i in results)
+
+        pages = list(client.list_custom_dimensions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ArchiveCustomDimensionRequest,
+        dict,
+    ],
+)
+def test_archive_custom_dimension_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customDimensions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.archive_custom_dimension(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_archive_custom_dimension_rest_required_fields(
+    request_type=analytics_admin.ArchiveCustomDimensionRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).archive_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).archive_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.archive_custom_dimension(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_archive_custom_dimension_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.archive_custom_dimension._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_archive_custom_dimension_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_archive_custom_dimension"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.ArchiveCustomDimensionRequest.pb(
+            analytics_admin.ArchiveCustomDimensionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.ArchiveCustomDimensionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.archive_custom_dimension(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_archive_custom_dimension_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ArchiveCustomDimensionRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customDimensions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.archive_custom_dimension(request)
+
+
+def test_archive_custom_dimension_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/customDimensions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.archive_custom_dimension(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/customDimensions/*}:archive"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_archive_custom_dimension_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.archive_custom_dimension(
+            analytics_admin.ArchiveCustomDimensionRequest(),
+            name="name_value",
+        )
+
+
+def test_archive_custom_dimension_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetCustomDimensionRequest,
+        dict,
+    ],
+)
+def test_get_custom_dimension_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customDimensions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomDimension(
+            name="name_value",
+            parameter_name="parameter_name_value",
+            display_name="display_name_value",
+            description="description_value",
+            scope=resources.CustomDimension.DimensionScope.EVENT,
+            disallow_ads_personalization=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomDimension.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_custom_dimension(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CustomDimension)
+    assert response.name == "name_value"
+    assert response.parameter_name == "parameter_name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.scope == resources.CustomDimension.DimensionScope.EVENT
+    assert response.disallow_ads_personalization is True
+
+
+def test_get_custom_dimension_rest_required_fields(
+    request_type=analytics_admin.GetCustomDimensionRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_dimension._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CustomDimension()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CustomDimension.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_custom_dimension(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_custom_dimension_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_custom_dimension._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_custom_dimension_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_dimension"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_dimension"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetCustomDimensionRequest.pb(
+            analytics_admin.GetCustomDimensionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CustomDimension.to_json(
+            resources.CustomDimension()
+        )
+
+        request = analytics_admin.GetCustomDimensionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CustomDimension()
+
+        client.get_custom_dimension(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_custom_dimension_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetCustomDimensionRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customDimensions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_custom_dimension(request)
+
+
+def test_get_custom_dimension_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomDimension()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/customDimensions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomDimension.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_custom_dimension(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/customDimensions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_custom_dimension_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_dimension(
+            analytics_admin.GetCustomDimensionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_custom_dimension_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateCustomMetricRequest,
+        dict,
+    ],
+)
+def test_create_custom_metric_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["custom_metric"] = {
+        "name": "name_value",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "measurement_unit": 1,
+        "scope": 1,
+        "restricted_metric_type": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomMetric(
+            name="name_value",
+            parameter_name="parameter_name_value",
+            display_name="display_name_value",
+            description="description_value",
+            measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
+            scope=resources.CustomMetric.MetricScope.EVENT,
+            restricted_metric_type=[
+                resources.CustomMetric.RestrictedMetricType.COST_DATA
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomMetric.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_custom_metric(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CustomMetric)
+    assert response.name == "name_value"
+    assert response.parameter_name == "parameter_name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
+    assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
+
+
+def test_create_custom_metric_rest_required_fields(
+    request_type=analytics_admin.CreateCustomMetricRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CustomMetric()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CustomMetric.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_custom_metric(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_custom_metric_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_custom_metric._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "customMetric",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_custom_metric_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_metric"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_metric"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateCustomMetricRequest.pb(
+            analytics_admin.CreateCustomMetricRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CustomMetric.to_json(
+            resources.CustomMetric()
+        )
+
+        request = analytics_admin.CreateCustomMetricRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CustomMetric()
+
+        client.create_custom_metric(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_custom_metric_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateCustomMetricRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["custom_metric"] = {
+        "name": "name_value",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "measurement_unit": 1,
+        "scope": 1,
+        "restricted_metric_type": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_custom_metric(request)
+
+
+def test_create_custom_metric_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomMetric()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            custom_metric=resources.CustomMetric(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomMetric.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_custom_metric(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/customMetrics" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_custom_metric_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_metric(
+            analytics_admin.CreateCustomMetricRequest(),
+            parent="parent_value",
+            custom_metric=resources.CustomMetric(name="name_value"),
+        )
+
+
+def test_create_custom_metric_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateCustomMetricRequest,
+        dict,
+    ],
+)
+def test_update_custom_metric_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_metric": {"name": "properties/sample1/customMetrics/sample2"}
+    }
+    request_init["custom_metric"] = {
+        "name": "properties/sample1/customMetrics/sample2",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "measurement_unit": 1,
+        "scope": 1,
+        "restricted_metric_type": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomMetric(
+            name="name_value",
+            parameter_name="parameter_name_value",
+            display_name="display_name_value",
+            description="description_value",
+            measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
+            scope=resources.CustomMetric.MetricScope.EVENT,
+            restricted_metric_type=[
+                resources.CustomMetric.RestrictedMetricType.COST_DATA
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomMetric.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_custom_metric(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CustomMetric)
+    assert response.name == "name_value"
+    assert response.parameter_name == "parameter_name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
+    assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
+
+
+def test_update_custom_metric_rest_required_fields(
+    request_type=analytics_admin.UpdateCustomMetricRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_metric._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CustomMetric()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CustomMetric.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_custom_metric(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_custom_metric_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_custom_metric._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("updateMask",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_custom_metric_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_metric"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_metric"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateCustomMetricRequest.pb(
+            analytics_admin.UpdateCustomMetricRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CustomMetric.to_json(
+            resources.CustomMetric()
+        )
+
+        request = analytics_admin.UpdateCustomMetricRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CustomMetric()
+
+        client.update_custom_metric(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_custom_metric_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateCustomMetricRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_metric": {"name": "properties/sample1/customMetrics/sample2"}
+    }
+    request_init["custom_metric"] = {
+        "name": "properties/sample1/customMetrics/sample2",
+        "parameter_name": "parameter_name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "measurement_unit": 1,
+        "scope": 1,
+        "restricted_metric_type": [1],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_custom_metric(request)
+
+
+def test_update_custom_metric_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomMetric()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "custom_metric": {"name": "properties/sample1/customMetrics/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            custom_metric=resources.CustomMetric(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomMetric.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_custom_metric(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{custom_metric.name=properties/*/customMetrics/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_custom_metric_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_metric(
+            analytics_admin.UpdateCustomMetricRequest(),
+            custom_metric=resources.CustomMetric(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_custom_metric_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListCustomMetricsRequest,
+        dict,
+    ],
+)
+def test_list_custom_metrics_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListCustomMetricsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListCustomMetricsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_custom_metrics(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomMetricsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_custom_metrics_rest_required_fields(
+    request_type=analytics_admin.ListCustomMetricsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_metrics._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_metrics._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListCustomMetricsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListCustomMetricsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_custom_metrics(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_custom_metrics_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_custom_metrics._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_custom_metrics_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_metrics"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_metrics"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListCustomMetricsRequest.pb(
+            analytics_admin.ListCustomMetricsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListCustomMetricsResponse.to_json(
+            analytics_admin.ListCustomMetricsResponse()
+        )
+
+        request = analytics_admin.ListCustomMetricsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListCustomMetricsResponse()
+
+        client.list_custom_metrics(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_custom_metrics_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListCustomMetricsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_custom_metrics(request)
+
+
+def test_list_custom_metrics_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListCustomMetricsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListCustomMetricsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_custom_metrics(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/customMetrics" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_custom_metrics_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_custom_metrics(
+            analytics_admin.ListCustomMetricsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_custom_metrics_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListCustomMetricsResponse(
+                custom_metrics=[
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListCustomMetricsResponse(
+                custom_metrics=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListCustomMetricsResponse(
+                custom_metrics=[
+                    resources.CustomMetric(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListCustomMetricsResponse(
+                custom_metrics=[
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListCustomMetricsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_custom_metrics(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.CustomMetric) for i in results)
+
+        pages = list(client.list_custom_metrics(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ArchiveCustomMetricRequest,
+        dict,
+    ],
+)
+def test_archive_custom_metric_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customMetrics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.archive_custom_metric(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_archive_custom_metric_rest_required_fields(
+    request_type=analytics_admin.ArchiveCustomMetricRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).archive_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).archive_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.archive_custom_metric(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_archive_custom_metric_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.archive_custom_metric._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_archive_custom_metric_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_archive_custom_metric"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.ArchiveCustomMetricRequest.pb(
+            analytics_admin.ArchiveCustomMetricRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.ArchiveCustomMetricRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.archive_custom_metric(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_archive_custom_metric_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ArchiveCustomMetricRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customMetrics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.archive_custom_metric(request)
+
+
+def test_archive_custom_metric_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/customMetrics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.archive_custom_metric(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/customMetrics/*}:archive"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_archive_custom_metric_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.archive_custom_metric(
+            analytics_admin.ArchiveCustomMetricRequest(),
+            name="name_value",
+        )
+
+
+def test_archive_custom_metric_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetCustomMetricRequest,
+        dict,
+    ],
+)
+def test_get_custom_metric_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customMetrics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomMetric(
+            name="name_value",
+            parameter_name="parameter_name_value",
+            display_name="display_name_value",
+            description="description_value",
+            measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
+            scope=resources.CustomMetric.MetricScope.EVENT,
+            restricted_metric_type=[
+                resources.CustomMetric.RestrictedMetricType.COST_DATA
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomMetric.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_custom_metric(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CustomMetric)
+    assert response.name == "name_value"
+    assert response.parameter_name == "parameter_name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
+    assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
+
+
+def test_get_custom_metric_rest_required_fields(
+    request_type=analytics_admin.GetCustomMetricRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_metric._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CustomMetric()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.CustomMetric.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_custom_metric(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_custom_metric_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_custom_metric._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_custom_metric_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_metric"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_metric"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetCustomMetricRequest.pb(
+            analytics_admin.GetCustomMetricRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.CustomMetric.to_json(
+            resources.CustomMetric()
+        )
+
+        request = analytics_admin.GetCustomMetricRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CustomMetric()
+
+        client.get_custom_metric(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_custom_metric_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetCustomMetricRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/customMetrics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_custom_metric(request)
+
+
+def test_get_custom_metric_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CustomMetric()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/customMetrics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.CustomMetric.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_custom_metric(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/customMetrics/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_custom_metric_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_metric(
+            analytics_admin.GetCustomMetricRequest(),
+            name="name_value",
+        )
+
+
+def test_get_custom_metric_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDataRetentionSettingsRequest,
+        dict,
+    ],
+)
+def test_get_data_retention_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataRetentionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRetentionSettings(
+            name="name_value",
+            event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            reset_user_data_on_new_activity=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataRetentionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_data_retention_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRetentionSettings)
+    assert response.name == "name_value"
+    assert (
+        response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert response.reset_user_data_on_new_activity is True
+
+
+def test_get_data_retention_settings_rest_required_fields(
+    request_type=analytics_admin.GetDataRetentionSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_retention_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_retention_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataRetentionSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DataRetentionSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_data_retention_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_data_retention_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_data_retention_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_retention_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_data_retention_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_data_retention_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetDataRetentionSettingsRequest.pb(
+            analytics_admin.GetDataRetentionSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataRetentionSettings.to_json(
+            resources.DataRetentionSettings()
+        )
+
+        request = analytics_admin.GetDataRetentionSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataRetentionSettings()
+
+        client.get_data_retention_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_data_retention_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetDataRetentionSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataRetentionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_data_retention_settings(request)
+
+
+def test_get_data_retention_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRetentionSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/dataRetentionSettings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataRetentionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_data_retention_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataRetentionSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_data_retention_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_retention_settings(
+            analytics_admin.GetDataRetentionSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_data_retention_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateDataRetentionSettingsRequest,
+        dict,
+    ],
+)
+def test_update_data_retention_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_retention_settings": {"name": "properties/sample1/dataRetentionSettings"}
+    }
+    request_init["data_retention_settings"] = {
+        "name": "properties/sample1/dataRetentionSettings",
+        "event_data_retention": 1,
+        "reset_user_data_on_new_activity": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRetentionSettings(
+            name="name_value",
+            event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            reset_user_data_on_new_activity=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataRetentionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_data_retention_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRetentionSettings)
+    assert response.name == "name_value"
+    assert (
+        response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert response.reset_user_data_on_new_activity is True
+
+
+def test_update_data_retention_settings_rest_required_fields(
+    request_type=analytics_admin.UpdateDataRetentionSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_retention_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_retention_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataRetentionSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DataRetentionSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_data_retention_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_data_retention_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_data_retention_settings._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "dataRetentionSettings",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_data_retention_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_data_retention_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_data_retention_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateDataRetentionSettingsRequest.pb(
+            analytics_admin.UpdateDataRetentionSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataRetentionSettings.to_json(
+            resources.DataRetentionSettings()
+        )
+
+        request = analytics_admin.UpdateDataRetentionSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataRetentionSettings()
+
+        client.update_data_retention_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_data_retention_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateDataRetentionSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_retention_settings": {"name": "properties/sample1/dataRetentionSettings"}
+    }
+    request_init["data_retention_settings"] = {
+        "name": "properties/sample1/dataRetentionSettings",
+        "event_data_retention": 1,
+        "reset_user_data_on_new_activity": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_data_retention_settings(request)
+
+
+def test_update_data_retention_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRetentionSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "data_retention_settings": {
+                "name": "properties/sample1/dataRetentionSettings"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            data_retention_settings=resources.DataRetentionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataRetentionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_data_retention_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{data_retention_settings.name=properties/*/dataRetentionSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_data_retention_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_data_retention_settings(
+            analytics_admin.UpdateDataRetentionSettingsRequest(),
+            data_retention_settings=resources.DataRetentionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_data_retention_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateDataStreamRequest,
+        dict,
+    ],
+)
+def test_create_data_stream_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["data_stream"] = {
+        "web_stream_data": {
+            "measurement_id": "measurement_id_value",
+            "firebase_app_id": "firebase_app_id_value",
+            "default_uri": "default_uri_value",
+        },
+        "android_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "package_name": "package_name_value",
+        },
+        "ios_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "bundle_id": "bundle_id_value",
+        },
+        "name": "name_value",
+        "type_": 1,
+        "display_name": "display_name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataStream(
+            name="name_value",
+            type_=resources.DataStream.DataStreamType.WEB_DATA_STREAM,
+            display_name="display_name_value",
+            web_stream_data=resources.DataStream.WebStreamData(
+                measurement_id="measurement_id_value"
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataStream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_data_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataStream)
+    assert response.name == "name_value"
+    assert response.type_ == resources.DataStream.DataStreamType.WEB_DATA_STREAM
+    assert response.display_name == "display_name_value"
+
+
+def test_create_data_stream_rest_required_fields(
+    request_type=analytics_admin.CreateDataStreamRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataStream()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DataStream.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_data_stream(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_data_stream_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_data_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "dataStream",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_data_stream_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_data_stream"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_data_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateDataStreamRequest.pb(
+            analytics_admin.CreateDataStreamRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataStream.to_json(resources.DataStream())
+
+        request = analytics_admin.CreateDataStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataStream()
+
+        client.create_data_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_data_stream_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateDataStreamRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["data_stream"] = {
+        "web_stream_data": {
+            "measurement_id": "measurement_id_value",
+            "firebase_app_id": "firebase_app_id_value",
+            "default_uri": "default_uri_value",
+        },
+        "android_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "package_name": "package_name_value",
+        },
+        "ios_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "bundle_id": "bundle_id_value",
+        },
+        "name": "name_value",
+        "type_": 1,
+        "display_name": "display_name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_data_stream(request)
+
+
+def test_create_data_stream_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataStream()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            data_stream=resources.DataStream(
+                web_stream_data=resources.DataStream.WebStreamData(
+                    measurement_id="measurement_id_value"
+                )
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataStream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_data_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/dataStreams" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_data_stream_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_data_stream(
+            analytics_admin.CreateDataStreamRequest(),
+            parent="parent_value",
+            data_stream=resources.DataStream(
+                web_stream_data=resources.DataStream.WebStreamData(
+                    measurement_id="measurement_id_value"
+                )
+            ),
+        )
+
+
+def test_create_data_stream_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteDataStreamRequest,
+        dict,
+    ],
+)
+def test_delete_data_stream_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_data_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_data_stream_rest_required_fields(
+    request_type=analytics_admin.DeleteDataStreamRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_data_stream(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_data_stream_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_data_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_data_stream_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_data_stream"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteDataStreamRequest.pb(
+            analytics_admin.DeleteDataStreamRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteDataStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_data_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_data_stream_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteDataStreamRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_data_stream(request)
+
+
+def test_delete_data_stream_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_data_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_data_stream_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_data_stream(
+            analytics_admin.DeleteDataStreamRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_data_stream_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateDataStreamRequest,
+        dict,
+    ],
+)
+def test_update_data_stream_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"data_stream": {"name": "properties/sample1/dataStreams/sample2"}}
+    request_init["data_stream"] = {
+        "web_stream_data": {
+            "measurement_id": "measurement_id_value",
+            "firebase_app_id": "firebase_app_id_value",
+            "default_uri": "default_uri_value",
+        },
+        "android_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "package_name": "package_name_value",
+        },
+        "ios_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "bundle_id": "bundle_id_value",
+        },
+        "name": "properties/sample1/dataStreams/sample2",
+        "type_": 1,
+        "display_name": "display_name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataStream(
+            name="name_value",
+            type_=resources.DataStream.DataStreamType.WEB_DATA_STREAM,
+            display_name="display_name_value",
+            web_stream_data=resources.DataStream.WebStreamData(
+                measurement_id="measurement_id_value"
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataStream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_data_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataStream)
+    assert response.name == "name_value"
+    assert response.type_ == resources.DataStream.DataStreamType.WEB_DATA_STREAM
+    assert response.display_name == "display_name_value"
+
+
+def test_update_data_stream_rest_required_fields(
+    request_type=analytics_admin.UpdateDataStreamRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_stream._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataStream()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DataStream.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_data_stream(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_data_stream_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_data_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("updateMask",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_data_stream_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_data_stream"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_data_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateDataStreamRequest.pb(
+            analytics_admin.UpdateDataStreamRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataStream.to_json(resources.DataStream())
+
+        request = analytics_admin.UpdateDataStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataStream()
+
+        client.update_data_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_data_stream_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateDataStreamRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"data_stream": {"name": "properties/sample1/dataStreams/sample2"}}
+    request_init["data_stream"] = {
+        "web_stream_data": {
+            "measurement_id": "measurement_id_value",
+            "firebase_app_id": "firebase_app_id_value",
+            "default_uri": "default_uri_value",
+        },
+        "android_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "package_name": "package_name_value",
+        },
+        "ios_app_stream_data": {
+            "firebase_app_id": "firebase_app_id_value",
+            "bundle_id": "bundle_id_value",
+        },
+        "name": "properties/sample1/dataStreams/sample2",
+        "type_": 1,
+        "display_name": "display_name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_data_stream(request)
+
+
+def test_update_data_stream_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataStream()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "data_stream": {"name": "properties/sample1/dataStreams/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            data_stream=resources.DataStream(
+                web_stream_data=resources.DataStream.WebStreamData(
+                    measurement_id="measurement_id_value"
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataStream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_data_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{data_stream.name=properties/*/dataStreams/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_data_stream_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_data_stream(
+            analytics_admin.UpdateDataStreamRequest(),
+            data_stream=resources.DataStream(
+                web_stream_data=resources.DataStream.WebStreamData(
+                    measurement_id="measurement_id_value"
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_data_stream_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListDataStreamsRequest,
+        dict,
+    ],
+)
+def test_list_data_streams_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListDataStreamsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListDataStreamsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_data_streams(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDataStreamsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_data_streams_rest_required_fields(
+    request_type=analytics_admin.ListDataStreamsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_data_streams._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_data_streams._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListDataStreamsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListDataStreamsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_data_streams(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_data_streams_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_data_streams._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_data_streams_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_data_streams"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_data_streams"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListDataStreamsRequest.pb(
+            analytics_admin.ListDataStreamsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListDataStreamsResponse.to_json(
+            analytics_admin.ListDataStreamsResponse()
+        )
+
+        request = analytics_admin.ListDataStreamsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListDataStreamsResponse()
+
+        client.list_data_streams(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_data_streams_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListDataStreamsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_data_streams(request)
+
+
+def test_list_data_streams_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListDataStreamsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListDataStreamsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_data_streams(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/dataStreams" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_data_streams_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_data_streams(
+            analytics_admin.ListDataStreamsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_data_streams_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListDataStreamsResponse(
+                data_streams=[
+                    resources.DataStream(),
+                    resources.DataStream(),
+                    resources.DataStream(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListDataStreamsResponse(
+                data_streams=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListDataStreamsResponse(
+                data_streams=[
+                    resources.DataStream(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListDataStreamsResponse(
+                data_streams=[
+                    resources.DataStream(),
+                    resources.DataStream(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListDataStreamsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_data_streams(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.DataStream) for i in results)
+
+        pages = list(client.list_data_streams(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDataStreamRequest,
+        dict,
+    ],
+)
+def test_get_data_stream_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataStream(
+            name="name_value",
+            type_=resources.DataStream.DataStreamType.WEB_DATA_STREAM,
+            display_name="display_name_value",
+            web_stream_data=resources.DataStream.WebStreamData(
+                measurement_id="measurement_id_value"
+            ),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataStream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_data_stream(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataStream)
+    assert response.name == "name_value"
+    assert response.type_ == resources.DataStream.DataStreamType.WEB_DATA_STREAM
+    assert response.display_name == "display_name_value"
+
+
+def test_get_data_stream_rest_required_fields(
+    request_type=analytics_admin.GetDataStreamRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataStream()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.DataStream.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_data_stream(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_data_stream_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_data_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_stream_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_data_stream"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetDataStreamRequest.pb(
+            analytics_admin.GetDataStreamRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataStream.to_json(resources.DataStream())
+
+        request = analytics_admin.GetDataStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataStream()
+
+        client.get_data_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_data_stream_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetDataStreamRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_data_stream(request)
+
+
+def test_get_data_stream_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataStream()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.DataStream.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_data_stream(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_data_stream_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_stream(
+            analytics_admin.GetDataStreamRequest(),
+            name="name_value",
+        )
+
+
+def test_get_data_stream_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetAudienceRequest,
+        dict,
+    ],
+)
+def test_get_audience_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/audiences/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = audience.Audience(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            membership_duration_days=2561,
+            ads_personalization_enabled=True,
+            exclusion_duration_mode=audience.Audience.AudienceExclusionDurationMode.EXCLUDE_TEMPORARILY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = audience.Audience.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_audience(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, audience.Audience)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.membership_duration_days == 2561
+    assert response.ads_personalization_enabled is True
+    assert (
+        response.exclusion_duration_mode
+        == audience.Audience.AudienceExclusionDurationMode.EXCLUDE_TEMPORARILY
+    )
+
+
+def test_get_audience_rest_required_fields(
+    request_type=analytics_admin.GetAudienceRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = audience.Audience()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = audience.Audience.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_audience(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_audience_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_audience._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_audience_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_audience"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_audience"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetAudienceRequest.pb(
+            analytics_admin.GetAudienceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = audience.Audience.to_json(audience.Audience())
+
+        request = analytics_admin.GetAudienceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = audience.Audience()
+
+        client.get_audience(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_audience_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetAudienceRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/audiences/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_audience(request)
+
+
+def test_get_audience_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = audience.Audience()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/audiences/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = audience.Audience.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_audience(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/audiences/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_audience_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_audience(
+            analytics_admin.GetAudienceRequest(),
+            name="name_value",
+        )
+
+
+def test_get_audience_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListAudiencesRequest,
+        dict,
+    ],
+)
+def test_list_audiences_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListAudiencesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListAudiencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_audiences(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAudiencesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_audiences_rest_required_fields(
+    request_type=analytics_admin.ListAudiencesRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_audiences._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_audiences._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListAudiencesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListAudiencesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_audiences(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_audiences_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_audiences._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_audiences_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_audiences"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_audiences"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListAudiencesRequest.pb(
+            analytics_admin.ListAudiencesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListAudiencesResponse.to_json(
+            analytics_admin.ListAudiencesResponse()
+        )
+
+        request = analytics_admin.ListAudiencesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListAudiencesResponse()
+
+        client.list_audiences(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_audiences_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListAudiencesRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_audiences(request)
+
+
+def test_list_audiences_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListAudiencesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListAudiencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_audiences(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/audiences" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_audiences_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_audiences(
+            analytics_admin.ListAudiencesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_audiences_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListAudiencesResponse(
+                audiences=[
+                    audience.Audience(),
+                    audience.Audience(),
+                    audience.Audience(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAudiencesResponse(
+                audiences=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAudiencesResponse(
+                audiences=[
+                    audience.Audience(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAudiencesResponse(
+                audiences=[
+                    audience.Audience(),
+                    audience.Audience(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListAudiencesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_audiences(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, audience.Audience) for i in results)
+
+        pages = list(client.list_audiences(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateAudienceRequest,
+        dict,
+    ],
+)
+def test_create_audience_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["audience"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "membership_duration_days": 2561,
+        "ads_personalization_enabled": True,
+        "event_trigger": {"event_name": "event_name_value", "log_condition": 1},
+        "exclusion_duration_mode": 1,
+        "filter_clauses": [
+            {
+                "simple_filter": {
+                    "scope": 1,
+                    "filter_expression": {
+                        "and_group": {"filter_expressions": {}},
+                        "or_group": {},
+                        "not_expression": {},
+                        "dimension_or_metric_filter": {
+                            "string_filter": {
+                                "match_type": 1,
+                                "value": "value_value",
+                                "case_sensitive": True,
+                            },
+                            "in_list_filter": {
+                                "values": ["values_value1", "values_value2"],
+                                "case_sensitive": True,
+                            },
+                            "numeric_filter": {
+                                "operation": 1,
+                                "value": {
+                                    "int64_value": 1073,
+                                    "double_value": 0.12710000000000002,
+                                },
+                            },
+                            "between_filter": {"from_value": {}, "to_value": {}},
+                            "field_name": "field_name_value",
+                            "at_any_point_in_time": True,
+                            "in_any_n_day_period": 1994,
+                        },
+                        "event_filter": {
+                            "event_name": "event_name_value",
+                            "event_parameter_filter_expression": {},
+                        },
+                    },
+                },
+                "sequence_filter": {
+                    "scope": 1,
+                    "sequence_maximum_duration": {"seconds": 751, "nanos": 543},
+                    "sequence_steps": [
+                        {
+                            "scope": 1,
+                            "immediately_follows": True,
+                            "constraint_duration": {},
+                            "filter_expression": {},
+                        }
+                    ],
+                },
+                "clause_type": 1,
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_audience.Audience(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            membership_duration_days=2561,
+            ads_personalization_enabled=True,
+            exclusion_duration_mode=gaa_audience.Audience.AudienceExclusionDurationMode.EXCLUDE_TEMPORARILY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_audience.Audience.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_audience(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_audience.Audience)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.membership_duration_days == 2561
+    assert response.ads_personalization_enabled is True
+    assert (
+        response.exclusion_duration_mode
+        == gaa_audience.Audience.AudienceExclusionDurationMode.EXCLUDE_TEMPORARILY
+    )
+
+
+def test_create_audience_rest_required_fields(
+    request_type=analytics_admin.CreateAudienceRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gaa_audience.Audience()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gaa_audience.Audience.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_audience(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_audience_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_audience._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "audience",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_audience_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_audience"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_audience"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateAudienceRequest.pb(
+            analytics_admin.CreateAudienceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gaa_audience.Audience.to_json(
+            gaa_audience.Audience()
+        )
+
+        request = analytics_admin.CreateAudienceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gaa_audience.Audience()
+
+        client.create_audience(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_audience_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateAudienceRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["audience"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "membership_duration_days": 2561,
+        "ads_personalization_enabled": True,
+        "event_trigger": {"event_name": "event_name_value", "log_condition": 1},
+        "exclusion_duration_mode": 1,
+        "filter_clauses": [
+            {
+                "simple_filter": {
+                    "scope": 1,
+                    "filter_expression": {
+                        "and_group": {"filter_expressions": {}},
+                        "or_group": {},
+                        "not_expression": {},
+                        "dimension_or_metric_filter": {
+                            "string_filter": {
+                                "match_type": 1,
+                                "value": "value_value",
+                                "case_sensitive": True,
+                            },
+                            "in_list_filter": {
+                                "values": ["values_value1", "values_value2"],
+                                "case_sensitive": True,
+                            },
+                            "numeric_filter": {
+                                "operation": 1,
+                                "value": {
+                                    "int64_value": 1073,
+                                    "double_value": 0.12710000000000002,
+                                },
+                            },
+                            "between_filter": {"from_value": {}, "to_value": {}},
+                            "field_name": "field_name_value",
+                            "at_any_point_in_time": True,
+                            "in_any_n_day_period": 1994,
+                        },
+                        "event_filter": {
+                            "event_name": "event_name_value",
+                            "event_parameter_filter_expression": {},
+                        },
+                    },
+                },
+                "sequence_filter": {
+                    "scope": 1,
+                    "sequence_maximum_duration": {"seconds": 751, "nanos": 543},
+                    "sequence_steps": [
+                        {
+                            "scope": 1,
+                            "immediately_follows": True,
+                            "constraint_duration": {},
+                            "filter_expression": {},
+                        }
+                    ],
+                },
+                "clause_type": 1,
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_audience(request)
+
+
+def test_create_audience_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_audience.Audience()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            audience=gaa_audience.Audience(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_audience.Audience.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_audience(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/audiences" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_audience_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_audience(
+            analytics_admin.CreateAudienceRequest(),
+            parent="parent_value",
+            audience=gaa_audience.Audience(name="name_value"),
+        )
+
+
+def test_create_audience_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateAudienceRequest,
+        dict,
+    ],
+)
+def test_update_audience_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"audience": {"name": "properties/sample1/audiences/sample2"}}
+    request_init["audience"] = {
+        "name": "properties/sample1/audiences/sample2",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "membership_duration_days": 2561,
+        "ads_personalization_enabled": True,
+        "event_trigger": {"event_name": "event_name_value", "log_condition": 1},
+        "exclusion_duration_mode": 1,
+        "filter_clauses": [
+            {
+                "simple_filter": {
+                    "scope": 1,
+                    "filter_expression": {
+                        "and_group": {"filter_expressions": {}},
+                        "or_group": {},
+                        "not_expression": {},
+                        "dimension_or_metric_filter": {
+                            "string_filter": {
+                                "match_type": 1,
+                                "value": "value_value",
+                                "case_sensitive": True,
+                            },
+                            "in_list_filter": {
+                                "values": ["values_value1", "values_value2"],
+                                "case_sensitive": True,
+                            },
+                            "numeric_filter": {
+                                "operation": 1,
+                                "value": {
+                                    "int64_value": 1073,
+                                    "double_value": 0.12710000000000002,
+                                },
+                            },
+                            "between_filter": {"from_value": {}, "to_value": {}},
+                            "field_name": "field_name_value",
+                            "at_any_point_in_time": True,
+                            "in_any_n_day_period": 1994,
+                        },
+                        "event_filter": {
+                            "event_name": "event_name_value",
+                            "event_parameter_filter_expression": {},
+                        },
+                    },
+                },
+                "sequence_filter": {
+                    "scope": 1,
+                    "sequence_maximum_duration": {"seconds": 751, "nanos": 543},
+                    "sequence_steps": [
+                        {
+                            "scope": 1,
+                            "immediately_follows": True,
+                            "constraint_duration": {},
+                            "filter_expression": {},
+                        }
+                    ],
+                },
+                "clause_type": 1,
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_audience.Audience(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            membership_duration_days=2561,
+            ads_personalization_enabled=True,
+            exclusion_duration_mode=gaa_audience.Audience.AudienceExclusionDurationMode.EXCLUDE_TEMPORARILY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_audience.Audience.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_audience(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_audience.Audience)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.membership_duration_days == 2561
+    assert response.ads_personalization_enabled is True
+    assert (
+        response.exclusion_duration_mode
+        == gaa_audience.Audience.AudienceExclusionDurationMode.EXCLUDE_TEMPORARILY
+    )
+
+
+def test_update_audience_rest_required_fields(
+    request_type=analytics_admin.UpdateAudienceRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_audience._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gaa_audience.Audience()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gaa_audience.Audience.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_audience(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_audience_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_audience._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "audience",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_audience_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_audience"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_audience"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateAudienceRequest.pb(
+            analytics_admin.UpdateAudienceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gaa_audience.Audience.to_json(
+            gaa_audience.Audience()
+        )
+
+        request = analytics_admin.UpdateAudienceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gaa_audience.Audience()
+
+        client.update_audience(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_audience_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateAudienceRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"audience": {"name": "properties/sample1/audiences/sample2"}}
+    request_init["audience"] = {
+        "name": "properties/sample1/audiences/sample2",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "membership_duration_days": 2561,
+        "ads_personalization_enabled": True,
+        "event_trigger": {"event_name": "event_name_value", "log_condition": 1},
+        "exclusion_duration_mode": 1,
+        "filter_clauses": [
+            {
+                "simple_filter": {
+                    "scope": 1,
+                    "filter_expression": {
+                        "and_group": {"filter_expressions": {}},
+                        "or_group": {},
+                        "not_expression": {},
+                        "dimension_or_metric_filter": {
+                            "string_filter": {
+                                "match_type": 1,
+                                "value": "value_value",
+                                "case_sensitive": True,
+                            },
+                            "in_list_filter": {
+                                "values": ["values_value1", "values_value2"],
+                                "case_sensitive": True,
+                            },
+                            "numeric_filter": {
+                                "operation": 1,
+                                "value": {
+                                    "int64_value": 1073,
+                                    "double_value": 0.12710000000000002,
+                                },
+                            },
+                            "between_filter": {"from_value": {}, "to_value": {}},
+                            "field_name": "field_name_value",
+                            "at_any_point_in_time": True,
+                            "in_any_n_day_period": 1994,
+                        },
+                        "event_filter": {
+                            "event_name": "event_name_value",
+                            "event_parameter_filter_expression": {},
+                        },
+                    },
+                },
+                "sequence_filter": {
+                    "scope": 1,
+                    "sequence_maximum_duration": {"seconds": 751, "nanos": 543},
+                    "sequence_steps": [
+                        {
+                            "scope": 1,
+                            "immediately_follows": True,
+                            "constraint_duration": {},
+                            "filter_expression": {},
+                        }
+                    ],
+                },
+                "clause_type": 1,
+            }
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_audience(request)
+
+
+def test_update_audience_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_audience.Audience()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"audience": {"name": "properties/sample1/audiences/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            audience=gaa_audience.Audience(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_audience.Audience.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_audience(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{audience.name=properties/*/audiences/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_audience_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_audience(
+            analytics_admin.UpdateAudienceRequest(),
+            audience=gaa_audience.Audience(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_audience_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ArchiveAudienceRequest,
+        dict,
+    ],
+)
+def test_archive_audience_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/audiences/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.archive_audience(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_archive_audience_rest_required_fields(
+    request_type=analytics_admin.ArchiveAudienceRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).archive_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).archive_audience._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.archive_audience(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_archive_audience_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.archive_audience._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_archive_audience_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_archive_audience"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.ArchiveAudienceRequest.pb(
+            analytics_admin.ArchiveAudienceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.ArchiveAudienceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.archive_audience(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_archive_audience_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ArchiveAudienceRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/audiences/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.archive_audience(request)
+
+
+def test_archive_audience_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetAttributionSettingsRequest,
+        dict,
+    ],
+)
+def test_get_attribution_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/attributionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AttributionSettings(
+            name="name_value",
+            acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
+            other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
+            reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AttributionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_attribution_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AttributionSettings)
+    assert response.name == "name_value"
+    assert (
+        response.acquisition_conversion_event_lookback_window
+        == resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS
+    )
+    assert (
+        response.other_conversion_event_lookback_window
+        == resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS
+    )
+    assert (
+        response.reporting_attribution_model
+        == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+
+
+def test_get_attribution_settings_rest_required_fields(
+    request_type=analytics_admin.GetAttributionSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attribution_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_attribution_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AttributionSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.AttributionSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_attribution_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_attribution_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_attribution_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_attribution_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_attribution_settings"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_attribution_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetAttributionSettingsRequest.pb(
+            analytics_admin.GetAttributionSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.AttributionSettings.to_json(
+            resources.AttributionSettings()
+        )
+
+        request = analytics_admin.GetAttributionSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AttributionSettings()
+
+        client.get_attribution_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_attribution_settings_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetAttributionSettingsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/attributionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_attribution_settings(request)
+
+
+def test_get_attribution_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AttributionSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/attributionSettings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AttributionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_attribution_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/attributionSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_attribution_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_attribution_settings(
+            analytics_admin.GetAttributionSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_attribution_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateAttributionSettingsRequest,
+        dict,
+    ],
+)
+def test_update_attribution_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attribution_settings": {"name": "properties/sample1/attributionSettings"}
+    }
+    request_init["attribution_settings"] = {
+        "name": "properties/sample1/attributionSettings",
+        "acquisition_conversion_event_lookback_window": 1,
+        "other_conversion_event_lookback_window": 1,
+        "reporting_attribution_model": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AttributionSettings(
+            name="name_value",
+            acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
+            other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
+            reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AttributionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_attribution_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AttributionSettings)
+    assert response.name == "name_value"
+    assert (
+        response.acquisition_conversion_event_lookback_window
+        == resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS
+    )
+    assert (
+        response.other_conversion_event_lookback_window
+        == resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS
+    )
+    assert (
+        response.reporting_attribution_model
+        == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+
+
+def test_update_attribution_settings_rest_required_fields(
+    request_type=analytics_admin.UpdateAttributionSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_attribution_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_attribution_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AttributionSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.AttributionSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_attribution_settings(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_attribution_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_attribution_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "attributionSettings",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_attribution_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_attribution_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_attribution_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateAttributionSettingsRequest.pb(
+            analytics_admin.UpdateAttributionSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.AttributionSettings.to_json(
+            resources.AttributionSettings()
+        )
+
+        request = analytics_admin.UpdateAttributionSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AttributionSettings()
+
+        client.update_attribution_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_attribution_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateAttributionSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attribution_settings": {"name": "properties/sample1/attributionSettings"}
+    }
+    request_init["attribution_settings"] = {
+        "name": "properties/sample1/attributionSettings",
+        "acquisition_conversion_event_lookback_window": 1,
+        "other_conversion_event_lookback_window": 1,
+        "reporting_attribution_model": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_attribution_settings(request)
+
+
+def test_update_attribution_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AttributionSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "attribution_settings": {"name": "properties/sample1/attributionSettings"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            attribution_settings=resources.AttributionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AttributionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_attribution_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{attribution_settings.name=properties/*/attributionSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_attribution_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_attribution_settings(
+            analytics_admin.UpdateAttributionSettingsRequest(),
+            attribution_settings=resources.AttributionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_attribution_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.RunAccessReportRequest,
+        dict,
+    ],
+)
+def test_run_access_report_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"entity": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.RunAccessReportResponse(
+            row_count=992,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.RunAccessReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_access_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.RunAccessReportResponse)
+    assert response.row_count == 992
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_access_report_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_run_access_report"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_run_access_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.RunAccessReportRequest.pb(
+            analytics_admin.RunAccessReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.RunAccessReportResponse.to_json(
+            analytics_admin.RunAccessReportResponse()
+        )
+
+        request = analytics_admin.RunAccessReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.RunAccessReportResponse()
+
+        client.run_access_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_access_report_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.RunAccessReportRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"entity": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_access_report(request)
+
+
+def test_run_access_report_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -22449,6 +45035,7 @@ def test_transport_get_channel():
     [
         transports.AnalyticsAdminServiceGrpcTransport,
         transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
+        transports.AnalyticsAdminServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -22463,6 +45050,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -22685,6 +45273,7 @@ def test_analytics_admin_service_transport_auth_adc(transport_class):
     [
         transports.AnalyticsAdminServiceGrpcTransport,
         transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
+        transports.AnalyticsAdminServiceRestTransport,
     ],
 )
 def test_analytics_admin_service_transport_auth_gdch_credentials(transport_class):
@@ -22791,11 +45380,23 @@ def test_analytics_admin_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_analytics_admin_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.AnalyticsAdminServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_analytics_admin_service_host_no_port(transport_name):
@@ -22806,7 +45407,11 @@ def test_analytics_admin_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("analyticsadmin.googleapis.com:443")
+    assert client.transport._host == (
+        "analyticsadmin.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://analyticsadmin.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -22814,6 +45419,7 @@ def test_analytics_admin_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_analytics_admin_service_host_with_port(transport_name):
@@ -22824,7 +45430,287 @@ def test_analytics_admin_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("analyticsadmin.googleapis.com:8000")
+    assert client.transport._host == (
+        "analyticsadmin.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://analyticsadmin.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_analytics_admin_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = AnalyticsAdminServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = AnalyticsAdminServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.get_account._session
+    session2 = client2.transport.get_account._session
+    assert session1 != session2
+    session1 = client1.transport.list_accounts._session
+    session2 = client2.transport.list_accounts._session
+    assert session1 != session2
+    session1 = client1.transport.delete_account._session
+    session2 = client2.transport.delete_account._session
+    assert session1 != session2
+    session1 = client1.transport.update_account._session
+    session2 = client2.transport.update_account._session
+    assert session1 != session2
+    session1 = client1.transport.provision_account_ticket._session
+    session2 = client2.transport.provision_account_ticket._session
+    assert session1 != session2
+    session1 = client1.transport.list_account_summaries._session
+    session2 = client2.transport.list_account_summaries._session
+    assert session1 != session2
+    session1 = client1.transport.get_property._session
+    session2 = client2.transport.get_property._session
+    assert session1 != session2
+    session1 = client1.transport.list_properties._session
+    session2 = client2.transport.list_properties._session
+    assert session1 != session2
+    session1 = client1.transport.create_property._session
+    session2 = client2.transport.create_property._session
+    assert session1 != session2
+    session1 = client1.transport.delete_property._session
+    session2 = client2.transport.delete_property._session
+    assert session1 != session2
+    session1 = client1.transport.update_property._session
+    session2 = client2.transport.update_property._session
+    assert session1 != session2
+    session1 = client1.transport.get_user_link._session
+    session2 = client2.transport.get_user_link._session
+    assert session1 != session2
+    session1 = client1.transport.batch_get_user_links._session
+    session2 = client2.transport.batch_get_user_links._session
+    assert session1 != session2
+    session1 = client1.transport.list_user_links._session
+    session2 = client2.transport.list_user_links._session
+    assert session1 != session2
+    session1 = client1.transport.audit_user_links._session
+    session2 = client2.transport.audit_user_links._session
+    assert session1 != session2
+    session1 = client1.transport.create_user_link._session
+    session2 = client2.transport.create_user_link._session
+    assert session1 != session2
+    session1 = client1.transport.batch_create_user_links._session
+    session2 = client2.transport.batch_create_user_links._session
+    assert session1 != session2
+    session1 = client1.transport.update_user_link._session
+    session2 = client2.transport.update_user_link._session
+    assert session1 != session2
+    session1 = client1.transport.batch_update_user_links._session
+    session2 = client2.transport.batch_update_user_links._session
+    assert session1 != session2
+    session1 = client1.transport.delete_user_link._session
+    session2 = client2.transport.delete_user_link._session
+    assert session1 != session2
+    session1 = client1.transport.batch_delete_user_links._session
+    session2 = client2.transport.batch_delete_user_links._session
+    assert session1 != session2
+    session1 = client1.transport.create_firebase_link._session
+    session2 = client2.transport.create_firebase_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_firebase_link._session
+    session2 = client2.transport.delete_firebase_link._session
+    assert session1 != session2
+    session1 = client1.transport.list_firebase_links._session
+    session2 = client2.transport.list_firebase_links._session
+    assert session1 != session2
+    session1 = client1.transport.get_global_site_tag._session
+    session2 = client2.transport.get_global_site_tag._session
+    assert session1 != session2
+    session1 = client1.transport.create_google_ads_link._session
+    session2 = client2.transport.create_google_ads_link._session
+    assert session1 != session2
+    session1 = client1.transport.update_google_ads_link._session
+    session2 = client2.transport.update_google_ads_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_google_ads_link._session
+    session2 = client2.transport.delete_google_ads_link._session
+    assert session1 != session2
+    session1 = client1.transport.list_google_ads_links._session
+    session2 = client2.transport.list_google_ads_links._session
+    assert session1 != session2
+    session1 = client1.transport.get_data_sharing_settings._session
+    session2 = client2.transport.get_data_sharing_settings._session
+    assert session1 != session2
+    session1 = client1.transport.get_measurement_protocol_secret._session
+    session2 = client2.transport.get_measurement_protocol_secret._session
+    assert session1 != session2
+    session1 = client1.transport.list_measurement_protocol_secrets._session
+    session2 = client2.transport.list_measurement_protocol_secrets._session
+    assert session1 != session2
+    session1 = client1.transport.create_measurement_protocol_secret._session
+    session2 = client2.transport.create_measurement_protocol_secret._session
+    assert session1 != session2
+    session1 = client1.transport.delete_measurement_protocol_secret._session
+    session2 = client2.transport.delete_measurement_protocol_secret._session
+    assert session1 != session2
+    session1 = client1.transport.update_measurement_protocol_secret._session
+    session2 = client2.transport.update_measurement_protocol_secret._session
+    assert session1 != session2
+    session1 = client1.transport.acknowledge_user_data_collection._session
+    session2 = client2.transport.acknowledge_user_data_collection._session
+    assert session1 != session2
+    session1 = client1.transport.search_change_history_events._session
+    session2 = client2.transport.search_change_history_events._session
+    assert session1 != session2
+    session1 = client1.transport.get_google_signals_settings._session
+    session2 = client2.transport.get_google_signals_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_google_signals_settings._session
+    session2 = client2.transport.update_google_signals_settings._session
+    assert session1 != session2
+    session1 = client1.transport.create_conversion_event._session
+    session2 = client2.transport.create_conversion_event._session
+    assert session1 != session2
+    session1 = client1.transport.get_conversion_event._session
+    session2 = client2.transport.get_conversion_event._session
+    assert session1 != session2
+    session1 = client1.transport.delete_conversion_event._session
+    session2 = client2.transport.delete_conversion_event._session
+    assert session1 != session2
+    session1 = client1.transport.list_conversion_events._session
+    session2 = client2.transport.list_conversion_events._session
+    assert session1 != session2
+    session1 = client1.transport.get_display_video360_advertiser_link._session
+    session2 = client2.transport.get_display_video360_advertiser_link._session
+    assert session1 != session2
+    session1 = client1.transport.list_display_video360_advertiser_links._session
+    session2 = client2.transport.list_display_video360_advertiser_links._session
+    assert session1 != session2
+    session1 = client1.transport.create_display_video360_advertiser_link._session
+    session2 = client2.transport.create_display_video360_advertiser_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_display_video360_advertiser_link._session
+    session2 = client2.transport.delete_display_video360_advertiser_link._session
+    assert session1 != session2
+    session1 = client1.transport.update_display_video360_advertiser_link._session
+    session2 = client2.transport.update_display_video360_advertiser_link._session
+    assert session1 != session2
+    session1 = client1.transport.get_display_video360_advertiser_link_proposal._session
+    session2 = client2.transport.get_display_video360_advertiser_link_proposal._session
+    assert session1 != session2
+    session1 = (
+        client1.transport.list_display_video360_advertiser_link_proposals._session
+    )
+    session2 = (
+        client2.transport.list_display_video360_advertiser_link_proposals._session
+    )
+    assert session1 != session2
+    session1 = (
+        client1.transport.create_display_video360_advertiser_link_proposal._session
+    )
+    session2 = (
+        client2.transport.create_display_video360_advertiser_link_proposal._session
+    )
+    assert session1 != session2
+    session1 = (
+        client1.transport.delete_display_video360_advertiser_link_proposal._session
+    )
+    session2 = (
+        client2.transport.delete_display_video360_advertiser_link_proposal._session
+    )
+    assert session1 != session2
+    session1 = (
+        client1.transport.approve_display_video360_advertiser_link_proposal._session
+    )
+    session2 = (
+        client2.transport.approve_display_video360_advertiser_link_proposal._session
+    )
+    assert session1 != session2
+    session1 = (
+        client1.transport.cancel_display_video360_advertiser_link_proposal._session
+    )
+    session2 = (
+        client2.transport.cancel_display_video360_advertiser_link_proposal._session
+    )
+    assert session1 != session2
+    session1 = client1.transport.create_custom_dimension._session
+    session2 = client2.transport.create_custom_dimension._session
+    assert session1 != session2
+    session1 = client1.transport.update_custom_dimension._session
+    session2 = client2.transport.update_custom_dimension._session
+    assert session1 != session2
+    session1 = client1.transport.list_custom_dimensions._session
+    session2 = client2.transport.list_custom_dimensions._session
+    assert session1 != session2
+    session1 = client1.transport.archive_custom_dimension._session
+    session2 = client2.transport.archive_custom_dimension._session
+    assert session1 != session2
+    session1 = client1.transport.get_custom_dimension._session
+    session2 = client2.transport.get_custom_dimension._session
+    assert session1 != session2
+    session1 = client1.transport.create_custom_metric._session
+    session2 = client2.transport.create_custom_metric._session
+    assert session1 != session2
+    session1 = client1.transport.update_custom_metric._session
+    session2 = client2.transport.update_custom_metric._session
+    assert session1 != session2
+    session1 = client1.transport.list_custom_metrics._session
+    session2 = client2.transport.list_custom_metrics._session
+    assert session1 != session2
+    session1 = client1.transport.archive_custom_metric._session
+    session2 = client2.transport.archive_custom_metric._session
+    assert session1 != session2
+    session1 = client1.transport.get_custom_metric._session
+    session2 = client2.transport.get_custom_metric._session
+    assert session1 != session2
+    session1 = client1.transport.get_data_retention_settings._session
+    session2 = client2.transport.get_data_retention_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_data_retention_settings._session
+    session2 = client2.transport.update_data_retention_settings._session
+    assert session1 != session2
+    session1 = client1.transport.create_data_stream._session
+    session2 = client2.transport.create_data_stream._session
+    assert session1 != session2
+    session1 = client1.transport.delete_data_stream._session
+    session2 = client2.transport.delete_data_stream._session
+    assert session1 != session2
+    session1 = client1.transport.update_data_stream._session
+    session2 = client2.transport.update_data_stream._session
+    assert session1 != session2
+    session1 = client1.transport.list_data_streams._session
+    session2 = client2.transport.list_data_streams._session
+    assert session1 != session2
+    session1 = client1.transport.get_data_stream._session
+    session2 = client2.transport.get_data_stream._session
+    assert session1 != session2
+    session1 = client1.transport.get_audience._session
+    session2 = client2.transport.get_audience._session
+    assert session1 != session2
+    session1 = client1.transport.list_audiences._session
+    session2 = client2.transport.list_audiences._session
+    assert session1 != session2
+    session1 = client1.transport.create_audience._session
+    session2 = client2.transport.create_audience._session
+    assert session1 != session2
+    session1 = client1.transport.update_audience._session
+    session2 = client2.transport.update_audience._session
+    assert session1 != session2
+    session1 = client1.transport.archive_audience._session
+    session2 = client2.transport.archive_audience._session
+    assert session1 != session2
+    session1 = client1.transport.get_attribution_settings._session
+    session2 = client2.transport.get_attribution_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_attribution_settings._session
+    session2 = client2.transport.update_attribution_settings._session
+    assert session1 != session2
+    session1 = client1.transport.run_access_report._session
+    session2 = client2.transport.run_access_report._session
+    assert session1 != session2
 
 
 def test_analytics_admin_service_grpc_transport_channel():
@@ -23530,6 +46416,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -23547,6 +46434,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

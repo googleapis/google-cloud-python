@@ -32,9 +32,16 @@ def run_sample():
     list_account_user_links(account_id)
 
 
-def list_account_user_links(account_id):
-    """Lists user links under the specified parent account."""
-    client = AnalyticsAdminServiceClient()
+def list_account_user_links(account_id: str, transport: str = None):
+    """
+    Lists user links under the specified parent account.
+
+    Args:
+        account_id(str): The id of the account.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.list_user_links(parent=f"accounts/{account_id}")
 
     print("Result:")

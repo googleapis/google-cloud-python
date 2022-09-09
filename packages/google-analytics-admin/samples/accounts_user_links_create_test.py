@@ -23,9 +23,11 @@ TEST_EMAIL_ADDRESS = os.getenv("GA_TEST_EMAIL_ADDRESS")
 
 
 def test_accounts_user_links_create():
-    # This test ensures that the call is valid and reaches the server, even
-    # though the operation does not succeed due to permission error.
-    with pytest.raises(Exception, match="403 The caller does not have permission"):
-        accounts_user_links_create.create_account_user_link(
-            FAKE_ACCOUNT_ID, TEST_EMAIL_ADDRESS
-        )
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        # This test ensures that the call is valid and reaches the server, even
+        # though the operation does not succeed due to permission error.
+        with pytest.raises(Exception, match="The caller does not have permission"):
+            accounts_user_links_create.create_account_user_link(
+                FAKE_ACCOUNT_ID, TEST_EMAIL_ADDRESS, transport=transport
+            )

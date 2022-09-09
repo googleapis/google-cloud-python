@@ -38,9 +38,16 @@ def run_sample():
     delete_property(property_id)
 
 
-def delete_property(property_id):
-    """Deletes the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def delete_property(property_id: str, transport: str = None):
+    """
+    Deletes the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_property(name=f"properties/{property_id}")
     print("Property deleted")
 

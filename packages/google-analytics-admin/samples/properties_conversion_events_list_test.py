@@ -20,6 +20,10 @@ TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
 
 
 def test_properties_conversion_events_list(capsys):
-    properties_conversion_events_list.list_conversion_events(TEST_PROPERTY_ID)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_conversion_events_list.list_conversion_events(
+            TEST_PROPERTY_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

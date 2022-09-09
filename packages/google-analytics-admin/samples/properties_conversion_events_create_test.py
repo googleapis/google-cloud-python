@@ -20,7 +20,11 @@ FAKE_PROPERTY_ID = "1"
 
 
 def test_properties_conversion_events_create():
-    # This test ensures that the call is valid and reaches the server, even
-    # though the operation does not succeed due to permission error.
-    with pytest.raises(Exception, match="403 The caller does not have permission"):
-        properties_conversion_events_create.create_conversion_event(FAKE_PROPERTY_ID)
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        # This test ensures that the call is valid and reaches the server, even
+        # though the operation does not succeed due to permission error.
+        with pytest.raises(Exception, match="The caller does not have permission"):
+            properties_conversion_events_create.create_conversion_event(
+                FAKE_PROPERTY_ID, transport=transport
+            )

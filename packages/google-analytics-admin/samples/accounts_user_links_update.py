@@ -44,9 +44,19 @@ def run_sample():
     update_account_user_link(account_id, account_user_link_id)
 
 
-def update_account_user_link(account_id, account_user_link_id):
-    """Updates the account user link."""
-    client = AnalyticsAdminServiceClient()
+def update_account_user_link(
+    account_id: str, account_user_link_id: str, transport: str = None
+):
+    """
+    Updates the account user link.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        account_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the email address and direct roles of the user link.
     # The user link to update is specified in the `name` field of the `UserLink`
     # instance.

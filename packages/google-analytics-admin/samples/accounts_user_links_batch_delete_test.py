@@ -21,9 +21,11 @@ FAKE_ACCOUNT_USER_LINK_ID = "1"
 
 
 def test_accounts_user_links_batch_delete():
-    # This test ensures that the call is valid and reaches the server, even
-    # though the operation does not succeed due to permission error.
-    with pytest.raises(Exception, match="403 The caller does not have permission"):
-        accounts_user_links_batch_delete.batch_delete_account_user_link(
-            FAKE_ACCOUNT_ID, FAKE_ACCOUNT_USER_LINK_ID
-        )
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        # This test ensures that the call is valid and reaches the server, even
+        # though the operation does not succeed due to permission error.
+        with pytest.raises(Exception, match="The caller does not have permission"):
+            accounts_user_links_batch_delete.batch_delete_account_user_link(
+                FAKE_ACCOUNT_ID, FAKE_ACCOUNT_USER_LINK_ID, transport=transport
+            )

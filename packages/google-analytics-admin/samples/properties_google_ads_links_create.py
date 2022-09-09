@@ -45,9 +45,19 @@ def run_sample():
     create_google_ads_link(property_id, google_ads_customer_id)
 
 
-def create_google_ads_link(property_id, google_ads_customer_id):
-    """Creates a Google Ads link for the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def create_google_ads_link(
+    property_id: str, google_ads_customer_id: str, transport: str = None
+):
+    """
+    Creates a Google Ads link for the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        google_ads_customer_id(str): The Google Analytics Ads Customer Id.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     google_ads_link = client.create_google_ads_link(
         parent=f"properties/{property_id}",
         google_ads_link=GoogleAdsLink(customer_id=f"{google_ads_customer_id}"),

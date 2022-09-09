@@ -43,9 +43,19 @@ def run_sample():
     delete_firebase_link(property_id, firebase_link_id)
 
 
-def delete_firebase_link(property_id, firebase_link_id):
-    """Deletes the Firebase link."""
-    client = AnalyticsAdminServiceClient()
+def delete_firebase_link(
+    property_id: str, firebase_link_id: str, transport: str = None
+):
+    """
+    Deletes the Firebase link.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        firebase_link_id: The Firebase link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_firebase_link(
         name=f"properties/{property_id}/firebaseLinks/{firebase_link_id}"
     )

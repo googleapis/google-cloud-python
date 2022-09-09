@@ -37,9 +37,18 @@ def run_sample():
     get_conversion_event(property_id, conversion_event_id)
 
 
-def get_conversion_event(property_id, conversion_event_id):
-    """Retrieves the details for the conversion event."""
-    client = AnalyticsAdminServiceClient()
+def get_conversion_event(
+    property_id: str, conversion_event_id: str, transport: str = None
+):
+    """
+    Retrieves the details for the conversion event.
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        conversion_event_id(str): The conversion event ID
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     conversion_event = client.get_conversion_event(
         name=f"properties/{property_id}/conversionEvents/{conversion_event_id}"
     )

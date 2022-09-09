@@ -47,9 +47,20 @@ def run_sample():
     update_measurement_protocol_secret(property_id, stream_id, secret_id)
 
 
-def update_measurement_protocol_secret(property_id, stream_id, secret_id):
-    """Updates the measurement protocol secret."""
-    client = AnalyticsAdminServiceClient()
+def update_measurement_protocol_secret(
+    property_id: str, stream_id: str, secret_id: str, transport: str = None
+):
+    """
+    Updates the measurement protocol secret.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        secret_id(str): The measurement protocol secret ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the display name of the measurement protocol secret, as
     # indicated by the value of the `update_mask` field. The measurement
     # protocol secret to update is specified in the `name` field of the

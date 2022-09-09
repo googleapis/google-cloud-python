@@ -22,9 +22,11 @@ FAKE_SECRET_ID = "1"
 
 
 def test_properties_data_streams_measurement_protocol_secrets_update():
-    # This test ensures that the call is valid and reaches the server, even
-    # though the operation does not succeed due to permission error.
-    with pytest.raises(Exception, match="403 The caller does not have permission"):
-        properties_data_streams_measurement_protocol_secrets_update.update_measurement_protocol_secret(
-            FAKE_PROPERTY_ID, FAKE_STREAM_ID, FAKE_SECRET_ID
-        )
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        # This test ensures that the call is valid and reaches the server, even
+        # though the operation does not succeed due to permission error.
+        with pytest.raises(Exception, match="The caller does not have permission"):
+            properties_data_streams_measurement_protocol_secrets_update.update_measurement_protocol_secret(
+                FAKE_PROPERTY_ID, FAKE_STREAM_ID, FAKE_SECRET_ID, transport=transport
+            )

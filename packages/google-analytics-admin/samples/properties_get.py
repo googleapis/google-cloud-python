@@ -33,9 +33,16 @@ def run_sample():
     get_property(property_id)
 
 
-def get_property(property_id):
-    """Retrieves the Google Analytics 4 property details."""
-    client = AnalyticsAdminServiceClient()
+def get_property(property_id: str, transport: str = None):
+    """
+    Retrieves the Google Analytics 4 property details.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     property_ = client.get_property(name=f"properties/{property_id}")
 
     print("Result:")

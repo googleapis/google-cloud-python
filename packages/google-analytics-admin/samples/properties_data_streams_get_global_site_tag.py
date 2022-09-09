@@ -34,9 +34,17 @@ def run_sample():
     get_global_site_tag(property_id, stream_id)
 
 
-def get_global_site_tag(property_id, stream_id):
-    """Retrieves the Site Tag for the specified data stream."""
-    client = AnalyticsAdminServiceClient()
+def get_global_site_tag(property_id: str, stream_id: str, transport: str = None):
+    """
+    Retrieves the Site Tag for the specified data stream.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     global_site_tag = client.get_global_site_tag(
         name=f"properties/{property_id}/dataStreams/{stream_id}/globalSiteTag"
     )

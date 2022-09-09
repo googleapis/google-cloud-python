@@ -24,9 +24,15 @@ for more information.
 from google.analytics.admin import AnalyticsAdminServiceClient
 
 
-def list_account_summaries():
-    """Returns summaries of all accounts accessible by the caller."""
-    client = AnalyticsAdminServiceClient()
+def list_account_summaries(transport: str = None) -> None:
+    """
+    Prints summaries of all accounts accessible by the caller.
+
+    Args:
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.list_account_summaries()
 
     print("Result:")

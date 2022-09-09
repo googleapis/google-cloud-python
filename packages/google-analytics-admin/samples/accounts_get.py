@@ -32,9 +32,15 @@ def run_sample():
     get_account(account_id)
 
 
-def get_account(account_id: str):
-    """Retrieves the Google Analytics account data."""
-    client = AnalyticsAdminServiceClient()
+def get_account(account_id: str, transport: str = None):
+    """
+    Retrieves the Google Analytics account data.
+    Args:
+        account_id(str): The id of the account.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     account = client.get_account(name=f"accounts/{account_id}")
 
     print("Result:")

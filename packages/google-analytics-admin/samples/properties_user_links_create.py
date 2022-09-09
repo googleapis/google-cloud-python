@@ -45,9 +45,19 @@ def run_sample():
     create_property_user_link(property_id, email_address)
 
 
-def create_property_user_link(property_id, email_address):
-    """Creates a user link for the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def create_property_user_link(
+    property_id: str, email_address: str, transport: str = None
+):
+    """
+    Creates a user link for the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        email_address(str): Email address of the user to link.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     user_link = client.create_user_link(
         CreateUserLinkRequest(
             parent=f"properties/{property_id}",

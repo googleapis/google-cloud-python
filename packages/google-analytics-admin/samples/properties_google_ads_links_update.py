@@ -44,9 +44,19 @@ def run_sample():
     update_google_ads_link(property_id, google_ads_link_id)
 
 
-def update_google_ads_link(property_id, google_ads_link_id):
-    """Updates the Google Ads link."""
-    client = AnalyticsAdminServiceClient()
+def update_google_ads_link(
+    property_id: str, google_ads_link_id: str, transport: str = None
+):
+    """
+    Updates the Google Ads link.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        google_ads_link_id(str): The Google Analytics Ads Link Id.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the adsPersonalizationEnabled setting of the
     # Google Ads link as indicated by the value of the `update_mask` field.
     # The Google Ads link to update is specified in the `name` field of the

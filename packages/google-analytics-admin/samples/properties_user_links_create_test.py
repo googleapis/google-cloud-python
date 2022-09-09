@@ -21,9 +21,11 @@ FAKE_EMAIL_ADDRESS = "test@google.com"
 
 
 def test_properties_user_links_create():
-    # This test ensures that the call is valid and reaches the server, even
-    # though the operation does not succeed due to permission error.
-    with pytest.raises(Exception, match="403 The caller does not have permission"):
-        properties_user_links_create.create_property_user_link(
-            FAKE_PROPERTY_ID, FAKE_EMAIL_ADDRESS
-        )
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        # This test ensures that the call is valid and reaches the server, even
+        # though the operation does not succeed due to permission error.
+        with pytest.raises(Exception, match="The caller does not have permission"):
+            properties_user_links_create.create_property_user_link(
+                FAKE_PROPERTY_ID, FAKE_EMAIL_ADDRESS, transport=transport
+            )

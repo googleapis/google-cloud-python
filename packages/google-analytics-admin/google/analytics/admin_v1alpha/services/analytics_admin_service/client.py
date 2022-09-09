@@ -47,6 +47,7 @@ from google.analytics.admin_v1alpha.types import resources
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 from .transports.grpc import AnalyticsAdminServiceGrpcTransport
 from .transports.grpc_asyncio import AnalyticsAdminServiceGrpcAsyncIOTransport
+from .transports.rest import AnalyticsAdminServiceRestTransport
 
 
 class AnalyticsAdminServiceClientMeta(type):
@@ -62,6 +63,7 @@ class AnalyticsAdminServiceClientMeta(type):
     )  # type: Dict[str, Type[AnalyticsAdminServiceTransport]]
     _transport_registry["grpc"] = AnalyticsAdminServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AnalyticsAdminServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AnalyticsAdminServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -675,6 +677,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             transport (Union[str, AnalyticsAdminServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

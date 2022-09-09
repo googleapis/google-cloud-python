@@ -22,8 +22,10 @@ TEST_SECRET_ID = os.getenv("GA_TEST_WEB_DATA_SECRET_ID")
 
 
 def test_properties_data_streams_measurement_protocol_secrets_get(capsys):
-    properties_data_streams_measurement_protocol_secrets_get.get_measurement_protocol_secret(
-        TEST_PROPERTY_ID, TEST_STREAM_ID, TEST_SECRET_ID
-    )
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_data_streams_measurement_protocol_secrets_get.get_measurement_protocol_secret(
+            TEST_PROPERTY_ID, TEST_STREAM_ID, TEST_SECRET_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

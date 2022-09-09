@@ -20,6 +20,10 @@ TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
 
 
 def test_properties_google_ads_links_list(capsys):
-    properties_google_ads_links_list.list_google_ads_links(TEST_PROPERTY_ID)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_google_ads_links_list.list_google_ads_links(
+            TEST_PROPERTY_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

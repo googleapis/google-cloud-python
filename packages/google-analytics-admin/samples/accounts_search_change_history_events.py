@@ -43,10 +43,20 @@ def run_sample():
     search_change_history_events(account_id, property_id)
 
 
-def search_change_history_events(account_id: str, property_id: str):
-    """Lists the change history events for the Google Analytics 4 property
-    within the specified date range."""
-    client = AnalyticsAdminServiceClient()
+def search_change_history_events(
+    account_id: str, property_id: str, transport: str = None
+):
+    """
+    Lists the change history events for the Google Analytics 4 property
+    within the specified date range.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # Create a timestamp object and subtract 7 days from the current date/time.
     earliest_change_time = Timestamp()
     earliest_change_time.FromDatetime(datetime.now() - timedelta(days=7))

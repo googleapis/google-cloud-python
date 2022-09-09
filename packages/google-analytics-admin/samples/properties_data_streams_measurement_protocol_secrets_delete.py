@@ -45,9 +45,20 @@ def run_sample():
     delete_measurement_protocol_secret(property_id, stream_id, secret_id)
 
 
-def delete_measurement_protocol_secret(property_id, stream_id, secret_id):
-    """Deletes a measurement protocol secret for the data stream."""
-    client = AnalyticsAdminServiceClient()
+def delete_measurement_protocol_secret(
+    property_id: str, stream_id: str, secret_id: str, transport: str = None
+):
+    """
+    Deletes a measurement protocol secret for the data stream.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        secret_id(str): The measurement protocol secret ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_measurement_protocol_secret(
         name=f"properties/{property_id}/dataStreams/{stream_id}/measurementProtocolSecrets/{secret_id}"
     )

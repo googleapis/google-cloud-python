@@ -44,9 +44,19 @@ def run_sample():
     create_firebase_link(property_id, firebase_project_id)
 
 
-def create_firebase_link(property_id, firebase_project_id):
-    """Creates a Firebase link for the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def create_firebase_link(
+    property_id: str, firebase_project_id: str, transport: str = None
+):
+    """
+    Creates a Firebase link for the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        firebase_project_id: Firebase project ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     firebase_link = client.create_firebase_link(
         parent=f"properties/{property_id}",
         firebase_link=FirebaseLink(project=f"projects/{firebase_project_id}"),

@@ -38,10 +38,20 @@ def run_sample():
     batch_get_property_user_link(property_id, property_user_link_id)
 
 
-def batch_get_property_user_link(property_id, property_user_link_id):
-    """Retrieves details for the Google Analytics 4 property user link using a
-    batch call."""
-    client = AnalyticsAdminServiceClient()
+def batch_get_property_user_link(
+    property_id: str, property_user_link_id: str, transport: str = None
+):
+    """
+    Retrieves details for the Google Analytics 4 property user link using a
+    batch call.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        property_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     response = client.batch_get_user_links(
         BatchGetUserLinksRequest(
             parent=f"properties/{property_id}",

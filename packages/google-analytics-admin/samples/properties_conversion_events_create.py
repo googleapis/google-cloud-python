@@ -40,9 +40,16 @@ def run_sample():
     create_conversion_event(property_id)
 
 
-def create_conversion_event(property_id):
-    """Creates a conversion event for the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def create_conversion_event(property_id: str, transport: str = None):
+    """
+    Creates a conversion event for the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     conversion_event = client.create_conversion_event(
         parent=f"properties/{property_id}",
         conversion_event=ConversionEvent(event_name="test_purchase"),

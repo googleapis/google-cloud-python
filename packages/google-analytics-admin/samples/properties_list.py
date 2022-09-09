@@ -34,10 +34,17 @@ def run_sample():
     list_properties(account_id)
 
 
-def list_properties(account_id):
-    """Lists Google Analytics 4 properties under the specified parent account
-    that are available to the current user."""
-    client = AnalyticsAdminServiceClient()
+def list_properties(account_id: str, transport: str = None):
+    """
+    Lists Google Analytics 4 properties under the specified parent account
+    that are available to the current user.
+
+    Args:
+        account_id(str): The Google Analytics account ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.list_properties(
         ListPropertiesRequest(filter=f"parent:accounts/{account_id}", show_deleted=True)
     )

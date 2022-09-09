@@ -16,6 +16,8 @@ import account_summaries_list
 
 
 def test_account_summaries_list(capsys):
-    account_summaries_list.list_account_summaries()
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        account_summaries_list.list_account_summaries(transport=transport)
+        out, _ = capsys.readouterr()
+        assert "Result" in out

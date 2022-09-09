@@ -37,9 +37,17 @@ def run_sample():
     get_data_stream(property_id, stream_id)
 
 
-def get_data_stream(property_id, stream_id):
-    """Retrieves the details for the data stream."""
-    client = AnalyticsAdminServiceClient()
+def get_data_stream(property_id: str, stream_id: str, transport: str = None):
+    """
+    Retrieves the details for the data stream.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     data_stream = client.get_data_stream(
         name=f"properties/{property_id}/dataStreams/{stream_id}"
     )

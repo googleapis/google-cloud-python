@@ -26,9 +26,15 @@ from google.analytics.admin import AnalyticsAdminServiceClient
 from accounts_get import print_account
 
 
-def list_accounts():
-    """Lists the Google Analytics accounts available to the current user."""
-    client = AnalyticsAdminServiceClient()
+def list_accounts(transport: str = None):
+    """
+    Lists the Google Analytics accounts available to the current user.
+
+    Args:
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     results = client.list_accounts()
 
     print("Result:")

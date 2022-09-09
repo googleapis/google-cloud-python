@@ -43,9 +43,17 @@ def run_sample():
     delete_data_stream(property_id, stream_id)
 
 
-def delete_data_stream(property_id, stream_id):
-    """Deletes the data stream from the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def delete_data_stream(property_id: str, stream_id: str, transport: str = None):
+    """
+    Deletes the data stream from the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_data_stream(name=f"properties/{property_id}/dataStreams/{stream_id}")
     print("Data stream deleted")
 

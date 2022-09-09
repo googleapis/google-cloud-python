@@ -45,9 +45,17 @@ def run_sample():
     update_data_stream(property_id, stream_id)
 
 
-def update_data_stream(property_id, stream_id):
-    """Updates the data stream."""
-    client = AnalyticsAdminServiceClient()
+def update_data_stream(property_id: str, stream_id: str, transport: str = None):
+    """
+    Updates the data stream.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        stream_id(str): The data stream ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the display name of the data stream, as indicated by
     # the value of the `update_mask` field. The data stream to update is
     # specified in the `name` field of the `dataStream` instance.

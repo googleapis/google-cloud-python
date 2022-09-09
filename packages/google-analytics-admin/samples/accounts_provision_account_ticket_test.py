@@ -18,6 +18,10 @@ TEST_REDIRECT_URL = "https://www.google.com"
 
 
 def test_accounts_provision_account_ticket(capsys):
-    accounts_provision_account_ticket.provision_account_ticket(TEST_REDIRECT_URL)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        accounts_provision_account_ticket.provision_account_ticket(
+            TEST_REDIRECT_URL, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

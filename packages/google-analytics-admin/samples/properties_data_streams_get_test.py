@@ -21,6 +21,10 @@ TEST_DATA_STREAM_ID = os.getenv("GA_TEST_WEB_DATA_STREAM_ID")
 
 
 def test_properties_data_streams_get(capsys):
-    properties_data_streams_get.get_data_stream(TEST_PROPERTY_ID, TEST_DATA_STREAM_ID)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_data_streams_get.get_data_stream(
+            TEST_PROPERTY_ID, TEST_DATA_STREAM_ID, transport=transport
+        )
+        out, _ = capsys.readouterr()
+        assert "Result" in out

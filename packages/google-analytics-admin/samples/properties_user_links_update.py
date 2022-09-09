@@ -44,9 +44,19 @@ def run_sample():
     update_property_user_link(property_id, property_user_link_id)
 
 
-def update_property_user_link(property_id, property_user_link_id):
-    """Updates the Google Analytics 4 property user link."""
-    client = AnalyticsAdminServiceClient()
+def update_property_user_link(
+    property_id: str, property_user_link_id: str, transport: str = None
+):
+    """
+    Updates the Google Analytics 4 property user link.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        property_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     # This call updates the email address and direct roles of the user link.
     # The user link to update is specified in the `name` field of the `UserLink`
     # instance.

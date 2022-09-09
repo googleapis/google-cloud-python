@@ -44,9 +44,19 @@ def run_sample():
     delete_account_user_link(account_id, account_user_link_id)
 
 
-def delete_account_user_link(account_id, account_user_link_id):
-    """Deletes the user link for the account."""
-    client = AnalyticsAdminServiceClient()
+def delete_account_user_link(
+    account_id: str, account_user_link_id: str, transport: str = None
+):
+    """
+    Deletes the user link for the account.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        account_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_user_link(
         DeleteUserLinkRequest(
             name=f"accounts/{account_id}/userLinks/{account_user_link_id}"

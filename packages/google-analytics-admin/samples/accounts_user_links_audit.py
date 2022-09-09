@@ -33,10 +33,17 @@ def run_sample():
     audit_account_user_links(account_id)
 
 
-def audit_account_user_links(account_id):
-    """Lists all user links on an account, including implicit ones that come
-    from effective permissions granted by groups or organization admin roles."""
-    client = AnalyticsAdminServiceClient()
+def audit_account_user_links(account_id: str, transport: str = None):
+    """
+    Lists all user links on an account, including implicit ones that come
+    from effective permissions granted by groups or organization admin roles.
+
+    Args:
+        account_id(str): The Google Analytics Account ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
 
     print("Result:")
     for user_link in client.audit_user_links(

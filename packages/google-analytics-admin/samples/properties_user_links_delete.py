@@ -44,9 +44,19 @@ def run_sample():
     delete_property_user_link(property_id, property_user_link_id)
 
 
-def delete_property_user_link(property_id, property_user_link_id):
-    """Deletes the user link from the Google Analytics 4 property."""
-    client = AnalyticsAdminServiceClient()
+def delete_property_user_link(
+    property_id: str, property_user_link_id: str, transport: str = None
+):
+    """
+    Deletes the user link from the Google Analytics 4 property.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        property_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     client.delete_user_link(
         DeleteUserLinkRequest(
             name=f"properties/{property_id}/userLinks/{property_user_link_id}"

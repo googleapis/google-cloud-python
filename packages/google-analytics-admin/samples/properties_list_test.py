@@ -20,6 +20,8 @@ TEST_ACCOUNT_ID = os.getenv("GA_TEST_ACCOUNT_ID")
 
 
 def test_properties_get(capsys):
-    properties_list.list_properties(TEST_ACCOUNT_ID)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_list.list_properties(TEST_ACCOUNT_ID, transport=transport)
+        out, _ = capsys.readouterr()
+        assert "Result" in out

@@ -49,10 +49,20 @@ def run_sample():
     batch_create_property_user_link(property_id, email_address)
 
 
-def batch_create_property_user_link(property_id, email_address):
-    """Creates a user link for the Google Analytics 4 property using a batch
-    call."""
-    client = AnalyticsAdminServiceClient()
+def batch_create_property_user_link(
+    property_id: str, email_address: str, transport: str = None
+):
+    """
+    Creates a user link for the Google Analytics 4 property using a batch
+    call.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        email_address(str): Email address of the user to link.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     response = client.batch_create_user_links(
         BatchCreateUserLinksRequest(
             parent=f"properties/{property_id}",

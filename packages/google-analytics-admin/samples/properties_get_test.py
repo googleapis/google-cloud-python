@@ -21,6 +21,8 @@ TEST_USER_LINK_ID = os.getenv("GA_USER_LINK_ID")
 
 
 def test_properties_get(capsys):
-    properties_get.get_property(TEST_PROPERTY_ID)
-    out, _ = capsys.readouterr()
-    assert "Result" in out
+    transports = ["grpc", "rest"]
+    for transport in transports:
+        properties_get.get_property(TEST_PROPERTY_ID, transport=transport)
+        out, _ = capsys.readouterr()
+        assert "Result" in out

@@ -37,9 +37,19 @@ def run_sample():
     get_property_user_link(property_id, property_user_link_id)
 
 
-def get_property_user_link(property_id, property_user_link_id):
-    """Retrieves the Google Analytics 4 property user link details."""
-    client = AnalyticsAdminServiceClient()
+def get_property_user_link(
+    property_id: str, property_user_link_id: str, transport: str = None
+):
+    """
+    Retrieves the Google Analytics 4 property user link details.
+
+    Args:
+        property_id(str): The Google Analytics Property ID.
+        property_user_link_id(str): Google Analytics account user link ID.
+        transport(str): The transport to use. For example, "grpc"
+            or "rest". If set to None, a transport is chosen automatically.
+    """
+    client = AnalyticsAdminServiceClient(transport=transport)
     user_link = client.get_user_link(
         name=f"properties/{property_id}/userLinks/{property_user_link_id}"
     )
