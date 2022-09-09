@@ -20,14 +20,24 @@ from google.rpc import code_pb2
 
 
 def test_retry_bubble(echo):
-    # Note: InvalidArgument is from gRPC, InternalServerError from http
-    with pytest.raises((exceptions.DeadlineExceeded, exceptions.InternalServerError)):
+    with pytest.raises(exceptions.GatewayTimeout):
         echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
                 'message': 'This took longer than you said it should.',
             },
         })
+
+    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
+        # Under gRPC, we raise exceptions.DeadlineExceeded, which is a
+        # sub-class of exceptions.GatewayTimeout.
+        with pytest.raises(exceptions.DeadlineExceeded):
+            echo.echo({
+                'error': {
+                    'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
+                    'message': 'This took longer than you said it should.',
+                },
+            })
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
