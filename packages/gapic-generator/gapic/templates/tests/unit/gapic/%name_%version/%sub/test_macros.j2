@@ -400,6 +400,8 @@ def test_{{ method_name }}_flattened():
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif (field.ident|string()).startswith('wrappers_pb2.') %}
+        assert wrappers.{{ (field.ident|string())[13:] }}Rule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
         arg = args[0].{{ key }}
         mock_val = {{ field.mock_value }}
@@ -493,6 +495,8 @@ async def test_{{ method_name }}_flattened_async():
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif (field.ident|string()).startswith('wrappers_pb2.') %}
+        assert wrappers.{{ (field.ident|string())[13:] }}Rule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
         arg = args[0].{{ key }}
         mock_val = {{ field.mock_value }}

@@ -1,0 +1,2 @@
+# New boringssl requires C++14
+build --repo_env=BAZEL_CXXOPTS="-std=c++14"
