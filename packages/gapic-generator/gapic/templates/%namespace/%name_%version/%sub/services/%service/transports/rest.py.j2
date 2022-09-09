@@ -100,7 +100,7 @@ class {{ service.name }}RestInterceptor:
 
 
     """
-    {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming %}
+    {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming and method.http_options %}
     def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ method.name|snake_case }}
 
