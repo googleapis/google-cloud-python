@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-storage-transfer/compare/v1.4.1...v1.5.0) (2022-09-12)
+
+
+### Features
+
+* add AWS S3 compatible data source ([7bbaafb](https://github.com/googleapis/python-storage-transfer/commit/7bbaafb7a3b16aef6993656a8e49e4a35db9a479))
+* Add default retry configuration ([#123](https://github.com/googleapis/python-storage-transfer/issues/123)) ([7bbaafb](https://github.com/googleapis/python-storage-transfer/commit/7bbaafb7a3b16aef6993656a8e49e4a35db9a479))
+* add DeleteTransferJob operation ([7bbaafb](https://github.com/googleapis/python-storage-transfer/commit/7bbaafb7a3b16aef6993656a8e49e4a35db9a479))
+
 ## [1.4.1](https://github.com/googleapis/python-storage-transfer/compare/v1.4.0...v1.4.1) (2022-08-11)
 
 
