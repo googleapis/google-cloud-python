@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.11.0](https://github.com/googleapis/python-analytics-admin/compare/v0.10.1...v0.11.0) (2022-09-12)
+
+
+### Features
+
+* Enable REST transport support ([#265](https://github.com/googleapis/python-analytics-admin/issues/265)) ([c220210](https://github.com/googleapis/python-analytics-admin/commit/c220210adf0093a1257d8e91209488c1dec7602b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.0,>=2.8.0 ([c220210](https://github.com/googleapis/python-analytics-admin/commit/c220210adf0093a1257d8e91209488c1dec7602b))
+* **deps:** require protobuf >= 3.20.1 ([c220210](https://github.com/googleapis/python-analytics-admin/commit/c220210adf0093a1257d8e91209488c1dec7602b))
+
 ## [0.10.1](https://github.com/googleapis/python-analytics-admin/compare/v0.10.0...v0.10.1) (2022-08-11)
 
 
