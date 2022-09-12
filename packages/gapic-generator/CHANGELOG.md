@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.4.1](https://github.com/googleapis/gapic-generator-python/compare/v1.4.0...v1.4.1) (2022-09-09)
+
+
+### Bug Fixes
+
+* Fix test generation for `*Value` wrapper classes ([#1437](https://github.com/googleapis/gapic-generator-python/issues/1437)) ([9e9971f](https://github.com/googleapis/gapic-generator-python/commit/9e9971f6321207fe33a0d28f32a07e3b1f0e795a))
+* Remove grpc only methods from rest.py ([#1440](https://github.com/googleapis/gapic-generator-python/issues/1440)) ([c12a1c2](https://github.com/googleapis/gapic-generator-python/commit/c12a1c208dc91d8b222653b0d9d9696448751c91))
+* **rest:** Use strict encoding to lowercase query string bools ([#1436](https://github.com/googleapis/gapic-generator-python/issues/1436)) ([e667406](https://github.com/googleapis/gapic-generator-python/commit/e6674061ebd919281b49838f44fc0be8730595dc))
+
 ## [1.4.0](https://github.com/googleapis/gapic-generator-python/compare/v1.3.1...v1.4.0) (2022-09-07)
 
 
