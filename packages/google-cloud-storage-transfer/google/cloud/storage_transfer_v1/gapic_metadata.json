@@ -25,6 +25,11 @@
                 "delete_agent_pool"
               ]
             },
+            "DeleteTransferJob": {
+              "methods": [
+                "delete_transfer_job"
+              ]
+            },
             "GetAgentPool": {
               "methods": [
                 "get_agent_pool"
@@ -93,6 +98,11 @@
             "DeleteAgentPool": {
               "methods": [
                 "delete_agent_pool"
+              ]
+            },
+            "DeleteTransferJob": {
+              "methods": [
+                "delete_transfer_job"
               ]
             },
             "GetAgentPool": {

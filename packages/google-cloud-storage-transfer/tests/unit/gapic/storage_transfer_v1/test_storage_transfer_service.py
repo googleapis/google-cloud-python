@@ -2073,6 +2073,156 @@ async def test_run_transfer_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        transfer.DeleteTransferJobRequest,
+        dict,
+    ],
+)
+def test_delete_transfer_job(request_type, transport: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_transfer_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.DeleteTransferJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_transfer_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_job), "__call__"
+    ) as call:
+        client.delete_transfer_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.DeleteTransferJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_transfer_job_async(
+    transport: str = "grpc_asyncio", request_type=transfer.DeleteTransferJobRequest
+):
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_transfer_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.DeleteTransferJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_transfer_job_async_from_dict():
+    await test_delete_transfer_job_async(request_type=dict)
+
+
+def test_delete_transfer_job_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.DeleteTransferJobRequest()
+
+    request.job_name = "job_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_job), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_transfer_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_transfer_job_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.DeleteTransferJobRequest()
+
+    request.job_name = "job_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_job), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_transfer_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         transfer.CreateAgentPoolRequest,
         dict,
     ],
@@ -3647,6 +3797,7 @@ def test_storage_transfer_service_base_transport():
         "pause_transfer_operation",
         "resume_transfer_operation",
         "run_transfer_job",
+        "delete_transfer_job",
         "create_agent_pool",
         "update_agent_pool",
         "get_agent_pool",

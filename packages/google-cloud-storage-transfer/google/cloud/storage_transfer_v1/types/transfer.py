@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
         "CreateTransferJobRequest",
         "UpdateTransferJobRequest",
         "GetTransferJobRequest",
+        "DeleteTransferJobRequest",
         "ListTransferJobsRequest",
         "ListTransferJobsResponse",
         "PauseTransferOperationRequest",
@@ -93,7 +94,7 @@ class UpdateTransferJobRequest(proto.Message):
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
             Updating a job status to
             [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED]
-            requires ``storagetransfer.jobs.delete`` permissions.
+            requires ``storagetransfer.jobs.delete`` permission.
         update_transfer_job_field_mask (google.protobuf.field_mask_pb2.FieldMask):
             The field mask of the fields in ``transferJob`` that are to
             be updated in this request. Fields in ``transferJob`` that
@@ -136,6 +137,27 @@ class GetTransferJobRequest(proto.Message):
     Attributes:
         job_name (str):
             Required. The job to get.
+        project_id (str):
+            Required. The ID of the Google Cloud project
+            that owns the job.
+    """
+
+    job_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteTransferJobRequest(proto.Message):
+    r"""Request passed to DeleteTransferJob.
+
+    Attributes:
+        job_name (str):
+            Required. The job to delete.
         project_id (str):
             Required. The ID of the Google Cloud project
             that owns the job.

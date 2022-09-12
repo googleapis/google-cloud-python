@@ -136,7 +136,7 @@ class StorageTransferServiceTransport(abc.ABC):
             ),
             self.create_transfer_job: gapic_v1.method.wrap_method(
                 self.create_transfer_job,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_transfer_job: gapic_v1.method.wrap_method(
@@ -166,6 +166,11 @@ class StorageTransferServiceTransport(abc.ABC):
             ),
             self.run_transfer_job: gapic_v1.method.wrap_method(
                 self.run_transfer_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_transfer_job: gapic_v1.method.wrap_method(
+                self.delete_transfer_job,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -285,6 +290,15 @@ class StorageTransferServiceTransport(abc.ABC):
     ) -> Callable[
         [transfer.RunTransferJobRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_transfer_job(
+        self,
+    ) -> Callable[
+        [transfer.DeleteTransferJobRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

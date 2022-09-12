@@ -364,7 +364,7 @@ class StorageTransferServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_transfer_job,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -879,6 +879,76 @@ class StorageTransferServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def delete_transfer_job(
+        self,
+        request: Union[transfer.DeleteTransferJobRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a transfer job. Deleting a transfer job sets its status
+        to
+        [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_transfer_v1
+
+            async def sample_delete_transfer_job():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.DeleteTransferJobRequest(
+                    job_name="job_name_value",
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                await client.delete_transfer_job(request=request)
+
+        Args:
+            request (Union[google.cloud.storage_transfer_v1.types.DeleteTransferJobRequest, dict]):
+                The request object. Request passed to DeleteTransferJob.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        request = transfer.DeleteTransferJobRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_transfer_job,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("job_name", request.job_name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def create_agent_pool(
         self,

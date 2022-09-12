@@ -42,6 +42,7 @@ class storage_transferCallTransformer(cst.CSTTransformer):
         'create_agent_pool': ('project_id', 'agent_pool', 'agent_pool_id', ),
         'create_transfer_job': ('transfer_job', ),
         'delete_agent_pool': ('name', ),
+        'delete_transfer_job': ('job_name', 'project_id', ),
         'get_agent_pool': ('name', ),
         'get_google_service_account': ('project_id', ),
         'get_transfer_job': ('job_name', 'project_id', ),

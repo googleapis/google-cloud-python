@@ -499,6 +499,34 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         return self._stubs["run_transfer_job"]
 
     @property
+    def delete_transfer_job(
+        self,
+    ) -> Callable[[transfer.DeleteTransferJobRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete transfer job method over gRPC.
+
+        Deletes a transfer job. Deleting a transfer job sets its status
+        to
+        [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED].
+
+        Returns:
+            Callable[[~.DeleteTransferJobRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_transfer_job" not in self._stubs:
+            self._stubs["delete_transfer_job"] = self.grpc_channel.unary_unary(
+                "/google.storagetransfer.v1.StorageTransferService/DeleteTransferJob",
+                request_serializer=transfer.DeleteTransferJobRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_transfer_job"]
+
+    @property
     def create_agent_pool(
         self,
     ) -> Callable[

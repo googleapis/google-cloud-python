@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
         "AzureBlobStorageData",
         "HttpData",
         "PosixFilesystem",
+        "AwsS3CompatibleData",
+        "S3CompatibleMetadata",
         "AgentPool",
         "TransferOptions",
         "TransferSpec",
@@ -486,6 +488,130 @@ class PosixFilesystem(proto.Message):
     )
 
 
+class AwsS3CompatibleData(proto.Message):
+    r"""An AwsS3CompatibleData resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        bucket_name (str):
+            Required. Specifies the name of the bucket.
+        path (str):
+            Specifies the root path to transfer objects.
+            Must be an empty string or full path name that
+            ends with a '/'. This field is treated as an
+            object prefix. As such, it should generally not
+            begin with a '/'.
+        endpoint (str):
+            Required. Specifies the endpoint of the
+            storage service.
+        region (str):
+            Specifies the region to sign requests with.
+            This can be left blank if requests should be
+            signed with an empty region.
+        s3_metadata (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata):
+            A S3 compatible metadata.
+
+            This field is a member of `oneof`_ ``data_provider``.
+    """
+
+    bucket_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    path = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    endpoint = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    region = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    s3_metadata = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="data_provider",
+        message="S3CompatibleMetadata",
+    )
+
+
+class S3CompatibleMetadata(proto.Message):
+    r"""S3CompatibleMetadata contains the metadata fields that apply
+    to the basic types of S3-compatible data providers.
+
+    Attributes:
+        auth_method (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.AuthMethod):
+            Specifies the authentication and
+            authorization method used by the storage
+            service. When not specified, Transfer Service
+            will attempt to determine right auth method to
+            use.
+        request_model (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.RequestModel):
+            Specifies the API request model used to call the storage
+            service. When not specified, the default value of
+            RequestModel REQUEST_MODEL_VIRTUAL_HOSTED_STYLE is used.
+        protocol (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.NetworkProtocol):
+            Specifies the network protocol of the agent. When not
+            specified, the default value of NetworkProtocol
+            NETWORK_PROTOCOL_HTTPS is used.
+        list_api (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.ListApi):
+            The Listing API to use for discovering
+            objects. When not specified, Transfer Service
+            will attempt to determine the right API to use.
+    """
+
+    class AuthMethod(proto.Enum):
+        r"""The authentication and authorization method used by the
+        storage service.
+        """
+        AUTH_METHOD_UNSPECIFIED = 0
+        AUTH_METHOD_AWS_SIGNATURE_V4 = 1
+        AUTH_METHOD_AWS_SIGNATURE_V2 = 2
+
+    class RequestModel(proto.Enum):
+        r"""The request model of the API."""
+        REQUEST_MODEL_UNSPECIFIED = 0
+        REQUEST_MODEL_VIRTUAL_HOSTED_STYLE = 1
+        REQUEST_MODEL_PATH_STYLE = 2
+
+    class NetworkProtocol(proto.Enum):
+        r"""The agent network protocol to access the storage service."""
+        NETWORK_PROTOCOL_UNSPECIFIED = 0
+        NETWORK_PROTOCOL_HTTPS = 1
+        NETWORK_PROTOCOL_HTTP = 2
+
+    class ListApi(proto.Enum):
+        r"""The Listing API to use for discovering objects."""
+        LIST_API_UNSPECIFIED = 0
+        LIST_OBJECTS_V2 = 1
+        LIST_OBJECTS = 2
+
+    auth_method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AuthMethod,
+    )
+    request_model = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RequestModel,
+    )
+    protocol = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=NetworkProtocol,
+    )
+    list_api = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ListApi,
+    )
+
+
 class AgentPool(proto.Message):
     r"""Represents an On-Premises Agent pool.
 
@@ -576,11 +702,11 @@ class TransferOptions(proto.Message):
             are mutually exclusive.
         overwrite_when (google.cloud.storage_transfer_v1.types.TransferOptions.OverwriteWhen):
             When to overwrite objects that already exist in the sink. If
-            not set overwrite behavior is determined by
+            not set, overwrite behavior is determined by
             [overwrite_objects_already_existing_in_sink][google.storagetransfer.v1.TransferOptions.overwrite_objects_already_existing_in_sink].
         metadata_options (google.cloud.storage_transfer_v1.types.MetadataOptions):
             Represents the selected metadata options for
-            a transfer job. This feature is in Preview.
+            a transfer job.
     """
 
     class OverwriteWhen(proto.Enum):
@@ -653,6 +779,10 @@ class TransferSpec(proto.Message):
             This field is a member of `oneof`_ ``data_source``.
         azure_blob_storage_data_source (google.cloud.storage_transfer_v1.types.AzureBlobStorageData):
             An Azure Blob Storage data source.
+
+            This field is a member of `oneof`_ ``data_source``.
+        aws_s3_compatible_data_source (google.cloud.storage_transfer_v1.types.AwsS3CompatibleData):
+            An AWS S3 compatible data source.
 
             This field is a member of `oneof`_ ``data_source``.
         gcs_intermediate_data_location (google.cloud.storage_transfer_v1.types.GcsData):
@@ -728,6 +858,12 @@ class TransferSpec(proto.Message):
         number=8,
         oneof="data_source",
         message="AzureBlobStorageData",
+    )
+    aws_s3_compatible_data_source = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        oneof="data_source",
+        message="AwsS3CompatibleData",
     )
     gcs_intermediate_data_location = proto.Field(
         proto.MESSAGE,
