@@ -27,7 +27,7 @@ from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 
 from google.api import httpbody_pb2  # type: ignore
 from google.api_core import client_options
