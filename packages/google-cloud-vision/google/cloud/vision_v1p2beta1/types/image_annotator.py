@@ -90,9 +90,11 @@ class Feature(proto.Message):
             ``TEXT_DETECTION``, ``DOCUMENT_TEXT_DETECTION``, or
             ``CROP_HINTS``.
         model (str):
-            Model to use for the feature.
-            Supported values: "builtin/stable" (the default
-            if unset) and "builtin/latest".
+            Model to use for the feature. Supported values:
+            "builtin/stable" (the default if unset) and
+            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
+            ``TEXT_DETECTION`` also support "builtin/weekly" for the
+            bleeding edge release updated weekly.
     """
 
     class Type(proto.Enum):
