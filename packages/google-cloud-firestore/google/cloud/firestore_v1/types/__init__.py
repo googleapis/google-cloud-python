@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .aggregation_result import (
+    AggregationResult,
+)
 from .common import (
     DocumentMask,
     Precondition,
@@ -45,6 +48,8 @@ from .firestore import (
     PartitionQueryRequest,
     PartitionQueryResponse,
     RollbackRequest,
+    RunAggregationQueryRequest,
+    RunAggregationQueryResponse,
     RunQueryRequest,
     RunQueryResponse,
     Target,
@@ -55,6 +60,7 @@ from .firestore import (
 )
 from .query import (
     Cursor,
+    StructuredAggregationQuery,
     StructuredQuery,
 )
 from .write import (
@@ -68,6 +74,7 @@ from .write import (
 )
 
 __all__ = (
+    "AggregationResult",
     "DocumentMask",
     "Precondition",
     "TransactionOptions",
@@ -95,6 +102,8 @@ __all__ = (
     "PartitionQueryRequest",
     "PartitionQueryResponse",
     "RollbackRequest",
+    "RunAggregationQueryRequest",
+    "RunAggregationQueryResponse",
     "RunQueryRequest",
     "RunQueryResponse",
     "Target",
@@ -103,6 +112,7 @@ __all__ = (
     "WriteRequest",
     "WriteResponse",
     "Cursor",
+    "StructuredAggregationQuery",
     "StructuredQuery",
     "DocumentChange",
     "DocumentDelete",

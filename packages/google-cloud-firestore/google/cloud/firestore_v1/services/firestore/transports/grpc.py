@@ -27,6 +27,8 @@ import grpc  # type: ignore
 from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import firestore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from .base import FirestoreTransport, DEFAULT_CLIENT_INFO
 
@@ -477,6 +479,48 @@ class FirestoreGrpcTransport(FirestoreTransport):
         return self._stubs["run_query"]
 
     @property
+    def run_aggregation_query(
+        self,
+    ) -> Callable[
+        [firestore.RunAggregationQueryRequest], firestore.RunAggregationQueryResponse
+    ]:
+        r"""Return a callable for the run aggregation query method over gRPC.
+
+        Runs an aggregation query.
+
+        Rather than producing [Document][google.firestore.v1.Document]
+        results like
+        [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery],
+        this API allows running an aggregation to produce a series of
+        [AggregationResult][google.firestore.v1.AggregationResult]
+        server-side.
+
+        High-Level Example:
+
+        ::
+
+           -- Return the number of documents in table given a filter.
+           SELECT COUNT(*) FROM ( SELECT * FROM k where a = true );
+
+        Returns:
+            Callable[[~.RunAggregationQueryRequest],
+                    ~.RunAggregationQueryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_aggregation_query" not in self._stubs:
+            self._stubs["run_aggregation_query"] = self.grpc_channel.unary_stream(
+                "/google.firestore.v1.Firestore/RunAggregationQuery",
+                request_serializer=firestore.RunAggregationQueryRequest.serialize,
+                response_deserializer=firestore.RunAggregationQueryResponse.deserialize,
+            )
+        return self._stubs["run_aggregation_query"]
+
+    @property
     def partition_query(
         self,
     ) -> Callable[[firestore.PartitionQueryRequest], firestore.PartitionQueryResponse]:
@@ -647,6 +691,76 @@ class FirestoreGrpcTransport(FirestoreTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
+        r"""Return a callable for the delete_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_operation" not in self._stubs:
+            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/DeleteOperation",
+                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["delete_operation"]
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
 
     @property
     def kind(self) -> str:

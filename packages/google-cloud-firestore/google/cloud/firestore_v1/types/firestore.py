@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.firestore_v1.types import aggregation_result
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import query as gf_query
@@ -41,6 +42,8 @@ __protobuf__ = proto.module(
         "RollbackRequest",
         "RunQueryRequest",
         "RunQueryResponse",
+        "RunAggregationQueryRequest",
+        "RunAggregationQueryResponse",
         "PartitionQueryRequest",
         "PartitionQueryResponse",
         "WriteRequest",
@@ -758,6 +761,117 @@ class RunQueryResponse(proto.Message):
         proto.BOOL,
         number=6,
         oneof="continuation_selector",
+    )
+
+
+class RunAggregationQueryRequest(proto.Message):
+    r"""The request for
+    [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name. In the format:
+            ``projects/{project_id}/databases/{database_id}/documents``
+            or
+            ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
+            For example:
+            ``projects/my-project/databases/my-database/documents`` or
+            ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
+        structured_aggregation_query (google.cloud.firestore_v1.types.StructuredAggregationQuery):
+            An aggregation query.
+
+            This field is a member of `oneof`_ ``query_type``.
+        transaction (bytes):
+            Run the aggregation within an already active
+            transaction.
+            The value here is the opaque transaction ID to
+            execute the query in.
+
+            This field is a member of `oneof`_ ``consistency_selector``.
+        new_transaction (google.cloud.firestore_v1.types.TransactionOptions):
+            Starts a new transaction as part of the
+            query, defaulting to read-only.
+            The new transaction ID will be returned as the
+            first response in the stream.
+
+            This field is a member of `oneof`_ ``consistency_selector``.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Executes the query at the given timestamp.
+
+            Requires:
+
+            -  Cannot be more than 270 seconds in the past.
+
+            This field is a member of `oneof`_ ``consistency_selector``.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    structured_aggregation_query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="query_type",
+        message=gf_query.StructuredAggregationQuery,
+    )
+    transaction = proto.Field(
+        proto.BYTES,
+        number=4,
+        oneof="consistency_selector",
+    )
+    new_transaction = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="consistency_selector",
+        message=common.TransactionOptions,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="consistency_selector",
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class RunAggregationQueryResponse(proto.Message):
+    r"""The response for
+    [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
+
+    Attributes:
+        result (google.cloud.firestore_v1.types.AggregationResult):
+            A single aggregation result.
+            Not present when reporting partial progress.
+        transaction (bytes):
+            The transaction that was started as part of
+            this request.
+            Only present on the first response when the
+            request requested to start a new transaction.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the aggregate value is
+            valid for.
+    """
+
+    result = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=aggregation_result.AggregationResult,
+    )
+    transaction = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 

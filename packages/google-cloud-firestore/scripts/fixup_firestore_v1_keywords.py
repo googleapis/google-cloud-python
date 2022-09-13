@@ -57,6 +57,7 @@ class firestoreCallTransformer(cst.CSTTransformer):
         'listen': ('database', 'add_target', 'remove_target', 'labels', ),
         'partition_query': ('parent', 'structured_query', 'partition_count', 'page_token', 'page_size', 'read_time', ),
         'rollback': ('database', 'transaction', ),
+        'run_aggregation_query': ('parent', 'structured_aggregation_query', 'transaction', 'new_transaction', 'read_time', ),
         'run_query': ('parent', 'structured_query', 'transaction', 'new_transaction', 'read_time', ),
         'update_document': ('document', 'update_mask', 'mask', 'current_document', ),
         'write': ('database', 'stream_id', 'writes', 'stream_token', 'labels', ),

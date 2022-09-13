@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.firestore.v1",
     manifest={
         "StructuredQuery",
+        "StructuredAggregationQuery",
         "Cursor",
     },
 )
@@ -66,17 +67,73 @@ class StructuredQuery(proto.Message):
             -  ``WHERE __name__ > ... AND a > 1`` becomes
                ``WHERE __name__ > ... AND a > 1 ORDER BY a ASC, __name__ ASC``
         start_at (google.cloud.firestore_v1.types.Cursor):
-            A starting point for the query results.
+            A potential prefix of a position in the result set to start
+            the query at.
+
+            The ordering of the result set is based on the ``ORDER BY``
+            clause of the original query.
+
+            ::
+
+               SELECT * FROM k WHERE a = 1 AND b > 2 ORDER BY b ASC, __name__ ASC;
+
+            This query's results are ordered by
+            ``(b ASC, __name__ ASC)``.
+
+            Cursors can reference either the full ordering or a prefix
+            of the location, though it cannot reference more fields than
+            what are in the provided ``ORDER BY``.
+
+            Continuing off the example above, attaching the following
+            start cursors will have varying impact:
+
+            -  ``START BEFORE (2, /k/123)``: start the query right
+               before ``a = 1 AND b > 2 AND __name__ > /k/123``.
+            -  ``START AFTER (10)``: start the query right after
+               ``a = 1 AND b > 10``.
+
+            Unlike ``OFFSET`` which requires scanning over the first N
+            results to skip, a start cursor allows the query to begin at
+            a logical position. This position is not required to match
+            an actual result, it will scan forward from this position to
+            find the next document.
+
+            Requires:
+
+            -  The number of values cannot be greater than the number of
+               fields specified in the ``ORDER BY`` clause.
         end_at (google.cloud.firestore_v1.types.Cursor):
-            A end point for the query results.
+            A potential prefix of a position in the result set to end
+            the query at.
+
+            This is similar to ``START_AT`` but with it controlling the
+            end position rather than the start position.
+
+            Requires:
+
+            -  The number of values cannot be greater than the number of
+               fields specified in the ``ORDER BY`` clause.
         offset (int):
-            The number of results to skip.
-            Applies before limit, but after all other
-            constraints. Must be >= 0 if specified.
+            The number of documents to skip before returning the first
+            result.
+
+            This applies after the constraints specified by the
+            ``WHERE``, ``START AT``, & ``END AT`` but before the
+            ``LIMIT`` clause.
+
+            Requires:
+
+            -  The value must be greater than or equal to zero if
+               specified.
         limit (google.protobuf.wrappers_pb2.Int32Value):
             The maximum number of results to return.
+
             Applies after all other constraints.
-            Must be >= 0 if specified.
+
+            Requires:
+
+            -  The value must be greater than or equal to zero if
+               specified.
     """
 
     class Direction(proto.Enum):
@@ -281,11 +338,16 @@ class StructuredQuery(proto.Message):
         )
 
     class FieldReference(proto.Message):
-        r"""A reference to a field, such as ``max(messages.time) as max_time``.
+        r"""A reference to a field in a document, ex: ``stats.operations``.
 
         Attributes:
             field_path (str):
+                The relative path of the document being referenced.
 
+                Requires:
+
+                -  Conform to [document field
+                   name][google.firestore.v1.Document.fields] limitations.
         """
 
         field_path = proto.Field(
@@ -348,6 +410,134 @@ class StructuredQuery(proto.Message):
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.Int32Value,
+    )
+
+
+class StructuredAggregationQuery(proto.Message):
+    r"""Firestore query for running an aggregation over a
+    [StructuredQuery][google.firestore.v1.StructuredQuery].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        structured_query (google.cloud.firestore_v1.types.StructuredQuery):
+            Nested structured query.
+
+            This field is a member of `oneof`_ ``query_type``.
+        aggregations (Sequence[google.cloud.firestore_v1.types.StructuredAggregationQuery.Aggregation]):
+            Optional. Series of aggregations to apply over the results
+            of the ``structured_query``.
+
+            Requires:
+
+            -  A minimum of one and maximum of five aggregations per
+               query.
+    """
+
+    class Aggregation(proto.Message):
+        r"""Defines a aggregation that produces a single result.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            count (google.cloud.firestore_v1.types.StructuredAggregationQuery.Aggregation.Count):
+                Count aggregator.
+
+                This field is a member of `oneof`_ ``operator``.
+            alias (str):
+                Optional. Optional name of the field to store the result of
+                the aggregation into.
+
+                If not provided, Firestore will pick a default name
+                following the format ``field_<incremental_id++>``. For
+                example:
+
+                ::
+
+                   AGGREGATE
+                     COUNT_UP_TO(1) AS count_up_to_1,
+                     COUNT_UP_TO(2),
+                     COUNT_UP_TO(3) AS count_up_to_3,
+                     COUNT_UP_TO(4)
+                   OVER (
+                     ...
+                   );
+
+                becomes:
+
+                ::
+
+                   AGGREGATE
+                     COUNT_UP_TO(1) AS count_up_to_1,
+                     COUNT_UP_TO(2) AS field_1,
+                     COUNT_UP_TO(3) AS count_up_to_3,
+                     COUNT_UP_TO(4) AS field_2
+                   OVER (
+                     ...
+                   );
+
+                Requires:
+
+                -  Must be unique across all aggregation aliases.
+                -  Conform to [document field
+                   name][google.firestore.v1.Document.fields] limitations.
+        """
+
+        class Count(proto.Message):
+            r"""Count of documents that match the query.
+
+            The ``COUNT(*)`` aggregation function operates on the entire
+            document so it does not require a field reference.
+
+            Attributes:
+                up_to (google.protobuf.wrappers_pb2.Int64Value):
+                    Optional. Optional constraint on the maximum number of
+                    documents to count.
+
+                    This provides a way to set an upper bound on the number of
+                    documents to scan, limiting latency and cost.
+
+                    Unspecified is interpreted as no bound.
+
+                    High-Level Example:
+
+                    ::
+
+                       AGGREGATE COUNT_UP_TO(1000) OVER ( SELECT * FROM k );
+
+                    Requires:
+
+                    -  Must be greater than zero when present.
+            """
+
+            up_to = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message=wrappers_pb2.Int64Value,
+            )
+
+        count = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="operator",
+            message="StructuredAggregationQuery.Aggregation.Count",
+        )
+        alias = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    structured_query = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="query_type",
+        message="StructuredQuery",
+    )
+    aggregations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Aggregation,
     )
 
 
