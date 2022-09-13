@@ -44,6 +44,7 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 import grpc
 from grpc.experimental import aio
+from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
