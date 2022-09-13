@@ -27,7 +27,7 @@ from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 
 from google.analytics.data_v1alpha.services.alpha_analytics_data import (
     AlphaAnalyticsDataAsyncClient,
