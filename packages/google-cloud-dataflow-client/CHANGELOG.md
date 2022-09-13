@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-dataflow-client/compare/v0.5.5...v0.6.0) (2022-09-13)
+
+
+### Features
+
+* Enable REST transport support ([#139](https://github.com/googleapis/python-dataflow-client/issues/139)) ([e8a64ff](https://github.com/googleapis/python-dataflow-client/commit/e8a64ff142ae8f0ff48736b1611a11740e3fa9a3))
+
 ## [0.5.5](https://github.com/googleapis/python-dataflow-client/compare/v0.5.4...v0.5.5) (2022-08-11)
 
 
