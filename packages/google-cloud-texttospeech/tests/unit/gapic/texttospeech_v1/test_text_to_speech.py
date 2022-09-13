@@ -33,6 +33,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 import grpc
 from grpc.experimental import aio
+from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
