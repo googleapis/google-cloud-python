@@ -1213,6 +1213,8 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
                     "{{ req_field.field_pb.default_value }}",
+                    {% elif req_field.field_pb.type == 8 %}
+                    str({{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}).lower(),
                     {% else %}
                     str({{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}),
                     {% endif %}{# default is str #}
