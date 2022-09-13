@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-run/compare/v0.3.0...v0.4.0) (2022-09-13)
+
+
+### Features
+
+* Enable REST transport support ([#45](https://github.com/googleapis/python-run/issues/45)) ([0ccecb0](https://github.com/googleapis/python-run/commit/0ccecb079d3702026d14ef577fda27030f19f3aa))
+
 ## [0.3.0](https://github.com/googleapis/python-run/compare/v0.2.1...v0.3.0) (2022-08-15)
 
 
