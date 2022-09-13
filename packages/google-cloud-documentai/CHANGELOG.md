@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/googleapis/python-documentai/compare/v2.0.0...v2.0.1) (2022-09-13)
+
+
+### Documentation
+
+* **samples:** Updated Samples for v2.0.0 Client Library ([#365](https://github.com/googleapis/python-documentai/issues/365)) ([74f2249](https://github.com/googleapis/python-documentai/commit/74f22495da86c16338ef229ccb5eebd81d36c498))
+
 ## [2.0.0](https://github.com/googleapis/python-documentai/compare/v1.5.1...v2.0.0) (2022-08-17)
 
 
