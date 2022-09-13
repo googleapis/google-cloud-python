@@ -73,6 +73,8 @@ from .bigtable_table_admin import (
     UndeleteTableMetadata,
     UndeleteTableRequest,
     UpdateBackupRequest,
+    UpdateTableMetadata,
+    UpdateTableRequest,
 )
 from .common import (
     OperationProgress,
@@ -156,6 +158,8 @@ __all__ = (
     "UndeleteTableMetadata",
     "UndeleteTableRequest",
     "UpdateBackupRequest",
+    "UpdateTableMetadata",
+    "UpdateTableRequest",
     "OperationProgress",
     "StorageType",
     "AppProfile",

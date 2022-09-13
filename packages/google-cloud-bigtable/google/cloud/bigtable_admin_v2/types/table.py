@@ -102,6 +102,15 @@ class Table(proto.Message):
             another data source (e.g. a backup), this field
             will be populated with information about the
             restore.
+        deletion_protection (bool):
+            Set to true to make the table protected
+            against data loss. i.e. deleting the following
+            resources through Admin APIs are prohibited:   -
+            The table.
+              - The column families in the table.
+              - The instance containing the table.
+            Note one can still delete the data stored in the
+            table through Data APIs.
     """
 
     class TimestampGranularity(proto.Enum):
@@ -183,6 +192,10 @@ class Table(proto.Message):
         proto.MESSAGE,
         number=6,
         message="RestoreInfo",
+    )
+    deletion_protection = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 

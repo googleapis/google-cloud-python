@@ -76,6 +76,8 @@ from .types.bigtable_table_admin import SnapshotTableRequest
 from .types.bigtable_table_admin import UndeleteTableMetadata
 from .types.bigtable_table_admin import UndeleteTableRequest
 from .types.bigtable_table_admin import UpdateBackupRequest
+from .types.bigtable_table_admin import UpdateTableMetadata
+from .types.bigtable_table_admin import UpdateTableRequest
 from .types.common import OperationProgress
 from .types.common import StorageType
 from .types.instance import AppProfile
@@ -173,4 +175,6 @@ __all__ = (
     "UpdateBackupRequest",
     "UpdateClusterMetadata",
     "UpdateInstanceMetadata",
+    "UpdateTableMetadata",
+    "UpdateTableRequest",
 )

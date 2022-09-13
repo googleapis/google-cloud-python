@@ -375,6 +375,32 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         return self._stubs["get_table"]
 
     @property
+    def update_table(
+        self,
+    ) -> Callable[[bigtable_table_admin.UpdateTableRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update table method over gRPC.
+
+        Updates a specified table.
+
+        Returns:
+            Callable[[~.UpdateTableRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_table" not in self._stubs:
+            self._stubs["update_table"] = self.grpc_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UpdateTable",
+                request_serializer=bigtable_table_admin.UpdateTableRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_table"]
+
+    @property
     def delete_table(
         self,
     ) -> Callable[[bigtable_table_admin.DeleteTableRequest], empty_pb2.Empty]:

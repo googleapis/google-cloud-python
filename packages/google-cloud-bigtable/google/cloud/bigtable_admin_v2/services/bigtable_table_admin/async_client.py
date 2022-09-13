@@ -646,6 +646,115 @@ class BigtableTableAdminAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_table(
+        self,
+        request: Union[bigtable_table_admin.UpdateTableRequest, dict] = None,
+        *,
+        table: gba_table.Table = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a specified table.
+
+        Args:
+            request (Union[google.cloud.bigtable_admin_v2.types.UpdateTableRequest, dict]):
+                The request object. The request for
+                [UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable].
+            table (:class:`google.cloud.bigtable_admin_v2.types.Table`):
+                Required. The table to update. The table's ``name``
+                field is used to identify the table to update. Format:
+                ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``
+
+                This corresponds to the ``table`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to update. A mask
+                specifying which fields (e.g. ``deletion_protection``)
+                in the ``table`` field should be updated. This mask is
+                relative to the ``table`` field, not to the request
+                message. The wildcard (*) path is currently not
+                supported. Currently UpdateTable is only supported for
+                the following field:
+
+                -  ``deletion_protection`` If ``column_families`` is set
+                   in ``update_mask``, it will return an UNIMPLEMENTED
+                   error.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.bigtable_admin_v2.types.Table` A collection of user data indexed by row, column, and timestamp.
+                   Each table is served using the resources of its
+                   parent cluster.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([table, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = bigtable_table_admin.UpdateTableRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if table is not None:
+            request.table = table
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_table,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("table.name", request.table.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gba_table.Table,
+            metadata_type=bigtable_table_admin.UpdateTableMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def delete_table(
         self,
         request: Union[bigtable_table_admin.DeleteTableRequest, dict] = None,

@@ -348,6 +348,11 @@
               "methods": [
                 "update_backup"
               ]
+            },
+            "UpdateTable": {
+              "methods": [
+                "update_table"
+              ]
             }
           }
         },
@@ -467,6 +472,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateTable": {
+              "methods": [
+                "update_table"
               ]
             }
           }

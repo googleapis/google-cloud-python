@@ -181,6 +181,11 @@ class BigtableTableAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_table: gapic_v1.method.wrap_method(
+                self.update_table,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_table: gapic_v1.method.wrap_method(
                 self.delete_table,
                 default_timeout=60.0,
@@ -408,6 +413,15 @@ class BigtableTableAdminTransport(abc.ABC):
     ) -> Callable[
         [bigtable_table_admin.GetTableRequest],
         Union[table.Table, Awaitable[table.Table]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_table(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.UpdateTableRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

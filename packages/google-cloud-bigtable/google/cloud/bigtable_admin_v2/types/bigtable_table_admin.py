@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "ListTablesRequest",
         "ListTablesResponse",
         "GetTableRequest",
+        "UpdateTableRequest",
+        "UpdateTableMetadata",
         "DeleteTableRequest",
         "UndeleteTableRequest",
         "UndeleteTableMetadata",
@@ -441,6 +443,69 @@ class GetTableRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gba_table.Table.View,
+    )
+
+
+class UpdateTableRequest(proto.Message):
+    r"""The request for
+    [UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable].
+
+    Attributes:
+        table (google.cloud.bigtable_admin_v2.types.Table):
+            Required. The table to update. The table's ``name`` field is
+            used to identify the table to update. Format:
+            ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update. A mask specifying
+            which fields (e.g. ``deletion_protection``) in the ``table``
+            field should be updated. This mask is relative to the
+            ``table`` field, not to the request message. The wildcard
+            (*) path is currently not supported. Currently UpdateTable
+            is only supported for the following field:
+
+            -  ``deletion_protection`` If ``column_families`` is set in
+               ``update_mask``, it will return an UNIMPLEMENTED error.
+    """
+
+    table = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gba_table.Table,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class UpdateTableMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable].
+
+    Attributes:
+        name (str):
+            The name of the table being updated.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            If set, the time at which this operation
+            finished or was canceled.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 
