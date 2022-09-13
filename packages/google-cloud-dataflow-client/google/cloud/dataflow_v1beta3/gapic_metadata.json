@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "FlexTemplatesServiceClient",
+          "rpcs": {
+            "LaunchFlexTemplate": {
+              "methods": [
+                "launch_flex_template"
+              ]
+            }
+          }
         }
       }
     },
@@ -110,6 +120,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "JobsV1Beta3Client",
+          "rpcs": {
+            "AggregatedListJobs": {
+              "methods": [
+                "aggregated_list_jobs"
+              ]
+            },
+            "CheckActiveJobs": {
+              "methods": [
+                "check_active_jobs"
+              ]
+            },
+            "CreateJob": {
+              "methods": [
+                "create_job"
+              ]
+            },
+            "GetJob": {
+              "methods": [
+                "get_job"
+              ]
+            },
+            "ListJobs": {
+              "methods": [
+                "list_jobs"
+              ]
+            },
+            "SnapshotJob": {
+              "methods": [
+                "snapshot_job"
+              ]
+            },
+            "UpdateJob": {
+              "methods": [
+                "update_job"
+              ]
+            }
+          }
         }
       }
     },
@@ -127,6 +177,16 @@
         },
         "grpc-async": {
           "libraryClient": "MessagesV1Beta3AsyncClient",
+          "rpcs": {
+            "ListJobMessages": {
+              "methods": [
+                "list_job_messages"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "MessagesV1Beta3Client",
           "rpcs": {
             "ListJobMessages": {
               "methods": [
@@ -161,6 +221,26 @@
         },
         "grpc-async": {
           "libraryClient": "MetricsV1Beta3AsyncClient",
+          "rpcs": {
+            "GetJobExecutionDetails": {
+              "methods": [
+                "get_job_execution_details"
+              ]
+            },
+            "GetJobMetrics": {
+              "methods": [
+                "get_job_metrics"
+              ]
+            },
+            "GetStageExecutionDetails": {
+              "methods": [
+                "get_stage_execution_details"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "MetricsV1Beta3Client",
           "rpcs": {
             "GetJobExecutionDetails": {
               "methods": [
@@ -222,6 +302,26 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "SnapshotsV1Beta3Client",
+          "rpcs": {
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
+              ]
+            },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
+              ]
+            }
+          }
         }
       }
     },
@@ -249,6 +349,26 @@
         },
         "grpc-async": {
           "libraryClient": "TemplatesServiceAsyncClient",
+          "rpcs": {
+            "CreateJobFromTemplate": {
+              "methods": [
+                "create_job_from_template"
+              ]
+            },
+            "GetTemplate": {
+              "methods": [
+                "get_template"
+              ]
+            },
+            "LaunchTemplate": {
+              "methods": [
+                "launch_template"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "TemplatesServiceClient",
           "rpcs": {
             "CreateJobFromTemplate": {
               "methods": [

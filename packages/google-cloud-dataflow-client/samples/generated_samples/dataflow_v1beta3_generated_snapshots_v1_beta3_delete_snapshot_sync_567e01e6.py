@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetSnapshot
+# Snippet for DeleteSnapshot
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_SnapshotsV1Beta3_GetSnapshot_sync]
+# [START dataflow_v1beta3_generated_SnapshotsV1Beta3_DeleteSnapshot_sync_567e01e6]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,18 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_get_snapshot():
+def sample_delete_snapshot():
     # Create a client
     client = dataflow_v1beta3.SnapshotsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.GetSnapshotRequest(
+    request = dataflow_v1beta3.DeleteSnapshotRequest(
     )
 
     # Make the request
-    response = client.get_snapshot(request=request)
+    response = client.delete_snapshot(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataflow_v1beta3_generated_SnapshotsV1Beta3_GetSnapshot_sync]
+# [END dataflow_v1beta3_generated_SnapshotsV1Beta3_DeleteSnapshot_sync_567e01e6]

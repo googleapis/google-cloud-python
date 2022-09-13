@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,11 +33,15 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
+from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dataflow_v1beta3.services.metrics_v1_beta3 import (
     MetricsV1Beta3AsyncClient,
@@ -95,6 +101,7 @@ def test__get_default_mtls_endpoint():
     [
         (MetricsV1Beta3Client, "grpc"),
         (MetricsV1Beta3AsyncClient, "grpc_asyncio"),
+        (MetricsV1Beta3Client, "rest"),
     ],
 )
 def test_metrics_v1_beta3_client_from_service_account_info(
@@ -110,7 +117,11 @@ def test_metrics_v1_beta3_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -118,6 +129,7 @@ def test_metrics_v1_beta3_client_from_service_account_info(
     [
         (transports.MetricsV1Beta3GrpcTransport, "grpc"),
         (transports.MetricsV1Beta3GrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.MetricsV1Beta3RestTransport, "rest"),
     ],
 )
 def test_metrics_v1_beta3_client_service_account_always_use_jwt(
@@ -143,6 +155,7 @@ def test_metrics_v1_beta3_client_service_account_always_use_jwt(
     [
         (MetricsV1Beta3Client, "grpc"),
         (MetricsV1Beta3AsyncClient, "grpc_asyncio"),
+        (MetricsV1Beta3Client, "rest"),
     ],
 )
 def test_metrics_v1_beta3_client_from_service_account_file(
@@ -165,13 +178,18 @@ def test_metrics_v1_beta3_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 def test_metrics_v1_beta3_client_get_transport_class():
     transport = MetricsV1Beta3Client.get_transport_class()
     available_transports = [
         transports.MetricsV1Beta3GrpcTransport,
+        transports.MetricsV1Beta3RestTransport,
     ]
     assert transport in available_transports
 
@@ -188,6 +206,7 @@ def test_metrics_v1_beta3_client_get_transport_class():
             transports.MetricsV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (MetricsV1Beta3Client, transports.MetricsV1Beta3RestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -333,6 +352,8 @@ def test_metrics_v1_beta3_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (MetricsV1Beta3Client, transports.MetricsV1Beta3RestTransport, "rest", "true"),
+        (MetricsV1Beta3Client, transports.MetricsV1Beta3RestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -532,6 +553,7 @@ def test_metrics_v1_beta3_client_get_mtls_endpoint_and_cert_source(client_class)
             transports.MetricsV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (MetricsV1Beta3Client, transports.MetricsV1Beta3RestTransport, "rest"),
     ],
 )
 def test_metrics_v1_beta3_client_client_options_scopes(
@@ -572,6 +594,7 @@ def test_metrics_v1_beta3_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (MetricsV1Beta3Client, transports.MetricsV1Beta3RestTransport, "rest", None),
     ],
 )
 def test_metrics_v1_beta3_client_client_options_credentials_file(
@@ -1569,6 +1592,506 @@ async def test_get_stage_execution_details_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metrics.GetJobMetricsRequest,
+        dict,
+    ],
+)
+def test_get_job_metrics_rest(request_type):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metrics.JobMetrics()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metrics.JobMetrics.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job_metrics(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metrics.JobMetrics)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_metrics_rest_interceptors(null_interceptor):
+    transport = transports.MetricsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MetricsV1Beta3RestInterceptor(),
+    )
+    client = MetricsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MetricsV1Beta3RestInterceptor, "post_get_job_metrics"
+    ) as post, mock.patch.object(
+        transports.MetricsV1Beta3RestInterceptor, "pre_get_job_metrics"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metrics.GetJobMetricsRequest.pb(metrics.GetJobMetricsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metrics.JobMetrics.to_json(metrics.JobMetrics())
+
+        request = metrics.GetJobMetricsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metrics.JobMetrics()
+
+        client.get_job_metrics(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_metrics_rest_bad_request(
+    transport: str = "rest", request_type=metrics.GetJobMetricsRequest
+):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job_metrics(request)
+
+
+def test_get_job_metrics_rest_error():
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metrics.GetJobExecutionDetailsRequest,
+        dict,
+    ],
+)
+def test_get_job_execution_details_rest(request_type):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metrics.JobExecutionDetails(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metrics.JobExecutionDetails.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job_execution_details(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.GetJobExecutionDetailsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_execution_details_rest_interceptors(null_interceptor):
+    transport = transports.MetricsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MetricsV1Beta3RestInterceptor(),
+    )
+    client = MetricsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MetricsV1Beta3RestInterceptor, "post_get_job_execution_details"
+    ) as post, mock.patch.object(
+        transports.MetricsV1Beta3RestInterceptor, "pre_get_job_execution_details"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metrics.GetJobExecutionDetailsRequest.pb(
+            metrics.GetJobExecutionDetailsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metrics.JobExecutionDetails.to_json(
+            metrics.JobExecutionDetails()
+        )
+
+        request = metrics.GetJobExecutionDetailsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metrics.JobExecutionDetails()
+
+        client.get_job_execution_details(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_execution_details_rest_bad_request(
+    transport: str = "rest", request_type=metrics.GetJobExecutionDetailsRequest
+):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job_execution_details(request)
+
+
+def test_get_job_execution_details_rest_pager(transport: str = "rest"):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            metrics.JobExecutionDetails(
+                stages=[
+                    metrics.StageSummary(),
+                    metrics.StageSummary(),
+                    metrics.StageSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            metrics.JobExecutionDetails(
+                stages=[],
+                next_page_token="def",
+            ),
+            metrics.JobExecutionDetails(
+                stages=[
+                    metrics.StageSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            metrics.JobExecutionDetails(
+                stages=[
+                    metrics.StageSummary(),
+                    metrics.StageSummary(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(metrics.JobExecutionDetails.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "project_id": "sample1",
+            "location": "sample2",
+            "job_id": "sample3",
+        }
+
+        pager = client.get_job_execution_details(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, metrics.StageSummary) for i in results)
+
+        pages = list(client.get_job_execution_details(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metrics.GetStageExecutionDetailsRequest,
+        dict,
+    ],
+)
+def test_get_stage_execution_details_rest(request_type):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project_id": "sample1",
+        "location": "sample2",
+        "job_id": "sample3",
+        "stage_id": "sample4",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = metrics.StageExecutionDetails(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = metrics.StageExecutionDetails.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_stage_execution_details(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.GetStageExecutionDetailsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_stage_execution_details_rest_interceptors(null_interceptor):
+    transport = transports.MetricsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MetricsV1Beta3RestInterceptor(),
+    )
+    client = MetricsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MetricsV1Beta3RestInterceptor, "post_get_stage_execution_details"
+    ) as post, mock.patch.object(
+        transports.MetricsV1Beta3RestInterceptor, "pre_get_stage_execution_details"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = metrics.GetStageExecutionDetailsRequest.pb(
+            metrics.GetStageExecutionDetailsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = metrics.StageExecutionDetails.to_json(
+            metrics.StageExecutionDetails()
+        )
+
+        request = metrics.GetStageExecutionDetailsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = metrics.StageExecutionDetails()
+
+        client.get_stage_execution_details(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_stage_execution_details_rest_bad_request(
+    transport: str = "rest", request_type=metrics.GetStageExecutionDetailsRequest
+):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project_id": "sample1",
+        "location": "sample2",
+        "job_id": "sample3",
+        "stage_id": "sample4",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_stage_execution_details(request)
+
+
+def test_get_stage_execution_details_rest_pager(transport: str = "rest"):
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            metrics.StageExecutionDetails(
+                workers=[
+                    metrics.WorkerDetails(),
+                    metrics.WorkerDetails(),
+                    metrics.WorkerDetails(),
+                ],
+                next_page_token="abc",
+            ),
+            metrics.StageExecutionDetails(
+                workers=[],
+                next_page_token="def",
+            ),
+            metrics.StageExecutionDetails(
+                workers=[
+                    metrics.WorkerDetails(),
+                ],
+                next_page_token="ghi",
+            ),
+            metrics.StageExecutionDetails(
+                workers=[
+                    metrics.WorkerDetails(),
+                    metrics.WorkerDetails(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(metrics.StageExecutionDetails.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "project_id": "sample1",
+            "location": "sample2",
+            "job_id": "sample3",
+            "stage_id": "sample4",
+        }
+
+        pager = client.get_stage_execution_details(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, metrics.WorkerDetails) for i in results)
+
+        pages = list(client.get_stage_execution_details(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.MetricsV1Beta3GrpcTransport(
@@ -1650,6 +2173,7 @@ def test_transport_get_channel():
     [
         transports.MetricsV1Beta3GrpcTransport,
         transports.MetricsV1Beta3GrpcAsyncIOTransport,
+        transports.MetricsV1Beta3RestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1664,6 +2188,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1810,6 +2335,7 @@ def test_metrics_v1_beta3_transport_auth_adc(transport_class):
     [
         transports.MetricsV1Beta3GrpcTransport,
         transports.MetricsV1Beta3GrpcAsyncIOTransport,
+        transports.MetricsV1Beta3RestTransport,
     ],
 )
 def test_metrics_v1_beta3_transport_auth_gdch_credentials(transport_class):
@@ -1912,11 +2438,23 @@ def test_metrics_v1_beta3_grpc_transport_client_cert_source_for_mtls(transport_c
             )
 
 
+def test_metrics_v1_beta3_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.MetricsV1Beta3RestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_metrics_v1_beta3_host_no_port(transport_name):
@@ -1927,7 +2465,11 @@ def test_metrics_v1_beta3_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1935,6 +2477,7 @@ def test_metrics_v1_beta3_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_metrics_v1_beta3_host_with_port(transport_name):
@@ -1945,7 +2488,39 @@ def test_metrics_v1_beta3_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_metrics_v1_beta3_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = MetricsV1Beta3Client(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = MetricsV1Beta3Client(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.get_job_metrics._session
+    session2 = client2.transport.get_job_metrics._session
+    assert session1 != session2
+    session1 = client1.transport.get_job_execution_details._session
+    session2 = client2.transport.get_job_execution_details._session
+    assert session1 != session2
+    session1 = client1.transport.get_stage_execution_details._session
+    session2 = client2.transport.get_stage_execution_details._session
+    assert session1 != session2
 
 
 def test_metrics_v1_beta3_grpc_transport_channel():
@@ -2216,6 +2791,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2233,6 +2809,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,12 +33,16 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
+from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dataflow_v1beta3.services.templates_service import (
     TemplatesServiceAsyncClient,
@@ -96,6 +102,7 @@ def test__get_default_mtls_endpoint():
     [
         (TemplatesServiceClient, "grpc"),
         (TemplatesServiceAsyncClient, "grpc_asyncio"),
+        (TemplatesServiceClient, "rest"),
     ],
 )
 def test_templates_service_client_from_service_account_info(
@@ -111,7 +118,11 @@ def test_templates_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -119,6 +130,7 @@ def test_templates_service_client_from_service_account_info(
     [
         (transports.TemplatesServiceGrpcTransport, "grpc"),
         (transports.TemplatesServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.TemplatesServiceRestTransport, "rest"),
     ],
 )
 def test_templates_service_client_service_account_always_use_jwt(
@@ -144,6 +156,7 @@ def test_templates_service_client_service_account_always_use_jwt(
     [
         (TemplatesServiceClient, "grpc"),
         (TemplatesServiceAsyncClient, "grpc_asyncio"),
+        (TemplatesServiceClient, "rest"),
     ],
 )
 def test_templates_service_client_from_service_account_file(
@@ -166,13 +179,18 @@ def test_templates_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 def test_templates_service_client_get_transport_class():
     transport = TemplatesServiceClient.get_transport_class()
     available_transports = [
         transports.TemplatesServiceGrpcTransport,
+        transports.TemplatesServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -189,6 +207,7 @@ def test_templates_service_client_get_transport_class():
             transports.TemplatesServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (TemplatesServiceClient, transports.TemplatesServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -342,6 +361,18 @@ def test_templates_service_client_client_options(
             TemplatesServiceAsyncClient,
             transports.TemplatesServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            TemplatesServiceClient,
+            transports.TemplatesServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            TemplatesServiceClient,
+            transports.TemplatesServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -543,6 +574,7 @@ def test_templates_service_client_get_mtls_endpoint_and_cert_source(client_class
             transports.TemplatesServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (TemplatesServiceClient, transports.TemplatesServiceRestTransport, "rest"),
     ],
 )
 def test_templates_service_client_client_options_scopes(
@@ -582,6 +614,12 @@ def test_templates_service_client_client_options_scopes(
             transports.TemplatesServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            TemplatesServiceClient,
+            transports.TemplatesServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1210,6 +1248,457 @@ async def test_get_template_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.CreateJobFromTemplateRequest,
+        dict,
+    ],
+)
+def test_create_job_from_template_rest(request_type):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.Job(
+            id="id_value",
+            project_id="project_id_value",
+            name="name_value",
+            type_=environment.JobType.JOB_TYPE_BATCH,
+            steps_location="steps_location_value",
+            current_state=jobs.JobState.JOB_STATE_STOPPED,
+            requested_state=jobs.JobState.JOB_STATE_STOPPED,
+            replace_job_id="replace_job_id_value",
+            client_request_id="client_request_id_value",
+            replaced_by_job_id="replaced_by_job_id_value",
+            temp_files=["temp_files_value"],
+            location="location_value",
+            created_from_snapshot_id="created_from_snapshot_id_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job_from_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, jobs.Job)
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.name == "name_value"
+    assert response.type_ == environment.JobType.JOB_TYPE_BATCH
+    assert response.steps_location == "steps_location_value"
+    assert response.current_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.requested_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.replace_job_id == "replace_job_id_value"
+    assert response.client_request_id == "client_request_id_value"
+    assert response.replaced_by_job_id == "replaced_by_job_id_value"
+    assert response.temp_files == ["temp_files_value"]
+    assert response.location == "location_value"
+    assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
+    assert response.satisfies_pzs is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_from_template_rest_interceptors(null_interceptor):
+    transport = transports.TemplatesServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TemplatesServiceRestInterceptor(),
+    )
+    client = TemplatesServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "post_create_job_from_template"
+    ) as post, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "pre_create_job_from_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = templates.CreateJobFromTemplateRequest.pb(
+            templates.CreateJobFromTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = jobs.Job.to_json(jobs.Job())
+
+        request = templates.CreateJobFromTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = jobs.Job()
+
+        client.create_job_from_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_job_from_template_rest_bad_request(
+    transport: str = "rest", request_type=templates.CreateJobFromTemplateRequest
+):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_job_from_template(request)
+
+
+def test_create_job_from_template_rest_error():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.LaunchTemplateRequest,
+        dict,
+    ],
+)
+def test_launch_template_rest(request_type):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request_init["launch_parameters"] = {
+        "job_name": "job_name_value",
+        "parameters": {},
+        "environment": {
+            "num_workers": 1212,
+            "max_workers": 1202,
+            "zone": "zone_value",
+            "service_account_email": "service_account_email_value",
+            "temp_location": "temp_location_value",
+            "bypass_temp_dir_validation": True,
+            "machine_type": "machine_type_value",
+            "additional_experiments": [
+                "additional_experiments_value1",
+                "additional_experiments_value2",
+            ],
+            "network": "network_value",
+            "subnetwork": "subnetwork_value",
+            "additional_user_labels": {},
+            "kms_key_name": "kms_key_name_value",
+            "ip_configuration": 1,
+            "worker_region": "worker_region_value",
+            "worker_zone": "worker_zone_value",
+            "enable_streaming_engine": True,
+        },
+        "update": True,
+        "transform_name_mapping": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = templates.LaunchTemplateResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = templates.LaunchTemplateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.launch_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, templates.LaunchTemplateResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_launch_template_rest_interceptors(null_interceptor):
+    transport = transports.TemplatesServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TemplatesServiceRestInterceptor(),
+    )
+    client = TemplatesServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "post_launch_template"
+    ) as post, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "pre_launch_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = templates.LaunchTemplateRequest.pb(
+            templates.LaunchTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = templates.LaunchTemplateResponse.to_json(
+            templates.LaunchTemplateResponse()
+        )
+
+        request = templates.LaunchTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = templates.LaunchTemplateResponse()
+
+        client.launch_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_launch_template_rest_bad_request(
+    transport: str = "rest", request_type=templates.LaunchTemplateRequest
+):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request_init["launch_parameters"] = {
+        "job_name": "job_name_value",
+        "parameters": {},
+        "environment": {
+            "num_workers": 1212,
+            "max_workers": 1202,
+            "zone": "zone_value",
+            "service_account_email": "service_account_email_value",
+            "temp_location": "temp_location_value",
+            "bypass_temp_dir_validation": True,
+            "machine_type": "machine_type_value",
+            "additional_experiments": [
+                "additional_experiments_value1",
+                "additional_experiments_value2",
+            ],
+            "network": "network_value",
+            "subnetwork": "subnetwork_value",
+            "additional_user_labels": {},
+            "kms_key_name": "kms_key_name_value",
+            "ip_configuration": 1,
+            "worker_region": "worker_region_value",
+            "worker_zone": "worker_zone_value",
+            "enable_streaming_engine": True,
+        },
+        "update": True,
+        "transform_name_mapping": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.launch_template(request)
+
+
+def test_launch_template_rest_error():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.GetTemplateRequest,
+        dict,
+    ],
+)
+def test_get_template_rest(request_type):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = templates.GetTemplateResponse(
+            template_type=templates.GetTemplateResponse.TemplateType.LEGACY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = templates.GetTemplateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, templates.GetTemplateResponse)
+    assert response.template_type == templates.GetTemplateResponse.TemplateType.LEGACY
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_template_rest_interceptors(null_interceptor):
+    transport = transports.TemplatesServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TemplatesServiceRestInterceptor(),
+    )
+    client = TemplatesServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "post_get_template"
+    ) as post, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "pre_get_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = templates.GetTemplateRequest.pb(templates.GetTemplateRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = templates.GetTemplateResponse.to_json(
+            templates.GetTemplateResponse()
+        )
+
+        request = templates.GetTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = templates.GetTemplateResponse()
+
+        client.get_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_template_rest_bad_request(
+    transport: str = "rest", request_type=templates.GetTemplateRequest
+):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_template(request)
+
+
+def test_get_template_rest_error():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TemplatesServiceGrpcTransport(
@@ -1291,6 +1780,7 @@ def test_transport_get_channel():
     [
         transports.TemplatesServiceGrpcTransport,
         transports.TemplatesServiceGrpcAsyncIOTransport,
+        transports.TemplatesServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1305,6 +1795,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1451,6 +1942,7 @@ def test_templates_service_transport_auth_adc(transport_class):
     [
         transports.TemplatesServiceGrpcTransport,
         transports.TemplatesServiceGrpcAsyncIOTransport,
+        transports.TemplatesServiceRestTransport,
     ],
 )
 def test_templates_service_transport_auth_gdch_credentials(transport_class):
@@ -1553,11 +2045,23 @@ def test_templates_service_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
+def test_templates_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.TemplatesServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_templates_service_host_no_port(transport_name):
@@ -1568,7 +2072,11 @@ def test_templates_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1576,6 +2084,7 @@ def test_templates_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_templates_service_host_with_port(transport_name):
@@ -1586,7 +2095,39 @@ def test_templates_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_templates_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = TemplatesServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = TemplatesServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_job_from_template._session
+    session2 = client2.transport.create_job_from_template._session
+    assert session1 != session2
+    session1 = client1.transport.launch_template._session
+    session2 = client2.transport.launch_template._session
+    assert session1 != session2
+    session1 = client1.transport.get_template._session
+    session2 = client2.transport.get_template._session
+    assert session1 != session2
 
 
 def test_templates_service_grpc_transport_channel():
@@ -1857,6 +2398,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1874,6 +2416,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

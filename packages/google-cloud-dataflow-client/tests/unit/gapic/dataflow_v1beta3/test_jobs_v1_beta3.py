@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -33,12 +35,16 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
+from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3 import (
     JobsV1Beta3AsyncClient,
@@ -95,6 +101,7 @@ def test__get_default_mtls_endpoint():
     [
         (JobsV1Beta3Client, "grpc"),
         (JobsV1Beta3AsyncClient, "grpc_asyncio"),
+        (JobsV1Beta3Client, "rest"),
     ],
 )
 def test_jobs_v1_beta3_client_from_service_account_info(client_class, transport_name):
@@ -108,7 +115,11 @@ def test_jobs_v1_beta3_client_from_service_account_info(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -116,6 +127,7 @@ def test_jobs_v1_beta3_client_from_service_account_info(client_class, transport_
     [
         (transports.JobsV1Beta3GrpcTransport, "grpc"),
         (transports.JobsV1Beta3GrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.JobsV1Beta3RestTransport, "rest"),
     ],
 )
 def test_jobs_v1_beta3_client_service_account_always_use_jwt(
@@ -141,6 +153,7 @@ def test_jobs_v1_beta3_client_service_account_always_use_jwt(
     [
         (JobsV1Beta3Client, "grpc"),
         (JobsV1Beta3AsyncClient, "grpc_asyncio"),
+        (JobsV1Beta3Client, "rest"),
     ],
 )
 def test_jobs_v1_beta3_client_from_service_account_file(client_class, transport_name):
@@ -161,13 +174,18 @@ def test_jobs_v1_beta3_client_from_service_account_file(client_class, transport_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 def test_jobs_v1_beta3_client_get_transport_class():
     transport = JobsV1Beta3Client.get_transport_class()
     available_transports = [
         transports.JobsV1Beta3GrpcTransport,
+        transports.JobsV1Beta3RestTransport,
     ]
     assert transport in available_transports
 
@@ -184,6 +202,7 @@ def test_jobs_v1_beta3_client_get_transport_class():
             transports.JobsV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (JobsV1Beta3Client, transports.JobsV1Beta3RestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -327,6 +346,8 @@ def test_jobs_v1_beta3_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (JobsV1Beta3Client, transports.JobsV1Beta3RestTransport, "rest", "true"),
+        (JobsV1Beta3Client, transports.JobsV1Beta3RestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -520,6 +541,7 @@ def test_jobs_v1_beta3_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.JobsV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (JobsV1Beta3Client, transports.JobsV1Beta3RestTransport, "rest"),
     ],
 )
 def test_jobs_v1_beta3_client_client_options_scopes(
@@ -555,6 +577,7 @@ def test_jobs_v1_beta3_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (JobsV1Beta3Client, transports.JobsV1Beta3RestTransport, "rest", None),
     ],
 )
 def test_jobs_v1_beta3_client_client_options_credentials_file(
@@ -2247,6 +2270,1862 @@ async def test_snapshot_job_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        jobs.CreateJobRequest,
+        dict,
+    ],
+)
+def test_create_job_rest(request_type):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request_init["job"] = {
+        "id": "id_value",
+        "project_id": "project_id_value",
+        "name": "name_value",
+        "type_": 1,
+        "environment": {
+            "temp_storage_prefix": "temp_storage_prefix_value",
+            "cluster_manager_api_service": "cluster_manager_api_service_value",
+            "experiments": ["experiments_value1", "experiments_value2"],
+            "service_options": ["service_options_value1", "service_options_value2"],
+            "service_kms_key_name": "service_kms_key_name_value",
+            "worker_pools": [
+                {
+                    "kind": "kind_value",
+                    "num_workers": 1212,
+                    "packages": [{"name": "name_value", "location": "location_value"}],
+                    "default_package_set": 1,
+                    "machine_type": "machine_type_value",
+                    "teardown_policy": 1,
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "disk_source_image": "disk_source_image_value",
+                    "zone": "zone_value",
+                    "taskrunner_settings": {
+                        "task_user": "task_user_value",
+                        "task_group": "task_group_value",
+                        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+                        "base_url": "base_url_value",
+                        "dataflow_api_version": "dataflow_api_version_value",
+                        "parallel_worker_settings": {
+                            "base_url": "base_url_value",
+                            "reporting_enabled": True,
+                            "service_path": "service_path_value",
+                            "shuffle_service_path": "shuffle_service_path_value",
+                            "worker_id": "worker_id_value",
+                            "temp_storage_prefix": "temp_storage_prefix_value",
+                        },
+                        "base_task_dir": "base_task_dir_value",
+                        "continue_on_exception": True,
+                        "log_to_serialconsole": True,
+                        "alsologtostderr": True,
+                        "log_upload_location": "log_upload_location_value",
+                        "log_dir": "log_dir_value",
+                        "temp_storage_prefix": "temp_storage_prefix_value",
+                        "harness_command": "harness_command_value",
+                        "workflow_file_name": "workflow_file_name_value",
+                        "commandlines_file_name": "commandlines_file_name_value",
+                        "vm_id": "vm_id_value",
+                        "language_hint": "language_hint_value",
+                        "streaming_worker_main_class": "streaming_worker_main_class_value",
+                    },
+                    "on_host_maintenance": "on_host_maintenance_value",
+                    "data_disks": [
+                        {
+                            "size_gb": 739,
+                            "disk_type": "disk_type_value",
+                            "mount_point": "mount_point_value",
+                        }
+                    ],
+                    "metadata": {},
+                    "autoscaling_settings": {"algorithm": 1, "max_num_workers": 1633},
+                    "pool_args": {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    },
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "worker_harness_container_image": "worker_harness_container_image_value",
+                    "num_threads_per_worker": 2361,
+                    "ip_configuration": 1,
+                    "sdk_harness_container_images": [
+                        {
+                            "container_image": "container_image_value",
+                            "use_single_core_per_container": True,
+                            "environment_id": "environment_id_value",
+                            "capabilities": [
+                                "capabilities_value1",
+                                "capabilities_value2",
+                            ],
+                        }
+                    ],
+                }
+            ],
+            "user_agent": {"fields": {}},
+            "version": {},
+            "dataset": "dataset_value",
+            "sdk_pipeline_options": {},
+            "internal_experiments": {},
+            "service_account_email": "service_account_email_value",
+            "flex_resource_scheduling_goal": 1,
+            "worker_region": "worker_region_value",
+            "worker_zone": "worker_zone_value",
+            "shuffle_mode": 1,
+            "debug_options": {"enable_hot_key_logging": True},
+        },
+        "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
+        "steps_location": "steps_location_value",
+        "current_state": 1,
+        "current_state_time": {"seconds": 751, "nanos": 543},
+        "requested_state": 1,
+        "execution_info": {"stages": {}},
+        "create_time": {},
+        "replace_job_id": "replace_job_id_value",
+        "transform_name_mapping": {},
+        "client_request_id": "client_request_id_value",
+        "replaced_by_job_id": "replaced_by_job_id_value",
+        "temp_files": ["temp_files_value1", "temp_files_value2"],
+        "labels": {},
+        "location": "location_value",
+        "pipeline_description": {
+            "original_pipeline_transform": [
+                {
+                    "kind": 1,
+                    "id": "id_value",
+                    "name": "name_value",
+                    "display_data": [
+                        {
+                            "key": "key_value",
+                            "namespace": "namespace_value",
+                            "str_value": "str_value_value",
+                            "int64_value": 1073,
+                            "float_value": 0.117,
+                            "java_class_value": "java_class_value_value",
+                            "timestamp_value": {},
+                            "duration_value": {"seconds": 751, "nanos": 543},
+                            "bool_value": True,
+                            "short_str_value": "short_str_value_value",
+                            "url": "url_value",
+                            "label": "label_value",
+                        }
+                    ],
+                    "output_collection_name": [
+                        "output_collection_name_value1",
+                        "output_collection_name_value2",
+                    ],
+                    "input_collection_name": [
+                        "input_collection_name_value1",
+                        "input_collection_name_value2",
+                    ],
+                }
+            ],
+            "execution_pipeline_stage": [
+                {
+                    "name": "name_value",
+                    "id": "id_value",
+                    "kind": 1,
+                    "input_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                            "size_bytes": 1089,
+                        }
+                    ],
+                    "output_source": {},
+                    "prerequisite_stage": [
+                        "prerequisite_stage_value1",
+                        "prerequisite_stage_value2",
+                    ],
+                    "component_transform": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform": "original_transform_value",
+                        }
+                    ],
+                    "component_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                        }
+                    ],
+                }
+            ],
+            "display_data": {},
+        },
+        "stage_states": [
+            {
+                "execution_stage_name": "execution_stage_name_value",
+                "execution_stage_state": 1,
+                "current_state_time": {},
+            }
+        ],
+        "job_metadata": {
+            "sdk_version": {
+                "version": "version_value",
+                "version_display_name": "version_display_name_value",
+                "sdk_support_status": 1,
+            },
+            "spanner_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "database_id": "database_id_value",
+                }
+            ],
+            "bigquery_details": [
+                {
+                    "table": "table_value",
+                    "dataset": "dataset_value",
+                    "project_id": "project_id_value",
+                    "query": "query_value",
+                }
+            ],
+            "big_table_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "table_id": "table_id_value",
+                }
+            ],
+            "pubsub_details": [
+                {"topic": "topic_value", "subscription": "subscription_value"}
+            ],
+            "file_details": [{"file_pattern": "file_pattern_value"}],
+            "datastore_details": [
+                {"namespace": "namespace_value", "project_id": "project_id_value"}
+            ],
+        },
+        "start_time": {},
+        "created_from_snapshot_id": "created_from_snapshot_id_value",
+        "satisfies_pzs": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.Job(
+            id="id_value",
+            project_id="project_id_value",
+            name="name_value",
+            type_=environment.JobType.JOB_TYPE_BATCH,
+            steps_location="steps_location_value",
+            current_state=jobs.JobState.JOB_STATE_STOPPED,
+            requested_state=jobs.JobState.JOB_STATE_STOPPED,
+            replace_job_id="replace_job_id_value",
+            client_request_id="client_request_id_value",
+            replaced_by_job_id="replaced_by_job_id_value",
+            temp_files=["temp_files_value"],
+            location="location_value",
+            created_from_snapshot_id="created_from_snapshot_id_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, jobs.Job)
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.name == "name_value"
+    assert response.type_ == environment.JobType.JOB_TYPE_BATCH
+    assert response.steps_location == "steps_location_value"
+    assert response.current_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.requested_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.replace_job_id == "replace_job_id_value"
+    assert response.client_request_id == "client_request_id_value"
+    assert response.replaced_by_job_id == "replaced_by_job_id_value"
+    assert response.temp_files == ["temp_files_value"]
+    assert response.location == "location_value"
+    assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
+    assert response.satisfies_pzs is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_rest_interceptors(null_interceptor):
+    transport = transports.JobsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobsV1Beta3RestInterceptor(),
+    )
+    client = JobsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "post_create_job"
+    ) as post, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "pre_create_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = jobs.CreateJobRequest.pb(jobs.CreateJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = jobs.Job.to_json(jobs.Job())
+
+        request = jobs.CreateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = jobs.Job()
+
+        client.create_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_job_rest_bad_request(
+    transport: str = "rest", request_type=jobs.CreateJobRequest
+):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request_init["job"] = {
+        "id": "id_value",
+        "project_id": "project_id_value",
+        "name": "name_value",
+        "type_": 1,
+        "environment": {
+            "temp_storage_prefix": "temp_storage_prefix_value",
+            "cluster_manager_api_service": "cluster_manager_api_service_value",
+            "experiments": ["experiments_value1", "experiments_value2"],
+            "service_options": ["service_options_value1", "service_options_value2"],
+            "service_kms_key_name": "service_kms_key_name_value",
+            "worker_pools": [
+                {
+                    "kind": "kind_value",
+                    "num_workers": 1212,
+                    "packages": [{"name": "name_value", "location": "location_value"}],
+                    "default_package_set": 1,
+                    "machine_type": "machine_type_value",
+                    "teardown_policy": 1,
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "disk_source_image": "disk_source_image_value",
+                    "zone": "zone_value",
+                    "taskrunner_settings": {
+                        "task_user": "task_user_value",
+                        "task_group": "task_group_value",
+                        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+                        "base_url": "base_url_value",
+                        "dataflow_api_version": "dataflow_api_version_value",
+                        "parallel_worker_settings": {
+                            "base_url": "base_url_value",
+                            "reporting_enabled": True,
+                            "service_path": "service_path_value",
+                            "shuffle_service_path": "shuffle_service_path_value",
+                            "worker_id": "worker_id_value",
+                            "temp_storage_prefix": "temp_storage_prefix_value",
+                        },
+                        "base_task_dir": "base_task_dir_value",
+                        "continue_on_exception": True,
+                        "log_to_serialconsole": True,
+                        "alsologtostderr": True,
+                        "log_upload_location": "log_upload_location_value",
+                        "log_dir": "log_dir_value",
+                        "temp_storage_prefix": "temp_storage_prefix_value",
+                        "harness_command": "harness_command_value",
+                        "workflow_file_name": "workflow_file_name_value",
+                        "commandlines_file_name": "commandlines_file_name_value",
+                        "vm_id": "vm_id_value",
+                        "language_hint": "language_hint_value",
+                        "streaming_worker_main_class": "streaming_worker_main_class_value",
+                    },
+                    "on_host_maintenance": "on_host_maintenance_value",
+                    "data_disks": [
+                        {
+                            "size_gb": 739,
+                            "disk_type": "disk_type_value",
+                            "mount_point": "mount_point_value",
+                        }
+                    ],
+                    "metadata": {},
+                    "autoscaling_settings": {"algorithm": 1, "max_num_workers": 1633},
+                    "pool_args": {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    },
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "worker_harness_container_image": "worker_harness_container_image_value",
+                    "num_threads_per_worker": 2361,
+                    "ip_configuration": 1,
+                    "sdk_harness_container_images": [
+                        {
+                            "container_image": "container_image_value",
+                            "use_single_core_per_container": True,
+                            "environment_id": "environment_id_value",
+                            "capabilities": [
+                                "capabilities_value1",
+                                "capabilities_value2",
+                            ],
+                        }
+                    ],
+                }
+            ],
+            "user_agent": {"fields": {}},
+            "version": {},
+            "dataset": "dataset_value",
+            "sdk_pipeline_options": {},
+            "internal_experiments": {},
+            "service_account_email": "service_account_email_value",
+            "flex_resource_scheduling_goal": 1,
+            "worker_region": "worker_region_value",
+            "worker_zone": "worker_zone_value",
+            "shuffle_mode": 1,
+            "debug_options": {"enable_hot_key_logging": True},
+        },
+        "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
+        "steps_location": "steps_location_value",
+        "current_state": 1,
+        "current_state_time": {"seconds": 751, "nanos": 543},
+        "requested_state": 1,
+        "execution_info": {"stages": {}},
+        "create_time": {},
+        "replace_job_id": "replace_job_id_value",
+        "transform_name_mapping": {},
+        "client_request_id": "client_request_id_value",
+        "replaced_by_job_id": "replaced_by_job_id_value",
+        "temp_files": ["temp_files_value1", "temp_files_value2"],
+        "labels": {},
+        "location": "location_value",
+        "pipeline_description": {
+            "original_pipeline_transform": [
+                {
+                    "kind": 1,
+                    "id": "id_value",
+                    "name": "name_value",
+                    "display_data": [
+                        {
+                            "key": "key_value",
+                            "namespace": "namespace_value",
+                            "str_value": "str_value_value",
+                            "int64_value": 1073,
+                            "float_value": 0.117,
+                            "java_class_value": "java_class_value_value",
+                            "timestamp_value": {},
+                            "duration_value": {"seconds": 751, "nanos": 543},
+                            "bool_value": True,
+                            "short_str_value": "short_str_value_value",
+                            "url": "url_value",
+                            "label": "label_value",
+                        }
+                    ],
+                    "output_collection_name": [
+                        "output_collection_name_value1",
+                        "output_collection_name_value2",
+                    ],
+                    "input_collection_name": [
+                        "input_collection_name_value1",
+                        "input_collection_name_value2",
+                    ],
+                }
+            ],
+            "execution_pipeline_stage": [
+                {
+                    "name": "name_value",
+                    "id": "id_value",
+                    "kind": 1,
+                    "input_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                            "size_bytes": 1089,
+                        }
+                    ],
+                    "output_source": {},
+                    "prerequisite_stage": [
+                        "prerequisite_stage_value1",
+                        "prerequisite_stage_value2",
+                    ],
+                    "component_transform": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform": "original_transform_value",
+                        }
+                    ],
+                    "component_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                        }
+                    ],
+                }
+            ],
+            "display_data": {},
+        },
+        "stage_states": [
+            {
+                "execution_stage_name": "execution_stage_name_value",
+                "execution_stage_state": 1,
+                "current_state_time": {},
+            }
+        ],
+        "job_metadata": {
+            "sdk_version": {
+                "version": "version_value",
+                "version_display_name": "version_display_name_value",
+                "sdk_support_status": 1,
+            },
+            "spanner_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "database_id": "database_id_value",
+                }
+            ],
+            "bigquery_details": [
+                {
+                    "table": "table_value",
+                    "dataset": "dataset_value",
+                    "project_id": "project_id_value",
+                    "query": "query_value",
+                }
+            ],
+            "big_table_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "table_id": "table_id_value",
+                }
+            ],
+            "pubsub_details": [
+                {"topic": "topic_value", "subscription": "subscription_value"}
+            ],
+            "file_details": [{"file_pattern": "file_pattern_value"}],
+            "datastore_details": [
+                {"namespace": "namespace_value", "project_id": "project_id_value"}
+            ],
+        },
+        "start_time": {},
+        "created_from_snapshot_id": "created_from_snapshot_id_value",
+        "satisfies_pzs": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_job(request)
+
+
+def test_create_job_rest_error():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        jobs.GetJobRequest,
+        dict,
+    ],
+)
+def test_get_job_rest(request_type):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.Job(
+            id="id_value",
+            project_id="project_id_value",
+            name="name_value",
+            type_=environment.JobType.JOB_TYPE_BATCH,
+            steps_location="steps_location_value",
+            current_state=jobs.JobState.JOB_STATE_STOPPED,
+            requested_state=jobs.JobState.JOB_STATE_STOPPED,
+            replace_job_id="replace_job_id_value",
+            client_request_id="client_request_id_value",
+            replaced_by_job_id="replaced_by_job_id_value",
+            temp_files=["temp_files_value"],
+            location="location_value",
+            created_from_snapshot_id="created_from_snapshot_id_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, jobs.Job)
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.name == "name_value"
+    assert response.type_ == environment.JobType.JOB_TYPE_BATCH
+    assert response.steps_location == "steps_location_value"
+    assert response.current_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.requested_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.replace_job_id == "replace_job_id_value"
+    assert response.client_request_id == "client_request_id_value"
+    assert response.replaced_by_job_id == "replaced_by_job_id_value"
+    assert response.temp_files == ["temp_files_value"]
+    assert response.location == "location_value"
+    assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
+    assert response.satisfies_pzs is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_rest_interceptors(null_interceptor):
+    transport = transports.JobsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobsV1Beta3RestInterceptor(),
+    )
+    client = JobsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "post_get_job"
+    ) as post, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "pre_get_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = jobs.GetJobRequest.pb(jobs.GetJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = jobs.Job.to_json(jobs.Job())
+
+        request = jobs.GetJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = jobs.Job()
+
+        client.get_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_rest_bad_request(
+    transport: str = "rest", request_type=jobs.GetJobRequest
+):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_job(request)
+
+
+def test_get_job_rest_error():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        jobs.UpdateJobRequest,
+        dict,
+    ],
+)
+def test_update_job_rest(request_type):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request_init["job"] = {
+        "id": "id_value",
+        "project_id": "project_id_value",
+        "name": "name_value",
+        "type_": 1,
+        "environment": {
+            "temp_storage_prefix": "temp_storage_prefix_value",
+            "cluster_manager_api_service": "cluster_manager_api_service_value",
+            "experiments": ["experiments_value1", "experiments_value2"],
+            "service_options": ["service_options_value1", "service_options_value2"],
+            "service_kms_key_name": "service_kms_key_name_value",
+            "worker_pools": [
+                {
+                    "kind": "kind_value",
+                    "num_workers": 1212,
+                    "packages": [{"name": "name_value", "location": "location_value"}],
+                    "default_package_set": 1,
+                    "machine_type": "machine_type_value",
+                    "teardown_policy": 1,
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "disk_source_image": "disk_source_image_value",
+                    "zone": "zone_value",
+                    "taskrunner_settings": {
+                        "task_user": "task_user_value",
+                        "task_group": "task_group_value",
+                        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+                        "base_url": "base_url_value",
+                        "dataflow_api_version": "dataflow_api_version_value",
+                        "parallel_worker_settings": {
+                            "base_url": "base_url_value",
+                            "reporting_enabled": True,
+                            "service_path": "service_path_value",
+                            "shuffle_service_path": "shuffle_service_path_value",
+                            "worker_id": "worker_id_value",
+                            "temp_storage_prefix": "temp_storage_prefix_value",
+                        },
+                        "base_task_dir": "base_task_dir_value",
+                        "continue_on_exception": True,
+                        "log_to_serialconsole": True,
+                        "alsologtostderr": True,
+                        "log_upload_location": "log_upload_location_value",
+                        "log_dir": "log_dir_value",
+                        "temp_storage_prefix": "temp_storage_prefix_value",
+                        "harness_command": "harness_command_value",
+                        "workflow_file_name": "workflow_file_name_value",
+                        "commandlines_file_name": "commandlines_file_name_value",
+                        "vm_id": "vm_id_value",
+                        "language_hint": "language_hint_value",
+                        "streaming_worker_main_class": "streaming_worker_main_class_value",
+                    },
+                    "on_host_maintenance": "on_host_maintenance_value",
+                    "data_disks": [
+                        {
+                            "size_gb": 739,
+                            "disk_type": "disk_type_value",
+                            "mount_point": "mount_point_value",
+                        }
+                    ],
+                    "metadata": {},
+                    "autoscaling_settings": {"algorithm": 1, "max_num_workers": 1633},
+                    "pool_args": {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    },
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "worker_harness_container_image": "worker_harness_container_image_value",
+                    "num_threads_per_worker": 2361,
+                    "ip_configuration": 1,
+                    "sdk_harness_container_images": [
+                        {
+                            "container_image": "container_image_value",
+                            "use_single_core_per_container": True,
+                            "environment_id": "environment_id_value",
+                            "capabilities": [
+                                "capabilities_value1",
+                                "capabilities_value2",
+                            ],
+                        }
+                    ],
+                }
+            ],
+            "user_agent": {"fields": {}},
+            "version": {},
+            "dataset": "dataset_value",
+            "sdk_pipeline_options": {},
+            "internal_experiments": {},
+            "service_account_email": "service_account_email_value",
+            "flex_resource_scheduling_goal": 1,
+            "worker_region": "worker_region_value",
+            "worker_zone": "worker_zone_value",
+            "shuffle_mode": 1,
+            "debug_options": {"enable_hot_key_logging": True},
+        },
+        "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
+        "steps_location": "steps_location_value",
+        "current_state": 1,
+        "current_state_time": {"seconds": 751, "nanos": 543},
+        "requested_state": 1,
+        "execution_info": {"stages": {}},
+        "create_time": {},
+        "replace_job_id": "replace_job_id_value",
+        "transform_name_mapping": {},
+        "client_request_id": "client_request_id_value",
+        "replaced_by_job_id": "replaced_by_job_id_value",
+        "temp_files": ["temp_files_value1", "temp_files_value2"],
+        "labels": {},
+        "location": "location_value",
+        "pipeline_description": {
+            "original_pipeline_transform": [
+                {
+                    "kind": 1,
+                    "id": "id_value",
+                    "name": "name_value",
+                    "display_data": [
+                        {
+                            "key": "key_value",
+                            "namespace": "namespace_value",
+                            "str_value": "str_value_value",
+                            "int64_value": 1073,
+                            "float_value": 0.117,
+                            "java_class_value": "java_class_value_value",
+                            "timestamp_value": {},
+                            "duration_value": {"seconds": 751, "nanos": 543},
+                            "bool_value": True,
+                            "short_str_value": "short_str_value_value",
+                            "url": "url_value",
+                            "label": "label_value",
+                        }
+                    ],
+                    "output_collection_name": [
+                        "output_collection_name_value1",
+                        "output_collection_name_value2",
+                    ],
+                    "input_collection_name": [
+                        "input_collection_name_value1",
+                        "input_collection_name_value2",
+                    ],
+                }
+            ],
+            "execution_pipeline_stage": [
+                {
+                    "name": "name_value",
+                    "id": "id_value",
+                    "kind": 1,
+                    "input_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                            "size_bytes": 1089,
+                        }
+                    ],
+                    "output_source": {},
+                    "prerequisite_stage": [
+                        "prerequisite_stage_value1",
+                        "prerequisite_stage_value2",
+                    ],
+                    "component_transform": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform": "original_transform_value",
+                        }
+                    ],
+                    "component_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                        }
+                    ],
+                }
+            ],
+            "display_data": {},
+        },
+        "stage_states": [
+            {
+                "execution_stage_name": "execution_stage_name_value",
+                "execution_stage_state": 1,
+                "current_state_time": {},
+            }
+        ],
+        "job_metadata": {
+            "sdk_version": {
+                "version": "version_value",
+                "version_display_name": "version_display_name_value",
+                "sdk_support_status": 1,
+            },
+            "spanner_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "database_id": "database_id_value",
+                }
+            ],
+            "bigquery_details": [
+                {
+                    "table": "table_value",
+                    "dataset": "dataset_value",
+                    "project_id": "project_id_value",
+                    "query": "query_value",
+                }
+            ],
+            "big_table_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "table_id": "table_id_value",
+                }
+            ],
+            "pubsub_details": [
+                {"topic": "topic_value", "subscription": "subscription_value"}
+            ],
+            "file_details": [{"file_pattern": "file_pattern_value"}],
+            "datastore_details": [
+                {"namespace": "namespace_value", "project_id": "project_id_value"}
+            ],
+        },
+        "start_time": {},
+        "created_from_snapshot_id": "created_from_snapshot_id_value",
+        "satisfies_pzs": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.Job(
+            id="id_value",
+            project_id="project_id_value",
+            name="name_value",
+            type_=environment.JobType.JOB_TYPE_BATCH,
+            steps_location="steps_location_value",
+            current_state=jobs.JobState.JOB_STATE_STOPPED,
+            requested_state=jobs.JobState.JOB_STATE_STOPPED,
+            replace_job_id="replace_job_id_value",
+            client_request_id="client_request_id_value",
+            replaced_by_job_id="replaced_by_job_id_value",
+            temp_files=["temp_files_value"],
+            location="location_value",
+            created_from_snapshot_id="created_from_snapshot_id_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, jobs.Job)
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.name == "name_value"
+    assert response.type_ == environment.JobType.JOB_TYPE_BATCH
+    assert response.steps_location == "steps_location_value"
+    assert response.current_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.requested_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.replace_job_id == "replace_job_id_value"
+    assert response.client_request_id == "client_request_id_value"
+    assert response.replaced_by_job_id == "replaced_by_job_id_value"
+    assert response.temp_files == ["temp_files_value"]
+    assert response.location == "location_value"
+    assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
+    assert response.satisfies_pzs is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_job_rest_interceptors(null_interceptor):
+    transport = transports.JobsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobsV1Beta3RestInterceptor(),
+    )
+    client = JobsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "post_update_job"
+    ) as post, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "pre_update_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = jobs.UpdateJobRequest.pb(jobs.UpdateJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = jobs.Job.to_json(jobs.Job())
+
+        request = jobs.UpdateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = jobs.Job()
+
+        client.update_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_job_rest_bad_request(
+    transport: str = "rest", request_type=jobs.UpdateJobRequest
+):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request_init["job"] = {
+        "id": "id_value",
+        "project_id": "project_id_value",
+        "name": "name_value",
+        "type_": 1,
+        "environment": {
+            "temp_storage_prefix": "temp_storage_prefix_value",
+            "cluster_manager_api_service": "cluster_manager_api_service_value",
+            "experiments": ["experiments_value1", "experiments_value2"],
+            "service_options": ["service_options_value1", "service_options_value2"],
+            "service_kms_key_name": "service_kms_key_name_value",
+            "worker_pools": [
+                {
+                    "kind": "kind_value",
+                    "num_workers": 1212,
+                    "packages": [{"name": "name_value", "location": "location_value"}],
+                    "default_package_set": 1,
+                    "machine_type": "machine_type_value",
+                    "teardown_policy": 1,
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "disk_source_image": "disk_source_image_value",
+                    "zone": "zone_value",
+                    "taskrunner_settings": {
+                        "task_user": "task_user_value",
+                        "task_group": "task_group_value",
+                        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
+                        "base_url": "base_url_value",
+                        "dataflow_api_version": "dataflow_api_version_value",
+                        "parallel_worker_settings": {
+                            "base_url": "base_url_value",
+                            "reporting_enabled": True,
+                            "service_path": "service_path_value",
+                            "shuffle_service_path": "shuffle_service_path_value",
+                            "worker_id": "worker_id_value",
+                            "temp_storage_prefix": "temp_storage_prefix_value",
+                        },
+                        "base_task_dir": "base_task_dir_value",
+                        "continue_on_exception": True,
+                        "log_to_serialconsole": True,
+                        "alsologtostderr": True,
+                        "log_upload_location": "log_upload_location_value",
+                        "log_dir": "log_dir_value",
+                        "temp_storage_prefix": "temp_storage_prefix_value",
+                        "harness_command": "harness_command_value",
+                        "workflow_file_name": "workflow_file_name_value",
+                        "commandlines_file_name": "commandlines_file_name_value",
+                        "vm_id": "vm_id_value",
+                        "language_hint": "language_hint_value",
+                        "streaming_worker_main_class": "streaming_worker_main_class_value",
+                    },
+                    "on_host_maintenance": "on_host_maintenance_value",
+                    "data_disks": [
+                        {
+                            "size_gb": 739,
+                            "disk_type": "disk_type_value",
+                            "mount_point": "mount_point_value",
+                        }
+                    ],
+                    "metadata": {},
+                    "autoscaling_settings": {"algorithm": 1, "max_num_workers": 1633},
+                    "pool_args": {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    },
+                    "network": "network_value",
+                    "subnetwork": "subnetwork_value",
+                    "worker_harness_container_image": "worker_harness_container_image_value",
+                    "num_threads_per_worker": 2361,
+                    "ip_configuration": 1,
+                    "sdk_harness_container_images": [
+                        {
+                            "container_image": "container_image_value",
+                            "use_single_core_per_container": True,
+                            "environment_id": "environment_id_value",
+                            "capabilities": [
+                                "capabilities_value1",
+                                "capabilities_value2",
+                            ],
+                        }
+                    ],
+                }
+            ],
+            "user_agent": {"fields": {}},
+            "version": {},
+            "dataset": "dataset_value",
+            "sdk_pipeline_options": {},
+            "internal_experiments": {},
+            "service_account_email": "service_account_email_value",
+            "flex_resource_scheduling_goal": 1,
+            "worker_region": "worker_region_value",
+            "worker_zone": "worker_zone_value",
+            "shuffle_mode": 1,
+            "debug_options": {"enable_hot_key_logging": True},
+        },
+        "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
+        "steps_location": "steps_location_value",
+        "current_state": 1,
+        "current_state_time": {"seconds": 751, "nanos": 543},
+        "requested_state": 1,
+        "execution_info": {"stages": {}},
+        "create_time": {},
+        "replace_job_id": "replace_job_id_value",
+        "transform_name_mapping": {},
+        "client_request_id": "client_request_id_value",
+        "replaced_by_job_id": "replaced_by_job_id_value",
+        "temp_files": ["temp_files_value1", "temp_files_value2"],
+        "labels": {},
+        "location": "location_value",
+        "pipeline_description": {
+            "original_pipeline_transform": [
+                {
+                    "kind": 1,
+                    "id": "id_value",
+                    "name": "name_value",
+                    "display_data": [
+                        {
+                            "key": "key_value",
+                            "namespace": "namespace_value",
+                            "str_value": "str_value_value",
+                            "int64_value": 1073,
+                            "float_value": 0.117,
+                            "java_class_value": "java_class_value_value",
+                            "timestamp_value": {},
+                            "duration_value": {"seconds": 751, "nanos": 543},
+                            "bool_value": True,
+                            "short_str_value": "short_str_value_value",
+                            "url": "url_value",
+                            "label": "label_value",
+                        }
+                    ],
+                    "output_collection_name": [
+                        "output_collection_name_value1",
+                        "output_collection_name_value2",
+                    ],
+                    "input_collection_name": [
+                        "input_collection_name_value1",
+                        "input_collection_name_value2",
+                    ],
+                }
+            ],
+            "execution_pipeline_stage": [
+                {
+                    "name": "name_value",
+                    "id": "id_value",
+                    "kind": 1,
+                    "input_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                            "size_bytes": 1089,
+                        }
+                    ],
+                    "output_source": {},
+                    "prerequisite_stage": [
+                        "prerequisite_stage_value1",
+                        "prerequisite_stage_value2",
+                    ],
+                    "component_transform": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform": "original_transform_value",
+                        }
+                    ],
+                    "component_source": [
+                        {
+                            "user_name": "user_name_value",
+                            "name": "name_value",
+                            "original_transform_or_collection": "original_transform_or_collection_value",
+                        }
+                    ],
+                }
+            ],
+            "display_data": {},
+        },
+        "stage_states": [
+            {
+                "execution_stage_name": "execution_stage_name_value",
+                "execution_stage_state": 1,
+                "current_state_time": {},
+            }
+        ],
+        "job_metadata": {
+            "sdk_version": {
+                "version": "version_value",
+                "version_display_name": "version_display_name_value",
+                "sdk_support_status": 1,
+            },
+            "spanner_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "database_id": "database_id_value",
+                }
+            ],
+            "bigquery_details": [
+                {
+                    "table": "table_value",
+                    "dataset": "dataset_value",
+                    "project_id": "project_id_value",
+                    "query": "query_value",
+                }
+            ],
+            "big_table_details": [
+                {
+                    "project_id": "project_id_value",
+                    "instance_id": "instance_id_value",
+                    "table_id": "table_id_value",
+                }
+            ],
+            "pubsub_details": [
+                {"topic": "topic_value", "subscription": "subscription_value"}
+            ],
+            "file_details": [{"file_pattern": "file_pattern_value"}],
+            "datastore_details": [
+                {"namespace": "namespace_value", "project_id": "project_id_value"}
+            ],
+        },
+        "start_time": {},
+        "created_from_snapshot_id": "created_from_snapshot_id_value",
+        "satisfies_pzs": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_job(request)
+
+
+def test_update_job_rest_error():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        jobs.ListJobsRequest,
+        dict,
+    ],
+)
+def test_list_jobs_rest(request_type):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.ListJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = jobs.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobsV1Beta3RestInterceptor(),
+    )
+    client = JobsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "post_list_jobs"
+    ) as post, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "pre_list_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = jobs.ListJobsRequest.pb(jobs.ListJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = jobs.ListJobsResponse.to_json(
+            jobs.ListJobsResponse()
+        )
+
+        request = jobs.ListJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = jobs.ListJobsResponse()
+
+        client.list_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_jobs_rest_bad_request(
+    transport: str = "rest", request_type=jobs.ListJobsRequest
+):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_jobs(request)
+
+
+def test_list_jobs_rest_pager(transport: str = "rest"):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            jobs.ListJobsResponse(
+                jobs=[
+                    jobs.Job(),
+                    jobs.Job(),
+                    jobs.Job(),
+                ],
+                next_page_token="abc",
+            ),
+            jobs.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            jobs.ListJobsResponse(
+                jobs=[
+                    jobs.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            jobs.ListJobsResponse(
+                jobs=[
+                    jobs.Job(),
+                    jobs.Job(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(jobs.ListJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project_id": "sample1", "location": "sample2"}
+
+        pager = client.list_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, jobs.Job) for i in results)
+
+        pages = list(client.list_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        jobs.ListJobsRequest,
+        dict,
+    ],
+)
+def test_aggregated_list_jobs_rest(request_type):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.ListJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = jobs.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.aggregated_list_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregatedListJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_jobs_rest_interceptors(null_interceptor):
+    transport = transports.JobsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobsV1Beta3RestInterceptor(),
+    )
+    client = JobsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "post_aggregated_list_jobs"
+    ) as post, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "pre_aggregated_list_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = jobs.ListJobsRequest.pb(jobs.ListJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = jobs.ListJobsResponse.to_json(
+            jobs.ListJobsResponse()
+        )
+
+        request = jobs.ListJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = jobs.ListJobsResponse()
+
+        client.aggregated_list_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_aggregated_list_jobs_rest_bad_request(
+    transport: str = "rest", request_type=jobs.ListJobsRequest
+):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.aggregated_list_jobs(request)
+
+
+def test_aggregated_list_jobs_rest_pager(transport: str = "rest"):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            jobs.ListJobsResponse(
+                jobs=[
+                    jobs.Job(),
+                    jobs.Job(),
+                    jobs.Job(),
+                ],
+                next_page_token="abc",
+            ),
+            jobs.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            jobs.ListJobsResponse(
+                jobs=[
+                    jobs.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            jobs.ListJobsResponse(
+                jobs=[
+                    jobs.Job(),
+                    jobs.Job(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(jobs.ListJobsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project_id": "sample1"}
+
+        pager = client.aggregated_list_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, jobs.Job) for i in results)
+
+        pages = list(client.aggregated_list_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_check_active_jobs_rest_no_http_options():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = jobs.CheckActiveJobsRequest()
+    with pytest.raises(RuntimeError):
+        client.check_active_jobs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        jobs.SnapshotJobRequest,
+        dict,
+    ],
+)
+def test_snapshot_job_rest(request_type):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = snapshots.Snapshot(
+            id="id_value",
+            project_id="project_id_value",
+            source_job_id="source_job_id_value",
+            state=snapshots.SnapshotState.PENDING,
+            description="description_value",
+            disk_size_bytes=1611,
+            region="region_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = snapshots.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.snapshot_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, snapshots.Snapshot)
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.source_job_id == "source_job_id_value"
+    assert response.state == snapshots.SnapshotState.PENDING
+    assert response.description == "description_value"
+    assert response.disk_size_bytes == 1611
+    assert response.region == "region_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_snapshot_job_rest_interceptors(null_interceptor):
+    transport = transports.JobsV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.JobsV1Beta3RestInterceptor(),
+    )
+    client = JobsV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "post_snapshot_job"
+    ) as post, mock.patch.object(
+        transports.JobsV1Beta3RestInterceptor, "pre_snapshot_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = jobs.SnapshotJobRequest.pb(jobs.SnapshotJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = snapshots.Snapshot.to_json(snapshots.Snapshot())
+
+        request = jobs.SnapshotJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = snapshots.Snapshot()
+
+        client.snapshot_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_snapshot_job_rest_bad_request(
+    transport: str = "rest", request_type=jobs.SnapshotJobRequest
+):
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.snapshot_job(request)
+
+
+def test_snapshot_job_rest_error():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_check_active_jobs_rest_error():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(RuntimeError) as runtime_error:
+        client.check_active_jobs({})
+    assert (
+        "Cannot define a method without a valid 'google.api.http' annotation."
+        in str(runtime_error.value)
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.JobsV1Beta3GrpcTransport(
@@ -2328,6 +4207,7 @@ def test_transport_get_channel():
     [
         transports.JobsV1Beta3GrpcTransport,
         transports.JobsV1Beta3GrpcAsyncIOTransport,
+        transports.JobsV1Beta3RestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2342,6 +4222,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2492,6 +4373,7 @@ def test_jobs_v1_beta3_transport_auth_adc(transport_class):
     [
         transports.JobsV1Beta3GrpcTransport,
         transports.JobsV1Beta3GrpcAsyncIOTransport,
+        transports.JobsV1Beta3RestTransport,
     ],
 )
 def test_jobs_v1_beta3_transport_auth_gdch_credentials(transport_class):
@@ -2591,11 +4473,23 @@ def test_jobs_v1_beta3_grpc_transport_client_cert_source_for_mtls(transport_clas
             )
 
 
+def test_jobs_v1_beta3_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.JobsV1Beta3RestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_jobs_v1_beta3_host_no_port(transport_name):
@@ -2606,7 +4500,11 @@ def test_jobs_v1_beta3_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2614,6 +4512,7 @@ def test_jobs_v1_beta3_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_jobs_v1_beta3_host_with_port(transport_name):
@@ -2624,7 +4523,51 @@ def test_jobs_v1_beta3_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_jobs_v1_beta3_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = JobsV1Beta3Client(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = JobsV1Beta3Client(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_job._session
+    session2 = client2.transport.create_job._session
+    assert session1 != session2
+    session1 = client1.transport.get_job._session
+    session2 = client2.transport.get_job._session
+    assert session1 != session2
+    session1 = client1.transport.update_job._session
+    session2 = client2.transport.update_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_jobs._session
+    session2 = client2.transport.list_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.aggregated_list_jobs._session
+    session2 = client2.transport.aggregated_list_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.check_active_jobs._session
+    session2 = client2.transport.check_active_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.snapshot_job._session
+    session2 = client2.transport.snapshot_job._session
+    assert session1 != session2
 
 
 def test_jobs_v1_beta3_grpc_transport_channel():
@@ -2887,6 +4830,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2904,6 +4848,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

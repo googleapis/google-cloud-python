@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -31,11 +33,15 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
+from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import (
     MessagesV1Beta3AsyncClient,
@@ -95,6 +101,7 @@ def test__get_default_mtls_endpoint():
     [
         (MessagesV1Beta3Client, "grpc"),
         (MessagesV1Beta3AsyncClient, "grpc_asyncio"),
+        (MessagesV1Beta3Client, "rest"),
     ],
 )
 def test_messages_v1_beta3_client_from_service_account_info(
@@ -110,7 +117,11 @@ def test_messages_v1_beta3_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -118,6 +129,7 @@ def test_messages_v1_beta3_client_from_service_account_info(
     [
         (transports.MessagesV1Beta3GrpcTransport, "grpc"),
         (transports.MessagesV1Beta3GrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.MessagesV1Beta3RestTransport, "rest"),
     ],
 )
 def test_messages_v1_beta3_client_service_account_always_use_jwt(
@@ -143,6 +155,7 @@ def test_messages_v1_beta3_client_service_account_always_use_jwt(
     [
         (MessagesV1Beta3Client, "grpc"),
         (MessagesV1Beta3AsyncClient, "grpc_asyncio"),
+        (MessagesV1Beta3Client, "rest"),
     ],
 )
 def test_messages_v1_beta3_client_from_service_account_file(
@@ -165,13 +178,18 @@ def test_messages_v1_beta3_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataflow.googleapis.com:443")
+        assert client.transport._host == (
+            "dataflow.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataflow.googleapis.com"
+        )
 
 
 def test_messages_v1_beta3_client_get_transport_class():
     transport = MessagesV1Beta3Client.get_transport_class()
     available_transports = [
         transports.MessagesV1Beta3GrpcTransport,
+        transports.MessagesV1Beta3RestTransport,
     ]
     assert transport in available_transports
 
@@ -188,6 +206,7 @@ def test_messages_v1_beta3_client_get_transport_class():
             transports.MessagesV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (MessagesV1Beta3Client, transports.MessagesV1Beta3RestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -341,6 +360,18 @@ def test_messages_v1_beta3_client_client_options(
             MessagesV1Beta3AsyncClient,
             transports.MessagesV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            MessagesV1Beta3Client,
+            transports.MessagesV1Beta3RestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            MessagesV1Beta3Client,
+            transports.MessagesV1Beta3RestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -542,6 +573,7 @@ def test_messages_v1_beta3_client_get_mtls_endpoint_and_cert_source(client_class
             transports.MessagesV1Beta3GrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (MessagesV1Beta3Client, transports.MessagesV1Beta3RestTransport, "rest"),
     ],
 )
 def test_messages_v1_beta3_client_client_options_scopes(
@@ -582,6 +614,7 @@ def test_messages_v1_beta3_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (MessagesV1Beta3Client, transports.MessagesV1Beta3RestTransport, "rest", None),
     ],
 )
 def test_messages_v1_beta3_client_client_options_credentials_file(
@@ -1065,6 +1098,191 @@ async def test_list_job_messages_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        messages.ListJobMessagesRequest,
+        dict,
+    ],
+)
+def test_list_job_messages_rest(request_type):
+    client = MessagesV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = messages.ListJobMessagesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = messages.ListJobMessagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_job_messages(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobMessagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_job_messages_rest_interceptors(null_interceptor):
+    transport = transports.MessagesV1Beta3RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MessagesV1Beta3RestInterceptor(),
+    )
+    client = MessagesV1Beta3Client(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MessagesV1Beta3RestInterceptor, "post_list_job_messages"
+    ) as post, mock.patch.object(
+        transports.MessagesV1Beta3RestInterceptor, "pre_list_job_messages"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = messages.ListJobMessagesRequest.pb(
+            messages.ListJobMessagesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = messages.ListJobMessagesResponse.to_json(
+            messages.ListJobMessagesResponse()
+        )
+
+        request = messages.ListJobMessagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = messages.ListJobMessagesResponse()
+
+        client.list_job_messages(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_job_messages_rest_bad_request(
+    transport: str = "rest", request_type=messages.ListJobMessagesRequest
+):
+    client = MessagesV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_job_messages(request)
+
+
+def test_list_job_messages_rest_pager(transport: str = "rest"):
+    client = MessagesV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            messages.ListJobMessagesResponse(
+                job_messages=[
+                    messages.JobMessage(),
+                    messages.JobMessage(),
+                    messages.JobMessage(),
+                ],
+                next_page_token="abc",
+            ),
+            messages.ListJobMessagesResponse(
+                job_messages=[],
+                next_page_token="def",
+            ),
+            messages.ListJobMessagesResponse(
+                job_messages=[
+                    messages.JobMessage(),
+                ],
+                next_page_token="ghi",
+            ),
+            messages.ListJobMessagesResponse(
+                job_messages=[
+                    messages.JobMessage(),
+                    messages.JobMessage(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(messages.ListJobMessagesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "project_id": "sample1",
+            "location": "sample2",
+            "job_id": "sample3",
+        }
+
+        pager = client.list_job_messages(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, messages.JobMessage) for i in results)
+
+        pages = list(client.list_job_messages(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.MessagesV1Beta3GrpcTransport(
@@ -1146,6 +1364,7 @@ def test_transport_get_channel():
     [
         transports.MessagesV1Beta3GrpcTransport,
         transports.MessagesV1Beta3GrpcAsyncIOTransport,
+        transports.MessagesV1Beta3RestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1160,6 +1379,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1302,6 +1522,7 @@ def test_messages_v1_beta3_transport_auth_adc(transport_class):
     [
         transports.MessagesV1Beta3GrpcTransport,
         transports.MessagesV1Beta3GrpcAsyncIOTransport,
+        transports.MessagesV1Beta3RestTransport,
     ],
 )
 def test_messages_v1_beta3_transport_auth_gdch_credentials(transport_class):
@@ -1404,11 +1625,23 @@ def test_messages_v1_beta3_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
+def test_messages_v1_beta3_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.MessagesV1Beta3RestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_messages_v1_beta3_host_no_port(transport_name):
@@ -1419,7 +1652,11 @@ def test_messages_v1_beta3_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:443")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1427,6 +1664,7 @@ def test_messages_v1_beta3_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_messages_v1_beta3_host_with_port(transport_name):
@@ -1437,7 +1675,33 @@ def test_messages_v1_beta3_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataflow.googleapis.com:8000")
+    assert client.transport._host == (
+        "dataflow.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataflow.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_messages_v1_beta3_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = MessagesV1Beta3Client(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = MessagesV1Beta3Client(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_job_messages._session
+    session2 = client2.transport.list_job_messages._session
+    assert session1 != session2
 
 
 def test_messages_v1_beta3_grpc_transport_channel():
@@ -1708,6 +1972,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1725,6 +1990,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

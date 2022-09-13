@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import FlexTemplatesServiceTransport
 from .grpc import FlexTemplatesServiceGrpcTransport
 from .grpc_asyncio import FlexTemplatesServiceGrpcAsyncIOTransport
+from .rest import FlexTemplatesServiceRestInterceptor, FlexTemplatesServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[FlexTemplatesServiceTransport]]
 _transport_registry["grpc"] = FlexTemplatesServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = FlexTemplatesServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = FlexTemplatesServiceRestTransport
 
 __all__ = (
     "FlexTemplatesServiceTransport",
     "FlexTemplatesServiceGrpcTransport",
     "FlexTemplatesServiceGrpcAsyncIOTransport",
+    "FlexTemplatesServiceRestTransport",
+    "FlexTemplatesServiceRestInterceptor",
 )

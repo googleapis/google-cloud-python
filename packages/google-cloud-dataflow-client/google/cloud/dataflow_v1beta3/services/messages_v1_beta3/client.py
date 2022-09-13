@@ -40,6 +40,7 @@ from google.cloud.dataflow_v1beta3.types import messages
 from .transports.base import DEFAULT_CLIENT_INFO, MessagesV1Beta3Transport
 from .transports.grpc import MessagesV1Beta3GrpcTransport
 from .transports.grpc_asyncio import MessagesV1Beta3GrpcAsyncIOTransport
+from .transports.rest import MessagesV1Beta3RestTransport
 
 
 class MessagesV1Beta3ClientMeta(type):
@@ -55,6 +56,7 @@ class MessagesV1Beta3ClientMeta(type):
     )  # type: Dict[str, Type[MessagesV1Beta3Transport]]
     _transport_registry["grpc"] = MessagesV1Beta3GrpcTransport
     _transport_registry["grpc_asyncio"] = MessagesV1Beta3GrpcAsyncIOTransport
+    _transport_registry["rest"] = MessagesV1Beta3RestTransport
 
     def get_transport_class(
         cls,
@@ -328,6 +330,9 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
             transport (Union[str, MessagesV1Beta3Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

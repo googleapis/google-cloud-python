@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateJob
+# Snippet for SnapshotJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_JobsV1Beta3_UpdateJob_sync]
+# [START dataflow_v1beta3_generated_JobsV1Beta3_SnapshotJob_sync_60f4d8fe]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,18 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_update_job():
+def sample_snapshot_job():
     # Create a client
     client = dataflow_v1beta3.JobsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.UpdateJobRequest(
+    request = dataflow_v1beta3.SnapshotJobRequest(
     )
 
     # Make the request
-    response = client.update_job(request=request)
+    response = client.snapshot_job(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataflow_v1beta3_generated_JobsV1Beta3_UpdateJob_sync]
+# [END dataflow_v1beta3_generated_JobsV1Beta3_SnapshotJob_sync_60f4d8fe]

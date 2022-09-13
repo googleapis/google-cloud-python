@@ -42,6 +42,7 @@ from google.cloud.dataflow_v1beta3.types import environment, jobs, templates
 from .transports.base import DEFAULT_CLIENT_INFO, TemplatesServiceTransport
 from .transports.grpc import TemplatesServiceGrpcTransport
 from .transports.grpc_asyncio import TemplatesServiceGrpcAsyncIOTransport
+from .transports.rest import TemplatesServiceRestTransport
 
 
 class TemplatesServiceClientMeta(type):
@@ -57,6 +58,7 @@ class TemplatesServiceClientMeta(type):
     )  # type: Dict[str, Type[TemplatesServiceTransport]]
     _transport_registry["grpc"] = TemplatesServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = TemplatesServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = TemplatesServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -330,6 +332,9 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
             transport (Union[str, TemplatesServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

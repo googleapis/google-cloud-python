@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetJobMetrics
+# Snippet for LaunchTemplate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_MetricsV1Beta3_GetJobMetrics_sync]
+# [START dataflow_v1beta3_generated_TemplatesService_LaunchTemplate_sync_77764eb9]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,19 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_get_job_metrics():
+def sample_launch_template():
     # Create a client
-    client = dataflow_v1beta3.MetricsV1Beta3Client()
+    client = dataflow_v1beta3.TemplatesServiceClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.GetJobMetricsRequest(
+    request = dataflow_v1beta3.LaunchTemplateRequest(
+        gcs_path="gcs_path_value",
     )
 
     # Make the request
-    response = client.get_job_metrics(request=request)
+    response = client.launch_template(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataflow_v1beta3_generated_MetricsV1Beta3_GetJobMetrics_sync]
+# [END dataflow_v1beta3_generated_TemplatesService_LaunchTemplate_sync_77764eb9]
