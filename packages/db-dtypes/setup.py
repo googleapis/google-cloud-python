@@ -71,6 +71,6 @@ setup(
     ],
     platforms="Posix; MacOS X; Windows",
     install_requires=dependencies,
-    python_requires=">=3.7, <3.11",
+    python_requires=">=3.7",
     tests_require=["pytest"],
 )
