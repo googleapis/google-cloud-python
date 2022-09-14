@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.4.2](https://github.com/googleapis/gapic-generator-python/compare/v1.4.1...v1.4.2) (2022-09-13)
+
+
+### Bug Fixes
+
+* Unit test generation for boolean query prams ([#1447](https://github.com/googleapis/gapic-generator-python/issues/1447)) ([dd68dd1](https://github.com/googleapis/gapic-generator-python/commit/dd68dd1f288c4fbbdb7f54900094379ee1d771c0))
+
 ## [1.4.1](https://github.com/googleapis/gapic-generator-python/compare/v1.4.0...v1.4.1) (2022-09-09)
 
 
