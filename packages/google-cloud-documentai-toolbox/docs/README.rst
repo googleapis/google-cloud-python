@@ -12,7 +12,7 @@ Document AI Toolbox
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-admin.svg
    :target: https://pypi.org/project/google-analytics-admin/
 
-# TODO: Change LINK
+.. _Document AI Toolbox: LINK
 .. _SDK Documentation: LINK
 
 Quick Start
@@ -100,7 +100,6 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-# TODO: Change LINK
 .. _Client Library Documentation:  LINK
 .. _Document AI API Product documentation:  LINK
 .. _README: https://github.com/googleapis/python-documentai-toolbox/blob/main/README.rst

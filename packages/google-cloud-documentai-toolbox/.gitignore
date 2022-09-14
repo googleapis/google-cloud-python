@@ -43,6 +43,11 @@ pip-log.txt
 # emacs
 *~
 
+# Built documentation
+docs/_build
+bigquery/docs/generated
+docs.metadata
+
 # Virtual environment
 env/
 

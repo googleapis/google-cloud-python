@@ -26,11 +26,12 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 setuptools.setup(
-    name="document-ai-sdk",
+    name="google-cloud-documentai-toolbox",
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    url="https://github.com/googleapis/document-ai-sdk",
+    url="https://github.com/googleapis/python-documentai-toolbox",
     version=version,
+    license="Apache 2.0",
     long_description=readme,
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud"),
@@ -44,12 +45,11 @@ setuptools.setup(
         "grpc-google-iam-v1 >= 0.12.4, < 0.13dev",
         "google-cloud-documentai >= 1.2.1, < 2.0.0dev",
     ),
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
