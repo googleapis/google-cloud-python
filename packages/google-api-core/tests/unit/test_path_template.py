@@ -629,8 +629,9 @@ def test_transcode_with_additional_bindings(
 )
 def test_transcode_fails(http_options, message, request_kwargs):
     http_options, _ = helper_test_transcode(http_options, range(4))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as exc_info:
         path_template.transcode(http_options, message, **request_kwargs)
+    assert str(exc_info.value).count("URI") == len(http_options)
 
 
 def helper_test_transcode(http_options_list, expected_result_list):

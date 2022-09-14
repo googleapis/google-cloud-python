@@ -272,15 +272,19 @@ def transcode(http_options, message=None, **request_kwargs):
          ValueError: If the request does not match the given template.
     """
     transcoded_value = message or request_kwargs
+    bindings = []
     for http_option in http_options:
         request = {}
 
         # Assign path
         uri_template = http_option["uri"]
-        path_fields = [
-            match.group("name") for match in _VARIABLE_RE.finditer(uri_template)
+        fields = [
+            (m.group("name"), m.group("template"))
+            for m in _VARIABLE_RE.finditer(uri_template)
         ]
-        path_args = {field: get_field(transcoded_value, field) for field in path_fields}
+        bindings.append((uri_template, fields))
+
+        path_args = {field: get_field(transcoded_value, field) for field, _ in fields}
         request["uri"] = expand(uri_template, **path_args)
 
         if not validate(uri_template, request["uri"]) or not all(path_args.values()):
@@ -288,7 +292,7 @@ def transcode(http_options, message=None, **request_kwargs):
 
         # Remove fields used in uri path from request
         leftovers = copy.deepcopy(transcoded_value)
-        for path_field in path_fields:
+        for path_field, _ in fields:
             delete_field(leftovers, path_field)
 
         # Assign body and query params
@@ -316,8 +320,27 @@ def transcode(http_options, message=None, **request_kwargs):
         request["method"] = http_option["method"]
         return request
 
+    bindings_description = [
+        '\n\tURI: "{}"'
+        "\n\tRequired request fields:\n\t\t{}".format(
+            uri,
+            "\n\t\t".join(
+                [
+                    'field: "{}", pattern: "{}"'.format(n, p if p else "*")
+                    for n, p in fields
+                ]
+            ),
+        )
+        for uri, fields in bindings
+    ]
+
     raise ValueError(
-        "Request {} does not match any URL path template in available HttpRule's {}".format(
-            request_kwargs, [opt["uri"] for opt in http_options]
+        "Invalid request."
+        "\nSome of the fields of the request message are either not initialized or "
+        "initialized with an invalid value."
+        "\nPlease make sure your request matches at least one accepted HTTP binding."
+        "\nTo match a binding the request message must have all the required fields "
+        "initialized with values matching their patterns as listed below:{}".format(
+            "\n".join(bindings_description)
         )
     )
