@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.10.1](https://github.com/googleapis/python-api-core/compare/v2.10.0...v2.10.1) (2022-09-14)
+
+
+### Bug Fixes
+
+* Improve transcoding error message ([#442](https://github.com/googleapis/python-api-core/issues/442)) ([538df80](https://github.com/googleapis/python-api-core/commit/538df80ed6d21f43b512a73853935f7a7b9bdf52))
+
 ## [2.10.0](https://github.com/googleapis/python-api-core/compare/v2.9.0...v2.10.0) (2022-09-02)
 
 
