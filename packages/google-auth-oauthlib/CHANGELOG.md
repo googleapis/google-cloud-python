@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [0.5.3](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.2...v0.5.3) (2022-09-02)
+
+
+### Bug Fixes
+
+* Pass port range from `get_user_credentials` to `find_open_port` ([#212](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/212)) ([479330a](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/479330a49a28e4f7443982ba235d2adee3e49d58))
+
 ## [0.5.2](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.1...v0.5.2) (2022-06-03)
 
 
