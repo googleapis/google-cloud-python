@@ -24,7 +24,8 @@ RESERVED_NAMES = frozenset(
         # We CANNOT make exceptions for keywords.
         keyword.kwlist,
         # We make SOME exceptions for certain names that collide with builtins.
-        set(dir(builtins)) - {"filter", "map", "id", "input", "property"},
+        set(dir(builtins)) - {"filter", "map", "id",
+            "input", "property", "vars", "set"},
         # "mapping" and "ignore_unknown_fields" have special uses
         # in the constructor of proto.Message
         {"mapping", "ignore_unknown_fields"},
