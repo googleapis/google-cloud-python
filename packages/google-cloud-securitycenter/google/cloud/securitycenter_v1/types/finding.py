@@ -162,7 +162,7 @@ class Finding(proto.Message):
             Represents operating system processes
             associated with the Finding.
         contacts (Mapping[str, google.cloud.securitycenter_v1.types.ContactDetails]):
-            Output only. Map containing the point of contacts for the
+            Output only. Map containing the points of contact for the
             given finding. The key represents the type of contact, while
             the value contains a list of all the contacts that pertain.
             Please refer to:
@@ -185,6 +185,10 @@ class Finding(proto.Message):
         compliances (Sequence[google.cloud.securitycenter_v1.types.Compliance]):
             Contains compliance information for security
             standards associated to the finding.
+        parent_display_name (str):
+            Output only. The human readable display name
+            of the finding source such as "Event Threat
+            Detection" or "Security Health Analytics".
         description (str):
             Contains more detail about the finding.
         exfiltration (google.cloud.securitycenter_v1.types.Exfiltration):
@@ -356,6 +360,10 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=34,
         message=compliance.Compliance,
+    )
+    parent_display_name = proto.Field(
+        proto.STRING,
+        number=36,
     )
     description = proto.Field(
         proto.STRING,
