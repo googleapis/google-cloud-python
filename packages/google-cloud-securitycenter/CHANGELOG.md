@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.16.0](https://github.com/googleapis/python-securitycenter/compare/v1.15.0...v1.16.0) (2022-09-15)
+
+
+### Features
+
+* Added parent display name i.e. source display name for a finding as one of the finding attributes ([#390](https://github.com/googleapis/python-securitycenter/issues/390)) ([b6661c7](https://github.com/googleapis/python-securitycenter/commit/b6661c71103dc0f6ae22778615ad312a3c6b16f4))
+
 ## [1.15.0](https://github.com/googleapis/python-securitycenter/compare/v1.14.0...v1.15.0) (2022-08-29)
 
 
