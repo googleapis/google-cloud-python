@@ -24,17 +24,10 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
-from google.protobuf import json_format
-import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
 from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import client_options
@@ -108,7 +101,6 @@ def test__get_default_mtls_endpoint():
     [
         (RevisionsClient, "grpc"),
         (RevisionsAsyncClient, "grpc_asyncio"),
-        (RevisionsClient, "rest"),
     ],
 )
 def test_revisions_client_from_service_account_info(client_class, transport_name):
@@ -122,11 +114,7 @@ def test_revisions_client_from_service_account_info(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == (
-            "run.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://run.googleapis.com"
-        )
+        assert client.transport._host == ("run.googleapis.com:443")
 
 
 @pytest.mark.parametrize(
@@ -134,7 +122,6 @@ def test_revisions_client_from_service_account_info(client_class, transport_name
     [
         (transports.RevisionsGrpcTransport, "grpc"),
         (transports.RevisionsGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.RevisionsRestTransport, "rest"),
     ],
 )
 def test_revisions_client_service_account_always_use_jwt(
@@ -160,7 +147,6 @@ def test_revisions_client_service_account_always_use_jwt(
     [
         (RevisionsClient, "grpc"),
         (RevisionsAsyncClient, "grpc_asyncio"),
-        (RevisionsClient, "rest"),
     ],
 )
 def test_revisions_client_from_service_account_file(client_class, transport_name):
@@ -181,18 +167,13 @@ def test_revisions_client_from_service_account_file(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == (
-            "run.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://run.googleapis.com"
-        )
+        assert client.transport._host == ("run.googleapis.com:443")
 
 
 def test_revisions_client_get_transport_class():
     transport = RevisionsClient.get_transport_class()
     available_transports = [
         transports.RevisionsGrpcTransport,
-        transports.RevisionsRestTransport,
     ]
     assert transport in available_transports
 
@@ -209,7 +190,6 @@ def test_revisions_client_get_transport_class():
             transports.RevisionsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (RevisionsClient, transports.RevisionsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -351,8 +331,6 @@ def test_revisions_client_client_options(client_class, transport_class, transpor
             "grpc_asyncio",
             "false",
         ),
-        (RevisionsClient, transports.RevisionsRestTransport, "rest", "true"),
-        (RevisionsClient, transports.RevisionsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -546,7 +524,6 @@ def test_revisions_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.RevisionsGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (RevisionsClient, transports.RevisionsRestTransport, "rest"),
     ],
 )
 def test_revisions_client_client_options_scopes(
@@ -582,7 +559,6 @@ def test_revisions_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (RevisionsClient, transports.RevisionsRestTransport, "rest", None),
     ],
 )
 def test_revisions_client_client_options_credentials_file(
@@ -1510,919 +1486,6 @@ async def test_delete_revision_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        revision.GetRevisionRequest,
-        dict,
-    ],
-)
-def test_get_revision_rest(request_type):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/revisions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = revision.Revision(
-            name="name_value",
-            uid="uid_value",
-            generation=1068,
-            launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-            service="service_value",
-            max_instance_request_concurrency=3436,
-            service_account="service_account_value",
-            execution_environment=vendor_settings.ExecutionEnvironment.EXECUTION_ENVIRONMENT_GEN1,
-            encryption_key="encryption_key_value",
-            reconciling=True,
-            observed_generation=2021,
-            log_uri="log_uri_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = revision.Revision.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_revision(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, revision.Revision)
-    assert response.name == "name_value"
-    assert response.uid == "uid_value"
-    assert response.generation == 1068
-    assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
-    assert response.service == "service_value"
-    assert response.max_instance_request_concurrency == 3436
-    assert response.service_account == "service_account_value"
-    assert (
-        response.execution_environment
-        == vendor_settings.ExecutionEnvironment.EXECUTION_ENVIRONMENT_GEN1
-    )
-    assert response.encryption_key == "encryption_key_value"
-    assert response.reconciling is True
-    assert response.observed_generation == 2021
-    assert response.log_uri == "log_uri_value"
-    assert response.etag == "etag_value"
-
-
-def test_get_revision_rest_required_fields(request_type=revision.GetRevisionRequest):
-    transport_class = transports.RevisionsRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_revision._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_revision._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = revision.Revision()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = revision.Revision.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_revision(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_revision_rest_unset_required_fields():
-    transport = transports.RevisionsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_revision._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_revision_rest_interceptors(null_interceptor):
-    transport = transports.RevisionsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.RevisionsRestInterceptor(),
-    )
-    client = RevisionsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RevisionsRestInterceptor, "post_get_revision"
-    ) as post, mock.patch.object(
-        transports.RevisionsRestInterceptor, "pre_get_revision"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = revision.GetRevisionRequest.pb(revision.GetRevisionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = revision.Revision.to_json(revision.Revision())
-
-        request = revision.GetRevisionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = revision.Revision()
-
-        client.get_revision(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_revision_rest_bad_request(
-    transport: str = "rest", request_type=revision.GetRevisionRequest
-):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/revisions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_revision(request)
-
-
-def test_get_revision_rest_flattened():
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = revision.Revision()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/services/sample3/revisions/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = revision.Revision.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_revision(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2/{name=projects/*/locations/*/services/*/revisions/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_revision_rest_flattened_error(transport: str = "rest"):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_revision(
-            revision.GetRevisionRequest(),
-            name="name_value",
-        )
-
-
-def test_get_revision_rest_error():
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        revision.ListRevisionsRequest,
-        dict,
-    ],
-)
-def test_list_revisions_rest(request_type):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = revision.ListRevisionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = revision.ListRevisionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_revisions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListRevisionsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_revisions_rest_required_fields(
-    request_type=revision.ListRevisionsRequest,
-):
-    transport_class = transports.RevisionsRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_revisions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_revisions._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-            "show_deleted",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = revision.ListRevisionsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = revision.ListRevisionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_revisions(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_revisions_rest_unset_required_fields():
-    transport = transports.RevisionsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_revisions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-                "showDeleted",
-            )
-        )
-        & set(("parent",))
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_revisions_rest_interceptors(null_interceptor):
-    transport = transports.RevisionsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.RevisionsRestInterceptor(),
-    )
-    client = RevisionsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RevisionsRestInterceptor, "post_list_revisions"
-    ) as post, mock.patch.object(
-        transports.RevisionsRestInterceptor, "pre_list_revisions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = revision.ListRevisionsRequest.pb(revision.ListRevisionsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = revision.ListRevisionsResponse.to_json(
-            revision.ListRevisionsResponse()
-        )
-
-        request = revision.ListRevisionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = revision.ListRevisionsResponse()
-
-        client.list_revisions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_revisions_rest_bad_request(
-    transport: str = "rest", request_type=revision.ListRevisionsRequest
-):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_revisions(request)
-
-
-def test_list_revisions_rest_flattened():
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = revision.ListRevisionsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/services/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = revision.ListRevisionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_revisions(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2/{parent=projects/*/locations/*/services/*}/revisions"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_revisions_rest_flattened_error(transport: str = "rest"):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_revisions(
-            revision.ListRevisionsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_revisions_rest_pager(transport: str = "rest"):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            revision.ListRevisionsResponse(
-                revisions=[
-                    revision.Revision(),
-                    revision.Revision(),
-                    revision.Revision(),
-                ],
-                next_page_token="abc",
-            ),
-            revision.ListRevisionsResponse(
-                revisions=[],
-                next_page_token="def",
-            ),
-            revision.ListRevisionsResponse(
-                revisions=[
-                    revision.Revision(),
-                ],
-                next_page_token="ghi",
-            ),
-            revision.ListRevisionsResponse(
-                revisions=[
-                    revision.Revision(),
-                    revision.Revision(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(revision.ListRevisionsResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/services/sample3"
-        }
-
-        pager = client.list_revisions(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, revision.Revision) for i in results)
-
-        pages = list(client.list_revisions(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        revision.DeleteRevisionRequest,
-        dict,
-    ],
-)
-def test_delete_revision_rest(request_type):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/revisions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_revision(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_delete_revision_rest_required_fields(
-    request_type=revision.DeleteRevisionRequest,
-):
-    transport_class = transports.RevisionsRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_revision._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_revision._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "etag",
-            "validate_only",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_revision(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_revision_rest_unset_required_fields():
-    transport = transports.RevisionsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_revision._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "etag",
-                "validateOnly",
-            )
-        )
-        & set(("name",))
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_revision_rest_interceptors(null_interceptor):
-    transport = transports.RevisionsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.RevisionsRestInterceptor(),
-    )
-    client = RevisionsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.RevisionsRestInterceptor, "post_delete_revision"
-    ) as post, mock.patch.object(
-        transports.RevisionsRestInterceptor, "pre_delete_revision"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = revision.DeleteRevisionRequest.pb(revision.DeleteRevisionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = revision.DeleteRevisionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_revision(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_revision_rest_bad_request(
-    transport: str = "rest", request_type=revision.DeleteRevisionRequest
-):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/revisions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_revision(request)
-
-
-def test_delete_revision_rest_flattened():
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/services/sample3/revisions/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_revision(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v2/{name=projects/*/locations/*/services/*/revisions/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_delete_revision_rest_flattened_error(transport: str = "rest"):
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_revision(
-            revision.DeleteRevisionRequest(),
-            name="name_value",
-        )
-
-
-def test_delete_revision_rest_error():
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RevisionsGrpcTransport(
@@ -2504,7 +1567,6 @@ def test_transport_get_channel():
     [
         transports.RevisionsGrpcTransport,
         transports.RevisionsGrpcAsyncIOTransport,
-        transports.RevisionsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2519,7 +1581,6 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
-        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2656,7 +1717,6 @@ def test_revisions_transport_auth_adc(transport_class):
     [
         transports.RevisionsGrpcTransport,
         transports.RevisionsGrpcAsyncIOTransport,
-        transports.RevisionsRestTransport,
     ],
 )
 def test_revisions_transport_auth_gdch_credentials(transport_class):
@@ -2751,40 +1811,11 @@ def test_revisions_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
-def test_revisions_http_transport_client_cert_source_for_mtls():
-    cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.RevisionsRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
-        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_revisions_rest_lro_client():
-    client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
-
-
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
-        "rest",
     ],
 )
 def test_revisions_host_no_port(transport_name):
@@ -2793,11 +1824,7 @@ def test_revisions_host_no_port(transport_name):
         client_options=client_options.ClientOptions(api_endpoint="run.googleapis.com"),
         transport=transport_name,
     )
-    assert client.transport._host == (
-        "run.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://run.googleapis.com"
-    )
+    assert client.transport._host == ("run.googleapis.com:443")
 
 
 @pytest.mark.parametrize(
@@ -2805,7 +1832,6 @@ def test_revisions_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
-        "rest",
     ],
 )
 def test_revisions_host_with_port(transport_name):
@@ -2816,39 +1842,7 @@ def test_revisions_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == (
-        "run.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://run.googleapis.com:8000"
-    )
-
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "rest",
-    ],
-)
-def test_revisions_client_transport_session_collision(transport_name):
-    creds1 = ga_credentials.AnonymousCredentials()
-    creds2 = ga_credentials.AnonymousCredentials()
-    client1 = RevisionsClient(
-        credentials=creds1,
-        transport=transport_name,
-    )
-    client2 = RevisionsClient(
-        credentials=creds2,
-        transport=transport_name,
-    )
-    session1 = client1.transport.get_revision._session
-    session2 = client2.transport.get_revision._session
-    assert session1 != session2
-    session1 = client1.transport.list_revisions._session
-    session2 = client2.transport.list_revisions._session
-    assert session1 != session2
-    session1 = client1.transport.delete_revision._session
-    session2 = client2.transport.delete_revision._session
-    assert session1 != session2
+    assert client.transport._host == ("run.googleapis.com:8000")
 
 
 def test_revisions_grpc_transport_channel():
@@ -3304,7 +2298,6 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
-        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3322,7 +2315,6 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
-        "rest",
         "grpc",
     ]
     for transport in transports:

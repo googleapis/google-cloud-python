@@ -46,26 +46,6 @@
               ]
             }
           }
-        },
-        "rest": {
-          "libraryClient": "RevisionsClient",
-          "rpcs": {
-            "DeleteRevision": {
-              "methods": [
-                "delete_revision"
-              ]
-            },
-            "GetRevision": {
-              "methods": [
-                "get_revision"
-              ]
-            },
-            "ListRevisions": {
-              "methods": [
-                "list_revisions"
-              ]
-            }
-          }
         }
       }
     },
@@ -118,51 +98,6 @@
         },
         "grpc-async": {
           "libraryClient": "ServicesAsyncClient",
-          "rpcs": {
-            "CreateService": {
-              "methods": [
-                "create_service"
-              ]
-            },
-            "DeleteService": {
-              "methods": [
-                "delete_service"
-              ]
-            },
-            "GetIamPolicy": {
-              "methods": [
-                "get_iam_policy"
-              ]
-            },
-            "GetService": {
-              "methods": [
-                "get_service"
-              ]
-            },
-            "ListServices": {
-              "methods": [
-                "list_services"
-              ]
-            },
-            "SetIamPolicy": {
-              "methods": [
-                "set_iam_policy"
-              ]
-            },
-            "TestIamPermissions": {
-              "methods": [
-                "test_iam_permissions"
-              ]
-            },
-            "UpdateService": {
-              "methods": [
-                "update_service"
-              ]
-            }
-          }
-        },
-        "rest": {
-          "libraryClient": "ServicesClient",
           "rpcs": {
             "CreateService": {
               "methods": [

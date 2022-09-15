@@ -19,20 +19,15 @@ from typing import Dict, Type
 from .base import ServicesTransport
 from .grpc import ServicesGrpcTransport
 from .grpc_asyncio import ServicesGrpcAsyncIOTransport
-from .rest import ServicesRestTransport
-from .rest import ServicesRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ServicesTransport]]
 _transport_registry["grpc"] = ServicesGrpcTransport
 _transport_registry["grpc_asyncio"] = ServicesGrpcAsyncIOTransport
-_transport_registry["rest"] = ServicesRestTransport
 
 __all__ = (
     "ServicesTransport",
     "ServicesGrpcTransport",
     "ServicesGrpcAsyncIOTransport",
-    "ServicesRestTransport",
-    "ServicesRestInterceptor",
 )
