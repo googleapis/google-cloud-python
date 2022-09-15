@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.1.2](https://github.com/googleapis/python-vision/compare/v3.1.1...v3.1.2) (2022-09-13)
+
+
+### Documentation
+
+* Update comments for image annotator OCR models ([#485](https://github.com/googleapis/python-vision/issues/485)) ([cd9c2b9](https://github.com/googleapis/python-vision/commit/cd9c2b995b3fecd975247f5d1ac5b4d7c31eac96))
+
 ## [3.1.1](https://github.com/googleapis/python-vision/compare/v3.1.0...v3.1.1) (2022-08-11)
 
 
