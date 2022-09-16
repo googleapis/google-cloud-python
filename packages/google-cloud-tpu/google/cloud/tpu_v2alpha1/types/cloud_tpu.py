@@ -53,6 +53,7 @@ __protobuf__ = proto.module(
         "Symptom",
         "GetGuestAttributesRequest",
         "GetGuestAttributesResponse",
+        "ShieldedInstanceConfig",
     },
 )
 
@@ -350,6 +351,8 @@ class Node(proto.Message):
         symptoms (Sequence[google.cloud.tpu_v2alpha1.types.Symptom]):
             Output only. The Symptoms that have occurred
             to the TPU Node.
+        shielded_instance_config (google.cloud.tpu_v2alpha1.types.ShieldedInstanceConfig):
+            Shielded Instance options.
     """
 
     class State(proto.Enum):
@@ -480,6 +483,11 @@ class Node(proto.Message):
         proto.MESSAGE,
         number=39,
         message="Symptom",
+    )
+    shielded_instance_config = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        message="ShieldedInstanceConfig",
     )
 
 
@@ -1052,6 +1060,21 @@ class GetGuestAttributesResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="GuestAttributes",
+    )
+
+
+class ShieldedInstanceConfig(proto.Message):
+    r"""A set of Shielded Instance options.
+
+    Attributes:
+        enable_secure_boot (bool):
+            Defines whether the instance has Secure Boot
+            enabled.
+    """
+
+    enable_secure_boot = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 
