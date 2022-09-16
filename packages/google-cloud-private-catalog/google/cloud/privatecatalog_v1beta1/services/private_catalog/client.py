@@ -40,6 +40,7 @@ from google.cloud.privatecatalog_v1beta1.types import private_catalog
 from .transports.base import DEFAULT_CLIENT_INFO, PrivateCatalogTransport
 from .transports.grpc import PrivateCatalogGrpcTransport
 from .transports.grpc_asyncio import PrivateCatalogGrpcAsyncIOTransport
+from .transports.rest import PrivateCatalogRestTransport
 
 
 class PrivateCatalogClientMeta(type):
@@ -55,6 +56,7 @@ class PrivateCatalogClientMeta(type):
     )  # type: Dict[str, Type[PrivateCatalogTransport]]
     _transport_registry["grpc"] = PrivateCatalogGrpcTransport
     _transport_registry["grpc_asyncio"] = PrivateCatalogGrpcAsyncIOTransport
+    _transport_registry["rest"] = PrivateCatalogRestTransport
 
     def get_transport_class(
         cls,
@@ -400,6 +402,9 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
             transport (Union[str, PrivateCatalogTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
