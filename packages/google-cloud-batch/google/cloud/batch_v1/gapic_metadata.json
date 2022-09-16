@@ -76,6 +76,41 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "BatchServiceClient",
+          "rpcs": {
+            "CreateJob": {
+              "methods": [
+                "create_job"
+              ]
+            },
+            "DeleteJob": {
+              "methods": [
+                "delete_job"
+              ]
+            },
+            "GetJob": {
+              "methods": [
+                "get_job"
+              ]
+            },
+            "GetTask": {
+              "methods": [
+                "get_task"
+              ]
+            },
+            "ListJobs": {
+              "methods": [
+                "list_jobs"
+              ]
+            },
+            "ListTasks": {
+              "methods": [
+                "list_tasks"
+              ]
+            }
+          }
         }
       }
     }
