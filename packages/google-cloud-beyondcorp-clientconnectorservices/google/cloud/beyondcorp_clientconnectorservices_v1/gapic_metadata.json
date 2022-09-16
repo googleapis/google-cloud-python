@@ -66,6 +66,36 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ClientConnectorServicesServiceClient",
+          "rpcs": {
+            "CreateClientConnectorService": {
+              "methods": [
+                "create_client_connector_service"
+              ]
+            },
+            "DeleteClientConnectorService": {
+              "methods": [
+                "delete_client_connector_service"
+              ]
+            },
+            "GetClientConnectorService": {
+              "methods": [
+                "get_client_connector_service"
+              ]
+            },
+            "ListClientConnectorServices": {
+              "methods": [
+                "list_client_connector_services"
+              ]
+            },
+            "UpdateClientConnectorService": {
+              "methods": [
+                "update_client_connector_service"
+              ]
+            }
+          }
         }
       }
     }
