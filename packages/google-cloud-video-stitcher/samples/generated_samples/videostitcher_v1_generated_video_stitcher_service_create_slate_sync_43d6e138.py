@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateCdnKey
+# Snippet for CreateSlate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync_43d6e138]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,20 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_update_cdn_key():
+def sample_create_slate():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.UpdateCdnKeyRequest(
+    request = stitcher_v1.CreateSlateRequest(
+        parent="parent_value",
+        slate_id="slate_id_value",
     )
 
     # Make the request
-    response = client.update_cdn_key(request=request)
+    response = client.create_slate(request=request)
 
     # Handle the response
     print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync_43d6e138]

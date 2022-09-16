@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetCdnKey
+# Snippet for ListSlates
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_ListSlates_sync_0d7a1ee7]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,20 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_get_cdn_key():
+def sample_list_slates():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.GetCdnKeyRequest(
-        name="name_value",
+    request = stitcher_v1.ListSlatesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_cdn_key(request=request)
+    page_result = client.list_slates(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_ListSlates_sync_0d7a1ee7]

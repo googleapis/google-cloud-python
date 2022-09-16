@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync_62ab4011]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -48,4 +48,4 @@ def sample_update_slate():
     # Handle the response
     print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync_62ab4011]

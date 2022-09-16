@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetVodSession
+# Snippet for DeleteSlate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_GetVodSession_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_DeleteSlate_sync_736084b8]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,17 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_get_vod_session():
+def sample_delete_slate():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.GetVodSessionRequest(
+    request = stitcher_v1.DeleteSlateRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_vod_session(request=request)
+    client.delete_slate(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_GetVodSession_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_DeleteSlate_sync_736084b8]

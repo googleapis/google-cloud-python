@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteCdnKey
+# Snippet for CreateVodSession
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync_4d6e9ee0]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,17 +34,24 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_delete_cdn_key():
+def sample_create_vod_session():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.DeleteCdnKeyRequest(
-        name="name_value",
+    vod_session = stitcher_v1.VodSession()
+    vod_session.source_uri = "source_uri_value"
+    vod_session.ad_tag_uri = "ad_tag_uri_value"
+
+    request = stitcher_v1.CreateVodSessionRequest(
+        parent="parent_value",
+        vod_session=vod_session,
     )
 
     # Make the request
-    client.delete_cdn_key(request=request)
+    response = client.create_vod_session(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync_4d6e9ee0]

@@ -149,7 +149,7 @@
         "shortName": "create_cdn_key"
       },
       "description": "Sample for CreateCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_b0021d8c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_sync",
@@ -185,7 +185,95 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_b0021d8c.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.create_cdn_key",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.CreateCdnKey",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "CreateCdnKey"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.CreateCdnKeyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "cdn_key",
+            "type": "google.cloud.video.stitcher_v1.types.CdnKey"
+          },
+          {
+            "name": "cdn_key_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.CdnKey",
+        "shortName": "create_cdn_key"
+      },
+      "description": "Sample for CreateCdnKey",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_59d969c0.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_59d969c0.py"
     },
     {
       "canonical": true,
@@ -318,7 +406,7 @@
         "shortName": "create_live_session"
       },
       "description": "Sample for CreateLiveSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_9b417ffd.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateLiveSession_sync",
@@ -354,7 +442,91 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_9b417ffd.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.create_live_session",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.CreateLiveSession",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "CreateLiveSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.CreateLiveSessionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "live_session",
+            "type": "google.cloud.video.stitcher_v1.types.LiveSession"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.LiveSession",
+        "shortName": "create_live_session"
+      },
+      "description": "Sample for CreateLiveSession",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_a1d80535.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateLiveSession_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_a1d80535.py"
     },
     {
       "canonical": true,
@@ -495,7 +667,7 @@
         "shortName": "create_slate"
       },
       "description": "Sample for CreateSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_277cf557.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync",
@@ -531,7 +703,95 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_277cf557.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.create_slate",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.CreateSlate",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "CreateSlate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.CreateSlateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "slate",
+            "type": "google.cloud.video.stitcher_v1.types.Slate"
+          },
+          {
+            "name": "slate_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.Slate",
+        "shortName": "create_slate"
+      },
+      "description": "Sample for CreateSlate",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_43d6e138.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_43d6e138.py"
     },
     {
       "canonical": true,
@@ -664,7 +924,7 @@
         "shortName": "create_vod_session"
       },
       "description": "Sample for CreateVodSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_4d6e9ee0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync",
@@ -700,7 +960,91 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_4d6e9ee0.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.create_vod_session",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.CreateVodSession",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "CreateVodSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.CreateVodSessionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "vod_session",
+            "type": "google.cloud.video.stitcher_v1.types.VodSession"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.VodSession",
+        "shortName": "create_vod_session"
+      },
+      "description": "Sample for CreateVodSession",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_9f03724e.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_9f03724e.py"
     },
     {
       "canonical": true,
@@ -821,7 +1165,7 @@
         "shortName": "delete_cdn_key"
       },
       "description": "Sample for DeleteCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_aff65568.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_sync",
@@ -855,7 +1199,84 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_aff65568.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.delete_cdn_key",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.DeleteCdnKey",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "DeleteCdnKey"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.DeleteCdnKeyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_cdn_key"
+      },
+      "description": "Sample for DeleteCdnKey",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_9ced91b1.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_9ced91b1.py"
     },
     {
       "canonical": true,
@@ -976,7 +1397,7 @@
         "shortName": "delete_slate"
       },
       "description": "Sample for DeleteSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_736084b8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteSlate_sync",
@@ -1010,7 +1431,84 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_736084b8.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.delete_slate",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.DeleteSlate",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "DeleteSlate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.DeleteSlateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_slate"
+      },
+      "description": "Sample for DeleteSlate",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_5c66b7e5.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteSlate_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_5c66b7e5.py"
     },
     {
       "canonical": true,
@@ -1135,7 +1633,7 @@
         "shortName": "get_cdn_key"
       },
       "description": "Sample for GetCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_e19ea1b8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync",
@@ -1171,7 +1669,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_e19ea1b8.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_cdn_key",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetCdnKey",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetCdnKey"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetCdnKeyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.CdnKey",
+        "shortName": "get_cdn_key"
+      },
+      "description": "Sample for GetCdnKey",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_09f5a4f5.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_09f5a4f5.py"
     },
     {
       "canonical": true,
@@ -1296,7 +1874,7 @@
         "shortName": "get_live_ad_tag_detail"
       },
       "description": "Sample for GetLiveAdTagDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_1172d747.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_sync",
@@ -1332,7 +1910,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_1172d747.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_live_ad_tag_detail",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetLiveAdTagDetail",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetLiveAdTagDetail"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetLiveAdTagDetailRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.LiveAdTagDetail",
+        "shortName": "get_live_ad_tag_detail"
+      },
+      "description": "Sample for GetLiveAdTagDetail",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_b54519f7.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_b54519f7.py"
     },
     {
       "canonical": true,
@@ -1457,7 +2115,7 @@
         "shortName": "get_live_session"
       },
       "description": "Sample for GetLiveSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_d4a68dc9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveSession_sync",
@@ -1493,7 +2151,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_d4a68dc9.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_live_session",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetLiveSession",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetLiveSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetLiveSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.LiveSession",
+        "shortName": "get_live_session"
+      },
+      "description": "Sample for GetLiveSession",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_b3e35b13.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveSession_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_b3e35b13.py"
     },
     {
       "canonical": true,
@@ -1618,7 +2356,7 @@
         "shortName": "get_slate"
       },
       "description": "Sample for GetSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_936b3a35.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetSlate_sync",
@@ -1654,7 +2392,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_936b3a35.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_slate",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetSlate",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetSlate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetSlateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.Slate",
+        "shortName": "get_slate"
+      },
+      "description": "Sample for GetSlate",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_0fd1cfd2.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetSlate_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_0fd1cfd2.py"
     },
     {
       "canonical": true,
@@ -1779,7 +2597,7 @@
         "shortName": "get_vod_ad_tag_detail"
       },
       "description": "Sample for GetVodAdTagDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_369f73cc.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodAdTagDetail_sync",
@@ -1815,7 +2633,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_369f73cc.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_vod_ad_tag_detail",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetVodAdTagDetail",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetVodAdTagDetail"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetVodAdTagDetailRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.VodAdTagDetail",
+        "shortName": "get_vod_ad_tag_detail"
+      },
+      "description": "Sample for GetVodAdTagDetail",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_4de83d6c.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodAdTagDetail_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_4de83d6c.py"
     },
     {
       "canonical": true,
@@ -1940,7 +2838,7 @@
         "shortName": "get_vod_session"
       },
       "description": "Sample for GetVodSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_16cf0132.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodSession_sync",
@@ -1976,7 +2874,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_16cf0132.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_vod_session",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetVodSession",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetVodSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetVodSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.VodSession",
+        "shortName": "get_vod_session"
+      },
+      "description": "Sample for GetVodSession",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_3a5d7679.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodSession_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_3a5d7679.py"
     },
     {
       "canonical": true,
@@ -2101,7 +3079,7 @@
         "shortName": "get_vod_stitch_detail"
       },
       "description": "Sample for GetVodStitchDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_53138205.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodStitchDetail_sync",
@@ -2137,7 +3115,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_53138205.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.get_vod_stitch_detail",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.GetVodStitchDetail",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "GetVodStitchDetail"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.GetVodStitchDetailRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.VodStitchDetail",
+        "shortName": "get_vod_stitch_detail"
+      },
+      "description": "Sample for GetVodStitchDetail",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_c8880fd0.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodStitchDetail_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_c8880fd0.py"
     },
     {
       "canonical": true,
@@ -2262,7 +3320,7 @@
         "shortName": "list_cdn_keys"
       },
       "description": "Sample for ListCdnKeys",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_72a4d366.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync",
@@ -2298,7 +3356,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_72a4d366.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.list_cdn_keys",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.ListCdnKeys",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "ListCdnKeys"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.ListCdnKeysRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.services.video_stitcher_service.pagers.ListCdnKeysPager",
+        "shortName": "list_cdn_keys"
+      },
+      "description": "Sample for ListCdnKeys",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_ada63331.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_ada63331.py"
     },
     {
       "canonical": true,
@@ -2423,7 +3561,7 @@
         "shortName": "list_live_ad_tag_details"
       },
       "description": "Sample for ListLiveAdTagDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_cf281ee8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListLiveAdTagDetails_sync",
@@ -2459,7 +3597,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_cf281ee8.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.list_live_ad_tag_details",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.ListLiveAdTagDetails",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "ListLiveAdTagDetails"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.ListLiveAdTagDetailsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.services.video_stitcher_service.pagers.ListLiveAdTagDetailsPager",
+        "shortName": "list_live_ad_tag_details"
+      },
+      "description": "Sample for ListLiveAdTagDetails",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_9480708b.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListLiveAdTagDetails_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_9480708b.py"
     },
     {
       "canonical": true,
@@ -2584,7 +3802,7 @@
         "shortName": "list_slates"
       },
       "description": "Sample for ListSlates",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_0d7a1ee7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListSlates_sync",
@@ -2620,7 +3838,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_0d7a1ee7.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.list_slates",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.ListSlates",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "ListSlates"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.ListSlatesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.services.video_stitcher_service.pagers.ListSlatesPager",
+        "shortName": "list_slates"
+      },
+      "description": "Sample for ListSlates",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_d9290ca3.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListSlates_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_d9290ca3.py"
     },
     {
       "canonical": true,
@@ -2745,7 +4043,7 @@
         "shortName": "list_vod_ad_tag_details"
       },
       "description": "Sample for ListVodAdTagDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_1daae335.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodAdTagDetails_sync",
@@ -2781,7 +4079,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_1daae335.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.list_vod_ad_tag_details",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.ListVodAdTagDetails",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "ListVodAdTagDetails"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.ListVodAdTagDetailsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.services.video_stitcher_service.pagers.ListVodAdTagDetailsPager",
+        "shortName": "list_vod_ad_tag_details"
+      },
+      "description": "Sample for ListVodAdTagDetails",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_31926d37.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodAdTagDetails_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_31926d37.py"
     },
     {
       "canonical": true,
@@ -2906,7 +4284,7 @@
         "shortName": "list_vod_stitch_details"
       },
       "description": "Sample for ListVodStitchDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_57fcc8aa.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodStitchDetails_sync",
@@ -2942,7 +4320,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_57fcc8aa.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.list_vod_stitch_details",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.ListVodStitchDetails",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "ListVodStitchDetails"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.ListVodStitchDetailsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.services.video_stitcher_service.pagers.ListVodStitchDetailsPager",
+        "shortName": "list_vod_stitch_details"
+      },
+      "description": "Sample for ListVodStitchDetails",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_f27e747a.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodStitchDetails_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_f27e747a.py"
     },
     {
       "canonical": true,
@@ -3075,7 +4533,7 @@
         "shortName": "update_cdn_key"
       },
       "description": "Sample for UpdateCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_2d50b620.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_sync",
@@ -3111,7 +4569,91 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_2d50b620.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.update_cdn_key",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.UpdateCdnKey",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "UpdateCdnKey"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.UpdateCdnKeyRequest"
+          },
+          {
+            "name": "cdn_key",
+            "type": "google.cloud.video.stitcher_v1.types.CdnKey"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.CdnKey",
+        "shortName": "update_cdn_key"
+      },
+      "description": "Sample for UpdateCdnKey",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_92f920b1.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_92f920b1.py"
     },
     {
       "canonical": true,
@@ -3244,7 +4786,7 @@
         "shortName": "update_slate"
       },
       "description": "Sample for UpdateSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_62ab4011.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync",
@@ -3280,7 +4822,91 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_62ab4011.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient",
+          "shortName": "VideoStitcherServiceClient"
+        },
+        "fullName": "google.cloud.video.stitcher_v1.VideoStitcherServiceClient.update_slate",
+        "method": {
+          "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService.UpdateSlate",
+          "service": {
+            "fullName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+            "shortName": "VideoStitcherService"
+          },
+          "shortName": "UpdateSlate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.video.stitcher_v1.types.UpdateSlateRequest"
+          },
+          {
+            "name": "slate",
+            "type": "google.cloud.video.stitcher_v1.types.Slate"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.video.stitcher_v1.types.Slate",
+        "shortName": "update_slate"
+      },
+      "description": "Sample for UpdateSlate",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_0b7009b7.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_0b7009b7.py"
     }
   ]
 }

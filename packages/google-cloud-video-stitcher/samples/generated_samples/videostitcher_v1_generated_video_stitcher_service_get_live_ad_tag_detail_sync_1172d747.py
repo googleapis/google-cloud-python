@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListCdnKeys
+# Snippet for GetLiveAdTagDetail
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_sync_1172d747]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,19 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_list_cdn_keys():
+def sample_get_live_ad_tag_detail():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.ListCdnKeysRequest(
-        parent="parent_value",
+    request = stitcher_v1.GetLiveAdTagDetailRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_cdn_keys(request=request)
+    response = client.get_live_ad_tag_detail(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_sync_1172d747]

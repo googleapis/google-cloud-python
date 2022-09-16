@@ -49,6 +49,7 @@ from google.cloud.video.stitcher_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, VideoStitcherServiceTransport
 from .transports.grpc import VideoStitcherServiceGrpcTransport
 from .transports.grpc_asyncio import VideoStitcherServiceGrpcAsyncIOTransport
+from .transports.rest import VideoStitcherServiceRestTransport
 
 
 class VideoStitcherServiceClientMeta(type):
@@ -64,6 +65,7 @@ class VideoStitcherServiceClientMeta(type):
     )  # type: Dict[str, Type[VideoStitcherServiceTransport]]
     _transport_registry["grpc"] = VideoStitcherServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = VideoStitcherServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = VideoStitcherServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -502,6 +504,9 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             transport (Union[str, VideoStitcherServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

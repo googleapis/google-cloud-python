@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateCdnKey
+# Snippet for ListCdnKeys
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync_72a4d366]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,20 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_create_cdn_key():
+def sample_list_cdn_keys():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.CreateCdnKeyRequest(
+    request = stitcher_v1.ListCdnKeysRequest(
         parent="parent_value",
-        cdn_key_id="cdn_key_id_value",
     )
 
     # Make the request
-    response = client.create_cdn_key(request=request)
+    page_result = client.list_cdn_keys(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync_72a4d366]
