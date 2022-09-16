@@ -26,6 +26,16 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AlphaAnalyticsDataClient",
+          "rpcs": {
+            "RunFunnelReport": {
+              "methods": [
+                "run_funnel_report"
+              ]
+            }
+          }
         }
       }
     }

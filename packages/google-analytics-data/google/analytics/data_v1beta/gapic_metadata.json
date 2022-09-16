@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "BetaAnalyticsDataClient",
+          "rpcs": {
+            "BatchRunPivotReports": {
+              "methods": [
+                "batch_run_pivot_reports"
+              ]
+            },
+            "BatchRunReports": {
+              "methods": [
+                "batch_run_reports"
+              ]
+            },
+            "CheckCompatibility": {
+              "methods": [
+                "check_compatibility"
+              ]
+            },
+            "GetMetadata": {
+              "methods": [
+                "get_metadata"
+              ]
+            },
+            "RunPivotReport": {
+              "methods": [
+                "run_pivot_report"
+              ]
+            },
+            "RunRealtimeReport": {
+              "methods": [
+                "run_realtime_report"
+              ]
+            },
+            "RunReport": {
+              "methods": [
+                "run_report"
+              ]
+            }
+          }
         }
       }
     }

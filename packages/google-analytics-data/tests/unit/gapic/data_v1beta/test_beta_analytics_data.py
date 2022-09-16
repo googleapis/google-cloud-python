@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.analytics.data_v1beta.services.beta_analytics_data import (
     BetaAnalyticsDataAsyncClient,
@@ -100,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (BetaAnalyticsDataClient, "grpc"),
         (BetaAnalyticsDataAsyncClient, "grpc_asyncio"),
+        (BetaAnalyticsDataClient, "rest"),
     ],
 )
 def test_beta_analytics_data_client_from_service_account_info(
@@ -115,7 +123,11 @@ def test_beta_analytics_data_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("analyticsdata.googleapis.com:443")
+        assert client.transport._host == (
+            "analyticsdata.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://analyticsdata.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -123,6 +135,7 @@ def test_beta_analytics_data_client_from_service_account_info(
     [
         (transports.BetaAnalyticsDataGrpcTransport, "grpc"),
         (transports.BetaAnalyticsDataGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.BetaAnalyticsDataRestTransport, "rest"),
     ],
 )
 def test_beta_analytics_data_client_service_account_always_use_jwt(
@@ -148,6 +161,7 @@ def test_beta_analytics_data_client_service_account_always_use_jwt(
     [
         (BetaAnalyticsDataClient, "grpc"),
         (BetaAnalyticsDataAsyncClient, "grpc_asyncio"),
+        (BetaAnalyticsDataClient, "rest"),
     ],
 )
 def test_beta_analytics_data_client_from_service_account_file(
@@ -170,13 +184,18 @@ def test_beta_analytics_data_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("analyticsdata.googleapis.com:443")
+        assert client.transport._host == (
+            "analyticsdata.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://analyticsdata.googleapis.com"
+        )
 
 
 def test_beta_analytics_data_client_get_transport_class():
     transport = BetaAnalyticsDataClient.get_transport_class()
     available_transports = [
         transports.BetaAnalyticsDataGrpcTransport,
+        transports.BetaAnalyticsDataRestTransport,
     ]
     assert transport in available_transports
 
@@ -193,6 +212,7 @@ def test_beta_analytics_data_client_get_transport_class():
             transports.BetaAnalyticsDataGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (BetaAnalyticsDataClient, transports.BetaAnalyticsDataRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -346,6 +366,18 @@ def test_beta_analytics_data_client_client_options(
             BetaAnalyticsDataAsyncClient,
             transports.BetaAnalyticsDataGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            BetaAnalyticsDataClient,
+            transports.BetaAnalyticsDataRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            BetaAnalyticsDataClient,
+            transports.BetaAnalyticsDataRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -547,6 +579,7 @@ def test_beta_analytics_data_client_get_mtls_endpoint_and_cert_source(client_cla
             transports.BetaAnalyticsDataGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (BetaAnalyticsDataClient, transports.BetaAnalyticsDataRestTransport, "rest"),
     ],
 )
 def test_beta_analytics_data_client_client_options_scopes(
@@ -586,6 +619,12 @@ def test_beta_analytics_data_client_client_options_scopes(
             transports.BetaAnalyticsDataGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            BetaAnalyticsDataClient,
+            transports.BetaAnalyticsDataRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -1881,6 +1920,1037 @@ async def test_check_compatibility_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.RunReportRequest,
+        dict,
+    ],
+)
+def test_run_report_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.RunReportResponse(
+            row_count=992,
+            kind="kind_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.RunReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.RunReportResponse)
+    assert response.row_count == 992
+    assert response.kind == "kind_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_report_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_run_report"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_run_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.RunReportRequest.pb(
+            analytics_data_api.RunReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_data_api.RunReportResponse.to_json(
+            analytics_data_api.RunReportResponse()
+        )
+
+        request = analytics_data_api.RunReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.RunReportResponse()
+
+        client.run_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_report_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.RunReportRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_report(request)
+
+
+def test_run_report_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.RunPivotReportRequest,
+        dict,
+    ],
+)
+def test_run_pivot_report_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.RunPivotReportResponse(
+            kind="kind_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.RunPivotReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_pivot_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.RunPivotReportResponse)
+    assert response.kind == "kind_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_pivot_report_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_run_pivot_report"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_run_pivot_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.RunPivotReportRequest.pb(
+            analytics_data_api.RunPivotReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_data_api.RunPivotReportResponse.to_json(
+            analytics_data_api.RunPivotReportResponse()
+        )
+
+        request = analytics_data_api.RunPivotReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.RunPivotReportResponse()
+
+        client.run_pivot_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_pivot_report_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.RunPivotReportRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_pivot_report(request)
+
+
+def test_run_pivot_report_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.BatchRunReportsRequest,
+        dict,
+    ],
+)
+def test_batch_run_reports_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.BatchRunReportsResponse(
+            kind="kind_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.BatchRunReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_run_reports(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.BatchRunReportsResponse)
+    assert response.kind == "kind_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_run_reports_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_reports"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_reports"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.BatchRunReportsRequest.pb(
+            analytics_data_api.BatchRunReportsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_data_api.BatchRunReportsResponse.to_json(
+            analytics_data_api.BatchRunReportsResponse()
+        )
+
+        request = analytics_data_api.BatchRunReportsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.BatchRunReportsResponse()
+
+        client.batch_run_reports(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_run_reports_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.BatchRunReportsRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_run_reports(request)
+
+
+def test_batch_run_reports_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.BatchRunPivotReportsRequest,
+        dict,
+    ],
+)
+def test_batch_run_pivot_reports_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.BatchRunPivotReportsResponse(
+            kind="kind_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.BatchRunPivotReportsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_run_pivot_reports(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.BatchRunPivotReportsResponse)
+    assert response.kind == "kind_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_run_pivot_reports_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_pivot_reports"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_pivot_reports"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.BatchRunPivotReportsRequest.pb(
+            analytics_data_api.BatchRunPivotReportsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_data_api.BatchRunPivotReportsResponse.to_json(
+                analytics_data_api.BatchRunPivotReportsResponse()
+            )
+        )
+
+        request = analytics_data_api.BatchRunPivotReportsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.BatchRunPivotReportsResponse()
+
+        client.batch_run_pivot_reports(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_run_pivot_reports_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.BatchRunPivotReportsRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_run_pivot_reports(request)
+
+
+def test_batch_run_pivot_reports_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.GetMetadataRequest,
+        dict,
+    ],
+)
+def test_get_metadata_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/metadata"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.Metadata(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.Metadata.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_metadata(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.Metadata)
+    assert response.name == "name_value"
+
+
+def test_get_metadata_rest_required_fields(
+    request_type=analytics_data_api.GetMetadataRequest,
+):
+    transport_class = transports.BetaAnalyticsDataRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_data_api.Metadata()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_data_api.Metadata.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_metadata(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_metadata_rest_unset_required_fields():
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_metadata._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_metadata_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_get_metadata"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_get_metadata"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.GetMetadataRequest.pb(
+            analytics_data_api.GetMetadataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_data_api.Metadata.to_json(
+            analytics_data_api.Metadata()
+        )
+
+        request = analytics_data_api.GetMetadataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.Metadata()
+
+        client.get_metadata(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_metadata_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.GetMetadataRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/metadata"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_metadata(request)
+
+
+def test_get_metadata_rest_flattened():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.Metadata()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/metadata"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.Metadata.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_metadata(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=properties/*/metadata}" % client.transport._host, args[1]
+        )
+
+
+def test_get_metadata_rest_flattened_error(transport: str = "rest"):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_metadata(
+            analytics_data_api.GetMetadataRequest(),
+            name="name_value",
+        )
+
+
+def test_get_metadata_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.RunRealtimeReportRequest,
+        dict,
+    ],
+)
+def test_run_realtime_report_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.RunRealtimeReportResponse(
+            row_count=992,
+            kind="kind_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.RunRealtimeReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_realtime_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
+    assert response.row_count == 992
+    assert response.kind == "kind_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_realtime_report_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_run_realtime_report"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_run_realtime_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.RunRealtimeReportRequest.pb(
+            analytics_data_api.RunRealtimeReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_data_api.RunRealtimeReportResponse.to_json(
+                analytics_data_api.RunRealtimeReportResponse()
+            )
+        )
+
+        request = analytics_data_api.RunRealtimeReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.RunRealtimeReportResponse()
+
+        client.run_realtime_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_realtime_report_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.RunRealtimeReportRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_realtime_report(request)
+
+
+def test_run_realtime_report_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.CheckCompatibilityRequest,
+        dict,
+    ],
+)
+def test_check_compatibility_rest(request_type):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.CheckCompatibilityResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_data_api.CheckCompatibilityResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.check_compatibility(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.CheckCompatibilityResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_check_compatibility_rest_interceptors(null_interceptor):
+    transport = transports.BetaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BetaAnalyticsDataRestInterceptor(),
+    )
+    client = BetaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_check_compatibility"
+    ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "pre_check_compatibility"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.CheckCompatibilityRequest.pb(
+            analytics_data_api.CheckCompatibilityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_data_api.CheckCompatibilityResponse.to_json(
+                analytics_data_api.CheckCompatibilityResponse()
+            )
+        )
+
+        request = analytics_data_api.CheckCompatibilityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.CheckCompatibilityResponse()
+
+        client.check_compatibility(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_check_compatibility_rest_bad_request(
+    transport: str = "rest", request_type=analytics_data_api.CheckCompatibilityRequest
+):
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"property": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.check_compatibility(request)
+
+
+def test_check_compatibility_rest_error():
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BetaAnalyticsDataGrpcTransport(
@@ -1962,6 +3032,7 @@ def test_transport_get_channel():
     [
         transports.BetaAnalyticsDataGrpcTransport,
         transports.BetaAnalyticsDataGrpcAsyncIOTransport,
+        transports.BetaAnalyticsDataRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1976,6 +3047,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2120,6 +3192,7 @@ def test_beta_analytics_data_transport_auth_adc(transport_class):
     [
         transports.BetaAnalyticsDataGrpcTransport,
         transports.BetaAnalyticsDataGrpcAsyncIOTransport,
+        transports.BetaAnalyticsDataRestTransport,
     ],
 )
 def test_beta_analytics_data_transport_auth_gdch_credentials(transport_class):
@@ -2222,11 +3295,23 @@ def test_beta_analytics_data_grpc_transport_client_cert_source_for_mtls(
             )
 
 
+def test_beta_analytics_data_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.BetaAnalyticsDataRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_beta_analytics_data_host_no_port(transport_name):
@@ -2237,7 +3322,11 @@ def test_beta_analytics_data_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("analyticsdata.googleapis.com:443")
+    assert client.transport._host == (
+        "analyticsdata.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://analyticsdata.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2245,6 +3334,7 @@ def test_beta_analytics_data_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_beta_analytics_data_host_with_port(transport_name):
@@ -2255,7 +3345,51 @@ def test_beta_analytics_data_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("analyticsdata.googleapis.com:8000")
+    assert client.transport._host == (
+        "analyticsdata.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://analyticsdata.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_beta_analytics_data_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = BetaAnalyticsDataClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = BetaAnalyticsDataClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.run_report._session
+    session2 = client2.transport.run_report._session
+    assert session1 != session2
+    session1 = client1.transport.run_pivot_report._session
+    session2 = client2.transport.run_pivot_report._session
+    assert session1 != session2
+    session1 = client1.transport.batch_run_reports._session
+    session2 = client2.transport.batch_run_reports._session
+    assert session1 != session2
+    session1 = client1.transport.batch_run_pivot_reports._session
+    session2 = client2.transport.batch_run_pivot_reports._session
+    assert session1 != session2
+    session1 = client1.transport.get_metadata._session
+    session2 = client2.transport.get_metadata._session
+    assert session1 != session2
+    session1 = client1.transport.run_realtime_report._session
+    session2 = client2.transport.run_realtime_report._session
+    assert session1 != session2
+    session1 = client1.transport.check_compatibility._session
+    session2 = client2.transport.check_compatibility._session
+    assert session1 != session2
 
 
 def test_beta_analytics_data_grpc_transport_channel():
@@ -2546,6 +3680,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2563,6 +3698,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
