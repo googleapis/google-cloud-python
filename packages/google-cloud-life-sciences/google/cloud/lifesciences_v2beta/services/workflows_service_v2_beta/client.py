@@ -42,6 +42,7 @@ from google.cloud.lifesciences_v2beta.types import workflows
 from .transports.base import DEFAULT_CLIENT_INFO, WorkflowsServiceV2BetaTransport
 from .transports.grpc import WorkflowsServiceV2BetaGrpcTransport
 from .transports.grpc_asyncio import WorkflowsServiceV2BetaGrpcAsyncIOTransport
+from .transports.rest import WorkflowsServiceV2BetaRestTransport
 
 
 class WorkflowsServiceV2BetaClientMeta(type):
@@ -57,6 +58,7 @@ class WorkflowsServiceV2BetaClientMeta(type):
     )  # type: Dict[str, Type[WorkflowsServiceV2BetaTransport]]
     _transport_registry["grpc"] = WorkflowsServiceV2BetaGrpcTransport
     _transport_registry["grpc_asyncio"] = WorkflowsServiceV2BetaGrpcAsyncIOTransport
+    _transport_registry["rest"] = WorkflowsServiceV2BetaRestTransport
 
     def get_transport_class(
         cls,
@@ -330,6 +332,9 @@ class WorkflowsServiceV2BetaClient(metaclass=WorkflowsServiceV2BetaClientMeta):
             transport (Union[str, WorkflowsServiceV2BetaTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
