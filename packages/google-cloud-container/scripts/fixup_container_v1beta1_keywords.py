@@ -72,7 +72,7 @@ class containerCallTransformer(cst.CSTTransformer):
         'start_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', 'rotate_credentials', ),
         'update_cluster': ('project_id', 'zone', 'cluster_id', 'update', 'name', ),
         'update_master': ('project_id', 'zone', 'cluster_id', 'master_version', 'name', ),
-        'update_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_version', 'image_type', 'locations', 'workload_metadata_config', 'name', 'upgrade_settings', 'tags', 'taints', 'labels', 'linux_node_config', 'kubelet_config', 'node_network_config', 'gcfs_config', 'confidential_nodes', 'gvnic', ),
+        'update_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_version', 'image_type', 'locations', 'workload_metadata_config', 'name', 'upgrade_settings', 'tags', 'taints', 'labels', 'linux_node_config', 'kubelet_config', 'node_network_config', 'gcfs_config', 'confidential_nodes', 'gvnic', 'logging_config', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

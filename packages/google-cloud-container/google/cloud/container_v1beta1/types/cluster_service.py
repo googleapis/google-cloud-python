@@ -173,6 +173,8 @@ __protobuf__ = proto.module(
         "LoggingConfig",
         "LoggingComponentConfig",
         "MonitoringConfig",
+        "NodePoolLoggingConfig",
+        "LoggingVariantConfig",
         "MonitoringComponentConfig",
     },
 )
@@ -462,7 +464,7 @@ class NodeConfig(proto.Message):
             platforms, such as ``minCpuPlatform: "Intel Haswell"`` or
             ``minCpuPlatform: "Intel Sandy Bridge"``. For more
             information, read `how to specify min CPU
-            platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
+            platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__.
         workload_metadata_config (google.cloud.container_v1beta1.types.WorkloadMetadataConfig):
             The workload metadata configuration for this
             node.
@@ -504,6 +506,8 @@ class NodeConfig(proto.Message):
             Confidential nodes config.
             All the nodes in the node pool will be
             Confidential VM once enabled.
+        logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
+            Logging configuration.
     """
 
     machine_type = proto.Field(
@@ -632,6 +636,11 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=35,
         message="ConfidentialNodes",
+    )
+    logging_config = proto.Field(
+        proto.MESSAGE,
+        number=38,
+        message="NodePoolLoggingConfig",
     )
 
 
@@ -872,8 +881,8 @@ class ReservationAffinity(proto.Message):
         key (str):
             Corresponds to the label key of a reservation resource. To
             target a SPECIFIC_RESERVATION by name, specify
-            "googleapis.com/reservation-name" as the key and specify the
-            name of your reservation as its value.
+            "compute.googleapis.com/reservation-name" as the key and
+            specify the name of your reservation as its value.
         values (Sequence[str]):
             Corresponds to the label value(s) of
             reservation resource(s).
@@ -2663,12 +2672,19 @@ class NodeConfigDefaults(proto.Message):
         gcfs_config (google.cloud.container_v1beta1.types.GcfsConfig):
             GCFS (Google Container File System, also
             known as Riptide) options.
+        logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
+            Logging configuration for node pools.
     """
 
     gcfs_config = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GcfsConfig",
+    )
+    logging_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="NodePoolLoggingConfig",
     )
 
 
@@ -2874,6 +2890,9 @@ class ClusterUpdate(proto.Message):
             cluster.
 
             This field is a member of `oneof`_ ``_desired_protect_config``.
+        desired_node_pool_logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
+            The desired node pool logging configuration
+            defaults for the cluster.
     """
 
     desired_node_version = proto.Field(
@@ -3079,6 +3098,11 @@ class ClusterUpdate(proto.Message):
         number=112,
         optional=True,
         message="ProtectConfig",
+    )
+    desired_node_pool_logging_config = proto.Field(
+        proto.MESSAGE,
+        number=116,
+        message="NodePoolLoggingConfig",
     )
 
 
@@ -3546,6 +3570,8 @@ class UpdateNodePoolRequest(proto.Message):
             Confidential VM once enabled.
         gvnic (google.cloud.container_v1beta1.types.VirtualNIC):
             Enable or disable gvnic on the node pool.
+        logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
+            Logging configuration.
     """
 
     project_id = proto.Field(
@@ -3634,6 +3660,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=29,
         message="VirtualNIC",
+    )
+    logging_config = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message="NodePoolLoggingConfig",
     )
 
 
@@ -5701,7 +5732,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             names of CPU platforms, such as minCpuPlatform: Intel
             Haswell or minCpuPlatform: Intel Sandy Bridge. For more
             information, read `how to specify min CPU
-            platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
+            platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__.
             This field is deprecated, min_cpu_platform should be
             specified using
             https://cloud.google.com/requested-min-cpu-platform label
@@ -7669,6 +7700,44 @@ class MonitoringConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ManagedPrometheusConfig",
+    )
+
+
+class NodePoolLoggingConfig(proto.Message):
+    r"""NodePoolLoggingConfig specifies logging configuration for
+    nodepools.
+
+    Attributes:
+        variant_config (google.cloud.container_v1beta1.types.LoggingVariantConfig):
+            Logging variant configuration.
+    """
+
+    variant_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="LoggingVariantConfig",
+    )
+
+
+class LoggingVariantConfig(proto.Message):
+    r"""LoggingVariantConfig specifies the behaviour of the logging
+    component.
+
+    Attributes:
+        variant (google.cloud.container_v1beta1.types.LoggingVariantConfig.Variant):
+            Logging variant deployed on nodes.
+    """
+
+    class Variant(proto.Enum):
+        r"""Logging component variants."""
+        VARIANT_UNSPECIFIED = 0
+        DEFAULT = 1
+        MAX_THROUGHPUT = 2
+
+    variant = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Variant,
     )
 
 
