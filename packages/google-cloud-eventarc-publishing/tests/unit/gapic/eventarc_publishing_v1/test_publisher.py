@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -90,6 +97,7 @@ def test__get_default_mtls_endpoint():
     [
         (PublisherClient, "grpc"),
         (PublisherAsyncClient, "grpc_asyncio"),
+        (PublisherClient, "rest"),
     ],
 )
 def test_publisher_client_from_service_account_info(client_class, transport_name):
@@ -103,7 +111,11 @@ def test_publisher_client_from_service_account_info(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("eventarcpublishing.googleapis.com:443")
+        assert client.transport._host == (
+            "eventarcpublishing.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://eventarcpublishing.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -111,6 +123,7 @@ def test_publisher_client_from_service_account_info(client_class, transport_name
     [
         (transports.PublisherGrpcTransport, "grpc"),
         (transports.PublisherGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.PublisherRestTransport, "rest"),
     ],
 )
 def test_publisher_client_service_account_always_use_jwt(
@@ -136,6 +149,7 @@ def test_publisher_client_service_account_always_use_jwt(
     [
         (PublisherClient, "grpc"),
         (PublisherAsyncClient, "grpc_asyncio"),
+        (PublisherClient, "rest"),
     ],
 )
 def test_publisher_client_from_service_account_file(client_class, transport_name):
@@ -156,13 +170,18 @@ def test_publisher_client_from_service_account_file(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("eventarcpublishing.googleapis.com:443")
+        assert client.transport._host == (
+            "eventarcpublishing.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://eventarcpublishing.googleapis.com"
+        )
 
 
 def test_publisher_client_get_transport_class():
     transport = PublisherClient.get_transport_class()
     available_transports = [
         transports.PublisherGrpcTransport,
+        transports.PublisherRestTransport,
     ]
     assert transport in available_transports
 
@@ -179,6 +198,7 @@ def test_publisher_client_get_transport_class():
             transports.PublisherGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -320,6 +340,8 @@ def test_publisher_client_client_options(client_class, transport_class, transpor
             "grpc_asyncio",
             "false",
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest", "true"),
+        (PublisherClient, transports.PublisherRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -513,6 +535,7 @@ def test_publisher_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.PublisherGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest"),
     ],
 )
 def test_publisher_client_client_options_scopes(
@@ -548,6 +571,7 @@ def test_publisher_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest", None),
     ],
 )
 def test_publisher_client_client_options_credentials_file(
@@ -952,6 +976,255 @@ async def test_publish_events_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        publisher.PublishChannelConnectionEventsRequest,
+        dict,
+    ],
+)
+def test_publish_channel_connection_events_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "channel_connection": "projects/sample1/locations/sample2/channelConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = publisher.PublishChannelConnectionEventsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = publisher.PublishChannelConnectionEventsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.publish_channel_connection_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, publisher.PublishChannelConnectionEventsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_publish_channel_connection_events_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_publish_channel_connection_events"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_publish_channel_connection_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = publisher.PublishChannelConnectionEventsRequest.pb(
+            publisher.PublishChannelConnectionEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            publisher.PublishChannelConnectionEventsResponse.to_json(
+                publisher.PublishChannelConnectionEventsResponse()
+            )
+        )
+
+        request = publisher.PublishChannelConnectionEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = publisher.PublishChannelConnectionEventsResponse()
+
+        client.publish_channel_connection_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_publish_channel_connection_events_rest_bad_request(
+    transport: str = "rest",
+    request_type=publisher.PublishChannelConnectionEventsRequest,
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "channel_connection": "projects/sample1/locations/sample2/channelConnections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.publish_channel_connection_events(request)
+
+
+def test_publish_channel_connection_events_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        publisher.PublishEventsRequest,
+        dict,
+    ],
+)
+def test_publish_events_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"channel": "projects/sample1/locations/sample2/channels/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = publisher.PublishEventsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = publisher.PublishEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.publish_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, publisher.PublishEventsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_publish_events_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_publish_events"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_publish_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = publisher.PublishEventsRequest.pb(publisher.PublishEventsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = publisher.PublishEventsResponse.to_json(
+            publisher.PublishEventsResponse()
+        )
+
+        request = publisher.PublishEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = publisher.PublishEventsResponse()
+
+        client.publish_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_publish_events_rest_bad_request(
+    transport: str = "rest", request_type=publisher.PublishEventsRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"channel": "projects/sample1/locations/sample2/channels/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.publish_events(request)
+
+
+def test_publish_events_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.PublisherGrpcTransport(
@@ -1033,6 +1306,7 @@ def test_transport_get_channel():
     [
         transports.PublisherGrpcTransport,
         transports.PublisherGrpcAsyncIOTransport,
+        transports.PublisherRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1047,6 +1321,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -1177,6 +1452,7 @@ def test_publisher_transport_auth_adc(transport_class):
     [
         transports.PublisherGrpcTransport,
         transports.PublisherGrpcAsyncIOTransport,
+        transports.PublisherRestTransport,
     ],
 )
 def test_publisher_transport_auth_gdch_credentials(transport_class):
@@ -1271,11 +1547,23 @@ def test_publisher_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_publisher_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.PublisherRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_publisher_host_no_port(transport_name):
@@ -1286,7 +1574,11 @@ def test_publisher_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("eventarcpublishing.googleapis.com:443")
+    assert client.transport._host == (
+        "eventarcpublishing.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://eventarcpublishing.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1294,6 +1586,7 @@ def test_publisher_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_publisher_host_with_port(transport_name):
@@ -1304,7 +1597,36 @@ def test_publisher_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("eventarcpublishing.googleapis.com:8000")
+    assert client.transport._host == (
+        "eventarcpublishing.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://eventarcpublishing.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_publisher_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = PublisherClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = PublisherClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.publish_channel_connection_events._session
+    session2 = client2.transport.publish_channel_connection_events._session
+    assert session1 != session2
+    session1 = client1.transport.publish_events._session
+    session2 = client2.transport.publish_events._session
+    assert session1 != session2
 
 
 def test_publisher_grpc_transport_channel():
@@ -1567,6 +1889,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -1584,6 +1907,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

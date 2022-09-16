@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "PublisherClient",
+          "rpcs": {
+            "PublishChannelConnectionEvents": {
+              "methods": [
+                "publish_channel_connection_events"
+              ]
+            },
+            "PublishEvents": {
+              "methods": [
+                "publish_events"
+              ]
+            }
+          }
         }
       }
     }

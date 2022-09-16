@@ -38,6 +38,7 @@ from google.cloud.eventarc_publishing_v1.types import publisher
 from .transports.base import PublisherTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PublisherGrpcTransport
 from .transports.grpc_asyncio import PublisherGrpcAsyncIOTransport
+from .transports.rest import PublisherRestTransport
 
 
 class PublisherClientMeta(type):
@@ -51,6 +52,7 @@ class PublisherClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[PublisherTransport]]
     _transport_registry["grpc"] = PublisherGrpcTransport
     _transport_registry["grpc_asyncio"] = PublisherGrpcAsyncIOTransport
+    _transport_registry["rest"] = PublisherRestTransport
 
     def get_transport_class(
         cls,
@@ -346,6 +348,9 @@ class PublisherClient(metaclass=PublisherClientMeta):
             transport (Union[str, PublisherTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
