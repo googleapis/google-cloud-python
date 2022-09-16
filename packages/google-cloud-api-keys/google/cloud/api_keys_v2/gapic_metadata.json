@@ -96,6 +96,51 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "ApiKeysClient",
+          "rpcs": {
+            "CreateKey": {
+              "methods": [
+                "create_key"
+              ]
+            },
+            "DeleteKey": {
+              "methods": [
+                "delete_key"
+              ]
+            },
+            "GetKey": {
+              "methods": [
+                "get_key"
+              ]
+            },
+            "GetKeyString": {
+              "methods": [
+                "get_key_string"
+              ]
+            },
+            "ListKeys": {
+              "methods": [
+                "list_keys"
+              ]
+            },
+            "LookupKey": {
+              "methods": [
+                "lookup_key"
+              ]
+            },
+            "UndeleteKey": {
+              "methods": [
+                "undelete_key"
+              ]
+            },
+            "UpdateKey": {
+              "methods": [
+                "update_key"
+              ]
+            }
+          }
         }
       }
     }

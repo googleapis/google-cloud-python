@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import ApiKeysTransport
 from .grpc import ApiKeysGrpcTransport
 from .grpc_asyncio import ApiKeysGrpcAsyncIOTransport
+from .rest import ApiKeysRestInterceptor, ApiKeysRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ApiKeysTransport]]
 _transport_registry["grpc"] = ApiKeysGrpcTransport
 _transport_registry["grpc_asyncio"] = ApiKeysGrpcAsyncIOTransport
+_transport_registry["rest"] = ApiKeysRestTransport
 
 __all__ = (
     "ApiKeysTransport",
     "ApiKeysGrpcTransport",
     "ApiKeysGrpcAsyncIOTransport",
+    "ApiKeysRestTransport",
+    "ApiKeysRestInterceptor",
 )

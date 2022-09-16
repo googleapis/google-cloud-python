@@ -24,9 +24,9 @@ description = "API Keys API client library"
 version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
+    "google-api-core[grpc] >= 1.33.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
     "proto-plus >= 1.22.0, <2.0.0dev",
-    "protobuf >= 3.19.0, <5.0.0dev",
+    "protobuf >= 3.20.1, <5.0.0dev",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
