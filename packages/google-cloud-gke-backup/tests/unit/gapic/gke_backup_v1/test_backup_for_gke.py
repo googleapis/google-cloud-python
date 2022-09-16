@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -109,6 +116,7 @@ def test__get_default_mtls_endpoint():
     [
         (BackupForGKEClient, "grpc"),
         (BackupForGKEAsyncClient, "grpc_asyncio"),
+        (BackupForGKEClient, "rest"),
     ],
 )
 def test_backup_for_gke_client_from_service_account_info(client_class, transport_name):
@@ -122,7 +130,11 @@ def test_backup_for_gke_client_from_service_account_info(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkebackup.googleapis.com:443")
+        assert client.transport._host == (
+            "gkebackup.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkebackup.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -130,6 +142,7 @@ def test_backup_for_gke_client_from_service_account_info(client_class, transport
     [
         (transports.BackupForGKEGrpcTransport, "grpc"),
         (transports.BackupForGKEGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.BackupForGKERestTransport, "rest"),
     ],
 )
 def test_backup_for_gke_client_service_account_always_use_jwt(
@@ -155,6 +168,7 @@ def test_backup_for_gke_client_service_account_always_use_jwt(
     [
         (BackupForGKEClient, "grpc"),
         (BackupForGKEAsyncClient, "grpc_asyncio"),
+        (BackupForGKEClient, "rest"),
     ],
 )
 def test_backup_for_gke_client_from_service_account_file(client_class, transport_name):
@@ -175,13 +189,18 @@ def test_backup_for_gke_client_from_service_account_file(client_class, transport
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkebackup.googleapis.com:443")
+        assert client.transport._host == (
+            "gkebackup.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkebackup.googleapis.com"
+        )
 
 
 def test_backup_for_gke_client_get_transport_class():
     transport = BackupForGKEClient.get_transport_class()
     available_transports = [
         transports.BackupForGKEGrpcTransport,
+        transports.BackupForGKERestTransport,
     ]
     assert transport in available_transports
 
@@ -198,6 +217,7 @@ def test_backup_for_gke_client_get_transport_class():
             transports.BackupForGKEGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (BackupForGKEClient, transports.BackupForGKERestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -341,6 +361,8 @@ def test_backup_for_gke_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (BackupForGKEClient, transports.BackupForGKERestTransport, "rest", "true"),
+        (BackupForGKEClient, transports.BackupForGKERestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -534,6 +556,7 @@ def test_backup_for_gke_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.BackupForGKEGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (BackupForGKEClient, transports.BackupForGKERestTransport, "rest"),
     ],
 )
 def test_backup_for_gke_client_client_options_scopes(
@@ -574,6 +597,7 @@ def test_backup_for_gke_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (BackupForGKEClient, transports.BackupForGKERestTransport, "rest", None),
     ],
 )
 def test_backup_for_gke_client_client_options_credentials_file(
@@ -7841,6 +7865,7835 @@ async def test_get_volume_restore_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateBackupPlanRequest,
+        dict,
+    ],
+)
+def test_create_backup_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["backup_plan"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "cluster": "cluster_value",
+        "retention_policy": {
+            "backup_delete_lock_days": 2400,
+            "backup_retain_days": 1896,
+            "locked": True,
+        },
+        "labels": {},
+        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
+        "etag": "etag_value",
+        "deactivated": True,
+        "backup_config": {
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "include_volume_data": True,
+            "include_secrets": True,
+            "encryption_key": {
+                "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
+            },
+        },
+        "protected_pod_count": 2036,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_backup_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_backup_plan_rest_required_fields(
+    request_type=gkebackup.CreateBackupPlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["backup_plan_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "backupPlanId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "backupPlanId" in jsonified_request
+    assert jsonified_request["backupPlanId"] == request_init["backup_plan_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["backupPlanId"] = "backup_plan_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup_plan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("backup_plan_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "backupPlanId" in jsonified_request
+    assert jsonified_request["backupPlanId"] == "backup_plan_id_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_backup_plan(request)
+
+            expected_params = [
+                (
+                    "backupPlanId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_backup_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_backup_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("backupPlanId",))
+        & set(
+            (
+                "parent",
+                "backupPlan",
+                "backupPlanId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_backup_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_backup_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_create_backup_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.CreateBackupPlanRequest.pb(
+            gkebackup.CreateBackupPlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.CreateBackupPlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_backup_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_backup_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.CreateBackupPlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["backup_plan"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "cluster": "cluster_value",
+        "retention_policy": {
+            "backup_delete_lock_days": 2400,
+            "backup_retain_days": 1896,
+            "locked": True,
+        },
+        "labels": {},
+        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
+        "etag": "etag_value",
+        "deactivated": True,
+        "backup_config": {
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "include_volume_data": True,
+            "include_secrets": True,
+            "encryption_key": {
+                "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
+            },
+        },
+        "protected_pod_count": 2036,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_backup_plan(request)
+
+
+def test_create_backup_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            backup_plan=gcg_backup_plan.BackupPlan(name="name_value"),
+            backup_plan_id="backup_plan_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_backup_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/backupPlans"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_backup_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_backup_plan(
+            gkebackup.CreateBackupPlanRequest(),
+            parent="parent_value",
+            backup_plan=gcg_backup_plan.BackupPlan(name="name_value"),
+            backup_plan_id="backup_plan_id_value",
+        )
+
+
+def test_create_backup_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListBackupPlansRequest,
+        dict,
+    ],
+)
+def test_list_backup_plans_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListBackupPlansResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backup_plans(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupPlansPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_backup_plans_rest_required_fields(
+    request_type=gkebackup.ListBackupPlansRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backup_plans._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backup_plans._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.ListBackupPlansResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_backup_plans(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_backup_plans_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_backup_plans._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backup_plans_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_backup_plans"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_list_backup_plans"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.ListBackupPlansRequest.pb(
+            gkebackup.ListBackupPlansRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.ListBackupPlansResponse.to_json(
+            gkebackup.ListBackupPlansResponse()
+        )
+
+        request = gkebackup.ListBackupPlansRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.ListBackupPlansResponse()
+
+        client.list_backup_plans(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backup_plans_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.ListBackupPlansRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_backup_plans(request)
+
+
+def test_list_backup_plans_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListBackupPlansResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_backup_plans(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/backupPlans"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_backup_plans_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backup_plans(
+            gkebackup.ListBackupPlansRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backup_plans_rest_pager(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gkebackup.ListBackupPlansResponse(
+                backup_plans=[
+                    backup_plan.BackupPlan(),
+                    backup_plan.BackupPlan(),
+                    backup_plan.BackupPlan(),
+                ],
+                next_page_token="abc",
+            ),
+            gkebackup.ListBackupPlansResponse(
+                backup_plans=[],
+                next_page_token="def",
+            ),
+            gkebackup.ListBackupPlansResponse(
+                backup_plans=[
+                    backup_plan.BackupPlan(),
+                ],
+                next_page_token="ghi",
+            ),
+            gkebackup.ListBackupPlansResponse(
+                backup_plans=[
+                    backup_plan.BackupPlan(),
+                    backup_plan.BackupPlan(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(gkebackup.ListBackupPlansResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_backup_plans(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, backup_plan.BackupPlan) for i in results)
+
+        pages = list(client.list_backup_plans(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupPlanRequest,
+        dict,
+    ],
+)
+def test_get_backup_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup_plan.BackupPlan(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            cluster="cluster_value",
+            etag="etag_value",
+            deactivated=True,
+            protected_pod_count=2036,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = backup_plan.BackupPlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, backup_plan.BackupPlan)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.cluster == "cluster_value"
+    assert response.etag == "etag_value"
+    assert response.deactivated is True
+    assert response.protected_pod_count == 2036
+
+
+def test_get_backup_plan_rest_required_fields(
+    request_type=gkebackup.GetBackupPlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = backup_plan.BackupPlan()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = backup_plan.BackupPlan.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_backup_plan(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_backup_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_backup_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_backup_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_backup_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetBackupPlanRequest.pb(gkebackup.GetBackupPlanRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = backup_plan.BackupPlan.to_json(
+            backup_plan.BackupPlan()
+        )
+
+        request = gkebackup.GetBackupPlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup_plan.BackupPlan()
+
+        client.get_backup_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetBackupPlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_backup_plan(request)
+
+
+def test_get_backup_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup_plan.BackupPlan()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = backup_plan.BackupPlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_backup_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupPlans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_backup_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup_plan(
+            gkebackup.GetBackupPlanRequest(),
+            name="name_value",
+        )
+
+
+def test_get_backup_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateBackupPlanRequest,
+        dict,
+    ],
+)
+def test_update_backup_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup_plan": {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+    }
+    request_init["backup_plan"] = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "cluster": "cluster_value",
+        "retention_policy": {
+            "backup_delete_lock_days": 2400,
+            "backup_retain_days": 1896,
+            "locked": True,
+        },
+        "labels": {},
+        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
+        "etag": "etag_value",
+        "deactivated": True,
+        "backup_config": {
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "include_volume_data": True,
+            "include_secrets": True,
+            "encryption_key": {
+                "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
+            },
+        },
+        "protected_pod_count": 2036,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_backup_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_backup_plan_rest_required_fields(
+    request_type=gkebackup.UpdateBackupPlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_backup_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_backup_plan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_backup_plan(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_backup_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_backup_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("backupPlan",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_backup_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_backup_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_update_backup_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.UpdateBackupPlanRequest.pb(
+            gkebackup.UpdateBackupPlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.UpdateBackupPlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_backup_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_backup_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.UpdateBackupPlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup_plan": {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+    }
+    request_init["backup_plan"] = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "cluster": "cluster_value",
+        "retention_policy": {
+            "backup_delete_lock_days": 2400,
+            "backup_retain_days": 1896,
+            "locked": True,
+        },
+        "labels": {},
+        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
+        "etag": "etag_value",
+        "deactivated": True,
+        "backup_config": {
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "include_volume_data": True,
+            "include_secrets": True,
+            "encryption_key": {
+                "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
+            },
+        },
+        "protected_pod_count": 2036,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_backup_plan(request)
+
+
+def test_update_backup_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "backup_plan": {
+                "name": "projects/sample1/locations/sample2/backupPlans/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            backup_plan=gcg_backup_plan.BackupPlan(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_backup_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{backup_plan.name=projects/*/locations/*/backupPlans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_backup_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_backup_plan(
+            gkebackup.UpdateBackupPlanRequest(),
+            backup_plan=gcg_backup_plan.BackupPlan(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_backup_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteBackupPlanRequest,
+        dict,
+    ],
+)
+def test_delete_backup_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_backup_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_backup_plan_rest_required_fields(
+    request_type=gkebackup.DeleteBackupPlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup_plan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_backup_plan(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_backup_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_backup_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_backup_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_delete_backup_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.DeleteBackupPlanRequest.pb(
+            gkebackup.DeleteBackupPlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.DeleteBackupPlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_backup_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.DeleteBackupPlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_backup_plan(request)
+
+
+def test_delete_backup_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_backup_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupPlans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_backup_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_backup_plan(
+            gkebackup.DeleteBackupPlanRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_backup_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateBackupRequest,
+        dict,
+    ],
+)
+def test_create_backup_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request_init["backup"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "manual": True,
+        "labels": {},
+        "delete_lock_days": 1675,
+        "delete_lock_expire_time": {},
+        "retain_days": 1171,
+        "retain_expire_time": {},
+        "encryption_key": {"gcp_kms_encryption_key": "gcp_kms_encryption_key_value"},
+        "all_namespaces": True,
+        "selected_namespaces": {
+            "namespaces": ["namespaces_value1", "namespaces_value2"]
+        },
+        "selected_applications": {
+            "namespaced_names": [{"namespace": "namespace_value", "name": "name_value"}]
+        },
+        "contains_volume_data": True,
+        "contains_secrets": True,
+        "cluster_metadata": {
+            "cluster": "cluster_value",
+            "k8s_version": "k8s_version_value",
+            "backup_crd_versions": {},
+            "gke_version": "gke_version_value",
+            "anthos_version": "anthos_version_value",
+        },
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resource_count": 1520,
+        "volume_count": 1312,
+        "size_bytes": 1089,
+        "etag": "etag_value",
+        "description": "description_value",
+        "pod_count": 971,
+        "config_backup_size_bytes": 2539,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_backup_rest_required_fields(request_type=gkebackup.CreateBackupRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("backup_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_backup(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_backup_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("backupId",)) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_backup_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_backup"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_create_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.CreateBackupRequest.pb(gkebackup.CreateBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.CreateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_backup_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.CreateBackupRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request_init["backup"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "manual": True,
+        "labels": {},
+        "delete_lock_days": 1675,
+        "delete_lock_expire_time": {},
+        "retain_days": 1171,
+        "retain_expire_time": {},
+        "encryption_key": {"gcp_kms_encryption_key": "gcp_kms_encryption_key_value"},
+        "all_namespaces": True,
+        "selected_namespaces": {
+            "namespaces": ["namespaces_value1", "namespaces_value2"]
+        },
+        "selected_applications": {
+            "namespaced_names": [{"namespace": "namespace_value", "name": "name_value"}]
+        },
+        "contains_volume_data": True,
+        "contains_secrets": True,
+        "cluster_metadata": {
+            "cluster": "cluster_value",
+            "k8s_version": "k8s_version_value",
+            "backup_crd_versions": {},
+            "gke_version": "gke_version_value",
+            "anthos_version": "anthos_version_value",
+        },
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resource_count": 1520,
+        "volume_count": 1312,
+        "size_bytes": 1089,
+        "etag": "etag_value",
+        "description": "description_value",
+        "pod_count": 971,
+        "config_backup_size_bytes": 2539,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_backup(request)
+
+
+def test_create_backup_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            backup=gcg_backup.Backup(name="name_value"),
+            backup_id="backup_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/backupPlans/*}/backups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_backup_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_backup(
+            gkebackup.CreateBackupRequest(),
+            parent="parent_value",
+            backup=gcg_backup.Backup(name="name_value"),
+            backup_id="backup_id_value",
+        )
+
+
+def test_create_backup_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_backups_rest_required_fields(request_type=gkebackup.ListBackupsRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.ListBackupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gkebackup.ListBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_backups(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_backups_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_backups._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backups_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_backups"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_list_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.ListBackupsRequest.pb(gkebackup.ListBackupsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.ListBackupsResponse.to_json(
+            gkebackup.ListBackupsResponse()
+        )
+
+        request = gkebackup.ListBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.ListBackupsResponse()
+
+        client.list_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backups_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.ListBackupsRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/backupPlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_backups(request)
+
+
+def test_list_backups_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListBackupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_backups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/backupPlans/*}/backups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_backups_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backups(
+            gkebackup.ListBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backups_rest_pager(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gkebackup.ListBackupsResponse(
+                backups=[
+                    backup.Backup(),
+                    backup.Backup(),
+                    backup.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            gkebackup.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            gkebackup.ListBackupsResponse(
+                backups=[
+                    backup.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            gkebackup.ListBackupsResponse(
+                backups=[
+                    backup.Backup(),
+                    backup.Backup(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(gkebackup.ListBackupsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupPlans/sample3"
+        }
+
+        pager = client.list_backups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, backup.Backup) for i in results)
+
+        pages = list(client.list_backups(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup.Backup(
+            name="name_value",
+            uid="uid_value",
+            manual=True,
+            delete_lock_days=1675,
+            retain_days=1171,
+            contains_volume_data=True,
+            contains_secrets=True,
+            state=backup.Backup.State.CREATING,
+            state_reason="state_reason_value",
+            resource_count=1520,
+            volume_count=1312,
+            size_bytes=1089,
+            etag="etag_value",
+            description="description_value",
+            pod_count=971,
+            config_backup_size_bytes=2539,
+            all_namespaces=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = backup.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, backup.Backup)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.manual is True
+    assert response.delete_lock_days == 1675
+    assert response.retain_days == 1171
+    assert response.contains_volume_data is True
+    assert response.contains_secrets is True
+    assert response.state == backup.Backup.State.CREATING
+    assert response.state_reason == "state_reason_value"
+    assert response.resource_count == 1520
+    assert response.volume_count == 1312
+    assert response.size_bytes == 1089
+    assert response.etag == "etag_value"
+    assert response.description == "description_value"
+    assert response.pod_count == 971
+    assert response.config_backup_size_bytes == 2539
+
+
+def test_get_backup_rest_required_fields(request_type=gkebackup.GetBackupRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = backup.Backup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = backup.Backup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_backup(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_backup_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_backup"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetBackupRequest.pb(gkebackup.GetBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = backup.Backup.to_json(backup.Backup())
+
+        request = gkebackup.GetBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup.Backup()
+
+        client.get_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetBackupRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_backup(request)
+
+
+def test_get_backup_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup.Backup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = backup.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupPlans/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_backup_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup(
+            gkebackup.GetBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_get_backup_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateBackupRequest,
+        dict,
+    ],
+)
+def test_update_backup_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+    }
+    request_init["backup"] = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "manual": True,
+        "labels": {},
+        "delete_lock_days": 1675,
+        "delete_lock_expire_time": {},
+        "retain_days": 1171,
+        "retain_expire_time": {},
+        "encryption_key": {"gcp_kms_encryption_key": "gcp_kms_encryption_key_value"},
+        "all_namespaces": True,
+        "selected_namespaces": {
+            "namespaces": ["namespaces_value1", "namespaces_value2"]
+        },
+        "selected_applications": {
+            "namespaced_names": [{"namespace": "namespace_value", "name": "name_value"}]
+        },
+        "contains_volume_data": True,
+        "contains_secrets": True,
+        "cluster_metadata": {
+            "cluster": "cluster_value",
+            "k8s_version": "k8s_version_value",
+            "backup_crd_versions": {},
+            "gke_version": "gke_version_value",
+            "anthos_version": "anthos_version_value",
+        },
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resource_count": 1520,
+        "volume_count": 1312,
+        "size_bytes": 1089,
+        "etag": "etag_value",
+        "description": "description_value",
+        "pod_count": 971,
+        "config_backup_size_bytes": 2539,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_backup_rest_required_fields(request_type=gkebackup.UpdateBackupRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_backup(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_backup_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("backup",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_backup_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_backup"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_update_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.UpdateBackupRequest.pb(gkebackup.UpdateBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.UpdateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_backup_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.UpdateBackupRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+    }
+    request_init["backup"] = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "manual": True,
+        "labels": {},
+        "delete_lock_days": 1675,
+        "delete_lock_expire_time": {},
+        "retain_days": 1171,
+        "retain_expire_time": {},
+        "encryption_key": {"gcp_kms_encryption_key": "gcp_kms_encryption_key_value"},
+        "all_namespaces": True,
+        "selected_namespaces": {
+            "namespaces": ["namespaces_value1", "namespaces_value2"]
+        },
+        "selected_applications": {
+            "namespaced_names": [{"namespace": "namespace_value", "name": "name_value"}]
+        },
+        "contains_volume_data": True,
+        "contains_secrets": True,
+        "cluster_metadata": {
+            "cluster": "cluster_value",
+            "k8s_version": "k8s_version_value",
+            "backup_crd_versions": {},
+            "gke_version": "gke_version_value",
+            "anthos_version": "anthos_version_value",
+        },
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resource_count": 1520,
+        "volume_count": 1312,
+        "size_bytes": 1089,
+        "etag": "etag_value",
+        "description": "description_value",
+        "pod_count": 971,
+        "config_backup_size_bytes": 2539,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_backup(request)
+
+
+def test_update_backup_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "backup": {
+                "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            backup=gcg_backup.Backup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{backup.name=projects/*/locations/*/backupPlans/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_backup_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_backup(
+            gkebackup.UpdateBackupRequest(),
+            backup=gcg_backup.Backup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_backup_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteBackupRequest,
+        dict,
+    ],
+)
+def test_delete_backup_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_backup_rest_required_fields(request_type=gkebackup.DeleteBackupRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "etag",
+            "force",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_backup(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_backup_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "etag",
+                "force",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_backup"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_delete_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.DeleteBackupRequest.pb(gkebackup.DeleteBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.DeleteBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.DeleteBackupRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_backup(request)
+
+
+def test_delete_backup_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupPlans/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_backup_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_backup(
+            gkebackup.DeleteBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_backup_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListVolumeBackupsRequest,
+        dict,
+    ],
+)
+def test_list_volume_backups_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListVolumeBackupsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_volume_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVolumeBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_volume_backups_rest_required_fields(
+    request_type=gkebackup.ListVolumeBackupsRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volume_backups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volume_backups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.ListVolumeBackupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_volume_backups(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_volume_backups_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_volume_backups._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_volume_backups_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_volume_backups"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_list_volume_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.ListVolumeBackupsRequest.pb(
+            gkebackup.ListVolumeBackupsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.ListVolumeBackupsResponse.to_json(
+            gkebackup.ListVolumeBackupsResponse()
+        )
+
+        request = gkebackup.ListVolumeBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.ListVolumeBackupsResponse()
+
+        client.list_volume_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_volume_backups_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.ListVolumeBackupsRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_volume_backups(request)
+
+
+def test_list_volume_backups_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListVolumeBackupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_volume_backups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/backupPlans/*/backups/*}/volumeBackups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_volume_backups_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_volume_backups(
+            gkebackup.ListVolumeBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_volume_backups_rest_pager(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gkebackup.ListVolumeBackupsResponse(
+                volume_backups=[
+                    volume.VolumeBackup(),
+                    volume.VolumeBackup(),
+                    volume.VolumeBackup(),
+                ],
+                next_page_token="abc",
+            ),
+            gkebackup.ListVolumeBackupsResponse(
+                volume_backups=[],
+                next_page_token="def",
+            ),
+            gkebackup.ListVolumeBackupsResponse(
+                volume_backups=[
+                    volume.VolumeBackup(),
+                ],
+                next_page_token="ghi",
+            ),
+            gkebackup.ListVolumeBackupsResponse(
+                volume_backups=[
+                    volume.VolumeBackup(),
+                    volume.VolumeBackup(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            gkebackup.ListVolumeBackupsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+
+        pager = client.list_volume_backups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, volume.VolumeBackup) for i in results)
+
+        pages = list(client.list_volume_backups(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetVolumeBackupRequest,
+        dict,
+    ],
+)
+def test_get_volume_backup_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4/volumeBackups/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.VolumeBackup(
+            name="name_value",
+            uid="uid_value",
+            volume_backup_handle="volume_backup_handle_value",
+            format_=volume.VolumeBackup.VolumeBackupFormat.GCE_PERSISTENT_DISK,
+            storage_bytes=1403,
+            disk_size_bytes=1611,
+            state=volume.VolumeBackup.State.CREATING,
+            state_message="state_message_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.VolumeBackup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_volume_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume.VolumeBackup)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.volume_backup_handle == "volume_backup_handle_value"
+    assert (
+        response.format_ == volume.VolumeBackup.VolumeBackupFormat.GCE_PERSISTENT_DISK
+    )
+    assert response.storage_bytes == 1403
+    assert response.disk_size_bytes == 1611
+    assert response.state == volume.VolumeBackup.State.CREATING
+    assert response.state_message == "state_message_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_volume_backup_rest_required_fields(
+    request_type=gkebackup.GetVolumeBackupRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume.VolumeBackup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume.VolumeBackup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_volume_backup(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_volume_backup_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_volume_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_volume_backup_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_volume_backup"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_volume_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetVolumeBackupRequest.pb(
+            gkebackup.GetVolumeBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume.VolumeBackup.to_json(volume.VolumeBackup())
+
+        request = gkebackup.GetVolumeBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume.VolumeBackup()
+
+        client.get_volume_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_volume_backup_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetVolumeBackupRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4/volumeBackups/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_volume_backup(request)
+
+
+def test_get_volume_backup_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.VolumeBackup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4/volumeBackups/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.VolumeBackup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_volume_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_volume_backup_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_volume_backup(
+            gkebackup.GetVolumeBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_get_volume_backup_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateRestorePlanRequest,
+        dict,
+    ],
+)
+def test_create_restore_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["restore_plan"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup_plan": "backup_plan_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_restore_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_restore_plan_rest_required_fields(
+    request_type=gkebackup.CreateRestorePlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["restore_plan_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "restorePlanId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_restore_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "restorePlanId" in jsonified_request
+    assert jsonified_request["restorePlanId"] == request_init["restore_plan_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["restorePlanId"] = "restore_plan_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_restore_plan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("restore_plan_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "restorePlanId" in jsonified_request
+    assert jsonified_request["restorePlanId"] == "restore_plan_id_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_restore_plan(request)
+
+            expected_params = [
+                (
+                    "restorePlanId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_restore_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_restore_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("restorePlanId",))
+        & set(
+            (
+                "parent",
+                "restorePlan",
+                "restorePlanId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_restore_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_restore_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_create_restore_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.CreateRestorePlanRequest.pb(
+            gkebackup.CreateRestorePlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.CreateRestorePlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_restore_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_restore_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.CreateRestorePlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["restore_plan"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup_plan": "backup_plan_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_restore_plan(request)
+
+
+def test_create_restore_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            restore_plan=gcg_restore_plan.RestorePlan(name="name_value"),
+            restore_plan_id="restore_plan_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_restore_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/restorePlans"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_restore_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_restore_plan(
+            gkebackup.CreateRestorePlanRequest(),
+            parent="parent_value",
+            restore_plan=gcg_restore_plan.RestorePlan(name="name_value"),
+            restore_plan_id="restore_plan_id_value",
+        )
+
+
+def test_create_restore_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListRestorePlansRequest,
+        dict,
+    ],
+)
+def test_list_restore_plans_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListRestorePlansResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_restore_plans(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRestorePlansPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_restore_plans_rest_required_fields(
+    request_type=gkebackup.ListRestorePlansRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_restore_plans._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_restore_plans._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.ListRestorePlansResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_restore_plans(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_restore_plans_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_restore_plans._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_restore_plans_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_restore_plans"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_list_restore_plans"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.ListRestorePlansRequest.pb(
+            gkebackup.ListRestorePlansRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.ListRestorePlansResponse.to_json(
+            gkebackup.ListRestorePlansResponse()
+        )
+
+        request = gkebackup.ListRestorePlansRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.ListRestorePlansResponse()
+
+        client.list_restore_plans(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_restore_plans_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.ListRestorePlansRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_restore_plans(request)
+
+
+def test_list_restore_plans_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListRestorePlansResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_restore_plans(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/restorePlans"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_restore_plans_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_restore_plans(
+            gkebackup.ListRestorePlansRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_restore_plans_rest_pager(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gkebackup.ListRestorePlansResponse(
+                restore_plans=[
+                    restore_plan.RestorePlan(),
+                    restore_plan.RestorePlan(),
+                    restore_plan.RestorePlan(),
+                ],
+                next_page_token="abc",
+            ),
+            gkebackup.ListRestorePlansResponse(
+                restore_plans=[],
+                next_page_token="def",
+            ),
+            gkebackup.ListRestorePlansResponse(
+                restore_plans=[
+                    restore_plan.RestorePlan(),
+                ],
+                next_page_token="ghi",
+            ),
+            gkebackup.ListRestorePlansResponse(
+                restore_plans=[
+                    restore_plan.RestorePlan(),
+                    restore_plan.RestorePlan(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            gkebackup.ListRestorePlansResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_restore_plans(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, restore_plan.RestorePlan) for i in results)
+
+        pages = list(client.list_restore_plans(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetRestorePlanRequest,
+        dict,
+    ],
+)
+def test_get_restore_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = restore_plan.RestorePlan(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            backup_plan="backup_plan_value",
+            cluster="cluster_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = restore_plan.RestorePlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_restore_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, restore_plan.RestorePlan)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.backup_plan == "backup_plan_value"
+    assert response.cluster == "cluster_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_restore_plan_rest_required_fields(
+    request_type=gkebackup.GetRestorePlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_restore_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_restore_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = restore_plan.RestorePlan()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = restore_plan.RestorePlan.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_restore_plan(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_restore_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_restore_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_restore_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_restore_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_restore_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetRestorePlanRequest.pb(
+            gkebackup.GetRestorePlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = restore_plan.RestorePlan.to_json(
+            restore_plan.RestorePlan()
+        )
+
+        request = gkebackup.GetRestorePlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = restore_plan.RestorePlan()
+
+        client.get_restore_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_restore_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetRestorePlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_restore_plan(request)
+
+
+def test_get_restore_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = restore_plan.RestorePlan()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = restore_plan.RestorePlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_restore_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/restorePlans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_restore_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_restore_plan(
+            gkebackup.GetRestorePlanRequest(),
+            name="name_value",
+        )
+
+
+def test_get_restore_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateRestorePlanRequest,
+        dict,
+    ],
+)
+def test_update_restore_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "restore_plan": {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+    }
+    request_init["restore_plan"] = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup_plan": "backup_plan_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_restore_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_restore_plan_rest_required_fields(
+    request_type=gkebackup.UpdateRestorePlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_restore_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_restore_plan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_restore_plan(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_restore_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_restore_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("restorePlan",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_restore_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_restore_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_update_restore_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.UpdateRestorePlanRequest.pb(
+            gkebackup.UpdateRestorePlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.UpdateRestorePlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_restore_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_restore_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.UpdateRestorePlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "restore_plan": {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+    }
+    request_init["restore_plan"] = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup_plan": "backup_plan_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_restore_plan(request)
+
+
+def test_update_restore_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "restore_plan": {
+                "name": "projects/sample1/locations/sample2/restorePlans/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            restore_plan=gcg_restore_plan.RestorePlan(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_restore_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{restore_plan.name=projects/*/locations/*/restorePlans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_restore_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_restore_plan(
+            gkebackup.UpdateRestorePlanRequest(),
+            restore_plan=gcg_restore_plan.RestorePlan(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_restore_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteRestorePlanRequest,
+        dict,
+    ],
+)
+def test_delete_restore_plan_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_restore_plan(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_restore_plan_rest_required_fields(
+    request_type=gkebackup.DeleteRestorePlanRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_restore_plan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_restore_plan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "etag",
+            "force",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_restore_plan(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_restore_plan_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_restore_plan._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "etag",
+                "force",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_restore_plan_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_restore_plan"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_delete_restore_plan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.DeleteRestorePlanRequest.pb(
+            gkebackup.DeleteRestorePlanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.DeleteRestorePlanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_restore_plan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_restore_plan_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.DeleteRestorePlanRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_restore_plan(request)
+
+
+def test_delete_restore_plan_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_restore_plan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/restorePlans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_restore_plan_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_restore_plan(
+            gkebackup.DeleteRestorePlanRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_restore_plan_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateRestoreRequest,
+        dict,
+    ],
+)
+def test_create_restore_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request_init["restore"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup": "backup_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resources_restored_count": 2602,
+        "resources_excluded_count": 2576,
+        "resources_failed_count": 2343,
+        "volumes_restored_count": 2394,
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_restore(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_restore_rest_required_fields(
+    request_type=gkebackup.CreateRestoreRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["restore_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "restoreId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "restoreId" in jsonified_request
+    assert jsonified_request["restoreId"] == request_init["restore_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["restoreId"] = "restore_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_restore._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("restore_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "restoreId" in jsonified_request
+    assert jsonified_request["restoreId"] == "restore_id_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_restore(request)
+
+            expected_params = [
+                (
+                    "restoreId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_restore_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_restore._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("restoreId",))
+        & set(
+            (
+                "parent",
+                "restore",
+                "restoreId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_restore_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_restore"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_create_restore"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.CreateRestoreRequest.pb(gkebackup.CreateRestoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.CreateRestoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_restore(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_restore_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.CreateRestoreRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request_init["restore"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup": "backup_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resources_restored_count": 2602,
+        "resources_excluded_count": 2576,
+        "resources_failed_count": 2343,
+        "volumes_restored_count": 2394,
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_restore(request)
+
+
+def test_create_restore_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            restore=gcg_restore.Restore(name="name_value"),
+            restore_id="restore_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_restore(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/restorePlans/*}/restores"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_restore_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_restore(
+            gkebackup.CreateRestoreRequest(),
+            parent="parent_value",
+            restore=gcg_restore.Restore(name="name_value"),
+            restore_id="restore_id_value",
+        )
+
+
+def test_create_restore_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListRestoresRequest,
+        dict,
+    ],
+)
+def test_list_restores_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListRestoresResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_restores(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRestoresPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_restores_rest_required_fields(request_type=gkebackup.ListRestoresRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_restores._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_restores._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.ListRestoresResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gkebackup.ListRestoresResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_restores(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_restores_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_restores._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_restores_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_restores"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_list_restores"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.ListRestoresRequest.pb(gkebackup.ListRestoresRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.ListRestoresResponse.to_json(
+            gkebackup.ListRestoresResponse()
+        )
+
+        request = gkebackup.ListRestoresRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.ListRestoresResponse()
+
+        client.list_restores(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_restores_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.ListRestoresRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/restorePlans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_restores(request)
+
+
+def test_list_restores_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListRestoresResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_restores(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/restorePlans/*}/restores"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_restores_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_restores(
+            gkebackup.ListRestoresRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_restores_rest_pager(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gkebackup.ListRestoresResponse(
+                restores=[
+                    restore.Restore(),
+                    restore.Restore(),
+                    restore.Restore(),
+                ],
+                next_page_token="abc",
+            ),
+            gkebackup.ListRestoresResponse(
+                restores=[],
+                next_page_token="def",
+            ),
+            gkebackup.ListRestoresResponse(
+                restores=[
+                    restore.Restore(),
+                ],
+                next_page_token="ghi",
+            ),
+            gkebackup.ListRestoresResponse(
+                restores=[
+                    restore.Restore(),
+                    restore.Restore(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(gkebackup.ListRestoresResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/restorePlans/sample3"
+        }
+
+        pager = client.list_restores(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, restore.Restore) for i in results)
+
+        pages = list(client.list_restores(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetRestoreRequest,
+        dict,
+    ],
+)
+def test_get_restore_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = restore.Restore(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            backup="backup_value",
+            cluster="cluster_value",
+            state=restore.Restore.State.CREATING,
+            state_reason="state_reason_value",
+            resources_restored_count=2602,
+            resources_excluded_count=2576,
+            resources_failed_count=2343,
+            volumes_restored_count=2394,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = restore.Restore.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_restore(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, restore.Restore)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.backup == "backup_value"
+    assert response.cluster == "cluster_value"
+    assert response.state == restore.Restore.State.CREATING
+    assert response.state_reason == "state_reason_value"
+    assert response.resources_restored_count == 2602
+    assert response.resources_excluded_count == 2576
+    assert response.resources_failed_count == 2343
+    assert response.volumes_restored_count == 2394
+    assert response.etag == "etag_value"
+
+
+def test_get_restore_rest_required_fields(request_type=gkebackup.GetRestoreRequest):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = restore.Restore()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = restore.Restore.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_restore(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_restore_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_restore._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_restore_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_restore"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_restore"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetRestoreRequest.pb(gkebackup.GetRestoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = restore.Restore.to_json(restore.Restore())
+
+        request = gkebackup.GetRestoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = restore.Restore()
+
+        client.get_restore(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_restore_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetRestoreRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_restore(request)
+
+
+def test_get_restore_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = restore.Restore()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = restore.Restore.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_restore(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/restorePlans/*/restores/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_restore_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_restore(
+            gkebackup.GetRestoreRequest(),
+            name="name_value",
+        )
+
+
+def test_get_restore_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateRestoreRequest,
+        dict,
+    ],
+)
+def test_update_restore_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "restore": {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+        }
+    }
+    request_init["restore"] = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup": "backup_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resources_restored_count": 2602,
+        "resources_excluded_count": 2576,
+        "resources_failed_count": 2343,
+        "volumes_restored_count": 2394,
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_restore(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_restore_rest_required_fields(
+    request_type=gkebackup.UpdateRestoreRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_restore._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_restore(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_restore_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_restore._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("restore",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_restore_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_restore"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_update_restore"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.UpdateRestoreRequest.pb(gkebackup.UpdateRestoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.UpdateRestoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_restore(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_restore_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.UpdateRestoreRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "restore": {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+        }
+    }
+    request_init["restore"] = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "backup": "backup_value",
+        "cluster": "cluster_value",
+        "restore_config": {
+            "volume_data_restore_policy": 1,
+            "cluster_resource_conflict_policy": 1,
+            "namespaced_resource_restore_mode": 1,
+            "cluster_resource_restore_scope": {
+                "selected_group_kinds": [
+                    {
+                        "resource_group": "resource_group_value",
+                        "resource_kind": "resource_kind_value",
+                    }
+                ]
+            },
+            "all_namespaces": True,
+            "selected_namespaces": {
+                "namespaces": ["namespaces_value1", "namespaces_value2"]
+            },
+            "selected_applications": {
+                "namespaced_names": [
+                    {"namespace": "namespace_value", "name": "name_value"}
+                ]
+            },
+            "substitution_rules": [
+                {
+                    "target_namespaces": [
+                        "target_namespaces_value1",
+                        "target_namespaces_value2",
+                    ],
+                    "target_group_kinds": {},
+                    "target_json_path": "target_json_path_value",
+                    "original_value_pattern": "original_value_pattern_value",
+                    "new_value": "new_value_value",
+                }
+            ],
+        },
+        "labels": {},
+        "state": 1,
+        "state_reason": "state_reason_value",
+        "complete_time": {},
+        "resources_restored_count": 2602,
+        "resources_excluded_count": 2576,
+        "resources_failed_count": 2343,
+        "volumes_restored_count": 2394,
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_restore(request)
+
+
+def test_update_restore_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "restore": {
+                "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            restore=gcg_restore.Restore(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_restore(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{restore.name=projects/*/locations/*/restorePlans/*/restores/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_restore_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_restore(
+            gkebackup.UpdateRestoreRequest(),
+            restore=gcg_restore.Restore(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_restore_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteRestoreRequest,
+        dict,
+    ],
+)
+def test_delete_restore_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_restore(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_restore_rest_required_fields(
+    request_type=gkebackup.DeleteRestoreRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_restore._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "etag",
+            "force",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_restore(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_restore_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_restore._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "etag",
+                "force",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_restore_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_restore"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_delete_restore"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.DeleteRestoreRequest.pb(gkebackup.DeleteRestoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gkebackup.DeleteRestoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_restore(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_restore_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.DeleteRestoreRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_restore(request)
+
+
+def test_delete_restore_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_restore(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/restorePlans/*/restores/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_restore_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_restore(
+            gkebackup.DeleteRestoreRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_restore_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListVolumeRestoresRequest,
+        dict,
+    ],
+)
+def test_list_volume_restores_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListVolumeRestoresResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_volume_restores(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVolumeRestoresPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_volume_restores_rest_required_fields(
+    request_type=gkebackup.ListVolumeRestoresRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volume_restores._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volume_restores._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.ListVolumeRestoresResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_volume_restores(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_volume_restores_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_volume_restores._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_volume_restores_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_volume_restores"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_list_volume_restores"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.ListVolumeRestoresRequest.pb(
+            gkebackup.ListVolumeRestoresRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.ListVolumeRestoresResponse.to_json(
+            gkebackup.ListVolumeRestoresResponse()
+        )
+
+        request = gkebackup.ListVolumeRestoresRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.ListVolumeRestoresResponse()
+
+        client.list_volume_restores(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_volume_restores_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.ListVolumeRestoresRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_volume_restores(request)
+
+
+def test_list_volume_restores_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.ListVolumeRestoresResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_volume_restores(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/restorePlans/*/restores/*}/volumeRestores"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_volume_restores_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_volume_restores(
+            gkebackup.ListVolumeRestoresRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_volume_restores_rest_pager(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            gkebackup.ListVolumeRestoresResponse(
+                volume_restores=[
+                    volume.VolumeRestore(),
+                    volume.VolumeRestore(),
+                    volume.VolumeRestore(),
+                ],
+                next_page_token="abc",
+            ),
+            gkebackup.ListVolumeRestoresResponse(
+                volume_restores=[],
+                next_page_token="def",
+            ),
+            gkebackup.ListVolumeRestoresResponse(
+                volume_restores=[
+                    volume.VolumeRestore(),
+                ],
+                next_page_token="ghi",
+            ),
+            gkebackup.ListVolumeRestoresResponse(
+                volume_restores=[
+                    volume.VolumeRestore(),
+                    volume.VolumeRestore(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            gkebackup.ListVolumeRestoresResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
+        }
+
+        pager = client.list_volume_restores(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, volume.VolumeRestore) for i in results)
+
+        pages = list(client.list_volume_restores(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetVolumeRestoreRequest,
+        dict,
+    ],
+)
+def test_get_volume_restore_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4/volumeRestores/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.VolumeRestore(
+            name="name_value",
+            uid="uid_value",
+            volume_backup="volume_backup_value",
+            volume_handle="volume_handle_value",
+            volume_type=volume.VolumeRestore.VolumeType.GCE_PERSISTENT_DISK,
+            state=volume.VolumeRestore.State.CREATING,
+            state_message="state_message_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.VolumeRestore.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_volume_restore(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume.VolumeRestore)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.volume_backup == "volume_backup_value"
+    assert response.volume_handle == "volume_handle_value"
+    assert response.volume_type == volume.VolumeRestore.VolumeType.GCE_PERSISTENT_DISK
+    assert response.state == volume.VolumeRestore.State.CREATING
+    assert response.state_message == "state_message_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_volume_restore_rest_required_fields(
+    request_type=gkebackup.GetVolumeRestoreRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume_restore._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume.VolumeRestore()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume.VolumeRestore.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_volume_restore(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_volume_restore_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_volume_restore._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_volume_restore_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_volume_restore"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_volume_restore"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetVolumeRestoreRequest.pb(
+            gkebackup.GetVolumeRestoreRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume.VolumeRestore.to_json(volume.VolumeRestore())
+
+        request = gkebackup.GetVolumeRestoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume.VolumeRestore()
+
+        client.get_volume_restore(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_volume_restore_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetVolumeRestoreRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4/volumeRestores/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_volume_restore(request)
+
+
+def test_get_volume_restore_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.VolumeRestore()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4/volumeRestores/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.VolumeRestore.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_volume_restore(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_volume_restore_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_volume_restore(
+            gkebackup.GetVolumeRestoreRequest(),
+            name="name_value",
+        )
+
+
+def test_get_volume_restore_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BackupForGKEGrpcTransport(
@@ -7922,6 +15775,7 @@ def test_transport_get_channel():
     [
         transports.BackupForGKEGrpcTransport,
         transports.BackupForGKEGrpcAsyncIOTransport,
+        transports.BackupForGKERestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -7936,6 +15790,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -8093,6 +15948,7 @@ def test_backup_for_gke_transport_auth_adc(transport_class):
     [
         transports.BackupForGKEGrpcTransport,
         transports.BackupForGKEGrpcAsyncIOTransport,
+        transports.BackupForGKERestTransport,
     ],
 )
 def test_backup_for_gke_transport_auth_gdch_credentials(transport_class):
@@ -8187,11 +16043,40 @@ def test_backup_for_gke_grpc_transport_client_cert_source_for_mtls(transport_cla
             )
 
 
+def test_backup_for_gke_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.BackupForGKERestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_backup_for_gke_rest_lro_client():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_backup_for_gke_host_no_port(transport_name):
@@ -8202,7 +16087,11 @@ def test_backup_for_gke_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkebackup.googleapis.com:443")
+    assert client.transport._host == (
+        "gkebackup.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkebackup.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -8210,6 +16099,7 @@ def test_backup_for_gke_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_backup_for_gke_host_with_port(transport_name):
@@ -8220,7 +16110,102 @@ def test_backup_for_gke_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkebackup.googleapis.com:8000")
+    assert client.transport._host == (
+        "gkebackup.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkebackup.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_backup_for_gke_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = BackupForGKEClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = BackupForGKEClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_backup_plan._session
+    session2 = client2.transport.create_backup_plan._session
+    assert session1 != session2
+    session1 = client1.transport.list_backup_plans._session
+    session2 = client2.transport.list_backup_plans._session
+    assert session1 != session2
+    session1 = client1.transport.get_backup_plan._session
+    session2 = client2.transport.get_backup_plan._session
+    assert session1 != session2
+    session1 = client1.transport.update_backup_plan._session
+    session2 = client2.transport.update_backup_plan._session
+    assert session1 != session2
+    session1 = client1.transport.delete_backup_plan._session
+    session2 = client2.transport.delete_backup_plan._session
+    assert session1 != session2
+    session1 = client1.transport.create_backup._session
+    session2 = client2.transport.create_backup._session
+    assert session1 != session2
+    session1 = client1.transport.list_backups._session
+    session2 = client2.transport.list_backups._session
+    assert session1 != session2
+    session1 = client1.transport.get_backup._session
+    session2 = client2.transport.get_backup._session
+    assert session1 != session2
+    session1 = client1.transport.update_backup._session
+    session2 = client2.transport.update_backup._session
+    assert session1 != session2
+    session1 = client1.transport.delete_backup._session
+    session2 = client2.transport.delete_backup._session
+    assert session1 != session2
+    session1 = client1.transport.list_volume_backups._session
+    session2 = client2.transport.list_volume_backups._session
+    assert session1 != session2
+    session1 = client1.transport.get_volume_backup._session
+    session2 = client2.transport.get_volume_backup._session
+    assert session1 != session2
+    session1 = client1.transport.create_restore_plan._session
+    session2 = client2.transport.create_restore_plan._session
+    assert session1 != session2
+    session1 = client1.transport.list_restore_plans._session
+    session2 = client2.transport.list_restore_plans._session
+    assert session1 != session2
+    session1 = client1.transport.get_restore_plan._session
+    session2 = client2.transport.get_restore_plan._session
+    assert session1 != session2
+    session1 = client1.transport.update_restore_plan._session
+    session2 = client2.transport.update_restore_plan._session
+    assert session1 != session2
+    session1 = client1.transport.delete_restore_plan._session
+    session2 = client2.transport.delete_restore_plan._session
+    assert session1 != session2
+    session1 = client1.transport.create_restore._session
+    session2 = client2.transport.create_restore._session
+    assert session1 != session2
+    session1 = client1.transport.list_restores._session
+    session2 = client2.transport.list_restores._session
+    assert session1 != session2
+    session1 = client1.transport.get_restore._session
+    session2 = client2.transport.get_restore._session
+    assert session1 != session2
+    session1 = client1.transport.update_restore._session
+    session2 = client2.transport.update_restore._session
+    assert session1 != session2
+    session1 = client1.transport.delete_restore._session
+    session2 = client2.transport.delete_restore._session
+    assert session1 != session2
+    session1 = client1.transport.list_volume_restores._session
+    session2 = client2.transport.list_volume_restores._session
+    assert session1 != session2
+    session1 = client1.transport.get_volume_restore._session
+    session2 = client2.transport.get_volume_restore._session
+    assert session1 != session2
 
 
 def test_backup_for_gke_grpc_transport_channel():
@@ -8754,6 +16739,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -8771,6 +16757,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

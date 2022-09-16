@@ -256,6 +256,131 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "BackupForGKEClient",
+          "rpcs": {
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateBackupPlan": {
+              "methods": [
+                "create_backup_plan"
+              ]
+            },
+            "CreateRestore": {
+              "methods": [
+                "create_restore"
+              ]
+            },
+            "CreateRestorePlan": {
+              "methods": [
+                "create_restore_plan"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupPlan": {
+              "methods": [
+                "delete_backup_plan"
+              ]
+            },
+            "DeleteRestore": {
+              "methods": [
+                "delete_restore"
+              ]
+            },
+            "DeleteRestorePlan": {
+              "methods": [
+                "delete_restore_plan"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupPlan": {
+              "methods": [
+                "get_backup_plan"
+              ]
+            },
+            "GetRestore": {
+              "methods": [
+                "get_restore"
+              ]
+            },
+            "GetRestorePlan": {
+              "methods": [
+                "get_restore_plan"
+              ]
+            },
+            "GetVolumeBackup": {
+              "methods": [
+                "get_volume_backup"
+              ]
+            },
+            "GetVolumeRestore": {
+              "methods": [
+                "get_volume_restore"
+              ]
+            },
+            "ListBackupPlans": {
+              "methods": [
+                "list_backup_plans"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
+            "ListRestorePlans": {
+              "methods": [
+                "list_restore_plans"
+              ]
+            },
+            "ListRestores": {
+              "methods": [
+                "list_restores"
+              ]
+            },
+            "ListVolumeBackups": {
+              "methods": [
+                "list_volume_backups"
+              ]
+            },
+            "ListVolumeRestores": {
+              "methods": [
+                "list_volume_restores"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            },
+            "UpdateBackupPlan": {
+              "methods": [
+                "update_backup_plan"
+              ]
+            },
+            "UpdateRestore": {
+              "methods": [
+                "update_restore"
+              ]
+            },
+            "UpdateRestorePlan": {
+              "methods": [
+                "update_restore_plan"
+              ]
+            }
+          }
         }
       }
     }
