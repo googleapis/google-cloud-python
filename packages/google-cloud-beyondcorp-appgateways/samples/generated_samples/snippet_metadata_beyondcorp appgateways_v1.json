@@ -149,7 +149,7 @@
         "shortName": "create_app_gateway"
       },
       "description": "Sample for CreateAppGateway",
-      "file": "beyondcorp_v1_generated_app_gateways_service_create_app_gateway_sync.py",
+      "file": "beyondcorp_v1_generated_app_gateways_service_create_app_gateway_sync_100741a0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppGatewaysService_CreateAppGateway_sync",
@@ -185,7 +185,95 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_gateways_service_create_app_gateway_sync.py"
+      "title": "beyondcorp_v1_generated_app_gateways_service_create_app_gateway_sync_100741a0.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient",
+          "shortName": "AppGatewaysServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient.create_app_gateway",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService.CreateAppGateway",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService",
+            "shortName": "AppGatewaysService"
+          },
+          "shortName": "CreateAppGateway"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appgateways_v1.types.CreateAppGatewayRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "app_gateway",
+            "type": "google.cloud.beyondcorp_appgateways_v1.types.AppGateway"
+          },
+          {
+            "name": "app_gateway_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_app_gateway"
+      },
+      "description": "Sample for CreateAppGateway",
+      "file": "beyondcorp_v1_generated_app_gateways_service_create_app_gateway_sync_71a9d989.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppGatewaysService_CreateAppGateway_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_gateways_service_create_app_gateway_sync_71a9d989.py"
     },
     {
       "canonical": true,
@@ -310,7 +398,7 @@
         "shortName": "delete_app_gateway"
       },
       "description": "Sample for DeleteAppGateway",
-      "file": "beyondcorp_v1_generated_app_gateways_service_delete_app_gateway_sync.py",
+      "file": "beyondcorp_v1_generated_app_gateways_service_delete_app_gateway_sync_a9085548.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppGatewaysService_DeleteAppGateway_sync",
@@ -346,7 +434,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_gateways_service_delete_app_gateway_sync.py"
+      "title": "beyondcorp_v1_generated_app_gateways_service_delete_app_gateway_sync_a9085548.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient",
+          "shortName": "AppGatewaysServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient.delete_app_gateway",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService.DeleteAppGateway",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService",
+            "shortName": "AppGatewaysService"
+          },
+          "shortName": "DeleteAppGateway"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appgateways_v1.types.DeleteAppGatewayRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_app_gateway"
+      },
+      "description": "Sample for DeleteAppGateway",
+      "file": "beyondcorp_v1_generated_app_gateways_service_delete_app_gateway_sync_c3302150.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppGatewaysService_DeleteAppGateway_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_gateways_service_delete_app_gateway_sync_c3302150.py"
     },
     {
       "canonical": true,
@@ -471,7 +639,7 @@
         "shortName": "get_app_gateway"
       },
       "description": "Sample for GetAppGateway",
-      "file": "beyondcorp_v1_generated_app_gateways_service_get_app_gateway_sync.py",
+      "file": "beyondcorp_v1_generated_app_gateways_service_get_app_gateway_sync_d08d9f8b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppGatewaysService_GetAppGateway_sync",
@@ -507,7 +675,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_gateways_service_get_app_gateway_sync.py"
+      "title": "beyondcorp_v1_generated_app_gateways_service_get_app_gateway_sync_d08d9f8b.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient",
+          "shortName": "AppGatewaysServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient.get_app_gateway",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService.GetAppGateway",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService",
+            "shortName": "AppGatewaysService"
+          },
+          "shortName": "GetAppGateway"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appgateways_v1.types.GetAppGatewayRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.beyondcorp_appgateways_v1.types.AppGateway",
+        "shortName": "get_app_gateway"
+      },
+      "description": "Sample for GetAppGateway",
+      "file": "beyondcorp_v1_generated_app_gateways_service_get_app_gateway_sync_b076f27a.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppGatewaysService_GetAppGateway_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_gateways_service_get_app_gateway_sync_b076f27a.py"
     },
     {
       "canonical": true,
@@ -632,7 +880,7 @@
         "shortName": "list_app_gateways"
       },
       "description": "Sample for ListAppGateways",
-      "file": "beyondcorp_v1_generated_app_gateways_service_list_app_gateways_sync.py",
+      "file": "beyondcorp_v1_generated_app_gateways_service_list_app_gateways_sync_be8b980c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppGatewaysService_ListAppGateways_sync",
@@ -668,7 +916,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_gateways_service_list_app_gateways_sync.py"
+      "title": "beyondcorp_v1_generated_app_gateways_service_list_app_gateways_sync_be8b980c.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient",
+          "shortName": "AppGatewaysServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appgateways_v1.AppGatewaysServiceClient.list_app_gateways",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService.ListAppGateways",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appgateways.v1.AppGatewaysService",
+            "shortName": "AppGatewaysService"
+          },
+          "shortName": "ListAppGateways"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appgateways_v1.types.ListAppGatewaysRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.beyondcorp_appgateways_v1.services.app_gateways_service.pagers.ListAppGatewaysPager",
+        "shortName": "list_app_gateways"
+      },
+      "description": "Sample for ListAppGateways",
+      "file": "beyondcorp_v1_generated_app_gateways_service_list_app_gateways_sync_00fc2a5d.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppGatewaysService_ListAppGateways_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_gateways_service_list_app_gateways_sync_00fc2a5d.py"
     }
   ]
 }

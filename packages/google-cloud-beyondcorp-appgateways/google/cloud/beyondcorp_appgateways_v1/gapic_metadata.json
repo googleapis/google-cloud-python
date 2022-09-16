@@ -56,6 +56,31 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AppGatewaysServiceClient",
+          "rpcs": {
+            "CreateAppGateway": {
+              "methods": [
+                "create_app_gateway"
+              ]
+            },
+            "DeleteAppGateway": {
+              "methods": [
+                "delete_app_gateway"
+              ]
+            },
+            "GetAppGateway": {
+              "methods": [
+                "get_app_gateway"
+              ]
+            },
+            "ListAppGateways": {
+              "methods": [
+                "list_app_gateways"
+              ]
+            }
+          }
         }
       }
     }
