@@ -149,7 +149,7 @@
         "shortName": "create_app_connection"
       },
       "description": "Sample for CreateAppConnection",
-      "file": "beyondcorp_v1_generated_app_connections_service_create_app_connection_sync.py",
+      "file": "beyondcorp_v1_generated_app_connections_service_create_app_connection_sync_9d3c5dad.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppConnectionsService_CreateAppConnection_sync",
@@ -185,7 +185,95 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_connections_service_create_app_connection_sync.py"
+      "title": "beyondcorp_v1_generated_app_connections_service_create_app_connection_sync_9d3c5dad.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient",
+          "shortName": "AppConnectionsServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient.create_app_connection",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService.CreateAppConnection",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService",
+            "shortName": "AppConnectionsService"
+          },
+          "shortName": "CreateAppConnection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.CreateAppConnectionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "app_connection",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.AppConnection"
+          },
+          {
+            "name": "app_connection_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_app_connection"
+      },
+      "description": "Sample for CreateAppConnection",
+      "file": "beyondcorp_v1_generated_app_connections_service_create_app_connection_sync_91d87e6c.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppConnectionsService_CreateAppConnection_sync",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_connections_service_create_app_connection_sync_91d87e6c.py"
     },
     {
       "canonical": true,
@@ -310,7 +398,7 @@
         "shortName": "delete_app_connection"
       },
       "description": "Sample for DeleteAppConnection",
-      "file": "beyondcorp_v1_generated_app_connections_service_delete_app_connection_sync.py",
+      "file": "beyondcorp_v1_generated_app_connections_service_delete_app_connection_sync_d9e7bee9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppConnectionsService_DeleteAppConnection_sync",
@@ -346,7 +434,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_connections_service_delete_app_connection_sync.py"
+      "title": "beyondcorp_v1_generated_app_connections_service_delete_app_connection_sync_d9e7bee9.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient",
+          "shortName": "AppConnectionsServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient.delete_app_connection",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService.DeleteAppConnection",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService",
+            "shortName": "AppConnectionsService"
+          },
+          "shortName": "DeleteAppConnection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.DeleteAppConnectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_app_connection"
+      },
+      "description": "Sample for DeleteAppConnection",
+      "file": "beyondcorp_v1_generated_app_connections_service_delete_app_connection_sync_077fa6c0.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppConnectionsService_DeleteAppConnection_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_connections_service_delete_app_connection_sync_077fa6c0.py"
     },
     {
       "canonical": true,
@@ -471,7 +639,7 @@
         "shortName": "get_app_connection"
       },
       "description": "Sample for GetAppConnection",
-      "file": "beyondcorp_v1_generated_app_connections_service_get_app_connection_sync.py",
+      "file": "beyondcorp_v1_generated_app_connections_service_get_app_connection_sync_6eaecb87.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppConnectionsService_GetAppConnection_sync",
@@ -507,7 +675,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_connections_service_get_app_connection_sync.py"
+      "title": "beyondcorp_v1_generated_app_connections_service_get_app_connection_sync_6eaecb87.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient",
+          "shortName": "AppConnectionsServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient.get_app_connection",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService.GetAppConnection",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService",
+            "shortName": "AppConnectionsService"
+          },
+          "shortName": "GetAppConnection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.GetAppConnectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.beyondcorp_appconnections_v1.types.AppConnection",
+        "shortName": "get_app_connection"
+      },
+      "description": "Sample for GetAppConnection",
+      "file": "beyondcorp_v1_generated_app_connections_service_get_app_connection_sync_1502e303.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppConnectionsService_GetAppConnection_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_connections_service_get_app_connection_sync_1502e303.py"
     },
     {
       "canonical": true,
@@ -632,7 +880,7 @@
         "shortName": "list_app_connections"
       },
       "description": "Sample for ListAppConnections",
-      "file": "beyondcorp_v1_generated_app_connections_service_list_app_connections_sync.py",
+      "file": "beyondcorp_v1_generated_app_connections_service_list_app_connections_sync_64cb4a27.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppConnectionsService_ListAppConnections_sync",
@@ -668,7 +916,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_connections_service_list_app_connections_sync.py"
+      "title": "beyondcorp_v1_generated_app_connections_service_list_app_connections_sync_64cb4a27.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient",
+          "shortName": "AppConnectionsServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient.list_app_connections",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService.ListAppConnections",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService",
+            "shortName": "AppConnectionsService"
+          },
+          "shortName": "ListAppConnections"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.ListAppConnectionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.beyondcorp_appconnections_v1.services.app_connections_service.pagers.ListAppConnectionsPager",
+        "shortName": "list_app_connections"
+      },
+      "description": "Sample for ListAppConnections",
+      "file": "beyondcorp_v1_generated_app_connections_service_list_app_connections_sync_2599e0de.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppConnectionsService_ListAppConnections_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_connections_service_list_app_connections_sync_2599e0de.py"
     },
     {
       "canonical": true,
@@ -793,7 +1121,7 @@
         "shortName": "resolve_app_connections"
       },
       "description": "Sample for ResolveAppConnections",
-      "file": "beyondcorp_v1_generated_app_connections_service_resolve_app_connections_sync.py",
+      "file": "beyondcorp_v1_generated_app_connections_service_resolve_app_connections_sync_bdc212ed.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppConnectionsService_ResolveAppConnections_sync",
@@ -829,7 +1157,87 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_connections_service_resolve_app_connections_sync.py"
+      "title": "beyondcorp_v1_generated_app_connections_service_resolve_app_connections_sync_bdc212ed.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient",
+          "shortName": "AppConnectionsServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient.resolve_app_connections",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService.ResolveAppConnections",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService",
+            "shortName": "AppConnectionsService"
+          },
+          "shortName": "ResolveAppConnections"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.ResolveAppConnectionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.beyondcorp_appconnections_v1.services.app_connections_service.pagers.ResolveAppConnectionsPager",
+        "shortName": "resolve_app_connections"
+      },
+      "description": "Sample for ResolveAppConnections",
+      "file": "beyondcorp_v1_generated_app_connections_service_resolve_app_connections_sync_95f0c8dc.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppConnectionsService_ResolveAppConnections_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_connections_service_resolve_app_connections_sync_95f0c8dc.py"
     },
     {
       "canonical": true,
@@ -962,7 +1370,7 @@
         "shortName": "update_app_connection"
       },
       "description": "Sample for UpdateAppConnection",
-      "file": "beyondcorp_v1_generated_app_connections_service_update_app_connection_sync.py",
+      "file": "beyondcorp_v1_generated_app_connections_service_update_app_connection_sync_05ba433a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "beyondcorp_v1_generated_AppConnectionsService_UpdateAppConnection_sync",
@@ -998,7 +1406,91 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "beyondcorp_v1_generated_app_connections_service_update_app_connection_sync.py"
+      "title": "beyondcorp_v1_generated_app_connections_service_update_app_connection_sync_05ba433a.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient",
+          "shortName": "AppConnectionsServiceClient"
+        },
+        "fullName": "google.cloud.beyondcorp_appconnections_v1.AppConnectionsServiceClient.update_app_connection",
+        "method": {
+          "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService.UpdateAppConnection",
+          "service": {
+            "fullName": "google.cloud.beyondcorp.appconnections.v1.AppConnectionsService",
+            "shortName": "AppConnectionsService"
+          },
+          "shortName": "UpdateAppConnection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.UpdateAppConnectionRequest"
+          },
+          {
+            "name": "app_connection",
+            "type": "google.cloud.beyondcorp_appconnections_v1.types.AppConnection"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_app_connection"
+      },
+      "description": "Sample for UpdateAppConnection",
+      "file": "beyondcorp_v1_generated_app_connections_service_update_app_connection_sync_fbcb3f57.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "beyondcorp_v1_generated_AppConnectionsService_UpdateAppConnection_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "beyondcorp_v1_generated_app_connections_service_update_app_connection_sync_fbcb3f57.py"
     }
   ]
 }
