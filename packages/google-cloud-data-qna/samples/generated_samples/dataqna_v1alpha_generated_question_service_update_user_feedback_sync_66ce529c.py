@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataqna
 
 
-# [START dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync]
+# [START dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync_66ce529c]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -52,4 +52,4 @@ def sample_update_user_feedback():
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync]
+# [END dataqna_v1alpha_generated_QuestionService_UpdateUserFeedback_sync_66ce529c]

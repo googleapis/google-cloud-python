@@ -39,6 +39,7 @@ from google.cloud.dataqna_v1alpha.types import auto_suggestion_service
 from .transports.base import DEFAULT_CLIENT_INFO, AutoSuggestionServiceTransport
 from .transports.grpc import AutoSuggestionServiceGrpcTransport
 from .transports.grpc_asyncio import AutoSuggestionServiceGrpcAsyncIOTransport
+from .transports.rest import AutoSuggestionServiceRestTransport
 
 
 class AutoSuggestionServiceClientMeta(type):
@@ -54,6 +55,7 @@ class AutoSuggestionServiceClientMeta(type):
     )  # type: Dict[str, Type[AutoSuggestionServiceTransport]]
     _transport_registry["grpc"] = AutoSuggestionServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AutoSuggestionServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AutoSuggestionServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -396,6 +398,9 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
             transport (Union[str, AutoSuggestionServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

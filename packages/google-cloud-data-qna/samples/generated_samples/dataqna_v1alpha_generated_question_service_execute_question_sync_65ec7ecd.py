@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SuggestQueries
+# Snippet for ExecuteQuestion
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataqna
 
 
-# [START dataqna_v1alpha_generated_AutoSuggestionService_SuggestQueries_sync]
+# [START dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_sync_65ec7ecd]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,20 @@
 from google.cloud import dataqna_v1alpha
 
 
-def sample_suggest_queries():
+def sample_execute_question():
     # Create a client
-    client = dataqna_v1alpha.AutoSuggestionServiceClient()
+    client = dataqna_v1alpha.QuestionServiceClient()
 
     # Initialize request argument(s)
-    request = dataqna_v1alpha.SuggestQueriesRequest(
-        parent="parent_value",
+    request = dataqna_v1alpha.ExecuteQuestionRequest(
+        name="name_value",
+        interpretation_index=2159,
     )
 
     # Make the request
-    response = client.suggest_queries(request=request)
+    response = client.execute_question(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_AutoSuggestionService_SuggestQueries_sync]
+# [END dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_sync_65ec7ecd]

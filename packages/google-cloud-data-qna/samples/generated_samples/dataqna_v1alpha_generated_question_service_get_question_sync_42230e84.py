@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ExecuteQuestion
+# Snippet for GetQuestion
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataqna
 
 
-# [START dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_sync]
+# [START dataqna_v1alpha_generated_QuestionService_GetQuestion_sync_42230e84]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,19 @@
 from google.cloud import dataqna_v1alpha
 
 
-def sample_execute_question():
+def sample_get_question():
     # Create a client
     client = dataqna_v1alpha.QuestionServiceClient()
 
     # Initialize request argument(s)
-    request = dataqna_v1alpha.ExecuteQuestionRequest(
+    request = dataqna_v1alpha.GetQuestionRequest(
         name="name_value",
-        interpretation_index=2159,
     )
 
     # Make the request
-    response = client.execute_question(request=request)
+    response = client.get_question(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_sync]
+# [END dataqna_v1alpha_generated_QuestionService_GetQuestion_sync_42230e84]

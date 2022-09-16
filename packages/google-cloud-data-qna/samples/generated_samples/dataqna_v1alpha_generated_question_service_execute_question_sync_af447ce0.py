@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetUserFeedback
+# Snippet for ExecuteQuestion
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataqna
 
 
-# [START dataqna_v1alpha_generated_QuestionService_GetUserFeedback_sync]
+# [START dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_sync_af447ce0]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,20 @@
 from google.cloud import dataqna_v1alpha
 
 
-def sample_get_user_feedback():
+def sample_execute_question():
     # Create a client
     client = dataqna_v1alpha.QuestionServiceClient()
 
     # Initialize request argument(s)
-    request = dataqna_v1alpha.GetUserFeedbackRequest(
+    request = dataqna_v1alpha.ExecuteQuestionRequest(
         name="name_value",
+        interpretation_index=2159,
     )
 
     # Make the request
-    response = client.get_user_feedback(request=request)
+    response = client.execute_question(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataqna_v1alpha_generated_QuestionService_GetUserFeedback_sync]
+# [END dataqna_v1alpha_generated_QuestionService_ExecuteQuestion_sync_af447ce0]
