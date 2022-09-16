@@ -46,6 +46,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ProvisioningTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ProvisioningGrpcTransport
 from .transports.grpc_asyncio import ProvisioningGrpcAsyncIOTransport
+from .transports.rest import ProvisioningRestTransport
 
 
 class ProvisioningClientMeta(type):
@@ -59,6 +60,7 @@ class ProvisioningClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ProvisioningTransport]]
     _transport_registry["grpc"] = ProvisioningGrpcTransport
     _transport_registry["grpc_asyncio"] = ProvisioningGrpcAsyncIOTransport
+    _transport_registry["rest"] = ProvisioningRestTransport
 
     def get_transport_class(
         cls,
@@ -354,6 +356,9 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
             transport (Union[str, ProvisioningTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

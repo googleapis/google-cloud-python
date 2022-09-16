@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api import httpbody_pb2  # type: ignore
 from google.api_core import client_options
@@ -100,6 +107,7 @@ def test__get_default_mtls_endpoint():
     [
         (RegistryClient, "grpc"),
         (RegistryAsyncClient, "grpc_asyncio"),
+        (RegistryClient, "rest"),
     ],
 )
 def test_registry_client_from_service_account_info(client_class, transport_name):
@@ -113,7 +121,11 @@ def test_registry_client_from_service_account_info(client_class, transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("apigeeregistry.googleapis.com:443")
+        assert client.transport._host == (
+            "apigeeregistry.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://apigeeregistry.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -121,6 +133,7 @@ def test_registry_client_from_service_account_info(client_class, transport_name)
     [
         (transports.RegistryGrpcTransport, "grpc"),
         (transports.RegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.RegistryRestTransport, "rest"),
     ],
 )
 def test_registry_client_service_account_always_use_jwt(
@@ -146,6 +159,7 @@ def test_registry_client_service_account_always_use_jwt(
     [
         (RegistryClient, "grpc"),
         (RegistryAsyncClient, "grpc_asyncio"),
+        (RegistryClient, "rest"),
     ],
 )
 def test_registry_client_from_service_account_file(client_class, transport_name):
@@ -166,13 +180,18 @@ def test_registry_client_from_service_account_file(client_class, transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("apigeeregistry.googleapis.com:443")
+        assert client.transport._host == (
+            "apigeeregistry.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://apigeeregistry.googleapis.com"
+        )
 
 
 def test_registry_client_get_transport_class():
     transport = RegistryClient.get_transport_class()
     available_transports = [
         transports.RegistryGrpcTransport,
+        transports.RegistryRestTransport,
     ]
     assert transport in available_transports
 
@@ -185,6 +204,7 @@ def test_registry_client_get_transport_class():
     [
         (RegistryClient, transports.RegistryGrpcTransport, "grpc"),
         (RegistryAsyncClient, transports.RegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (RegistryClient, transports.RegistryRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -326,6 +346,8 @@ def test_registry_client_client_options(client_class, transport_class, transport
             "grpc_asyncio",
             "false",
         ),
+        (RegistryClient, transports.RegistryRestTransport, "rest", "true"),
+        (RegistryClient, transports.RegistryRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -515,6 +537,7 @@ def test_registry_client_get_mtls_endpoint_and_cert_source(client_class):
     [
         (RegistryClient, transports.RegistryGrpcTransport, "grpc"),
         (RegistryAsyncClient, transports.RegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (RegistryClient, transports.RegistryRestTransport, "rest"),
     ],
 )
 def test_registry_client_client_options_scopes(
@@ -550,6 +573,7 @@ def test_registry_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (RegistryClient, transports.RegistryRestTransport, "rest", None),
     ],
 )
 def test_registry_client_client_options_credentials_file(
@@ -10497,6 +10521,10326 @@ async def test_delete_artifact_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApisRequest,
+        dict,
+    ],
+)
+def test_list_apis_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApisResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_apis(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApisPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_apis_rest_required_fields(request_type=registry_service.ListApisRequest):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_apis._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_apis._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListApisResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListApisResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_apis(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_apis_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_apis._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_apis_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_apis"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_apis"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListApisRequest.pb(
+            registry_service.ListApisRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_service.ListApisResponse.to_json(
+            registry_service.ListApisResponse()
+        )
+
+        request = registry_service.ListApisRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListApisResponse()
+
+        client.list_apis(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_apis_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ListApisRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_apis(request)
+
+
+def test_list_apis_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApisResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_apis(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/apis" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_apis_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_apis(
+            registry_service.ListApisRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_apis_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListApisResponse(
+                apis=[
+                    registry_models.Api(),
+                    registry_models.Api(),
+                    registry_models.Api(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListApisResponse(
+                apis=[],
+                next_page_token="def",
+            ),
+            registry_service.ListApisResponse(
+                apis=[
+                    registry_models.Api(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListApisResponse(
+                apis=[
+                    registry_models.Api(),
+                    registry_models.Api(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(registry_service.ListApisResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_apis(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.Api) for i in results)
+
+        pages = list(client.list_apis(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiRequest,
+        dict,
+    ],
+)
+def test_get_api_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Api(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            availability="availability_value",
+            recommended_version="recommended_version_value",
+            recommended_deployment="recommended_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.availability == "availability_value"
+    assert response.recommended_version == "recommended_version_value"
+    assert response.recommended_deployment == "recommended_deployment_value"
+
+
+def test_get_api_rest_required_fields(request_type=registry_service.GetApiRequest):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.Api()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.Api.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_api(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_api_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_api._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetApiRequest.pb(registry_service.GetApiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.Api.to_json(registry_models.Api())
+
+        request = registry_service.GetApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.Api()
+
+        client.get_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetApiRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_api(request)
+
+
+def test_get_api_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Api()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_api(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_api_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_api(
+            registry_service.GetApiRequest(),
+            name="name_value",
+        )
+
+
+def test_get_api_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiRequest,
+        dict,
+    ],
+)
+def test_create_api_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["api"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "availability": "availability_value",
+        "recommended_version": "recommended_version_value",
+        "recommended_deployment": "recommended_deployment_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Api(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            availability="availability_value",
+            recommended_version="recommended_version_value",
+            recommended_deployment="recommended_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.availability == "availability_value"
+    assert response.recommended_version == "recommended_version_value"
+    assert response.recommended_deployment == "recommended_deployment_value"
+
+
+def test_create_api_rest_required_fields(
+    request_type=registry_service.CreateApiRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["api_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "apiId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "apiId" in jsonified_request
+    assert jsonified_request["apiId"] == request_init["api_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["apiId"] = "api_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("api_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "apiId" in jsonified_request
+    assert jsonified_request["apiId"] == "api_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.Api()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.Api.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_api(request)
+
+            expected_params = [
+                (
+                    "apiId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_api_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_api._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("apiId",))
+        & set(
+            (
+                "parent",
+                "api",
+                "apiId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_create_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.CreateApiRequest.pb(
+            registry_service.CreateApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.Api.to_json(registry_models.Api())
+
+        request = registry_service.CreateApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.Api()
+
+        client.create_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_api_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.CreateApiRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["api"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "availability": "availability_value",
+        "recommended_version": "recommended_version_value",
+        "recommended_deployment": "recommended_deployment_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_api(request)
+
+
+def test_create_api_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Api()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            api=registry_models.Api(name="name_value"),
+            api_id="api_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_api(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/apis" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_api_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_api(
+            registry_service.CreateApiRequest(),
+            parent="parent_value",
+            api=registry_models.Api(name="name_value"),
+            api_id="api_id_value",
+        )
+
+
+def test_create_api_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiRequest,
+        dict,
+    ],
+)
+def test_update_api_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
+    request_init["api"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "availability": "availability_value",
+        "recommended_version": "recommended_version_value",
+        "recommended_deployment": "recommended_deployment_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Api(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            availability="availability_value",
+            recommended_version="recommended_version_value",
+            recommended_deployment="recommended_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.availability == "availability_value"
+    assert response.recommended_version == "recommended_version_value"
+    assert response.recommended_deployment == "recommended_deployment_value"
+
+
+def test_update_api_rest_required_fields(
+    request_type=registry_service.UpdateApiRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.Api()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.Api.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_api(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_api_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_api._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "updateMask",
+            )
+        )
+        & set(("api",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_update_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.UpdateApiRequest.pb(
+            registry_service.UpdateApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.Api.to_json(registry_models.Api())
+
+        request = registry_service.UpdateApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.Api()
+
+        client.update_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.UpdateApiRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
+    request_init["api"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "availability": "availability_value",
+        "recommended_version": "recommended_version_value",
+        "recommended_deployment": "recommended_deployment_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_api(request)
+
+
+def test_update_api_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Api()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "api": {"name": "projects/sample1/locations/sample2/apis/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            api=registry_models.Api(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_api(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{api.name=projects/*/locations/*/apis/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_api_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_api(
+            registry_service.UpdateApiRequest(),
+            api=registry_models.Api(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_api_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiRequest,
+        dict,
+    ],
+)
+def test_delete_api_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_api_rest_required_fields(
+    request_type=registry_service.DeleteApiRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_api(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_api"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = registry_service.DeleteApiRequest.pb(
+            registry_service.DeleteApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = registry_service.DeleteApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_api_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.DeleteApiRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_api(request)
+
+
+def test_delete_api_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_api(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api(
+            registry_service.DeleteApiRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_api_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiVersionsRequest,
+        dict,
+    ],
+)
+def test_list_api_versions_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_api_versions_rest_required_fields(
+    request_type=registry_service.ListApiVersionsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_versions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_versions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListApiVersionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListApiVersionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_api_versions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_api_versions_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_api_versions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_versions_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_versions"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_api_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListApiVersionsRequest.pb(
+            registry_service.ListApiVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_service.ListApiVersionsResponse.to_json(
+            registry_service.ListApiVersionsResponse()
+        )
+
+        request = registry_service.ListApiVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListApiVersionsResponse()
+
+        client.list_api_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_versions_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ListApiVersionsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_api_versions(request)
+
+
+def test_list_api_versions_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiVersionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_api_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*}/versions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_api_versions_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_api_versions(
+            registry_service.ListApiVersionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_api_versions_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListApiVersionsResponse(
+                api_versions=[
+                    registry_models.ApiVersion(),
+                    registry_models.ApiVersion(),
+                    registry_models.ApiVersion(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListApiVersionsResponse(
+                api_versions=[],
+                next_page_token="def",
+            ),
+            registry_service.ListApiVersionsResponse(
+                api_versions=[
+                    registry_models.ApiVersion(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListApiVersionsResponse(
+                api_versions=[
+                    registry_models.ApiVersion(),
+                    registry_models.ApiVersion(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            registry_service.ListApiVersionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+
+        pager = client.list_api_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.ApiVersion) for i in results)
+
+        pages = list(client.list_api_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiVersionRequest,
+        dict,
+    ],
+)
+def test_get_api_version_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiVersion(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            state="state_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiVersion)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == "state_value"
+
+
+def test_get_api_version_rest_required_fields(
+    request_type=registry_service.GetApiVersionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_api_version(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_api_version_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_api_version._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_version_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_version"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_api_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetApiVersionRequest.pb(
+            registry_service.GetApiVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiVersion.to_json(
+            registry_models.ApiVersion()
+        )
+
+        request = registry_service.GetApiVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiVersion()
+
+        client.get_api_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_version_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetApiVersionRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_api_version(request)
+
+
+def test_get_api_version_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_api_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_api_version_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_api_version(
+            registry_service.GetApiVersionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_api_version_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiVersionRequest,
+        dict,
+    ],
+)
+def test_create_api_version_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request_init["api_version"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": "state_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiVersion(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            state="state_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiVersion)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == "state_value"
+
+
+def test_create_api_version_rest_required_fields(
+    request_type=registry_service.CreateApiVersionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["api_version_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "apiVersionId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "apiVersionId" in jsonified_request
+    assert jsonified_request["apiVersionId"] == request_init["api_version_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["apiVersionId"] = "api_version_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_version._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("api_version_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "apiVersionId" in jsonified_request
+    assert jsonified_request["apiVersionId"] == "api_version_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_api_version(request)
+
+            expected_params = [
+                (
+                    "apiVersionId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_api_version_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_api_version._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("apiVersionId",))
+        & set(
+            (
+                "parent",
+                "apiVersion",
+                "apiVersionId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_version_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_version"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_create_api_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.CreateApiVersionRequest.pb(
+            registry_service.CreateApiVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiVersion.to_json(
+            registry_models.ApiVersion()
+        )
+
+        request = registry_service.CreateApiVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiVersion()
+
+        client.create_api_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_api_version_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.CreateApiVersionRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request_init["api_version"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": "state_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_api_version(request)
+
+
+def test_create_api_version_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            api_version=registry_models.ApiVersion(name="name_value"),
+            api_version_id="api_version_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_api_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*}/versions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_api_version_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_api_version(
+            registry_service.CreateApiVersionRequest(),
+            parent="parent_value",
+            api_version=registry_models.ApiVersion(name="name_value"),
+            api_version_id="api_version_id_value",
+        )
+
+
+def test_create_api_version_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiVersionRequest,
+        dict,
+    ],
+)
+def test_update_api_version_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_version": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+    }
+    request_init["api_version"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": "state_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiVersion(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            state="state_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiVersion)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.state == "state_value"
+
+
+def test_update_api_version_rest_required_fields(
+    request_type=registry_service.UpdateApiVersionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_version._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_api_version(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_api_version_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_api_version._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "updateMask",
+            )
+        )
+        & set(("apiVersion",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_version_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_version"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_update_api_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.UpdateApiVersionRequest.pb(
+            registry_service.UpdateApiVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiVersion.to_json(
+            registry_models.ApiVersion()
+        )
+
+        request = registry_service.UpdateApiVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiVersion()
+
+        client.update_api_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_version_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.UpdateApiVersionRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_version": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+    }
+    request_init["api_version"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": "state_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_api_version(request)
+
+
+def test_update_api_version_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "api_version": {
+                "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            api_version=registry_models.ApiVersion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_api_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{api_version.name=projects/*/locations/*/apis/*/versions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_api_version_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_api_version(
+            registry_service.UpdateApiVersionRequest(),
+            api_version=registry_models.ApiVersion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_api_version_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiVersionRequest,
+        dict,
+    ],
+)
+def test_delete_api_version_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_api_version_rest_required_fields(
+    request_type=registry_service.DeleteApiVersionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_version._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_api_version(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_version_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api_version._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_version_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_api_version"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = registry_service.DeleteApiVersionRequest.pb(
+            registry_service.DeleteApiVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = registry_service.DeleteApiVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_api_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_api_version_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.DeleteApiVersionRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_api_version(request)
+
+
+def test_delete_api_version_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_api_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_version_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api_version(
+            registry_service.DeleteApiVersionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_api_version_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiSpecsRequest,
+        dict,
+    ],
+)
+def test_list_api_specs_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiSpecsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_specs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiSpecsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_api_specs_rest_required_fields(
+    request_type=registry_service.ListApiSpecsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_specs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_specs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListApiSpecsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListApiSpecsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_api_specs(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_api_specs_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_api_specs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_specs_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_specs"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_api_specs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListApiSpecsRequest.pb(
+            registry_service.ListApiSpecsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_service.ListApiSpecsResponse.to_json(
+            registry_service.ListApiSpecsResponse()
+        )
+
+        request = registry_service.ListApiSpecsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListApiSpecsResponse()
+
+        client.list_api_specs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_specs_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ListApiSpecsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_api_specs(request)
+
+
+def test_list_api_specs_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiSpecsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_api_specs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*/versions/*}/specs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_api_specs_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_api_specs(
+            registry_service.ListApiSpecsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_api_specs_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListApiSpecsResponse(
+                api_specs=[
+                    registry_models.ApiSpec(),
+                    registry_models.ApiSpec(),
+                    registry_models.ApiSpec(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListApiSpecsResponse(
+                api_specs=[],
+                next_page_token="def",
+            ),
+            registry_service.ListApiSpecsResponse(
+                api_specs=[
+                    registry_models.ApiSpec(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListApiSpecsResponse(
+                api_specs=[
+                    registry_models.ApiSpec(),
+                    registry_models.ApiSpec(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            registry_service.ListApiSpecsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+
+        pager = client.list_api_specs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.ApiSpec) for i in results)
+
+        pages = list(client.list_api_specs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiSpecRequest,
+        dict,
+    ],
+)
+def test_get_api_spec_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec(
+            name="name_value",
+            filename="filename_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            source_uri="source_uri_value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiSpec)
+    assert response.name == "name_value"
+    assert response.filename == "filename_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.source_uri == "source_uri_value"
+    assert response.contents == b"contents_blob"
+
+
+def test_get_api_spec_rest_required_fields(
+    request_type=registry_service.GetApiSpecRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_api_spec(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_api_spec_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_api_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_spec_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_spec"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_api_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetApiSpecRequest.pb(
+            registry_service.GetApiSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiSpec.to_json(
+            registry_models.ApiSpec()
+        )
+
+        request = registry_service.GetApiSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiSpec()
+
+        client.get_api_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_spec_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetApiSpecRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_api_spec(request)
+
+
+def test_get_api_spec_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_api_spec(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*/specs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_api_spec_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_api_spec(
+            registry_service.GetApiSpecRequest(),
+            name="name_value",
+        )
+
+
+def test_get_api_spec_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiSpecContentsRequest,
+        dict,
+    ],
+)
+def test_get_api_spec_contents_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = httpbody_pb2.HttpBody(
+            content_type="content_type_value",
+            data=b"data_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_spec_contents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, httpbody_pb2.HttpBody)
+    assert response.content_type == "content_type_value"
+    assert response.data == b"data_blob"
+
+
+def test_get_api_spec_contents_rest_required_fields(
+    request_type=registry_service.GetApiSpecContentsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_spec_contents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_spec_contents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = httpbody_pb2.HttpBody()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_api_spec_contents(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_api_spec_contents_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_api_spec_contents._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_spec_contents_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_spec_contents"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_api_spec_contents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetApiSpecContentsRequest.pb(
+            registry_service.GetApiSpecContentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(httpbody_pb2.HttpBody())
+
+        request = registry_service.GetApiSpecContentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = httpbody_pb2.HttpBody()
+
+        client.get_api_spec_contents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_spec_contents_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetApiSpecContentsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_api_spec_contents(request)
+
+
+def test_get_api_spec_contents_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = httpbody_pb2.HttpBody()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_api_spec_contents(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*/specs/*}:getContents"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_api_spec_contents_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_api_spec_contents(
+            registry_service.GetApiSpecContentsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_api_spec_contents_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiSpecRequest,
+        dict,
+    ],
+)
+def test_create_api_spec_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request_init["api_spec"] = {
+        "name": "name_value",
+        "filename": "filename_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "source_uri": "source_uri_value",
+        "contents": b"contents_blob",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec(
+            name="name_value",
+            filename="filename_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            source_uri="source_uri_value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiSpec)
+    assert response.name == "name_value"
+    assert response.filename == "filename_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.source_uri == "source_uri_value"
+    assert response.contents == b"contents_blob"
+
+
+def test_create_api_spec_rest_required_fields(
+    request_type=registry_service.CreateApiSpecRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["api_spec_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "apiSpecId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "apiSpecId" in jsonified_request
+    assert jsonified_request["apiSpecId"] == request_init["api_spec_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["apiSpecId"] = "api_spec_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_spec._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("api_spec_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "apiSpecId" in jsonified_request
+    assert jsonified_request["apiSpecId"] == "api_spec_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_api_spec(request)
+
+            expected_params = [
+                (
+                    "apiSpecId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_api_spec_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_api_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("apiSpecId",))
+        & set(
+            (
+                "parent",
+                "apiSpec",
+                "apiSpecId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_spec_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_spec"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_create_api_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.CreateApiSpecRequest.pb(
+            registry_service.CreateApiSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiSpec.to_json(
+            registry_models.ApiSpec()
+        )
+
+        request = registry_service.CreateApiSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiSpec()
+
+        client.create_api_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_api_spec_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.CreateApiSpecRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request_init["api_spec"] = {
+        "name": "name_value",
+        "filename": "filename_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "source_uri": "source_uri_value",
+        "contents": b"contents_blob",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_api_spec(request)
+
+
+def test_create_api_spec_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            api_spec=registry_models.ApiSpec(name="name_value"),
+            api_spec_id="api_spec_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_api_spec(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*/versions/*}/specs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_api_spec_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_api_spec(
+            registry_service.CreateApiSpecRequest(),
+            parent="parent_value",
+            api_spec=registry_models.ApiSpec(name="name_value"),
+            api_spec_id="api_spec_id_value",
+        )
+
+
+def test_create_api_spec_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiSpecRequest,
+        dict,
+    ],
+)
+def test_update_api_spec_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_spec": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+    }
+    request_init["api_spec"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5",
+        "filename": "filename_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "source_uri": "source_uri_value",
+        "contents": b"contents_blob",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec(
+            name="name_value",
+            filename="filename_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            source_uri="source_uri_value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiSpec)
+    assert response.name == "name_value"
+    assert response.filename == "filename_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.source_uri == "source_uri_value"
+    assert response.contents == b"contents_blob"
+
+
+def test_update_api_spec_rest_required_fields(
+    request_type=registry_service.UpdateApiSpecRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_spec._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_api_spec(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_api_spec_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_api_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "updateMask",
+            )
+        )
+        & set(("apiSpec",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_spec_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_spec"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_update_api_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.UpdateApiSpecRequest.pb(
+            registry_service.UpdateApiSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiSpec.to_json(
+            registry_models.ApiSpec()
+        )
+
+        request = registry_service.UpdateApiSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiSpec()
+
+        client.update_api_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_spec_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.UpdateApiSpecRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_spec": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+    }
+    request_init["api_spec"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5",
+        "filename": "filename_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "source_uri": "source_uri_value",
+        "contents": b"contents_blob",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_api_spec(request)
+
+
+def test_update_api_spec_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "api_spec": {
+                "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            api_spec=registry_models.ApiSpec(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_api_spec(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{api_spec.name=projects/*/locations/*/apis/*/versions/*/specs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_api_spec_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_api_spec(
+            registry_service.UpdateApiSpecRequest(),
+            api_spec=registry_models.ApiSpec(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_api_spec_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiSpecRequest,
+        dict,
+    ],
+)
+def test_delete_api_spec_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_api_spec_rest_required_fields(
+    request_type=registry_service.DeleteApiSpecRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_spec._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_api_spec(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_spec_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_spec_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_api_spec"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = registry_service.DeleteApiSpecRequest.pb(
+            registry_service.DeleteApiSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = registry_service.DeleteApiSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_api_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_api_spec_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.DeleteApiSpecRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_api_spec(request)
+
+
+def test_delete_api_spec_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_api_spec(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*/specs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_spec_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api_spec(
+            registry_service.DeleteApiSpecRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_api_spec_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.TagApiSpecRevisionRequest,
+        dict,
+    ],
+)
+def test_tag_api_spec_revision_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec(
+            name="name_value",
+            filename="filename_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            source_uri="source_uri_value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.tag_api_spec_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiSpec)
+    assert response.name == "name_value"
+    assert response.filename == "filename_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.source_uri == "source_uri_value"
+    assert response.contents == b"contents_blob"
+
+
+def test_tag_api_spec_revision_rest_required_fields(
+    request_type=registry_service.TagApiSpecRevisionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["tag"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tag_api_spec_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["tag"] = "tag_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tag_api_spec_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "tag" in jsonified_request
+    assert jsonified_request["tag"] == "tag_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.tag_api_spec_revision(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_tag_api_spec_revision_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.tag_api_spec_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "tag",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_tag_api_spec_revision_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_tag_api_spec_revision"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_tag_api_spec_revision"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.TagApiSpecRevisionRequest.pb(
+            registry_service.TagApiSpecRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiSpec.to_json(
+            registry_models.ApiSpec()
+        )
+
+        request = registry_service.TagApiSpecRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiSpec()
+
+        client.tag_api_spec_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_tag_api_spec_revision_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.TagApiSpecRevisionRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.tag_api_spec_revision(request)
+
+
+def test_tag_api_spec_revision_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiSpecRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_api_spec_revisions_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiSpecRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiSpecRevisionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_spec_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiSpecRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_api_spec_revisions_rest_required_fields(
+    request_type=registry_service.ListApiSpecRevisionsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_spec_revisions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_spec_revisions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListApiSpecRevisionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListApiSpecRevisionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_api_spec_revisions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_api_spec_revisions_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_api_spec_revisions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_spec_revisions_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_spec_revisions"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_api_spec_revisions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListApiSpecRevisionsRequest.pb(
+            registry_service.ListApiSpecRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            registry_service.ListApiSpecRevisionsResponse.to_json(
+                registry_service.ListApiSpecRevisionsResponse()
+            )
+        )
+
+        request = registry_service.ListApiSpecRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListApiSpecRevisionsResponse()
+
+        client.list_api_spec_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_spec_revisions_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ListApiSpecRevisionsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_api_spec_revisions(request)
+
+
+def test_list_api_spec_revisions_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListApiSpecRevisionsResponse(
+                api_specs=[
+                    registry_models.ApiSpec(),
+                    registry_models.ApiSpec(),
+                    registry_models.ApiSpec(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListApiSpecRevisionsResponse(
+                api_specs=[],
+                next_page_token="def",
+            ),
+            registry_service.ListApiSpecRevisionsResponse(
+                api_specs=[
+                    registry_models.ApiSpec(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListApiSpecRevisionsResponse(
+                api_specs=[
+                    registry_models.ApiSpec(),
+                    registry_models.ApiSpec(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            registry_service.ListApiSpecRevisionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+
+        pager = client.list_api_spec_revisions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.ApiSpec) for i in results)
+
+        pages = list(client.list_api_spec_revisions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.RollbackApiSpecRequest,
+        dict,
+    ],
+)
+def test_rollback_api_spec_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec(
+            name="name_value",
+            filename="filename_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            source_uri="source_uri_value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback_api_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiSpec)
+    assert response.name == "name_value"
+    assert response.filename == "filename_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.source_uri == "source_uri_value"
+    assert response.contents == b"contents_blob"
+
+
+def test_rollback_api_spec_rest_required_fields(
+    request_type=registry_service.RollbackApiSpecRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["revision_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["revisionId"] = "revision_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_api_spec._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "revisionId" in jsonified_request
+    assert jsonified_request["revisionId"] == "revision_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rollback_api_spec(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rollback_api_spec_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rollback_api_spec._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "revisionId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_api_spec_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_rollback_api_spec"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_rollback_api_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.RollbackApiSpecRequest.pb(
+            registry_service.RollbackApiSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiSpec.to_json(
+            registry_models.ApiSpec()
+        )
+
+        request = registry_service.RollbackApiSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiSpec()
+
+        client.rollback_api_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_api_spec_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.RollbackApiSpecRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rollback_api_spec(request)
+
+
+def test_rollback_api_spec_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiSpecRevisionRequest,
+        dict,
+    ],
+)
+def test_delete_api_spec_revision_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec(
+            name="name_value",
+            filename="filename_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            source_uri="source_uri_value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api_spec_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiSpec)
+    assert response.name == "name_value"
+    assert response.filename == "filename_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.source_uri == "source_uri_value"
+    assert response.contents == b"contents_blob"
+
+
+def test_delete_api_spec_revision_rest_required_fields(
+    request_type=registry_service.DeleteApiSpecRevisionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_spec_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_spec_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiSpec()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_api_spec_revision(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_spec_revision_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api_spec_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_spec_revision_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_delete_api_spec_revision"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_api_spec_revision"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.DeleteApiSpecRevisionRequest.pb(
+            registry_service.DeleteApiSpecRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiSpec.to_json(
+            registry_models.ApiSpec()
+        )
+
+        request = registry_service.DeleteApiSpecRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiSpec()
+
+        client.delete_api_spec_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_api_spec_revision_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.DeleteApiSpecRevisionRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_api_spec_revision(request)
+
+
+def test_delete_api_spec_revision_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiSpec()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_api_spec_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*/specs/*}:deleteRevision"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_spec_revision_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api_spec_revision(
+            registry_service.DeleteApiSpecRevisionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_api_spec_revision_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiDeploymentsRequest,
+        dict,
+    ],
+)
+def test_list_api_deployments_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiDeploymentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_deployments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiDeploymentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_api_deployments_rest_required_fields(
+    request_type=registry_service.ListApiDeploymentsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_deployments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_deployments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListApiDeploymentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListApiDeploymentsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_api_deployments(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_api_deployments_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_api_deployments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_deployments_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_deployments"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_api_deployments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListApiDeploymentsRequest.pb(
+            registry_service.ListApiDeploymentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_service.ListApiDeploymentsResponse.to_json(
+            registry_service.ListApiDeploymentsResponse()
+        )
+
+        request = registry_service.ListApiDeploymentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListApiDeploymentsResponse()
+
+        client.list_api_deployments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_deployments_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ListApiDeploymentsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_api_deployments(request)
+
+
+def test_list_api_deployments_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiDeploymentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_api_deployments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*}/deployments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_api_deployments_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_api_deployments(
+            registry_service.ListApiDeploymentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_api_deployments_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListApiDeploymentsResponse(
+                api_deployments=[
+                    registry_models.ApiDeployment(),
+                    registry_models.ApiDeployment(),
+                    registry_models.ApiDeployment(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListApiDeploymentsResponse(
+                api_deployments=[],
+                next_page_token="def",
+            ),
+            registry_service.ListApiDeploymentsResponse(
+                api_deployments=[
+                    registry_models.ApiDeployment(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListApiDeploymentsResponse(
+                api_deployments=[
+                    registry_models.ApiDeployment(),
+                    registry_models.ApiDeployment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            registry_service.ListApiDeploymentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+
+        pager = client.list_api_deployments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.ApiDeployment) for i in results)
+
+        pages = list(client.list_api_deployments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiDeploymentRequest,
+        dict,
+    ],
+)
+def test_get_api_deployment_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            api_spec_revision="api_spec_revision_value",
+            endpoint_uri="endpoint_uri_value",
+            external_channel_uri="external_channel_uri_value",
+            intended_audience="intended_audience_value",
+            access_guidance="access_guidance_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiDeployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.api_spec_revision == "api_spec_revision_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.external_channel_uri == "external_channel_uri_value"
+    assert response.intended_audience == "intended_audience_value"
+    assert response.access_guidance == "access_guidance_value"
+
+
+def test_get_api_deployment_rest_required_fields(
+    request_type=registry_service.GetApiDeploymentRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_api_deployment(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_api_deployment_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_api_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_deployment_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_deployment"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_api_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetApiDeploymentRequest.pb(
+            registry_service.GetApiDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiDeployment.to_json(
+            registry_models.ApiDeployment()
+        )
+
+        request = registry_service.GetApiDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiDeployment()
+
+        client.get_api_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_deployment_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetApiDeploymentRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_api_deployment(request)
+
+
+def test_get_api_deployment_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_api_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/deployments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_api_deployment_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_api_deployment(
+            registry_service.GetApiDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_api_deployment_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiDeploymentRequest,
+        dict,
+    ],
+)
+def test_create_api_deployment_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request_init["api_deployment"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "api_spec_revision": "api_spec_revision_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "external_channel_uri": "external_channel_uri_value",
+        "intended_audience": "intended_audience_value",
+        "access_guidance": "access_guidance_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            api_spec_revision="api_spec_revision_value",
+            endpoint_uri="endpoint_uri_value",
+            external_channel_uri="external_channel_uri_value",
+            intended_audience="intended_audience_value",
+            access_guidance="access_guidance_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiDeployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.api_spec_revision == "api_spec_revision_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.external_channel_uri == "external_channel_uri_value"
+    assert response.intended_audience == "intended_audience_value"
+    assert response.access_guidance == "access_guidance_value"
+
+
+def test_create_api_deployment_rest_required_fields(
+    request_type=registry_service.CreateApiDeploymentRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["api_deployment_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "apiDeploymentId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "apiDeploymentId" in jsonified_request
+    assert jsonified_request["apiDeploymentId"] == request_init["api_deployment_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["apiDeploymentId"] = "api_deployment_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("api_deployment_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "apiDeploymentId" in jsonified_request
+    assert jsonified_request["apiDeploymentId"] == "api_deployment_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_api_deployment(request)
+
+            expected_params = [
+                (
+                    "apiDeploymentId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_api_deployment_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_api_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("apiDeploymentId",))
+        & set(
+            (
+                "parent",
+                "apiDeployment",
+                "apiDeploymentId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_deployment_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_deployment"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_create_api_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.CreateApiDeploymentRequest.pb(
+            registry_service.CreateApiDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiDeployment.to_json(
+            registry_models.ApiDeployment()
+        )
+
+        request = registry_service.CreateApiDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiDeployment()
+
+        client.create_api_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_api_deployment_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.CreateApiDeploymentRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request_init["api_deployment"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "api_spec_revision": "api_spec_revision_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "external_channel_uri": "external_channel_uri_value",
+        "intended_audience": "intended_audience_value",
+        "access_guidance": "access_guidance_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_api_deployment(request)
+
+
+def test_create_api_deployment_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            api_deployment=registry_models.ApiDeployment(name="name_value"),
+            api_deployment_id="api_deployment_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_api_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*}/deployments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_api_deployment_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_api_deployment(
+            registry_service.CreateApiDeploymentRequest(),
+            parent="parent_value",
+            api_deployment=registry_models.ApiDeployment(name="name_value"),
+            api_deployment_id="api_deployment_id_value",
+        )
+
+
+def test_create_api_deployment_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiDeploymentRequest,
+        dict,
+    ],
+)
+def test_update_api_deployment_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_deployment": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+        }
+    }
+    request_init["api_deployment"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "api_spec_revision": "api_spec_revision_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "external_channel_uri": "external_channel_uri_value",
+        "intended_audience": "intended_audience_value",
+        "access_guidance": "access_guidance_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            api_spec_revision="api_spec_revision_value",
+            endpoint_uri="endpoint_uri_value",
+            external_channel_uri="external_channel_uri_value",
+            intended_audience="intended_audience_value",
+            access_guidance="access_guidance_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiDeployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.api_spec_revision == "api_spec_revision_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.external_channel_uri == "external_channel_uri_value"
+    assert response.intended_audience == "intended_audience_value"
+    assert response.access_guidance == "access_guidance_value"
+
+
+def test_update_api_deployment_rest_required_fields(
+    request_type=registry_service.UpdateApiDeploymentRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_api_deployment(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_api_deployment_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_api_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "updateMask",
+            )
+        )
+        & set(("apiDeployment",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_deployment_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_deployment"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_update_api_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.UpdateApiDeploymentRequest.pb(
+            registry_service.UpdateApiDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiDeployment.to_json(
+            registry_models.ApiDeployment()
+        )
+
+        request = registry_service.UpdateApiDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiDeployment()
+
+        client.update_api_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_deployment_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.UpdateApiDeploymentRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_deployment": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+        }
+    }
+    request_init["api_deployment"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "revision_id": "revision_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "revision_create_time": {},
+        "revision_update_time": {},
+        "api_spec_revision": "api_spec_revision_value",
+        "endpoint_uri": "endpoint_uri_value",
+        "external_channel_uri": "external_channel_uri_value",
+        "intended_audience": "intended_audience_value",
+        "access_guidance": "access_guidance_value",
+        "labels": {},
+        "annotations": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_api_deployment(request)
+
+
+def test_update_api_deployment_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "api_deployment": {
+                "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            api_deployment=registry_models.ApiDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_api_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{api_deployment.name=projects/*/locations/*/apis/*/deployments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_api_deployment_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_api_deployment(
+            registry_service.UpdateApiDeploymentRequest(),
+            api_deployment=registry_models.ApiDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_api_deployment_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiDeploymentRequest,
+        dict,
+    ],
+)
+def test_delete_api_deployment_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_api_deployment_rest_required_fields(
+    request_type=registry_service.DeleteApiDeploymentRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_deployment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_api_deployment(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_deployment_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_deployment_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_api_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = registry_service.DeleteApiDeploymentRequest.pb(
+            registry_service.DeleteApiDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = registry_service.DeleteApiDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_api_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_api_deployment_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.DeleteApiDeploymentRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_api_deployment(request)
+
+
+def test_delete_api_deployment_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_api_deployment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/deployments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_deployment_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api_deployment(
+            registry_service.DeleteApiDeploymentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_api_deployment_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.TagApiDeploymentRevisionRequest,
+        dict,
+    ],
+)
+def test_tag_api_deployment_revision_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            api_spec_revision="api_spec_revision_value",
+            endpoint_uri="endpoint_uri_value",
+            external_channel_uri="external_channel_uri_value",
+            intended_audience="intended_audience_value",
+            access_guidance="access_guidance_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.tag_api_deployment_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiDeployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.api_spec_revision == "api_spec_revision_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.external_channel_uri == "external_channel_uri_value"
+    assert response.intended_audience == "intended_audience_value"
+    assert response.access_guidance == "access_guidance_value"
+
+
+def test_tag_api_deployment_revision_rest_required_fields(
+    request_type=registry_service.TagApiDeploymentRevisionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["tag"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tag_api_deployment_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["tag"] = "tag_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tag_api_deployment_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "tag" in jsonified_request
+    assert jsonified_request["tag"] == "tag_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.tag_api_deployment_revision(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_tag_api_deployment_revision_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.tag_api_deployment_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "tag",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_tag_api_deployment_revision_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_tag_api_deployment_revision"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_tag_api_deployment_revision"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.TagApiDeploymentRevisionRequest.pb(
+            registry_service.TagApiDeploymentRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiDeployment.to_json(
+            registry_models.ApiDeployment()
+        )
+
+        request = registry_service.TagApiDeploymentRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiDeployment()
+
+        client.tag_api_deployment_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_tag_api_deployment_revision_rest_bad_request(
+    transport: str = "rest",
+    request_type=registry_service.TagApiDeploymentRevisionRequest,
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.tag_api_deployment_revision(request)
+
+
+def test_tag_api_deployment_revision_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiDeploymentRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_api_deployment_revisions_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListApiDeploymentRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListApiDeploymentRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_deployment_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiDeploymentRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_api_deployment_revisions_rest_required_fields(
+    request_type=registry_service.ListApiDeploymentRevisionsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_deployment_revisions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_api_deployment_revisions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListApiDeploymentRevisionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListApiDeploymentRevisionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_api_deployment_revisions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_api_deployment_revisions_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_api_deployment_revisions._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_deployment_revisions_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_deployment_revisions"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_api_deployment_revisions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListApiDeploymentRevisionsRequest.pb(
+            registry_service.ListApiDeploymentRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            registry_service.ListApiDeploymentRevisionsResponse.to_json(
+                registry_service.ListApiDeploymentRevisionsResponse()
+            )
+        )
+
+        request = registry_service.ListApiDeploymentRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListApiDeploymentRevisionsResponse()
+
+        client.list_api_deployment_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_deployment_revisions_rest_bad_request(
+    transport: str = "rest",
+    request_type=registry_service.ListApiDeploymentRevisionsRequest,
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_api_deployment_revisions(request)
+
+
+def test_list_api_deployment_revisions_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListApiDeploymentRevisionsResponse(
+                api_deployments=[
+                    registry_models.ApiDeployment(),
+                    registry_models.ApiDeployment(),
+                    registry_models.ApiDeployment(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListApiDeploymentRevisionsResponse(
+                api_deployments=[],
+                next_page_token="def",
+            ),
+            registry_service.ListApiDeploymentRevisionsResponse(
+                api_deployments=[
+                    registry_models.ApiDeployment(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListApiDeploymentRevisionsResponse(
+                api_deployments=[
+                    registry_models.ApiDeployment(),
+                    registry_models.ApiDeployment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            registry_service.ListApiDeploymentRevisionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+        }
+
+        pager = client.list_api_deployment_revisions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.ApiDeployment) for i in results)
+
+        pages = list(client.list_api_deployment_revisions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.RollbackApiDeploymentRequest,
+        dict,
+    ],
+)
+def test_rollback_api_deployment_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            api_spec_revision="api_spec_revision_value",
+            endpoint_uri="endpoint_uri_value",
+            external_channel_uri="external_channel_uri_value",
+            intended_audience="intended_audience_value",
+            access_guidance="access_guidance_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback_api_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiDeployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.api_spec_revision == "api_spec_revision_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.external_channel_uri == "external_channel_uri_value"
+    assert response.intended_audience == "intended_audience_value"
+    assert response.access_guidance == "access_guidance_value"
+
+
+def test_rollback_api_deployment_rest_required_fields(
+    request_type=registry_service.RollbackApiDeploymentRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["revision_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["revisionId"] = "revision_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_api_deployment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "revisionId" in jsonified_request
+    assert jsonified_request["revisionId"] == "revision_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rollback_api_deployment(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rollback_api_deployment_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rollback_api_deployment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "revisionId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_api_deployment_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_rollback_api_deployment"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_rollback_api_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.RollbackApiDeploymentRequest.pb(
+            registry_service.RollbackApiDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiDeployment.to_json(
+            registry_models.ApiDeployment()
+        )
+
+        request = registry_service.RollbackApiDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiDeployment()
+
+        client.rollback_api_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_api_deployment_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.RollbackApiDeploymentRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rollback_api_deployment(request)
+
+
+def test_rollback_api_deployment_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiDeploymentRevisionRequest,
+        dict,
+    ],
+)
+def test_delete_api_deployment_revision_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            revision_id="revision_id_value",
+            api_spec_revision="api_spec_revision_value",
+            endpoint_uri="endpoint_uri_value",
+            external_channel_uri="external_channel_uri_value",
+            intended_audience="intended_audience_value",
+            access_guidance="access_guidance_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api_deployment_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.ApiDeployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.api_spec_revision == "api_spec_revision_value"
+    assert response.endpoint_uri == "endpoint_uri_value"
+    assert response.external_channel_uri == "external_channel_uri_value"
+    assert response.intended_audience == "intended_audience_value"
+    assert response.access_guidance == "access_guidance_value"
+
+
+def test_delete_api_deployment_revision_rest_required_fields(
+    request_type=registry_service.DeleteApiDeploymentRevisionRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_deployment_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_deployment_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.ApiDeployment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.ApiDeployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_api_deployment_revision(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_deployment_revision_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api_deployment_revision._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_deployment_revision_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_delete_api_deployment_revision"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_api_deployment_revision"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.DeleteApiDeploymentRevisionRequest.pb(
+            registry_service.DeleteApiDeploymentRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.ApiDeployment.to_json(
+            registry_models.ApiDeployment()
+        )
+
+        request = registry_service.DeleteApiDeploymentRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.ApiDeployment()
+
+        client.delete_api_deployment_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_api_deployment_revision_rest_bad_request(
+    transport: str = "rest",
+    request_type=registry_service.DeleteApiDeploymentRevisionRequest,
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_api_deployment_revision(request)
+
+
+def test_delete_api_deployment_revision_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.ApiDeployment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/deployments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.ApiDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_api_deployment_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/deployments/*}:deleteRevision"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_deployment_revision_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api_deployment_revision(
+            registry_service.DeleteApiDeploymentRevisionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_api_deployment_revision_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListArtifactsRequest,
+        dict,
+    ],
+)
+def test_list_artifacts_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListArtifactsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListArtifactsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_artifacts(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListArtifactsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_artifacts_rest_required_fields(
+    request_type=registry_service.ListArtifactsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_artifacts._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_artifacts._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_service.ListArtifactsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_service.ListArtifactsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_artifacts(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_artifacts_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_artifacts._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_artifacts_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_artifacts"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_list_artifacts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ListArtifactsRequest.pb(
+            registry_service.ListArtifactsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_service.ListArtifactsResponse.to_json(
+            registry_service.ListArtifactsResponse()
+        )
+
+        request = registry_service.ListArtifactsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_service.ListArtifactsResponse()
+
+        client.list_artifacts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_artifacts_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ListArtifactsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_artifacts(request)
+
+
+def test_list_artifacts_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_service.ListArtifactsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_service.ListArtifactsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_artifacts(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/artifacts" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_artifacts_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_artifacts(
+            registry_service.ListArtifactsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_artifacts_rest_pager(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            registry_service.ListArtifactsResponse(
+                artifacts=[
+                    registry_models.Artifact(),
+                    registry_models.Artifact(),
+                    registry_models.Artifact(),
+                ],
+                next_page_token="abc",
+            ),
+            registry_service.ListArtifactsResponse(
+                artifacts=[],
+                next_page_token="def",
+            ),
+            registry_service.ListArtifactsResponse(
+                artifacts=[
+                    registry_models.Artifact(),
+                ],
+                next_page_token="ghi",
+            ),
+            registry_service.ListArtifactsResponse(
+                artifacts=[
+                    registry_models.Artifact(),
+                    registry_models.Artifact(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            registry_service.ListArtifactsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_artifacts(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, registry_models.Artifact) for i in results)
+
+        pages = list(client.list_artifacts(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetArtifactRequest,
+        dict,
+    ],
+)
+def test_get_artifact_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Artifact(
+            name="name_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Artifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_artifact(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.Artifact)
+    assert response.name == "name_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.contents == b"contents_blob"
+
+
+def test_get_artifact_rest_required_fields(
+    request_type=registry_service.GetArtifactRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.Artifact()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.Artifact.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_artifact(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_artifact_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_artifact._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_artifact_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_artifact"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_artifact"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetArtifactRequest.pb(
+            registry_service.GetArtifactRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.Artifact.to_json(
+            registry_models.Artifact()
+        )
+
+        request = registry_service.GetArtifactRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.Artifact()
+
+        client.get_artifact(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_artifact_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetArtifactRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_artifact(request)
+
+
+def test_get_artifact_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Artifact()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/artifacts/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Artifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_artifact(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/artifacts/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_artifact_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_artifact(
+            registry_service.GetArtifactRequest(),
+            name="name_value",
+        )
+
+
+def test_get_artifact_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetArtifactContentsRequest,
+        dict,
+    ],
+)
+def test_get_artifact_contents_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = httpbody_pb2.HttpBody(
+            content_type="content_type_value",
+            data=b"data_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_artifact_contents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, httpbody_pb2.HttpBody)
+    assert response.content_type == "content_type_value"
+    assert response.data == b"data_blob"
+
+
+def test_get_artifact_contents_rest_required_fields(
+    request_type=registry_service.GetArtifactContentsRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_artifact_contents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_artifact_contents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = httpbody_pb2.HttpBody()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_artifact_contents(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_artifact_contents_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_artifact_contents._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_artifact_contents_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_artifact_contents"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_get_artifact_contents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.GetArtifactContentsRequest.pb(
+            registry_service.GetArtifactContentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(httpbody_pb2.HttpBody())
+
+        request = registry_service.GetArtifactContentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = httpbody_pb2.HttpBody()
+
+        client.get_artifact_contents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_artifact_contents_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.GetArtifactContentsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_artifact_contents(request)
+
+
+def test_get_artifact_contents_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = httpbody_pb2.HttpBody()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/artifacts/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_artifact_contents(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/artifacts/*}:getContents"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_artifact_contents_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_artifact_contents(
+            registry_service.GetArtifactContentsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_artifact_contents_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateArtifactRequest,
+        dict,
+    ],
+)
+def test_create_artifact_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["artifact"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "contents": b"contents_blob",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Artifact(
+            name="name_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Artifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_artifact(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.Artifact)
+    assert response.name == "name_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.contents == b"contents_blob"
+
+
+def test_create_artifact_rest_required_fields(
+    request_type=registry_service.CreateArtifactRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["artifact_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "artifactId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "artifactId" in jsonified_request
+    assert jsonified_request["artifactId"] == request_init["artifact_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["artifactId"] = "artifact_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_artifact._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("artifact_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "artifactId" in jsonified_request
+    assert jsonified_request["artifactId"] == "artifact_id_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.Artifact()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.Artifact.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_artifact(request)
+
+            expected_params = [
+                (
+                    "artifactId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_artifact_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_artifact._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("artifactId",))
+        & set(
+            (
+                "parent",
+                "artifact",
+                "artifactId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_artifact_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_artifact"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_create_artifact"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.CreateArtifactRequest.pb(
+            registry_service.CreateArtifactRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.Artifact.to_json(
+            registry_models.Artifact()
+        )
+
+        request = registry_service.CreateArtifactRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.Artifact()
+
+        client.create_artifact(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_artifact_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.CreateArtifactRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["artifact"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "contents": b"contents_blob",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_artifact(request)
+
+
+def test_create_artifact_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Artifact()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            artifact=registry_models.Artifact(name="name_value"),
+            artifact_id="artifact_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Artifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_artifact(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/artifacts" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_artifact_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_artifact(
+            registry_service.CreateArtifactRequest(),
+            parent="parent_value",
+            artifact=registry_models.Artifact(name="name_value"),
+            artifact_id="artifact_id_value",
+        )
+
+
+def test_create_artifact_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ReplaceArtifactRequest,
+        dict,
+    ],
+)
+def test_replace_artifact_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "artifact": {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    }
+    request_init["artifact"] = {
+        "name": "projects/sample1/locations/sample2/artifacts/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "contents": b"contents_blob",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Artifact(
+            name="name_value",
+            mime_type="mime_type_value",
+            size_bytes=1089,
+            hash_="hash__value",
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Artifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.replace_artifact(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, registry_models.Artifact)
+    assert response.name == "name_value"
+    assert response.mime_type == "mime_type_value"
+    assert response.size_bytes == 1089
+    assert response.hash_ == "hash__value"
+    assert response.contents == b"contents_blob"
+
+
+def test_replace_artifact_rest_required_fields(
+    request_type=registry_service.ReplaceArtifactRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).replace_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).replace_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = registry_models.Artifact()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = registry_models.Artifact.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.replace_artifact(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_replace_artifact_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.replace_artifact._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("artifact",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_replace_artifact_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_replace_artifact"
+    ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_replace_artifact"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = registry_service.ReplaceArtifactRequest.pb(
+            registry_service.ReplaceArtifactRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = registry_models.Artifact.to_json(
+            registry_models.Artifact()
+        )
+
+        request = registry_service.ReplaceArtifactRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = registry_models.Artifact()
+
+        client.replace_artifact(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_replace_artifact_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.ReplaceArtifactRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "artifact": {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    }
+    request_init["artifact"] = {
+        "name": "projects/sample1/locations/sample2/artifacts/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "mime_type": "mime_type_value",
+        "size_bytes": 1089,
+        "hash_": "hash__value",
+        "contents": b"contents_blob",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.replace_artifact(request)
+
+
+def test_replace_artifact_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = registry_models.Artifact()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "artifact": {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            artifact=registry_models.Artifact(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = registry_models.Artifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.replace_artifact(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{artifact.name=projects/*/locations/*/artifacts/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_replace_artifact_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.replace_artifact(
+            registry_service.ReplaceArtifactRequest(),
+            artifact=registry_models.Artifact(name="name_value"),
+        )
+
+
+def test_replace_artifact_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteArtifactRequest,
+        dict,
+    ],
+)
+def test_delete_artifact_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_artifact(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_artifact_rest_required_fields(
+    request_type=registry_service.DeleteArtifactRequest,
+):
+    transport_class = transports.RegistryRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_artifact._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_artifact(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_artifact_rest_unset_required_fields():
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_artifact._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_artifact_rest_interceptors(null_interceptor):
+    transport = transports.RegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RegistryRestInterceptor(),
+    )
+    client = RegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegistryRestInterceptor, "pre_delete_artifact"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = registry_service.DeleteArtifactRequest.pb(
+            registry_service.DeleteArtifactRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = registry_service.DeleteArtifactRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_artifact(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_artifact_rest_bad_request(
+    transport: str = "rest", request_type=registry_service.DeleteArtifactRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/artifacts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_artifact(request)
+
+
+def test_delete_artifact_rest_flattened():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/artifacts/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_artifact(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/artifacts/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_artifact_rest_flattened_error(transport: str = "rest"):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_artifact(
+            registry_service.DeleteArtifactRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_artifact_rest_error():
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RegistryGrpcTransport(
@@ -10578,6 +20922,7 @@ def test_transport_get_channel():
     [
         transports.RegistryGrpcTransport,
         transports.RegistryGrpcAsyncIOTransport,
+        transports.RegistryRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -10592,6 +20937,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -10764,6 +21110,7 @@ def test_registry_transport_auth_adc(transport_class):
     [
         transports.RegistryGrpcTransport,
         transports.RegistryGrpcAsyncIOTransport,
+        transports.RegistryRestTransport,
     ],
 )
 def test_registry_transport_auth_gdch_credentials(transport_class):
@@ -10858,11 +21205,23 @@ def test_registry_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_registry_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.RegistryRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_registry_host_no_port(transport_name):
@@ -10873,7 +21232,11 @@ def test_registry_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("apigeeregistry.googleapis.com:443")
+    assert client.transport._host == (
+        "apigeeregistry.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://apigeeregistry.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -10881,6 +21244,7 @@ def test_registry_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_registry_host_with_port(transport_name):
@@ -10891,7 +21255,135 @@ def test_registry_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("apigeeregistry.googleapis.com:8000")
+    assert client.transport._host == (
+        "apigeeregistry.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://apigeeregistry.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_registry_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = RegistryClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = RegistryClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_apis._session
+    session2 = client2.transport.list_apis._session
+    assert session1 != session2
+    session1 = client1.transport.get_api._session
+    session2 = client2.transport.get_api._session
+    assert session1 != session2
+    session1 = client1.transport.create_api._session
+    session2 = client2.transport.create_api._session
+    assert session1 != session2
+    session1 = client1.transport.update_api._session
+    session2 = client2.transport.update_api._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api._session
+    session2 = client2.transport.delete_api._session
+    assert session1 != session2
+    session1 = client1.transport.list_api_versions._session
+    session2 = client2.transport.list_api_versions._session
+    assert session1 != session2
+    session1 = client1.transport.get_api_version._session
+    session2 = client2.transport.get_api_version._session
+    assert session1 != session2
+    session1 = client1.transport.create_api_version._session
+    session2 = client2.transport.create_api_version._session
+    assert session1 != session2
+    session1 = client1.transport.update_api_version._session
+    session2 = client2.transport.update_api_version._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api_version._session
+    session2 = client2.transport.delete_api_version._session
+    assert session1 != session2
+    session1 = client1.transport.list_api_specs._session
+    session2 = client2.transport.list_api_specs._session
+    assert session1 != session2
+    session1 = client1.transport.get_api_spec._session
+    session2 = client2.transport.get_api_spec._session
+    assert session1 != session2
+    session1 = client1.transport.get_api_spec_contents._session
+    session2 = client2.transport.get_api_spec_contents._session
+    assert session1 != session2
+    session1 = client1.transport.create_api_spec._session
+    session2 = client2.transport.create_api_spec._session
+    assert session1 != session2
+    session1 = client1.transport.update_api_spec._session
+    session2 = client2.transport.update_api_spec._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api_spec._session
+    session2 = client2.transport.delete_api_spec._session
+    assert session1 != session2
+    session1 = client1.transport.tag_api_spec_revision._session
+    session2 = client2.transport.tag_api_spec_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_api_spec_revisions._session
+    session2 = client2.transport.list_api_spec_revisions._session
+    assert session1 != session2
+    session1 = client1.transport.rollback_api_spec._session
+    session2 = client2.transport.rollback_api_spec._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api_spec_revision._session
+    session2 = client2.transport.delete_api_spec_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_api_deployments._session
+    session2 = client2.transport.list_api_deployments._session
+    assert session1 != session2
+    session1 = client1.transport.get_api_deployment._session
+    session2 = client2.transport.get_api_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.create_api_deployment._session
+    session2 = client2.transport.create_api_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.update_api_deployment._session
+    session2 = client2.transport.update_api_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api_deployment._session
+    session2 = client2.transport.delete_api_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.tag_api_deployment_revision._session
+    session2 = client2.transport.tag_api_deployment_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_api_deployment_revisions._session
+    session2 = client2.transport.list_api_deployment_revisions._session
+    assert session1 != session2
+    session1 = client1.transport.rollback_api_deployment._session
+    session2 = client2.transport.rollback_api_deployment._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api_deployment_revision._session
+    session2 = client2.transport.delete_api_deployment_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_artifacts._session
+    session2 = client2.transport.list_artifacts._session
+    assert session1 != session2
+    session1 = client1.transport.get_artifact._session
+    session2 = client2.transport.get_artifact._session
+    assert session1 != session2
+    session1 = client1.transport.get_artifact_contents._session
+    session2 = client2.transport.get_artifact_contents._session
+    assert session1 != session2
+    session1 = client1.transport.create_artifact._session
+    session2 = client2.transport.create_artifact._session
+    assert session1 != session2
+    session1 = client1.transport.replace_artifact._session
+    session2 = client2.transport.replace_artifact._session
+    assert session1 != session2
+    session1 = client1.transport.delete_artifact._session
+    session2 = client2.transport.delete_artifact._session
+    assert session1 != session2
 
 
 def test_registry_grpc_transport_channel():
@@ -11294,6 +21786,526 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/apis/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/apis/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/apis/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_delete_operation(transport: str = "grpc"):
@@ -12660,6 +23672,7 @@ async def test_test_iam_permissions_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -12677,6 +23690,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
