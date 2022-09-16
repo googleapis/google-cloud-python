@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api import httpbody_pb2  # type: ignore
 from google.api_core import client_options
@@ -115,6 +122,7 @@ def test__get_default_mtls_endpoint():
     [
         (UserEventServiceClient, "grpc"),
         (UserEventServiceAsyncClient, "grpc_asyncio"),
+        (UserEventServiceClient, "rest"),
     ],
 )
 def test_user_event_service_client_from_service_account_info(
@@ -130,7 +138,11 @@ def test_user_event_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("recommendationengine.googleapis.com:443")
+        assert client.transport._host == (
+            "recommendationengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://recommendationengine.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -138,6 +150,7 @@ def test_user_event_service_client_from_service_account_info(
     [
         (transports.UserEventServiceGrpcTransport, "grpc"),
         (transports.UserEventServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.UserEventServiceRestTransport, "rest"),
     ],
 )
 def test_user_event_service_client_service_account_always_use_jwt(
@@ -163,6 +176,7 @@ def test_user_event_service_client_service_account_always_use_jwt(
     [
         (UserEventServiceClient, "grpc"),
         (UserEventServiceAsyncClient, "grpc_asyncio"),
+        (UserEventServiceClient, "rest"),
     ],
 )
 def test_user_event_service_client_from_service_account_file(
@@ -185,13 +199,18 @@ def test_user_event_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("recommendationengine.googleapis.com:443")
+        assert client.transport._host == (
+            "recommendationengine.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://recommendationengine.googleapis.com"
+        )
 
 
 def test_user_event_service_client_get_transport_class():
     transport = UserEventServiceClient.get_transport_class()
     available_transports = [
         transports.UserEventServiceGrpcTransport,
+        transports.UserEventServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -208,6 +227,7 @@ def test_user_event_service_client_get_transport_class():
             transports.UserEventServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (UserEventServiceClient, transports.UserEventServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -361,6 +381,18 @@ def test_user_event_service_client_client_options(
             UserEventServiceAsyncClient,
             transports.UserEventServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            UserEventServiceClient,
+            transports.UserEventServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            UserEventServiceClient,
+            transports.UserEventServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -562,6 +594,7 @@ def test_user_event_service_client_get_mtls_endpoint_and_cert_source(client_clas
             transports.UserEventServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (UserEventServiceClient, transports.UserEventServiceRestTransport, "rest"),
     ],
 )
 def test_user_event_service_client_client_options_scopes(
@@ -601,6 +634,12 @@ def test_user_event_service_client_client_options_scopes(
             transports.UserEventServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            UserEventServiceClient,
+            transports.UserEventServiceRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2228,6 +2267,1631 @@ async def test_import_user_events_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.WriteUserEventRequest,
+        dict,
+    ],
+)
+def test_write_user_event_rest(request_type):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request_init["user_event"] = {
+        "event_type": "event_type_value",
+        "user_info": {
+            "visitor_id": "visitor_id_value",
+            "user_id": "user_id_value",
+            "ip_address": "ip_address_value",
+            "user_agent": "user_agent_value",
+            "direct_user_request": True,
+        },
+        "event_detail": {
+            "uri": "uri_value",
+            "referrer_uri": "referrer_uri_value",
+            "page_view_id": "page_view_id_value",
+            "experiment_ids": ["experiment_ids_value1", "experiment_ids_value2"],
+            "recommendation_token": "recommendation_token_value",
+            "event_attributes": {"categorical_features": {}, "numerical_features": {}},
+        },
+        "product_event_detail": {
+            "search_query": "search_query_value",
+            "page_categories": [
+                {"categories": ["categories_value1", "categories_value2"]}
+            ],
+            "product_details": [
+                {
+                    "id": "id_value",
+                    "currency_code": "currency_code_value",
+                    "original_price": 0.1479,
+                    "display_price": 0.1384,
+                    "stock_state": 1,
+                    "quantity": 895,
+                    "available_quantity": 1919,
+                    "item_attributes": {},
+                }
+            ],
+            "list_id": "list_id_value",
+            "cart_id": "cart_id_value",
+            "purchase_transaction": {
+                "id": "id_value",
+                "revenue": 0.762,
+                "taxes": {},
+                "costs": {},
+                "currency_code": "currency_code_value",
+            },
+        },
+        "event_time": {"seconds": 751, "nanos": 543},
+        "event_source": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_user_event.UserEvent(
+            event_type="event_type_value",
+            event_source=gcr_user_event.UserEvent.EventSource.AUTOML,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_user_event.UserEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.write_user_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_user_event.UserEvent)
+    assert response.event_type == "event_type_value"
+    assert response.event_source == gcr_user_event.UserEvent.EventSource.AUTOML
+
+
+def test_write_user_event_rest_required_fields(
+    request_type=user_event_service.WriteUserEventRequest,
+):
+    transport_class = transports.UserEventServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).write_user_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).write_user_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcr_user_event.UserEvent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcr_user_event.UserEvent.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.write_user_event(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_write_user_event_rest_unset_required_fields():
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.write_user_event._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "userEvent",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_write_user_event_rest_interceptors(null_interceptor):
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.UserEventServiceRestInterceptor(),
+    )
+    client = UserEventServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "post_write_user_event"
+    ) as post, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "pre_write_user_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = user_event_service.WriteUserEventRequest.pb(
+            user_event_service.WriteUserEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcr_user_event.UserEvent.to_json(
+            gcr_user_event.UserEvent()
+        )
+
+        request = user_event_service.WriteUserEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcr_user_event.UserEvent()
+
+        client.write_user_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_write_user_event_rest_bad_request(
+    transport: str = "rest", request_type=user_event_service.WriteUserEventRequest
+):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request_init["user_event"] = {
+        "event_type": "event_type_value",
+        "user_info": {
+            "visitor_id": "visitor_id_value",
+            "user_id": "user_id_value",
+            "ip_address": "ip_address_value",
+            "user_agent": "user_agent_value",
+            "direct_user_request": True,
+        },
+        "event_detail": {
+            "uri": "uri_value",
+            "referrer_uri": "referrer_uri_value",
+            "page_view_id": "page_view_id_value",
+            "experiment_ids": ["experiment_ids_value1", "experiment_ids_value2"],
+            "recommendation_token": "recommendation_token_value",
+            "event_attributes": {"categorical_features": {}, "numerical_features": {}},
+        },
+        "product_event_detail": {
+            "search_query": "search_query_value",
+            "page_categories": [
+                {"categories": ["categories_value1", "categories_value2"]}
+            ],
+            "product_details": [
+                {
+                    "id": "id_value",
+                    "currency_code": "currency_code_value",
+                    "original_price": 0.1479,
+                    "display_price": 0.1384,
+                    "stock_state": 1,
+                    "quantity": 895,
+                    "available_quantity": 1919,
+                    "item_attributes": {},
+                }
+            ],
+            "list_id": "list_id_value",
+            "cart_id": "cart_id_value",
+            "purchase_transaction": {
+                "id": "id_value",
+                "revenue": 0.762,
+                "taxes": {},
+                "costs": {},
+                "currency_code": "currency_code_value",
+            },
+        },
+        "event_time": {"seconds": 751, "nanos": 543},
+        "event_source": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.write_user_event(request)
+
+
+def test_write_user_event_rest_flattened():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_user_event.UserEvent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            user_event=gcr_user_event.UserEvent(event_type="event_type_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_user_event.UserEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.write_user_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/userEvents:write"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_write_user_event_rest_flattened_error(transport: str = "rest"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.write_user_event(
+            user_event_service.WriteUserEventRequest(),
+            parent="parent_value",
+            user_event=gcr_user_event.UserEvent(event_type="event_type_value"),
+        )
+
+
+def test_write_user_event_rest_error():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.CollectUserEventRequest,
+        dict,
+    ],
+)
+def test_collect_user_event_rest(request_type):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = httpbody_pb2.HttpBody(
+            content_type="content_type_value",
+            data=b"data_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.collect_user_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, httpbody_pb2.HttpBody)
+    assert response.content_type == "content_type_value"
+    assert response.data == b"data_blob"
+
+
+def test_collect_user_event_rest_required_fields(
+    request_type=user_event_service.CollectUserEventRequest,
+):
+    transport_class = transports.UserEventServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["user_event"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "userEvent" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).collect_user_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "userEvent" in jsonified_request
+    assert jsonified_request["userEvent"] == request_init["user_event"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["userEvent"] = "user_event_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).collect_user_event._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "ets",
+            "uri",
+            "user_event",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "userEvent" in jsonified_request
+    assert jsonified_request["userEvent"] == "user_event_value"
+
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = httpbody_pb2.HttpBody()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = return_value
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.collect_user_event(request)
+
+            expected_params = [
+                (
+                    "userEvent",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_collect_user_event_rest_unset_required_fields():
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.collect_user_event._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "ets",
+                "uri",
+                "userEvent",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "userEvent",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_collect_user_event_rest_interceptors(null_interceptor):
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.UserEventServiceRestInterceptor(),
+    )
+    client = UserEventServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "post_collect_user_event"
+    ) as post, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "pre_collect_user_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = user_event_service.CollectUserEventRequest.pb(
+            user_event_service.CollectUserEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(httpbody_pb2.HttpBody())
+
+        request = user_event_service.CollectUserEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = httpbody_pb2.HttpBody()
+
+        client.collect_user_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_collect_user_event_rest_bad_request(
+    transport: str = "rest", request_type=user_event_service.CollectUserEventRequest
+):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.collect_user_event(request)
+
+
+def test_collect_user_event_rest_flattened():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = httpbody_pb2.HttpBody()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            user_event="user_event_value",
+            uri="uri_value",
+            ets=332,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = return_value
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.collect_user_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/userEvents:collect"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_collect_user_event_rest_flattened_error(transport: str = "rest"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.collect_user_event(
+            user_event_service.CollectUserEventRequest(),
+            parent="parent_value",
+            user_event="user_event_value",
+            uri="uri_value",
+            ets=332,
+        )
+
+
+def test_collect_user_event_rest_error():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.ListUserEventsRequest,
+        dict,
+    ],
+)
+def test_list_user_events_rest(request_type):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = user_event_service.ListUserEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = user_event_service.ListUserEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_user_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUserEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_user_events_rest_required_fields(
+    request_type=user_event_service.ListUserEventsRequest,
+):
+    transport_class = transports.UserEventServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_user_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_user_events._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = user_event_service.ListUserEventsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = user_event_service.ListUserEventsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_user_events(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_user_events_rest_unset_required_fields():
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_user_events._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_user_events_rest_interceptors(null_interceptor):
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.UserEventServiceRestInterceptor(),
+    )
+    client = UserEventServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "post_list_user_events"
+    ) as post, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "pre_list_user_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = user_event_service.ListUserEventsRequest.pb(
+            user_event_service.ListUserEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = user_event_service.ListUserEventsResponse.to_json(
+            user_event_service.ListUserEventsResponse()
+        )
+
+        request = user_event_service.ListUserEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = user_event_service.ListUserEventsResponse()
+
+        client.list_user_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_user_events_rest_bad_request(
+    transport: str = "rest", request_type=user_event_service.ListUserEventsRequest
+):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_user_events(request)
+
+
+def test_list_user_events_rest_flattened():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = user_event_service.ListUserEventsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = user_event_service.ListUserEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_user_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/userEvents"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_user_events_rest_flattened_error(transport: str = "rest"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_user_events(
+            user_event_service.ListUserEventsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_list_user_events_rest_pager(transport: str = "rest"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            user_event_service.ListUserEventsResponse(
+                user_events=[
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            user_event_service.ListUserEventsResponse(
+                user_events=[],
+                next_page_token="def",
+            ),
+            user_event_service.ListUserEventsResponse(
+                user_events=[
+                    user_event.UserEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            user_event_service.ListUserEventsResponse(
+                user_events=[
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            user_event_service.ListUserEventsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+        }
+
+        pager = client.list_user_events(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, user_event.UserEvent) for i in results)
+
+        pages = list(client.list_user_events(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.PurgeUserEventsRequest,
+        dict,
+    ],
+)
+def test_purge_user_events_rest(request_type):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.purge_user_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_purge_user_events_rest_required_fields(
+    request_type=user_event_service.PurgeUserEventsRequest,
+):
+    transport_class = transports.UserEventServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).purge_user_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).purge_user_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.purge_user_events(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_purge_user_events_rest_unset_required_fields():
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.purge_user_events._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "filter",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_purge_user_events_rest_interceptors(null_interceptor):
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.UserEventServiceRestInterceptor(),
+    )
+    client = UserEventServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "post_purge_user_events"
+    ) as post, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "pre_purge_user_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = user_event_service.PurgeUserEventsRequest.pb(
+            user_event_service.PurgeUserEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = user_event_service.PurgeUserEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.purge_user_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_purge_user_events_rest_bad_request(
+    transport: str = "rest", request_type=user_event_service.PurgeUserEventsRequest
+):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.purge_user_events(request)
+
+
+def test_purge_user_events_rest_flattened():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+            force=True,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.purge_user_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/userEvents:purge"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_purge_user_events_rest_flattened_error(transport: str = "rest"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.purge_user_events(
+            user_event_service.PurgeUserEventsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+            force=True,
+        )
+
+
+def test_purge_user_events_rest_error():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        import_.ImportUserEventsRequest,
+        dict,
+    ],
+)
+def test_import_user_events_rest(request_type):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_user_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_import_user_events_rest_required_fields(
+    request_type=import_.ImportUserEventsRequest,
+):
+    transport_class = transports.UserEventServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).import_user_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).import_user_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.import_user_events(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_import_user_events_rest_unset_required_fields():
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.import_user_events._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "inputConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_user_events_rest_interceptors(null_interceptor):
+    transport = transports.UserEventServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.UserEventServiceRestInterceptor(),
+    )
+    client = UserEventServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "post_import_user_events"
+    ) as post, mock.patch.object(
+        transports.UserEventServiceRestInterceptor, "pre_import_user_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = import_.ImportUserEventsRequest.pb(
+            import_.ImportUserEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = import_.ImportUserEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_user_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_user_events_rest_bad_request(
+    transport: str = "rest", request_type=import_.ImportUserEventsRequest
+):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.import_user_events(request)
+
+
+def test_import_user_events_rest_flattened():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            request_id="request_id_value",
+            input_config=import_.InputConfig(
+                catalog_inline_source=import_.CatalogInlineSource(
+                    catalog_items=[catalog.CatalogItem(id="id_value")]
+                )
+            ),
+            errors_config=import_.ImportErrorsConfig(gcs_prefix="gcs_prefix_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.import_user_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/userEvents:import"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_import_user_events_rest_flattened_error(transport: str = "rest"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.import_user_events(
+            import_.ImportUserEventsRequest(),
+            parent="parent_value",
+            request_id="request_id_value",
+            input_config=import_.InputConfig(
+                catalog_inline_source=import_.CatalogInlineSource(
+                    catalog_items=[catalog.CatalogItem(id="id_value")]
+                )
+            ),
+            errors_config=import_.ImportErrorsConfig(gcs_prefix="gcs_prefix_value"),
+        )
+
+
+def test_import_user_events_rest_error():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.UserEventServiceGrpcTransport(
@@ -2309,6 +3973,7 @@ def test_transport_get_channel():
     [
         transports.UserEventServiceGrpcTransport,
         transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.UserEventServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2323,6 +3988,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -2461,6 +4127,7 @@ def test_user_event_service_transport_auth_adc(transport_class):
     [
         transports.UserEventServiceGrpcTransport,
         transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.UserEventServiceRestTransport,
     ],
 )
 def test_user_event_service_transport_auth_gdch_credentials(transport_class):
@@ -2558,11 +4225,40 @@ def test_user_event_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
+def test_user_event_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.UserEventServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_user_event_service_rest_lro_client():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_user_event_service_host_no_port(transport_name):
@@ -2573,7 +4269,11 @@ def test_user_event_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("recommendationengine.googleapis.com:443")
+    assert client.transport._host == (
+        "recommendationengine.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://recommendationengine.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -2581,6 +4281,7 @@ def test_user_event_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_user_event_service_host_with_port(transport_name):
@@ -2591,7 +4292,45 @@ def test_user_event_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("recommendationengine.googleapis.com:8000")
+    assert client.transport._host == (
+        "recommendationengine.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://recommendationengine.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_user_event_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = UserEventServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = UserEventServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.write_user_event._session
+    session2 = client2.transport.write_user_event._session
+    assert session1 != session2
+    session1 = client1.transport.collect_user_event._session
+    session2 = client2.transport.collect_user_event._session
+    assert session1 != session2
+    session1 = client1.transport.list_user_events._session
+    session2 = client2.transport.list_user_events._session
+    assert session1 != session2
+    session1 = client1.transport.purge_user_events._session
+    session2 = client2.transport.purge_user_events._session
+    assert session1 != session2
+    session1 = client1.transport.import_user_events._session
+    session2 = client2.transport.import_user_events._session
+    assert session1 != session2
 
 
 def test_user_event_service_grpc_transport_channel():
@@ -2927,6 +4666,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -2944,6 +4684,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

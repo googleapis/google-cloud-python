@@ -40,6 +40,7 @@ from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_us
 from .transports.base import PredictionServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PredictionServiceGrpcTransport
 from .transports.grpc_asyncio import PredictionServiceGrpcAsyncIOTransport
+from .transports.rest import PredictionServiceRestTransport
 
 
 class PredictionServiceClientMeta(type):
@@ -55,6 +56,7 @@ class PredictionServiceClientMeta(type):
     )  # type: Dict[str, Type[PredictionServiceTransport]]
     _transport_registry["grpc"] = PredictionServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = PredictionServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = PredictionServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -352,6 +354,9 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
             transport (Union[str, PredictionServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

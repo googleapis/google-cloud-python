@@ -19,6 +19,8 @@ from typing import Dict, Type
 from .base import PredictionApiKeyRegistryTransport
 from .grpc import PredictionApiKeyRegistryGrpcTransport
 from .grpc_asyncio import PredictionApiKeyRegistryGrpcAsyncIOTransport
+from .rest import PredictionApiKeyRegistryRestTransport
+from .rest import PredictionApiKeyRegistryRestInterceptor
 
 
 # Compile a registry of transports.
@@ -27,9 +29,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[PredictionApiKeyRegistryTransport]]
 _transport_registry["grpc"] = PredictionApiKeyRegistryGrpcTransport
 _transport_registry["grpc_asyncio"] = PredictionApiKeyRegistryGrpcAsyncIOTransport
+_transport_registry["rest"] = PredictionApiKeyRegistryRestTransport
 
 __all__ = (
     "PredictionApiKeyRegistryTransport",
     "PredictionApiKeyRegistryGrpcTransport",
     "PredictionApiKeyRegistryGrpcAsyncIOTransport",
+    "PredictionApiKeyRegistryRestTransport",
+    "PredictionApiKeyRegistryRestInterceptor",
 )

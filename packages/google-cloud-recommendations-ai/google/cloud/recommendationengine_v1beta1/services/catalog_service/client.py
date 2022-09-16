@@ -45,6 +45,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import CatalogServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CatalogServiceGrpcTransport
 from .transports.grpc_asyncio import CatalogServiceGrpcAsyncIOTransport
+from .transports.rest import CatalogServiceRestTransport
 
 
 class CatalogServiceClientMeta(type):
@@ -60,6 +61,7 @@ class CatalogServiceClientMeta(type):
     )  # type: Dict[str, Type[CatalogServiceTransport]]
     _transport_registry["grpc"] = CatalogServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CatalogServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CatalogServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -355,6 +357,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             transport (Union[str, CatalogServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
