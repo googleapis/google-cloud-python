@@ -13,36 +13,54 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .common import (
+    OperationProgress,
+)
 from .spanner_instance_admin import (
+    CreateInstanceConfigMetadata,
+    CreateInstanceConfigRequest,
     CreateInstanceMetadata,
     CreateInstanceRequest,
+    DeleteInstanceConfigRequest,
     DeleteInstanceRequest,
     GetInstanceConfigRequest,
     GetInstanceRequest,
     Instance,
     InstanceConfig,
+    ListInstanceConfigOperationsRequest,
+    ListInstanceConfigOperationsResponse,
     ListInstanceConfigsRequest,
     ListInstanceConfigsResponse,
     ListInstancesRequest,
     ListInstancesResponse,
     ReplicaInfo,
+    UpdateInstanceConfigMetadata,
+    UpdateInstanceConfigRequest,
     UpdateInstanceMetadata,
     UpdateInstanceRequest,
 )
 
 __all__ = (
+    "OperationProgress",
+    "CreateInstanceConfigMetadata",
+    "CreateInstanceConfigRequest",
     "CreateInstanceMetadata",
     "CreateInstanceRequest",
+    "DeleteInstanceConfigRequest",
     "DeleteInstanceRequest",
     "GetInstanceConfigRequest",
     "GetInstanceRequest",
     "Instance",
     "InstanceConfig",
+    "ListInstanceConfigOperationsRequest",
+    "ListInstanceConfigOperationsResponse",
     "ListInstanceConfigsRequest",
     "ListInstanceConfigsResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
     "ReplicaInfo",
+    "UpdateInstanceConfigMetadata",
+    "UpdateInstanceConfigRequest",
     "UpdateInstanceMetadata",
     "UpdateInstanceRequest",
 )

@@ -335,6 +335,232 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         return self._stubs["get_instance_config"]
 
     @property
+    def create_instance_config(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.CreateInstanceConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create instance config method over gRPC.
+
+        Creates an instance config and begins preparing it to be used.
+        The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of preparing the new instance config. The instance
+        config name is assigned by the caller. If the named instance
+        config already exists, ``CreateInstanceConfig`` returns
+        ``ALREADY_EXISTS``.
+
+        Immediately after the request returns:
+
+        -  The instance config is readable via the API, with all
+           requested attributes. The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field is set to true. Its state is ``CREATING``.
+
+        While the operation is pending:
+
+        -  Cancelling the operation renders the instance config
+           immediately unreadable via the API.
+        -  Except for deleting the creating resource, all other attempts
+           to modify the instance config are rejected.
+
+        Upon completion of the returned operation:
+
+        -  Instances can be created using the instance configuration.
+        -  The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field becomes false. Its state becomes ``READY``.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_config_name>/operations/<operation_id>`` and
+        can be used to track creation of the instance config. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig],
+        if successful.
+
+        Authorization requires ``spanner.instanceConfigs.create``
+        permission on the resource
+        [parent][google.spanner.admin.instance.v1.CreateInstanceConfigRequest.parent].
+
+        Returns:
+            Callable[[~.CreateInstanceConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_instance_config" not in self._stubs:
+            self._stubs["create_instance_config"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstanceConfig",
+                request_serializer=spanner_instance_admin.CreateInstanceConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_instance_config"]
+
+    @property
+    def update_instance_config(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.UpdateInstanceConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update instance config method over gRPC.
+
+        Updates an instance config. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of updating the instance. If the named instance
+        config does not exist, returns ``NOT_FOUND``.
+
+        Only user managed configurations can be updated.
+
+        Immediately after the request returns:
+
+        -  The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field is set to true.
+
+        While the operation is pending:
+
+        -  Cancelling the operation sets its metadata's
+           [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata.cancel_time].
+           The operation is guaranteed to succeed at undoing all
+           changes, after which point it terminates with a ``CANCELLED``
+           status.
+        -  All other attempts to modify the instance config are
+           rejected.
+        -  Reading the instance config via the API continues to give the
+           pre-request values.
+
+        Upon completion of the returned operation:
+
+        -  Creating instances using the instance configuration uses the
+           new values.
+        -  The instance config's new values are readable via the API.
+        -  The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field becomes false.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_config_name>/operations/<operation_id>`` and
+        can be used to track the instance config modification. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [UpdateInstanceConfigMetadata][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig],
+        if successful.
+
+        Authorization requires ``spanner.instanceConfigs.update``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstanceConfig.name].
+
+        Returns:
+            Callable[[~.UpdateInstanceConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_instance_config" not in self._stubs:
+            self._stubs["update_instance_config"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstanceConfig",
+                request_serializer=spanner_instance_admin.UpdateInstanceConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_instance_config"]
+
+    @property
+    def delete_instance_config(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.DeleteInstanceConfigRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete instance config method over gRPC.
+
+        Deletes the instance config. Deletion is only allowed when no
+        instances are using the configuration. If any instances are
+        using the config, returns ``FAILED_PRECONDITION``.
+
+        Only user managed configurations can be deleted.
+
+        Authorization requires ``spanner.instanceConfigs.delete``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstanceConfig.name].
+
+        Returns:
+            Callable[[~.DeleteInstanceConfigRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_instance_config" not in self._stubs:
+            self._stubs["delete_instance_config"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstanceConfig",
+                request_serializer=spanner_instance_admin.DeleteInstanceConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_instance_config"]
+
+    @property
+    def list_instance_config_operations(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstanceConfigOperationsRequest],
+        Awaitable[spanner_instance_admin.ListInstanceConfigOperationsResponse],
+    ]:
+        r"""Return a callable for the list instance config
+        operations method over gRPC.
+
+        Lists the user-managed instance config [long-running
+        operations][google.longrunning.Operation] in the given project.
+        An instance config operation has a name of the form
+        ``projects/<project>/instanceConfigs/<instance_config>/operations/<operation>``.
+        The long-running operation
+        [metadata][google.longrunning.Operation.metadata] field type
+        ``metadata.type_url`` describes the type of the metadata.
+        Operations returned include those that have
+        completed/failed/canceled within the last 7 days, and pending
+        operations. Operations returned are ordered by
+        ``operation.metadata.value.start_time`` in descending order
+        starting from the most recently started operation.
+
+        Returns:
+            Callable[[~.ListInstanceConfigOperationsRequest],
+                    Awaitable[~.ListInstanceConfigOperationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_instance_config_operations" not in self._stubs:
+            self._stubs[
+                "list_instance_config_operations"
+            ] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigOperations",
+                request_serializer=spanner_instance_admin.ListInstanceConfigOperationsRequest.serialize,
+                response_deserializer=spanner_instance_admin.ListInstanceConfigOperationsResponse.deserialize,
+            )
+        return self._stubs["list_instance_config_operations"]
+
+    @property
     def list_instances(
         self,
     ) -> Callable[

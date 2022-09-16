@@ -40,15 +40,19 @@ class spanner_admin_instanceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_instance': ('parent', 'instance_id', 'instance', ),
+        'create_instance_config': ('parent', 'instance_config_id', 'instance_config', 'validate_only', ),
         'delete_instance': ('name', ),
+        'delete_instance_config': ('name', 'etag', 'validate_only', ),
         'get_iam_policy': ('resource', 'options', ),
         'get_instance': ('name', 'field_mask', ),
         'get_instance_config': ('name', ),
+        'list_instance_config_operations': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_instance_configs': ('parent', 'page_size', 'page_token', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_instance': ('instance', 'field_mask', ),
+        'update_instance_config': ('instance_config', 'update_mask', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

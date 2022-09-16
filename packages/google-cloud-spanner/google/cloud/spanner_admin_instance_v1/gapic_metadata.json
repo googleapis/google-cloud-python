@@ -15,9 +15,19 @@
                 "create_instance"
               ]
             },
+            "CreateInstanceConfig": {
+              "methods": [
+                "create_instance_config"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteInstanceConfig": {
+              "methods": [
+                "delete_instance_config"
               ]
             },
             "GetIamPolicy": {
@@ -33,6 +43,11 @@
             "GetInstanceConfig": {
               "methods": [
                 "get_instance_config"
+              ]
+            },
+            "ListInstanceConfigOperations": {
+              "methods": [
+                "list_instance_config_operations"
               ]
             },
             "ListInstanceConfigs": {
@@ -58,6 +73,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateInstanceConfig": {
+              "methods": [
+                "update_instance_config"
               ]
             }
           }
@@ -70,9 +90,19 @@
                 "create_instance"
               ]
             },
+            "CreateInstanceConfig": {
+              "methods": [
+                "create_instance_config"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteInstanceConfig": {
+              "methods": [
+                "delete_instance_config"
               ]
             },
             "GetIamPolicy": {
@@ -88,6 +118,11 @@
             "GetInstanceConfig": {
               "methods": [
                 "get_instance_config"
+              ]
+            },
+            "ListInstanceConfigOperations": {
+              "methods": [
+                "list_instance_config_operations"
               ]
             },
             "ListInstanceConfigs": {
@@ -113,6 +148,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateInstanceConfig": {
+              "methods": [
+                "update_instance_config"
               ]
             }
           }

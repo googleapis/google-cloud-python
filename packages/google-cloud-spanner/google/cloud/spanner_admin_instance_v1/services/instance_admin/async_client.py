@@ -37,6 +37,7 @@ from google.cloud.spanner_admin_instance_v1.services.instance_admin import pager
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import InstanceAdminTransport, DEFAULT_CLIENT_INFO
@@ -293,7 +294,7 @@ class InstanceAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstanceConfigsAsyncPager:
                 The response for
-                [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
+                   [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -476,6 +477,609 @@ class InstanceAdminAsyncClient:
         # Done; return the response.
         return response
 
+    async def create_instance_config(
+        self,
+        request: Union[spanner_instance_admin.CreateInstanceConfigRequest, dict] = None,
+        *,
+        parent: str = None,
+        instance_config: spanner_instance_admin.InstanceConfig = None,
+        instance_config_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates an instance config and begins preparing it to be used.
+        The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of preparing the new instance config. The instance
+        config name is assigned by the caller. If the named instance
+        config already exists, ``CreateInstanceConfig`` returns
+        ``ALREADY_EXISTS``.
+
+        Immediately after the request returns:
+
+        -  The instance config is readable via the API, with all
+           requested attributes. The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field is set to true. Its state is ``CREATING``.
+
+        While the operation is pending:
+
+        -  Cancelling the operation renders the instance config
+           immediately unreadable via the API.
+        -  Except for deleting the creating resource, all other attempts
+           to modify the instance config are rejected.
+
+        Upon completion of the returned operation:
+
+        -  Instances can be created using the instance configuration.
+        -  The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field becomes false. Its state becomes ``READY``.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_config_name>/operations/<operation_id>`` and
+        can be used to track creation of the instance config. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig],
+        if successful.
+
+        Authorization requires ``spanner.instanceConfigs.create``
+        permission on the resource
+        [parent][google.spanner.admin.instance.v1.CreateInstanceConfigRequest.parent].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_create_instance_config():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.CreateInstanceConfigRequest(
+                    parent="parent_value",
+                    instance_config_id="instance_config_id_value",
+                )
+
+                # Make the request
+                operation = client.create_instance_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_instance_v1.types.CreateInstanceConfigRequest, dict]):
+                The request object. The request for
+                [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
+            parent (:class:`str`):
+                Required. The name of the project in which to create the
+                instance config. Values are of the form
+                ``projects/<project>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_config (:class:`google.cloud.spanner_admin_instance_v1.types.InstanceConfig`):
+                Required. The InstanceConfig proto of the configuration
+                to create. instance_config.name must be
+                ``<parent>/instanceConfigs/<instance_config_id>``.
+                instance_config.base_config must be a Google managed
+                configuration name, e.g. /instanceConfigs/us-east1,
+                /instanceConfigs/nam3.
+
+                This corresponds to the ``instance_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_config_id (:class:`str`):
+                Required. The ID of the instance config to create. Valid
+                identifiers are of the form
+                ``custom-[-a-z0-9]*[a-z0-9]`` and must be between 2 and
+                64 characters in length. The ``custom-`` prefix is
+                required to avoid name conflicts with Google managed
+                configurations.
+
+                This corresponds to the ``instance_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.spanner_admin_instance_v1.types.InstanceConfig` A possible configuration for a Cloud Spanner instance. Configurations
+                   define the geographic placement of nodes and their
+                   replication.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, instance_config, instance_config_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = spanner_instance_admin.CreateInstanceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if instance_config is not None:
+            request.instance_config = instance_config
+        if instance_config_id is not None:
+            request.instance_config_id = instance_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_instance_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            spanner_instance_admin.InstanceConfig,
+            metadata_type=spanner_instance_admin.CreateInstanceConfigMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_instance_config(
+        self,
+        request: Union[spanner_instance_admin.UpdateInstanceConfigRequest, dict] = None,
+        *,
+        instance_config: spanner_instance_admin.InstanceConfig = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates an instance config. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of updating the instance. If the named instance
+        config does not exist, returns ``NOT_FOUND``.
+
+        Only user managed configurations can be updated.
+
+        Immediately after the request returns:
+
+        -  The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field is set to true.
+
+        While the operation is pending:
+
+        -  Cancelling the operation sets its metadata's
+           [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata.cancel_time].
+           The operation is guaranteed to succeed at undoing all
+           changes, after which point it terminates with a ``CANCELLED``
+           status.
+        -  All other attempts to modify the instance config are
+           rejected.
+        -  Reading the instance config via the API continues to give the
+           pre-request values.
+
+        Upon completion of the returned operation:
+
+        -  Creating instances using the instance configuration uses the
+           new values.
+        -  The instance config's new values are readable via the API.
+        -  The instance config's
+           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+           field becomes false.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_config_name>/operations/<operation_id>`` and
+        can be used to track the instance config modification. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [UpdateInstanceConfigMetadata][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig],
+        if successful.
+
+        Authorization requires ``spanner.instanceConfigs.update``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstanceConfig.name].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_update_instance_config():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.UpdateInstanceConfigRequest(
+                )
+
+                # Make the request
+                operation = client.update_instance_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstanceConfigRequest, dict]):
+                The request object. The request for
+                [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
+            instance_config (:class:`google.cloud.spanner_admin_instance_v1.types.InstanceConfig`):
+                Required. The user instance config to update, which must
+                always include the instance config name. Otherwise, only
+                fields mentioned in
+                [update_mask][google.spanner.admin.instance.v1.UpdateInstanceConfigRequest.update_mask]
+                need be included. To prevent conflicts of concurrent
+                updates,
+                [etag][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+                can be used.
+
+                This corresponds to the ``instance_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. A mask specifying which fields in
+                [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig]
+                should be updated. The field mask must always be
+                specified; this prevents any future fields in
+                [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig]
+                from being erased accidentally by clients that do not
+                know about them. Only display_name and labels can be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.spanner_admin_instance_v1.types.InstanceConfig` A possible configuration for a Cloud Spanner instance. Configurations
+                   define the geographic placement of nodes and their
+                   replication.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([instance_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = spanner_instance_admin.UpdateInstanceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if instance_config is not None:
+            request.instance_config = instance_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_instance_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("instance_config.name", request.instance_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            spanner_instance_admin.InstanceConfig,
+            metadata_type=spanner_instance_admin.UpdateInstanceConfigMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_instance_config(
+        self,
+        request: Union[spanner_instance_admin.DeleteInstanceConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the instance config. Deletion is only allowed when no
+        instances are using the configuration. If any instances are
+        using the config, returns ``FAILED_PRECONDITION``.
+
+        Only user managed configurations can be deleted.
+
+        Authorization requires ``spanner.instanceConfigs.delete``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstanceConfig.name].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_delete_instance_config():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.DeleteInstanceConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_instance_config(request=request)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceConfigRequest, dict]):
+                The request object. The request for
+                [DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest].
+            name (:class:`str`):
+                Required. The name of the instance configuration to be
+                deleted. Values are of the form
+                ``projects/<project>/instanceConfigs/<instance_config>``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = spanner_instance_admin.DeleteInstanceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_instance_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_instance_config_operations(
+        self,
+        request: Union[
+            spanner_instance_admin.ListInstanceConfigOperationsRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListInstanceConfigOperationsAsyncPager:
+        r"""Lists the user-managed instance config [long-running
+        operations][google.longrunning.Operation] in the given project.
+        An instance config operation has a name of the form
+        ``projects/<project>/instanceConfigs/<instance_config>/operations/<operation>``.
+        The long-running operation
+        [metadata][google.longrunning.Operation.metadata] field type
+        ``metadata.type_url`` describes the type of the metadata.
+        Operations returned include those that have
+        completed/failed/canceled within the last 7 days, and pending
+        operations. Operations returned are ordered by
+        ``operation.metadata.value.start_time`` in descending order
+        starting from the most recently started operation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_list_instance_config_operations():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.ListInstanceConfigOperationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instance_config_operations(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigOperationsRequest, dict]):
+                The request object. The request for
+                [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
+            parent (:class:`str`):
+                Required. The project of the instance config operations.
+                Values are of the form ``projects/<project>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstanceConfigOperationsAsyncPager:
+                The response for
+                   [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = spanner_instance_admin.ListInstanceConfigOperationsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_instance_config_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListInstanceConfigOperationsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_instances(
         self,
         request: Union[spanner_instance_admin.ListInstancesRequest, dict] = None,
@@ -535,7 +1139,7 @@ class InstanceAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstancesAsyncPager:
                 The response for
-                [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
+                   [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

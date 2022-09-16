@@ -165,6 +165,26 @@ class InstanceAdminTransport(abc.ABC):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
+            self.create_instance_config: gapic_v1.method.wrap_method(
+                self.create_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_instance_config: gapic_v1.method.wrap_method(
+                self.update_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_instance_config: gapic_v1.method.wrap_method(
+                self.delete_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_instance_config_operations: gapic_v1.method.wrap_method(
+                self.list_instance_config_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_instances: gapic_v1.method.wrap_method(
                 self.list_instances,
                 default_retry=retries.Retry(
@@ -281,6 +301,45 @@ class InstanceAdminTransport(abc.ABC):
         Union[
             spanner_instance_admin.InstanceConfig,
             Awaitable[spanner_instance_admin.InstanceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_instance_config(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.CreateInstanceConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_instance_config(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.UpdateInstanceConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_instance_config(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.DeleteInstanceConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_instance_config_operations(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstanceConfigOperationsRequest],
+        Union[
+            spanner_instance_admin.ListInstanceConfigOperationsResponse,
+            Awaitable[spanner_instance_admin.ListInstanceConfigOperationsResponse],
         ],
     ]:
         raise NotImplementedError()

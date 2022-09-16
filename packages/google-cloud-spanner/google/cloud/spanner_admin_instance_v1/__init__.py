@@ -17,36 +17,52 @@
 from .services.instance_admin import InstanceAdminClient
 from .services.instance_admin import InstanceAdminAsyncClient
 
+from .types.common import OperationProgress
+from .types.spanner_instance_admin import CreateInstanceConfigMetadata
+from .types.spanner_instance_admin import CreateInstanceConfigRequest
 from .types.spanner_instance_admin import CreateInstanceMetadata
 from .types.spanner_instance_admin import CreateInstanceRequest
+from .types.spanner_instance_admin import DeleteInstanceConfigRequest
 from .types.spanner_instance_admin import DeleteInstanceRequest
 from .types.spanner_instance_admin import GetInstanceConfigRequest
 from .types.spanner_instance_admin import GetInstanceRequest
 from .types.spanner_instance_admin import Instance
 from .types.spanner_instance_admin import InstanceConfig
+from .types.spanner_instance_admin import ListInstanceConfigOperationsRequest
+from .types.spanner_instance_admin import ListInstanceConfigOperationsResponse
 from .types.spanner_instance_admin import ListInstanceConfigsRequest
 from .types.spanner_instance_admin import ListInstanceConfigsResponse
 from .types.spanner_instance_admin import ListInstancesRequest
 from .types.spanner_instance_admin import ListInstancesResponse
 from .types.spanner_instance_admin import ReplicaInfo
+from .types.spanner_instance_admin import UpdateInstanceConfigMetadata
+from .types.spanner_instance_admin import UpdateInstanceConfigRequest
 from .types.spanner_instance_admin import UpdateInstanceMetadata
 from .types.spanner_instance_admin import UpdateInstanceRequest
 
 __all__ = (
     "InstanceAdminAsyncClient",
+    "CreateInstanceConfigMetadata",
+    "CreateInstanceConfigRequest",
     "CreateInstanceMetadata",
     "CreateInstanceRequest",
+    "DeleteInstanceConfigRequest",
     "DeleteInstanceRequest",
     "GetInstanceConfigRequest",
     "GetInstanceRequest",
     "Instance",
     "InstanceAdminClient",
     "InstanceConfig",
+    "ListInstanceConfigOperationsRequest",
+    "ListInstanceConfigOperationsResponse",
     "ListInstanceConfigsRequest",
     "ListInstanceConfigsResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
+    "OperationProgress",
     "ReplicaInfo",
+    "UpdateInstanceConfigMetadata",
+    "UpdateInstanceConfigRequest",
     "UpdateInstanceMetadata",
     "UpdateInstanceRequest",
 )

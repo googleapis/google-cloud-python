@@ -15,6 +15,8 @@
 #
 import proto  # type: ignore
 
+from google.cloud.spanner_admin_instance_v1.types import common
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -28,6 +30,11 @@ __protobuf__ = proto.module(
         "ListInstanceConfigsRequest",
         "ListInstanceConfigsResponse",
         "GetInstanceConfigRequest",
+        "CreateInstanceConfigRequest",
+        "UpdateInstanceConfigRequest",
+        "DeleteInstanceConfigRequest",
+        "ListInstanceConfigOperationsRequest",
+        "ListInstanceConfigOperationsResponse",
         "GetInstanceRequest",
         "CreateInstanceRequest",
         "ListInstancesRequest",
@@ -36,6 +43,8 @@ __protobuf__ = proto.module(
         "DeleteInstanceRequest",
         "CreateInstanceMetadata",
         "UpdateInstanceMetadata",
+        "CreateInstanceConfigMetadata",
+        "UpdateInstanceConfigMetadata",
     },
 )
 
@@ -95,14 +104,94 @@ class InstanceConfig(proto.Message):
         display_name (str):
             The name of this instance configuration as it
             appears in UIs.
+        config_type (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.Type):
+            Output only. Whether this instance config is
+            a Google or User Managed Configuration.
         replicas (Sequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
             The geographic placement of nodes in this
             instance configuration and their replication
             properties.
+        optional_replicas (Sequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
+            Output only. The available optional replicas
+            to choose from for user managed configurations.
+            Populated for Google managed configurations.
+        base_config (str):
+            Base configuration name, e.g.
+            projects/<project_name>/instanceConfigs/nam3, based on which
+            this configuration is created. Only set for user managed
+            configurations. ``base_config`` must refer to a
+            configuration of type GOOGLE_MANAGED in the same project as
+            this configuration.
+        labels (Mapping[str, str]):
+            Cloud Labels are a flexible and lightweight mechanism for
+            organizing cloud resources into groups that reflect a
+            customer's organizational needs and deployment strategies.
+            Cloud Labels can be used to filter collections of resources.
+            They can be used to control how resource metrics are
+            aggregated. And they can be used as arguments to policy
+            management rules (e.g. route, firewall, load balancing,
+            etc.).
+
+            -  Label keys must be between 1 and 63 characters long and
+               must conform to the following regular expression:
+               ``[a-z][a-z0-9_-]{0,62}``.
+            -  Label values must be between 0 and 63 characters long and
+               must conform to the regular expression
+               ``[a-z0-9_-]{0,63}``.
+            -  No more than 64 labels can be associated with a given
+               resource.
+
+            See https://goo.gl/xmQnxf for more information on and
+            examples of labels.
+
+            If you plan to use labels in your own code, please note that
+            additional characters may be allowed in the future.
+            Therefore, you are advised to use an internal label
+            representation, such as JSON, which doesn't rely upon
+            specific characters being disallowed. For example,
+            representing labels as the string: name + "*" + value would
+            prove problematic if we were to allow "*" in a future
+            release.
+        etag (str):
+            etag is used for optimistic concurrency
+            control as a way to help prevent simultaneous
+            updates of a instance config from overwriting
+            each other. It is strongly suggested that
+            systems make use of the etag in the
+            read-modify-write cycle to perform instance
+            config updates in order to avoid race
+            conditions: An etag is returned in the response
+            which contains instance configs, and systems are
+            expected to put that etag in the request to
+            update instance config to ensure that their
+            change will be applied to the same version of
+            the instance config.
+            If no etag is provided in the call to update
+            instance config, then the existing instance
+            config is overwritten blindly.
         leader_options (Sequence[str]):
             Allowed values of the "default_leader" schema option for
             databases in instances that use this instance configuration.
+        reconciling (bool):
+            Output only. If true, the instance config is
+            being created or updated. If false, there are no
+            ongoing operations for the instance config.
+        state (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.State):
+            Output only. The current instance config
+            state.
     """
+
+    class Type(proto.Enum):
+        r"""The type of this configuration."""
+        TYPE_UNSPECIFIED = 0
+        GOOGLE_MANAGED = 1
+        USER_MANAGED = 2
+
+    class State(proto.Enum):
+        r"""Indicates the current state of the instance config."""
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        READY = 2
 
     name = proto.Field(
         proto.STRING,
@@ -112,14 +201,46 @@ class InstanceConfig(proto.Message):
         proto.STRING,
         number=2,
     )
+    config_type = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Type,
+    )
     replicas = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ReplicaInfo",
     )
+    optional_replicas = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="ReplicaInfo",
+    )
+    base_config = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=9,
+    )
     leader_options = proto.RepeatedField(
         proto.STRING,
         number=4,
+    )
+    reconciling = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=State,
     )
 
 
@@ -340,6 +461,256 @@ class GetInstanceConfigRequest(proto.Message):
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class CreateInstanceConfigRequest(proto.Message):
+    r"""The request for
+    [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
+
+    Attributes:
+        parent (str):
+            Required. The name of the project in which to create the
+            instance config. Values are of the form
+            ``projects/<project>``.
+        instance_config_id (str):
+            Required. The ID of the instance config to create. Valid
+            identifiers are of the form ``custom-[-a-z0-9]*[a-z0-9]``
+            and must be between 2 and 64 characters in length. The
+            ``custom-`` prefix is required to avoid name conflicts with
+            Google managed configurations.
+        instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
+            Required. The InstanceConfig proto of the configuration to
+            create. instance_config.name must be
+            ``<parent>/instanceConfigs/<instance_config_id>``.
+            instance_config.base_config must be a Google managed
+            configuration name, e.g. /instanceConfigs/us-east1,
+            /instanceConfigs/nam3.
+        validate_only (bool):
+            An option to validate, but not actually
+            execute, a request, and provide the same
+            response.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InstanceConfig",
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class UpdateInstanceConfigRequest(proto.Message):
+    r"""The request for
+    [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
+
+    Attributes:
+        instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
+            Required. The user instance config to update, which must
+            always include the instance config name. Otherwise, only
+            fields mentioned in
+            [update_mask][google.spanner.admin.instance.v1.UpdateInstanceConfigRequest.update_mask]
+            need be included. To prevent conflicts of concurrent
+            updates,
+            [etag][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+            can be used.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. A mask specifying which fields in
+            [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig]
+            should be updated. The field mask must always be specified;
+            this prevents any future fields in
+            [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig]
+            from being erased accidentally by clients that do not know
+            about them. Only display_name and labels can be updated.
+        validate_only (bool):
+            An option to validate, but not actually
+            execute, a request, and provide the same
+            response.
+    """
+
+    instance_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InstanceConfig",
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class DeleteInstanceConfigRequest(proto.Message):
+    r"""The request for
+    [DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest].
+
+    Attributes:
+        name (str):
+            Required. The name of the instance configuration to be
+            deleted. Values are of the form
+            ``projects/<project>/instanceConfigs/<instance_config>``
+        etag (str):
+            Used for optimistic concurrency control as a
+            way to help prevent simultaneous deletes of an
+            instance config from overwriting each other. If
+            not empty, the API
+            only deletes the instance config when the etag
+            provided matches the current status of the
+            requested instance config. Otherwise, deletes
+            the instance config without checking the current
+            status of the requested instance config.
+        validate_only (bool):
+            An option to validate, but not actually
+            execute, a request, and provide the same
+            response.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class ListInstanceConfigOperationsRequest(proto.Message):
+    r"""The request for
+    [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
+
+    Attributes:
+        parent (str):
+            Required. The project of the instance config operations.
+            Values are of the form ``projects/<project>``.
+        filter (str):
+            An expression that filters the list of returned operations.
+
+            A filter expression consists of a field name, a comparison
+            operator, and a value for filtering. The value must be a
+            string, a number, or a boolean. The comparison operator must
+            be one of: ``<``, ``>``, ``<=``, ``>=``, ``!=``, ``=``, or
+            ``:``. Colon ``:`` is the contains operator. Filter rules
+            are not case sensitive.
+
+            The following fields in the
+            [Operation][google.longrunning.Operation] are eligible for
+            filtering:
+
+            -  ``name`` - The name of the long-running operation
+            -  ``done`` - False if the operation is in progress, else
+               true.
+            -  ``metadata.@type`` - the type of metadata. For example,
+               the type string for
+               [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata]
+               is
+               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata``.
+            -  ``metadata.<field_name>`` - any field in metadata.value.
+               ``metadata.@type`` must be specified first, if filtering
+               on metadata fields.
+            -  ``error`` - Error associated with the long-running
+               operation.
+            -  ``response.@type`` - the type of response.
+            -  ``response.<field_name>`` - any field in response.value.
+
+            You can combine multiple expressions by enclosing each
+            expression in parentheses. By default, expressions are
+            combined with AND logic. However, you can specify AND, OR,
+            and NOT logic explicitly.
+
+            Here are a few examples:
+
+            -  ``done:true`` - The operation is complete.
+            -  ``(metadata.@type=``
+               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata) AND``
+               ``(metadata.instance_config.name:custom-config) AND``
+               ``(metadata.progress.start_time < \"2021-03-28T14:50:00Z\") AND``
+               ``(error:*)`` - Return operations where:
+
+               -  The operation's metadata type is
+                  [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
+               -  The instance config name contains "custom-config".
+               -  The operation started before 2021-03-28T14:50:00Z.
+               -  The operation resulted in an error.
+        page_size (int):
+            Number of operations to be returned in the
+            response. If 0 or less, defaults to the server's
+            maximum allowed page size.
+        page_token (str):
+            If non-empty, ``page_token`` should contain a
+            [next_page_token][google.spanner.admin.instance.v1.ListInstanceConfigOperationsResponse.next_page_token]
+            from a previous
+            [ListInstanceConfigOperationsResponse][google.spanner.admin.instance.v1.ListInstanceConfigOperationsResponse]
+            to the same ``parent`` and with the same ``filter``.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListInstanceConfigOperationsResponse(proto.Message):
+    r"""The response for
+    [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
+
+    Attributes:
+        operations (Sequence[google.longrunning.operations_pb2.Operation]):
+            The list of matching instance config [long-running
+            operations][google.longrunning.Operation]. Each operation's
+            name will be prefixed by the instance config's name. The
+            operation's
+            [metadata][google.longrunning.Operation.metadata] field type
+            ``metadata.type_url`` describes the type of the metadata.
+        next_page_token (str):
+            ``next_page_token`` can be sent in a subsequent
+            [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations]
+            call to fetch more of the matching metadata.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    operations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=operations_pb2.Operation,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -621,6 +992,72 @@ class UpdateInstanceMetadata(proto.Message):
     end_time = proto.Field(
         proto.MESSAGE,
         number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class CreateInstanceConfigMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig].
+
+    Attributes:
+        instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
+            The target instance config end state.
+        progress (google.cloud.spanner_admin_instance_v1.types.OperationProgress):
+            The progress of the
+            [CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig]
+            operation.
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation was
+            cancelled.
+    """
+
+    instance_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InstanceConfig",
+    )
+    progress = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.OperationProgress,
+    )
+    cancel_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class UpdateInstanceConfigMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [UpdateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstanceConfig].
+
+    Attributes:
+        instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
+            The desired instance config after updating.
+        progress (google.cloud.spanner_admin_instance_v1.types.OperationProgress):
+            The progress of the
+            [UpdateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstanceConfig]
+            operation.
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation was
+            cancelled.
+    """
+
+    instance_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InstanceConfig",
+    )
+    progress = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.OperationProgress,
+    )
+    cancel_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
         message=timestamp_pb2.Timestamp,
     )
 
