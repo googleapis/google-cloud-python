@@ -76,6 +76,41 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AppConnectorsServiceClient",
+          "rpcs": {
+            "CreateAppConnector": {
+              "methods": [
+                "create_app_connector"
+              ]
+            },
+            "DeleteAppConnector": {
+              "methods": [
+                "delete_app_connector"
+              ]
+            },
+            "GetAppConnector": {
+              "methods": [
+                "get_app_connector"
+              ]
+            },
+            "ListAppConnectors": {
+              "methods": [
+                "list_app_connectors"
+              ]
+            },
+            "ReportStatus": {
+              "methods": [
+                "report_status"
+              ]
+            },
+            "UpdateAppConnector": {
+              "methods": [
+                "update_app_connector"
+              ]
+            }
+          }
         }
       }
     }

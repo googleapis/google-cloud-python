@@ -54,6 +54,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AppConnectorsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AppConnectorsServiceGrpcTransport
 from .transports.grpc_asyncio import AppConnectorsServiceGrpcAsyncIOTransport
+from .transports.rest import AppConnectorsServiceRestTransport
 
 
 class AppConnectorsServiceClientMeta(type):
@@ -69,6 +70,7 @@ class AppConnectorsServiceClientMeta(type):
     )  # type: Dict[str, Type[AppConnectorsServiceTransport]]
     _transport_registry["grpc"] = AppConnectorsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AppConnectorsServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AppConnectorsServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -372,6 +374,9 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
             transport (Union[str, AppConnectorsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
