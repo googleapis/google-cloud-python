@@ -46,6 +46,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AwsClustersTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AwsClustersGrpcTransport
 from .transports.grpc_asyncio import AwsClustersGrpcAsyncIOTransport
+from .transports.rest import AwsClustersRestTransport
 
 
 class AwsClustersClientMeta(type):
@@ -59,6 +60,7 @@ class AwsClustersClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AwsClustersTransport]]
     _transport_registry["grpc"] = AwsClustersGrpcTransport
     _transport_registry["grpc_asyncio"] = AwsClustersGrpcAsyncIOTransport
+    _transport_registry["rest"] = AwsClustersRestTransport
 
     def get_transport_class(
         cls,
@@ -401,6 +403,9 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             transport (Union[str, AwsClustersTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

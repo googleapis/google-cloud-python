@@ -24,10 +24,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -101,6 +108,7 @@ def test__get_default_mtls_endpoint():
     [
         (AwsClustersClient, "grpc"),
         (AwsClustersAsyncClient, "grpc_asyncio"),
+        (AwsClustersClient, "rest"),
     ],
 )
 def test_aws_clusters_client_from_service_account_info(client_class, transport_name):
@@ -114,7 +122,11 @@ def test_aws_clusters_client_from_service_account_info(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkemulticloud.googleapis.com:443")
+        assert client.transport._host == (
+            "gkemulticloud.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkemulticloud.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -122,6 +134,7 @@ def test_aws_clusters_client_from_service_account_info(client_class, transport_n
     [
         (transports.AwsClustersGrpcTransport, "grpc"),
         (transports.AwsClustersGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.AwsClustersRestTransport, "rest"),
     ],
 )
 def test_aws_clusters_client_service_account_always_use_jwt(
@@ -147,6 +160,7 @@ def test_aws_clusters_client_service_account_always_use_jwt(
     [
         (AwsClustersClient, "grpc"),
         (AwsClustersAsyncClient, "grpc_asyncio"),
+        (AwsClustersClient, "rest"),
     ],
 )
 def test_aws_clusters_client_from_service_account_file(client_class, transport_name):
@@ -167,13 +181,18 @@ def test_aws_clusters_client_from_service_account_file(client_class, transport_n
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("gkemulticloud.googleapis.com:443")
+        assert client.transport._host == (
+            "gkemulticloud.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://gkemulticloud.googleapis.com"
+        )
 
 
 def test_aws_clusters_client_get_transport_class():
     transport = AwsClustersClient.get_transport_class()
     available_transports = [
         transports.AwsClustersGrpcTransport,
+        transports.AwsClustersRestTransport,
     ]
     assert transport in available_transports
 
@@ -190,6 +209,7 @@ def test_aws_clusters_client_get_transport_class():
             transports.AwsClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (AwsClustersClient, transports.AwsClustersRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -333,6 +353,8 @@ def test_aws_clusters_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (AwsClustersClient, transports.AwsClustersRestTransport, "rest", "true"),
+        (AwsClustersClient, transports.AwsClustersRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -526,6 +548,7 @@ def test_aws_clusters_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.AwsClustersGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (AwsClustersClient, transports.AwsClustersRestTransport, "rest"),
     ],
 )
 def test_aws_clusters_client_client_options_scopes(
@@ -561,6 +584,7 @@ def test_aws_clusters_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (AwsClustersClient, transports.AwsClustersRestTransport, "rest", None),
     ],
 )
 def test_aws_clusters_client_client_options_credentials_file(
@@ -3995,6 +4019,3916 @@ async def test_get_aws_server_config_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.CreateAwsClusterRequest,
+        dict,
+    ],
+)
+def test_create_aws_cluster_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["aws_cluster"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "networking": {
+            "vpc_id": "vpc_id_value",
+            "pod_address_cidr_blocks": [
+                "pod_address_cidr_blocks_value1",
+                "pod_address_cidr_blocks_value2",
+            ],
+            "service_address_cidr_blocks": [
+                "service_address_cidr_blocks_value1",
+                "service_address_cidr_blocks_value2",
+            ],
+        },
+        "aws_region": "aws_region_value",
+        "control_plane": {
+            "version": "version_value",
+            "instance_type": "instance_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "iam_instance_profile": "iam_instance_profile_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "main_volume": {},
+            "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "tags": {},
+            "aws_services_authentication": {
+                "role_arn": "role_arn_value",
+                "role_session_name": "role_session_name_value",
+            },
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "state": 1,
+        "endpoint": "endpoint_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "logging_config": {"component_config": {"enable_components": [1]}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_aws_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_aws_cluster_rest_required_fields(
+    request_type=aws_service.CreateAwsClusterRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["aws_cluster_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "awsClusterId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_aws_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "awsClusterId" in jsonified_request
+    assert jsonified_request["awsClusterId"] == request_init["aws_cluster_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["awsClusterId"] = "aws_cluster_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_aws_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "aws_cluster_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "awsClusterId" in jsonified_request
+    assert jsonified_request["awsClusterId"] == "aws_cluster_id_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_aws_cluster(request)
+
+            expected_params = [
+                (
+                    "awsClusterId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_aws_cluster_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_aws_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "awsClusterId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "awsCluster",
+                "awsClusterId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_aws_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_create_aws_cluster"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_create_aws_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.CreateAwsClusterRequest.pb(
+            aws_service.CreateAwsClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.CreateAwsClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_aws_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_aws_cluster_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.CreateAwsClusterRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["aws_cluster"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "networking": {
+            "vpc_id": "vpc_id_value",
+            "pod_address_cidr_blocks": [
+                "pod_address_cidr_blocks_value1",
+                "pod_address_cidr_blocks_value2",
+            ],
+            "service_address_cidr_blocks": [
+                "service_address_cidr_blocks_value1",
+                "service_address_cidr_blocks_value2",
+            ],
+        },
+        "aws_region": "aws_region_value",
+        "control_plane": {
+            "version": "version_value",
+            "instance_type": "instance_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "iam_instance_profile": "iam_instance_profile_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "main_volume": {},
+            "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "tags": {},
+            "aws_services_authentication": {
+                "role_arn": "role_arn_value",
+                "role_session_name": "role_session_name_value",
+            },
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "state": 1,
+        "endpoint": "endpoint_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "logging_config": {"component_config": {"enable_components": [1]}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_aws_cluster(request)
+
+
+def test_create_aws_cluster_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+            aws_cluster_id="aws_cluster_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_aws_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/awsClusters"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_aws_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_aws_cluster(
+            aws_service.CreateAwsClusterRequest(),
+            parent="parent_value",
+            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+            aws_cluster_id="aws_cluster_id_value",
+        )
+
+
+def test_create_aws_cluster_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.UpdateAwsClusterRequest,
+        dict,
+    ],
+)
+def test_update_aws_cluster_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+    }
+    request_init["aws_cluster"] = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3",
+        "description": "description_value",
+        "networking": {
+            "vpc_id": "vpc_id_value",
+            "pod_address_cidr_blocks": [
+                "pod_address_cidr_blocks_value1",
+                "pod_address_cidr_blocks_value2",
+            ],
+            "service_address_cidr_blocks": [
+                "service_address_cidr_blocks_value1",
+                "service_address_cidr_blocks_value2",
+            ],
+        },
+        "aws_region": "aws_region_value",
+        "control_plane": {
+            "version": "version_value",
+            "instance_type": "instance_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "iam_instance_profile": "iam_instance_profile_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "main_volume": {},
+            "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "tags": {},
+            "aws_services_authentication": {
+                "role_arn": "role_arn_value",
+                "role_session_name": "role_session_name_value",
+            },
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "state": 1,
+        "endpoint": "endpoint_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "logging_config": {"component_config": {"enable_components": [1]}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_aws_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_aws_cluster_rest_required_fields(
+    request_type=aws_service.UpdateAwsClusterRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_aws_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_aws_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_aws_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_aws_cluster_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_aws_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "awsCluster",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_aws_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_update_aws_cluster"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_update_aws_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.UpdateAwsClusterRequest.pb(
+            aws_service.UpdateAwsClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.UpdateAwsClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_aws_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_aws_cluster_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.UpdateAwsClusterRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+    }
+    request_init["aws_cluster"] = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3",
+        "description": "description_value",
+        "networking": {
+            "vpc_id": "vpc_id_value",
+            "pod_address_cidr_blocks": [
+                "pod_address_cidr_blocks_value1",
+                "pod_address_cidr_blocks_value2",
+            ],
+            "service_address_cidr_blocks": [
+                "service_address_cidr_blocks_value1",
+                "service_address_cidr_blocks_value2",
+            ],
+        },
+        "aws_region": "aws_region_value",
+        "control_plane": {
+            "version": "version_value",
+            "instance_type": "instance_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "iam_instance_profile": "iam_instance_profile_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "main_volume": {},
+            "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "tags": {},
+            "aws_services_authentication": {
+                "role_arn": "role_arn_value",
+                "role_session_name": "role_session_name_value",
+            },
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "state": 1,
+        "endpoint": "endpoint_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "workload_identity_config": {
+            "issuer_uri": "issuer_uri_value",
+            "workload_pool": "workload_pool_value",
+            "identity_provider": "identity_provider_value",
+        },
+        "cluster_ca_certificate": "cluster_ca_certificate_value",
+        "fleet": {"project": "project_value", "membership": "membership_value"},
+        "logging_config": {"component_config": {"enable_components": [1]}},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_aws_cluster(request)
+
+
+def test_update_aws_cluster_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "aws_cluster": {
+                "name": "projects/sample1/locations/sample2/awsClusters/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_aws_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{aws_cluster.name=projects/*/locations/*/awsClusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_aws_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_aws_cluster(
+            aws_service.UpdateAwsClusterRequest(),
+            aws_cluster=aws_resources.AwsCluster(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_aws_cluster_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsClusterRequest,
+        dict,
+    ],
+)
+def test_get_aws_cluster_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsCluster(
+            name="name_value",
+            description="description_value",
+            aws_region="aws_region_value",
+            state=aws_resources.AwsCluster.State.PROVISIONING,
+            endpoint="endpoint_value",
+            uid="uid_value",
+            reconciling=True,
+            etag="etag_value",
+            cluster_ca_certificate="cluster_ca_certificate_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_resources.AwsCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_aws_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsCluster)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.aws_region == "aws_region_value"
+    assert response.state == aws_resources.AwsCluster.State.PROVISIONING
+    assert response.endpoint == "endpoint_value"
+    assert response.uid == "uid_value"
+    assert response.reconciling is True
+    assert response.etag == "etag_value"
+    assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
+
+
+def test_get_aws_cluster_rest_required_fields(
+    request_type=aws_service.GetAwsClusterRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_resources.AwsCluster()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = aws_resources.AwsCluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_aws_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_aws_cluster_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_aws_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_aws_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_cluster"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_get_aws_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GetAwsClusterRequest.pb(
+            aws_service.GetAwsClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_resources.AwsCluster.to_json(
+            aws_resources.AwsCluster()
+        )
+
+        request = aws_service.GetAwsClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_resources.AwsCluster()
+
+        client.get_aws_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_aws_cluster_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.GetAwsClusterRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_aws_cluster(request)
+
+
+def test_get_aws_cluster_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsCluster()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_resources.AwsCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_aws_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/awsClusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_aws_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_aws_cluster(
+            aws_service.GetAwsClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_get_aws_cluster_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.ListAwsClustersRequest,
+        dict,
+    ],
+)
+def test_list_aws_clusters_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_service.ListAwsClustersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_service.ListAwsClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_aws_clusters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAwsClustersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_aws_clusters_rest_required_fields(
+    request_type=aws_service.ListAwsClustersRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_aws_clusters._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_aws_clusters._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_service.ListAwsClustersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = aws_service.ListAwsClustersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_aws_clusters(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_aws_clusters_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_aws_clusters._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_aws_clusters_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_list_aws_clusters"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_list_aws_clusters"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.ListAwsClustersRequest.pb(
+            aws_service.ListAwsClustersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_service.ListAwsClustersResponse.to_json(
+            aws_service.ListAwsClustersResponse()
+        )
+
+        request = aws_service.ListAwsClustersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_service.ListAwsClustersResponse()
+
+        client.list_aws_clusters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_aws_clusters_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.ListAwsClustersRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_aws_clusters(request)
+
+
+def test_list_aws_clusters_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_service.ListAwsClustersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_service.ListAwsClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_aws_clusters(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/awsClusters"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_aws_clusters_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_aws_clusters(
+            aws_service.ListAwsClustersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_aws_clusters_rest_pager(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            aws_service.ListAwsClustersResponse(
+                aws_clusters=[
+                    aws_resources.AwsCluster(),
+                    aws_resources.AwsCluster(),
+                    aws_resources.AwsCluster(),
+                ],
+                next_page_token="abc",
+            ),
+            aws_service.ListAwsClustersResponse(
+                aws_clusters=[],
+                next_page_token="def",
+            ),
+            aws_service.ListAwsClustersResponse(
+                aws_clusters=[
+                    aws_resources.AwsCluster(),
+                ],
+                next_page_token="ghi",
+            ),
+            aws_service.ListAwsClustersResponse(
+                aws_clusters=[
+                    aws_resources.AwsCluster(),
+                    aws_resources.AwsCluster(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            aws_service.ListAwsClustersResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_aws_clusters(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, aws_resources.AwsCluster) for i in results)
+
+        pages = list(client.list_aws_clusters(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.DeleteAwsClusterRequest,
+        dict,
+    ],
+)
+def test_delete_aws_cluster_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_aws_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_aws_cluster_rest_required_fields(
+    request_type=aws_service.DeleteAwsClusterRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_aws_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_aws_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_aws_cluster(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_aws_cluster_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_aws_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_aws_cluster_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_delete_aws_cluster"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_delete_aws_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.DeleteAwsClusterRequest.pb(
+            aws_service.DeleteAwsClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.DeleteAwsClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_aws_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_aws_cluster_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.DeleteAwsClusterRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_aws_cluster(request)
+
+
+def test_delete_aws_cluster_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_aws_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/awsClusters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_aws_cluster_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_aws_cluster(
+            aws_service.DeleteAwsClusterRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_aws_cluster_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GenerateAwsAccessTokenRequest,
+        dict,
+    ],
+)
+def test_generate_aws_access_token_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_service.GenerateAwsAccessTokenResponse(
+            access_token="access_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_service.GenerateAwsAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_aws_access_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_service.GenerateAwsAccessTokenResponse)
+    assert response.access_token == "access_token_value"
+
+
+def test_generate_aws_access_token_rest_required_fields(
+    request_type=aws_service.GenerateAwsAccessTokenRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["aws_cluster"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_aws_access_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["awsCluster"] = "aws_cluster_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_aws_access_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "awsCluster" in jsonified_request
+    assert jsonified_request["awsCluster"] == "aws_cluster_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_service.GenerateAwsAccessTokenResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = aws_service.GenerateAwsAccessTokenResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_aws_access_token(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_aws_access_token_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_aws_access_token._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("awsCluster",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_aws_access_token_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_generate_aws_access_token"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_generate_aws_access_token"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GenerateAwsAccessTokenRequest.pb(
+            aws_service.GenerateAwsAccessTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_service.GenerateAwsAccessTokenResponse.to_json(
+            aws_service.GenerateAwsAccessTokenResponse()
+        )
+
+        request = aws_service.GenerateAwsAccessTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_service.GenerateAwsAccessTokenResponse()
+
+        client.generate_aws_access_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_aws_access_token_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.GenerateAwsAccessTokenRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_aws_access_token(request)
+
+
+def test_generate_aws_access_token_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.CreateAwsNodePoolRequest,
+        dict,
+    ],
+)
+def test_create_aws_node_pool_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request_init["aws_node_pool"] = {
+        "name": "name_value",
+        "version": "version_value",
+        "config": {
+            "instance_type": "instance_type_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
+            "labels": {},
+            "tags": {},
+            "iam_instance_profile": "iam_instance_profile_value",
+            "image_type": "image_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
+        "subnet_id": "subnet_id_value",
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "max_pods_constraint": {"max_pods_per_node": 1798},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_aws_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_aws_node_pool_rest_required_fields(
+    request_type=aws_service.CreateAwsNodePoolRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["aws_node_pool_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "awsNodePoolId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_aws_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "awsNodePoolId" in jsonified_request
+    assert jsonified_request["awsNodePoolId"] == request_init["aws_node_pool_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["awsNodePoolId"] = "aws_node_pool_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_aws_node_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "aws_node_pool_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "awsNodePoolId" in jsonified_request
+    assert jsonified_request["awsNodePoolId"] == "aws_node_pool_id_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_aws_node_pool(request)
+
+            expected_params = [
+                (
+                    "awsNodePoolId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_aws_node_pool_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_aws_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "awsNodePoolId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "awsNodePool",
+                "awsNodePoolId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_aws_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_create_aws_node_pool"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_create_aws_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.CreateAwsNodePoolRequest.pb(
+            aws_service.CreateAwsNodePoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.CreateAwsNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_aws_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_aws_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.CreateAwsNodePoolRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request_init["aws_node_pool"] = {
+        "name": "name_value",
+        "version": "version_value",
+        "config": {
+            "instance_type": "instance_type_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
+            "labels": {},
+            "tags": {},
+            "iam_instance_profile": "iam_instance_profile_value",
+            "image_type": "image_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
+        "subnet_id": "subnet_id_value",
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "max_pods_constraint": {"max_pods_per_node": 1798},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_aws_node_pool(request)
+
+
+def test_create_aws_node_pool_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
+            aws_node_pool_id="aws_node_pool_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_aws_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_aws_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_aws_node_pool(
+            aws_service.CreateAwsNodePoolRequest(),
+            parent="parent_value",
+            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
+            aws_node_pool_id="aws_node_pool_id_value",
+        )
+
+
+def test_create_aws_node_pool_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.UpdateAwsNodePoolRequest,
+        dict,
+    ],
+)
+def test_update_aws_node_pool_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_node_pool": {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+        }
+    }
+    request_init["aws_node_pool"] = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4",
+        "version": "version_value",
+        "config": {
+            "instance_type": "instance_type_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
+            "labels": {},
+            "tags": {},
+            "iam_instance_profile": "iam_instance_profile_value",
+            "image_type": "image_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
+        "subnet_id": "subnet_id_value",
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "max_pods_constraint": {"max_pods_per_node": 1798},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_aws_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_aws_node_pool_rest_required_fields(
+    request_type=aws_service.UpdateAwsNodePoolRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_aws_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_aws_node_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_aws_node_pool(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_aws_node_pool_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_aws_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "awsNodePool",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_aws_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_update_aws_node_pool"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_update_aws_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.UpdateAwsNodePoolRequest.pb(
+            aws_service.UpdateAwsNodePoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.UpdateAwsNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_aws_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_aws_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.UpdateAwsNodePoolRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_node_pool": {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+        }
+    }
+    request_init["aws_node_pool"] = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4",
+        "version": "version_value",
+        "config": {
+            "instance_type": "instance_type_value",
+            "root_volume": {
+                "size_gib": 844,
+                "volume_type": 1,
+                "iops": 443,
+                "kms_key_arn": "kms_key_arn_value",
+            },
+            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
+            "labels": {},
+            "tags": {},
+            "iam_instance_profile": "iam_instance_profile_value",
+            "image_type": "image_type_value",
+            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
+            "security_group_ids": [
+                "security_group_ids_value1",
+                "security_group_ids_value2",
+            ],
+            "proxy_config": {
+                "secret_arn": "secret_arn_value",
+                "secret_version": "secret_version_value",
+            },
+            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
+            "instance_placement": {"tenancy": 1},
+        },
+        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
+        "subnet_id": "subnet_id_value",
+        "state": 1,
+        "uid": "uid_value",
+        "reconciling": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "annotations": {},
+        "max_pods_constraint": {"max_pods_per_node": 1798},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_aws_node_pool(request)
+
+
+def test_update_aws_node_pool_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "aws_node_pool": {
+                "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_aws_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{aws_node_pool.name=projects/*/locations/*/awsClusters/*/awsNodePools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_aws_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_aws_node_pool(
+            aws_service.UpdateAwsNodePoolRequest(),
+            aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_aws_node_pool_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsNodePoolRequest,
+        dict,
+    ],
+)
+def test_get_aws_node_pool_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsNodePool(
+            name="name_value",
+            version="version_value",
+            subnet_id="subnet_id_value",
+            state=aws_resources.AwsNodePool.State.PROVISIONING,
+            uid="uid_value",
+            reconciling=True,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_resources.AwsNodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_aws_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsNodePool)
+    assert response.name == "name_value"
+    assert response.version == "version_value"
+    assert response.subnet_id == "subnet_id_value"
+    assert response.state == aws_resources.AwsNodePool.State.PROVISIONING
+    assert response.uid == "uid_value"
+    assert response.reconciling is True
+    assert response.etag == "etag_value"
+
+
+def test_get_aws_node_pool_rest_required_fields(
+    request_type=aws_service.GetAwsNodePoolRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_resources.AwsNodePool()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = aws_resources.AwsNodePool.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_aws_node_pool(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_aws_node_pool_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_aws_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_aws_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_node_pool"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_get_aws_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GetAwsNodePoolRequest.pb(
+            aws_service.GetAwsNodePoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_resources.AwsNodePool.to_json(
+            aws_resources.AwsNodePool()
+        )
+
+        request = aws_service.GetAwsNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_resources.AwsNodePool()
+
+        client.get_aws_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_aws_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.GetAwsNodePoolRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_aws_node_pool(request)
+
+
+def test_get_aws_node_pool_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsNodePool()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_resources.AwsNodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_aws_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_aws_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_aws_node_pool(
+            aws_service.GetAwsNodePoolRequest(),
+            name="name_value",
+        )
+
+
+def test_get_aws_node_pool_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.ListAwsNodePoolsRequest,
+        dict,
+    ],
+)
+def test_list_aws_node_pools_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_service.ListAwsNodePoolsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_aws_node_pools(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAwsNodePoolsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_aws_node_pools_rest_required_fields(
+    request_type=aws_service.ListAwsNodePoolsRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_aws_node_pools._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_aws_node_pools._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_service.ListAwsNodePoolsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_aws_node_pools(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_aws_node_pools_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_aws_node_pools._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_aws_node_pools_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_list_aws_node_pools"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_list_aws_node_pools"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.ListAwsNodePoolsRequest.pb(
+            aws_service.ListAwsNodePoolsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_service.ListAwsNodePoolsResponse.to_json(
+            aws_service.ListAwsNodePoolsResponse()
+        )
+
+        request = aws_service.ListAwsNodePoolsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_service.ListAwsNodePoolsResponse()
+
+        client.list_aws_node_pools(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_aws_node_pools_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.ListAwsNodePoolsRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_aws_node_pools(request)
+
+
+def test_list_aws_node_pools_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_service.ListAwsNodePoolsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_aws_node_pools(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/awsClusters/*}/awsNodePools"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_aws_node_pools_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_aws_node_pools(
+            aws_service.ListAwsNodePoolsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_aws_node_pools_rest_pager(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            aws_service.ListAwsNodePoolsResponse(
+                aws_node_pools=[
+                    aws_resources.AwsNodePool(),
+                    aws_resources.AwsNodePool(),
+                    aws_resources.AwsNodePool(),
+                ],
+                next_page_token="abc",
+            ),
+            aws_service.ListAwsNodePoolsResponse(
+                aws_node_pools=[],
+                next_page_token="def",
+            ),
+            aws_service.ListAwsNodePoolsResponse(
+                aws_node_pools=[
+                    aws_resources.AwsNodePool(),
+                ],
+                next_page_token="ghi",
+            ),
+            aws_service.ListAwsNodePoolsResponse(
+                aws_node_pools=[
+                    aws_resources.AwsNodePool(),
+                    aws_resources.AwsNodePool(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            aws_service.ListAwsNodePoolsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/awsClusters/sample3"
+        }
+
+        pager = client.list_aws_node_pools(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, aws_resources.AwsNodePool) for i in results)
+
+        pages = list(client.list_aws_node_pools(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.DeleteAwsNodePoolRequest,
+        dict,
+    ],
+)
+def test_delete_aws_node_pool_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_aws_node_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_aws_node_pool_rest_required_fields(
+    request_type=aws_service.DeleteAwsNodePoolRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_aws_node_pool._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_aws_node_pool._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_aws_node_pool(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_aws_node_pool_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_aws_node_pool._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_aws_node_pool_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_delete_aws_node_pool"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_delete_aws_node_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.DeleteAwsNodePoolRequest.pb(
+            aws_service.DeleteAwsNodePoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.DeleteAwsNodePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_aws_node_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_aws_node_pool_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.DeleteAwsNodePoolRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_aws_node_pool(request)
+
+
+def test_delete_aws_node_pool_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_aws_node_pool(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_aws_node_pool_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_aws_node_pool(
+            aws_service.DeleteAwsNodePoolRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_aws_node_pool_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsServerConfigRequest,
+        dict,
+    ],
+)
+def test_get_aws_server_config_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/awsServerConfig"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsServerConfig(
+            name="name_value",
+            supported_aws_regions=["supported_aws_regions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_resources.AwsServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_aws_server_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsServerConfig)
+    assert response.name == "name_value"
+    assert response.supported_aws_regions == ["supported_aws_regions_value"]
+
+
+def test_get_aws_server_config_rest_required_fields(
+    request_type=aws_service.GetAwsServerConfigRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_server_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_server_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_resources.AwsServerConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = aws_resources.AwsServerConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_aws_server_config(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_aws_server_config_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_aws_server_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_aws_server_config_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_server_config"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_get_aws_server_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GetAwsServerConfigRequest.pb(
+            aws_service.GetAwsServerConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_resources.AwsServerConfig.to_json(
+            aws_resources.AwsServerConfig()
+        )
+
+        request = aws_service.GetAwsServerConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_resources.AwsServerConfig()
+
+        client.get_aws_server_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_aws_server_config_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.GetAwsServerConfigRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/awsServerConfig"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_aws_server_config(request)
+
+
+def test_get_aws_server_config_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsServerConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/awsServerConfig"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = aws_resources.AwsServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_aws_server_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/awsServerConfig}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_aws_server_config_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_aws_server_config(
+            aws_service.GetAwsServerConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_aws_server_config_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AwsClustersGrpcTransport(
@@ -4076,6 +8010,7 @@ def test_transport_get_channel():
     [
         transports.AwsClustersGrpcTransport,
         transports.AwsClustersGrpcAsyncIOTransport,
+        transports.AwsClustersRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4090,6 +8025,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -4235,6 +8171,7 @@ def test_aws_clusters_transport_auth_adc(transport_class):
     [
         transports.AwsClustersGrpcTransport,
         transports.AwsClustersGrpcAsyncIOTransport,
+        transports.AwsClustersRestTransport,
     ],
 )
 def test_aws_clusters_transport_auth_gdch_credentials(transport_class):
@@ -4329,11 +8266,40 @@ def test_aws_clusters_grpc_transport_client_cert_source_for_mtls(transport_class
             )
 
 
+def test_aws_clusters_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.AwsClustersRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_aws_clusters_rest_lro_client():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_aws_clusters_host_no_port(transport_name):
@@ -4344,7 +8310,11 @@ def test_aws_clusters_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkemulticloud.googleapis.com:443")
+    assert client.transport._host == (
+        "gkemulticloud.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkemulticloud.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -4352,6 +8322,7 @@ def test_aws_clusters_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_aws_clusters_host_with_port(transport_name):
@@ -4362,7 +8333,66 @@ def test_aws_clusters_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("gkemulticloud.googleapis.com:8000")
+    assert client.transport._host == (
+        "gkemulticloud.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://gkemulticloud.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_aws_clusters_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = AwsClustersClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = AwsClustersClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_aws_cluster._session
+    session2 = client2.transport.create_aws_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.update_aws_cluster._session
+    session2 = client2.transport.update_aws_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.get_aws_cluster._session
+    session2 = client2.transport.get_aws_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.list_aws_clusters._session
+    session2 = client2.transport.list_aws_clusters._session
+    assert session1 != session2
+    session1 = client1.transport.delete_aws_cluster._session
+    session2 = client2.transport.delete_aws_cluster._session
+    assert session1 != session2
+    session1 = client1.transport.generate_aws_access_token._session
+    session2 = client2.transport.generate_aws_access_token._session
+    assert session1 != session2
+    session1 = client1.transport.create_aws_node_pool._session
+    session2 = client2.transport.create_aws_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.update_aws_node_pool._session
+    session2 = client2.transport.update_aws_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.get_aws_node_pool._session
+    session2 = client2.transport.get_aws_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.list_aws_node_pools._session
+    session2 = client2.transport.list_aws_node_pools._session
+    assert session1 != session2
+    session1 = client1.transport.delete_aws_node_pool._session
+    session2 = client2.transport.delete_aws_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.get_aws_server_config._session
+    session2 = client2.transport.get_aws_server_config._session
+    assert session1 != session2
 
 
 def test_aws_clusters_grpc_transport_channel():
@@ -4741,6 +8771,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4758,6 +8789,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:
