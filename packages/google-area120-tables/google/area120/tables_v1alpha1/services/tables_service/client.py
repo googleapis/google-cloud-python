@@ -42,6 +42,7 @@ from google.area120.tables_v1alpha1.types import tables
 from .transports.base import DEFAULT_CLIENT_INFO, TablesServiceTransport
 from .transports.grpc import TablesServiceGrpcTransport
 from .transports.grpc_asyncio import TablesServiceGrpcAsyncIOTransport
+from .transports.rest import TablesServiceRestTransport
 
 
 class TablesServiceClientMeta(type):
@@ -55,6 +56,7 @@ class TablesServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[TablesServiceTransport]]
     _transport_registry["grpc"] = TablesServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = TablesServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = TablesServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -387,6 +389,9 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             transport (Union[str, TablesServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

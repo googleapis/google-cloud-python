@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchDeleteRows
+# Snippet for ListTables
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync]
+# [START area120tables_v1alpha1_generated_TablesService_ListTables_sync_5fad2c45]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,19 @@
 from google.area120 import tables_v1alpha1
 
 
-def sample_batch_delete_rows():
+def sample_list_tables():
     # Create a client
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.BatchDeleteRowsRequest(
-        parent="parent_value",
-        names=['names_value1', 'names_value2'],
+    request = tables_v1alpha1.ListTablesRequest(
     )
 
     # Make the request
-    client.batch_delete_rows(request=request)
+    page_result = client.list_tables(request=request)
 
+    # Handle the response
+    for response in page_result:
+        print(response)
 
-# [END area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync]
+# [END area120tables_v1alpha1_generated_TablesService_ListTables_sync_5fad2c45]

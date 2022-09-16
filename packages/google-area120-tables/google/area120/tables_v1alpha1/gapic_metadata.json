@@ -136,6 +136,71 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "TablesServiceClient",
+          "rpcs": {
+            "BatchCreateRows": {
+              "methods": [
+                "batch_create_rows"
+              ]
+            },
+            "BatchDeleteRows": {
+              "methods": [
+                "batch_delete_rows"
+              ]
+            },
+            "BatchUpdateRows": {
+              "methods": [
+                "batch_update_rows"
+              ]
+            },
+            "CreateRow": {
+              "methods": [
+                "create_row"
+              ]
+            },
+            "DeleteRow": {
+              "methods": [
+                "delete_row"
+              ]
+            },
+            "GetRow": {
+              "methods": [
+                "get_row"
+              ]
+            },
+            "GetTable": {
+              "methods": [
+                "get_table"
+              ]
+            },
+            "GetWorkspace": {
+              "methods": [
+                "get_workspace"
+              ]
+            },
+            "ListRows": {
+              "methods": [
+                "list_rows"
+              ]
+            },
+            "ListTables": {
+              "methods": [
+                "list_tables"
+              ]
+            },
+            "ListWorkspaces": {
+              "methods": [
+                "list_workspaces"
+              ]
+            },
+            "UpdateRow": {
+              "methods": [
+                "update_row"
+              ]
+            }
+          }
         }
       }
     }
