@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-network-security/compare/v0.6.1...v0.7.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#136](https://github.com/googleapis/python-network-security/issues/136)) ([e17eff4](https://github.com/googleapis/python-network-security/commit/e17eff464aeb9504ed1f493eebd23f11df6655c4))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([e17eff4](https://github.com/googleapis/python-network-security/commit/e17eff464aeb9504ed1f493eebd23f11df6655c4))
+* **deps:** require protobuf >= 3.20.1 ([e17eff4](https://github.com/googleapis/python-network-security/commit/e17eff464aeb9504ed1f493eebd23f11df6655c4))
+
 ## [0.6.1](https://github.com/googleapis/python-network-security/compare/v0.6.0...v0.6.1) (2022-08-15)
 
 
