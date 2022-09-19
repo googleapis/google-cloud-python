@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.7.1...v0.8.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#184](https://github.com/googleapis/python-recommendations-ai/issues/184)) ([db5cec0](https://github.com/googleapis/python-recommendations-ai/commit/db5cec03eb40b6b8b752927f7bcad2b21f2ace73))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([db5cec0](https://github.com/googleapis/python-recommendations-ai/commit/db5cec03eb40b6b8b752927f7bcad2b21f2ace73))
+* **deps:** require protobuf >= 3.20.1 ([db5cec0](https://github.com/googleapis/python-recommendations-ai/commit/db5cec03eb40b6b8b752927f7bcad2b21f2ace73))
+
 ## [0.7.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.7.0...v0.7.1) (2022-08-11)
 
 
