@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-life-sciences/compare/v0.6.2...v0.7.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#137](https://github.com/googleapis/python-life-sciences/issues/137)) ([e7866fe](https://github.com/googleapis/python-life-sciences/commit/e7866feda2f3af183b3e2fdf9a036acac1cf4086))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([e7866fe](https://github.com/googleapis/python-life-sciences/commit/e7866feda2f3af183b3e2fdf9a036acac1cf4086))
+* **deps:** require protobuf >= 3.20.1 ([e7866fe](https://github.com/googleapis/python-life-sciences/commit/e7866feda2f3af183b3e2fdf9a036acac1cf4086))
+
 ## [0.6.2](https://github.com/googleapis/python-life-sciences/compare/v0.6.1...v0.6.2) (2022-08-11)
 
 
