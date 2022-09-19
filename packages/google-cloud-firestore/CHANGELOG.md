@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.7.0](https://github.com/googleapis/python-firestore/compare/v2.6.1...v2.7.0) (2022-09-13)
+
+
+### Features
+
+* add firestore aggregation query apis to the stable googleapis branch ([f25fd82](https://github.com/googleapis/python-firestore/commit/f25fd8263f7a78ea03c2d2a55c41302643f2edf0))
+
 ## [2.6.1](https://github.com/googleapis/python-firestore/compare/v2.6.0...v2.6.1) (2022-08-11)
 
 
