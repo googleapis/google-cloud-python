@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.1.1...v0.2.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#27](https://github.com/googleapis/python-beyondcorp-appconnections/issues/27)) ([56764f7](https://github.com/googleapis/python-beyondcorp-appconnections/commit/56764f76d72480397a0d7efe3c65fcc2e5847d31))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([56764f7](https://github.com/googleapis/python-beyondcorp-appconnections/commit/56764f76d72480397a0d7efe3c65fcc2e5847d31))
+* **deps:** require protobuf >= 3.20.1 ([56764f7](https://github.com/googleapis/python-beyondcorp-appconnections/commit/56764f76d72480397a0d7efe3c65fcc2e5847d31))
+
 ## [0.1.1](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.1.0...v0.1.1) (2022-08-15)
 
 
