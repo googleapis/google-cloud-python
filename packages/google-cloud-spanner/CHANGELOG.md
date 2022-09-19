@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.21.0](https://github.com/googleapis/python-spanner/compare/v3.20.0...v3.21.0) (2022-09-16)
+
+
+### Features
+
+* Add custom instance config operations ([#810](https://github.com/googleapis/python-spanner/issues/810)) ([f07333f](https://github.com/googleapis/python-spanner/commit/f07333fb7238e79b32f480a8c82c61fc2fb26dee))
+
 ## [3.20.0](https://github.com/googleapis/python-spanner/compare/v3.19.0...v3.20.0) (2022-08-30)
 
 
