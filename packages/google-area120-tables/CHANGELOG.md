@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-area120-tables/compare/v0.7.1...v0.8.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#194](https://github.com/googleapis/python-area120-tables/issues/194)) ([14bab6c](https://github.com/googleapis/python-area120-tables/commit/14bab6c92a74aa27b2dac80543171082a7c4c189))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([14bab6c](https://github.com/googleapis/python-area120-tables/commit/14bab6c92a74aa27b2dac80543171082a7c4c189))
+* **deps:** require protobuf >= 3.20.1 ([14bab6c](https://github.com/googleapis/python-area120-tables/commit/14bab6c92a74aa27b2dac80543171082a7c4c189))
+
 ## [0.7.1](https://github.com/googleapis/python-area120-tables/compare/v0.7.0...v0.7.1) (2022-08-11)
 
 
