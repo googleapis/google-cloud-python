@@ -37,6 +37,11 @@ steps:
 
 Installation
 ------------
+Stable released version of the package is available on PyPi:
+
+::
+
+   pip install sqlalchemy-spanner
 
 To install an in-development version of the package, clone its
 Git-repository:
