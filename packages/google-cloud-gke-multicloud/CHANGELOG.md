@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.1.1...v0.2.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#23](https://github.com/googleapis/python-gke-multicloud/issues/23)) ([763dbc4](https://github.com/googleapis/python-gke-multicloud/commit/763dbc4c4defe4888c815e7c8f6b42a6b8f63468))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([763dbc4](https://github.com/googleapis/python-gke-multicloud/commit/763dbc4c4defe4888c815e7c8f6b42a6b8f63468))
+* **deps:** require protobuf >= 3.20.1 ([763dbc4](https://github.com/googleapis/python-gke-multicloud/commit/763dbc4c4defe4888c815e7c8f6b42a6b8f63468))
+
 ## [0.1.1](https://github.com/googleapis/python-gke-multicloud/compare/v0.1.0...v0.1.1) (2022-08-11)
 
 
