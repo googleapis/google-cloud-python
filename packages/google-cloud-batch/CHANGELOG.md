@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-batch/compare/v0.2.0...v0.3.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#37](https://github.com/googleapis/python-batch/issues/37)) ([e48b9ba](https://github.com/googleapis/python-batch/commit/e48b9badf426683dc65c8ed3c570a9b5b44a119f))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([e48b9ba](https://github.com/googleapis/python-batch/commit/e48b9badf426683dc65c8ed3c570a9b5b44a119f))
+* **deps:** require protobuf >= 3.20.1 ([e48b9ba](https://github.com/googleapis/python-batch/commit/e48b9badf426683dc65c8ed3c570a9b5b44a119f))
+
+
+### Documentation
+
+* **samples:** Adding first sample code + tests ([#22](https://github.com/googleapis/python-batch/issues/22)) ([d8a4864](https://github.com/googleapis/python-batch/commit/d8a4864133ad41e8dec11870ab4a1a9bbbca3292))
+
 ## [0.2.0](https://github.com/googleapis/python-batch/compare/v0.1.2...v0.2.0) (2022-08-31)
 
 
