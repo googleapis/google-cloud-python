@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-gke-backup/compare/v0.1.1...v0.2.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#24](https://github.com/googleapis/python-gke-backup/issues/24)) ([fbaff82](https://github.com/googleapis/python-gke-backup/commit/fbaff8285a3e6efa78c74bec26f681906af60754))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([fbaff82](https://github.com/googleapis/python-gke-backup/commit/fbaff8285a3e6efa78c74bec26f681906af60754))
+* **deps:** require protobuf >= 3.20.1 ([fbaff82](https://github.com/googleapis/python-gke-backup/commit/fbaff8285a3e6efa78c74bec26f681906af60754))
+
 ## [0.1.1](https://github.com/googleapis/python-gke-backup/compare/v0.1.0...v0.1.1) (2022-08-11)
 
 
