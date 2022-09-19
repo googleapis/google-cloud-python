@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.3.1...v0.4.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([c9d1d77](https://github.com/googleapis/python-eventarc-publishing/commit/c9d1d77123d3713e2d2c575b75b20a002c56f0e2))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([c9d1d77](https://github.com/googleapis/python-eventarc-publishing/commit/c9d1d77123d3713e2d2c575b75b20a002c56f0e2))
+* **deps:** require protobuf >= 3.20.1 ([c9d1d77](https://github.com/googleapis/python-eventarc-publishing/commit/c9d1d77123d3713e2d2c575b75b20a002c56f0e2))
+
 ## [0.3.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.3.0...v0.3.1) (2022-08-11)
 
 
