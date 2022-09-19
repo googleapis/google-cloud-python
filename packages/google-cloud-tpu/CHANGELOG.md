@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-tpu/compare/v1.4.1...v1.5.0) (2022-09-16)
+
+
+### Features
+
+* Add Secure Boot support to TPU v2alpha1 API ([#190](https://github.com/googleapis/python-tpu/issues/190)) ([955e3db](https://github.com/googleapis/python-tpu/commit/955e3dbc7bfcaa32027a4e467b05c2579f217483))
+
 ## [1.4.1](https://github.com/googleapis/python-tpu/compare/v1.4.0...v1.4.1) (2022-08-11)
 
 
