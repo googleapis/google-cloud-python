@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-apigee-registry/compare/v0.2.1...v0.3.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#30](https://github.com/googleapis/python-apigee-registry/issues/30)) ([268c41c](https://github.com/googleapis/python-apigee-registry/commit/268c41c5eff4b5453c27fa1e043d32f970b667cf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([268c41c](https://github.com/googleapis/python-apigee-registry/commit/268c41c5eff4b5453c27fa1e043d32f970b667cf))
+* **deps:** require protobuf >= 3.20.1 ([268c41c](https://github.com/googleapis/python-apigee-registry/commit/268c41c5eff4b5453c27fa1e043d32f970b667cf))
+
 ## [0.2.1](https://github.com/googleapis/python-apigee-registry/compare/v0.2.0...v0.2.1) (2022-09-01)
 
 
