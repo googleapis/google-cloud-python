@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.12.0](https://github.com/googleapis/python-container/compare/v2.11.2...v2.12.0) (2022-09-16)
+
+
+### Features
+
+* Added High Throughput Logging API for Google Kubernetes Engine ([#297](https://github.com/googleapis/python-container/issues/297)) ([f774719](https://github.com/googleapis/python-container/commit/f7747196207f8487a4d50c93d76f8ea6e02f3f7c))
+
+
+### Documentation
+
+* missing period in description for min CPU platform ([f774719](https://github.com/googleapis/python-container/commit/f7747196207f8487a4d50c93d76f8ea6e02f3f7c))
+* ReservationAffinity key field docs incorrect ([f774719](https://github.com/googleapis/python-container/commit/f7747196207f8487a4d50c93d76f8ea6e02f3f7c))
+
 ## [2.11.2](https://github.com/googleapis/python-container/compare/v2.11.1...v2.11.2) (2022-08-12)
 
 
