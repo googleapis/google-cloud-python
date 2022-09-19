@@ -45,7 +45,9 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     geopandas = None
 
 try:
-    from tqdm import tqdm
+    import tqdm
+    from tqdm.std import TqdmDeprecationWarning
+
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
@@ -2798,7 +2800,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui")
-    @mock.patch("tqdm.tqdm_notebook")
+    @mock.patch("tqdm.notebook.tqdm")
     @mock.patch("tqdm.tqdm")
     def test_to_arrow_progress_bar(self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock):
         from google.cloud.bigquery.schema import SchemaField
@@ -3146,7 +3148,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui")
-    @mock.patch("tqdm.tqdm_notebook")
+    @mock.patch("tqdm.notebook.tqdm")
     @mock.patch("tqdm.tqdm")
     def test_to_dataframe_progress_bar(
         self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
@@ -3249,7 +3251,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui", new=None)  # will raise TypeError on call
-    @mock.patch("tqdm.tqdm_notebook", new=None)  # will raise TypeError on call
+    @mock.patch("tqdm.notebook.tqdm", new=None)  # will raise TypeError on call
     @mock.patch("tqdm.tqdm", new=None)  # will raise TypeError on call
     def test_to_dataframe_tqdm_error(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -3281,7 +3283,10 @@ class TestRowIterator(unittest.TestCase):
             # Warn that a progress bar was requested, but creating the tqdm
             # progress bar failed.
             for warning in warned:
-                self.assertIs(warning.category, UserWarning)
+                self.assertIn(
+                    warning.category,
+                    [UserWarning, DeprecationWarning, TqdmDeprecationWarning],
+                )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_empty_results(self):

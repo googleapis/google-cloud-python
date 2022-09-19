@@ -22,6 +22,7 @@ import warnings
 
 try:
     import tqdm  # type: ignore
+
 except ImportError:  # pragma: NO COVER
     tqdm = None
 
@@ -48,7 +49,7 @@ def get_progress_bar(progress_bar_type, description, total, unit):
         if progress_bar_type == "tqdm":
             return tqdm.tqdm(desc=description, total=total, unit=unit)
         elif progress_bar_type == "tqdm_notebook":
-            return tqdm.tqdm_notebook(desc=description, total=total, unit=unit)
+            return tqdm.notebook.tqdm(desc=description, total=total, unit=unit)
         elif progress_bar_type == "tqdm_gui":
             return tqdm.tqdm_gui(desc=description, total=total, unit=unit)
     except (KeyError, TypeError):
