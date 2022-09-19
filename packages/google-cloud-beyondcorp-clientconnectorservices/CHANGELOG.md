@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.1.1...v0.2.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#24](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/issues/24)) ([13d7217](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/13d7217b27d917e8fe7b07a4928146ab1cb9bc5c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([13d7217](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/13d7217b27d917e8fe7b07a4928146ab1cb9bc5c))
+* **deps:** require protobuf >= 3.20.1 ([13d7217](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/13d7217b27d917e8fe7b07a4928146ab1cb9bc5c))
+
 ## [0.1.1](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.1.0...v0.1.1) (2022-08-15)
 
 
