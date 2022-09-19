@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/googleapis/python-analytics-data/compare/v0.13.2...v0.14.0) (2022-09-19)
+
+
+### Features
+
+* Add support for REST transport ([#290](https://github.com/googleapis/python-analytics-data/issues/290)) ([1e4f58e](https://github.com/googleapis/python-analytics-data/commit/1e4f58e60668dc590e7c91f9997b9eb2bdf0b948))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([1e4f58e](https://github.com/googleapis/python-analytics-data/commit/1e4f58e60668dc590e7c91f9997b9eb2bdf0b948))
+* **deps:** require protobuf >= 3.20.1 ([1e4f58e](https://github.com/googleapis/python-analytics-data/commit/1e4f58e60668dc590e7c91f9997b9eb2bdf0b948))
+
 ## [0.13.2](https://github.com/googleapis/python-analytics-data/compare/v0.13.1...v0.13.2) (2022-08-11)
 
 
