@@ -453,8 +453,7 @@ class UpdateTableRequest(proto.Message):
     Attributes:
         table (google.cloud.bigtable_admin_v2.types.Table):
             Required. The table to update. The table's ``name`` field is
-            used to identify the table to update. Format:
-            ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``
+            used to identify the table to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to update. A mask specifying
             which fields (e.g. ``deletion_protection``) in the ``table``

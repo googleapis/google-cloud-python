@@ -969,8 +969,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 [UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable].
             table (google.cloud.bigtable_admin_v2.types.Table):
                 Required. The table to update. The table's ``name``
-                field is used to identify the table to update. Format:
-                ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``
+                field is used to identify the table to update.
 
                 This corresponds to the ``table`` field
                 on the ``request`` instance; if ``request`` is provided, this
