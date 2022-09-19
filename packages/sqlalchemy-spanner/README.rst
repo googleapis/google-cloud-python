@@ -263,6 +263,14 @@ Isolation level change example:
    eng = create_engine("spanner:///projects/project-id/instances/instance-id/databases/database-id")
    autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
 
+Automatic transactions retry
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In the default ``SERIALIZABLE`` mode transactions may fail with ``Aborted`` exception. This is a transient kind of errors, which mostly happen to prevent data corruption by concurrent modifications. Though the original transaction becomes non operational, a simple retry of the queries solves the issue.
+
+This, however, may require to manually repeat a long list of operations, executed in the failed transaction. To simplify it, Spanner Connection API tracks all the operations, executed inside current transaction, and their result checksums. If the transaction failed with ``Aborted`` exception, the Connection API will automatically start a new transaction and will re-run all the tracked operations, checking if their results are the same as they were in the original transaction. In case data changed, and results differ, the transaction is dropped, as there is no way to automatically retry it.
+
+In ``AUTOCOMMIT`` mode automatic transactions retry mechanism is disabled, as every operation is committed just in time, and there is no way an ``Aborted`` exception can happen.
+
 Autoincremented IDs
 ~~~~~~~~~~~~~~~~~~~
 
