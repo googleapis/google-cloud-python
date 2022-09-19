@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-private-catalog/compare/v0.6.2...v0.7.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#152](https://github.com/googleapis/python-private-catalog/issues/152)) ([59b3839](https://github.com/googleapis/python-private-catalog/commit/59b383939c61fe273b0070ac2e0779c27385da8c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([59b3839](https://github.com/googleapis/python-private-catalog/commit/59b383939c61fe273b0070ac2e0779c27385da8c))
+* **deps:** require protobuf >= 3.20.1 ([59b3839](https://github.com/googleapis/python-private-catalog/commit/59b383939c61fe273b0070ac2e0779c27385da8c))
+
 ## [0.6.2](https://github.com/googleapis/python-private-catalog/compare/v0.6.1...v0.6.2) (2022-08-11)
 
 
