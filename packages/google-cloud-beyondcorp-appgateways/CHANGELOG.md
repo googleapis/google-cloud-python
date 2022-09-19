@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.1.1...v0.2.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#24](https://github.com/googleapis/python-beyondcorp-appgateways/issues/24)) ([008e80e](https://github.com/googleapis/python-beyondcorp-appgateways/commit/008e80ed122f67034c116efebdf2941c72f785b9))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([008e80e](https://github.com/googleapis/python-beyondcorp-appgateways/commit/008e80ed122f67034c116efebdf2941c72f785b9))
+* **deps:** require protobuf >= 3.20.1 ([008e80e](https://github.com/googleapis/python-beyondcorp-appgateways/commit/008e80ed122f67034c116efebdf2941c72f785b9))
+
 ## [0.1.1](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.1.0...v0.1.1) (2022-08-15)
 
 
