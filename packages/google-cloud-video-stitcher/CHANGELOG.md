@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-video-stitcher/compare/v0.2.1...v0.3.0) (2022-09-16)
+
+
+### Features
+
+* Add support for REST transport ([#75](https://github.com/googleapis/python-video-stitcher/issues/75)) ([48e8350](https://github.com/googleapis/python-video-stitcher/commit/48e8350b931f39aa3484cfa935b4ca75f9c0d04e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([48e8350](https://github.com/googleapis/python-video-stitcher/commit/48e8350b931f39aa3484cfa935b4ca75f9c0d04e))
+* **deps:** require protobuf >= 3.20.1 ([48e8350](https://github.com/googleapis/python-video-stitcher/commit/48e8350b931f39aa3484cfa935b4ca75f9c0d04e))
+
 ## [0.2.1](https://github.com/googleapis/python-video-stitcher/compare/v0.2.0...v0.2.1) (2022-08-11)
 
 
