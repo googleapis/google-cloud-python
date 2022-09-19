@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-data-qna/compare/v0.7.1...v0.8.0) (2022-09-19)
+
+
+### Features
+
+* Add support for REST transport ([a1dea02](https://github.com/googleapis/python-data-qna/commit/a1dea02238950fa36cfdc0bd51cab11323f3c983))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.33.1,>=2.8.0 ([a1dea02](https://github.com/googleapis/python-data-qna/commit/a1dea02238950fa36cfdc0bd51cab11323f3c983))
+* **deps:** require protobuf >= 3.20.1 ([a1dea02](https://github.com/googleapis/python-data-qna/commit/a1dea02238950fa36cfdc0bd51cab11323f3c983))
+
 ## [0.7.1](https://github.com/googleapis/python-data-qna/compare/v0.7.0...v0.7.1) (2022-08-11)
 
 
