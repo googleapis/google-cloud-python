@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.16.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.15.0...v2.16.0) (2022-09-19)
+
+
+### Features
+
+* Add location to WriteStream and add WriteStreamView support ([#507](https://github.com/googleapis/python-bigquery-storage/issues/507)) ([20371ef](https://github.com/googleapis/python-bigquery-storage/commit/20371ef91b2071cbdf0000a5fbecb7db71184fae))
+* add proto annotation for non-ascii field mapping ([7eba58c](https://github.com/googleapis/python-bigquery-storage/commit/7eba58c13a770a2876b75a520f5222528f848b89))
+
 ## [2.15.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.14.2...v2.15.0) (2022-09-06)
 
 
