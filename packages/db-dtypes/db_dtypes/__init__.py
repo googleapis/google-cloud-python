@@ -150,7 +150,8 @@ class TimeArray(core.BaseDatetimeArray):
                 hour=int(hour),
                 minute=int(minute) if minute else 0,
                 second=int(second) if second else 0,
-                nanosecond=nanosecond,
+                microsecond=nanosecond // 1000,
+                nanosecond=nanosecond % 1000,
             ).to_datetime64()
         else:
             raise TypeError("Invalid value type", scalar)
