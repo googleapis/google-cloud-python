@@ -17,13 +17,32 @@
 import base64
 import calendar
 import datetime
+import os
 import sys
 
 import six
 from six.moves import urllib
 
+from google.auth import environment_vars
 
-REFRESH_THRESHOLD = datetime.timedelta(seconds=300)
+
+# Token server doesn't provide a new a token when doing refresh unless the
+# token is expiring within 30 seconds, so refresh threshold should not be
+# more than 30 seconds. Otherwise auth lib will send tons of refresh requests
+# until 30 seconds before the expiration, and cause a spike of CPU usage.
+REFRESH_THRESHOLD = datetime.timedelta(seconds=20)
+
+
+def get_refresh_threshold():
+    env_threshold = os.environ.get(
+        environment_vars.GOOGLE_CLOUD_TOKEN_REFRESH_THRESHOLD
+    )
+
+    if env_threshold is not None:
+        # If the value is not an int, we can throw exception and let it bubble up
+        return datetime.timedelta(seconds=int(env_threshold))
+
+    return REFRESH_THRESHOLD
 
 
 def copy_docstring(source_class):

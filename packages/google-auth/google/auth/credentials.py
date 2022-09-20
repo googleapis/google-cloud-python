@@ -65,7 +65,7 @@ class Credentials(object):
 
         # Remove some threshold from expiry to err on the side of reporting
         # expiration early so that we avoid the 401-refresh-retry loop.
-        skewed_expiry = self.expiry - _helpers.REFRESH_THRESHOLD
+        skewed_expiry = self.expiry - _helpers.get_refresh_threshold()
         return _helpers.utcnow() >= skewed_expiry
 
     @property
