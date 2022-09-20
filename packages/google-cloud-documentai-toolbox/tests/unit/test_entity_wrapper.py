@@ -13,7 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.documentai_toolbox.wrappers import EntityWrapper
+from google.cloud import documentai
 
-# TODO: Remove this test once we start adding services and types into google/cloud/documentai_toolbox
-def test_kokoro():
-    assert True
+
+def test_from_documentai_entity():
+    test_entity = documentai.Document.Entity(
+        mention_text="20,868", type_="vat", id="0", mention_id="", redacted=False
+    )
+
+    actual = EntityWrapper.from_documentai_entity(test_entity)
+
+    assert actual.mention_text == "20,868"
+    assert actual.type_ == "vat"

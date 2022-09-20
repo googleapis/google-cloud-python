@@ -13,3 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+from .wrappers import (
+    DocumentWrapper,
+    PageWrapper,
+    EntityWrapper,
+)
+
+__all__ = (
+    "DocumentWrapper",
+    "PageWrapper",
+    "EntityWrapper",
+)
