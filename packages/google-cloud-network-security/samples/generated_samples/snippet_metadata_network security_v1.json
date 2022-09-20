@@ -149,7 +149,7 @@
         "shortName": "create_authorization_policy"
       },
       "description": "Sample for CreateAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_92eec257.py",
+      "file": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_50c6f504.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_CreateAuthorizationPolicy_sync",
@@ -185,7 +185,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_92eec257.py"
+      "title": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_50c6f504.py"
     },
     {
       "canonical": true,
@@ -237,7 +237,7 @@
         "shortName": "create_authorization_policy"
       },
       "description": "Sample for CreateAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_50c6f504.py",
+      "file": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_92eec257.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_CreateAuthorizationPolicy_sync",
@@ -273,7 +273,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_50c6f504.py"
+      "title": "networksecurity_v1_generated_network_security_create_authorization_policy_sync_92eec257.py"
     },
     {
       "canonical": true,
@@ -414,7 +414,7 @@
         "shortName": "create_client_tls_policy"
       },
       "description": "Sample for CreateClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_55e9e16f.py",
+      "file": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_d41c0b2f.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_CreateClientTlsPolicy_sync",
@@ -450,7 +450,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_55e9e16f.py"
+      "title": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_d41c0b2f.py"
     },
     {
       "canonical": true,
@@ -502,7 +502,7 @@
         "shortName": "create_client_tls_policy"
       },
       "description": "Sample for CreateClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_d41c0b2f.py",
+      "file": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_55e9e16f.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_CreateClientTlsPolicy_sync",
@@ -538,7 +538,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_d41c0b2f.py"
+      "title": "networksecurity_v1_generated_network_security_create_client_tls_policy_sync_55e9e16f.py"
     },
     {
       "canonical": true,
@@ -679,7 +679,7 @@
         "shortName": "create_server_tls_policy"
       },
       "description": "Sample for CreateServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_5f6bfcb1.py",
+      "file": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_9455b0b7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_CreateServerTlsPolicy_sync",
@@ -715,7 +715,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_5f6bfcb1.py"
+      "title": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_9455b0b7.py"
     },
     {
       "canonical": true,
@@ -767,7 +767,7 @@
         "shortName": "create_server_tls_policy"
       },
       "description": "Sample for CreateServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_9455b0b7.py",
+      "file": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_5f6bfcb1.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_CreateServerTlsPolicy_sync",
@@ -803,7 +803,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_9455b0b7.py"
+      "title": "networksecurity_v1_generated_network_security_create_server_tls_policy_sync_5f6bfcb1.py"
     },
     {
       "canonical": true,
@@ -928,7 +928,7 @@
         "shortName": "delete_authorization_policy"
       },
       "description": "Sample for DeleteAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_ae73c9c7.py",
+      "file": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_b3435b7b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_DeleteAuthorizationPolicy_sync",
@@ -964,7 +964,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_ae73c9c7.py"
+      "title": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_b3435b7b.py"
     },
     {
       "canonical": true,
@@ -1008,7 +1008,7 @@
         "shortName": "delete_authorization_policy"
       },
       "description": "Sample for DeleteAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_b3435b7b.py",
+      "file": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_ae73c9c7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_DeleteAuthorizationPolicy_sync",
@@ -1044,7 +1044,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_b3435b7b.py"
+      "title": "networksecurity_v1_generated_network_security_delete_authorization_policy_sync_ae73c9c7.py"
     },
     {
       "canonical": true,
@@ -1169,7 +1169,7 @@
         "shortName": "delete_client_tls_policy"
       },
       "description": "Sample for DeleteClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_3b1913a0.py",
+      "file": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_edd5ff26.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_DeleteClientTlsPolicy_sync",
@@ -1205,7 +1205,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_3b1913a0.py"
+      "title": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_edd5ff26.py"
     },
     {
       "canonical": true,
@@ -1249,7 +1249,7 @@
         "shortName": "delete_client_tls_policy"
       },
       "description": "Sample for DeleteClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_edd5ff26.py",
+      "file": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_3b1913a0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_DeleteClientTlsPolicy_sync",
@@ -1285,7 +1285,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_edd5ff26.py"
+      "title": "networksecurity_v1_generated_network_security_delete_client_tls_policy_sync_3b1913a0.py"
     },
     {
       "canonical": true,
@@ -1410,7 +1410,7 @@
         "shortName": "delete_server_tls_policy"
       },
       "description": "Sample for DeleteServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_ad303fbb.py",
+      "file": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_38190956.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_DeleteServerTlsPolicy_sync",
@@ -1446,7 +1446,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_ad303fbb.py"
+      "title": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_38190956.py"
     },
     {
       "canonical": true,
@@ -1490,7 +1490,7 @@
         "shortName": "delete_server_tls_policy"
       },
       "description": "Sample for DeleteServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_38190956.py",
+      "file": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_ad303fbb.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_DeleteServerTlsPolicy_sync",
@@ -1526,7 +1526,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_38190956.py"
+      "title": "networksecurity_v1_generated_network_security_delete_server_tls_policy_sync_ad303fbb.py"
     },
     {
       "canonical": true,
@@ -1651,7 +1651,7 @@
         "shortName": "get_authorization_policy"
       },
       "description": "Sample for GetAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_1a5f98be.py",
+      "file": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_cfc76a54.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_GetAuthorizationPolicy_sync",
@@ -1687,7 +1687,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_1a5f98be.py"
+      "title": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_cfc76a54.py"
     },
     {
       "canonical": true,
@@ -1731,7 +1731,7 @@
         "shortName": "get_authorization_policy"
       },
       "description": "Sample for GetAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_cfc76a54.py",
+      "file": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_1a5f98be.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_GetAuthorizationPolicy_sync",
@@ -1767,7 +1767,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_cfc76a54.py"
+      "title": "networksecurity_v1_generated_network_security_get_authorization_policy_sync_1a5f98be.py"
     },
     {
       "canonical": true,
@@ -1892,7 +1892,7 @@
         "shortName": "get_client_tls_policy"
       },
       "description": "Sample for GetClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_9aed6c48.py",
+      "file": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_e21f794a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_GetClientTlsPolicy_sync",
@@ -1928,7 +1928,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_9aed6c48.py"
+      "title": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_e21f794a.py"
     },
     {
       "canonical": true,
@@ -1972,7 +1972,7 @@
         "shortName": "get_client_tls_policy"
       },
       "description": "Sample for GetClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_e21f794a.py",
+      "file": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_9aed6c48.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_GetClientTlsPolicy_sync",
@@ -2008,7 +2008,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_e21f794a.py"
+      "title": "networksecurity_v1_generated_network_security_get_client_tls_policy_sync_9aed6c48.py"
     },
     {
       "canonical": true,
@@ -2133,7 +2133,7 @@
         "shortName": "get_server_tls_policy"
       },
       "description": "Sample for GetServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_c5e8bf0a.py",
+      "file": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_031e2ebd.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_GetServerTlsPolicy_sync",
@@ -2169,7 +2169,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_c5e8bf0a.py"
+      "title": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_031e2ebd.py"
     },
     {
       "canonical": true,
@@ -2213,7 +2213,7 @@
         "shortName": "get_server_tls_policy"
       },
       "description": "Sample for GetServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_031e2ebd.py",
+      "file": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_c5e8bf0a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_GetServerTlsPolicy_sync",
@@ -2249,7 +2249,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_031e2ebd.py"
+      "title": "networksecurity_v1_generated_network_security_get_server_tls_policy_sync_c5e8bf0a.py"
     },
     {
       "canonical": true,
@@ -2374,7 +2374,7 @@
         "shortName": "list_authorization_policies"
       },
       "description": "Sample for ListAuthorizationPolicies",
-      "file": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_a367cb24.py",
+      "file": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_bcd1f7f2.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_ListAuthorizationPolicies_sync",
@@ -2410,7 +2410,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_a367cb24.py"
+      "title": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_bcd1f7f2.py"
     },
     {
       "canonical": true,
@@ -2454,7 +2454,7 @@
         "shortName": "list_authorization_policies"
       },
       "description": "Sample for ListAuthorizationPolicies",
-      "file": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_bcd1f7f2.py",
+      "file": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_a367cb24.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_ListAuthorizationPolicies_sync",
@@ -2490,7 +2490,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_bcd1f7f2.py"
+      "title": "networksecurity_v1_generated_network_security_list_authorization_policies_sync_a367cb24.py"
     },
     {
       "canonical": true,
@@ -2615,7 +2615,7 @@
         "shortName": "list_client_tls_policies"
       },
       "description": "Sample for ListClientTlsPolicies",
-      "file": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9d256917.py",
+      "file": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9f9532a9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_ListClientTlsPolicies_sync",
@@ -2651,7 +2651,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9d256917.py"
+      "title": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9f9532a9.py"
     },
     {
       "canonical": true,
@@ -2695,7 +2695,7 @@
         "shortName": "list_client_tls_policies"
       },
       "description": "Sample for ListClientTlsPolicies",
-      "file": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9f9532a9.py",
+      "file": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9d256917.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_ListClientTlsPolicies_sync",
@@ -2731,7 +2731,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9f9532a9.py"
+      "title": "networksecurity_v1_generated_network_security_list_client_tls_policies_sync_9d256917.py"
     },
     {
       "canonical": true,
@@ -2856,7 +2856,7 @@
         "shortName": "list_server_tls_policies"
       },
       "description": "Sample for ListServerTlsPolicies",
-      "file": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_91e492c0.py",
+      "file": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_5b72b482.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_ListServerTlsPolicies_sync",
@@ -2892,7 +2892,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_91e492c0.py"
+      "title": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_5b72b482.py"
     },
     {
       "canonical": true,
@@ -2936,7 +2936,7 @@
         "shortName": "list_server_tls_policies"
       },
       "description": "Sample for ListServerTlsPolicies",
-      "file": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_5b72b482.py",
+      "file": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_91e492c0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_ListServerTlsPolicies_sync",
@@ -2972,7 +2972,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_5b72b482.py"
+      "title": "networksecurity_v1_generated_network_security_list_server_tls_policies_sync_91e492c0.py"
     },
     {
       "canonical": true,
@@ -3105,7 +3105,7 @@
         "shortName": "update_authorization_policy"
       },
       "description": "Sample for UpdateAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_64ee237c.py",
+      "file": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_62d4e07b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_UpdateAuthorizationPolicy_sync",
@@ -3141,7 +3141,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_64ee237c.py"
+      "title": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_62d4e07b.py"
     },
     {
       "canonical": true,
@@ -3189,7 +3189,7 @@
         "shortName": "update_authorization_policy"
       },
       "description": "Sample for UpdateAuthorizationPolicy",
-      "file": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_62d4e07b.py",
+      "file": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_64ee237c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_UpdateAuthorizationPolicy_sync",
@@ -3225,7 +3225,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_62d4e07b.py"
+      "title": "networksecurity_v1_generated_network_security_update_authorization_policy_sync_64ee237c.py"
     },
     {
       "canonical": true,
@@ -3358,7 +3358,7 @@
         "shortName": "update_client_tls_policy"
       },
       "description": "Sample for UpdateClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_2de403cb.py",
+      "file": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_5ea17e64.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_UpdateClientTlsPolicy_sync",
@@ -3394,7 +3394,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_2de403cb.py"
+      "title": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_5ea17e64.py"
     },
     {
       "canonical": true,
@@ -3442,7 +3442,7 @@
         "shortName": "update_client_tls_policy"
       },
       "description": "Sample for UpdateClientTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_5ea17e64.py",
+      "file": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_2de403cb.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_UpdateClientTlsPolicy_sync",
@@ -3478,7 +3478,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_5ea17e64.py"
+      "title": "networksecurity_v1_generated_network_security_update_client_tls_policy_sync_2de403cb.py"
     },
     {
       "canonical": true,
@@ -3611,7 +3611,7 @@
         "shortName": "update_server_tls_policy"
       },
       "description": "Sample for UpdateServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_9618030c.py",
+      "file": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_7c28be0a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_UpdateServerTlsPolicy_sync",
@@ -3647,7 +3647,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_9618030c.py"
+      "title": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_7c28be0a.py"
     },
     {
       "canonical": true,
@@ -3695,7 +3695,7 @@
         "shortName": "update_server_tls_policy"
       },
       "description": "Sample for UpdateServerTlsPolicy",
-      "file": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_7c28be0a.py",
+      "file": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_9618030c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1_generated_NetworkSecurity_UpdateServerTlsPolicy_sync",
@@ -3731,7 +3731,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_7c28be0a.py"
+      "title": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync_9618030c.py"
     }
   ]
 }
