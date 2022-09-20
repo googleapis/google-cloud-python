@@ -1,0 +1,29 @@
+google.cloud.bigquery.query.UDFResource
+=======================================
+
+.. currentmodule:: google.cloud.bigquery.query
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: UDFResource
+   :show-inheritance:
+   :inherited-members:
+   :members:

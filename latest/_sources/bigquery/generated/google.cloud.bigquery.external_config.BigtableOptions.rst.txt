@@ -1,0 +1,43 @@
+google.cloud.bigquery.external\_config.BigtableOptions
+======================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~BigtableOptions.from_api_repr
+   
+   
+   ~BigtableOptions.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~BigtableOptions.column_families
+   ~BigtableOptions.ignore_unspecified_column_families
+   ~BigtableOptions.read_rowkey_as_string
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: BigtableOptions
+   :show-inheritance:
+   :inherited-members:
+   :members:

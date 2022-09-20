@@ -1,0 +1,41 @@
+google.cloud.bigquery.dataset.AccessEntry
+=========================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~AccessEntry.from_api_repr
+   
+   
+   ~AccessEntry.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~AccessEntry.ENTITY_TYPES
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: AccessEntry
+   :show-inheritance:
+   :inherited-members:
+   :members:

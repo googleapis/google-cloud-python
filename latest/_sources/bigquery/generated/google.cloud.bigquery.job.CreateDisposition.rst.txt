@@ -1,0 +1,36 @@
+google.cloud.bigquery.job.CreateDisposition
+===========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~CreateDisposition.CREATE_IF_NEEDED
+   ~CreateDisposition.CREATE_NEVER
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: CreateDisposition
+   :show-inheritance:
+   :inherited-members:
+   :members:

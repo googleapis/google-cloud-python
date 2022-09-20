@@ -1,0 +1,6 @@
+google.cloud.bigquery.retry.DEFAULT\_RETRY
+==========================================
+
+.. currentmodule:: google.cloud.bigquery.retry
+
+.. autodata:: DEFAULT_RETRY

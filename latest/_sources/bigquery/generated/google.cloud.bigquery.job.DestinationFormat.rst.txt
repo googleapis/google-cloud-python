@@ -1,0 +1,37 @@
+google.cloud.bigquery.job.DestinationFormat
+===========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~DestinationFormat.AVRO
+   ~DestinationFormat.CSV
+   ~DestinationFormat.NEWLINE_DELIMITED_JSON
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: DestinationFormat
+   :show-inheritance:
+   :inherited-members:
+   :members:

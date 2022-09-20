@@ -1,0 +1,38 @@
+google.cloud.bigquery.query.StructQueryParameter
+================================================
+
+.. currentmodule:: google.cloud.bigquery.query
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~StructQueryParameter.from_api_repr
+   
+   
+   ~StructQueryParameter.positional
+   
+   
+   ~StructQueryParameter.to_api_repr
+   
+
+
+
+
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: StructQueryParameter
+   :show-inheritance:
+   :inherited-members:
+   :members:

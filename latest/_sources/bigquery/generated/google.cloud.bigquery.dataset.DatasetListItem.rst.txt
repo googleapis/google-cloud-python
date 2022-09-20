@@ -1,0 +1,49 @@
+google.cloud.bigquery.dataset.DatasetListItem
+=============================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~DatasetListItem.model
+   
+   
+   ~DatasetListItem.routine
+   
+   
+   ~DatasetListItem.table
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~DatasetListItem.dataset_id
+   ~DatasetListItem.friendly_name
+   ~DatasetListItem.full_dataset_id
+   ~DatasetListItem.labels
+   ~DatasetListItem.project
+   ~DatasetListItem.reference
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: DatasetListItem
+   :show-inheritance:
+   :inherited-members:
+   :members:

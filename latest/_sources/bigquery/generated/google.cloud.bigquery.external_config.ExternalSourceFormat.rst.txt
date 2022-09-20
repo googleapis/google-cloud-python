@@ -1,0 +1,40 @@
+google.cloud.bigquery.external\_config.ExternalSourceFormat
+===========================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~ExternalSourceFormat.AVRO
+   ~ExternalSourceFormat.BIGTABLE
+   ~ExternalSourceFormat.CSV
+   ~ExternalSourceFormat.DATASTORE_BACKUP
+   ~ExternalSourceFormat.GOOGLE_SHEETS
+   ~ExternalSourceFormat.NEWLINE_DELIMITED_JSON
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: ExternalSourceFormat
+   :show-inheritance:
+   :inherited-members:
+   :members:

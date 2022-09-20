@@ -1,0 +1,55 @@
+google.cloud.bigquery.dataset.DatasetReference
+==============================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~DatasetReference.from_api_repr
+   
+   
+   ~DatasetReference.from_string
+   
+   
+   ~DatasetReference.model
+   
+   
+   ~DatasetReference.routine
+   
+   
+   ~DatasetReference.table
+   
+   
+   ~DatasetReference.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~DatasetReference.dataset_id
+   ~DatasetReference.path
+   ~DatasetReference.project
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: DatasetReference
+   :show-inheritance:
+   :inherited-members:
+   :members:

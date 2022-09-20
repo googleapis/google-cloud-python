@@ -1,0 +1,47 @@
+google.cloud.bigquery.routine.RoutineReference
+==============================================
+
+.. currentmodule:: google.cloud.bigquery.routine
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~RoutineReference.from_api_repr
+   
+   
+   ~RoutineReference.from_string
+   
+   
+   ~RoutineReference.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~RoutineReference.dataset_id
+   ~RoutineReference.path
+   ~RoutineReference.project
+   ~RoutineReference.routine_id
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: RoutineReference
+   :show-inheritance:
+   :inherited-members:
+   :members:

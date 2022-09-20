@@ -1,0 +1,156 @@
+google.cloud.bigquery.client.Client
+===================================
+
+.. currentmodule:: google.cloud.bigquery.client
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~Client.cancel_job
+   
+   
+   ~Client.copy_table
+   
+   
+   ~Client.create_dataset
+   
+   
+   ~Client.create_routine
+   
+   
+   ~Client.create_table
+   
+   
+   ~Client.dataset
+   
+   
+   ~Client.delete_dataset
+   
+   
+   ~Client.delete_model
+   
+   
+   ~Client.delete_routine
+   
+   
+   ~Client.delete_table
+   
+   
+   ~Client.extract_table
+   
+   
+   ~Client.from_service_account_json
+   
+   
+   ~Client.get_dataset
+   
+   
+   ~Client.get_job
+   
+   
+   ~Client.get_model
+   
+   
+   ~Client.get_routine
+   
+   
+   ~Client.get_service_account_email
+   
+   
+   ~Client.get_table
+   
+   
+   ~Client.insert_rows
+   
+   
+   ~Client.insert_rows_json
+   
+   
+   ~Client.job_from_resource
+   
+   
+   ~Client.list_datasets
+   
+   
+   ~Client.list_jobs
+   
+   
+   ~Client.list_models
+   
+   
+   ~Client.list_partitions
+   
+   
+   ~Client.list_projects
+   
+   
+   ~Client.list_routines
+   
+   
+   ~Client.list_rows
+   
+   
+   ~Client.list_tables
+   
+   
+   ~Client.load_table_from_dataframe
+   
+   
+   ~Client.load_table_from_file
+   
+   
+   ~Client.load_table_from_json
+   
+   
+   ~Client.load_table_from_uri
+   
+   
+   ~Client.query
+   
+   
+   ~Client.schema_from_json
+   
+   
+   ~Client.schema_to_json
+   
+   
+   ~Client.update_dataset
+   
+   
+   ~Client.update_model
+   
+   
+   ~Client.update_routine
+   
+   
+   ~Client.update_table
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Client.SCOPE
+   ~Client.location
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: Client
+   :show-inheritance:
+   :inherited-members:
+   :members:

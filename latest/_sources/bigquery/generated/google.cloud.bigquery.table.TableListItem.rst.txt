@@ -1,0 +1,55 @@
+google.cloud.bigquery.table.TableListItem
+=========================================
+
+.. currentmodule:: google.cloud.bigquery.table
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~TableListItem.from_string
+   
+   
+   ~TableListItem.to_bqstorage
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~TableListItem.clustering_fields
+   ~TableListItem.created
+   ~TableListItem.dataset_id
+   ~TableListItem.expires
+   ~TableListItem.friendly_name
+   ~TableListItem.full_table_id
+   ~TableListItem.labels
+   ~TableListItem.partition_expiration
+   ~TableListItem.partitioning_type
+   ~TableListItem.project
+   ~TableListItem.reference
+   ~TableListItem.table_id
+   ~TableListItem.table_type
+   ~TableListItem.time_partitioning
+   ~TableListItem.view_use_legacy_sql
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: TableListItem
+   :show-inheritance:
+   :inherited-members:
+   :members:

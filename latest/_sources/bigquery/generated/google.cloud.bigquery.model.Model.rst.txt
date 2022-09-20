@@ -1,0 +1,54 @@
+google.cloud.bigquery.model.Model
+=================================
+
+.. currentmodule:: google.cloud.bigquery.model
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~Model.from_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Model.created
+   ~Model.dataset_id
+   ~Model.description
+   ~Model.etag
+   ~Model.expires
+   ~Model.feature_columns
+   ~Model.friendly_name
+   ~Model.label_columns
+   ~Model.labels
+   ~Model.location
+   ~Model.model_id
+   ~Model.model_type
+   ~Model.modified
+   ~Model.path
+   ~Model.project
+   ~Model.reference
+   ~Model.training_runs
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: Model
+   :show-inheritance:
+   :inherited-members:
+   :members:

@@ -1,0 +1,38 @@
+google.cloud.bigquery.query.ScalarQueryParameter
+================================================
+
+.. currentmodule:: google.cloud.bigquery.query
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~ScalarQueryParameter.from_api_repr
+   
+   
+   ~ScalarQueryParameter.positional
+   
+   
+   ~ScalarQueryParameter.to_api_repr
+   
+
+
+
+
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: ScalarQueryParameter
+   :show-inheritance:
+   :inherited-members:
+   :members:

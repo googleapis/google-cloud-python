@@ -1,0 +1,45 @@
+google.cloud.bigquery.job.ExtractJobConfig
+==========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~ExtractJobConfig.from_api_repr
+   
+   
+   ~ExtractJobConfig.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~ExtractJobConfig.compression
+   ~ExtractJobConfig.destination_format
+   ~ExtractJobConfig.field_delimiter
+   ~ExtractJobConfig.labels
+   ~ExtractJobConfig.print_header
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: ExtractJobConfig
+   :show-inheritance:
+   :inherited-members:
+   :members:

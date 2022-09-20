@@ -1,0 +1,46 @@
+google.cloud.bigquery.external\_config.BigtableColumn
+=====================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~BigtableColumn.from_api_repr
+   
+   
+   ~BigtableColumn.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~BigtableColumn.encoding
+   ~BigtableColumn.field_name
+   ~BigtableColumn.only_read_latest
+   ~BigtableColumn.qualifier_encoded
+   ~BigtableColumn.qualifier_string
+   ~BigtableColumn.type_
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: BigtableColumn
+   :show-inheritance:
+   :inherited-members:
+   :members:

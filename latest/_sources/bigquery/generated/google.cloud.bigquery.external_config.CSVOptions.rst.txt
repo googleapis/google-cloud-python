@@ -1,0 +1,46 @@
+google.cloud.bigquery.external\_config.CSVOptions
+=================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~CSVOptions.from_api_repr
+   
+   
+   ~CSVOptions.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~CSVOptions.allow_jagged_rows
+   ~CSVOptions.allow_quoted_newlines
+   ~CSVOptions.encoding
+   ~CSVOptions.field_delimiter
+   ~CSVOptions.quote_character
+   ~CSVOptions.skip_leading_rows
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: CSVOptions
+   :show-inheritance:
+   :inherited-members:
+   :members:

@@ -1,0 +1,36 @@
+google.cloud.bigquery.job.Encoding
+==================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Encoding.ISO_8859_1
+   ~Encoding.UTF_8
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: Encoding
+   :show-inheritance:
+   :inherited-members:
+   :members:

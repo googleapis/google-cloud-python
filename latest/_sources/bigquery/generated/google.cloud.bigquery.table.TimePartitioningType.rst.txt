@@ -1,0 +1,35 @@
+google.cloud.bigquery.table.TimePartitioningType
+================================================
+
+.. currentmodule:: google.cloud.bigquery.table
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~TimePartitioningType.DAY
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: TimePartitioningType
+   :show-inheritance:
+   :inherited-members:
+   :members:

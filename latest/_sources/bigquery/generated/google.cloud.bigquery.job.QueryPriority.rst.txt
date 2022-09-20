@@ -1,0 +1,36 @@
+google.cloud.bigquery.job.QueryPriority
+=======================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~QueryPriority.BATCH
+   ~QueryPriority.INTERACTIVE
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: QueryPriority
+   :show-inheritance:
+   :inherited-members:
+   :members:

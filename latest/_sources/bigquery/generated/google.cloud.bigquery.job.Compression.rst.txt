@@ -1,0 +1,38 @@
+google.cloud.bigquery.job.Compression
+=====================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~Compression.DEFLATE
+   ~Compression.GZIP
+   ~Compression.NONE
+   ~Compression.SNAPPY
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: Compression
+   :show-inheritance:
+   :inherited-members:
+   :members:
