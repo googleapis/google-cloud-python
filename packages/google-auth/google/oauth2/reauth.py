@@ -332,7 +332,7 @@ def refresh_grant(
     ):
         if not enable_reauth_refresh:
             raise exceptions.RefreshError(
-                "Reauthentication is needed. Please run `gcloud auth login --update-adc` to reauthenticate."
+                "Reauthentication is needed. Please run `gcloud auth application-default login` to reauthenticate."
             )
 
         rapt_token = get_rapt_token(
