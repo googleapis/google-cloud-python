@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.3...v1.0.4) (2022-09-19)
+
+
+### Bug Fixes
+
+* Avoid out-of-range nanoseconds field in pandas 1.5.x ([#148](https://github.com/googleapis/python-db-dtypes-pandas/issues/148)) ([2a477ca](https://github.com/googleapis/python-db-dtypes-pandas/commit/2a477ca42033867fbf76f0a818677b04d4d66f8f))
+* **deps:** Remove python version upper bound ([#145](https://github.com/googleapis/python-db-dtypes-pandas/issues/145)) ([a361806](https://github.com/googleapis/python-db-dtypes-pandas/commit/a361806026b0358270d101e9eff362d08a971076))
+
 ## [1.0.3](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.2...v1.0.3) (2022-08-05)
 
 
