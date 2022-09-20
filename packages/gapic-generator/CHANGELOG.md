@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.4.4](https://github.com/googleapis/gapic-generator-python/compare/v1.4.3...v1.4.4) (2022-09-20)
+
+
+### Bug Fixes
+
+* Do not generate _flattened() unit tests for client streaming methods ([#1454](https://github.com/googleapis/gapic-generator-python/issues/1454)) ([29610ad](https://github.com/googleapis/gapic-generator-python/commit/29610ad68cfd8326e5430413d0ead1951a9b06b2))
+
 ## [1.4.3](https://github.com/googleapis/gapic-generator-python/compare/v1.4.2...v1.4.3) (2022-09-19)
 
 
