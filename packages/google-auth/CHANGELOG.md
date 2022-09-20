@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.11.1](https://github.com/googleapis/google-auth-library-python/compare/v2.11.0...v2.11.1) (2022-09-20)
+
+
+### Bug Fixes
+
+* Fix socket leak in impersonated_credentials ([#1123](https://github.com/googleapis/google-auth-library-python/issues/1123)) ([b1eb467](https://github.com/googleapis/google-auth-library-python/commit/b1eb467f50f0c080e89a122426061b28f0be0567)), closes [#1122](https://github.com/googleapis/google-auth-library-python/issues/1122)
+* Make pluggable auth tests work in all environments ([#1114](https://github.com/googleapis/google-auth-library-python/issues/1114)) ([bb5c979](https://github.com/googleapis/google-auth-library-python/commit/bb5c9791c64e2472a90ba7191f79f4c5fedb2538))
+* Skip oauth2client adapter tests if oauth2client is not installed ([#1132](https://github.com/googleapis/google-auth-library-python/issues/1132)) ([d15092f](https://github.com/googleapis/google-auth-library-python/commit/d15092ff8b66b3039641d482a0debafde4ba0077))
+* Update token refresh threshold from 20 seconds to 5 minutes ([#1146](https://github.com/googleapis/google-auth-library-python/issues/1146)) ([261a561](https://github.com/googleapis/google-auth-library-python/commit/261a56138fba33ff7d898ab5907a6098125fefef))
+
+
+### Documentation
+
+* **samples:** Add auth samples and tests ([#1102](https://github.com/googleapis/google-auth-library-python/issues/1102)) ([ac87520](https://github.com/googleapis/google-auth-library-python/commit/ac875201bc8ba5d638a9eafcd3ccfdeb73a2f0ec))
+
 ## [2.11.0](https://github.com/googleapis/google-auth-library-python/compare/v2.10.0...v2.11.0) (2022-08-18)
 
 
