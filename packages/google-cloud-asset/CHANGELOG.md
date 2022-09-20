@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.14.0](https://github.com/googleapis/python-asset/compare/v3.13.1...v3.14.0) (2022-09-20)
+
+
+### Features
+
+* Add client library support for AssetService v1 SavedQuery APIs ([#496](https://github.com/googleapis/python-asset/issues/496)) ([1d1103e](https://github.com/googleapis/python-asset/commit/1d1103e86d9dac7e55d2bd2ba7cebf37c4b8d597))
+
 ## [3.13.1](https://github.com/googleapis/python-asset/compare/v3.13.0...v3.13.1) (2022-08-29)
 
 
