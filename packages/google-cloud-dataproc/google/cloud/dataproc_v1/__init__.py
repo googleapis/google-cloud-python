@@ -54,6 +54,7 @@ from .types.clusters import ClusterMetrics
 from .types.clusters import ClusterStatus
 from .types.clusters import ConfidentialInstanceConfig
 from .types.clusters import CreateClusterRequest
+from .types.clusters import DataprocMetricConfig
 from .types.clusters import DeleteClusterRequest
 from .types.clusters import DiagnoseClusterRequest
 from .types.clusters import DiagnoseClusterResults
@@ -70,6 +71,7 @@ from .types.clusters import ListClustersRequest
 from .types.clusters import ListClustersResponse
 from .types.clusters import ManagedGroupConfig
 from .types.clusters import MetastoreConfig
+from .types.clusters import Metric
 from .types.clusters import NodeGroupAffinity
 from .types.clusters import NodeInitializationAction
 from .types.clusters import ReservationAffinity
@@ -174,6 +176,7 @@ __all__ = (
     "CreateBatchRequest",
     "CreateClusterRequest",
     "CreateWorkflowTemplateRequest",
+    "DataprocMetricConfig",
     "DeleteAutoscalingPolicyRequest",
     "DeleteBatchRequest",
     "DeleteClusterRequest",
@@ -228,6 +231,7 @@ __all__ = (
     "ManagedCluster",
     "ManagedGroupConfig",
     "MetastoreConfig",
+    "Metric",
     "NodeGroupAffinity",
     "NodeInitializationAction",
     "OrderedJob",

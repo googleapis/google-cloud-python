@@ -47,6 +47,8 @@ __protobuf__ = proto.module(
         "SoftwareConfig",
         "LifecycleConfig",
         "MetastoreConfig",
+        "Metric",
+        "DataprocMetricConfig",
         "ClusterMetrics",
         "CreateClusterRequest",
         "UpdateClusterRequest",
@@ -234,6 +236,8 @@ class ClusterConfig(proto.Message):
             this cluster
         metastore_config (google.cloud.dataproc_v1.types.MetastoreConfig):
             Optional. Metastore configuration.
+        dataproc_metric_config (google.cloud.dataproc_v1.types.DataprocMetricConfig):
+            Optional. Dataproc metrics configuration.
     """
 
     config_bucket = proto.Field(
@@ -303,6 +307,11 @@ class ClusterConfig(proto.Message):
         proto.MESSAGE,
         number=20,
         message="MetastoreConfig",
+    )
+    dataproc_metric_config = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="DataprocMetricConfig",
     )
 
 
@@ -1328,6 +1337,55 @@ class MetastoreConfig(proto.Message):
     dataproc_metastore_service = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class Metric(proto.Message):
+    r"""Specifies Dataproc OSS Metric.
+
+    Attributes:
+        metric_source (google.cloud.dataproc_v1.types.Metric.MetricSource):
+            Required. Specified source of metric
+            collection
+        metric_overrides (Sequence[str]):
+            Optional. The set of available OSS metrics to
+            collect from the metric source.
+    """
+
+    class MetricSource(proto.Enum):
+        r""""""
+        METRIC_SOURCE_UNSPECIFIED = 0
+        MONITORING_AGENT_DEFAULTS = 1
+        HDFS = 2
+        SPARK = 3
+        YARN = 4
+        SPARK_HISTORY_SERVER = 5
+        HIVESERVER2 = 6
+
+    metric_source = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=MetricSource,
+    )
+    metric_overrides = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DataprocMetricConfig(proto.Message):
+    r"""Specifies a Dataproc metric config
+
+    Attributes:
+        metrics (Sequence[google.cloud.dataproc_v1.types.Metric]):
+            Configuration set of metrics to collect from
+            the cluster
+    """
+
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Metric",
     )
 
 

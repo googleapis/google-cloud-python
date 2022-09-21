@@ -90,6 +90,7 @@ from google.cloud.dataproc_v1.types.clusters import ClusterMetrics
 from google.cloud.dataproc_v1.types.clusters import ClusterStatus
 from google.cloud.dataproc_v1.types.clusters import ConfidentialInstanceConfig
 from google.cloud.dataproc_v1.types.clusters import CreateClusterRequest
+from google.cloud.dataproc_v1.types.clusters import DataprocMetricConfig
 from google.cloud.dataproc_v1.types.clusters import DeleteClusterRequest
 from google.cloud.dataproc_v1.types.clusters import DiagnoseClusterRequest
 from google.cloud.dataproc_v1.types.clusters import DiagnoseClusterResults
@@ -106,6 +107,7 @@ from google.cloud.dataproc_v1.types.clusters import ListClustersRequest
 from google.cloud.dataproc_v1.types.clusters import ListClustersResponse
 from google.cloud.dataproc_v1.types.clusters import ManagedGroupConfig
 from google.cloud.dataproc_v1.types.clusters import MetastoreConfig
+from google.cloud.dataproc_v1.types.clusters import Metric
 from google.cloud.dataproc_v1.types.clusters import NodeGroupAffinity
 from google.cloud.dataproc_v1.types.clusters import NodeInitializationAction
 from google.cloud.dataproc_v1.types.clusters import ReservationAffinity
@@ -232,6 +234,7 @@ __all__ = (
     "ClusterStatus",
     "ConfidentialInstanceConfig",
     "CreateClusterRequest",
+    "DataprocMetricConfig",
     "DeleteClusterRequest",
     "DiagnoseClusterRequest",
     "DiagnoseClusterResults",
@@ -248,6 +251,7 @@ __all__ = (
     "ListClustersResponse",
     "ManagedGroupConfig",
     "MetastoreConfig",
+    "Metric",
     "NodeGroupAffinity",
     "NodeInitializationAction",
     "ReservationAffinity",
