@@ -149,7 +149,7 @@
         "shortName": "create_instance"
       },
       "description": "Sample for CreateInstance",
-      "file": "apigeeregistry_v1_generated_provisioning_create_instance_sync_99c0616d.py",
+      "file": "apigeeregistry_v1_generated_provisioning_create_instance_sync_db60b650.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Provisioning_CreateInstance_sync",
@@ -185,7 +185,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_provisioning_create_instance_sync_99c0616d.py"
+      "title": "apigeeregistry_v1_generated_provisioning_create_instance_sync_db60b650.py"
     },
     {
       "canonical": true,
@@ -237,7 +237,7 @@
         "shortName": "create_instance"
       },
       "description": "Sample for CreateInstance",
-      "file": "apigeeregistry_v1_generated_provisioning_create_instance_sync_db60b650.py",
+      "file": "apigeeregistry_v1_generated_provisioning_create_instance_sync_99c0616d.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Provisioning_CreateInstance_sync",
@@ -273,7 +273,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_provisioning_create_instance_sync_db60b650.py"
+      "title": "apigeeregistry_v1_generated_provisioning_create_instance_sync_99c0616d.py"
     },
     {
       "canonical": true,
@@ -398,7 +398,7 @@
         "shortName": "delete_instance"
       },
       "description": "Sample for DeleteInstance",
-      "file": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_8fbcb629.py",
+      "file": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_1791bfe4.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Provisioning_DeleteInstance_sync",
@@ -434,7 +434,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_8fbcb629.py"
+      "title": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_1791bfe4.py"
     },
     {
       "canonical": true,
@@ -478,7 +478,7 @@
         "shortName": "delete_instance"
       },
       "description": "Sample for DeleteInstance",
-      "file": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_1791bfe4.py",
+      "file": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_8fbcb629.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Provisioning_DeleteInstance_sync",
@@ -514,7 +514,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_1791bfe4.py"
+      "title": "apigeeregistry_v1_generated_provisioning_delete_instance_sync_8fbcb629.py"
     },
     {
       "canonical": true,
@@ -639,7 +639,7 @@
         "shortName": "get_instance"
       },
       "description": "Sample for GetInstance",
-      "file": "apigeeregistry_v1_generated_provisioning_get_instance_sync_d52a931d.py",
+      "file": "apigeeregistry_v1_generated_provisioning_get_instance_sync_7c15b370.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Provisioning_GetInstance_sync",
@@ -675,7 +675,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_provisioning_get_instance_sync_d52a931d.py"
+      "title": "apigeeregistry_v1_generated_provisioning_get_instance_sync_7c15b370.py"
     },
     {
       "canonical": true,
@@ -719,7 +719,7 @@
         "shortName": "get_instance"
       },
       "description": "Sample for GetInstance",
-      "file": "apigeeregistry_v1_generated_provisioning_get_instance_sync_7c15b370.py",
+      "file": "apigeeregistry_v1_generated_provisioning_get_instance_sync_d52a931d.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Provisioning_GetInstance_sync",
@@ -755,7 +755,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_provisioning_get_instance_sync_7c15b370.py"
+      "title": "apigeeregistry_v1_generated_provisioning_get_instance_sync_d52a931d.py"
     },
     {
       "canonical": true,
@@ -896,7 +896,7 @@
         "shortName": "create_api_deployment"
       },
       "description": "Sample for CreateApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_ed13f1bd.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_51197a3c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiDeployment_sync",
@@ -932,7 +932,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_ed13f1bd.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_51197a3c.py"
     },
     {
       "canonical": true,
@@ -984,7 +984,7 @@
         "shortName": "create_api_deployment"
       },
       "description": "Sample for CreateApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_51197a3c.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_ed13f1bd.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiDeployment_sync",
@@ -1020,7 +1020,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_51197a3c.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_deployment_sync_ed13f1bd.py"
     },
     {
       "canonical": true,
@@ -1161,7 +1161,7 @@
         "shortName": "create_api_spec"
       },
       "description": "Sample for CreateApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_create_api_spec_sync_8c746412.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_spec_sync_13d906f3.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiSpec_sync",
@@ -1197,7 +1197,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_spec_sync_8c746412.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_spec_sync_13d906f3.py"
     },
     {
       "canonical": true,
@@ -1249,7 +1249,7 @@
         "shortName": "create_api_spec"
       },
       "description": "Sample for CreateApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_create_api_spec_sync_13d906f3.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_spec_sync_8c746412.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiSpec_sync",
@@ -1285,7 +1285,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_spec_sync_13d906f3.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_spec_sync_8c746412.py"
     },
     {
       "canonical": true,
@@ -1426,7 +1426,7 @@
         "shortName": "create_api_version"
       },
       "description": "Sample for CreateApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_create_api_version_sync_68e37c0b.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_version_sync_3949e992.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiVersion_sync",
@@ -1462,7 +1462,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_version_sync_68e37c0b.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_version_sync_3949e992.py"
     },
     {
       "canonical": true,
@@ -1514,7 +1514,7 @@
         "shortName": "create_api_version"
       },
       "description": "Sample for CreateApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_create_api_version_sync_3949e992.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_version_sync_68e37c0b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiVersion_sync",
@@ -1550,7 +1550,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_version_sync_3949e992.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_version_sync_68e37c0b.py"
     },
     {
       "canonical": true,
@@ -1691,7 +1691,7 @@
         "shortName": "create_api"
       },
       "description": "Sample for CreateApi",
-      "file": "apigeeregistry_v1_generated_registry_create_api_sync_a80ac305.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_sync_eaa94940.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApi_sync",
@@ -1727,7 +1727,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_sync_a80ac305.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_sync_eaa94940.py"
     },
     {
       "canonical": true,
@@ -1779,7 +1779,7 @@
         "shortName": "create_api"
       },
       "description": "Sample for CreateApi",
-      "file": "apigeeregistry_v1_generated_registry_create_api_sync_eaa94940.py",
+      "file": "apigeeregistry_v1_generated_registry_create_api_sync_a80ac305.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateApi_sync",
@@ -1815,7 +1815,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_api_sync_eaa94940.py"
+      "title": "apigeeregistry_v1_generated_registry_create_api_sync_a80ac305.py"
     },
     {
       "canonical": true,
@@ -1956,7 +1956,7 @@
         "shortName": "create_artifact"
       },
       "description": "Sample for CreateArtifact",
-      "file": "apigeeregistry_v1_generated_registry_create_artifact_sync_1fc1b003.py",
+      "file": "apigeeregistry_v1_generated_registry_create_artifact_sync_8b3636ad.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateArtifact_sync",
@@ -1992,7 +1992,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_artifact_sync_1fc1b003.py"
+      "title": "apigeeregistry_v1_generated_registry_create_artifact_sync_8b3636ad.py"
     },
     {
       "canonical": true,
@@ -2044,7 +2044,7 @@
         "shortName": "create_artifact"
       },
       "description": "Sample for CreateArtifact",
-      "file": "apigeeregistry_v1_generated_registry_create_artifact_sync_8b3636ad.py",
+      "file": "apigeeregistry_v1_generated_registry_create_artifact_sync_1fc1b003.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_CreateArtifact_sync",
@@ -2080,7 +2080,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_create_artifact_sync_8b3636ad.py"
+      "title": "apigeeregistry_v1_generated_registry_create_artifact_sync_1fc1b003.py"
     },
     {
       "canonical": true,
@@ -2205,7 +2205,7 @@
         "shortName": "delete_api_deployment_revision"
       },
       "description": "Sample for DeleteApiDeploymentRevision",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_3823da5c.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_9d74aad9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeploymentRevision_sync",
@@ -2241,7 +2241,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_3823da5c.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_9d74aad9.py"
     },
     {
       "canonical": true,
@@ -2285,7 +2285,7 @@
         "shortName": "delete_api_deployment_revision"
       },
       "description": "Sample for DeleteApiDeploymentRevision",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_9d74aad9.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_3823da5c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeploymentRevision_sync",
@@ -2321,7 +2321,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_9d74aad9.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync_3823da5c.py"
     },
     {
       "canonical": true,
@@ -2442,7 +2442,7 @@
         "shortName": "delete_api_deployment"
       },
       "description": "Sample for DeleteApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_9b8bc191.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_3cfb1726.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeployment_sync",
@@ -2476,7 +2476,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_9b8bc191.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_3cfb1726.py"
     },
     {
       "canonical": true,
@@ -2519,7 +2519,7 @@
         "shortName": "delete_api_deployment"
       },
       "description": "Sample for DeleteApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_3cfb1726.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_9b8bc191.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeployment_sync",
@@ -2553,7 +2553,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_3cfb1726.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync_9b8bc191.py"
     },
     {
       "canonical": true,
@@ -2678,7 +2678,7 @@
         "shortName": "delete_api_spec_revision"
       },
       "description": "Sample for DeleteApiSpecRevision",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_4ccdbbe6.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_ab064abb.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpecRevision_sync",
@@ -2714,7 +2714,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_4ccdbbe6.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_ab064abb.py"
     },
     {
       "canonical": true,
@@ -2758,7 +2758,7 @@
         "shortName": "delete_api_spec_revision"
       },
       "description": "Sample for DeleteApiSpecRevision",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_ab064abb.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_4ccdbbe6.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpecRevision_sync",
@@ -2794,7 +2794,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_ab064abb.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync_4ccdbbe6.py"
     },
     {
       "canonical": true,
@@ -2915,7 +2915,7 @@
         "shortName": "delete_api_spec"
       },
       "description": "Sample for DeleteApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_5db34200.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_f7ac362c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpec_sync",
@@ -2949,7 +2949,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_5db34200.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_f7ac362c.py"
     },
     {
       "canonical": true,
@@ -2992,7 +2992,7 @@
         "shortName": "delete_api_spec"
       },
       "description": "Sample for DeleteApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_f7ac362c.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_5db34200.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpec_sync",
@@ -3026,7 +3026,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_f7ac362c.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_sync_5db34200.py"
     },
     {
       "canonical": true,
@@ -3147,7 +3147,7 @@
         "shortName": "delete_api_version"
       },
       "description": "Sample for DeleteApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_version_sync_2e9f3456.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_version_sync_ce0fedd8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiVersion_sync",
@@ -3181,7 +3181,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_version_sync_2e9f3456.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_version_sync_ce0fedd8.py"
     },
     {
       "canonical": true,
@@ -3224,7 +3224,7 @@
         "shortName": "delete_api_version"
       },
       "description": "Sample for DeleteApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_version_sync_ce0fedd8.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_version_sync_2e9f3456.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiVersion_sync",
@@ -3258,7 +3258,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_version_sync_ce0fedd8.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_version_sync_2e9f3456.py"
     },
     {
       "canonical": true,
@@ -3379,7 +3379,7 @@
         "shortName": "delete_api"
       },
       "description": "Sample for DeleteApi",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_sync_8e52d6a8.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_sync_9a975a2a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApi_sync",
@@ -3413,7 +3413,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_sync_8e52d6a8.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_sync_9a975a2a.py"
     },
     {
       "canonical": true,
@@ -3456,7 +3456,7 @@
         "shortName": "delete_api"
       },
       "description": "Sample for DeleteApi",
-      "file": "apigeeregistry_v1_generated_registry_delete_api_sync_9a975a2a.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_sync_8e52d6a8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApi_sync",
@@ -3490,7 +3490,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_api_sync_9a975a2a.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_api_sync_8e52d6a8.py"
     },
     {
       "canonical": true,
@@ -3611,7 +3611,7 @@
         "shortName": "delete_artifact"
       },
       "description": "Sample for DeleteArtifact",
-      "file": "apigeeregistry_v1_generated_registry_delete_artifact_sync_168c00e8.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_artifact_sync_6040b0d2.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteArtifact_sync",
@@ -3645,7 +3645,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_artifact_sync_168c00e8.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_artifact_sync_6040b0d2.py"
     },
     {
       "canonical": true,
@@ -3688,7 +3688,7 @@
         "shortName": "delete_artifact"
       },
       "description": "Sample for DeleteArtifact",
-      "file": "apigeeregistry_v1_generated_registry_delete_artifact_sync_6040b0d2.py",
+      "file": "apigeeregistry_v1_generated_registry_delete_artifact_sync_168c00e8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_DeleteArtifact_sync",
@@ -3722,7 +3722,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_delete_artifact_sync_6040b0d2.py"
+      "title": "apigeeregistry_v1_generated_registry_delete_artifact_sync_168c00e8.py"
     },
     {
       "canonical": true,
@@ -3847,7 +3847,7 @@
         "shortName": "get_api_deployment"
       },
       "description": "Sample for GetApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_5ec8f12d.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_66cd0b3b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiDeployment_sync",
@@ -3883,7 +3883,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_5ec8f12d.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_66cd0b3b.py"
     },
     {
       "canonical": true,
@@ -3927,7 +3927,7 @@
         "shortName": "get_api_deployment"
       },
       "description": "Sample for GetApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_66cd0b3b.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_5ec8f12d.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiDeployment_sync",
@@ -3963,7 +3963,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_66cd0b3b.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_deployment_sync_5ec8f12d.py"
     },
     {
       "canonical": true,
@@ -4088,7 +4088,7 @@
         "shortName": "get_api_spec_contents"
       },
       "description": "Sample for GetApiSpecContents",
-      "file": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_5d46947a.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_b7eb863b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpecContents_sync",
@@ -4124,7 +4124,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_5d46947a.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_b7eb863b.py"
     },
     {
       "canonical": true,
@@ -4168,7 +4168,7 @@
         "shortName": "get_api_spec_contents"
       },
       "description": "Sample for GetApiSpecContents",
-      "file": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_b7eb863b.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_5d46947a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpecContents_sync",
@@ -4204,7 +4204,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_b7eb863b.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync_5d46947a.py"
     },
     {
       "canonical": true,
@@ -4329,7 +4329,7 @@
         "shortName": "get_api_spec"
       },
       "description": "Sample for GetApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_get_api_spec_sync_171cad6f.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_sync_ba1c8941.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpec_sync",
@@ -4365,7 +4365,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_spec_sync_171cad6f.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_sync_ba1c8941.py"
     },
     {
       "canonical": true,
@@ -4409,7 +4409,7 @@
         "shortName": "get_api_spec"
       },
       "description": "Sample for GetApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_get_api_spec_sync_ba1c8941.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_sync_171cad6f.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpec_sync",
@@ -4445,7 +4445,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_spec_sync_ba1c8941.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_sync_171cad6f.py"
     },
     {
       "canonical": true,
@@ -4570,7 +4570,7 @@
         "shortName": "get_api_version"
       },
       "description": "Sample for GetApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_get_api_version_sync_396c76c5.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_version_sync_e2ce574f.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiVersion_sync",
@@ -4606,7 +4606,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_version_sync_396c76c5.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_version_sync_e2ce574f.py"
     },
     {
       "canonical": true,
@@ -4650,7 +4650,7 @@
         "shortName": "get_api_version"
       },
       "description": "Sample for GetApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_get_api_version_sync_e2ce574f.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_version_sync_396c76c5.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApiVersion_sync",
@@ -4686,7 +4686,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_version_sync_e2ce574f.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_version_sync_396c76c5.py"
     },
     {
       "canonical": true,
@@ -4811,7 +4811,7 @@
         "shortName": "get_api"
       },
       "description": "Sample for GetApi",
-      "file": "apigeeregistry_v1_generated_registry_get_api_sync_bc7358db.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_sync_b7474ce3.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApi_sync",
@@ -4847,7 +4847,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_sync_bc7358db.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_sync_b7474ce3.py"
     },
     {
       "canonical": true,
@@ -4891,7 +4891,7 @@
         "shortName": "get_api"
       },
       "description": "Sample for GetApi",
-      "file": "apigeeregistry_v1_generated_registry_get_api_sync_b7474ce3.py",
+      "file": "apigeeregistry_v1_generated_registry_get_api_sync_bc7358db.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetApi_sync",
@@ -4927,7 +4927,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_api_sync_b7474ce3.py"
+      "title": "apigeeregistry_v1_generated_registry_get_api_sync_bc7358db.py"
     },
     {
       "canonical": true,
@@ -5052,7 +5052,7 @@
         "shortName": "get_artifact_contents"
       },
       "description": "Sample for GetArtifactContents",
-      "file": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_360dea88.py",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_cf55f89d.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifactContents_sync",
@@ -5088,7 +5088,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_360dea88.py"
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_cf55f89d.py"
     },
     {
       "canonical": true,
@@ -5132,7 +5132,7 @@
         "shortName": "get_artifact_contents"
       },
       "description": "Sample for GetArtifactContents",
-      "file": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_cf55f89d.py",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_360dea88.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifactContents_sync",
@@ -5168,7 +5168,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_cf55f89d.py"
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync_360dea88.py"
     },
     {
       "canonical": true,
@@ -5293,7 +5293,7 @@
         "shortName": "get_artifact"
       },
       "description": "Sample for GetArtifact",
-      "file": "apigeeregistry_v1_generated_registry_get_artifact_sync_d59167c3.py",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_sync_01903acd.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifact_sync",
@@ -5329,7 +5329,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_artifact_sync_d59167c3.py"
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_sync_01903acd.py"
     },
     {
       "canonical": true,
@@ -5373,7 +5373,7 @@
         "shortName": "get_artifact"
       },
       "description": "Sample for GetArtifact",
-      "file": "apigeeregistry_v1_generated_registry_get_artifact_sync_01903acd.py",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_sync_d59167c3.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifact_sync",
@@ -5409,7 +5409,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_get_artifact_sync_01903acd.py"
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_sync_d59167c3.py"
     },
     {
       "canonical": true,
@@ -5526,7 +5526,7 @@
         "shortName": "list_api_deployment_revisions"
       },
       "description": "Sample for ListApiDeploymentRevisions",
-      "file": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_8cccd09c.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_64bfc8ef.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeploymentRevisions_sync",
@@ -5562,7 +5562,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_8cccd09c.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_64bfc8ef.py"
     },
     {
       "canonical": true,
@@ -5602,7 +5602,7 @@
         "shortName": "list_api_deployment_revisions"
       },
       "description": "Sample for ListApiDeploymentRevisions",
-      "file": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_64bfc8ef.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_8cccd09c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeploymentRevisions_sync",
@@ -5638,7 +5638,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_64bfc8ef.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync_8cccd09c.py"
     },
     {
       "canonical": true,
@@ -5763,7 +5763,7 @@
         "shortName": "list_api_deployments"
       },
       "description": "Sample for ListApiDeployments",
-      "file": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_6c6142af.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_ff8eaca4.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeployments_sync",
@@ -5799,7 +5799,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_6c6142af.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_ff8eaca4.py"
     },
     {
       "canonical": true,
@@ -5843,7 +5843,7 @@
         "shortName": "list_api_deployments"
       },
       "description": "Sample for ListApiDeployments",
-      "file": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_ff8eaca4.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_6c6142af.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeployments_sync",
@@ -5879,7 +5879,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_ff8eaca4.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployments_sync_6c6142af.py"
     },
     {
       "canonical": true,
@@ -5996,7 +5996,7 @@
         "shortName": "list_api_spec_revisions"
       },
       "description": "Sample for ListApiSpecRevisions",
-      "file": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_88824047.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_a18db05b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecRevisions_sync",
@@ -6032,7 +6032,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_88824047.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_a18db05b.py"
     },
     {
       "canonical": true,
@@ -6072,7 +6072,7 @@
         "shortName": "list_api_spec_revisions"
       },
       "description": "Sample for ListApiSpecRevisions",
-      "file": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_a18db05b.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_88824047.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecRevisions_sync",
@@ -6108,7 +6108,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_a18db05b.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync_88824047.py"
     },
     {
       "canonical": true,
@@ -6233,7 +6233,7 @@
         "shortName": "list_api_specs"
       },
       "description": "Sample for ListApiSpecs",
-      "file": "apigeeregistry_v1_generated_registry_list_api_specs_sync_e8873dfe.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_specs_sync_39e8acac.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecs_sync",
@@ -6269,7 +6269,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_specs_sync_e8873dfe.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_specs_sync_39e8acac.py"
     },
     {
       "canonical": true,
@@ -6313,7 +6313,7 @@
         "shortName": "list_api_specs"
       },
       "description": "Sample for ListApiSpecs",
-      "file": "apigeeregistry_v1_generated_registry_list_api_specs_sync_39e8acac.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_specs_sync_e8873dfe.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecs_sync",
@@ -6349,7 +6349,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_specs_sync_39e8acac.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_specs_sync_e8873dfe.py"
     },
     {
       "canonical": true,
@@ -6474,7 +6474,7 @@
         "shortName": "list_api_versions"
       },
       "description": "Sample for ListApiVersions",
-      "file": "apigeeregistry_v1_generated_registry_list_api_versions_sync_8f9fa9ae.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_versions_sync_6a0f8cf5.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiVersions_sync",
@@ -6510,7 +6510,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_versions_sync_8f9fa9ae.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_versions_sync_6a0f8cf5.py"
     },
     {
       "canonical": true,
@@ -6554,7 +6554,7 @@
         "shortName": "list_api_versions"
       },
       "description": "Sample for ListApiVersions",
-      "file": "apigeeregistry_v1_generated_registry_list_api_versions_sync_6a0f8cf5.py",
+      "file": "apigeeregistry_v1_generated_registry_list_api_versions_sync_8f9fa9ae.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApiVersions_sync",
@@ -6590,7 +6590,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_api_versions_sync_6a0f8cf5.py"
+      "title": "apigeeregistry_v1_generated_registry_list_api_versions_sync_8f9fa9ae.py"
     },
     {
       "canonical": true,
@@ -6715,7 +6715,7 @@
         "shortName": "list_apis"
       },
       "description": "Sample for ListApis",
-      "file": "apigeeregistry_v1_generated_registry_list_apis_sync_ea1d3b9f.py",
+      "file": "apigeeregistry_v1_generated_registry_list_apis_sync_f3bb4616.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApis_sync",
@@ -6751,7 +6751,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_apis_sync_ea1d3b9f.py"
+      "title": "apigeeregistry_v1_generated_registry_list_apis_sync_f3bb4616.py"
     },
     {
       "canonical": true,
@@ -6795,7 +6795,7 @@
         "shortName": "list_apis"
       },
       "description": "Sample for ListApis",
-      "file": "apigeeregistry_v1_generated_registry_list_apis_sync_f3bb4616.py",
+      "file": "apigeeregistry_v1_generated_registry_list_apis_sync_ea1d3b9f.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListApis_sync",
@@ -6831,7 +6831,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_apis_sync_f3bb4616.py"
+      "title": "apigeeregistry_v1_generated_registry_list_apis_sync_ea1d3b9f.py"
     },
     {
       "canonical": true,
@@ -6956,7 +6956,7 @@
         "shortName": "list_artifacts"
       },
       "description": "Sample for ListArtifacts",
-      "file": "apigeeregistry_v1_generated_registry_list_artifacts_sync_91f547f9.py",
+      "file": "apigeeregistry_v1_generated_registry_list_artifacts_sync_9a6d51c6.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListArtifacts_sync",
@@ -6992,7 +6992,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_artifacts_sync_91f547f9.py"
+      "title": "apigeeregistry_v1_generated_registry_list_artifacts_sync_9a6d51c6.py"
     },
     {
       "canonical": true,
@@ -7036,7 +7036,7 @@
         "shortName": "list_artifacts"
       },
       "description": "Sample for ListArtifacts",
-      "file": "apigeeregistry_v1_generated_registry_list_artifacts_sync_9a6d51c6.py",
+      "file": "apigeeregistry_v1_generated_registry_list_artifacts_sync_91f547f9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ListArtifacts_sync",
@@ -7072,7 +7072,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_list_artifacts_sync_9a6d51c6.py"
+      "title": "apigeeregistry_v1_generated_registry_list_artifacts_sync_91f547f9.py"
     },
     {
       "canonical": true,
@@ -7197,7 +7197,7 @@
         "shortName": "replace_artifact"
       },
       "description": "Sample for ReplaceArtifact",
-      "file": "apigeeregistry_v1_generated_registry_replace_artifact_sync_e3f2bedb.py",
+      "file": "apigeeregistry_v1_generated_registry_replace_artifact_sync_a507619e.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ReplaceArtifact_sync",
@@ -7233,7 +7233,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_replace_artifact_sync_e3f2bedb.py"
+      "title": "apigeeregistry_v1_generated_registry_replace_artifact_sync_a507619e.py"
     },
     {
       "canonical": true,
@@ -7277,7 +7277,7 @@
         "shortName": "replace_artifact"
       },
       "description": "Sample for ReplaceArtifact",
-      "file": "apigeeregistry_v1_generated_registry_replace_artifact_sync_a507619e.py",
+      "file": "apigeeregistry_v1_generated_registry_replace_artifact_sync_e3f2bedb.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_ReplaceArtifact_sync",
@@ -7313,7 +7313,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_replace_artifact_sync_a507619e.py"
+      "title": "apigeeregistry_v1_generated_registry_replace_artifact_sync_e3f2bedb.py"
     },
     {
       "canonical": true,
@@ -7430,7 +7430,7 @@
         "shortName": "rollback_api_deployment"
       },
       "description": "Sample for RollbackApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_947d4cf2.py",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_d5d9719b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiDeployment_sync",
@@ -7466,7 +7466,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_947d4cf2.py"
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_d5d9719b.py"
     },
     {
       "canonical": true,
@@ -7506,7 +7506,7 @@
         "shortName": "rollback_api_deployment"
       },
       "description": "Sample for RollbackApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_d5d9719b.py",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_947d4cf2.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiDeployment_sync",
@@ -7542,7 +7542,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_d5d9719b.py"
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync_947d4cf2.py"
     },
     {
       "canonical": true,
@@ -7659,7 +7659,7 @@
         "shortName": "rollback_api_spec"
       },
       "description": "Sample for RollbackApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_c6c8d091.py",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_9eeca7ec.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiSpec_sync",
@@ -7695,7 +7695,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_c6c8d091.py"
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_9eeca7ec.py"
     },
     {
       "canonical": true,
@@ -7735,7 +7735,7 @@
         "shortName": "rollback_api_spec"
       },
       "description": "Sample for RollbackApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_9eeca7ec.py",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_c6c8d091.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiSpec_sync",
@@ -7771,7 +7771,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_9eeca7ec.py"
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync_c6c8d091.py"
     },
     {
       "canonical": true,
@@ -7888,7 +7888,7 @@
         "shortName": "tag_api_deployment_revision"
       },
       "description": "Sample for TagApiDeploymentRevision",
-      "file": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_d989b918.py",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_174bf899.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_TagApiDeploymentRevision_sync",
@@ -7924,7 +7924,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_d989b918.py"
+      "title": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_174bf899.py"
     },
     {
       "canonical": true,
@@ -7964,7 +7964,7 @@
         "shortName": "tag_api_deployment_revision"
       },
       "description": "Sample for TagApiDeploymentRevision",
-      "file": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_174bf899.py",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_d989b918.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_TagApiDeploymentRevision_sync",
@@ -8000,7 +8000,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_174bf899.py"
+      "title": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync_d989b918.py"
     },
     {
       "canonical": true,
@@ -8117,7 +8117,7 @@
         "shortName": "tag_api_spec_revision"
       },
       "description": "Sample for TagApiSpecRevision",
-      "file": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_ffcb0393.py",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_a6fdf1e7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_TagApiSpecRevision_sync",
@@ -8153,7 +8153,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_ffcb0393.py"
+      "title": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_a6fdf1e7.py"
     },
     {
       "canonical": true,
@@ -8193,7 +8193,7 @@
         "shortName": "tag_api_spec_revision"
       },
       "description": "Sample for TagApiSpecRevision",
-      "file": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_a6fdf1e7.py",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_ffcb0393.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_TagApiSpecRevision_sync",
@@ -8229,7 +8229,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_a6fdf1e7.py"
+      "title": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync_ffcb0393.py"
     },
     {
       "canonical": true,
@@ -8362,7 +8362,7 @@
         "shortName": "update_api_deployment"
       },
       "description": "Sample for UpdateApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_7711f86e.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_ef7fd49e.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiDeployment_sync",
@@ -8398,7 +8398,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_7711f86e.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_ef7fd49e.py"
     },
     {
       "canonical": true,
@@ -8446,7 +8446,7 @@
         "shortName": "update_api_deployment"
       },
       "description": "Sample for UpdateApiDeployment",
-      "file": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_ef7fd49e.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_7711f86e.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiDeployment_sync",
@@ -8482,7 +8482,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_ef7fd49e.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_deployment_sync_7711f86e.py"
     },
     {
       "canonical": true,
@@ -8615,7 +8615,7 @@
         "shortName": "update_api_spec"
       },
       "description": "Sample for UpdateApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_update_api_spec_sync_33f2f0c7.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_spec_sync_56582d58.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiSpec_sync",
@@ -8651,7 +8651,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_spec_sync_33f2f0c7.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_spec_sync_56582d58.py"
     },
     {
       "canonical": true,
@@ -8699,7 +8699,7 @@
         "shortName": "update_api_spec"
       },
       "description": "Sample for UpdateApiSpec",
-      "file": "apigeeregistry_v1_generated_registry_update_api_spec_sync_56582d58.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_spec_sync_33f2f0c7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiSpec_sync",
@@ -8735,7 +8735,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_spec_sync_56582d58.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_spec_sync_33f2f0c7.py"
     },
     {
       "canonical": true,
@@ -8868,7 +8868,7 @@
         "shortName": "update_api_version"
       },
       "description": "Sample for UpdateApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_update_api_version_sync_41a2051d.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_version_sync_73ec8ff9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiVersion_sync",
@@ -8904,7 +8904,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_version_sync_41a2051d.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_version_sync_73ec8ff9.py"
     },
     {
       "canonical": true,
@@ -8952,7 +8952,7 @@
         "shortName": "update_api_version"
       },
       "description": "Sample for UpdateApiVersion",
-      "file": "apigeeregistry_v1_generated_registry_update_api_version_sync_73ec8ff9.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_version_sync_41a2051d.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiVersion_sync",
@@ -8988,7 +8988,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_version_sync_73ec8ff9.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_version_sync_41a2051d.py"
     },
     {
       "canonical": true,
@@ -9121,7 +9121,7 @@
         "shortName": "update_api"
       },
       "description": "Sample for UpdateApi",
-      "file": "apigeeregistry_v1_generated_registry_update_api_sync_efb5a2e0.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_sync_a304797b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApi_sync",
@@ -9157,7 +9157,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_sync_efb5a2e0.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_sync_a304797b.py"
     },
     {
       "canonical": true,
@@ -9205,7 +9205,7 @@
         "shortName": "update_api"
       },
       "description": "Sample for UpdateApi",
-      "file": "apigeeregistry_v1_generated_registry_update_api_sync_a304797b.py",
+      "file": "apigeeregistry_v1_generated_registry_update_api_sync_efb5a2e0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApi_sync",
@@ -9241,7 +9241,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "apigeeregistry_v1_generated_registry_update_api_sync_a304797b.py"
+      "title": "apigeeregistry_v1_generated_registry_update_api_sync_efb5a2e0.py"
     }
   ]
 }
