@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.12.0](https://github.com/googleapis/python-bigtable/compare/v2.11.3...v2.12.0) (2022-09-19)
+
+
+### Features
+
+* Publish CBT deletion_protection field in Table, UpdateTableRequest, and UpdateTable API ([#670](https://github.com/googleapis/python-bigtable/issues/670)) ([c57289c](https://github.com/googleapis/python-bigtable/commit/c57289c03335380694580202d746ca4f679dce9b))
+
+
+### Documentation
+
+* Remove unnecessary comment ([#674](https://github.com/googleapis/python-bigtable/issues/674)) ([9c62655](https://github.com/googleapis/python-bigtable/commit/9c62655de7fecd93ee7a1bb95b208d94798727cd))
+
 ## [2.11.3](https://github.com/googleapis/python-bigtable/compare/v2.11.2...v2.11.3) (2022-08-17)
 
 
