@@ -1662,7 +1662,7 @@
         "shortName": "create_prediction_api_key_registration"
       },
       "description": "Sample for CreatePredictionApiKeyRegistration",
-      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_c078ad83.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_8ddf5d36.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync",
@@ -1698,7 +1698,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_c078ad83.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_8ddf5d36.py"
     },
     {
       "canonical": true,
@@ -1746,7 +1746,7 @@
         "shortName": "create_prediction_api_key_registration"
       },
       "description": "Sample for CreatePredictionApiKeyRegistration",
-      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_8ddf5d36.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_c078ad83.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync",
@@ -1782,7 +1782,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_8ddf5d36.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync_c078ad83.py"
     },
     {
       "canonical": true,
@@ -1903,7 +1903,7 @@
         "shortName": "delete_prediction_api_key_registration"
       },
       "description": "Sample for DeletePredictionApiKeyRegistration",
-      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_f40a4844.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_3de55013.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_sync",
@@ -1937,7 +1937,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_f40a4844.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_3de55013.py"
     },
     {
       "canonical": true,
@@ -1980,7 +1980,7 @@
         "shortName": "delete_prediction_api_key_registration"
       },
       "description": "Sample for DeletePredictionApiKeyRegistration",
-      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_3de55013.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_f40a4844.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_sync",
@@ -2014,7 +2014,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_3de55013.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync_f40a4844.py"
     },
     {
       "canonical": true,
@@ -2139,7 +2139,7 @@
         "shortName": "list_prediction_api_key_registrations"
       },
       "description": "Sample for ListPredictionApiKeyRegistrations",
-      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_2d26cba1.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_4cdac270.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_sync",
@@ -2175,7 +2175,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_2d26cba1.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_4cdac270.py"
     },
     {
       "canonical": true,
@@ -2219,7 +2219,7 @@
         "shortName": "list_prediction_api_key_registrations"
       },
       "description": "Sample for ListPredictionApiKeyRegistrations",
-      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_4cdac270.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_2d26cba1.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_sync",
@@ -2255,7 +2255,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_4cdac270.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync_2d26cba1.py"
     },
     {
       "canonical": true,
@@ -2388,7 +2388,7 @@
         "shortName": "predict"
       },
       "description": "Sample for Predict",
-      "file": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_a38ea195.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_31326670.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionService_Predict_sync",
@@ -2424,7 +2424,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_a38ea195.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_31326670.py"
     },
     {
       "canonical": true,
@@ -2472,7 +2472,7 @@
         "shortName": "predict"
       },
       "description": "Sample for Predict",
-      "file": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_31326670.py",
+      "file": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_a38ea195.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "recommendationengine_v1beta1_generated_PredictionService_Predict_sync",
@@ -2508,7 +2508,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_31326670.py"
+      "title": "recommendationengine_v1beta1_generated_prediction_service_predict_sync_a38ea195.py"
     },
     {
       "canonical": true,
