@@ -395,6 +395,45 @@ class TestDownload(object):
         range_bytes = "bytes={:d}-{:d}".format(offset, end)
         assert download._headers["range"] == range_bytes
 
+    def test_consume_gzip_reset_stream_w_bytes_downloaded(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+
+        # Mock a decompressive transcoding retry operation with bytes already downloaded in the stream
+        headers = {_helpers._STORED_CONTENT_ENCODING_HEADER: "gzip"}
+        transport.request.return_value = _mock_response(chunks=chunks, headers=headers)
+        offset = 16
+        download._bytes_downloaded = offset
+        download.consume(transport)
+
+        assert stream.getvalue() == b"".join(chunks)
+        assert download._bytes_downloaded == len(b"".join(chunks))
+
+    def test_consume_gzip_reset_stream_error(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+
+        # Mock a stream seek error while resuming a decompressive transcoding download
+        stream.seek = mock.Mock(side_effect=OSError("mock stream seek error"))
+        headers = {_helpers._STORED_CONTENT_ENCODING_HEADER: "gzip"}
+        transport.request.return_value = _mock_response(chunks=chunks, headers=headers)
+        offset = 16
+        download._bytes_downloaded = offset
+        with pytest.raises(Exception):
+            download.consume(transport)
+
 
 class TestRawDownload(object):
     def test__write_to_stream_no_hash_check(self):
@@ -771,6 +810,49 @@ class TestRawDownload(object):
         transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
         range_bytes = "bytes={:d}-{:d}".format(offset, end)
         assert download._headers["range"] == range_bytes
+
+    def test_consume_gzip_reset_stream_w_bytes_downloaded(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+
+        # Mock a decompressive transcoding retry operation with bytes already downloaded in the stream
+        headers = {_helpers._STORED_CONTENT_ENCODING_HEADER: "gzip"}
+        transport.request.return_value = _mock_raw_response(
+            chunks=chunks, headers=headers
+        )
+        offset = 16
+        download._bytes_downloaded = offset
+        download.consume(transport)
+
+        assert stream.getvalue() == b"".join(chunks)
+        assert download._bytes_downloaded == len(b"".join(chunks))
+
+    def test_consume_gzip_reset_stream_error(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+
+        # Mock a stream seek error while resuming a decompressive transcoding download
+        stream.seek = mock.Mock(side_effect=OSError("mock stream seek error"))
+        headers = {_helpers._STORED_CONTENT_ENCODING_HEADER: "gzip"}
+        transport.request.return_value = _mock_raw_response(
+            chunks=chunks, headers=headers
+        )
+        offset = 16
+        download._bytes_downloaded = offset
+        with pytest.raises(Exception):
+            download.consume(transport)
 
 
 class TestChunkedDownload(object):

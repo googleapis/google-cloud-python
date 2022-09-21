@@ -36,6 +36,13 @@ but the actual {checksum_type} checksum of the downloaded contents was:
   {}
 """
 
+_STREAM_SEEK_ERROR = """\
+Incomplete download for:
+{}
+Error writing to stream while handling a gzip-compressed file download.
+Please restart the download.
+"""
+
 
 class Download(_request_helpers.RequestsMixin, _download.Download):
     """Helper to manage downloading a resource from a Google API.
@@ -206,7 +213,18 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
 
             self._process_response(result)
 
+            # With decompressive transcoding, GCS serves back the whole file regardless of the range request,
+            # thus we reset the stream position to the start of the stream.
+            # See: https://cloud.google.com/storage/docs/transcoding#range
             if self._stream is not None:
+                if _helpers._is_decompressive_transcoding(result, self._get_headers):
+                    try:
+                        self._stream.seek(0)
+                    except Exception as exc:
+                        msg = _STREAM_SEEK_ERROR.format(url)
+                        raise Exception(msg) from exc
+                    self._bytes_downloaded = 0
+
                 self._write_to_stream(result)
 
             return result
@@ -379,7 +397,18 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
 
             self._process_response(result)
 
+            # With decompressive transcoding, GCS serves back the whole file regardless of the range request,
+            # thus we reset the stream position to the start of the stream.
+            # See: https://cloud.google.com/storage/docs/transcoding#range
             if self._stream is not None:
+                if _helpers._is_decompressive_transcoding(result, self._get_headers):
+                    try:
+                        self._stream.seek(0)
+                    except Exception as exc:
+                        msg = _STREAM_SEEK_ERROR.format(url)
+                        raise Exception(msg) from exc
+                    self._bytes_downloaded = 0
+
                 self._write_to_stream(result)
 
             return result

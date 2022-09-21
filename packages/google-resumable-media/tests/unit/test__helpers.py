@@ -425,6 +425,31 @@ class Test__parse_generation_header(object):
         assert generation_header == self.GENERATION_VALUE
 
 
+class Test__is_decompressive_transcoding(object):
+    def test_empty_value(self):
+        headers = {}
+        response = _mock_response(headers=headers)
+        assert _helpers._is_decompressive_transcoding(response, _get_headers) is False
+
+    def test_gzip_in_headers(self):
+        headers = {_helpers._STORED_CONTENT_ENCODING_HEADER: "gzip"}
+        response = _mock_response(headers=headers)
+        assert _helpers._is_decompressive_transcoding(response, _get_headers) is True
+
+    def test_gzip_not_in_headers(self):
+        headers = {_helpers._STORED_CONTENT_ENCODING_HEADER: "identity"}
+        response = _mock_response(headers=headers)
+        assert _helpers._is_decompressive_transcoding(response, _get_headers) is False
+
+    def test_gzip_w_content_encoding_in_headers(self):
+        headers = {
+            _helpers._STORED_CONTENT_ENCODING_HEADER: "gzip",
+            _helpers.CONTENT_ENCODING_HEADER: "gzip",
+        }
+        response = _mock_response(headers=headers)
+        assert _helpers._is_decompressive_transcoding(response, _get_headers) is False
+
+
 class Test__get_generation_from_url(object):
 
     GENERATION_VALUE = 1641590104888641
