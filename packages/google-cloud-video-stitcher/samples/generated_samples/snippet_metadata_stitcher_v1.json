@@ -149,7 +149,7 @@
         "shortName": "create_cdn_key"
       },
       "description": "Sample for CreateCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_b0021d8c.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_59d969c0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_sync",
@@ -185,7 +185,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_b0021d8c.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_59d969c0.py"
     },
     {
       "canonical": true,
@@ -237,7 +237,7 @@
         "shortName": "create_cdn_key"
       },
       "description": "Sample for CreateCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_59d969c0.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_b0021d8c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_sync",
@@ -273,7 +273,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_59d969c0.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_cdn_key_sync_b0021d8c.py"
     },
     {
       "canonical": true,
@@ -406,7 +406,7 @@
         "shortName": "create_live_session"
       },
       "description": "Sample for CreateLiveSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_9b417ffd.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_a1d80535.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateLiveSession_sync",
@@ -442,7 +442,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_9b417ffd.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_a1d80535.py"
     },
     {
       "canonical": true,
@@ -490,7 +490,7 @@
         "shortName": "create_live_session"
       },
       "description": "Sample for CreateLiveSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_a1d80535.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_9b417ffd.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateLiveSession_sync",
@@ -526,7 +526,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_a1d80535.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_live_session_sync_9b417ffd.py"
     },
     {
       "canonical": true,
@@ -667,7 +667,7 @@
         "shortName": "create_slate"
       },
       "description": "Sample for CreateSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_277cf557.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_43d6e138.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync",
@@ -703,7 +703,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_277cf557.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_43d6e138.py"
     },
     {
       "canonical": true,
@@ -755,7 +755,7 @@
         "shortName": "create_slate"
       },
       "description": "Sample for CreateSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_43d6e138.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_277cf557.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync",
@@ -791,7 +791,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_43d6e138.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_slate_sync_277cf557.py"
     },
     {
       "canonical": true,
@@ -924,7 +924,7 @@
         "shortName": "create_vod_session"
       },
       "description": "Sample for CreateVodSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_4d6e9ee0.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_9f03724e.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync",
@@ -960,7 +960,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_4d6e9ee0.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_9f03724e.py"
     },
     {
       "canonical": true,
@@ -1008,7 +1008,7 @@
         "shortName": "create_vod_session"
       },
       "description": "Sample for CreateVodSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_9f03724e.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_4d6e9ee0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync",
@@ -1044,7 +1044,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_9f03724e.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_create_vod_session_sync_4d6e9ee0.py"
     },
     {
       "canonical": true,
@@ -1165,7 +1165,7 @@
         "shortName": "delete_cdn_key"
       },
       "description": "Sample for DeleteCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_aff65568.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_9ced91b1.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_sync",
@@ -1199,7 +1199,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_aff65568.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_9ced91b1.py"
     },
     {
       "canonical": true,
@@ -1242,7 +1242,7 @@
         "shortName": "delete_cdn_key"
       },
       "description": "Sample for DeleteCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_9ced91b1.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_aff65568.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_sync",
@@ -1276,7 +1276,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_9ced91b1.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_cdn_key_sync_aff65568.py"
     },
     {
       "canonical": true,
@@ -1397,7 +1397,7 @@
         "shortName": "delete_slate"
       },
       "description": "Sample for DeleteSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_736084b8.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_5c66b7e5.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteSlate_sync",
@@ -1431,7 +1431,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_736084b8.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_5c66b7e5.py"
     },
     {
       "canonical": true,
@@ -1474,7 +1474,7 @@
         "shortName": "delete_slate"
       },
       "description": "Sample for DeleteSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_5c66b7e5.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_736084b8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_DeleteSlate_sync",
@@ -1508,7 +1508,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_5c66b7e5.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_delete_slate_sync_736084b8.py"
     },
     {
       "canonical": true,
@@ -1633,7 +1633,7 @@
         "shortName": "get_cdn_key"
       },
       "description": "Sample for GetCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_e19ea1b8.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_09f5a4f5.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync",
@@ -1669,7 +1669,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_e19ea1b8.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_09f5a4f5.py"
     },
     {
       "canonical": true,
@@ -1713,7 +1713,7 @@
         "shortName": "get_cdn_key"
       },
       "description": "Sample for GetCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_09f5a4f5.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_e19ea1b8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync",
@@ -1749,7 +1749,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_09f5a4f5.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_cdn_key_sync_e19ea1b8.py"
     },
     {
       "canonical": true,
@@ -1874,7 +1874,7 @@
         "shortName": "get_live_ad_tag_detail"
       },
       "description": "Sample for GetLiveAdTagDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_1172d747.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_b54519f7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_sync",
@@ -1910,7 +1910,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_1172d747.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_b54519f7.py"
     },
     {
       "canonical": true,
@@ -1954,7 +1954,7 @@
         "shortName": "get_live_ad_tag_detail"
       },
       "description": "Sample for GetLiveAdTagDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_b54519f7.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_1172d747.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_sync",
@@ -1990,7 +1990,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_b54519f7.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_ad_tag_detail_sync_1172d747.py"
     },
     {
       "canonical": true,
@@ -2115,7 +2115,7 @@
         "shortName": "get_live_session"
       },
       "description": "Sample for GetLiveSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_d4a68dc9.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_b3e35b13.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveSession_sync",
@@ -2151,7 +2151,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_d4a68dc9.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_b3e35b13.py"
     },
     {
       "canonical": true,
@@ -2195,7 +2195,7 @@
         "shortName": "get_live_session"
       },
       "description": "Sample for GetLiveSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_b3e35b13.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_d4a68dc9.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetLiveSession_sync",
@@ -2231,7 +2231,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_b3e35b13.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_live_session_sync_d4a68dc9.py"
     },
     {
       "canonical": true,
@@ -2356,7 +2356,7 @@
         "shortName": "get_slate"
       },
       "description": "Sample for GetSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_936b3a35.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_0fd1cfd2.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetSlate_sync",
@@ -2392,7 +2392,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_936b3a35.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_0fd1cfd2.py"
     },
     {
       "canonical": true,
@@ -2436,7 +2436,7 @@
         "shortName": "get_slate"
       },
       "description": "Sample for GetSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_0fd1cfd2.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_936b3a35.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetSlate_sync",
@@ -2472,7 +2472,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_0fd1cfd2.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_slate_sync_936b3a35.py"
     },
     {
       "canonical": true,
@@ -2597,7 +2597,7 @@
         "shortName": "get_vod_ad_tag_detail"
       },
       "description": "Sample for GetVodAdTagDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_369f73cc.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_4de83d6c.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodAdTagDetail_sync",
@@ -2633,7 +2633,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_369f73cc.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_4de83d6c.py"
     },
     {
       "canonical": true,
@@ -2677,7 +2677,7 @@
         "shortName": "get_vod_ad_tag_detail"
       },
       "description": "Sample for GetVodAdTagDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_4de83d6c.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_369f73cc.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodAdTagDetail_sync",
@@ -2713,7 +2713,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_4de83d6c.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_ad_tag_detail_sync_369f73cc.py"
     },
     {
       "canonical": true,
@@ -2838,7 +2838,7 @@
         "shortName": "get_vod_session"
       },
       "description": "Sample for GetVodSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_16cf0132.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_3a5d7679.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodSession_sync",
@@ -2874,7 +2874,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_16cf0132.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_3a5d7679.py"
     },
     {
       "canonical": true,
@@ -2918,7 +2918,7 @@
         "shortName": "get_vod_session"
       },
       "description": "Sample for GetVodSession",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_3a5d7679.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_16cf0132.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodSession_sync",
@@ -2954,7 +2954,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_3a5d7679.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_session_sync_16cf0132.py"
     },
     {
       "canonical": true,
@@ -3079,7 +3079,7 @@
         "shortName": "get_vod_stitch_detail"
       },
       "description": "Sample for GetVodStitchDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_53138205.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_c8880fd0.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodStitchDetail_sync",
@@ -3115,7 +3115,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_53138205.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_c8880fd0.py"
     },
     {
       "canonical": true,
@@ -3159,7 +3159,7 @@
         "shortName": "get_vod_stitch_detail"
       },
       "description": "Sample for GetVodStitchDetail",
-      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_c8880fd0.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_53138205.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_GetVodStitchDetail_sync",
@@ -3195,7 +3195,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_c8880fd0.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_get_vod_stitch_detail_sync_53138205.py"
     },
     {
       "canonical": true,
@@ -3320,7 +3320,7 @@
         "shortName": "list_cdn_keys"
       },
       "description": "Sample for ListCdnKeys",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_72a4d366.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_ada63331.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync",
@@ -3356,7 +3356,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_72a4d366.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_ada63331.py"
     },
     {
       "canonical": true,
@@ -3400,7 +3400,7 @@
         "shortName": "list_cdn_keys"
       },
       "description": "Sample for ListCdnKeys",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_ada63331.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_72a4d366.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListCdnKeys_sync",
@@ -3436,7 +3436,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_ada63331.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_cdn_keys_sync_72a4d366.py"
     },
     {
       "canonical": true,
@@ -3561,7 +3561,7 @@
         "shortName": "list_live_ad_tag_details"
       },
       "description": "Sample for ListLiveAdTagDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_cf281ee8.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_9480708b.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListLiveAdTagDetails_sync",
@@ -3597,7 +3597,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_cf281ee8.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_9480708b.py"
     },
     {
       "canonical": true,
@@ -3641,7 +3641,7 @@
         "shortName": "list_live_ad_tag_details"
       },
       "description": "Sample for ListLiveAdTagDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_9480708b.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_cf281ee8.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListLiveAdTagDetails_sync",
@@ -3677,7 +3677,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_9480708b.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_live_ad_tag_details_sync_cf281ee8.py"
     },
     {
       "canonical": true,
@@ -3802,7 +3802,7 @@
         "shortName": "list_slates"
       },
       "description": "Sample for ListSlates",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_0d7a1ee7.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_d9290ca3.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListSlates_sync",
@@ -3838,7 +3838,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_0d7a1ee7.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_d9290ca3.py"
     },
     {
       "canonical": true,
@@ -3882,7 +3882,7 @@
         "shortName": "list_slates"
       },
       "description": "Sample for ListSlates",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_d9290ca3.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_0d7a1ee7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListSlates_sync",
@@ -3918,7 +3918,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_d9290ca3.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_slates_sync_0d7a1ee7.py"
     },
     {
       "canonical": true,
@@ -4043,7 +4043,7 @@
         "shortName": "list_vod_ad_tag_details"
       },
       "description": "Sample for ListVodAdTagDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_1daae335.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_31926d37.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodAdTagDetails_sync",
@@ -4079,7 +4079,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_1daae335.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_31926d37.py"
     },
     {
       "canonical": true,
@@ -4123,7 +4123,7 @@
         "shortName": "list_vod_ad_tag_details"
       },
       "description": "Sample for ListVodAdTagDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_31926d37.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_1daae335.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodAdTagDetails_sync",
@@ -4159,7 +4159,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_31926d37.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_ad_tag_details_sync_1daae335.py"
     },
     {
       "canonical": true,
@@ -4284,7 +4284,7 @@
         "shortName": "list_vod_stitch_details"
       },
       "description": "Sample for ListVodStitchDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_57fcc8aa.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_f27e747a.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodStitchDetails_sync",
@@ -4320,7 +4320,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_57fcc8aa.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_f27e747a.py"
     },
     {
       "canonical": true,
@@ -4364,7 +4364,7 @@
         "shortName": "list_vod_stitch_details"
       },
       "description": "Sample for ListVodStitchDetails",
-      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_f27e747a.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_57fcc8aa.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_ListVodStitchDetails_sync",
@@ -4400,7 +4400,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_f27e747a.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_list_vod_stitch_details_sync_57fcc8aa.py"
     },
     {
       "canonical": true,
@@ -4533,7 +4533,7 @@
         "shortName": "update_cdn_key"
       },
       "description": "Sample for UpdateCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_2d50b620.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_92f920b1.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_sync",
@@ -4569,7 +4569,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_2d50b620.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_92f920b1.py"
     },
     {
       "canonical": true,
@@ -4617,7 +4617,7 @@
         "shortName": "update_cdn_key"
       },
       "description": "Sample for UpdateCdnKey",
-      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_92f920b1.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_2d50b620.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateCdnKey_sync",
@@ -4653,7 +4653,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_92f920b1.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_cdn_key_sync_2d50b620.py"
     },
     {
       "canonical": true,
@@ -4786,7 +4786,7 @@
         "shortName": "update_slate"
       },
       "description": "Sample for UpdateSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_62ab4011.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_0b7009b7.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync",
@@ -4822,7 +4822,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_62ab4011.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_0b7009b7.py"
     },
     {
       "canonical": true,
@@ -4870,7 +4870,7 @@
         "shortName": "update_slate"
       },
       "description": "Sample for UpdateSlate",
-      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_0b7009b7.py",
+      "file": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_62ab4011.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "videostitcher_v1_generated_VideoStitcherService_UpdateSlate_sync",
@@ -4906,7 +4906,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_0b7009b7.py"
+      "title": "videostitcher_v1_generated_video_stitcher_service_update_slate_sync_62ab4011.py"
     }
   ]
 }
