@@ -12,7 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
+import sys
+
+# special case python < 3.8
+if sys.version_info.major == 3 and sys.version_info.minor < 8:
+    import mock
+else:
+    from unittest import mock
+
 import queue
 
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads

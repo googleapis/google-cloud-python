@@ -14,6 +14,7 @@
 
 import collections
 import queue
+import sys
 import threading
 
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
@@ -22,7 +23,12 @@ from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.cloud.pubsub_v1.subscriber import futures
 
-import mock
+# special case python < 3.8
+if sys.version_info.major == 3 and sys.version_info.minor < 8:
+    import mock
+else:
+    from unittest import mock
+
 import pytest
 from google.cloud.pubsub_v1.subscriber.exceptions import (
     AcknowledgeStatus,
