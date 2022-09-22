@@ -988,7 +988,9 @@ class StreamingPullManager(object):
         # Return the initial request.
         return request
 
-    def _send_lease_modacks(self, ack_ids: Iterable[str], ack_deadline: float):
+    def _send_lease_modacks(
+        self, ack_ids: Iterable[str], ack_deadline: float
+    ) -> List[str]:
         exactly_once_enabled = False
         with self._exactly_once_enabled_lock:
             exactly_once_enabled = self._exactly_once_enabled
@@ -1002,15 +1004,19 @@ class StreamingPullManager(object):
             assert self._dispatcher is not None
             self._dispatcher.modify_ack_deadline(items)
 
+            expired_ack_ids = []
             for req in items:
                 try:
                     assert req.future is not None
                     req.future.result()
-                except AcknowledgeError:
+                except AcknowledgeError as ack_error:
                     _LOGGER.warning(
                         "AcknowledgeError when lease-modacking a message.",
                         exc_info=True,
                     )
+                    if ack_error.error_code == AcknowledgeStatus.INVALID_ACK_ID:
+                        expired_ack_ids.append(req.ack_id)
+            return expired_ack_ids
         else:
             items = [
                 requests.ModAckRequest(ack_id, self.ack_deadline, None)
@@ -1018,6 +1024,7 @@ class StreamingPullManager(object):
             ]
             assert self._dispatcher is not None
             self._dispatcher.modify_ack_deadline(items)
+            return []
 
     def _exactly_once_delivery_enabled(self) -> bool:
         """Whether exactly-once delivery is enabled for the subscription."""
@@ -1071,28 +1078,32 @@ class StreamingPullManager(object):
         # modack the messages we received, as this tells the server that we've
         # received them.
         ack_id_gen = (message.ack_id for message in received_messages)
-        self._send_lease_modacks(ack_id_gen, self.ack_deadline)
+        expired_ack_ids = set(self._send_lease_modacks(ack_id_gen, self.ack_deadline))
 
         with self._pause_resume_lock:
             assert self._scheduler is not None
             assert self._leaser is not None
 
             for received_message in received_messages:
-                message = google.cloud.pubsub_v1.subscriber.message.Message(
-                    received_message.message,
-                    received_message.ack_id,
-                    received_message.delivery_attempt,
-                    self._scheduler.queue,
-                    self._exactly_once_delivery_enabled,
-                )
-                self._messages_on_hold.put(message)
-                self._on_hold_bytes += message.size
-                req = requests.LeaseRequest(
-                    ack_id=message.ack_id,
-                    byte_size=message.size,
-                    ordering_key=message.ordering_key,
-                )
-                self._leaser.add([req])
+                if (
+                    not self._exactly_once_delivery_enabled()
+                    or received_message.ack_id not in expired_ack_ids
+                ):
+                    message = google.cloud.pubsub_v1.subscriber.message.Message(
+                        received_message.message,
+                        received_message.ack_id,
+                        received_message.delivery_attempt,
+                        self._scheduler.queue,
+                        self._exactly_once_delivery_enabled,
+                    )
+                    self._messages_on_hold.put(message)
+                    self._on_hold_bytes += message.size
+                    req = requests.LeaseRequest(
+                        ack_id=message.ack_id,
+                        byte_size=message.size,
+                        ordering_key=message.ordering_key,
+                    )
+                    self._leaser.add([req])
 
             self._maybe_release_messages()
 

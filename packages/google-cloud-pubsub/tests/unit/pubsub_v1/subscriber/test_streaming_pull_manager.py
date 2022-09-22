@@ -1125,6 +1125,7 @@ def test_heartbeat_stream_ack_deadline_seconds(caplog):
     "google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater", autospec=True
 )
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
+
     manager = make_manager()
 
     with mock.patch.object(
@@ -1852,11 +1853,18 @@ def test__on_response_exactly_once_immediate_modacks_fail():
     def complete_futures_with_error(*args, **kwargs):
         modack_requests = args[0]
         for req in modack_requests:
-            req.future.set_exception(
-                subscriber_exceptions.AcknowledgeError(
-                    subscriber_exceptions.AcknowledgeStatus.SUCCESS, None
+            if req.ack_id == "fack":
+                req.future.set_exception(
+                    subscriber_exceptions.AcknowledgeError(
+                        subscriber_exceptions.AcknowledgeStatus.INVALID_ACK_ID, None
+                    )
                 )
-            )
+            else:
+                req.future.set_exception(
+                    subscriber_exceptions.AcknowledgeError(
+                        subscriber_exceptions.AcknowledgeStatus.SUCCESS, None
+                    )
+                )
 
     dispatcher.modify_ack_deadline.side_effect = complete_futures_with_error
 
@@ -1866,19 +1874,39 @@ def test__on_response_exactly_once_immediate_modacks_fail():
             gapic_types.ReceivedMessage(
                 ack_id="fack",
                 message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
-            )
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="good",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="2"),
+            ),
         ],
         subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
             exactly_once_delivery_enabled=True
         ),
     )
 
-    # adjust message bookkeeping in leaser
-    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+    # Actually run the method and prove that modack and schedule are called in
+    # the expected way.
 
-    # exactly_once should be enabled
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10)
+
     manager._on_response(response)
-    # exceptions are logged, but otherwise no effect
+
+    # The second messages should be scheduled, and not the first.
+
+    schedule_calls = scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 1
+    call_args = schedule_calls[0][1]
+    assert call_args[0] == mock.sentinel.callback
+    assert isinstance(call_args[1], message.Message)
+    assert call_args[1].message_id == "2"
+
+    assert manager._messages_on_hold.size == 0
+    # No messages available
+    assert manager._messages_on_hold.get() is None
+
+    # do not add message
+    assert manager.load == 0.001
 
 
 def test__should_recover_true():
