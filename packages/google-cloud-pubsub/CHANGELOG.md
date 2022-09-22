@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.7](https://github.com/googleapis/python-pubsub/compare/v2.13.6...v2.13.7) (2022-09-22)
+
+
+### Bug Fixes
+
+* Remove expired ack_ids ([#787](https://github.com/googleapis/python-pubsub/issues/787)) ([b4b809d](https://github.com/googleapis/python-pubsub/commit/b4b809d616cf93881815d6baadf2dd322ab566d1))
+
 ## [2.13.6](https://github.com/googleapis/python-pubsub/compare/v2.13.5...v2.13.6) (2022-08-11)
 
 
