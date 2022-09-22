@@ -292,7 +292,7 @@ async def refresh_grant(
     if rapt_token:
         body["rapt"] = rapt_token
 
-    response_status_ok, response_data = await _client_async._token_endpoint_request_no_throw(
+    response_status_ok, response_data, retryable_error = await _client_async._token_endpoint_request_no_throw(
         request, token_uri, body
     )
     if (
@@ -317,12 +317,13 @@ async def refresh_grant(
         (
             response_status_ok,
             response_data,
+            retryable_error,
         ) = await _client_async._token_endpoint_request_no_throw(
             request, token_uri, body
         )
 
     if not response_status_ok:
-        _client._handle_error_response(response_data)
+        _client._handle_error_response(response_data, retryable_error)
     refresh_response = _client._handle_refresh_grant_response(
         response_data, refresh_token
     )

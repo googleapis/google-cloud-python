@@ -47,12 +47,14 @@ SCOPES_AS_STRING = (
 )
 
 
-def test__handle_error_response():
+@pytest.mark.parametrize("retryable", [True, False])
+def test__handle_error_response(retryable):
     response_data = {"error": "help", "error_description": "I'm alive"}
 
     with pytest.raises(exceptions.RefreshError) as excinfo:
-        _client._handle_error_response(response_data)
+        _client._handle_error_response(response_data, retryable)
 
+    assert excinfo.value.retryable == retryable
     assert excinfo.match(r"help: I\'m alive")
 
 
@@ -60,8 +62,9 @@ def test__handle_error_response_no_error():
     response_data = {"foo": "bar"}
 
     with pytest.raises(exceptions.RefreshError) as excinfo:
-        _client._handle_error_response(response_data)
+        _client._handle_error_response(response_data, False)
 
+    assert not excinfo.value.retryable
     assert excinfo.match(r"{\"foo\": \"bar\"}")
 
 
@@ -69,9 +72,31 @@ def test__handle_error_response_not_json():
     response_data = "this is an error message"
 
     with pytest.raises(exceptions.RefreshError) as excinfo:
-        _client._handle_error_response(response_data)
+        _client._handle_error_response(response_data, False)
 
+    assert not excinfo.value.retryable
     assert excinfo.match(response_data)
+
+
+def test__can_retry_retryable():
+    retryable_codes = transport.DEFAULT_RETRYABLE_STATUS_CODES
+    for status_code in range(100, 600):
+        if status_code in retryable_codes:
+            assert _client._can_retry(status_code, {"error": "invalid_scope"})
+        else:
+            assert not _client._can_retry(status_code, {"error": "invalid_scope"})
+
+
+@pytest.mark.parametrize(
+    "response_data", [{"error": "internal_failure"}, {"error": "server_error"}]
+)
+def test__can_retry_message(response_data):
+    assert _client._can_retry(http_client.OK, response_data)
+
+
+@pytest.mark.parametrize("response_data", [{"error": "invalid_scope"}])
+def test__can_retry_no_retry_message(response_data):
+    assert not _client._can_retry(http_client.OK, response_data)
 
 
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
@@ -154,8 +179,8 @@ def test__token_endpoint_request_internal_failure_error():
         _client._token_endpoint_request(
             request, "http://example.com", {"error_description": "internal_failure"}
         )
-    # request should be called twice due to the retry
-    assert request.call_count == 2
+    # request should be called once and then with 3 retries
+    assert request.call_count == 4
 
     request = make_request(
         {"error": "internal_failure"}, status=http_client.BAD_REQUEST
@@ -165,7 +190,55 @@ def test__token_endpoint_request_internal_failure_error():
         _client._token_endpoint_request(
             request, "http://example.com", {"error": "internal_failure"}
         )
-    # request should be called twice due to the retry
+    # request should be called once and then with 3 retries
+    assert request.call_count == 4
+
+
+def test__token_endpoint_request_internal_failure_and_retry_failure_error():
+    retryable_error = mock.create_autospec(transport.Response, instance=True)
+    retryable_error.status = http_client.BAD_REQUEST
+    retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
+        "utf-8"
+    )
+
+    unretryable_error = mock.create_autospec(transport.Response, instance=True)
+    unretryable_error.status = http_client.BAD_REQUEST
+    unretryable_error.data = json.dumps({"error_description": "invalid_scope"}).encode(
+        "utf-8"
+    )
+
+    request = mock.create_autospec(transport.Request)
+
+    request.side_effect = [retryable_error, retryable_error, unretryable_error]
+
+    with pytest.raises(exceptions.RefreshError):
+        _client._token_endpoint_request(
+            request, "http://example.com", {"error_description": "invalid_scope"}
+        )
+    # request should be called three times. Two retryable errors and one
+    # unretryable error to break the retry loop.
+    assert request.call_count == 3
+
+
+def test__token_endpoint_request_internal_failure_and_retry_succeeds():
+    retryable_error = mock.create_autospec(transport.Response, instance=True)
+    retryable_error.status = http_client.BAD_REQUEST
+    retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
+        "utf-8"
+    )
+
+    response = mock.create_autospec(transport.Response, instance=True)
+    response.status = http_client.OK
+    response.data = json.dumps({"hello": "world"}).encode("utf-8")
+
+    request = mock.create_autospec(transport.Request)
+
+    request.side_effect = [retryable_error, response]
+
+    _ = _client._token_endpoint_request(
+        request, "http://example.com", {"test": "params"}
+    )
+
     assert request.call_count == 2
 
 
@@ -219,8 +292,9 @@ def test_jwt_grant_no_access_token():
         }
     )
 
-    with pytest.raises(exceptions.RefreshError):
+    with pytest.raises(exceptions.RefreshError) as excinfo:
         _client.jwt_grant(request, "http://example.com", "assertion_value")
+    assert not excinfo.value.retryable
 
 
 def test_id_token_jwt_grant():
@@ -255,8 +329,9 @@ def test_id_token_jwt_grant_no_access_token():
         }
     )
 
-    with pytest.raises(exceptions.RefreshError):
+    with pytest.raises(exceptions.RefreshError) as excinfo:
         _client.id_token_jwt_grant(request, "http://example.com", "assertion_value")
+    assert not excinfo.value.retryable
 
 
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
@@ -348,7 +423,104 @@ def test_refresh_grant_no_access_token():
         }
     )
 
-    with pytest.raises(exceptions.RefreshError):
+    with pytest.raises(exceptions.RefreshError) as excinfo:
         _client.refresh_grant(
             request, "http://example.com", "refresh_token", "client_id", "client_secret"
         )
+    assert not excinfo.value.retryable
+
+
+@mock.patch("google.oauth2._client._parse_expiry", return_value=None)
+@mock.patch.object(_client, "_token_endpoint_request", autospec=True)
+def test_jwt_grant_retry_default(mock_token_endpoint_request, mock_expiry):
+    _client.jwt_grant(mock.Mock(), mock.Mock(), mock.Mock())
+    mock_token_endpoint_request.assert_called_with(
+        mock.ANY, mock.ANY, mock.ANY, can_retry=True
+    )
+
+
+@pytest.mark.parametrize("can_retry", [True, False])
+@mock.patch("google.oauth2._client._parse_expiry", return_value=None)
+@mock.patch.object(_client, "_token_endpoint_request", autospec=True)
+def test_jwt_grant_retry_with_retry(
+    mock_token_endpoint_request, mock_expiry, can_retry
+):
+    _client.jwt_grant(mock.Mock(), mock.Mock(), mock.Mock(), can_retry=can_retry)
+    mock_token_endpoint_request.assert_called_with(
+        mock.ANY, mock.ANY, mock.ANY, can_retry=can_retry
+    )
+
+
+@mock.patch("google.auth.jwt.decode", return_value={"exp": 0})
+@mock.patch.object(_client, "_token_endpoint_request", autospec=True)
+def test_id_token_jwt_grant_retry_default(mock_token_endpoint_request, mock_jwt_decode):
+    _client.id_token_jwt_grant(mock.Mock(), mock.Mock(), mock.Mock())
+    mock_token_endpoint_request.assert_called_with(
+        mock.ANY, mock.ANY, mock.ANY, can_retry=True
+    )
+
+
+@pytest.mark.parametrize("can_retry", [True, False])
+@mock.patch("google.auth.jwt.decode", return_value={"exp": 0})
+@mock.patch.object(_client, "_token_endpoint_request", autospec=True)
+def test_id_token_jwt_grant_retry_with_retry(
+    mock_token_endpoint_request, mock_jwt_decode, can_retry
+):
+    _client.id_token_jwt_grant(
+        mock.Mock(), mock.Mock(), mock.Mock(), can_retry=can_retry
+    )
+    mock_token_endpoint_request.assert_called_with(
+        mock.ANY, mock.ANY, mock.ANY, can_retry=can_retry
+    )
+
+
+@mock.patch("google.oauth2._client._parse_expiry", return_value=None)
+@mock.patch.object(_client, "_token_endpoint_request", autospec=True)
+def test_refresh_grant_retry_default(mock_token_endpoint_request, mock_parse_expiry):
+    _client.refresh_grant(
+        mock.Mock(), mock.Mock(), mock.Mock(), mock.Mock(), mock.Mock()
+    )
+    mock_token_endpoint_request.assert_called_with(
+        mock.ANY, mock.ANY, mock.ANY, can_retry=True
+    )
+
+
+@pytest.mark.parametrize("can_retry", [True, False])
+@mock.patch("google.oauth2._client._parse_expiry", return_value=None)
+@mock.patch.object(_client, "_token_endpoint_request", autospec=True)
+def test_refresh_grant_retry_with_retry(
+    mock_token_endpoint_request, mock_parse_expiry, can_retry
+):
+    _client.refresh_grant(
+        mock.Mock(),
+        mock.Mock(),
+        mock.Mock(),
+        mock.Mock(),
+        mock.Mock(),
+        can_retry=can_retry,
+    )
+    mock_token_endpoint_request.assert_called_with(
+        mock.ANY, mock.ANY, mock.ANY, can_retry=can_retry
+    )
+
+
+@pytest.mark.parametrize("can_retry", [True, False])
+def test__token_endpoint_request_no_throw_with_retry(can_retry):
+    response_data = {"error": "help", "error_description": "I'm alive"}
+    body = "dummy body"
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.INTERNAL_SERVER_ERROR
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    _client._token_endpoint_request_no_throw(
+        mock_request, mock.Mock(), body, mock.Mock(), mock.Mock(), can_retry=can_retry
+    )
+
+    if can_retry:
+        assert mock_request.call_count == 4
+    else:
+        assert mock_request.call_count == 1

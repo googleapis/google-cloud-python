@@ -29,9 +29,21 @@ import abc
 import six
 from six.moves import http_client
 
+TOO_MANY_REQUESTS = 429  # Python 2.7 six is missing this status code.
+
+DEFAULT_RETRYABLE_STATUS_CODES = (
+    http_client.INTERNAL_SERVER_ERROR,
+    http_client.SERVICE_UNAVAILABLE,
+    http_client.REQUEST_TIMEOUT,
+    TOO_MANY_REQUESTS,
+)
+"""Sequence[int]:  HTTP status codes indicating a request can be retried.
+"""
+
+
 DEFAULT_REFRESH_STATUS_CODES = (http_client.UNAUTHORIZED,)
 """Sequence[int]:  Which HTTP status code indicate that credentials should be
-refreshed and a request should be retried.
+refreshed.
 """
 
 DEFAULT_MAX_REFRESH_ATTEMPTS = 2

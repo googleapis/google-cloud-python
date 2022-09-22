@@ -609,7 +609,7 @@ class TestIDTokenCredentials(object):
         request = mock.create_autospec(transport.Request, instance=True)
         response = mock.Mock()
         response.data = b'{"error": "http error"}'
-        response.status = 500
+        response.status = 404  # Throw a 404 so the request is not retried.
         request.side_effect = [response]
 
         self.credentials = credentials.IDTokenCredentials(

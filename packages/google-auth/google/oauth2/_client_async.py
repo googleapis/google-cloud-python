@@ -30,13 +30,14 @@ import six
 from six.moves import http_client
 from six.moves import urllib
 
+from google.auth import _exponential_backoff
 from google.auth import exceptions
 from google.auth import jwt
 from google.oauth2 import _client as client
 
 
 async def _token_endpoint_request_no_throw(
-    request, token_uri, body, access_token=None, use_json=False
+    request, token_uri, body, access_token=None, use_json=False, can_retry=True
 ):
     """Makes a request to the OAuth 2.0 authorization server's token endpoint.
     This function doesn't throw on response errors.
@@ -50,10 +51,13 @@ async def _token_endpoint_request_no_throw(
         access_token (Optional(str)): The access token needed to make the request.
         use_json (Optional(bool)): Use urlencoded format or json format for the
             content type. The default value is False.
+        can_retry (bool): Enable or disable request retry behavior.
 
     Returns:
-        Tuple(bool, Mapping[str, str]): A boolean indicating if the request is
-            successful, and a mapping for the JSON-decoded response data.
+        Tuple(bool, Mapping[str, str], Optional[bool]): A boolean indicating
+          if the request is successful, a mapping for the JSON-decoded response
+          data and in the case of an error a boolean indicating if the error
+          is retryable.
     """
     if use_json:
         headers = {"Content-Type": client._JSON_CONTENT_TYPE}
@@ -65,11 +69,7 @@ async def _token_endpoint_request_no_throw(
     if access_token:
         headers["Authorization"] = "Bearer {}".format(access_token)
 
-    retry = 0
-    # retry to fetch token for maximum of two times if any internal failure
-    # occurs.
-    while True:
-
+    async def _perform_request():
         response = await request(
             method="POST", url=token_uri, headers=headers, body=body
         )
@@ -83,26 +83,36 @@ async def _token_endpoint_request_no_throw(
             else response_body1
         )
 
-        response_data = json.loads(response_body)
+        try:
+            response_data = json.loads(response_body)
+        except ValueError:
+            response_data = response_body
 
         if response.status == http_client.OK:
-            break
-        else:
-            error_desc = response_data.get("error_description") or ""
-            error_code = response_data.get("error") or ""
-            if (
-                any(e == "internal_failure" for e in (error_code, error_desc))
-                and retry < 1
-            ):
-                retry += 1
-                continue
-            return response.status == http_client.OK, response_data
+            return True, response_data, None
 
-    return response.status == http_client.OK, response_data
+        retryable_error = client._can_retry(
+            status_code=response.status, response_data=response_data
+        )
+
+        return False, response_data, retryable_error
+
+    request_succeeded, response_data, retryable_error = await _perform_request()
+
+    if request_succeeded or not retryable_error or not can_retry:
+        return request_succeeded, response_data, retryable_error
+
+    retries = _exponential_backoff.ExponentialBackoff()
+    for _ in retries:
+        request_succeeded, response_data, retryable_error = await _perform_request()
+        if request_succeeded or not retryable_error:
+            return request_succeeded, response_data, retryable_error
+
+    return False, response_data, retryable_error
 
 
 async def _token_endpoint_request(
-    request, token_uri, body, access_token=None, use_json=False
+    request, token_uri, body, access_token=None, use_json=False, can_retry=True
 ):
     """Makes a request to the OAuth 2.0 authorization server's token endpoint.
 
@@ -115,6 +125,7 @@ async def _token_endpoint_request(
         access_token (Optional(str)): The access token needed to make the request.
         use_json (Optional(bool)): Use urlencoded format or json format for the
             content type. The default value is False.
+        can_retry (bool): Enable or disable request retry behavior.
 
     Returns:
         Mapping[str, str]: The JSON-decoded response data.
@@ -123,15 +134,21 @@ async def _token_endpoint_request(
         google.auth.exceptions.RefreshError: If the token endpoint returned
             an error.
     """
-    response_status_ok, response_data = await _token_endpoint_request_no_throw(
-        request, token_uri, body, access_token=access_token, use_json=use_json
+
+    response_status_ok, response_data, retryable_error = await _token_endpoint_request_no_throw(
+        request,
+        token_uri,
+        body,
+        access_token=access_token,
+        use_json=use_json,
+        can_retry=can_retry,
     )
     if not response_status_ok:
-        client._handle_error_response(response_data)
+        client._handle_error_response(response_data, retryable_error)
     return response_data
 
 
-async def jwt_grant(request, token_uri, assertion):
+async def jwt_grant(request, token_uri, assertion, can_retry=True):
     """Implements the JWT Profile for OAuth 2.0 Authorization Grants.
 
     For more details, see `rfc7523 section 4`_.
@@ -142,6 +159,7 @@ async def jwt_grant(request, token_uri, assertion):
         token_uri (str): The OAuth 2.0 authorizations server's token endpoint
             URI.
         assertion (str): The OAuth 2.0 assertion.
+        can_retry (bool): Enable or disable request retry behavior.
 
     Returns:
         Tuple[str, Optional[datetime], Mapping[str, str]]: The access token,
@@ -155,12 +173,16 @@ async def jwt_grant(request, token_uri, assertion):
     """
     body = {"assertion": assertion, "grant_type": client._JWT_GRANT_TYPE}
 
-    response_data = await _token_endpoint_request(request, token_uri, body)
+    response_data = await _token_endpoint_request(
+        request, token_uri, body, can_retry=can_retry
+    )
 
     try:
         access_token = response_data["access_token"]
     except KeyError as caught_exc:
-        new_exc = exceptions.RefreshError("No access token in response.", response_data)
+        new_exc = exceptions.RefreshError(
+            "No access token in response.", response_data, retryable=False
+        )
         six.raise_from(new_exc, caught_exc)
 
     expiry = client._parse_expiry(response_data)
@@ -168,7 +190,7 @@ async def jwt_grant(request, token_uri, assertion):
     return access_token, expiry, response_data
 
 
-async def id_token_jwt_grant(request, token_uri, assertion):
+async def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
     """Implements the JWT Profile for OAuth 2.0 Authorization Grants, but
     requests an OpenID Connect ID Token instead of an access token.
 
@@ -183,6 +205,7 @@ async def id_token_jwt_grant(request, token_uri, assertion):
             URI.
         assertion (str): JWT token signed by a service account. The token's
             payload must include a ``target_audience`` claim.
+        can_retry (bool): Enable or disable request retry behavior.
 
     Returns:
         Tuple[str, Optional[datetime], Mapping[str, str]]:
@@ -195,12 +218,16 @@ async def id_token_jwt_grant(request, token_uri, assertion):
     """
     body = {"assertion": assertion, "grant_type": client._JWT_GRANT_TYPE}
 
-    response_data = await _token_endpoint_request(request, token_uri, body)
+    response_data = await _token_endpoint_request(
+        request, token_uri, body, can_retry=can_retry
+    )
 
     try:
         id_token = response_data["id_token"]
     except KeyError as caught_exc:
-        new_exc = exceptions.RefreshError("No ID token in response.", response_data)
+        new_exc = exceptions.RefreshError(
+            "No ID token in response.", response_data, retryable=False
+        )
         six.raise_from(new_exc, caught_exc)
 
     payload = jwt.decode(id_token, verify=False)
@@ -217,6 +244,7 @@ async def refresh_grant(
     client_secret,
     scopes=None,
     rapt_token=None,
+    can_retry=True,
 ):
     """Implements the OAuth 2.0 refresh token grant.
 
@@ -236,6 +264,7 @@ async def refresh_grant(
             token has a wild card scope (e.g.
             'https://www.googleapis.com/auth/any-api').
         rapt_token (Optional(str)): The reauth Proof Token.
+        can_retry (bool): Enable or disable request retry behavior.
 
     Returns:
         Tuple[str, Optional[str], Optional[datetime], Mapping[str, str]]: The
@@ -259,5 +288,7 @@ async def refresh_grant(
     if rapt_token:
         body["rapt"] = rapt_token
 
-    response_data = await _token_endpoint_request(request, token_uri, body)
+    response_data = await _token_endpoint_request(
+        request, token_uri, body, can_retry=can_retry
+    )
     return client._handle_refresh_grant_response(response_data, refresh_token)
