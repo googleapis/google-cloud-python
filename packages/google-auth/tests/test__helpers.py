@@ -13,27 +13,16 @@
 # limitations under the License.
 
 import datetime
-import os
 
-import mock
 import pytest  # type: ignore
 from six.moves import urllib
 
 from google.auth import _helpers
-from google.auth import environment_vars
 
 
 class SourceClass(object):
     def func(self):  # pragma: NO COVER
         """example docstring"""
-
-
-@mock.patch.dict(os.environ)
-def test_get_refresh_threshold():
-    assert _helpers.get_refresh_threshold() == _helpers.REFRESH_THRESHOLD
-
-    os.environ[environment_vars.GOOGLE_CLOUD_TOKEN_REFRESH_THRESHOLD] = "300"
-    assert _helpers.get_refresh_threshold() == datetime.timedelta(seconds=300)
 
 
 def test_copy_docstring_success():

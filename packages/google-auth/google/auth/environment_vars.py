@@ -29,10 +29,6 @@ This environment variable is used instead of the current one in some
 situations (such as Google App Engine).
 """
 
-GOOGLE_CLOUD_TOKEN_REFRESH_THRESHOLD = "GOOGLE_CLOUD_TOKEN_REFRESH_THRESHOLD"
-"""Environment variable defines a time in seconds. If a token is going to
-expire within this time, then it will be refreshed"""
-
 CREDENTIALS = "GOOGLE_APPLICATION_CREDENTIALS"
 """Environment variable defining the location of Google application default
 credentials."""

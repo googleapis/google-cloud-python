@@ -670,7 +670,7 @@ class TestCredentials(object):
         # accommodation. These credentials should be valid.
         credentials.expiry = (
             datetime.datetime.min
-            + _helpers.get_refresh_threshold()
+            + _helpers.REFRESH_THRESHOLD
             + datetime.timedelta(seconds=1)
         )
 

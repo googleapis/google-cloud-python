@@ -47,7 +47,7 @@ def test_expired_and_valid():
     # accomodation. These credentials should be valid.
     credentials.expiry = (
         datetime.datetime.utcnow()
-        + _helpers.get_refresh_threshold()
+        + _helpers.REFRESH_THRESHOLD
         + datetime.timedelta(seconds=1)
     )
 
