@@ -6,3 +6,10 @@ twine
 wheel
 setuptools
 nox
+tox
+sphinx==4.5.0
+recommonmark
+django==2.2
+ipython
+black==22.8.0
+parameterized==0.8.1

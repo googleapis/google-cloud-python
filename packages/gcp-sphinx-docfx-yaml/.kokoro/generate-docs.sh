@@ -29,12 +29,8 @@ export GOOGLE_APPLICATION_CREDENTIALS=$KOKORO_KEYSTORE_DIR/73713_docuploader_ser
 gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
 
 # Install dependencies.
-python3 -m pip install --user --quiet --upgrade nox
-python3 -m pip install --user gcp-docuploader
+python3 -m pip install --require-hashes -r .kokoro/requirements.txt
 python3 -m pip install -e .
-python3 -m pip install recommonmark
-# Required for some client libraries:
-python3 -m pip install --user django==2.2 ipython
 
 # Store the contents of bucket log in a variable to reuse.
 python_bucket_items=$(gsutil ls "gs://docs-staging-v2/docfx-python*")
