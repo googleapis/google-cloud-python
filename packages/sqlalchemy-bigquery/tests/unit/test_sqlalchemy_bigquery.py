@@ -233,3 +233,16 @@ def test_unnest_function(args, kw):
         assert isinstance(
             sqlalchemy.select([f]).subquery().c.unnest.type, sqlalchemy.String
         )
+
+
+@mock.patch("sqlalchemy_bigquery._helpers.create_bigquery_client")
+def test_setting_user_supplied_client_skips_creating_client(
+    mock_create_bigquery_client,
+):
+    import sqlalchemy_bigquery  # noqa
+
+    result = sqlalchemy_bigquery.BigQueryDialect().create_connect_args(
+        mock.MagicMock(database=None, query={"user_supplied_client": "true"})
+    )
+    assert result == ([], {})
+    assert not mock_create_bigquery_client.called

@@ -801,6 +801,7 @@ class BigQueryDialect(DefaultDialect):
             credentials_base64,
             default_query_job_config,
             list_tables_page_size,
+            user_supplied_client,
         ) = parse_url(url)
 
         self.arraysize = arraysize or self.arraysize
@@ -812,15 +813,21 @@ class BigQueryDialect(DefaultDialect):
         self._add_default_dataset_to_job_config(
             default_query_job_config, project_id, dataset_id
         )
-        client = _helpers.create_bigquery_client(
-            credentials_path=self.credentials_path,
-            credentials_info=self.credentials_info,
-            credentials_base64=self.credentials_base64,
-            project_id=project_id,
-            location=self.location,
-            default_query_job_config=default_query_job_config,
-        )
-        return ([client], {})
+
+        if user_supplied_client:
+            # The user is expected to supply a client with
+            # create_engine('...', connect_args={'client': bq_client})
+            return ([], {})
+        else:
+            client = _helpers.create_bigquery_client(
+                credentials_path=self.credentials_path,
+                credentials_info=self.credentials_info,
+                credentials_base64=self.credentials_base64,
+                project_id=project_id,
+                location=self.location,
+                default_query_job_config=default_query_job_config,
+            )
+            return ([], {"client": client})
 
     def _get_table_or_view_names(self, connection, item_types, schema=None):
         current_schema = schema or self.dataset_id

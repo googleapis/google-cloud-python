@@ -63,6 +63,7 @@ def url_with_everything():
         "&schema_update_options=ALLOW_FIELD_ADDITION,ALLOW_FIELD_RELAXATION"
         "&use_query_cache=true"
         "&write_disposition=WRITE_APPEND"
+        "&user_supplied_client=true"
     )
 
 
@@ -76,6 +77,7 @@ def test_basic(url_with_everything):
         credentials_base64,
         job_config,
         list_tables_page_size,
+        user_supplied_client,
     ) = parse_url(url_with_everything)
 
     assert project_id == "some-project"
@@ -86,6 +88,7 @@ def test_basic(url_with_everything):
     assert credentials_path == "/some/path/to.json"
     assert credentials_base64 == "eyJrZXkiOiJ2YWx1ZSJ9Cg=="
     assert isinstance(job_config, QueryJobConfig)
+    assert user_supplied_client
 
 
 @pytest.mark.parametrize(
@@ -161,11 +164,15 @@ def test_bad_values(param, value):
 
 
 def test_empty_url():
-    for value in parse_url(make_url("bigquery://")):
+    values = parse_url(make_url("bigquery://"))
+    for value in values[:-1]:
         assert value is None
+    assert not values[-1]
 
-    for value in parse_url(make_url("bigquery:///")):
+    values = parse_url(make_url("bigquery:///"))
+    for value in values[:-1]:
         assert value is None
+    assert not values[-1]
 
 
 def test_empty_with_non_config():
@@ -183,6 +190,7 @@ def test_empty_with_non_config():
         credentials_base64,
         job_config,
         list_tables_page_size,
+        user_supplied_credentials,
     ) = url
 
     assert project_id is None
@@ -193,6 +201,7 @@ def test_empty_with_non_config():
     assert credentials_base64 is None
     assert job_config is None
     assert list_tables_page_size is None
+    assert not user_supplied_credentials
 
 
 def test_only_dataset():
@@ -206,6 +215,7 @@ def test_only_dataset():
         credentials_base64,
         job_config,
         list_tables_page_size,
+        user_supplied_credentials,
     ) = url
 
     assert project_id is None
@@ -216,6 +226,7 @@ def test_only_dataset():
     assert credentials_base64 is None
     assert list_tables_page_size is None
     assert isinstance(job_config, QueryJobConfig)
+    assert not user_supplied_credentials
     # we can't actually test that the dataset is on the job_config,
     # since we take care of that afterwards, when we have a client to fill in the project
 

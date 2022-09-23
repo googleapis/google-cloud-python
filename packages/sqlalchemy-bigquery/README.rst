@@ -234,6 +234,25 @@ To create the base64 encoded string you can use the command line tool ``base64``
 
 Alternatively, you can use an online generator like `www.base64encode.org <https://www.base64encode.org>_` to paste your credentials JSON file to be encoded.
 
+
+Supplying Your Own BigQuery Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The above connection string parameters allow you to influence how the BigQuery client used to execute your queries will be instantiated.
+If you need additional control, you can supply a BigQuery client of your own:
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    custom_bq_client = bigquery.Client(...)
+
+    engine = create_engine(
+        'bigquery://some-project/some-dataset?user_supplied_client=True',
+	connect_args={'client': custom_bq_client},
+    )
+
+
 Creating tables
 ^^^^^^^^^^^^^^^
 
