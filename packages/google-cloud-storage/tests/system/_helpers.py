@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import time
 
 from google.api_core import exceptions
 
@@ -63,16 +64,16 @@ def _no_retetion_period(bucket):
 
 
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
-retry_no_event_based_hold = RetryInstanceState(_no_event_based_hold, max_tries=10)
-retry_has_kms_key_name = RetryInstanceState(_has_kms_key_name, max_tries=10)
+retry_no_event_based_hold = RetryInstanceState(_no_event_based_hold, max_tries=5)
+retry_has_kms_key_name = RetryInstanceState(_has_kms_key_name, max_tries=5)
 retry_has_retention_expiration = RetryInstanceState(
-    _has_retention_expiration, max_tries=10
+    _has_retention_expiration, max_tries=5
 )
 retry_no_retention_expiration = RetryInstanceState(
-    _no_retention_expiration, max_tries=10
+    _no_retention_expiration, max_tries=5
 )
-retry_has_retention_period = RetryInstanceState(_has_retetion_period, max_tries=10)
-retry_no_retention_period = RetryInstanceState(_no_retetion_period, max_tries=10)
+retry_has_retention_period = RetryInstanceState(_has_retetion_period, max_tries=5)
+retry_no_retention_period = RetryInstanceState(_no_retetion_period, max_tries=5)
 
 
 def unique_name(prefix):
@@ -106,3 +107,10 @@ def delete_bucket(bucket):
     retry = RetryErrors(errors, max_tries=15)
     retry(empty_bucket)(bucket)
     retry(bucket.delete)(force=True)
+
+
+def await_config_changes_propagate(sec=3):
+    # Changes to the bucket will be readable immediately after writing,
+    # but configuration changes may take time to propagate.
+    # See https://cloud.google.com/storage/docs/json_api/v1/buckets/patch
+    time.sleep(sec)

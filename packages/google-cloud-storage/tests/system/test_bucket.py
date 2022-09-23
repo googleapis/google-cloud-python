@@ -682,16 +682,10 @@ def test_bucket_w_retention_period(
 
 def test_bucket_w_default_event_based_hold(
     storage_client,
-    buckets_to_delete,
     blobs_to_delete,
+    default_ebh_bucket,
 ):
-    bucket_name = _helpers.unique_name("w-def-ebh")
-    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
-    buckets_to_delete.append(bucket)
-
-    bucket.default_event_based_hold = True
-    bucket.patch()
-
+    bucket = storage_client.get_bucket(default_ebh_bucket)
     assert bucket.default_event_based_hold
     assert bucket.retention_period is None
     assert bucket.retention_policy_effective_time is None
@@ -724,6 +718,10 @@ def test_bucket_w_default_event_based_hold(
     assert bucket.retention_period is None
     assert bucket.retention_policy_effective_time is None
     assert not bucket.retention_policy_locked
+
+    # Changes to the bucket will be readable immediately after writing,
+    # but configuration changes may take time to propagate.
+    _helpers.await_config_changes_propagate()
 
     blob.upload_from_string(payload)
 
@@ -870,6 +868,7 @@ def test_ubla_set_unset_preserves_acls(
     # Clear UBLA
     bucket.iam_configuration.uniform_bucket_level_access_enabled = False
     bucket.patch()
+    _helpers.await_config_changes_propagate()
 
     # Query ACLs after clearing UBLA
     bucket.acl.reload()
