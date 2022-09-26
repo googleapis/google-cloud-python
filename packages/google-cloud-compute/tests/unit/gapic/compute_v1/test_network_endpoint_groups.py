@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session

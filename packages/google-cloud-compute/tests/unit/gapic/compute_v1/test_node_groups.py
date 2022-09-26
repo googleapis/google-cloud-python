@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -3542,6 +3542,7 @@ def test_insert_rest(request_type):
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -3704,7 +3705,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertNodeGroupRequest
             expected_params = [
                 (
                     "initialNodeCount",
-                    0,
+                    str(0),
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
@@ -3818,6 +3819,7 @@ def test_insert_rest_bad_request(
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -3943,6 +3945,7 @@ def test_insert_unary_rest(request_type):
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -4083,7 +4086,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertNodeGroupR
             expected_params = [
                 (
                     "initialNodeCount",
-                    0,
+                    str(0),
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
@@ -4197,6 +4200,7 @@ def test_insert_unary_rest_bad_request(
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -5055,6 +5059,7 @@ def test_patch_rest(request_type):
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -5313,6 +5318,7 @@ def test_patch_rest_bad_request(
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -5442,6 +5448,7 @@ def test_patch_unary_rest(request_type):
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",
@@ -5678,6 +5685,7 @@ def test_patch_unary_rest_bad_request(
         "name": "name_value",
         "node_template": "node_template_value",
         "self_link": "self_link_value",
+        "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "size": 443,
         "status": "status_value",
         "zone": "zone_value",

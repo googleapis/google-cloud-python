@@ -111,6 +111,13 @@ class BackendServicesRestInterceptor:
             def post_get_health(response):
                 logging.log(f"Received response: {response}")
 
+            def pre_get_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
             def pre_insert(request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -137,6 +144,13 @@ class BackendServicesRestInterceptor:
                 return request, metadata
 
             def post_set_edge_security_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(response):
                 logging.log(f"Received response: {response}")
 
             def pre_set_security_policy(request, metadata):
@@ -293,6 +307,27 @@ class BackendServicesRestInterceptor:
         """
         return response
 
+    def pre_get_iam_policy(
+        self,
+        request: compute.GetIamPolicyBackendServiceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetIamPolicyBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackendServices server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BackendServices server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_insert(
         self,
         request: compute.InsertBackendServiceRequest,
@@ -376,6 +411,27 @@ class BackendServicesRestInterceptor:
         self, response: compute.Operation
     ) -> compute.Operation:
         """Post-rpc interceptor for set_edge_security_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BackendServices server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: compute.SetIamPolicyBackendServiceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetIamPolicyBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackendServices server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
         after it is returned by the BackendServices server but before
@@ -629,7 +685,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -719,7 +775,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -821,7 +877,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -927,7 +983,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1029,7 +1085,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1124,7 +1180,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1139,6 +1195,134 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_health(resp)
+            return resp
+
+    class _GetIamPolicy(BackendServicesRestStub):
+        def __hash__(self):
+            return hash("GetIamPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetIamPolicyBackendServiceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (~.compute.GetIamPolicyBackendServiceRequest):
+                    The request object. A request message for
+                BackendServices.GetIamPolicy. See the
+                method description for details.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Policy:
+                    An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources. A
+                ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
+                documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+                **JSON example:** { "bindings": [ { "role":
+                "roles/resourcemanager.organizationAdmin", "members": [
+                "user:mike@example.com", "group:admins@example.com",
+                "domain:google.com",
+                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                ] }, { "role":
+                "roles/resourcemanager.organizationViewer", "members": [
+                "user:eve@example.com" ], "condition": { "title":
+                "expirable access", "description": "Does not grant
+                access after Sep 2020", "expression": "request.time <
+                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
+                "BwWWja0YfJA=", "version": 3 } **YAML example:**
+                bindings: - members: - user:mike@example.com -
+                group:admins@example.com - domain:google.com -
+                serviceAccount:my-project-id@appspot.gserviceaccount.com
+                role: roles/resourcemanager.organizationAdmin - members:
+                - user:eve@example.com role:
+                roles/resourcemanager.organizationViewer condition:
+                title: expirable access description: Does not grant
+                access after Sep 2020 expression: request.time <
+                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
+                version: 3 For a description of IAM and its features,
+                see the `IAM
+                documentation <https://cloud.google.com/iam/docs/>`__.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/global/backendServices/{resource}/getIamPolicy",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            pb_request = compute.GetIamPolicyBackendServiceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
     class _Insert(BackendServicesRestStub):
@@ -1235,7 +1419,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1325,7 +1509,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1435,7 +1619,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1548,7 +1732,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1563,6 +1747,143 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_edge_security_policy(resp)
+            return resp
+
+    class _SetIamPolicy(BackendServicesRestStub):
+        def __hash__(self):
+            return hash("SetIamPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.SetIamPolicyBackendServiceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (~.compute.SetIamPolicyBackendServiceRequest):
+                    The request object. A request message for
+                BackendServices.SetIamPolicy. See the
+                method description for details.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Policy:
+                    An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources. A
+                ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
+                documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+                **JSON example:** { "bindings": [ { "role":
+                "roles/resourcemanager.organizationAdmin", "members": [
+                "user:mike@example.com", "group:admins@example.com",
+                "domain:google.com",
+                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                ] }, { "role":
+                "roles/resourcemanager.organizationViewer", "members": [
+                "user:eve@example.com" ], "condition": { "title":
+                "expirable access", "description": "Does not grant
+                access after Sep 2020", "expression": "request.time <
+                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
+                "BwWWja0YfJA=", "version": 3 } **YAML example:**
+                bindings: - members: - user:mike@example.com -
+                group:admins@example.com - domain:google.com -
+                serviceAccount:my-project-id@appspot.gserviceaccount.com
+                role: roles/resourcemanager.organizationAdmin - members:
+                - user:eve@example.com role:
+                roles/resourcemanager.organizationViewer condition:
+                title: expirable access description: Does not grant
+                access after Sep 2020 expression: request.time <
+                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
+                version: 3 For a description of IAM and its features,
+                see the `IAM
+                documentation <https://cloud.google.com/iam/docs/>`__.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/global/backendServices/{resource}/setIamPolicy",
+                    "body": "global_set_policy_request_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            pb_request = compute.SetIamPolicyBackendServiceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
     class _SetSecurityPolicy(BackendServicesRestStub):
@@ -1661,7 +1982,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1772,7 +2093,7 @@ class BackendServicesRestTransport(BackendServicesTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1843,6 +2164,14 @@ class BackendServicesRestTransport(BackendServicesTransport):
         return self._GetHealth(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[compute.GetIamPolicyBackendServiceRequest], compute.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def insert(
         self,
     ) -> Callable[[compute.InsertBackendServiceRequest], compute.Operation]:
@@ -1875,6 +2204,14 @@ class BackendServicesRestTransport(BackendServicesTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetEdgeSecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[compute.SetIamPolicyBackendServiceRequest], compute.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_security_policy(

@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -1227,6 +1227,7 @@ def test_get_rest(request_type):
             name="name_value",
             proxy_bind=True,
             proxy_header="proxy_header_value",
+            region="region_value",
             self_link="self_link_value",
             service="service_value",
         )
@@ -1250,6 +1251,7 @@ def test_get_rest(request_type):
     assert response.name == "name_value"
     assert response.proxy_bind is True
     assert response.proxy_header == "proxy_header_value"
+    assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.service == "service_value"
 
@@ -1518,6 +1520,7 @@ def test_insert_rest(request_type):
         "name": "name_value",
         "proxy_bind": True,
         "proxy_header": "proxy_header_value",
+        "region": "region_value",
         "self_link": "self_link_value",
         "service": "service_value",
     }
@@ -1755,6 +1758,7 @@ def test_insert_rest_bad_request(
         "name": "name_value",
         "proxy_bind": True,
         "proxy_header": "proxy_header_value",
+        "region": "region_value",
         "self_link": "self_link_value",
         "service": "service_value",
     }
@@ -1863,6 +1867,7 @@ def test_insert_unary_rest(request_type):
         "name": "name_value",
         "proxy_bind": True,
         "proxy_header": "proxy_header_value",
+        "region": "region_value",
         "self_link": "self_link_value",
         "service": "service_value",
     }
@@ -2080,6 +2085,7 @@ def test_insert_unary_rest_bad_request(
         "name": "name_value",
         "proxy_bind": True,
         "proxy_header": "proxy_header_value",
+        "region": "region_value",
         "self_link": "self_link_value",
         "service": "service_value",
     }

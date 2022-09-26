@@ -187,6 +187,11 @@ class SecurityPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_labels: gapic_v1.method.wrap_method(
+                self.set_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -299,6 +304,15 @@ class SecurityPoliciesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.RemoveRuleSecurityPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_labels(
+        self,
+    ) -> Callable[
+        [compute.SetLabelsSecurityPolicyRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

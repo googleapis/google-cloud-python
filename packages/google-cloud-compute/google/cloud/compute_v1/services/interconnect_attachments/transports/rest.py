@@ -111,6 +111,13 @@ class InterconnectAttachmentsRestInterceptor:
             def post_patch(response):
                 logging.log(f"Received response: {response}")
 
+            def pre_set_labels(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_labels(response):
+                logging.log(f"Received response: {response}")
+
         transport = InterconnectAttachmentsRestTransport(interceptor=MyCustomInterconnectAttachmentsInterceptor())
         client = InterconnectAttachmentsClient(transport=transport)
 
@@ -244,6 +251,29 @@ class InterconnectAttachmentsRestInterceptor:
 
     def post_patch(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InterconnectAttachments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_labels(
+        self,
+        request: compute.SetLabelsInterconnectAttachmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SetLabelsInterconnectAttachmentRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for set_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InterconnectAttachments server.
+        """
+        return request, metadata
+
+    def post_set_labels(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the response
         after it is returned by the InterconnectAttachments server but before
@@ -428,7 +458,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -530,7 +560,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -625,7 +655,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -735,7 +765,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -826,7 +856,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -936,7 +966,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -951,6 +981,117 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
+            return resp
+
+    class _SetLabels(InterconnectAttachmentsRestStub):
+        def __hash__(self):
+            return hash("SetLabels")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.SetLabelsInterconnectAttachmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the set labels method over HTTP.
+
+            Args:
+                request (~.compute.SetLabelsInterconnectAttachmentRequest):
+                    The request object. A request message for
+                InterconnectAttachments.SetLabels. See
+                the method description for details.
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{resource}/setLabels",
+                    "body": "region_set_labels_request_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_set_labels(request, metadata)
+            pb_request = compute.SetLabelsInterconnectAttachmentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_set_labels(resp)
             return resp
 
     @property
@@ -1007,6 +1148,14 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def set_labels(
+        self,
+    ) -> Callable[[compute.SetLabelsInterconnectAttachmentRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

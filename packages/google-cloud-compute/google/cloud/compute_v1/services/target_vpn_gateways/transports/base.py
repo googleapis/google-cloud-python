@@ -157,6 +157,11 @@ class TargetVpnGatewaysTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_labels: gapic_v1.method.wrap_method(
+                self.set_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -213,6 +218,15 @@ class TargetVpnGatewaysTransport(abc.ABC):
     ) -> Callable[
         [compute.ListTargetVpnGatewaysRequest],
         Union[compute.TargetVpnGatewayList, Awaitable[compute.TargetVpnGatewayList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_labels(
+        self,
+    ) -> Callable[
+        [compute.SetLabelsTargetVpnGatewayRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -77,8 +77,10 @@ from .services.region_operations import RegionOperationsClient
 from .services.regions import RegionsClient
 from .services.region_security_policies import RegionSecurityPoliciesClient
 from .services.region_ssl_certificates import RegionSslCertificatesClient
+from .services.region_ssl_policies import RegionSslPoliciesClient
 from .services.region_target_http_proxies import RegionTargetHttpProxiesClient
 from .services.region_target_https_proxies import RegionTargetHttpsProxiesClient
+from .services.region_target_tcp_proxies import RegionTargetTcpProxiesClient
 from .services.region_url_maps import RegionUrlMapsClient
 from .services.reservations import ReservationsClient
 from .services.resource_policies import ResourcePoliciesClient
@@ -164,6 +166,7 @@ from .types.compute import AggregatedListRoutersRequest
 from .types.compute import AggregatedListSecurityPoliciesRequest
 from .types.compute import AggregatedListServiceAttachmentsRequest
 from .types.compute import AggregatedListSslCertificatesRequest
+from .types.compute import AggregatedListSslPoliciesRequest
 from .types.compute import AggregatedListSubnetworksRequest
 from .types.compute import AggregatedListTargetHttpProxiesRequest
 from .types.compute import AggregatedListTargetHttpsProxiesRequest
@@ -310,8 +313,10 @@ from .types.compute import DeleteRegionOperationRequest
 from .types.compute import DeleteRegionOperationResponse
 from .types.compute import DeleteRegionSecurityPolicyRequest
 from .types.compute import DeleteRegionSslCertificateRequest
+from .types.compute import DeleteRegionSslPolicyRequest
 from .types.compute import DeleteRegionTargetHttpProxyRequest
 from .types.compute import DeleteRegionTargetHttpsProxyRequest
+from .types.compute import DeleteRegionTargetTcpProxyRequest
 from .types.compute import DeleteRegionUrlMapRequest
 from .types.compute import DeleteReservationRequest
 from .types.compute import DeleteResourcePolicyRequest
@@ -351,6 +356,7 @@ from .types.compute import DiskAggregatedList
 from .types.compute import DiskInstantiationConfig
 from .types.compute import DiskList
 from .types.compute import DiskMoveRequest
+from .types.compute import DiskParams
 from .types.compute import DisksAddResourcePoliciesRequest
 from .types.compute import DisksRemoveResourcePoliciesRequest
 from .types.compute import DisksResizeRequest
@@ -425,6 +431,7 @@ from .types.compute import GetHealthBackendServiceRequest
 from .types.compute import GetHealthCheckRequest
 from .types.compute import GetHealthRegionBackendServiceRequest
 from .types.compute import GetHealthTargetPoolRequest
+from .types.compute import GetIamPolicyBackendServiceRequest
 from .types.compute import GetIamPolicyDiskRequest
 from .types.compute import GetIamPolicyFirewallPolicyRequest
 from .types.compute import GetIamPolicyImageRequest
@@ -435,6 +442,7 @@ from .types.compute import GetIamPolicyMachineImageRequest
 from .types.compute import GetIamPolicyNetworkFirewallPolicyRequest
 from .types.compute import GetIamPolicyNodeGroupRequest
 from .types.compute import GetIamPolicyNodeTemplateRequest
+from .types.compute import GetIamPolicyRegionBackendServiceRequest
 from .types.compute import GetIamPolicyRegionDiskRequest
 from .types.compute import GetIamPolicyRegionNetworkFirewallPolicyRequest
 from .types.compute import GetIamPolicyReservationRequest
@@ -483,8 +491,10 @@ from .types.compute import GetRegionOperationRequest
 from .types.compute import GetRegionRequest
 from .types.compute import GetRegionSecurityPolicyRequest
 from .types.compute import GetRegionSslCertificateRequest
+from .types.compute import GetRegionSslPolicyRequest
 from .types.compute import GetRegionTargetHttpProxyRequest
 from .types.compute import GetRegionTargetHttpsProxyRequest
+from .types.compute import GetRegionTargetTcpProxyRequest
 from .types.compute import GetRegionUrlMapRequest
 from .types.compute import GetReservationRequest
 from .types.compute import GetResourcePolicyRequest
@@ -607,8 +617,10 @@ from .types.compute import InsertRegionNetworkFirewallPolicyRequest
 from .types.compute import InsertRegionNotificationEndpointRequest
 from .types.compute import InsertRegionSecurityPolicyRequest
 from .types.compute import InsertRegionSslCertificateRequest
+from .types.compute import InsertRegionSslPolicyRequest
 from .types.compute import InsertRegionTargetHttpProxyRequest
 from .types.compute import InsertRegionTargetHttpsProxyRequest
+from .types.compute import InsertRegionTargetTcpProxyRequest
 from .types.compute import InsertRegionUrlMapRequest
 from .types.compute import InsertReservationRequest
 from .types.compute import InsertResourcePolicyRequest
@@ -633,6 +645,8 @@ from .types.compute import InsertVpnGatewayRequest
 from .types.compute import InsertVpnTunnelRequest
 from .types.compute import Instance
 from .types.compute import InstanceAggregatedList
+from .types.compute import InstanceConsumptionData
+from .types.compute import InstanceConsumptionInfo
 from .types.compute import InstanceGroup
 from .types.compute import InstanceGroupAggregatedList
 from .types.compute import InstanceGroupList
@@ -722,6 +736,7 @@ from .types.compute import ListAcceleratorTypesRequest
 from .types.compute import ListAddressesRequest
 from .types.compute import ListAssociationsFirewallPolicyRequest
 from .types.compute import ListAutoscalersRequest
+from .types.compute import ListAvailableFeaturesRegionSslPoliciesRequest
 from .types.compute import ListAvailableFeaturesSslPoliciesRequest
 from .types.compute import ListBackendBucketsRequest
 from .types.compute import ListBackendServicesRequest
@@ -788,8 +803,10 @@ from .types.compute import ListRegionOperationsRequest
 from .types.compute import ListRegionSecurityPoliciesRequest
 from .types.compute import ListRegionsRequest
 from .types.compute import ListRegionSslCertificatesRequest
+from .types.compute import ListRegionSslPoliciesRequest
 from .types.compute import ListRegionTargetHttpProxiesRequest
 from .types.compute import ListRegionTargetHttpsProxiesRequest
+from .types.compute import ListRegionTargetTcpProxiesRequest
 from .types.compute import ListRegionUrlMapsRequest
 from .types.compute import ListReservationsRequest
 from .types.compute import ListResourcePoliciesRequest
@@ -938,6 +955,7 @@ from .types.compute import PatchRegionHealthCheckServiceRequest
 from .types.compute import PatchRegionInstanceGroupManagerRequest
 from .types.compute import PatchRegionNetworkFirewallPolicyRequest
 from .types.compute import PatchRegionSecurityPolicyRequest
+from .types.compute import PatchRegionSslPolicyRequest
 from .types.compute import PatchRegionTargetHttpsProxyRequest
 from .types.compute import PatchRegionUrlMapRequest
 from .types.compute import PatchRouterRequest
@@ -1099,6 +1117,7 @@ from .types.compute import SecurityPolicy
 from .types.compute import SecurityPolicyAdaptiveProtectionConfig
 from .types.compute import SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
 from .types.compute import SecurityPolicyAdvancedOptionsConfig
+from .types.compute import SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
 from .types.compute import SecurityPolicyDdosProtectionConfig
 from .types.compute import SecurityPolicyList
 from .types.compute import SecurityPolicyRecaptchaOptionsConfig
@@ -1134,6 +1153,7 @@ from .types.compute import SetDeletionProtectionInstanceRequest
 from .types.compute import SetDiskAutoDeleteInstanceRequest
 from .types.compute import SetEdgeSecurityPolicyBackendBucketRequest
 from .types.compute import SetEdgeSecurityPolicyBackendServiceRequest
+from .types.compute import SetIamPolicyBackendServiceRequest
 from .types.compute import SetIamPolicyDiskRequest
 from .types.compute import SetIamPolicyFirewallPolicyRequest
 from .types.compute import SetIamPolicyImageRequest
@@ -1144,6 +1164,7 @@ from .types.compute import SetIamPolicyMachineImageRequest
 from .types.compute import SetIamPolicyNetworkFirewallPolicyRequest
 from .types.compute import SetIamPolicyNodeGroupRequest
 from .types.compute import SetIamPolicyNodeTemplateRequest
+from .types.compute import SetIamPolicyRegionBackendServiceRequest
 from .types.compute import SetIamPolicyRegionDiskRequest
 from .types.compute import SetIamPolicyRegionNetworkFirewallPolicyRequest
 from .types.compute import SetIamPolicyReservationRequest
@@ -1153,15 +1174,22 @@ from .types.compute import SetIamPolicySnapshotRequest
 from .types.compute import SetIamPolicySubnetworkRequest
 from .types.compute import SetInstanceTemplateInstanceGroupManagerRequest
 from .types.compute import SetInstanceTemplateRegionInstanceGroupManagerRequest
+from .types.compute import SetLabelsAddressRequest
 from .types.compute import SetLabelsDiskRequest
 from .types.compute import SetLabelsExternalVpnGatewayRequest
 from .types.compute import SetLabelsForwardingRuleRequest
+from .types.compute import SetLabelsGlobalAddressRequest
 from .types.compute import SetLabelsGlobalForwardingRuleRequest
 from .types.compute import SetLabelsImageRequest
 from .types.compute import SetLabelsInstanceRequest
+from .types.compute import SetLabelsInterconnectAttachmentRequest
+from .types.compute import SetLabelsInterconnectRequest
 from .types.compute import SetLabelsRegionDiskRequest
+from .types.compute import SetLabelsSecurityPolicyRequest
 from .types.compute import SetLabelsSnapshotRequest
+from .types.compute import SetLabelsTargetVpnGatewayRequest
 from .types.compute import SetLabelsVpnGatewayRequest
+from .types.compute import SetLabelsVpnTunnelRequest
 from .types.compute import SetMachineResourcesInstanceRequest
 from .types.compute import SetMachineTypeInstanceRequest
 from .types.compute import SetMetadataInstanceRequest
@@ -1212,8 +1240,10 @@ from .types.compute import SslCertificateManagedSslCertificate
 from .types.compute import SslCertificateSelfManagedSslCertificate
 from .types.compute import SslCertificatesScopedList
 from .types.compute import SSLHealthCheck
+from .types.compute import SslPoliciesAggregatedList
 from .types.compute import SslPoliciesList
 from .types.compute import SslPoliciesListAvailableFeaturesResponse
+from .types.compute import SslPoliciesScopedList
 from .types.compute import SslPolicy
 from .types.compute import SslPolicyReference
 from .types.compute import StartInstanceRequest
@@ -1436,6 +1466,7 @@ __all__ = (
     "AggregatedListSecurityPoliciesRequest",
     "AggregatedListServiceAttachmentsRequest",
     "AggregatedListSslCertificatesRequest",
+    "AggregatedListSslPoliciesRequest",
     "AggregatedListSubnetworksRequest",
     "AggregatedListTargetHttpProxiesRequest",
     "AggregatedListTargetHttpsProxiesRequest",
@@ -1583,8 +1614,10 @@ __all__ = (
     "DeleteRegionOperationResponse",
     "DeleteRegionSecurityPolicyRequest",
     "DeleteRegionSslCertificateRequest",
+    "DeleteRegionSslPolicyRequest",
     "DeleteRegionTargetHttpProxyRequest",
     "DeleteRegionTargetHttpsProxyRequest",
+    "DeleteRegionTargetTcpProxyRequest",
     "DeleteRegionUrlMapRequest",
     "DeleteReservationRequest",
     "DeleteResourcePolicyRequest",
@@ -1624,6 +1657,7 @@ __all__ = (
     "DiskInstantiationConfig",
     "DiskList",
     "DiskMoveRequest",
+    "DiskParams",
     "DiskType",
     "DiskTypeAggregatedList",
     "DiskTypeList",
@@ -1705,6 +1739,7 @@ __all__ = (
     "GetHealthCheckRequest",
     "GetHealthRegionBackendServiceRequest",
     "GetHealthTargetPoolRequest",
+    "GetIamPolicyBackendServiceRequest",
     "GetIamPolicyDiskRequest",
     "GetIamPolicyFirewallPolicyRequest",
     "GetIamPolicyImageRequest",
@@ -1715,6 +1750,7 @@ __all__ = (
     "GetIamPolicyNetworkFirewallPolicyRequest",
     "GetIamPolicyNodeGroupRequest",
     "GetIamPolicyNodeTemplateRequest",
+    "GetIamPolicyRegionBackendServiceRequest",
     "GetIamPolicyRegionDiskRequest",
     "GetIamPolicyRegionNetworkFirewallPolicyRequest",
     "GetIamPolicyReservationRequest",
@@ -1763,8 +1799,10 @@ __all__ = (
     "GetRegionRequest",
     "GetRegionSecurityPolicyRequest",
     "GetRegionSslCertificateRequest",
+    "GetRegionSslPolicyRequest",
     "GetRegionTargetHttpProxyRequest",
     "GetRegionTargetHttpsProxyRequest",
+    "GetRegionTargetTcpProxyRequest",
     "GetRegionUrlMapRequest",
     "GetReservationRequest",
     "GetResourcePolicyRequest",
@@ -1895,8 +1933,10 @@ __all__ = (
     "InsertRegionNotificationEndpointRequest",
     "InsertRegionSecurityPolicyRequest",
     "InsertRegionSslCertificateRequest",
+    "InsertRegionSslPolicyRequest",
     "InsertRegionTargetHttpProxyRequest",
     "InsertRegionTargetHttpsProxyRequest",
+    "InsertRegionTargetTcpProxyRequest",
     "InsertRegionUrlMapRequest",
     "InsertReservationRequest",
     "InsertResourcePolicyRequest",
@@ -1921,6 +1961,8 @@ __all__ = (
     "InsertVpnTunnelRequest",
     "Instance",
     "InstanceAggregatedList",
+    "InstanceConsumptionData",
+    "InstanceConsumptionInfo",
     "InstanceGroup",
     "InstanceGroupAggregatedList",
     "InstanceGroupList",
@@ -2019,6 +2061,7 @@ __all__ = (
     "ListAddressesRequest",
     "ListAssociationsFirewallPolicyRequest",
     "ListAutoscalersRequest",
+    "ListAvailableFeaturesRegionSslPoliciesRequest",
     "ListAvailableFeaturesSslPoliciesRequest",
     "ListBackendBucketsRequest",
     "ListBackendServicesRequest",
@@ -2084,8 +2127,10 @@ __all__ = (
     "ListRegionOperationsRequest",
     "ListRegionSecurityPoliciesRequest",
     "ListRegionSslCertificatesRequest",
+    "ListRegionSslPoliciesRequest",
     "ListRegionTargetHttpProxiesRequest",
     "ListRegionTargetHttpsProxiesRequest",
+    "ListRegionTargetTcpProxiesRequest",
     "ListRegionUrlMapsRequest",
     "ListRegionsRequest",
     "ListReservationsRequest",
@@ -2245,6 +2290,7 @@ __all__ = (
     "PatchRegionInstanceGroupManagerRequest",
     "PatchRegionNetworkFirewallPolicyRequest",
     "PatchRegionSecurityPolicyRequest",
+    "PatchRegionSslPolicyRequest",
     "PatchRegionTargetHttpsProxyRequest",
     "PatchRegionUrlMapRequest",
     "PatchRouterRequest",
@@ -2335,9 +2381,11 @@ __all__ = (
     "RegionSetLabelsRequest",
     "RegionSetPolicyRequest",
     "RegionSslCertificatesClient",
+    "RegionSslPoliciesClient",
     "RegionTargetHttpProxiesClient",
     "RegionTargetHttpsProxiesClient",
     "RegionTargetHttpsProxiesSetSslCertificatesRequest",
+    "RegionTargetTcpProxiesClient",
     "RegionUrlMapsClient",
     "RegionUrlMapsValidateRequest",
     "RegionsClient",
@@ -2433,6 +2481,7 @@ __all__ = (
     "SecurityPolicyAdaptiveProtectionConfig",
     "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
     "SecurityPolicyAdvancedOptionsConfig",
+    "SecurityPolicyAdvancedOptionsConfigJsonCustomConfig",
     "SecurityPolicyDdosProtectionConfig",
     "SecurityPolicyList",
     "SecurityPolicyRecaptchaOptionsConfig",
@@ -2469,6 +2518,7 @@ __all__ = (
     "SetDiskAutoDeleteInstanceRequest",
     "SetEdgeSecurityPolicyBackendBucketRequest",
     "SetEdgeSecurityPolicyBackendServiceRequest",
+    "SetIamPolicyBackendServiceRequest",
     "SetIamPolicyDiskRequest",
     "SetIamPolicyFirewallPolicyRequest",
     "SetIamPolicyImageRequest",
@@ -2479,6 +2529,7 @@ __all__ = (
     "SetIamPolicyNetworkFirewallPolicyRequest",
     "SetIamPolicyNodeGroupRequest",
     "SetIamPolicyNodeTemplateRequest",
+    "SetIamPolicyRegionBackendServiceRequest",
     "SetIamPolicyRegionDiskRequest",
     "SetIamPolicyRegionNetworkFirewallPolicyRequest",
     "SetIamPolicyReservationRequest",
@@ -2488,15 +2539,22 @@ __all__ = (
     "SetIamPolicySubnetworkRequest",
     "SetInstanceTemplateInstanceGroupManagerRequest",
     "SetInstanceTemplateRegionInstanceGroupManagerRequest",
+    "SetLabelsAddressRequest",
     "SetLabelsDiskRequest",
     "SetLabelsExternalVpnGatewayRequest",
     "SetLabelsForwardingRuleRequest",
+    "SetLabelsGlobalAddressRequest",
     "SetLabelsGlobalForwardingRuleRequest",
     "SetLabelsImageRequest",
     "SetLabelsInstanceRequest",
+    "SetLabelsInterconnectAttachmentRequest",
+    "SetLabelsInterconnectRequest",
     "SetLabelsRegionDiskRequest",
+    "SetLabelsSecurityPolicyRequest",
     "SetLabelsSnapshotRequest",
+    "SetLabelsTargetVpnGatewayRequest",
     "SetLabelsVpnGatewayRequest",
+    "SetLabelsVpnTunnelRequest",
     "SetMachineResourcesInstanceRequest",
     "SetMachineTypeInstanceRequest",
     "SetMetadataInstanceRequest",
@@ -2548,9 +2606,11 @@ __all__ = (
     "SslCertificateSelfManagedSslCertificate",
     "SslCertificatesClient",
     "SslCertificatesScopedList",
+    "SslPoliciesAggregatedList",
     "SslPoliciesClient",
     "SslPoliciesList",
     "SslPoliciesListAvailableFeaturesResponse",
+    "SslPoliciesScopedList",
     "SslPolicy",
     "SslPolicyReference",
     "StartInstanceRequest",

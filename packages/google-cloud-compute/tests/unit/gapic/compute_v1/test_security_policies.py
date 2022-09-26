@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -2986,6 +2986,9 @@ def test_insert_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -3291,6 +3294,9 @@ def test_insert_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -3465,6 +3471,9 @@ def test_insert_unary_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -3750,6 +3759,9 @@ def test_insert_unary_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -4581,6 +4593,9 @@ def test_patch_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -4881,6 +4896,9 @@ def test_patch_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -5057,6 +5075,9 @@ def test_patch_unary_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -5337,6 +5358,9 @@ def test_patch_unary_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -6942,6 +6966,660 @@ def test_remove_rule_unary_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetLabelsSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_set_labels_rest(request_type):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request_init["global_set_labels_request_resource"] = {
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_labels(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_set_labels_rest_required_fields(
+    request_type=compute.SetLabelsSecurityPolicyRequest,
+):
+    transport_class = transports.SecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_labels(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_labels_rest_unset_required_fields():
+    transport = transports.SecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "globalSetLabelsRequestResource",
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_labels_rest_interceptors(null_interceptor):
+    transport = transports.SecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityPoliciesRestInterceptor(),
+    )
+    client = SecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityPoliciesRestInterceptor, "post_set_labels"
+    ) as post, mock.patch.object(
+        transports.SecurityPoliciesRestInterceptor, "pre_set_labels"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.SetLabelsSecurityPolicyRequest.pb(
+            compute.SetLabelsSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetLabelsSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.set_labels(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_labels_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetLabelsSecurityPolicyRequest
+):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request_init["global_set_labels_request_resource"] = {
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_labels(request)
+
+
+def test_set_labels_rest_flattened():
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_labels(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/securityPolicies/{resource}/setLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_labels_rest_flattened_error(transport: str = "rest"):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_labels(
+            compute.SetLabelsSecurityPolicyRequest(),
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+
+
+def test_set_labels_rest_error():
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetLabelsSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_set_labels_unary_rest(request_type):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request_init["global_set_labels_request_resource"] = {
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_labels_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_set_labels_unary_rest_required_fields(
+    request_type=compute.SetLabelsSecurityPolicyRequest,
+):
+    transport_class = transports.SecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_labels_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_labels_unary_rest_unset_required_fields():
+    transport = transports.SecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "globalSetLabelsRequestResource",
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_labels_unary_rest_interceptors(null_interceptor):
+    transport = transports.SecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityPoliciesRestInterceptor(),
+    )
+    client = SecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityPoliciesRestInterceptor, "post_set_labels"
+    ) as post, mock.patch.object(
+        transports.SecurityPoliciesRestInterceptor, "pre_set_labels"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.SetLabelsSecurityPolicyRequest.pb(
+            compute.SetLabelsSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetLabelsSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.set_labels_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_labels_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetLabelsSecurityPolicyRequest
+):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request_init["global_set_labels_request_resource"] = {
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_labels_unary(request)
+
+
+def test_set_labels_unary_rest_flattened():
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_labels_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/securityPolicies/{resource}/setLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_labels_unary(
+            compute.SetLabelsSecurityPolicyRequest(),
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+
+
+def test_set_labels_unary_rest_error():
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SecurityPoliciesRestTransport(
@@ -7063,6 +7741,7 @@ def test_security_policies_base_transport():
         "patch",
         "patch_rule",
         "remove_rule",
+        "set_labels",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -7232,6 +7911,9 @@ def test_security_policies_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.remove_rule._session
     session2 = client2.transport.remove_rule._session
+    assert session1 != session2
+    session1 = client1.transport.set_labels._session
+    session2 = client2.transport.set_labels._session
     assert session1 != session2
 
 

@@ -58,6 +58,11 @@
               "methods": [
                 "list"
               ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
+              ]
             }
           }
         }
@@ -196,6 +201,11 @@
                 "get_health"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -214,6 +224,11 @@
             "SetEdgeSecurityPolicy": {
               "methods": [
                 "set_edge_security_policy"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "SetSecurityPolicy": {
@@ -577,6 +592,11 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
               ]
             }
           }
@@ -1360,6 +1380,11 @@
               "methods": [
                 "patch"
               ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
+              ]
             }
           }
         }
@@ -1417,6 +1442,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
               ]
             }
           }
@@ -2192,6 +2222,11 @@
                 "get_health"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -2205,6 +2240,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "Update": {
@@ -2802,6 +2842,45 @@
         }
       }
     },
+    "RegionSslPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionSslPoliciesClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "ListAvailableFeatures": {
+              "methods": [
+                "list_available_features"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RegionTargetHttpProxies": {
       "clients": {
         "rest": {
@@ -2874,6 +2953,35 @@
             "SetUrlMap": {
               "methods": [
                 "set_url_map"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionTargetTcpProxies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionTargetTcpProxiesClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
               ]
             }
           }
@@ -3198,6 +3306,11 @@
               "methods": [
                 "remove_rule"
               ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
+              ]
             }
           }
         }
@@ -3345,6 +3458,11 @@
         "rest": {
           "libraryClient": "SslPoliciesClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -3810,6 +3928,11 @@
               "methods": [
                 "list"
               ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
+              ]
             }
           }
         }
@@ -3946,6 +4069,11 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
               ]
             }
           }

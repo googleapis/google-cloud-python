@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -10477,7 +10477,7 @@ def test_resize_rest_required_fields(
             expected_params = [
                 (
                     "size",
-                    0,
+                    str(0),
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
@@ -10823,7 +10823,7 @@ def test_resize_unary_rest_required_fields(
             expected_params = [
                 (
                     "size",
-                    0,
+                    str(0),
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]

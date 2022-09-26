@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -1589,6 +1589,9 @@ def test_insert_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -1901,6 +1904,9 @@ def test_insert_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -2077,6 +2083,9 @@ def test_insert_unary_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -2367,6 +2376,9 @@ def test_insert_unary_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -2906,6 +2918,9 @@ def test_patch_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -3217,6 +3232,9 @@ def test_patch_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -3403,6 +3421,9 @@ def test_patch_unary_rest(request_type):
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },
@@ -3692,6 +3713,9 @@ def test_patch_unary_rest_bad_request(
             }
         },
         "advanced_options_config": {
+            "json_custom_config": {
+                "content_types": ["content_types_value1", "content_types_value2"]
+            },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
         },

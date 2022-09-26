@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -969,10 +969,12 @@ def test_get_rest(request_type):
             end_timestamp="end_timestamp_value",
             id=205,
             kind="kind_value",
+            merge_source_commitments=["merge_source_commitments_value"],
             name="name_value",
             plan="plan_value",
             region="region_value",
             self_link="self_link_value",
+            split_source_commitment="split_source_commitment_value",
             start_timestamp="start_timestamp_value",
             status="status_value",
             status_message="status_message_value",
@@ -998,10 +1000,12 @@ def test_get_rest(request_type):
     assert response.end_timestamp == "end_timestamp_value"
     assert response.id == 205
     assert response.kind == "kind_value"
+    assert response.merge_source_commitments == ["merge_source_commitments_value"]
     assert response.name == "name_value"
     assert response.plan == "plan_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
+    assert response.split_source_commitment == "split_source_commitment_value"
     assert response.start_timestamp == "start_timestamp_value"
     assert response.status == "status_value"
     assert response.status_message == "status_message_value"
@@ -1286,6 +1290,10 @@ def test_insert_rest(request_type):
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -1332,6 +1340,7 @@ def test_insert_rest(request_type):
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -1583,6 +1592,10 @@ def test_insert_rest_bad_request(
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -1629,6 +1642,7 @@ def test_insert_rest_bad_request(
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -1742,6 +1756,10 @@ def test_insert_unary_rest(request_type):
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -1788,6 +1806,7 @@ def test_insert_unary_rest(request_type):
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -2017,6 +2036,10 @@ def test_insert_unary_rest_bad_request(
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -2063,6 +2086,7 @@ def test_insert_unary_rest_bad_request(
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -2535,6 +2559,10 @@ def test_update_rest(request_type):
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -2581,6 +2609,7 @@ def test_update_rest(request_type):
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -2849,6 +2878,10 @@ def test_update_rest_bad_request(
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -2895,6 +2928,7 @@ def test_update_rest_bad_request(
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -3014,6 +3048,10 @@ def test_update_unary_rest(request_type):
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -3060,6 +3098,7 @@ def test_update_unary_rest(request_type):
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",
@@ -3306,6 +3345,10 @@ def test_update_unary_rest_bad_request(
             "cores_per_license": "cores_per_license_value",
             "license_": "license__value",
         },
+        "merge_source_commitments": [
+            "merge_source_commitments_value1",
+            "merge_source_commitments_value2",
+        ],
         "name": "name_value",
         "plan": "plan_value",
         "region": "region_value",
@@ -3352,6 +3395,7 @@ def test_update_unary_rest_bad_request(
             }
         ],
         "self_link": "self_link_value",
+        "split_source_commitment": "split_source_commitment_value",
         "start_timestamp": "start_timestamp_value",
         "status": "status_value",
         "status_message": "status_message_value",

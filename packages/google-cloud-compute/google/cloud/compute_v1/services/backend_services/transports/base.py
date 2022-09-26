@@ -162,6 +162,11 @@ class BackendServicesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=None,
@@ -179,6 +184,11 @@ class BackendServicesTransport(abc.ABC):
             ),
             self.set_edge_security_policy: gapic_v1.method.wrap_method(
                 self.set_edge_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -264,6 +274,15 @@ class BackendServicesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.GetIamPolicyBackendServiceRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def insert(
         self,
     ) -> Callable[
@@ -296,6 +315,15 @@ class BackendServicesTransport(abc.ABC):
     ) -> Callable[
         [compute.SetEdgeSecurityPolicyBackendServiceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.SetIamPolicyBackendServiceRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
     ]:
         raise NotImplementedError()
 

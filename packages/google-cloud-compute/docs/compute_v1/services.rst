@@ -62,8 +62,10 @@ Services for Google Cloud Compute v1 API
     regions
     region_security_policies
     region_ssl_certificates
+    region_ssl_policies
     region_target_http_proxies
     region_target_https_proxies
+    region_target_tcp_proxies
     region_url_maps
     reservations
     resource_policies

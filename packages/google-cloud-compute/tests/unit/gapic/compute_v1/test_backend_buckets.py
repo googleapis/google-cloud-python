@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -2527,6 +2527,7 @@ def test_get_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendBucket(
             bucket_name="bucket_name_value",
+            compression_mode="compression_mode_value",
             creation_timestamp="creation_timestamp_value",
             custom_response_headers=["custom_response_headers_value"],
             description="description_value",
@@ -2551,6 +2552,7 @@ def test_get_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.BackendBucket)
     assert response.bucket_name == "bucket_name_value"
+    assert response.compression_mode == "compression_mode_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.custom_response_headers == ["custom_response_headers_value"]
     assert response.description == "description_value"
@@ -2846,6 +2848,7 @@ def test_insert_rest(request_type):
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -3113,6 +3116,7 @@ def test_insert_rest_bad_request(
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -3251,6 +3255,7 @@ def test_insert_unary_rest(request_type):
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -3498,6 +3503,7 @@ def test_insert_unary_rest_bad_request(
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -3984,6 +3990,7 @@ def test_patch_rest(request_type):
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -4256,6 +4263,7 @@ def test_patch_rest_bad_request(
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -4396,6 +4404,7 @@ def test_patch_unary_rest(request_type):
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -4648,6 +4657,7 @@ def test_patch_unary_rest_bad_request(
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -5444,6 +5454,7 @@ def test_update_rest(request_type):
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -5716,6 +5727,7 @@ def test_update_rest_bad_request(
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -5856,6 +5868,7 @@ def test_update_unary_rest(request_type):
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",
@@ -6108,6 +6121,7 @@ def test_update_unary_rest_bad_request(
                 "signed_url_key_names_value2",
             ],
         },
+        "compression_mode": "compression_mode_value",
         "creation_timestamp": "creation_timestamp_value",
         "custom_response_headers": [
             "custom_response_headers_value1",

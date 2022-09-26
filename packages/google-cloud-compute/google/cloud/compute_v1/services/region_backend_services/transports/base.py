@@ -147,6 +147,11 @@ class RegionBackendServicesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=None,
@@ -159,6 +164,11 @@ class RegionBackendServicesTransport(abc.ABC):
             ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -209,6 +219,15 @@ class RegionBackendServicesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.GetIamPolicyRegionBackendServiceRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def insert(
         self,
     ) -> Callable[
@@ -232,6 +251,15 @@ class RegionBackendServicesTransport(abc.ABC):
     ) -> Callable[
         [compute.PatchRegionBackendServiceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.SetIamPolicyRegionBackendServiceRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
     ]:
         raise NotImplementedError()
 

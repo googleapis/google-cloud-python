@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -2911,6 +2911,7 @@ def test_get_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendService(
             affinity_cookie_ttl_sec=2432,
+            compression_mode="compression_mode_value",
             creation_timestamp="creation_timestamp_value",
             custom_request_headers=["custom_request_headers_value"],
             custom_response_headers=["custom_response_headers_value"],
@@ -2949,6 +2950,7 @@ def test_get_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.BackendService)
     assert response.affinity_cookie_ttl_sec == 2432
+    assert response.compression_mode == "compression_mode_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.custom_request_headers == ["custom_request_headers_value"]
     assert response.custom_response_headers == ["custom_response_headers_value"]
@@ -3510,6 +3512,292 @@ def test_get_health_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.GetIamPolicyBackendServiceRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Policy)
+    assert response.etag == "etag_value"
+    assert response.iam_owned is True
+    assert response.version == 774
+
+
+def test_get_iam_policy_rest_required_fields(
+    request_type=compute.GetIamPolicyBackendServiceRequest,
+):
+    transport_class = transports.BackendServicesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("options_requested_policy_version",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_iam_policy(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_iam_policy_rest_unset_required_fields():
+    transport = transports.BackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("optionsRequestedPolicyVersion",))
+        & set(
+            (
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.BackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackendServicesRestInterceptor(),
+    )
+    client = BackendServicesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetIamPolicyBackendServiceRequest.pb(
+            compute.GetIamPolicyBackendServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.GetIamPolicyBackendServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetIamPolicyBackendServiceRequest
+):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+def test_get_iam_policy_rest_flattened():
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_iam_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/backendServices/{resource}/getIamPolicy"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_iam_policy(
+            compute.GetIamPolicyBackendServiceRequest(),
+            project="project_value",
+            resource="resource_value",
+        )
+
+
+def test_get_iam_policy_rest_error():
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.InsertBackendServiceRequest,
         dict,
     ],
@@ -3584,6 +3872,7 @@ def test_insert_rest(request_type):
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -3958,6 +4247,7 @@ def test_insert_rest_bad_request(
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -4203,6 +4493,7 @@ def test_insert_unary_rest(request_type):
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -4557,6 +4848,7 @@ def test_insert_unary_rest_bad_request(
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -5150,6 +5442,7 @@ def test_patch_rest(request_type):
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -5529,6 +5822,7 @@ def test_patch_rest_bad_request(
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -5776,6 +6070,7 @@ def test_patch_unary_rest(request_type):
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -6135,6 +6430,7 @@ def test_patch_unary_rest_bad_request(
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -6964,6 +7260,452 @@ def test_set_edge_security_policy_unary_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.SetIamPolicyBackendServiceRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request_init["global_set_policy_request_resource"] = {
+        "bindings": [
+            {
+                "binding_id": "binding_id_value",
+                "condition": {
+                    "description": "description_value",
+                    "expression": "expression_value",
+                    "location": "location_value",
+                    "title": "title_value",
+                },
+                "members": ["members_value1", "members_value2"],
+                "role": "role_value",
+            }
+        ],
+        "etag": "etag_value",
+        "policy": {
+            "audit_configs": [
+                {
+                    "audit_log_configs": [
+                        {
+                            "exempted_members": [
+                                "exempted_members_value1",
+                                "exempted_members_value2",
+                            ],
+                            "ignore_child_exemptions": True,
+                            "log_type": "log_type_value",
+                        }
+                    ],
+                    "exempted_members": [
+                        "exempted_members_value1",
+                        "exempted_members_value2",
+                    ],
+                    "service": "service_value",
+                }
+            ],
+            "bindings": {},
+            "etag": "etag_value",
+            "iam_owned": True,
+            "rules": [
+                {
+                    "action": "action_value",
+                    "conditions": [
+                        {
+                            "iam": "iam_value",
+                            "op": "op_value",
+                            "svc": "svc_value",
+                            "sys": "sys_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
+                    "description": "description_value",
+                    "ins": ["ins_value1", "ins_value2"],
+                    "log_configs": [
+                        {
+                            "cloud_audit": {
+                                "authorization_logging_options": {
+                                    "permission_type": "permission_type_value"
+                                },
+                                "log_name": "log_name_value",
+                            },
+                            "counter": {
+                                "custom_fields": [
+                                    {"name": "name_value", "value": "value_value"}
+                                ],
+                                "field": "field_value",
+                                "metric": "metric_value",
+                            },
+                            "data_access": {"log_mode": "log_mode_value"},
+                        }
+                    ],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
+                }
+            ],
+            "version": 774,
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Policy)
+    assert response.etag == "etag_value"
+    assert response.iam_owned is True
+    assert response.version == 774
+
+
+def test_set_iam_policy_rest_required_fields(
+    request_type=compute.SetIamPolicyBackendServiceRequest,
+):
+    transport_class = transports.BackendServicesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_iam_policy(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.BackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "globalSetPolicyRequestResource",
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.BackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackendServicesRestInterceptor(),
+    )
+    client = BackendServicesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.SetIamPolicyBackendServiceRequest.pb(
+            compute.SetIamPolicyBackendServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.SetIamPolicyBackendServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetIamPolicyBackendServiceRequest
+):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request_init["global_set_policy_request_resource"] = {
+        "bindings": [
+            {
+                "binding_id": "binding_id_value",
+                "condition": {
+                    "description": "description_value",
+                    "expression": "expression_value",
+                    "location": "location_value",
+                    "title": "title_value",
+                },
+                "members": ["members_value1", "members_value2"],
+                "role": "role_value",
+            }
+        ],
+        "etag": "etag_value",
+        "policy": {
+            "audit_configs": [
+                {
+                    "audit_log_configs": [
+                        {
+                            "exempted_members": [
+                                "exempted_members_value1",
+                                "exempted_members_value2",
+                            ],
+                            "ignore_child_exemptions": True,
+                            "log_type": "log_type_value",
+                        }
+                    ],
+                    "exempted_members": [
+                        "exempted_members_value1",
+                        "exempted_members_value2",
+                    ],
+                    "service": "service_value",
+                }
+            ],
+            "bindings": {},
+            "etag": "etag_value",
+            "iam_owned": True,
+            "rules": [
+                {
+                    "action": "action_value",
+                    "conditions": [
+                        {
+                            "iam": "iam_value",
+                            "op": "op_value",
+                            "svc": "svc_value",
+                            "sys": "sys_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
+                    "description": "description_value",
+                    "ins": ["ins_value1", "ins_value2"],
+                    "log_configs": [
+                        {
+                            "cloud_audit": {
+                                "authorization_logging_options": {
+                                    "permission_type": "permission_type_value"
+                                },
+                                "log_name": "log_name_value",
+                            },
+                            "counter": {
+                                "custom_fields": [
+                                    {"name": "name_value", "value": "value_value"}
+                                ],
+                                "field": "field_value",
+                                "metric": "metric_value",
+                            },
+                            "data_access": {"log_mode": "log_mode_value"},
+                        }
+                    ],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
+                }
+            ],
+            "version": 774,
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+def test_set_iam_policy_rest_flattened():
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_iam_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/backendServices/{resource}/setIamPolicy"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_iam_policy(
+            compute.SetIamPolicyBackendServiceRequest(),
+            project="project_value",
+            resource="resource_value",
+            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
+        )
+
+
+def test_set_iam_policy_rest_error():
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.SetSecurityPolicyBackendServiceRequest,
         dict,
     ],
@@ -7692,6 +8434,7 @@ def test_update_rest(request_type):
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -8071,6 +8814,7 @@ def test_update_rest_bad_request(
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -8318,6 +9062,7 @@ def test_update_unary_rest(request_type):
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -8677,6 +9422,7 @@ def test_update_unary_rest_bad_request(
             "max_requests_per_connection": 2902,
             "max_retries": 1187,
         },
+        "compression_mode": "compression_mode_value",
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
@@ -8963,10 +9709,12 @@ def test_backend_services_base_transport():
         "delete_signed_url_key",
         "get",
         "get_health",
+        "get_iam_policy",
         "insert",
         "list",
         "patch",
         "set_edge_security_policy",
+        "set_iam_policy",
         "set_security_policy",
         "update",
     )
@@ -9124,6 +9872,9 @@ def test_backend_services_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_health._session
     session2 = client2.transport.get_health._session
     assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
+    assert session1 != session2
     session1 = client1.transport.insert._session
     session2 = client2.transport.insert._session
     assert session1 != session2
@@ -9135,6 +9886,9 @@ def test_backend_services_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.set_edge_security_policy._session
     session2 = client2.transport.set_edge_security_policy._session
+    assert session1 != session2
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
     assert session1 != session2
     session1 = client1.transport.set_security_policy._session
     session2 = client2.transport.set_security_policy._session

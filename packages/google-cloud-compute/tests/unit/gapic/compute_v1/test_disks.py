@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -3680,6 +3680,7 @@ def test_insert_rest(request_type):
         "location_hint": "location_hint_value",
         "name": "name_value",
         "options": "options_value",
+        "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
         "region": "region_value",
@@ -3962,6 +3963,7 @@ def test_insert_rest_bad_request(
         "location_hint": "location_hint_value",
         "name": "name_value",
         "options": "options_value",
+        "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
         "region": "region_value",
@@ -4102,6 +4104,7 @@ def test_insert_unary_rest(request_type):
         "location_hint": "location_hint_value",
         "name": "name_value",
         "options": "options_value",
+        "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
         "region": "region_value",
@@ -4362,6 +4365,7 @@ def test_insert_unary_rest_bad_request(
         "location_hint": "location_hint_value",
         "name": "name_value",
         "options": "options_value",
+        "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
         "region": "region_value",

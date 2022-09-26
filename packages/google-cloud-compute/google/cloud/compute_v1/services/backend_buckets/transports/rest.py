@@ -537,7 +537,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -640,7 +640,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -746,7 +746,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -838,7 +838,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -948,7 +948,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1038,7 +1038,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1148,7 +1148,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1261,7 +1261,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 
@@ -1372,7 +1372,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
             )
 

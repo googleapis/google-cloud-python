@@ -30,7 +30,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -1805,6 +1805,7 @@ def test_insert_rest(request_type):
                 "enable_nested_virtualization": True,
                 "enable_uefi_networking": True,
                 "threads_per_core": 1689,
+                "visible_core_count": 1918,
             },
             "can_ip_forward": True,
             "confidential_instance_config": {"enable_confidential_compute": True},
@@ -1823,6 +1824,7 @@ def test_insert_rest(request_type):
                         "sha256": "sha256_value",
                     },
                     "disk_size_gb": 1261,
+                    "force_attach": True,
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
@@ -1835,6 +1837,7 @@ def test_insert_rest(request_type):
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
                             "resource_policies_value2",
@@ -2206,6 +2209,7 @@ def test_insert_rest_bad_request(
                 "enable_nested_virtualization": True,
                 "enable_uefi_networking": True,
                 "threads_per_core": 1689,
+                "visible_core_count": 1918,
             },
             "can_ip_forward": True,
             "confidential_instance_config": {"enable_confidential_compute": True},
@@ -2224,6 +2228,7 @@ def test_insert_rest_bad_request(
                         "sha256": "sha256_value",
                     },
                     "disk_size_gb": 1261,
+                    "force_attach": True,
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
@@ -2236,6 +2241,7 @@ def test_insert_rest_bad_request(
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
                             "resource_policies_value2",
@@ -2476,6 +2482,7 @@ def test_insert_unary_rest(request_type):
                 "enable_nested_virtualization": True,
                 "enable_uefi_networking": True,
                 "threads_per_core": 1689,
+                "visible_core_count": 1918,
             },
             "can_ip_forward": True,
             "confidential_instance_config": {"enable_confidential_compute": True},
@@ -2494,6 +2501,7 @@ def test_insert_unary_rest(request_type):
                         "sha256": "sha256_value",
                     },
                     "disk_size_gb": 1261,
+                    "force_attach": True,
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
@@ -2506,6 +2514,7 @@ def test_insert_unary_rest(request_type):
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
                             "resource_policies_value2",
@@ -2855,6 +2864,7 @@ def test_insert_unary_rest_bad_request(
                 "enable_nested_virtualization": True,
                 "enable_uefi_networking": True,
                 "threads_per_core": 1689,
+                "visible_core_count": 1918,
             },
             "can_ip_forward": True,
             "confidential_instance_config": {"enable_confidential_compute": True},
@@ -2873,6 +2883,7 @@ def test_insert_unary_rest_bad_request(
                         "sha256": "sha256_value",
                     },
                     "disk_size_gb": 1261,
+                    "force_attach": True,
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
@@ -2885,6 +2896,7 @@ def test_insert_unary_rest_bad_request(
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
                             "resource_policies_value2",

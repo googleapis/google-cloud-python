@@ -147,11 +147,17 @@ from google.cloud.compute_v1.services.region_security_policies.client import (
 from google.cloud.compute_v1.services.region_ssl_certificates.client import (
     RegionSslCertificatesClient,
 )
+from google.cloud.compute_v1.services.region_ssl_policies.client import (
+    RegionSslPoliciesClient,
+)
 from google.cloud.compute_v1.services.region_target_http_proxies.client import (
     RegionTargetHttpProxiesClient,
 )
 from google.cloud.compute_v1.services.region_target_https_proxies.client import (
     RegionTargetHttpsProxiesClient,
+)
+from google.cloud.compute_v1.services.region_target_tcp_proxies.client import (
+    RegionTargetTcpProxiesClient,
 )
 from google.cloud.compute_v1.services.region_url_maps.client import RegionUrlMapsClient
 from google.cloud.compute_v1.services.reservations.client import ReservationsClient
@@ -282,6 +288,7 @@ from google.cloud.compute_v1.types.compute import (
     AggregatedListServiceAttachmentsRequest,
 )
 from google.cloud.compute_v1.types.compute import AggregatedListSslCertificatesRequest
+from google.cloud.compute_v1.types.compute import AggregatedListSslPoliciesRequest
 from google.cloud.compute_v1.types.compute import AggregatedListSubnetworksRequest
 from google.cloud.compute_v1.types.compute import AggregatedListTargetHttpProxiesRequest
 from google.cloud.compute_v1.types.compute import (
@@ -494,8 +501,10 @@ from google.cloud.compute_v1.types.compute import DeleteRegionOperationRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionOperationResponse
 from google.cloud.compute_v1.types.compute import DeleteRegionSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionSslCertificateRequest
+from google.cloud.compute_v1.types.compute import DeleteRegionSslPolicyRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionTargetHttpProxyRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1.types.compute import DeleteRegionTargetTcpProxyRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionUrlMapRequest
 from google.cloud.compute_v1.types.compute import DeleteReservationRequest
 from google.cloud.compute_v1.types.compute import DeleteResourcePolicyRequest
@@ -541,6 +550,7 @@ from google.cloud.compute_v1.types.compute import DiskAggregatedList
 from google.cloud.compute_v1.types.compute import DiskInstantiationConfig
 from google.cloud.compute_v1.types.compute import DiskList
 from google.cloud.compute_v1.types.compute import DiskMoveRequest
+from google.cloud.compute_v1.types.compute import DiskParams
 from google.cloud.compute_v1.types.compute import DisksAddResourcePoliciesRequest
 from google.cloud.compute_v1.types.compute import DisksRemoveResourcePoliciesRequest
 from google.cloud.compute_v1.types.compute import DisksResizeRequest
@@ -625,6 +635,7 @@ from google.cloud.compute_v1.types.compute import GetHealthBackendServiceRequest
 from google.cloud.compute_v1.types.compute import GetHealthCheckRequest
 from google.cloud.compute_v1.types.compute import GetHealthRegionBackendServiceRequest
 from google.cloud.compute_v1.types.compute import GetHealthTargetPoolRequest
+from google.cloud.compute_v1.types.compute import GetIamPolicyBackendServiceRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyDiskRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyImageRequest
@@ -637,6 +648,9 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import GetIamPolicyNodeGroupRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyNodeTemplateRequest
+from google.cloud.compute_v1.types.compute import (
+    GetIamPolicyRegionBackendServiceRequest,
+)
 from google.cloud.compute_v1.types.compute import GetIamPolicyRegionDiskRequest
 from google.cloud.compute_v1.types.compute import (
     GetIamPolicyRegionNetworkFirewallPolicyRequest,
@@ -687,8 +701,10 @@ from google.cloud.compute_v1.types.compute import GetRegionOperationRequest
 from google.cloud.compute_v1.types.compute import GetRegionRequest
 from google.cloud.compute_v1.types.compute import GetRegionSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import GetRegionSslCertificateRequest
+from google.cloud.compute_v1.types.compute import GetRegionSslPolicyRequest
 from google.cloud.compute_v1.types.compute import GetRegionTargetHttpProxyRequest
 from google.cloud.compute_v1.types.compute import GetRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1.types.compute import GetRegionTargetTcpProxyRequest
 from google.cloud.compute_v1.types.compute import GetRegionUrlMapRequest
 from google.cloud.compute_v1.types.compute import GetReservationRequest
 from google.cloud.compute_v1.types.compute import GetResourcePolicyRequest
@@ -833,8 +849,10 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import InsertRegionSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import InsertRegionSslCertificateRequest
+from google.cloud.compute_v1.types.compute import InsertRegionSslPolicyRequest
 from google.cloud.compute_v1.types.compute import InsertRegionTargetHttpProxyRequest
 from google.cloud.compute_v1.types.compute import InsertRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1.types.compute import InsertRegionTargetTcpProxyRequest
 from google.cloud.compute_v1.types.compute import InsertRegionUrlMapRequest
 from google.cloud.compute_v1.types.compute import InsertReservationRequest
 from google.cloud.compute_v1.types.compute import InsertResourcePolicyRequest
@@ -859,6 +877,8 @@ from google.cloud.compute_v1.types.compute import InsertVpnGatewayRequest
 from google.cloud.compute_v1.types.compute import InsertVpnTunnelRequest
 from google.cloud.compute_v1.types.compute import Instance
 from google.cloud.compute_v1.types.compute import InstanceAggregatedList
+from google.cloud.compute_v1.types.compute import InstanceConsumptionData
+from google.cloud.compute_v1.types.compute import InstanceConsumptionInfo
 from google.cloud.compute_v1.types.compute import InstanceGroup
 from google.cloud.compute_v1.types.compute import InstanceGroupAggregatedList
 from google.cloud.compute_v1.types.compute import InstanceGroupList
@@ -987,6 +1007,9 @@ from google.cloud.compute_v1.types.compute import ListAddressesRequest
 from google.cloud.compute_v1.types.compute import ListAssociationsFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import ListAutoscalersRequest
 from google.cloud.compute_v1.types.compute import (
+    ListAvailableFeaturesRegionSslPoliciesRequest,
+)
+from google.cloud.compute_v1.types.compute import (
     ListAvailableFeaturesSslPoliciesRequest,
 )
 from google.cloud.compute_v1.types.compute import ListBackendBucketsRequest
@@ -1078,8 +1101,10 @@ from google.cloud.compute_v1.types.compute import ListRegionOperationsRequest
 from google.cloud.compute_v1.types.compute import ListRegionSecurityPoliciesRequest
 from google.cloud.compute_v1.types.compute import ListRegionsRequest
 from google.cloud.compute_v1.types.compute import ListRegionSslCertificatesRequest
+from google.cloud.compute_v1.types.compute import ListRegionSslPoliciesRequest
 from google.cloud.compute_v1.types.compute import ListRegionTargetHttpProxiesRequest
 from google.cloud.compute_v1.types.compute import ListRegionTargetHttpsProxiesRequest
+from google.cloud.compute_v1.types.compute import ListRegionTargetTcpProxiesRequest
 from google.cloud.compute_v1.types.compute import ListRegionUrlMapsRequest
 from google.cloud.compute_v1.types.compute import ListReservationsRequest
 from google.cloud.compute_v1.types.compute import ListResourcePoliciesRequest
@@ -1252,6 +1277,7 @@ from google.cloud.compute_v1.types.compute import (
     PatchRegionNetworkFirewallPolicyRequest,
 )
 from google.cloud.compute_v1.types.compute import PatchRegionSecurityPolicyRequest
+from google.cloud.compute_v1.types.compute import PatchRegionSslPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchRegionTargetHttpsProxyRequest
 from google.cloud.compute_v1.types.compute import PatchRegionUrlMapRequest
 from google.cloud.compute_v1.types.compute import PatchRouterRequest
@@ -1483,6 +1509,9 @@ from google.cloud.compute_v1.types.compute import (
     SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig,
 )
 from google.cloud.compute_v1.types.compute import SecurityPolicyAdvancedOptionsConfig
+from google.cloud.compute_v1.types.compute import (
+    SecurityPolicyAdvancedOptionsConfigJsonCustomConfig,
+)
 from google.cloud.compute_v1.types.compute import SecurityPolicyDdosProtectionConfig
 from google.cloud.compute_v1.types.compute import SecurityPolicyList
 from google.cloud.compute_v1.types.compute import SecurityPolicyRecaptchaOptionsConfig
@@ -1532,6 +1561,7 @@ from google.cloud.compute_v1.types.compute import (
 from google.cloud.compute_v1.types.compute import (
     SetEdgeSecurityPolicyBackendServiceRequest,
 )
+from google.cloud.compute_v1.types.compute import SetIamPolicyBackendServiceRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyDiskRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyImageRequest
@@ -1544,6 +1574,9 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import SetIamPolicyNodeGroupRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyNodeTemplateRequest
+from google.cloud.compute_v1.types.compute import (
+    SetIamPolicyRegionBackendServiceRequest,
+)
 from google.cloud.compute_v1.types.compute import SetIamPolicyRegionDiskRequest
 from google.cloud.compute_v1.types.compute import (
     SetIamPolicyRegionNetworkFirewallPolicyRequest,
@@ -1559,15 +1592,22 @@ from google.cloud.compute_v1.types.compute import (
 from google.cloud.compute_v1.types.compute import (
     SetInstanceTemplateRegionInstanceGroupManagerRequest,
 )
+from google.cloud.compute_v1.types.compute import SetLabelsAddressRequest
 from google.cloud.compute_v1.types.compute import SetLabelsDiskRequest
 from google.cloud.compute_v1.types.compute import SetLabelsExternalVpnGatewayRequest
 from google.cloud.compute_v1.types.compute import SetLabelsForwardingRuleRequest
+from google.cloud.compute_v1.types.compute import SetLabelsGlobalAddressRequest
 from google.cloud.compute_v1.types.compute import SetLabelsGlobalForwardingRuleRequest
 from google.cloud.compute_v1.types.compute import SetLabelsImageRequest
 from google.cloud.compute_v1.types.compute import SetLabelsInstanceRequest
+from google.cloud.compute_v1.types.compute import SetLabelsInterconnectAttachmentRequest
+from google.cloud.compute_v1.types.compute import SetLabelsInterconnectRequest
 from google.cloud.compute_v1.types.compute import SetLabelsRegionDiskRequest
+from google.cloud.compute_v1.types.compute import SetLabelsSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import SetLabelsSnapshotRequest
+from google.cloud.compute_v1.types.compute import SetLabelsTargetVpnGatewayRequest
 from google.cloud.compute_v1.types.compute import SetLabelsVpnGatewayRequest
+from google.cloud.compute_v1.types.compute import SetLabelsVpnTunnelRequest
 from google.cloud.compute_v1.types.compute import SetMachineResourcesInstanceRequest
 from google.cloud.compute_v1.types.compute import SetMachineTypeInstanceRequest
 from google.cloud.compute_v1.types.compute import SetMetadataInstanceRequest
@@ -1638,10 +1678,12 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import SslCertificatesScopedList
 from google.cloud.compute_v1.types.compute import SSLHealthCheck
+from google.cloud.compute_v1.types.compute import SslPoliciesAggregatedList
 from google.cloud.compute_v1.types.compute import SslPoliciesList
 from google.cloud.compute_v1.types.compute import (
     SslPoliciesListAvailableFeaturesResponse,
 )
+from google.cloud.compute_v1.types.compute import SslPoliciesScopedList
 from google.cloud.compute_v1.types.compute import SslPolicy
 from google.cloud.compute_v1.types.compute import SslPolicyReference
 from google.cloud.compute_v1.types.compute import StartInstanceRequest
@@ -1907,8 +1949,10 @@ __all__ = (
     "RegionsClient",
     "RegionSecurityPoliciesClient",
     "RegionSslCertificatesClient",
+    "RegionSslPoliciesClient",
     "RegionTargetHttpProxiesClient",
     "RegionTargetHttpsProxiesClient",
+    "RegionTargetTcpProxiesClient",
     "RegionUrlMapsClient",
     "ReservationsClient",
     "ResourcePoliciesClient",
@@ -1993,6 +2037,7 @@ __all__ = (
     "AggregatedListSecurityPoliciesRequest",
     "AggregatedListServiceAttachmentsRequest",
     "AggregatedListSslCertificatesRequest",
+    "AggregatedListSslPoliciesRequest",
     "AggregatedListSubnetworksRequest",
     "AggregatedListTargetHttpProxiesRequest",
     "AggregatedListTargetHttpsProxiesRequest",
@@ -2137,8 +2182,10 @@ __all__ = (
     "DeleteRegionOperationResponse",
     "DeleteRegionSecurityPolicyRequest",
     "DeleteRegionSslCertificateRequest",
+    "DeleteRegionSslPolicyRequest",
     "DeleteRegionTargetHttpProxyRequest",
     "DeleteRegionTargetHttpsProxyRequest",
+    "DeleteRegionTargetTcpProxyRequest",
     "DeleteRegionUrlMapRequest",
     "DeleteReservationRequest",
     "DeleteResourcePolicyRequest",
@@ -2178,6 +2225,7 @@ __all__ = (
     "DiskInstantiationConfig",
     "DiskList",
     "DiskMoveRequest",
+    "DiskParams",
     "DisksAddResourcePoliciesRequest",
     "DisksRemoveResourcePoliciesRequest",
     "DisksResizeRequest",
@@ -2252,6 +2300,7 @@ __all__ = (
     "GetHealthCheckRequest",
     "GetHealthRegionBackendServiceRequest",
     "GetHealthTargetPoolRequest",
+    "GetIamPolicyBackendServiceRequest",
     "GetIamPolicyDiskRequest",
     "GetIamPolicyFirewallPolicyRequest",
     "GetIamPolicyImageRequest",
@@ -2262,6 +2311,7 @@ __all__ = (
     "GetIamPolicyNetworkFirewallPolicyRequest",
     "GetIamPolicyNodeGroupRequest",
     "GetIamPolicyNodeTemplateRequest",
+    "GetIamPolicyRegionBackendServiceRequest",
     "GetIamPolicyRegionDiskRequest",
     "GetIamPolicyRegionNetworkFirewallPolicyRequest",
     "GetIamPolicyReservationRequest",
@@ -2310,8 +2360,10 @@ __all__ = (
     "GetRegionRequest",
     "GetRegionSecurityPolicyRequest",
     "GetRegionSslCertificateRequest",
+    "GetRegionSslPolicyRequest",
     "GetRegionTargetHttpProxyRequest",
     "GetRegionTargetHttpsProxyRequest",
+    "GetRegionTargetTcpProxyRequest",
     "GetRegionUrlMapRequest",
     "GetReservationRequest",
     "GetResourcePolicyRequest",
@@ -2434,8 +2486,10 @@ __all__ = (
     "InsertRegionNotificationEndpointRequest",
     "InsertRegionSecurityPolicyRequest",
     "InsertRegionSslCertificateRequest",
+    "InsertRegionSslPolicyRequest",
     "InsertRegionTargetHttpProxyRequest",
     "InsertRegionTargetHttpsProxyRequest",
+    "InsertRegionTargetTcpProxyRequest",
     "InsertRegionUrlMapRequest",
     "InsertReservationRequest",
     "InsertResourcePolicyRequest",
@@ -2460,6 +2514,8 @@ __all__ = (
     "InsertVpnTunnelRequest",
     "Instance",
     "InstanceAggregatedList",
+    "InstanceConsumptionData",
+    "InstanceConsumptionInfo",
     "InstanceGroup",
     "InstanceGroupAggregatedList",
     "InstanceGroupList",
@@ -2549,6 +2605,7 @@ __all__ = (
     "ListAddressesRequest",
     "ListAssociationsFirewallPolicyRequest",
     "ListAutoscalersRequest",
+    "ListAvailableFeaturesRegionSslPoliciesRequest",
     "ListAvailableFeaturesSslPoliciesRequest",
     "ListBackendBucketsRequest",
     "ListBackendServicesRequest",
@@ -2615,8 +2672,10 @@ __all__ = (
     "ListRegionSecurityPoliciesRequest",
     "ListRegionsRequest",
     "ListRegionSslCertificatesRequest",
+    "ListRegionSslPoliciesRequest",
     "ListRegionTargetHttpProxiesRequest",
     "ListRegionTargetHttpsProxiesRequest",
+    "ListRegionTargetTcpProxiesRequest",
     "ListRegionUrlMapsRequest",
     "ListReservationsRequest",
     "ListResourcePoliciesRequest",
@@ -2765,6 +2824,7 @@ __all__ = (
     "PatchRegionInstanceGroupManagerRequest",
     "PatchRegionNetworkFirewallPolicyRequest",
     "PatchRegionSecurityPolicyRequest",
+    "PatchRegionSslPolicyRequest",
     "PatchRegionTargetHttpsProxyRequest",
     "PatchRegionUrlMapRequest",
     "PatchRouterRequest",
@@ -2924,6 +2984,7 @@ __all__ = (
     "SecurityPolicyAdaptiveProtectionConfig",
     "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
     "SecurityPolicyAdvancedOptionsConfig",
+    "SecurityPolicyAdvancedOptionsConfigJsonCustomConfig",
     "SecurityPolicyDdosProtectionConfig",
     "SecurityPolicyList",
     "SecurityPolicyRecaptchaOptionsConfig",
@@ -2959,6 +3020,7 @@ __all__ = (
     "SetDiskAutoDeleteInstanceRequest",
     "SetEdgeSecurityPolicyBackendBucketRequest",
     "SetEdgeSecurityPolicyBackendServiceRequest",
+    "SetIamPolicyBackendServiceRequest",
     "SetIamPolicyDiskRequest",
     "SetIamPolicyFirewallPolicyRequest",
     "SetIamPolicyImageRequest",
@@ -2969,6 +3031,7 @@ __all__ = (
     "SetIamPolicyNetworkFirewallPolicyRequest",
     "SetIamPolicyNodeGroupRequest",
     "SetIamPolicyNodeTemplateRequest",
+    "SetIamPolicyRegionBackendServiceRequest",
     "SetIamPolicyRegionDiskRequest",
     "SetIamPolicyRegionNetworkFirewallPolicyRequest",
     "SetIamPolicyReservationRequest",
@@ -2978,15 +3041,22 @@ __all__ = (
     "SetIamPolicySubnetworkRequest",
     "SetInstanceTemplateInstanceGroupManagerRequest",
     "SetInstanceTemplateRegionInstanceGroupManagerRequest",
+    "SetLabelsAddressRequest",
     "SetLabelsDiskRequest",
     "SetLabelsExternalVpnGatewayRequest",
     "SetLabelsForwardingRuleRequest",
+    "SetLabelsGlobalAddressRequest",
     "SetLabelsGlobalForwardingRuleRequest",
     "SetLabelsImageRequest",
     "SetLabelsInstanceRequest",
+    "SetLabelsInterconnectAttachmentRequest",
+    "SetLabelsInterconnectRequest",
     "SetLabelsRegionDiskRequest",
+    "SetLabelsSecurityPolicyRequest",
     "SetLabelsSnapshotRequest",
+    "SetLabelsTargetVpnGatewayRequest",
     "SetLabelsVpnGatewayRequest",
+    "SetLabelsVpnTunnelRequest",
     "SetMachineResourcesInstanceRequest",
     "SetMachineTypeInstanceRequest",
     "SetMetadataInstanceRequest",
@@ -3037,8 +3107,10 @@ __all__ = (
     "SslCertificateSelfManagedSslCertificate",
     "SslCertificatesScopedList",
     "SSLHealthCheck",
+    "SslPoliciesAggregatedList",
     "SslPoliciesList",
     "SslPoliciesListAvailableFeaturesResponse",
+    "SslPoliciesScopedList",
     "SslPolicy",
     "SslPolicyReference",
     "StartInstanceRequest",
