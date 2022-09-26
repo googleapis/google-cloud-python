@@ -50,7 +50,9 @@ dependencies.
 Code samples and snippets
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Code samples and snippets live in the `samples/` folder.
+Code samples and snippets live in `python-docs-samples`_ repository.
+
+.. _python-docs-samples: https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/dns/api
 
 
 Supported Python Versions

@@ -28,7 +28,7 @@ common = gcp.CommonTemplates()
 templated_files = common.py_library(
     microgenerator=True,
 )
-s.move(templated_files, excludes=["docs/multiprocessing.rst"])
+s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst"])
 
 python.py_samples(skip_readmes=True)
 
