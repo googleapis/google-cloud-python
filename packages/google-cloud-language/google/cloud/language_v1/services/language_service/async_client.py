@@ -248,7 +248,7 @@ class LanguageServiceAsyncClient:
                 The request object. The sentiment analysis request
                 message.
             document (:class:`google.cloud.language_v1.types.Document`):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -367,7 +367,7 @@ class LanguageServiceAsyncClient:
             request (Union[google.cloud.language_v1.types.AnalyzeEntitiesRequest, dict]):
                 The request object. The entity analysis request message.
             document (:class:`google.cloud.language_v1.types.Document`):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -485,7 +485,7 @@ class LanguageServiceAsyncClient:
                 The request object. The entity-level sentiment analysis
                 request message.
             document (:class:`google.cloud.language_v1.types.Document`):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -603,7 +603,7 @@ class LanguageServiceAsyncClient:
             request (Union[google.cloud.language_v1.types.AnalyzeSyntaxRequest, dict]):
                 The request object. The syntax analysis request message.
             document (:class:`google.cloud.language_v1.types.Document`):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -717,7 +717,7 @@ class LanguageServiceAsyncClient:
                 The request object. The document classification request
                 message.
             document (:class:`google.cloud.language_v1.types.Document`):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -829,12 +829,12 @@ class LanguageServiceAsyncClient:
                 annotation API, which can perform multiple analysis
                 types (sentiment, entities, and syntax) in one call.
             document (:class:`google.cloud.language_v1.types.Document`):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             features (:class:`google.cloud.language_v1.types.AnnotateTextRequest.Features`):
-                The enabled features.
+                Required. The enabled features.
                 This corresponds to the ``features`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

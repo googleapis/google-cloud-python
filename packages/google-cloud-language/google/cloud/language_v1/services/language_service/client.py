@@ -453,7 +453,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 The request object. The sentiment analysis request
                 message.
             document (google.cloud.language_v1.types.Document):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -562,7 +562,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
             request (Union[google.cloud.language_v1.types.AnalyzeEntitiesRequest, dict]):
                 The request object. The entity analysis request message.
             document (google.cloud.language_v1.types.Document):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -670,7 +670,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 The request object. The entity-level sentiment analysis
                 request message.
             document (google.cloud.language_v1.types.Document):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -778,7 +778,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
             request (Union[google.cloud.language_v1.types.AnalyzeSyntaxRequest, dict]):
                 The request object. The syntax analysis request message.
             document (google.cloud.language_v1.types.Document):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -882,7 +882,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 The request object. The document classification request
                 message.
             document (google.cloud.language_v1.types.Document):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -984,12 +984,12 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 annotation API, which can perform multiple analysis
                 types (sentiment, entities, and syntax) in one call.
             document (google.cloud.language_v1.types.Document):
-                Input document.
+                Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             features (google.cloud.language_v1.types.AnnotateTextRequest.Features):
-                The enabled features.
+                Required. The enabled features.
                 This corresponds to the ``features`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

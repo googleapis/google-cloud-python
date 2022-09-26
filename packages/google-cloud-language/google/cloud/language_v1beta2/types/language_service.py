@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "EntityMention",
         "TextSpan",
         "ClassificationCategory",
+        "ClassificationModelOptions",
         "AnalyzeSentimentRequest",
         "AnalyzeSentimentResponse",
         "AnalyzeEntitySentimentRequest",
@@ -95,6 +96,16 @@ class Document(proto.Message):
             the language (either specified by the caller or
             automatically detected) is not supported by the called API
             method, an ``INVALID_ARGUMENT`` error is returned.
+        reference_web_uri (str):
+            The web URI where the document comes from.
+            This URI is not used for fetching the content,
+            but as a hint for analyzing the document.
+        boilerplate_handling (google.cloud.language_v1beta2.types.Document.BoilerplateHandling):
+            Indicates how detected boilerplate(e.g.
+            advertisements, copyright declarations, banners)
+            should be handled for this document. If not
+            specified, boilerplate will be treated the same
+            as content.
     """
 
     class Type(proto.Enum):
@@ -102,6 +113,12 @@ class Document(proto.Message):
         TYPE_UNSPECIFIED = 0
         PLAIN_TEXT = 1
         HTML = 2
+
+    class BoilerplateHandling(proto.Enum):
+        r"""Ways of handling boilerplate detected in the document"""
+        BOILERPLATE_HANDLING_UNSPECIFIED = 0
+        SKIP_BOILERPLATE = 1
+        KEEP_BOILERPLATE = 2
 
     type_ = proto.Field(
         proto.ENUM,
@@ -121,6 +138,15 @@ class Document(proto.Message):
     language = proto.Field(
         proto.STRING,
         number=4,
+    )
+    reference_web_uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    boilerplate_handling = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=BoilerplateHandling,
     )
 
 
@@ -725,6 +751,70 @@ class ClassificationCategory(proto.Message):
     )
 
 
+class ClassificationModelOptions(proto.Message):
+    r"""Model options available for classification requests.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        v1_model (google.cloud.language_v1beta2.types.ClassificationModelOptions.V1Model):
+            Setting this field will use the V1 model and
+            V1 content categories version. The V1 model is a
+            legacy model; support for this will be
+            discontinued in the future.
+
+            This field is a member of `oneof`_ ``model_type``.
+        v2_model (google.cloud.language_v1beta2.types.ClassificationModelOptions.V2Model):
+            Setting this field will use the V2 model with
+            the appropriate content categories version. The
+            V2 model is a better performing model.
+
+            This field is a member of `oneof`_ ``model_type``.
+    """
+
+    class V1Model(proto.Message):
+        r"""Options for the V1 model."""
+
+    class V2Model(proto.Message):
+        r"""Options for the V2 model.
+
+        Attributes:
+            content_categories_version (google.cloud.language_v1beta2.types.ClassificationModelOptions.V2Model.ContentCategoriesVersion):
+                The content categories used for
+                classification.
+        """
+
+        class ContentCategoriesVersion(proto.Enum):
+            r"""The content categories used for classification."""
+            CONTENT_CATEGORIES_VERSION_UNSPECIFIED = 0
+            V1 = 1
+            V2 = 2
+
+        content_categories_version = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ClassificationModelOptions.V2Model.ContentCategoriesVersion",
+        )
+
+    v1_model = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="model_type",
+        message=V1Model,
+    )
+    v2_model = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="model_type",
+        message=V2Model,
+    )
+
+
 class AnalyzeSentimentRequest(proto.Message):
     r"""The sentiment analysis request message.
 
@@ -942,12 +1032,20 @@ class ClassifyTextRequest(proto.Message):
     Attributes:
         document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
+        classification_model_options (google.cloud.language_v1beta2.types.ClassificationModelOptions):
+            Model options to use for classification.
+            Defaults to v1 options if not specified.
     """
 
     document = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Document",
+    )
+    classification_model_options = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ClassificationModelOptions",
     )
 
 
@@ -984,7 +1082,7 @@ class AnnotateTextRequest(proto.Message):
     class Features(proto.Message):
         r"""All available features for sentiment, syntax, and semantic
         analysis. Setting each one to true will enable that specific
-        analysis for the input. Next ID: 10
+        analysis for the input. Next ID: 11
 
         Attributes:
             extract_syntax (bool):
@@ -1001,6 +1099,10 @@ class AnnotateTextRequest(proto.Message):
                 the API will use the default model which classifies into a
                 `predefined
                 taxonomy <https://cloud.google.com/natural-language/docs/categories>`__.
+            classification_model_options (google.cloud.language_v1beta2.types.ClassificationModelOptions):
+                The model options to use for classification. Defaults to v1
+                options if not specified. Only used if ``classify_text`` is
+                set to true.
         """
 
         extract_syntax = proto.Field(
@@ -1022,6 +1124,11 @@ class AnnotateTextRequest(proto.Message):
         classify_text = proto.Field(
             proto.BOOL,
             number=6,
+        )
+        classification_model_options = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message="ClassificationModelOptions",
         )
 
     document = proto.Field(

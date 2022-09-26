@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "EntityMention",
         "TextSpan",
         "ClassificationCategory",
+        "ClassificationModelOptions",
         "AnalyzeSentimentRequest",
         "AnalyzeSentimentResponse",
         "AnalyzeEntitySentimentRequest",
@@ -728,12 +729,76 @@ class ClassificationCategory(proto.Message):
     )
 
 
+class ClassificationModelOptions(proto.Message):
+    r"""Model options available for classification requests.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        v1_model (google.cloud.language_v1.types.ClassificationModelOptions.V1Model):
+            Setting this field will use the V1 model and
+            V1 content categories version. The V1 model is a
+            legacy model; support for this will be
+            discontinued in the future.
+
+            This field is a member of `oneof`_ ``model_type``.
+        v2_model (google.cloud.language_v1.types.ClassificationModelOptions.V2Model):
+            Setting this field will use the V2 model with
+            the appropriate content categories version. The
+            V2 model is a better performing model.
+
+            This field is a member of `oneof`_ ``model_type``.
+    """
+
+    class V1Model(proto.Message):
+        r"""Options for the V1 model."""
+
+    class V2Model(proto.Message):
+        r"""Options for the V2 model.
+
+        Attributes:
+            content_categories_version (google.cloud.language_v1.types.ClassificationModelOptions.V2Model.ContentCategoriesVersion):
+                The content categories used for
+                classification.
+        """
+
+        class ContentCategoriesVersion(proto.Enum):
+            r"""The content categories used for classification."""
+            CONTENT_CATEGORIES_VERSION_UNSPECIFIED = 0
+            V1 = 1
+            V2 = 2
+
+        content_categories_version = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ClassificationModelOptions.V2Model.ContentCategoriesVersion",
+        )
+
+    v1_model = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="model_type",
+        message=V1Model,
+    )
+    v2_model = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="model_type",
+        message=V2Model,
+    )
+
+
 class AnalyzeSentimentRequest(proto.Message):
     r"""The sentiment analysis request message.
 
     Attributes:
         document (google.cloud.language_v1.types.Document):
-            Input document.
+            Required. Input document.
         encoding_type (google.cloud.language_v1.types.EncodingType):
             The encoding type used by the API to
             calculate sentence offsets.
@@ -789,7 +854,7 @@ class AnalyzeEntitySentimentRequest(proto.Message):
 
     Attributes:
         document (google.cloud.language_v1.types.Document):
-            Input document.
+            Required. Input document.
         encoding_type (google.cloud.language_v1.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
@@ -838,7 +903,7 @@ class AnalyzeEntitiesRequest(proto.Message):
 
     Attributes:
         document (google.cloud.language_v1.types.Document):
-            Input document.
+            Required. Input document.
         encoding_type (google.cloud.language_v1.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
@@ -887,7 +952,7 @@ class AnalyzeSyntaxRequest(proto.Message):
 
     Attributes:
         document (google.cloud.language_v1.types.Document):
-            Input document.
+            Required. Input document.
         encoding_type (google.cloud.language_v1.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
@@ -943,13 +1008,21 @@ class ClassifyTextRequest(proto.Message):
 
     Attributes:
         document (google.cloud.language_v1.types.Document):
-            Input document.
+            Required. Input document.
+        classification_model_options (google.cloud.language_v1.types.ClassificationModelOptions):
+            Model options to use for classification.
+            Defaults to v1 options if not specified.
     """
 
     document = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Document",
+    )
+    classification_model_options = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ClassificationModelOptions",
     )
 
 
@@ -975,9 +1048,9 @@ class AnnotateTextRequest(proto.Message):
 
     Attributes:
         document (google.cloud.language_v1.types.Document):
-            Input document.
+            Required. Input document.
         features (google.cloud.language_v1.types.AnnotateTextRequest.Features):
-            The enabled features.
+            Required. The enabled features.
         encoding_type (google.cloud.language_v1.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
@@ -1000,6 +1073,10 @@ class AnnotateTextRequest(proto.Message):
                 sentiment.
             classify_text (bool):
                 Classify the full document into categories.
+            classification_model_options (google.cloud.language_v1.types.ClassificationModelOptions):
+                The model options to use for classification. Defaults to v1
+                options if not specified. Only used if ``classify_text`` is
+                set to true.
         """
 
         extract_syntax = proto.Field(
@@ -1021,6 +1098,11 @@ class AnnotateTextRequest(proto.Message):
         classify_text = proto.Field(
             proto.BOOL,
             number=6,
+        )
+        classification_model_options = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message="ClassificationModelOptions",
         )
 
     document = proto.Field(
