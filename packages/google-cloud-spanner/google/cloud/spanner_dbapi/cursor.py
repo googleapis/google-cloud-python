@@ -281,11 +281,11 @@ class Cursor(object):
                     self._do_execute_update, sql, args or None
                 )
         except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
-            raise IntegrityError(getattr(e, "details", e))
+            raise IntegrityError(getattr(e, "details", e)) from e
         except InvalidArgument as e:
-            raise ProgrammingError(getattr(e, "details", e))
+            raise ProgrammingError(getattr(e, "details", e)) from e
         except InternalServerError as e:
-            raise OperationalError(getattr(e, "details", e))
+            raise OperationalError(getattr(e, "details", e)) from e
 
     @check_not_closed
     def executemany(self, operation, seq_of_params):

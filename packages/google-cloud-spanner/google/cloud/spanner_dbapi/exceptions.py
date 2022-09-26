@@ -14,6 +14,8 @@
 
 """Spanner DB API exceptions."""
 
+from google.api_core.exceptions import GoogleAPICallError
+
 
 class Warning(Exception):
     """Important DB API warning."""
@@ -27,7 +29,65 @@ class Error(Exception):
     Does not include :class:`Warning`.
     """
 
-    pass
+    def _is_error_cause_instance_of_google_api_exception(self):
+        return isinstance(self.__cause__, GoogleAPICallError)
+
+    @property
+    def reason(self):
+        """The reason of the error.
+        Reference:
+            https://cloud.google.com/apis/design/errors#error_info
+        Returns:
+            Union[str, None]: An optional string containing reason of the error.
+        """
+        return (
+            self.__cause__.reason
+            if self._is_error_cause_instance_of_google_api_exception()
+            else None
+        )
+
+    @property
+    def domain(self):
+        """The logical grouping to which the "reason" belongs.
+        Reference:
+            https://cloud.google.com/apis/design/errors#error_info
+        Returns:
+            Union[str, None]: An optional string containing a logical grouping to which the "reason" belongs.
+        """
+        return (
+            self.__cause__.domain
+            if self._is_error_cause_instance_of_google_api_exception()
+            else None
+        )
+
+    @property
+    def metadata(self):
+        """Additional structured details about this error.
+        Reference:
+            https://cloud.google.com/apis/design/errors#error_info
+        Returns:
+            Union[Dict[str, str], None]: An optional object containing structured details about the error.
+        """
+        return (
+            self.__cause__.metadata
+            if self._is_error_cause_instance_of_google_api_exception()
+            else None
+        )
+
+    @property
+    def details(self):
+        """Information contained in google.rpc.status.details.
+        Reference:
+            https://cloud.google.com/apis/design/errors#error_model
+            https://cloud.google.com/apis/design/errors#error_details
+        Returns:
+            Sequence[Any]: A list of structured objects from error_details.proto
+        """
+        return (
+            self.__cause__.details
+            if self._is_error_cause_instance_of_google_api_exception()
+            else None
+        )
 
 
 class InterfaceError(Error):
