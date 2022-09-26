@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.bigtable_v2.types import data
+from google.cloud.bigtable_v2.types import request_stats as gb_request_stats
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
@@ -50,9 +51,8 @@ class ReadRowsRequest(proto.Message):
             Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
         app_profile_id (str):
-            This value specifies routing for replication.
-            If not specified, the "default" application
-            profile will be used.
+            This value specifies routing for replication. This API only
+            accepts the empty value of app_profile_id.
         rows (google.cloud.bigtable_v2.types.RowSet):
             The row keys and/or ranges to read
             sequentially. If not specified, reads from all
@@ -65,7 +65,20 @@ class ReadRowsRequest(proto.Message):
             The read will stop after committing to N
             rows' worth of results. The default (zero) is to
             return all results.
+        request_stats_view (google.cloud.bigtable_v2.types.ReadRowsRequest.RequestStatsView):
+            The view into RequestStats, as described
+            above.
     """
+
+    class RequestStatsView(proto.Enum):
+        r"""The desired view into RequestStats that should be returned in
+        the response.
+        See also: RequestStats message.
+        """
+        REQUEST_STATS_VIEW_UNSPECIFIED = 0
+        REQUEST_STATS_NONE = 1
+        REQUEST_STATS_EFFICIENCY = 2
+        REQUEST_STATS_FULL = 3
 
     table_name = proto.Field(
         proto.STRING,
@@ -89,6 +102,11 @@ class ReadRowsRequest(proto.Message):
         proto.INT64,
         number=4,
     )
+    request_stats_view = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=RequestStatsView,
+    )
 
 
 class ReadRowsResponse(proto.Message):
@@ -109,6 +127,28 @@ class ReadRowsResponse(proto.Message):
             that was filtered out since the last committed
             row key, allowing the client to skip that work
             on a retry.
+        request_stats (google.cloud.bigtable_v2.types.RequestStats):
+            If requested, provide enhanced query performance statistics.
+            The semantics dictate:
+
+            -  request_stats is empty on every (streamed) response,
+               except
+            -  request_stats has non-empty information after all chunks
+               have been streamed, where the ReadRowsResponse message
+               only contains request_stats.
+
+               -  For example, if a read request would have returned an
+                  empty response instead a single ReadRowsResponse is
+                  streamed with empty chunks and request_stats filled.
+
+            Visually, response messages will stream as follows: ... ->
+            {chunks: [...]} -> {chunks: [], request_stats: {...}}
+            \_\ **/ \_**\ \__________/ Primary response Trailer of
+            RequestStats info
+
+            Or if the read did not return any values: {chunks: [],
+            request_stats: {...}} \________________________________/
+            Trailer of RequestStats info
     """
 
     class CellChunk(proto.Message):
@@ -231,6 +271,11 @@ class ReadRowsResponse(proto.Message):
     last_scanned_row_key = proto.Field(
         proto.BYTES,
         number=2,
+    )
+    request_stats = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gb_request_stats.RequestStats,
     )
 
 
@@ -370,8 +415,8 @@ class MutateRowsRequest(proto.Message):
                 Required. Changes to be atomically applied to
                 the specified row. Mutations are applied in
                 order, meaning that earlier mutations can be
-                masked by later ones.
-                You must specify at least one mutation.
+                masked by later ones. You must specify at least
+                one mutation.
         """
 
         row_key = proto.Field(

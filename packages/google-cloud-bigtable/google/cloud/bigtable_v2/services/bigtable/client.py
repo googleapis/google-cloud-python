@@ -36,6 +36,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.bigtable_v2.types import bigtable
 from google.cloud.bigtable_v2.types import data
+from google.cloud.bigtable_v2.types import request_stats
 from .transports.base import BigtableTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import BigtableGrpcTransport
 from .transports.grpc_asyncio import BigtableGrpcAsyncIOTransport
@@ -474,10 +475,8 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             app_profile_id (str):
-                This value specifies routing for
-                replication. If not specified, the
-                "default" application profile will be
-                used.
+                This value specifies routing for replication. This API
+                only accepts the empty value of app_profile_id.
 
                 This corresponds to the ``app_profile_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

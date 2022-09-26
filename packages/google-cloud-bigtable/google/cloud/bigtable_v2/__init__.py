@@ -43,10 +43,16 @@ from .types.data import RowRange
 from .types.data import RowSet
 from .types.data import TimestampRange
 from .types.data import ValueRange
+from .types.request_stats import AllReadStats
+from .types.request_stats import ReadEfficiencyStats
+from .types.request_stats import ReadIteratorStats
+from .types.request_stats import RequestLatencyStats
+from .types.request_stats import RequestStats
 from .types.response_params import ResponseParams
 
 __all__ = (
     "BigtableAsyncClient",
+    "AllReadStats",
     "BigtableClient",
     "Cell",
     "CheckAndMutateRowRequest",
@@ -61,11 +67,15 @@ __all__ = (
     "Mutation",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
+    "ReadEfficiencyStats",
+    "ReadIteratorStats",
     "ReadModifyWriteRowRequest",
     "ReadModifyWriteRowResponse",
     "ReadModifyWriteRule",
     "ReadRowsRequest",
     "ReadRowsResponse",
+    "RequestLatencyStats",
+    "RequestStats",
     "ResponseParams",
     "Row",
     "RowFilter",

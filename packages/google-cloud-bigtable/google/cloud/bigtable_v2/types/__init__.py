@@ -43,6 +43,13 @@ from .data import (
     TimestampRange,
     ValueRange,
 )
+from .request_stats import (
+    AllReadStats,
+    ReadEfficiencyStats,
+    ReadIteratorStats,
+    RequestLatencyStats,
+    RequestStats,
+)
 from .response_params import (
     ResponseParams,
 )
@@ -74,5 +81,10 @@ __all__ = (
     "RowSet",
     "TimestampRange",
     "ValueRange",
+    "AllReadStats",
+    "ReadEfficiencyStats",
+    "ReadIteratorStats",
+    "RequestLatencyStats",
+    "RequestStats",
     "ResponseParams",
 )

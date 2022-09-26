@@ -42,6 +42,7 @@ from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 from google.cloud.bigtable_v2.services.bigtable import transports
 from google.cloud.bigtable_v2.types import bigtable
 from google.cloud.bigtable_v2.types import data
+from google.cloud.bigtable_v2.types import request_stats
 from google.oauth2 import service_account
 import google.auth
 

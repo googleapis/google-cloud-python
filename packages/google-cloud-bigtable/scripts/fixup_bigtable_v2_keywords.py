@@ -44,7 +44,7 @@ class bigtableCallTransformer(cst.CSTTransformer):
         'mutate_rows': ('table_name', 'entries', 'app_profile_id', ),
         'ping_and_warm': ('name', 'app_profile_id', ),
         'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
-        'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', ),
+        'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', ),
         'sample_row_keys': ('table_name', 'app_profile_id', ),
     }
 
