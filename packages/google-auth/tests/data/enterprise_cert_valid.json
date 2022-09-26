@@ -1,6 +1,6 @@
 {
     "libs": {
-        "signer_library": "/path/to/signer/lib",
-        "offload_library": "/path/to/offload/lib"
+        "ecp_client": "/path/to/signer/lib",
+        "tls_offload": "/path/to/offload/lib"
     }
 }

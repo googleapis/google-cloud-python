@@ -192,8 +192,8 @@ class CustomTlsSigner(object):
 
                     {
                         "libs": {
-                            "signer_library": "...",
-                            "offload_library": "..."
+                            "ecp_client": "...",
+                            "tls_offload": "..."
                         }
                     }
         """
@@ -206,8 +206,8 @@ class CustomTlsSigner(object):
             with open(self._enterprise_cert_file_path, "r") as f:
                 enterprise_cert_json = json.load(f)
                 libs = enterprise_cert_json["libs"]
-                signer_library = libs["signer_library"]
-                offload_library = libs["offload_library"]
+                signer_library = libs["ecp_client"]
+                offload_library = libs["tls_offload"]
         except (KeyError, ValueError) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(
                 "enterprise cert file is invalid", caught_exc
