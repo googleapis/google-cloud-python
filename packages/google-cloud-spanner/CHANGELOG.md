@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.22.0](https://github.com/googleapis/python-spanner/compare/v3.21.0...v3.22.0) (2022-09-26)
+
+
+### Features
+
+* Adding reason, domain, metadata & error_details fields in Custom Exceptions for additional info ([#804](https://github.com/googleapis/python-spanner/issues/804)) ([2a74060](https://github.com/googleapis/python-spanner/commit/2a740607a00cb622ac9ce4005c12afd52114b4a5))
+
 ## [3.21.0](https://github.com/googleapis/python-spanner/compare/v3.20.0...v3.21.0) (2022-09-16)
 
 
