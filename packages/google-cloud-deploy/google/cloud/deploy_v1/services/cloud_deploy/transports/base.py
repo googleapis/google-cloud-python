@@ -22,6 +22,9 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import pkg_resources
@@ -247,6 +250,11 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.abandon_release: gapic_v1.method.wrap_method(
+                self.abandon_release,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.approve_rollout: gapic_v1.method.wrap_method(
                 self.approve_rollout,
                 default_timeout=60.0,
@@ -282,6 +290,39 @@ class CloudDeployTransport(abc.ABC):
             ),
             self.create_rollout: gapic_v1.method.wrap_method(
                 self.create_rollout,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.retry_job: gapic_v1.method.wrap_method(
+                self.retry_job,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_job_runs: gapic_v1.method.wrap_method(
+                self.list_job_runs,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_job_run: gapic_v1.method.wrap_method(
+                self.get_job_run,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -442,6 +483,18 @@ class CloudDeployTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def abandon_release(
+        self,
+    ) -> Callable[
+        [cloud_deploy.AbandonReleaseRequest],
+        Union[
+            cloud_deploy.AbandonReleaseResponse,
+            Awaitable[cloud_deploy.AbandonReleaseResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def approve_rollout(
         self,
     ) -> Callable[
@@ -484,11 +537,125 @@ class CloudDeployTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def retry_job(
+        self,
+    ) -> Callable[
+        [cloud_deploy.RetryJobRequest],
+        Union[cloud_deploy.RetryJobResponse, Awaitable[cloud_deploy.RetryJobResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_job_runs(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListJobRunsRequest],
+        Union[
+            cloud_deploy.ListJobRunsResponse,
+            Awaitable[cloud_deploy.ListJobRunsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_job_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetJobRunRequest],
+        Union[cloud_deploy.JobRun, Awaitable[cloud_deploy.JobRun]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_config(
         self,
     ) -> Callable[
         [cloud_deploy.GetConfigRequest],
         Union[cloud_deploy.Config, Awaitable[cloud_deploy.Config]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

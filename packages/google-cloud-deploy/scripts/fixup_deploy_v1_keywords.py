@@ -39,6 +39,7 @@ def partition(
 class deployCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'abandon_release': ('name', ),
         'approve_rollout': ('name', 'approved', ),
         'create_delivery_pipeline': ('parent', 'delivery_pipeline_id', 'delivery_pipeline', 'request_id', 'validate_only', ),
         'create_release': ('parent', 'release_id', 'release', 'request_id', 'validate_only', ),
@@ -48,13 +49,16 @@ class deployCallTransformer(cst.CSTTransformer):
         'delete_target': ('name', 'request_id', 'allow_missing', 'validate_only', 'etag', ),
         'get_config': ('name', ),
         'get_delivery_pipeline': ('name', ),
+        'get_job_run': ('name', ),
         'get_release': ('name', ),
         'get_rollout': ('name', ),
         'get_target': ('name', ),
         'list_delivery_pipelines': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_job_runs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_releases': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_rollouts': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_targets': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'retry_job': ('rollout', 'phase_id', 'job_id', ),
         'update_delivery_pipeline': ('update_mask', 'delivery_pipeline', 'request_id', 'allow_missing', 'validate_only', ),
         'update_target': ('update_mask', 'target', 'request_id', 'allow_missing', 'validate_only', ),
     }

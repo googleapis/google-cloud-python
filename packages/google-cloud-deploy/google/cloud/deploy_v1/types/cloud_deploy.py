@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
@@ -24,6 +25,8 @@ __protobuf__ = proto.module(
         "DeliveryPipeline",
         "SerialPipeline",
         "Stage",
+        "Strategy",
+        "Standard",
         "PipelineReadyCondition",
         "TargetsPresentCondition",
         "PipelineCondition",
@@ -39,6 +42,7 @@ __protobuf__ = proto.module(
         "PrivatePool",
         "GkeCluster",
         "AnthosCluster",
+        "CloudRunLocation",
         "ListTargetsRequest",
         "ListTargetsResponse",
         "GetTargetRequest",
@@ -53,6 +57,14 @@ __protobuf__ = proto.module(
         "GetReleaseRequest",
         "CreateReleaseRequest",
         "Rollout",
+        "Metadata",
+        "DeployJobRunMetadata",
+        "CloudRunMetadata",
+        "Phase",
+        "DeploymentJobs",
+        "Job",
+        "DeployJob",
+        "VerifyJob",
         "ListRolloutsRequest",
         "ListRolloutsResponse",
         "GetRolloutRequest",
@@ -60,6 +72,16 @@ __protobuf__ = proto.module(
         "OperationMetadata",
         "ApproveRolloutRequest",
         "ApproveRolloutResponse",
+        "RetryJobRequest",
+        "RetryJobResponse",
+        "AbandonReleaseRequest",
+        "AbandonReleaseResponse",
+        "JobRun",
+        "DeployJobRun",
+        "VerifyJobRun",
+        "ListJobRunsRequest",
+        "ListJobRunsResponse",
+        "GetJobRunRequest",
         "Config",
         "SkaffoldVersion",
         "GetConfigRequest",
@@ -89,9 +111,7 @@ class DeliveryPipeline(proto.Message):
         annotations (Mapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
-            Cloud Deploy. See
-            https://google.aip.dev/128#annotations for more
-            details such as format and size limitations.
+            Cloud Deploy.
         labels (Mapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
@@ -126,6 +146,10 @@ class DeliveryPipeline(proto.Message):
             on the value of other fields, and may be sent on
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
+        suspended (bool):
+            When suspended, no new releases or rollouts
+            can be created, but in-progress ones will
+            complete.
     """
 
     name = proto.Field(
@@ -175,6 +199,10 @@ class DeliveryPipeline(proto.Message):
         proto.STRING,
         number=10,
     )
+    suspended = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
 
 
 class SerialPipeline(proto.Message):
@@ -209,6 +237,9 @@ class Stage(proto.Message):
         profiles (Sequence[str]):
             Skaffold profiles to use when rendering the manifest for
             this stage's ``Target``.
+        strategy (google.cloud.deploy_v1.types.Strategy):
+            Optional. The strategy to use for a ``Rollout`` to this
+            stage.
     """
 
     target_id = proto.Field(
@@ -218,6 +249,47 @@ class Stage(proto.Message):
     profiles = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    strategy = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Strategy",
+    )
+
+
+class Strategy(proto.Message):
+    r"""Strategy contains deployment strategy information.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        standard (google.cloud.deploy_v1.types.Standard):
+            Standard deployment strategy executes a
+            single deploy and allows verifying the
+            deployment.
+
+            This field is a member of `oneof`_ ``deployment_strategy``.
+    """
+
+    standard = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="deployment_strategy",
+        message="Standard",
+    )
+
+
+class Standard(proto.Message):
+    r"""Standard represents the standard deployment strategy.
+
+    Attributes:
+        verify (bool):
+            Whether to verify a deployment.
+    """
+
+    verify = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 
@@ -655,6 +727,11 @@ class Target(proto.Message):
             Information specifying an Anthos Cluster.
 
             This field is a member of `oneof`_ ``deployment_target``.
+        run (google.cloud.deploy_v1.types.CloudRunLocation):
+            Information specifying a Cloud Run deployment
+            target.
+
+            This field is a member of `oneof`_ ``deployment_target``.
         etag (str):
             Optional. This checksum is computed by the
             server based on the value of other fields, and
@@ -724,6 +801,12 @@ class Target(proto.Message):
         oneof="deployment_target",
         message="AnthosCluster",
     )
+    run = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        oneof="deployment_target",
+        message="CloudRunLocation",
+    )
     etag = proto.Field(
         proto.STRING,
         number=12,
@@ -776,6 +859,11 @@ class ExecutionConfig(proto.Message):
             bucket ("gs://my-bucket/my-dir").
             If unspecified, a default bucket located in the
             same region will be used.
+        execution_timeout (google.protobuf.duration_pb2.Duration):
+            Optional. Execution timeout for a Cloud Build
+            Execution. This must be between 10m and 24h in
+            seconds format. If unspecified, a default
+            timeout of 1h is used.
     """
 
     class ExecutionEnvironmentUsage(proto.Enum):
@@ -783,6 +871,7 @@ class ExecutionConfig(proto.Message):
         EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED = 0
         RENDER = 1
         DEPLOY = 2
+        VERIFY = 3
 
     usages = proto.RepeatedField(
         proto.ENUM,
@@ -812,6 +901,11 @@ class ExecutionConfig(proto.Message):
     artifact_storage = proto.Field(
         proto.STRING,
         number=6,
+    )
+    execution_timeout = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
     )
 
 
@@ -919,6 +1013,21 @@ class AnthosCluster(proto.Message):
     """
 
     membership = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CloudRunLocation(proto.Message):
+    r"""Information specifying where to deploy a Cloud Run Service.
+
+    Attributes:
+        location (str):
+            Required. The location for the Cloud Run Service. Format
+            must be ``projects/{project}/locations/{location}``.
+    """
+
+    location = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1248,6 +1357,9 @@ class Release(proto.Message):
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
+        abandoned (bool):
+            Output only. Indicates whether this is an
+            abandoned release.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the ``Release`` was created.
         render_start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1317,6 +1429,9 @@ class Release(proto.Message):
                 Output only. Reason this render failed. This
                 will always be unspecified while the render in
                 progress.
+            failure_message (str):
+                Output only. Additional information about the
+                render failure, if available.
         """
 
         class TargetRenderState(proto.Enum):
@@ -1346,6 +1461,10 @@ class Release(proto.Message):
             number=4,
             enum="Release.TargetRender.FailureCause",
         )
+        failure_message = proto.Field(
+            proto.STRING,
+            number=5,
+        )
 
     name = proto.Field(
         proto.STRING,
@@ -1368,6 +1487,10 @@ class Release(proto.Message):
         proto.STRING,
         proto.STRING,
         number=5,
+    )
+    abandoned = proto.Field(
+        proto.BOOL,
+        number=23,
     )
     create_time = proto.Field(
         proto.MESSAGE,
@@ -1709,8 +1832,8 @@ class Rollout(proto.Message):
         state (google.cloud.deploy_v1.types.Rollout.State):
             Output only. Current state of the ``Rollout``.
         failure_reason (str):
-            Output only. Reason the build failed. Empty
-            if the build succeeded.
+            Output only. Additional information about the
+            rollout failure, if available.
         deploying_build (str):
             Output only. The resource name of the Cloud Build ``Build``
             object that is used to deploy the Rollout. Format is
@@ -1721,9 +1844,15 @@ class Rollout(proto.Message):
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
         deploy_failure_cause (google.cloud.deploy_v1.types.Rollout.FailureCause):
-            Output only. The reason this deploy failed.
-            This will always be unspecified while the deploy
-            in progress.
+            Output only. The reason this rollout failed.
+            This will always be unspecified while the
+            rollout is in progress.
+        phases (Sequence[google.cloud.deploy_v1.types.Phase]):
+            Output only. The phases that represent the workflows of this
+            ``Rollout``.
+        metadata (google.cloud.deploy_v1.types.Metadata):
+            Output only. Metadata contains information
+            about the rollout.
     """
 
     class ApprovalState(proto.Enum):
@@ -1746,12 +1875,14 @@ class Rollout(proto.Message):
         PENDING_RELEASE = 7
 
     class FailureCause(proto.Enum):
-        r"""Well-known deployment failures."""
+        r"""Well-known rollout failures."""
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
         DEADLINE_EXCEEDED = 3
         RELEASE_FAILED = 4
+        RELEASE_ABANDONED = 5
+        VERIFICATION_CONFIG_NOT_FOUND = 6
 
     name = proto.Field(
         proto.STRING,
@@ -1831,6 +1962,221 @@ class Rollout(proto.Message):
         number=19,
         enum=FailureCause,
     )
+    phases = proto.RepeatedField(
+        proto.MESSAGE,
+        number=23,
+        message="Phase",
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="Metadata",
+    )
+
+
+class Metadata(proto.Message):
+    r"""Metadata includes information associated with a ``Rollout``.
+
+    Attributes:
+        cloud_run (google.cloud.deploy_v1.types.CloudRunMetadata):
+            Output only. The name of the Cloud Run Service that is
+            associated with a ``Rollout``.
+    """
+
+    cloud_run = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CloudRunMetadata",
+    )
+
+
+class DeployJobRunMetadata(proto.Message):
+    r"""DeployJobRunMetadata surfaces information associated with a
+    ``DeployJobRun`` to the user.
+
+    Attributes:
+        cloud_run (google.cloud.deploy_v1.types.CloudRunMetadata):
+            Output only. The name of the Cloud Run Service that is
+            associated with a ``DeployJobRun``.
+    """
+
+    cloud_run = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CloudRunMetadata",
+    )
+
+
+class CloudRunMetadata(proto.Message):
+    r"""CloudRunMetadata contains information from a Cloud Run
+    deployment.
+
+    Attributes:
+        service (str):
+            Output only. The name of the Cloud Run Service that is
+            associated with a ``Rollout``. Format is
+            projects/{project}/locations/{location}/services/{service}.
+        service_urls (Sequence[str]):
+            Output only. The Cloud Run Service urls that are associated
+            with a ``Rollout``.
+        revision (str):
+            Output only. The Cloud Run Revision id associated with a
+            ``Rollout``.
+    """
+
+    service = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_urls = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    revision = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class Phase(proto.Message):
+    r"""Phase represents a collection of jobs that are logically grouped
+    together for a ``Rollout``.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            Output only. The ID of the Phase.
+        state (google.cloud.deploy_v1.types.Phase.State):
+            Output only. Current state of the Phase.
+        deployment_jobs (google.cloud.deploy_v1.types.DeploymentJobs):
+            Output only. Deployment job composition.
+
+            This field is a member of `oneof`_ ``jobs``.
+    """
+
+    class State(proto.Enum):
+        r"""Valid states of a Phase."""
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        IN_PROGRESS = 2
+        SUCCEEDED = 3
+        FAILED = 4
+        ABORTED = 5
+
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    deployment_jobs = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="jobs",
+        message="DeploymentJobs",
+    )
+
+
+class DeploymentJobs(proto.Message):
+    r"""Deployment job composition.
+
+    Attributes:
+        deploy_job (google.cloud.deploy_v1.types.Job):
+            Output only. The deploy Job. This is the
+            first job run in the phase.
+        verify_job (google.cloud.deploy_v1.types.Job):
+            Output only. The verify Job. Runs after a
+            deploy if the deploy succeeds.
+    """
+
+    deploy_job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Job",
+    )
+    verify_job = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Job",
+    )
+
+
+class Job(proto.Message):
+    r"""Job represents an operation for a ``Rollout``.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            Output only. The ID of the Job.
+        state (google.cloud.deploy_v1.types.Job.State):
+            Output only. The current state of the Job.
+        job_run (str):
+            Output only. The name of the ``JobRun`` responsible for the
+            most recent invocation of this Job.
+        deploy_job (google.cloud.deploy_v1.types.DeployJob):
+            Output only. A deploy Job.
+
+            This field is a member of `oneof`_ ``job_type``.
+        verify_job (google.cloud.deploy_v1.types.VerifyJob):
+            Output only. A verify Job.
+
+            This field is a member of `oneof`_ ``job_type``.
+    """
+
+    class State(proto.Enum):
+        r"""Valid states of a Job."""
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        DISABLED = 2
+        IN_PROGRESS = 3
+        SUCCEEDED = 4
+        FAILED = 5
+        ABORTED = 6
+
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    job_run = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    deploy_job = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="job_type",
+        message="DeployJob",
+    )
+    verify_job = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="job_type",
+        message="VerifyJob",
+    )
+
+
+class DeployJob(proto.Message):
+    r"""A deploy Job."""
+
+
+class VerifyJob(proto.Message):
+    r"""A verify Job."""
 
 
 class ListRolloutsRequest(proto.Message):
@@ -2079,6 +2425,373 @@ class ApproveRolloutRequest(proto.Message):
 
 class ApproveRolloutResponse(proto.Message):
     r"""The response object from ``ApproveRollout``."""
+
+
+class RetryJobRequest(proto.Message):
+    r"""RetryJobRequest is the request object used by ``RetryJob``.
+
+    Attributes:
+        rollout (str):
+            Required. Name of the Rollout. Format is
+            projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
+            releases/{release}/rollouts/{rollout}.
+        phase_id (str):
+            Required. The phase ID the Job to retry
+            belongs to.
+        job_id (str):
+            Required. The job ID for the Job to retry.
+    """
+
+    rollout = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    phase_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class RetryJobResponse(proto.Message):
+    r"""The response object from 'RetryJob'."""
+
+
+class AbandonReleaseRequest(proto.Message):
+    r"""The request object used by ``AbandonRelease``.
+
+    Attributes:
+        name (str):
+            Required. Name of the Release. Format is
+            projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
+            releases/{release}.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AbandonReleaseResponse(proto.Message):
+    r"""The response object for ``AbandonRelease``."""
+
+
+class JobRun(proto.Message):
+    r"""A ``JobRun`` resource in the Google Cloud Deploy API.
+
+    A ``JobRun`` contains information of a single ``Rollout`` job
+    evaluation.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Optional. Name of the ``JobRun``. Format is
+            projects/{project}/locations/{location}/
+            deliveryPipelines/{deliveryPipeline}/releases/{releases}/rollouts/
+            {rollouts}/jobRuns/{uuid}.
+        uid (str):
+            Output only. Unique identifier of the ``JobRun``.
+        phase_id (str):
+            Output only. ID of the ``Rollout`` phase this ``JobRun``
+            belongs in.
+        job_id (str):
+            Output only. ID of the ``Rollout`` job this ``JobRun``
+            corresponds to.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time at which the ``JobRun`` was created.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time at which the ``JobRun`` was started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time at which the ``JobRun`` ended.
+        state (google.cloud.deploy_v1.types.JobRun.State):
+            Output only. The current state of the ``JobRun``.
+        deploy_job_run (google.cloud.deploy_v1.types.DeployJobRun):
+            Output only. Information specific to a deploy ``JobRun``.
+
+            This field is a member of `oneof`_ ``job_run``.
+        verify_job_run (google.cloud.deploy_v1.types.VerifyJobRun):
+            Output only. Information specific to a verify ``JobRun``.
+
+            This field is a member of `oneof`_ ``job_run``.
+        etag (str):
+            Output only. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+    """
+
+    class State(proto.Enum):
+        r"""Valid states of a ``JobRun``."""
+        STATE_UNSPECIFIED = 0
+        IN_PROGRESS = 1
+        SUCCEEDED = 2
+        FAILED = 3
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    phase_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
+    deploy_job_run = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="job_run",
+        message="DeployJobRun",
+    )
+    verify_job_run = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="job_run",
+        message="VerifyJobRun",
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+
+
+class DeployJobRun(proto.Message):
+    r"""DeployJobRun contains information specific to a deploy ``JobRun``.
+
+    Attributes:
+        build (str):
+            Output only. The resource name of the Cloud Build ``Build``
+            object that is used to deploy. Format is
+            projects/{project}/locations/{location}/builds/{build}.
+        failure_cause (google.cloud.deploy_v1.types.DeployJobRun.FailureCause):
+            Output only. The reason the deploy failed.
+            This will always be unspecified while the deploy
+            is in progress or if it succeeded.
+        failure_message (str):
+            Output only. Additional information about the
+            deploy failure, if available.
+        metadata (google.cloud.deploy_v1.types.DeployJobRunMetadata):
+            Output only. Metadata containing information
+            about the deploy job run.
+    """
+
+    class FailureCause(proto.Enum):
+        r"""Well-known deploy failures."""
+        FAILURE_CAUSE_UNSPECIFIED = 0
+        CLOUD_BUILD_UNAVAILABLE = 1
+        EXECUTION_FAILED = 2
+        DEADLINE_EXCEEDED = 3
+
+    build = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    failure_cause = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=FailureCause,
+    )
+    failure_message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="DeployJobRunMetadata",
+    )
+
+
+class VerifyJobRun(proto.Message):
+    r"""VerifyJobRun contains information specific to a verify ``JobRun``.
+
+    Attributes:
+        build (str):
+            Output only. The resource name of the Cloud Build ``Build``
+            object that is used to verify. Format is
+            projects/{project}/locations/{location}/builds/{build}.
+        artifact_uri (str):
+            Output only. URI of a directory containing
+            the verify artifacts. This contains the Skaffold
+            event log.
+        event_log_path (str):
+            Output only. File path of the Skaffold event
+            log relative to the artifact URI.
+        failure_cause (google.cloud.deploy_v1.types.VerifyJobRun.FailureCause):
+            Output only. The reason the verify failed.
+            This will always be unspecified while the verify
+            is in progress or if it succeeded.
+        failure_message (str):
+            Output only. Additional information about the
+            verify failure, if available.
+    """
+
+    class FailureCause(proto.Enum):
+        r"""Well-known verify failures."""
+        FAILURE_CAUSE_UNSPECIFIED = 0
+        CLOUD_BUILD_UNAVAILABLE = 1
+        EXECUTION_FAILED = 2
+        DEADLINE_EXCEEDED = 3
+        VERIFICATION_CONFIG_NOT_FOUND = 4
+
+    build = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    artifact_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    event_log_path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    failure_cause = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=FailureCause,
+    )
+    failure_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListJobRunsRequest(proto.Message):
+    r"""ListJobRunsRequest is the request object used by ``ListJobRuns``.
+
+    Attributes:
+        parent (str):
+            Required. The ``Rollout`` which owns this collection of
+            ``JobRun`` objects.
+        page_size (int):
+            Optional. The maximum number of ``JobRun`` objects to
+            return. The service may return fewer than this value. If
+            unspecified, at most 50 ``JobRun`` objects will be returned.
+            The maximum value is 1000; values above 1000 will be set to
+            1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListJobRuns`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other provided parameters match the
+            call that provided the page token.
+        filter (str):
+            Optional. Filter results to be returned. See
+            https://google.aip.dev/160 for more details.
+        order_by (str):
+            Optional. Field to sort by. See
+            https://google.aip.dev/132#ordering for more
+            details.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListJobRunsResponse(proto.Message):
+    r"""ListJobRunsResponse is the response object returned by
+    ``ListJobRuns``.
+
+    Attributes:
+        job_runs (Sequence[google.cloud.deploy_v1.types.JobRun]):
+            The ``JobRun`` objects.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (Sequence[str]):
+            Locations that could not be reached
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    job_runs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="JobRun",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetJobRunRequest(proto.Message):
+    r"""GetJobRunRequest is the request object used by ``GetJobRun``.
+
+    Attributes:
+        name (str):
+            Required. Name of the ``JobRun``. Format must be
+            projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}/jobRuns/{job_run_name}.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Config(proto.Message):

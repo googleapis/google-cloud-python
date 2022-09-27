@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CloudDeployClient",
           "rpcs": {
+            "AbandonRelease": {
+              "methods": [
+                "abandon_release"
+              ]
+            },
             "ApproveRollout": {
               "methods": [
                 "approve_rollout"
@@ -55,6 +60,11 @@
                 "get_delivery_pipeline"
               ]
             },
+            "GetJobRun": {
+              "methods": [
+                "get_job_run"
+              ]
+            },
             "GetRelease": {
               "methods": [
                 "get_release"
@@ -75,6 +85,11 @@
                 "list_delivery_pipelines"
               ]
             },
+            "ListJobRuns": {
+              "methods": [
+                "list_job_runs"
+              ]
+            },
             "ListReleases": {
               "methods": [
                 "list_releases"
@@ -88,6 +103,11 @@
             "ListTargets": {
               "methods": [
                 "list_targets"
+              ]
+            },
+            "RetryJob": {
+              "methods": [
+                "retry_job"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -105,6 +125,11 @@
         "grpc-async": {
           "libraryClient": "CloudDeployAsyncClient",
           "rpcs": {
+            "AbandonRelease": {
+              "methods": [
+                "abandon_release"
+              ]
+            },
             "ApproveRollout": {
               "methods": [
                 "approve_rollout"
@@ -150,6 +175,11 @@
                 "get_delivery_pipeline"
               ]
             },
+            "GetJobRun": {
+              "methods": [
+                "get_job_run"
+              ]
+            },
             "GetRelease": {
               "methods": [
                 "get_release"
@@ -170,6 +200,11 @@
                 "list_delivery_pipelines"
               ]
             },
+            "ListJobRuns": {
+              "methods": [
+                "list_job_runs"
+              ]
+            },
             "ListReleases": {
               "methods": [
                 "list_releases"
@@ -183,6 +218,11 @@
             "ListTargets": {
               "methods": [
                 "list_targets"
+              ]
+            },
+            "RetryJob": {
+              "methods": [
+                "retry_job"
               ]
             },
             "UpdateDeliveryPipeline": {
