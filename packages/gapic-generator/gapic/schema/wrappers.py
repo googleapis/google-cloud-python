@@ -77,7 +77,7 @@ class Field:
     def name(self) -> str:
         """Used to prevent collisions with python keywords"""
         name = self.field_pb.name
-        return name + "_" if name in utils.RESERVED_NAMES else name
+        return name + "_" if name in utils.RESERVED_NAMES and not self.meta.address.is_external_type else name
 
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:

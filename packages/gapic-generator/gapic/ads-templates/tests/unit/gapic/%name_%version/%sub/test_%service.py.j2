@@ -6,14 +6,15 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 {% endif %}
 import math
@@ -44,9 +45,6 @@ from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
-{% if "rest" in opts.transport %}
-from google.protobuf import json_format
-{% endif %}{# rest transport #}
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
@@ -1101,12 +1099,17 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     request_init["{{ req_field.name }}"] = {{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}
     {% endif %}{# default is str #}
     {% endfor %}
-    request = request_type(request_init)
-    jsonified_request = json.loads(request_type.to_json(
-        request,
+    request = request_type(**request_init)
+    {% if method.input.ident.is_external_type %}
+    pb_request = request
+    {% else %}
+    pb_request = request_type.pb(request)
+    {% endif %}
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
         including_default_value_fields=False,
         use_integers_for_enums=False
-        ))
+    ))
 
     # verify fields with default values are dropped
     {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
@@ -1114,7 +1117,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1124,26 +1127,21 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
     {% endfor %}
 
-    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
     {% set field_name = req_field.name | camel_case %}
     {% set mock_value = req_field.primitive_mock_as_str() %}
-    {% if method.query_params %}
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param|camel_case }}", {% endfor %}))
-    {% endif %}
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}",
-{% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
     {% endif %}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
     {% set field_name = req_field.name | camel_case %}
     {% set mock_value = req_field.primitive_mock_as_str() %}
     assert "{{ field_name }}" in jsonified_request
@@ -1155,7 +1153,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest',
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     {% if method.void %}
@@ -1173,13 +1171,18 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         with mock.patch.object(path_template, 'transcode') as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            {% if method.input.ident.is_external_type %}
+            pb_request = request
+            {% else %}
+            pb_request = request_type.pb(request)
+            {% endif %}
             transcode_result = {
                 'uri': 'v1/sample_method',
                 'method': "{{ method.http_options[0].method }}",
-                'query_params': request_init,
+                'query_params': pb_request,
             }
             {% if method.http_options[0].body %}
-            transcode_result['body'] = {}
+            transcode_result['body'] = pb_request
             {% endif %}
             transcode.return_value = transcode_result
 
@@ -1189,16 +1192,24 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = ''
             {% elif method.lro %}
             json_return_value = json_format.MessageToJson(return_value)
-            {% elif method.server_streaming %}
-            json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
             {% else %}
-            json_return_value = {{ method.output.ident }}.to_json(return_value)
+
+            {% if method.output.ident.is_external_type %}
+            pb_return_value = return_value
+            {% else %}
+            pb_return_value = {{ method.output.ident }}.pb(return_value)
             {% endif %}
+            json_return_value = json_format.MessageToJson(pb_return_value)
+            {% endif %}
+            {% if method.server_streaming %}
+            json_return_value = "[{}]".format(json_return_value)
+            {% endif %}
+
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
 
             {% if method.client_streaming %}
-            response = client.{{ method.name|snake_case }}(iter(requests))
+            response = client.{{ method_name }}(iter(requests))
             {% elif method.server_streaming %}
             with mock.patch.object(response_value, 'iter_content') as iter_content:
                 iter_content.return_value = iter(json_return_value)
@@ -1237,7 +1248,7 @@ def test_{{ method_name }}_rest_unset_required_fields():
 
     {% endif %}{# required_fields #}
 
-{% if not (method.server_streaming or method.client_streaming) %}
+{% if not method.client_streaming %}
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_{{ method_name }}_rest_interceptors(null_interceptor):
     transport = transports.{{ service.name }}RestTransport(
@@ -1258,14 +1269,28 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         {% if not method.void %}
         post.assert_not_called()
         {% endif %}
-
-        transcode.return_value = {"method": "post", "uri": "my_uri", "body": None, "query_params": {},}
+        {% if method.input.ident.is_external_type %}
+        pb_message = {{ method.input.ident }}()
+        {% else %}
+        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% endif %}
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
 
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
         {% if not method.void %}
         req.return_value._content = {% if method.output.ident.package == method.ident.package %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
+
+        {% if method.server_streaming %}
+        req.return_value._content = "[{}]".format(req.return_value._content)
+        {% endif %}
+
         {% endif %}
 
         request = {{ method.input.ident }}()
@@ -1275,7 +1300,7 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         {% if not method.void %}
-        post.return_value = {{ method.output.ident }}
+        post.return_value = {{ method.output.ident }}()
         {% endif %}
 
         client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])

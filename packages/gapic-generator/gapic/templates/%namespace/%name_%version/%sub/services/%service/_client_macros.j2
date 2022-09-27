@@ -146,6 +146,7 @@
 
         {% if method.explicit_routing %}
         header_params = {}
+        {% if not method.client_streaming %}
         {% for routing_param in method.routing_rule.routing_parameters %}
         {% if routing_param.path_template %} {# Need to match. #}
 
@@ -161,6 +162,7 @@
 
         {% endif %}
         {% endfor %} {# method.routing_rule.routing_parameters #}
+        {% endif %} {# if not method.client_streaming #}
 
         if header_params:
             metadata = tuple(metadata) + (

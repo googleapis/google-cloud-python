@@ -212,7 +212,7 @@ def test_{{ method.name|snake_case }}_routing_parameters():
     {% for routing_param in method.routing_rule.routing_parameters %}
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = {{ method.input.ident }}({{ routing_param.sample_request }})
+    request = {{ method.input.ident }}(**{{ routing_param.sample_request }})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
