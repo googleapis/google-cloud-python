@@ -71,7 +71,6 @@ from .types.clusters import ListClustersRequest
 from .types.clusters import ListClustersResponse
 from .types.clusters import ManagedGroupConfig
 from .types.clusters import MetastoreConfig
-from .types.clusters import Metric
 from .types.clusters import NodeGroupAffinity
 from .types.clusters import NodeInitializationAction
 from .types.clusters import ReservationAffinity
@@ -231,7 +230,6 @@ __all__ = (
     "ManagedCluster",
     "ManagedGroupConfig",
     "MetastoreConfig",
-    "Metric",
     "NodeGroupAffinity",
     "NodeInitializationAction",
     "OrderedJob",

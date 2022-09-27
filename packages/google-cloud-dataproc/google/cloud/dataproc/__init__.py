@@ -107,7 +107,6 @@ from google.cloud.dataproc_v1.types.clusters import ListClustersRequest
 from google.cloud.dataproc_v1.types.clusters import ListClustersResponse
 from google.cloud.dataproc_v1.types.clusters import ManagedGroupConfig
 from google.cloud.dataproc_v1.types.clusters import MetastoreConfig
-from google.cloud.dataproc_v1.types.clusters import Metric
 from google.cloud.dataproc_v1.types.clusters import NodeGroupAffinity
 from google.cloud.dataproc_v1.types.clusters import NodeInitializationAction
 from google.cloud.dataproc_v1.types.clusters import ReservationAffinity
@@ -251,7 +250,6 @@ __all__ = (
     "ListClustersResponse",
     "ManagedGroupConfig",
     "MetastoreConfig",
-    "Metric",
     "NodeGroupAffinity",
     "NodeInitializationAction",
     "ReservationAffinity",

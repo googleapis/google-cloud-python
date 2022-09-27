@@ -47,7 +47,6 @@ __protobuf__ = proto.module(
         "SoftwareConfig",
         "LifecycleConfig",
         "MetastoreConfig",
-        "Metric",
         "DataprocMetricConfig",
         "ClusterMetrics",
         "CreateClusterRequest",
@@ -237,7 +236,7 @@ class ClusterConfig(proto.Message):
         metastore_config (google.cloud.dataproc_v1.types.MetastoreConfig):
             Optional. Metastore configuration.
         dataproc_metric_config (google.cloud.dataproc_v1.types.DataprocMetricConfig):
-            Optional. Dataproc metrics configuration.
+            Optional. The config for Dataproc metrics.
     """
 
     config_bucket = proto.Field(
@@ -310,7 +309,7 @@ class ClusterConfig(proto.Message):
     )
     dataproc_metric_config = proto.Field(
         proto.MESSAGE,
-        number=21,
+        number=23,
         message="DataprocMetricConfig",
     )
 
@@ -1340,20 +1339,19 @@ class MetastoreConfig(proto.Message):
     )
 
 
-class Metric(proto.Message):
-    r"""Specifies Dataproc OSS Metric.
+class DataprocMetricConfig(proto.Message):
+    r"""Dataproc metric config.
 
     Attributes:
-        metric_source (google.cloud.dataproc_v1.types.Metric.MetricSource):
-            Required. Specified source of metric
-            collection
-        metric_overrides (Sequence[str]):
-            Optional. The set of available OSS metrics to
-            collect from the metric source.
+        metrics (Sequence[google.cloud.dataproc_v1.types.DataprocMetricConfig.Metric]):
+            Required. Metrics sources to enable.
     """
 
     class MetricSource(proto.Enum):
-        r""""""
+        r"""A source for the collection of Dataproc OSS metrics (see [available
+        OSS metrics]
+        (https://cloud.google.com//dataproc/docs/guides/monitoring#available_oss_metrics)).
+        """
         METRIC_SOURCE_UNSPECIFIED = 0
         MONITORING_AGENT_DEFAULTS = 1
         HDFS = 2
@@ -1362,30 +1360,64 @@ class Metric(proto.Message):
         SPARK_HISTORY_SERVER = 5
         HIVESERVER2 = 6
 
-    metric_source = proto.Field(
-        proto.ENUM,
-        number=1,
-        enum=MetricSource,
-    )
-    metric_overrides = proto.RepeatedField(
-        proto.STRING,
-        number=2,
-    )
+    class Metric(proto.Message):
+        r"""A Dataproc OSS metric.
 
+        Attributes:
+            metric_source (google.cloud.dataproc_v1.types.DataprocMetricConfig.MetricSource):
+                Required. Default metrics are collected unless
+                ``metricOverrides`` are specified for the metric source (see
+                [Available OSS metrics]
+                (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
+                for more information).
+            metric_overrides (Sequence[str]):
+                Optional. Specify one or more [available OSS metrics]
+                (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
+                to collect for the metric course (for the ``SPARK`` metric
+                source, any [Spark metric]
+                (https://spark.apache.org/docs/latest/monitoring.html#metrics)
+                can be specified).
 
-class DataprocMetricConfig(proto.Message):
-    r"""Specifies a Dataproc metric config
+                Provide metrics in the following format:
+                METRIC_SOURCE:INSTANCE:GROUP:METRIC Use camelcase as
+                appropriate.
 
-    Attributes:
-        metrics (Sequence[google.cloud.dataproc_v1.types.Metric]):
-            Configuration set of metrics to collect from
-            the cluster
-    """
+                Examples:
+
+                ::
+
+                   yarn:ResourceManager:QueueMetrics:AppsCompleted
+                   spark:driver:DAGScheduler:job.allJobs
+                   sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed
+                   hiveserver2:JVM:Memory:NonHeapMemoryUsage.used
+
+                Notes:
+
+                -  Only the specified overridden metrics will be collected
+                   for the metric source. For example, if one or more
+                   ``spark:executive`` metrics are listed as metric
+                   overrides, other ``SPARK`` metrics will not be collected.
+                   The collection of the default metrics for other OSS
+                   metric sources is unaffected. For example, if both
+                   ``SPARK`` andd ``YARN`` metric sources are enabled, and
+                   overrides are provided for Spark metrics only, all
+                   default YARN metrics will be collected.
+        """
+
+        metric_source = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DataprocMetricConfig.MetricSource",
+        )
+        metric_overrides = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
 
     metrics = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="Metric",
+        message=Metric,
     )
 
 
