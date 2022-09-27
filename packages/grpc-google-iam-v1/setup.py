@@ -26,8 +26,9 @@ version = "0.12.5"
 url = "https://github.com/googleapis/python-grpc-google-iam-v1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "grpcio>=1.0.0, <2.0.0dev",
+    "grpcio>=1.44.0, <2.0.0dev",
     "googleapis-common-protos[grpc]>=1.56.0, <2.0.0dev",
+    "protobuf >= 3.20.2, <5.0.0dev",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
