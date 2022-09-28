@@ -38,6 +38,7 @@ except ImportError:  # pragma: NO COVER
 import json
 import os
 import subprocess
+import sys
 import time
 
 from google.auth import _helpers
@@ -46,6 +47,14 @@ from google.auth import external_account
 
 # The max supported executable spec version.
 EXECUTABLE_SUPPORTED_MAX_VERSION = 1
+
+EXECUTABLE_TIMEOUT_MILLIS_DEFAULT = 30 * 1000  # 30 seconds
+EXECUTABLE_TIMEOUT_MILLIS_LOWER_BOUND = 5 * 1000  # 5 seconds
+EXECUTABLE_TIMEOUT_MILLIS_UPPER_BOUND = 120 * 1000  # 2 minutes
+
+EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_DEFAULT = 5 * 60 * 1000  # 5 minutes
+EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_LOWER_BOUND = 5 * 60 * 1000  # 5 minutes
+EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_UPPER_BOUND = 30 * 60 * 1000  # 30 minutes
 
 
 class Credentials(external_account.Credentials):
@@ -92,6 +101,7 @@ class Credentials(external_account.Credentials):
             :meth:`from_info` are used instead of calling the constructor directly.
         """
 
+        self.interactive = kwargs.pop("interactive", False)
         super(Credentials, self).__init__(
             audience=audience,
             subject_token_type=subject_token_type,
@@ -116,37 +126,51 @@ class Credentials(external_account.Credentials):
         self._credential_source_executable_timeout_millis = self._credential_source_executable.get(
             "timeout_millis"
         )
+        self._credential_source_executable_interactive_timeout_millis = self._credential_source_executable.get(
+            "interactive_timeout_millis"
+        )
         self._credential_source_executable_output_file = self._credential_source_executable.get(
             "output_file"
         )
+        self._tokeninfo_username = kwargs.get("tokeninfo_username", "")  # dummy value
 
         if not self._credential_source_executable_command:
             raise ValueError(
                 "Missing command field. Executable command must be provided."
             )
         if not self._credential_source_executable_timeout_millis:
-            self._credential_source_executable_timeout_millis = 30 * 1000
+            self._credential_source_executable_timeout_millis = (
+                EXECUTABLE_TIMEOUT_MILLIS_DEFAULT
+            )
         elif (
-            self._credential_source_executable_timeout_millis < 5 * 1000
-            or self._credential_source_executable_timeout_millis > 120 * 1000
+            self._credential_source_executable_timeout_millis
+            < EXECUTABLE_TIMEOUT_MILLIS_LOWER_BOUND
+            or self._credential_source_executable_timeout_millis
+            > EXECUTABLE_TIMEOUT_MILLIS_UPPER_BOUND
         ):
             raise ValueError("Timeout must be between 5 and 120 seconds.")
 
+        if not self._credential_source_executable_interactive_timeout_millis:
+            self._credential_source_executable_interactive_timeout_millis = (
+                EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_DEFAULT
+            )
+        elif (
+            self._credential_source_executable_interactive_timeout_millis
+            < EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_LOWER_BOUND
+            or self._credential_source_executable_interactive_timeout_millis
+            > EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_UPPER_BOUND
+        ):
+            raise ValueError("Interactive timeout must be between 5 and 30 minutes.")
+
     @_helpers.copy_docstring(external_account.Credentials)
     def retrieve_subject_token(self, request):
-        env_allow_executables = os.environ.get(
-            "GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES"
-        )
-        if env_allow_executables != "1":
-            raise ValueError(
-                "Executables need to be explicitly allowed (set GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES to '1') to run."
-            )
+        self._validate_running_mode()
 
         # Check output file.
         if self._credential_source_executable_output_file is not None:
             try:
                 with open(
-                    self._credential_source_executable_output_file
+                    self._credential_source_executable_output_file, encoding="utf-8"
                 ) as output_file:
                     response = json.load(output_file)
             except Exception:
@@ -155,6 +179,10 @@ class Credentials(external_account.Credentials):
                 try:
                     # If the cached response is expired, _parse_subject_token will raise an error which will be ignored and we will call the executable again.
                     subject_token = self._parse_subject_token(response)
+                    if (
+                        "expiration_time" not in response
+                    ):  # Always treat missing expiration_time as expired and proceed to executable run.
+                        raise exceptions.RefreshError
                 except ValueError:
                     raise
                 except exceptions.RefreshError:
@@ -169,45 +197,101 @@ class Credentials(external_account.Credentials):
 
         # Inject env vars.
         env = os.environ.copy()
-        env["GOOGLE_EXTERNAL_ACCOUNT_AUDIENCE"] = self._audience
-        env["GOOGLE_EXTERNAL_ACCOUNT_TOKEN_TYPE"] = self._subject_token_type
-        env[
-            "GOOGLE_EXTERNAL_ACCOUNT_INTERACTIVE"
-        ] = "0"  # Always set to 0 until interactive mode is implemented.
-        if self._service_account_impersonation_url is not None:
-            env[
-                "GOOGLE_EXTERNAL_ACCOUNT_IMPERSONATED_EMAIL"
-            ] = self.service_account_email
-        if self._credential_source_executable_output_file is not None:
-            env[
-                "GOOGLE_EXTERNAL_ACCOUNT_OUTPUT_FILE"
-            ] = self._credential_source_executable_output_file
+        self._inject_env_variables(env)
+        env["GOOGLE_EXTERNAL_ACCOUNT_REVOKE"] = "0"
 
-        try:
-            result = subprocess.run(
-                self._credential_source_executable_command.split(),
-                timeout=self._credential_source_executable_timeout_millis / 1000,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                env=env,
-            )
-            if result.returncode != 0:
-                raise exceptions.RefreshError(
-                    "Executable exited with non-zero return code {}. Error: {}".format(
-                        result.returncode, result.stdout
-                    )
+        # Run executable.
+        exe_timeout = (
+            self._credential_source_executable_interactive_timeout_millis / 1000
+            if self.interactive
+            else self._credential_source_executable_timeout_millis / 1000
+        )
+        exe_stdin = sys.stdin if self.interactive else None
+        exe_stdout = sys.stdout if self.interactive else subprocess.PIPE
+        exe_stderr = sys.stdout if self.interactive else subprocess.STDOUT
+
+        result = subprocess.run(
+            self._credential_source_executable_command.split(),
+            timeout=exe_timeout,
+            stdin=exe_stdin,
+            stdout=exe_stdout,
+            stderr=exe_stderr,
+            env=env,
+        )
+        if result.returncode != 0:
+            raise exceptions.RefreshError(
+                "Executable exited with non-zero return code {}. Error: {}".format(
+                    result.returncode, result.stdout
                 )
-        except Exception:
-            raise
-        else:
-            try:
-                data = result.stdout.decode("utf-8")
-                response = json.loads(data)
-                subject_token = self._parse_subject_token(response)
-            except Exception:
-                raise
+            )
 
+        # Handle executable output.
+        response = json.loads(result.stdout.decode("utf-8")) if result.stdout else None
+        if not response and self._credential_source_executable_output_file is not None:
+            response = json.load(
+                open(self._credential_source_executable_output_file, encoding="utf-8")
+            )
+
+        subject_token = self._parse_subject_token(response)
         return subject_token
+
+    def revoke(self, request):
+        """Revokes the subject token using the credential_source object.
+
+        Args:
+            request (google.auth.transport.Request): A callable used to make
+                HTTP requests.
+        Raises:
+            google.auth.exceptions.RefreshError: If the executable revocation
+                not properly executed.
+
+        """
+        if not self.interactive:
+            raise ValueError("Revoke is only enabled under interactive mode.")
+        self._validate_running_mode()
+
+        if not _helpers.is_python_3():
+            raise exceptions.RefreshError(
+                "Pluggable auth is only supported for python 3.6+"
+            )
+
+        # Inject variables
+        env = os.environ.copy()
+        self._inject_env_variables(env)
+        env["GOOGLE_EXTERNAL_ACCOUNT_REVOKE"] = "1"
+
+        # Run executable
+        result = subprocess.run(
+            self._credential_source_executable_command.split(),
+            timeout=self._credential_source_executable_interactive_timeout_millis
+            / 1000,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=env,
+        )
+
+        if result.returncode != 0:
+            raise exceptions.RefreshError(
+                "Auth revoke failed on executable. Exit with non-zero return code {}. Error: {}".format(
+                    result.returncode, result.stdout
+                )
+            )
+
+        response = json.loads(result.stdout.decode("utf-8"))
+        self._validate_revoke_response(response)
+
+    @property
+    def external_account_id(self):
+        """Returns the external account identifier.
+
+        When service account impersonation is used the identifier is the service
+        account email.
+
+        Without service account impersonation, this returns None, unless it is
+        being used by the Google Cloud CLI which populates this field.
+        """
+
+        return self.service_account_email or self._tokeninfo_username
 
     @classmethod
     def from_info(cls, info, **kwargs):
@@ -241,17 +325,23 @@ class Credentials(external_account.Credentials):
         """
         return super(Credentials, cls).from_file(filename, **kwargs)
 
+    def _inject_env_variables(self, env):
+        env["GOOGLE_EXTERNAL_ACCOUNT_AUDIENCE"] = self._audience
+        env["GOOGLE_EXTERNAL_ACCOUNT_TOKEN_TYPE"] = self._subject_token_type
+        env["GOOGLE_EXTERNAL_ACCOUNT_ID"] = self.external_account_id
+        env["GOOGLE_EXTERNAL_ACCOUNT_INTERACTIVE"] = "1" if self.interactive else "0"
+
+        if self._service_account_impersonation_url is not None:
+            env[
+                "GOOGLE_EXTERNAL_ACCOUNT_IMPERSONATED_EMAIL"
+            ] = self.service_account_email
+        if self._credential_source_executable_output_file is not None:
+            env[
+                "GOOGLE_EXTERNAL_ACCOUNT_OUTPUT_FILE"
+            ] = self._credential_source_executable_output_file
+
     def _parse_subject_token(self, response):
-        if "version" not in response:
-            raise ValueError("The executable response is missing the version field.")
-        if response["version"] > EXECUTABLE_SUPPORTED_MAX_VERSION:
-            raise exceptions.RefreshError(
-                "Executable returned unsupported version {}.".format(
-                    response["version"]
-                )
-            )
-        if "success" not in response:
-            raise ValueError("The executable response is missing the success field.")
+        self._validate_response_schema(response)
         if not response["success"]:
             if "code" not in response or "message" not in response:
                 raise ValueError(
@@ -261,13 +351,6 @@ class Credentials(external_account.Credentials):
                 "Executable returned unsuccessful response: code: {}, message: {}.".format(
                     response["code"], response["message"]
                 )
-            )
-        if (
-            "expiration_time" not in response
-            and self._credential_source_executable_output_file
-        ):
-            raise ValueError(
-                "The executable response must contain an expiration_time for successful responses when an output_file has been specified in the configuration."
             )
         if "expiration_time" in response and response["expiration_time"] < time.time():
             raise exceptions.RefreshError(
@@ -284,3 +367,38 @@ class Credentials(external_account.Credentials):
             return response["saml_response"]
         else:
             raise exceptions.RefreshError("Executable returned unsupported token type.")
+
+    def _validate_revoke_response(self, response):
+        self._validate_response_schema(response)
+        if not response["success"]:
+            raise exceptions.RefreshError("Revoke failed with unsuccessful response.")
+
+    def _validate_response_schema(self, response):
+        if "version" not in response:
+            raise ValueError("The executable response is missing the version field.")
+        if response["version"] > EXECUTABLE_SUPPORTED_MAX_VERSION:
+            raise exceptions.RefreshError(
+                "Executable returned unsupported version {}.".format(
+                    response["version"]
+                )
+            )
+
+        if "success" not in response:
+            raise ValueError("The executable response is missing the success field.")
+
+    def _validate_running_mode(self):
+        env_allow_executables = os.environ.get(
+            "GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES"
+        )
+        if env_allow_executables != "1":
+            raise ValueError(
+                "Executables need to be explicitly allowed (set GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES to '1') to run."
+            )
+
+        if self.interactive and not self._credential_source_executable_output_file:
+            raise ValueError(
+                "An output_file must be specified in the credential configuration for interactive mode."
+            )
+
+        if self.interactive and not self.is_workforce_pool:
+            raise ValueError("Interactive mode is only enabled for workforce pool.")
