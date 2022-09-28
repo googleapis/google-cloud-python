@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.9](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.8...v0.17.9) (2022-09-27)
+
+
+### Bug Fixes
+
+* Updates requirements.txt to fix failing tests due to missing req ([#575](https://github.com/googleapis/python-bigquery-pandas/issues/575)) ([1d797a3](https://github.com/googleapis/python-bigquery-pandas/commit/1d797a3337e716fa6f3de511e7c8875dfadde43b))
+
 ## [0.17.8](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.7...v0.17.8) (2022-08-09)
 
 
