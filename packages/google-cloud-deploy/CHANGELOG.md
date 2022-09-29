@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-deploy/compare/v1.3.1...v1.4.0) (2022-09-29)
+
+
+### Features
+
+* Publish new JobRun resource and associated methods for Google Cloud Deploy ([#133](https://github.com/googleapis/python-deploy/issues/133)) ([03ab410](https://github.com/googleapis/python-deploy/commit/03ab410ee01e20e3d1051fa8d8003300c871d82c))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#135](https://github.com/googleapis/python-deploy/issues/135)) ([c271ac1](https://github.com/googleapis/python-deploy/commit/c271ac1163bda6cc415c41c0a2651a7f72dd40fe))
+
 ## [1.3.1](https://github.com/googleapis/python-deploy/compare/v1.3.0...v1.3.1) (2022-08-11)
 
 
