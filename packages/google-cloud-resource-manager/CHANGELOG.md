@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.6.2](https://github.com/googleapis/python-resource-manager/compare/v1.6.1...v1.6.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#237](https://github.com/googleapis/python-resource-manager/issues/237)) ([d5c6d4b](https://github.com/googleapis/python-resource-manager/commit/d5c6d4bc320446b2cbbb7ce99c3ae477cd83a02a))
+
 ## [1.6.1](https://github.com/googleapis/python-resource-manager/compare/v1.6.0...v1.6.1) (2022-08-11)
 
 
