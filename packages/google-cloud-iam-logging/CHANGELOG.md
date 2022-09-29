@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/googleapis/python-iam-logging/compare/v1.0.4...v1.0.5) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#122](https://github.com/googleapis/python-iam-logging/issues/122)) ([a4abb03](https://github.com/googleapis/python-iam-logging/commit/a4abb035ef001bc55875c11078ae1ee2d0468f21))
+
 ## [1.0.4](https://github.com/googleapis/python-iam-logging/compare/v1.0.3...v1.0.4) (2022-08-12)
 
 
