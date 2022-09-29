@@ -8,6 +8,7 @@
 set -eo pipefail
 
 # Start the releasetool reporter
+python3 -m pip install --require-hashes -r github/python-spanner-sqlalchemy/.kokoro/requirements.txt
 python3 -m pip install gcp-releasetool
 python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
 

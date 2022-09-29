@@ -13,6 +13,7 @@ export PYTHONUNBUFFERED=1
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # Install nox
+python3 -m pip install --require-hashes -r requirements.txt
 python3 -m pip install --user --upgrade --quiet nox
 python3 -m nox --version
 
