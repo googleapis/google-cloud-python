@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.4.0...v0.4.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#72](https://github.com/googleapis/python-eventarc-publishing/issues/72)) ([b436e3d](https://github.com/googleapis/python-eventarc-publishing/commit/b436e3d9a00590034831c2567a466f6fdb0c58b7))
+
 ## [0.4.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.3.1...v0.4.0) (2022-09-16)
 
 
