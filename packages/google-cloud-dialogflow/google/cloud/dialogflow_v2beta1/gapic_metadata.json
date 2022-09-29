@@ -345,6 +345,11 @@
               "methods": [
                 "list_messages"
               ]
+            },
+            "SuggestConversationSummary": {
+              "methods": [
+                "suggest_conversation_summary"
+              ]
             }
           }
         },
@@ -379,6 +384,11 @@
             "ListMessages": {
               "methods": [
                 "list_messages"
+              ]
+            },
+            "SuggestConversationSummary": {
+              "methods": [
+                "suggest_conversation_summary"
               ]
             }
           }

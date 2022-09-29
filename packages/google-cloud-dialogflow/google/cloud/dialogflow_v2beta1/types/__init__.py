@@ -76,6 +76,8 @@ from .conversation import (
     ListConversationsResponse,
     ListMessagesRequest,
     ListMessagesResponse,
+    SuggestConversationSummaryRequest,
+    SuggestConversationSummaryResponse,
 )
 from .conversation_event import (
     ConversationEvent,
@@ -314,6 +316,8 @@ __all__ = (
     "ListConversationsResponse",
     "ListMessagesRequest",
     "ListMessagesResponse",
+    "SuggestConversationSummaryRequest",
+    "SuggestConversationSummaryResponse",
     "ConversationEvent",
     "AutomatedAgentConfig",
     "ClearSuggestionFeatureConfigOperationMetadata",

@@ -53,6 +53,10 @@ class ConversationsAsyncClient:
     DEFAULT_ENDPOINT = ConversationsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConversationsClient.DEFAULT_MTLS_ENDPOINT
 
+    answer_record_path = staticmethod(ConversationsClient.answer_record_path)
+    parse_answer_record_path = staticmethod(
+        ConversationsClient.parse_answer_record_path
+    )
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
     conversation_profile_path = staticmethod(
@@ -915,6 +919,113 @@ class ConversationsAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def suggest_conversation_summary(
+        self,
+        request: Union[gcd_conversation.SuggestConversationSummaryRequest, dict] = None,
+        *,
+        conversation: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_conversation.SuggestConversationSummaryResponse:
+        r"""Suggest summary for a conversation based on specific
+        historical messages. The range of the messages to be
+        used for summary can be specified in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            async def sample_suggest_conversation_summary():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.SuggestConversationSummaryRequest(
+                    conversation="conversation_value",
+                )
+
+                # Make the request
+                response = await client.suggest_conversation_summary(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.SuggestConversationSummaryRequest, dict]):
+                The request object. The request message for
+                [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary].
+            conversation (:class:`str`):
+                Required. The conversation to fetch suggestion for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
+
+                This corresponds to the ``conversation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.SuggestConversationSummaryResponse:
+                The response message for
+                [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([conversation])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = gcd_conversation.SuggestConversationSummaryRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if conversation is not None:
+            request.conversation = conversation
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.suggest_conversation_summary,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("conversation", request.conversation),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

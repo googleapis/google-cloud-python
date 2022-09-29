@@ -540,6 +540,7 @@ class SuggestionFeature(proto.Message):
         ARTICLE_SUGGESTION = 1
         FAQ = 2
         SMART_REPLY = 3
+        CONVERSATION_SUMMARIZATION = 8
 
     type_ = proto.Field(
         proto.ENUM,

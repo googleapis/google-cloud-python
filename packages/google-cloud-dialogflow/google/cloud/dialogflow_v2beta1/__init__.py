@@ -99,6 +99,8 @@ from .types.conversation import ListConversationsRequest
 from .types.conversation import ListConversationsResponse
 from .types.conversation import ListMessagesRequest
 from .types.conversation import ListMessagesResponse
+from .types.conversation import SuggestConversationSummaryRequest
+from .types.conversation import SuggestConversationSummaryResponse
 from .types.conversation_event import ConversationEvent
 from .types.conversation_profile import AutomatedAgentConfig
 from .types.conversation_profile import ClearSuggestionFeatureConfigOperationMetadata
@@ -451,6 +453,8 @@ __all__ = (
     "SubAgent",
     "SuggestArticlesRequest",
     "SuggestArticlesResponse",
+    "SuggestConversationSummaryRequest",
+    "SuggestConversationSummaryResponse",
     "SuggestFaqAnswersRequest",
     "SuggestFaqAnswersResponse",
     "SuggestSmartRepliesRequest",

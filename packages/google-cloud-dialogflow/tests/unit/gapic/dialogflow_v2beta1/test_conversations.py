@@ -2599,6 +2599,257 @@ async def test_list_messages_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.SuggestConversationSummaryRequest,
+        dict,
+    ],
+)
+def test_suggest_conversation_summary(request_type, transport: str = "grpc"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_conversation.SuggestConversationSummaryResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+        response = client.suggest_conversation_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_conversation.SuggestConversationSummaryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_conversation.SuggestConversationSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_suggest_conversation_summary_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        client.suggest_conversation_summary()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_conversation.SuggestConversationSummaryRequest()
+
+
+@pytest.mark.asyncio
+async def test_suggest_conversation_summary_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcd_conversation.SuggestConversationSummaryRequest,
+):
+    client = ConversationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_conversation.SuggestConversationSummaryResponse(
+                latest_message="latest_message_value",
+                context_size=1311,
+            )
+        )
+        response = await client.suggest_conversation_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_conversation.SuggestConversationSummaryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_conversation.SuggestConversationSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+@pytest.mark.asyncio
+async def test_suggest_conversation_summary_async_from_dict():
+    await test_suggest_conversation_summary_async(request_type=dict)
+
+
+def test_suggest_conversation_summary_field_headers():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcd_conversation.SuggestConversationSummaryRequest()
+
+    request.conversation = "conversation_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        call.return_value = gcd_conversation.SuggestConversationSummaryResponse()
+        client.suggest_conversation_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "conversation=conversation_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_suggest_conversation_summary_field_headers_async():
+    client = ConversationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcd_conversation.SuggestConversationSummaryRequest()
+
+    request.conversation = "conversation_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_conversation.SuggestConversationSummaryResponse()
+        )
+        await client.suggest_conversation_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "conversation=conversation_value",
+    ) in kw["metadata"]
+
+
+def test_suggest_conversation_summary_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_conversation.SuggestConversationSummaryResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.suggest_conversation_summary(
+            conversation="conversation_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].conversation
+        mock_val = "conversation_value"
+        assert arg == mock_val
+
+
+def test_suggest_conversation_summary_flattened_error():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.suggest_conversation_summary(
+            gcd_conversation.SuggestConversationSummaryRequest(),
+            conversation="conversation_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_suggest_conversation_summary_flattened_async():
+    client = ConversationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_conversation.SuggestConversationSummaryResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_conversation.SuggestConversationSummaryResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.suggest_conversation_summary(
+            conversation="conversation_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].conversation
+        mock_val = "conversation_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_suggest_conversation_summary_flattened_error_async():
+    client = ConversationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.suggest_conversation_summary(
+            gcd_conversation.SuggestConversationSummaryRequest(),
+            conversation="conversation_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConversationsGrpcTransport(
@@ -2742,6 +2993,7 @@ def test_conversations_base_transport():
         "complete_conversation",
         "batch_create_messages",
         "list_messages",
+        "suggest_conversation_summary",
         "get_location",
         "list_locations",
         "get_operation",
@@ -3102,9 +3354,32 @@ def test_conversations_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_conversation_path():
+def test_answer_record_path():
     project = "squid"
-    conversation = "clam"
+    answer_record = "clam"
+    expected = "projects/{project}/answerRecords/{answer_record}".format(
+        project=project,
+        answer_record=answer_record,
+    )
+    actual = ConversationsClient.answer_record_path(project, answer_record)
+    assert expected == actual
+
+
+def test_parse_answer_record_path():
+    expected = {
+        "project": "whelk",
+        "answer_record": "octopus",
+    }
+    path = ConversationsClient.answer_record_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_answer_record_path(path)
+    assert expected == actual
+
+
+def test_conversation_path():
+    project = "oyster"
+    conversation = "nudibranch"
     expected = "projects/{project}/conversations/{conversation}".format(
         project=project,
         conversation=conversation,
@@ -3115,8 +3390,8 @@ def test_conversation_path():
 
 def test_parse_conversation_path():
     expected = {
-        "project": "whelk",
-        "conversation": "octopus",
+        "project": "cuttlefish",
+        "conversation": "mussel",
     }
     path = ConversationsClient.conversation_path(**expected)
 
@@ -3126,8 +3401,8 @@ def test_parse_conversation_path():
 
 
 def test_conversation_profile_path():
-    project = "oyster"
-    conversation_profile = "nudibranch"
+    project = "winkle"
+    conversation_profile = "nautilus"
     expected = "projects/{project}/conversationProfiles/{conversation_profile}".format(
         project=project,
         conversation_profile=conversation_profile,
@@ -3140,8 +3415,8 @@ def test_conversation_profile_path():
 
 def test_parse_conversation_profile_path():
     expected = {
-        "project": "cuttlefish",
-        "conversation_profile": "mussel",
+        "project": "scallop",
+        "conversation_profile": "abalone",
     }
     path = ConversationsClient.conversation_profile_path(**expected)
 
@@ -3151,9 +3426,9 @@ def test_parse_conversation_profile_path():
 
 
 def test_message_path():
-    project = "winkle"
-    conversation = "nautilus"
-    message = "scallop"
+    project = "squid"
+    conversation = "clam"
+    message = "whelk"
     expected = (
         "projects/{project}/conversations/{conversation}/messages/{message}".format(
             project=project,
@@ -3167,9 +3442,9 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "project": "abalone",
-        "conversation": "squid",
-        "message": "clam",
+        "project": "octopus",
+        "conversation": "oyster",
+        "message": "nudibranch",
     }
     path = ConversationsClient.message_path(**expected)
 
@@ -3179,7 +3454,7 @@ def test_parse_message_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3189,7 +3464,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = ConversationsClient.common_billing_account_path(**expected)
 
@@ -3199,7 +3474,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3209,7 +3484,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = ConversationsClient.common_folder_path(**expected)
 
@@ -3219,7 +3494,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3229,7 +3504,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = ConversationsClient.common_organization_path(**expected)
 
@@ -3239,7 +3514,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3249,7 +3524,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = ConversationsClient.common_project_path(**expected)
 
@@ -3259,8 +3534,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3271,8 +3546,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ConversationsClient.common_location_path(**expected)
 

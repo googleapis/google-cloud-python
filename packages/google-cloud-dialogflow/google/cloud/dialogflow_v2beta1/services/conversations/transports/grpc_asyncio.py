@@ -436,6 +436,37 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
             )
         return self._stubs["list_messages"]
 
+    @property
+    def suggest_conversation_summary(
+        self,
+    ) -> Callable[
+        [gcd_conversation.SuggestConversationSummaryRequest],
+        Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
+    ]:
+        r"""Return a callable for the suggest conversation summary method over gRPC.
+
+        Suggest summary for a conversation based on specific
+        historical messages. The range of the messages to be
+        used for summary can be specified in the request.
+
+        Returns:
+            Callable[[~.SuggestConversationSummaryRequest],
+                    Awaitable[~.SuggestConversationSummaryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "suggest_conversation_summary" not in self._stubs:
+            self._stubs["suggest_conversation_summary"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Conversations/SuggestConversationSummary",
+                request_serializer=gcd_conversation.SuggestConversationSummaryRequest.serialize,
+                response_deserializer=gcd_conversation.SuggestConversationSummaryResponse.deserialize,
+            )
+        return self._stubs["suggest_conversation_summary"]
+
     def close(self):
         return self.grpc_channel.close()
 

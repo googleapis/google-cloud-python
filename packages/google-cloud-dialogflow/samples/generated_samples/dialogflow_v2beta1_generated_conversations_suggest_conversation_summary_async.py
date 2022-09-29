@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ClearSuggestionFeatureConfig
+# Snippet for SuggestConversationSummary
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dialogflow
 
 
-# [START dialogflow_v2beta1_generated_ConversationProfiles_ClearSuggestionFeatureConfig_async]
+# [START dialogflow_v2beta1_generated_Conversations_SuggestConversationSummary_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,25 +34,19 @@
 from google.cloud import dialogflow_v2beta1
 
 
-async def sample_clear_suggestion_feature_config():
+async def sample_suggest_conversation_summary():
     # Create a client
-    client = dialogflow_v2beta1.ConversationProfilesAsyncClient()
+    client = dialogflow_v2beta1.ConversationsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.ClearSuggestionFeatureConfigRequest(
-        conversation_profile="conversation_profile_value",
-        participant_role="END_USER",
-        suggestion_feature_type="CONVERSATION_SUMMARIZATION",
+    request = dialogflow_v2beta1.SuggestConversationSummaryRequest(
+        conversation="conversation_value",
     )
 
     # Make the request
-    operation = client.clear_suggestion_feature_config(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = await client.suggest_conversation_summary(request=request)
 
     # Handle the response
     print(response)
 
-# [END dialogflow_v2beta1_generated_ConversationProfiles_ClearSuggestionFeatureConfig_async]
+# [END dialogflow_v2beta1_generated_Conversations_SuggestConversationSummary_async]
