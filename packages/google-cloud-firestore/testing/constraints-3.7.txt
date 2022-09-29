@@ -8,4 +8,4 @@
 google-api-core==1.32.0
 google-cloud-core==1.4.1
 proto-plus==1.22.0
-protobuf==3.19.0  # transitive from `google-api-core`
+protobuf==3.20.2  # transitive from `google-api-core`
