@@ -288,23 +288,6 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def location_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_location_path(path: str) -> Dict[str, str]:
-        """Parses a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def membership_path(
         project: str,
         location: str,

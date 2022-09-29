@@ -72,8 +72,6 @@ class CloudDeployAsyncClient:
     )
     job_run_path = staticmethod(CloudDeployClient.job_run_path)
     parse_job_run_path = staticmethod(CloudDeployClient.parse_job_run_path)
-    location_path = staticmethod(CloudDeployClient.location_path)
-    parse_location_path = staticmethod(CloudDeployClient.parse_location_path)
     membership_path = staticmethod(CloudDeployClient.membership_path)
     parse_membership_path = staticmethod(CloudDeployClient.parse_membership_path)
     release_path = staticmethod(CloudDeployClient.release_path)
