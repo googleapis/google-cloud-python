@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.6.0](https://github.com/googleapis/python-language/compare/v2.5.2...v2.6.0) (2022-09-29)
+
+
+### Features
+
+* Add support for V1 and V2 classification models ([#376](https://github.com/googleapis/python-language/issues/376)) ([3ba5c56](https://github.com/googleapis/python-language/commit/3ba5c568179b04326ef9cc9874f2d18da99e51d6))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#381](https://github.com/googleapis/python-language/issues/381)) ([06f74b0](https://github.com/googleapis/python-language/commit/06f74b0cba8d3a5191caf5bee814c15bd0371813))
+
+
+### Documentation
+
+* Update classification sample to use v2 model ([#378](https://github.com/googleapis/python-language/issues/378)) ([73670e2](https://github.com/googleapis/python-language/commit/73670e27e2c2056f4a53d1225bb99399e8cbd05e))
+
 ## [2.5.2](https://github.com/googleapis/python-language/compare/v2.5.1...v2.5.2) (2022-08-11)
 
 
