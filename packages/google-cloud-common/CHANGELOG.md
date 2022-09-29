@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/googleapis/python-cloud-common/compare/v1.0.4...v1.0.5) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#87](https://github.com/googleapis/python-cloud-common/issues/87)) ([4430802](https://github.com/googleapis/python-cloud-common/commit/44308020a0db1c0cc4853c827426de7ee4c2ee4f))
+
 ## [1.0.4](https://github.com/googleapis/python-cloud-common/compare/v1.0.3...v1.0.4) (2022-08-11)
 
 
