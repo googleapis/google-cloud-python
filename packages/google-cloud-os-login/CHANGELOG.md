@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.7.3](https://github.com/googleapis/python-oslogin/compare/v2.7.2...v2.7.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#227](https://github.com/googleapis/python-oslogin/issues/227)) ([799858f](https://github.com/googleapis/python-oslogin/commit/799858f120e3aaaa8f753e343e1ceb4225448a84))
+
 ## [2.7.2](https://github.com/googleapis/python-oslogin/compare/v2.7.1...v2.7.2) (2022-08-11)
 
 
