@@ -46,7 +46,7 @@ setuptools.setup(
     install_requires=(
         "google-api-core[grpc] >= 2.10.1, <3.0.0dev",
         "proto-plus >= 1.22.0, <2.0.0dev",
-        "protobuf >= 3.20.1, <5.0.0dev",
+        "protobuf >= 3.20.2, <5.0.0dev",
     ),
     python_requires=">=3.7",
     classifiers=[
