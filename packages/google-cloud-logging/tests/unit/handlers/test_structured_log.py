@@ -207,6 +207,54 @@ class TestStructuredLogHandler(unittest.TestCase):
         self.assertIn(expected_result, result)
         self.assertIn("message", result)
 
+    def test_format_with_reserved_json_field(self):
+        # drop json_field data with reserved names
+        # related issue: https://github.com/googleapis/python-logging/issues/543
+        import logging
+        import json
+
+        handler = self._make_one()
+        message = "hello world"
+        extra = "still here"
+        json_fields = {
+            "message": "override?",
+            "severity": "error",
+            "logging.googleapis.com/trace_sampled": True,
+            "time": "none",
+            "extra": extra,
+            "SEVERITY": "error",
+        }
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            message,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        expected_payload = {
+            "message": message,
+            "severity": "INFO",
+            "SEVERITY": "error",
+            "logging.googleapis.com/trace": "",
+            "logging.googleapis.com/spanId": "",
+            "logging.googleapis.com/trace_sampled": False,
+            "logging.googleapis.com/sourceLocation": {},
+            "httpRequest": {},
+            "logging.googleapis.com/labels": {},
+            "extra": extra,
+        }
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+        self.assertEqual(set(expected_payload.keys()), set(result.keys()))
+        for (key, value) in expected_payload.items():
+            self.assertEqual(
+                value, result[key], f"expected_payload[{key}] != result[{key}]"
+            )
+
     def test_dict(self):
         """
         Handler should parse json encoded as a string

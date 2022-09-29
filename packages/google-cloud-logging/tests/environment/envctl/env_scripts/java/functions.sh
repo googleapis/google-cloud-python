@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@ set -e # exit on any failure
 set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
-SERVICE_NAME="log-node-func-$(echo $ENVCTL_ID | head -c 8)"
+
+SERVICE_NAME="logging-java-func-$(echo $ENVCTL_ID | head -c 10)"\
 
 destroy() {
   set +e
@@ -31,7 +32,7 @@ destroy() {
 
 verify() {
   set +e
-  gcloud functions describe $SERVICE_NAME --region us-west2 ${EXTRA_FUNCTIONS_FLAGS-} &> /dev/null
+  gcloud functions describe $SERVICE_NAME --region us-west2 ${EXTRA_FUNCTIONS_FLAGS-} > /dev/null
   if [[ $? == 0 ]]; then
      echo "TRUE"
      exit 0
@@ -43,40 +44,41 @@ verify() {
 }
 
 deploy() {
+  # available runtimes on Jun'22 are Java 11 (java11) and Java 17 (java17)
+  # use java11 since it is closest to LTS Java runtime (Java 9)
+  RUNTIME="${RUNTIME:-java17}"
+
   # create pub/sub topic
   set +e
   gcloud pubsub topics create $SERVICE_NAME 2>/dev/null
   set -e
 
-  # copy over local copy of library
-  pushd $SUPERREPO_ROOT
-    echo "in SUPERREPO_ROOT"
-    ls
-    tar -cvf $TMP_DIR/lib.tar --exclude node_modules --exclude env-tests-logging --exclude test --exclude system-test --exclude .nox --exclude samples --exclude docs .
-  popd
+  # use custom cloud functions Dockerfile
+  export ENV_TEST_DOCKERFILE=Dockerfile.cloudfunctions
+  # extract container
+  build_container nopush
+  id=$(docker create $GCR_PATH)
+  docker cp $id:/app/target/deployable-1.0.0.jar $TMP_DIR/deployable-1.0.0.jar
+  docker rm -v $id
+  ls $TMP_DIR
 
-  mkdir $TMP_DIR/nodejs-logging
-  tar -xvf $TMP_DIR/lib.tar --directory $TMP_DIR/nodejs-logging
-
-  # copy test code into deployment folder
-  cp $REPO_ROOT/deployable/nodejs/app.js $TMP_DIR/app.js
-  cp $REPO_ROOT/deployable/nodejs/tests.js $TMP_DIR/tests.js
-  cp $REPO_ROOT/deployable/nodejs/package.json $TMP_DIR/
-
-  # deploy function
-  local RUNTIME="nodejs12"
+  # deploy
   pushd $TMP_DIR
-    echo "in TMP_DIR"
-    ls
-    gcloud functions deploy $SERVICE_NAME \
-      --entry-point pubsubFunction \
-      --trigger-topic $SERVICE_NAME \
-      --runtime $RUNTIME \
-      --region us-west2 \
-      ${EXTRA_FUNCTIONS_FLAGS-}
+  gcloud functions deploy $SERVICE_NAME \
+    --entry-point envtest.deployable.CloudFunctionTrigger \
+    --source $TMP_DIR \
+    --memory 512MB \
+    --trigger-topic $SERVICE_NAME \
+    --runtime $RUNTIME \
+    --region us-west2 \
+    ${EXTRA_FUNCTIONS_FLAGS-}
   popd
+
 }
 
 filter-string() {
-  echo "resource.type=\"cloud_function\" AND resource.labels.function_name=\"$SERVICE_NAME\""
+  echo "resource.type=\"cloud_function\" AND resource.labels.module_id=\"$SERVICE_NAME\""
 }
+
+
+

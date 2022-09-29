@@ -17,7 +17,7 @@ set -e # exit on any failure
 set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
-SERVICE_NAME="log-go-func-$(echo $ENVCTL_ID | head -c 8)x"
+SERVICE_NAME="log-go-func-$(echo $ENVCTL_ID | head -c 8)"
 
 destroy() {
   set +e
@@ -25,13 +25,13 @@ destroy() {
   gcloud pubsub topics delete $SERVICE_NAME -q  2> /dev/null
   gcloud pubsub subscriptions delete $SERVICE_NAME-subscriber -q  2> /dev/null
   # delete service
-  gcloud functions delete $SERVICE_NAME --region us-west2 -q  2> /dev/null
+  gcloud functions delete $SERVICE_NAME --region us-west2 -q ${EXTRA_FUNCTIONS_FLAGS-} 2> /dev/null
   set -e
 }
 
 verify() {
   set +e
-  gcloud functions describe $SERVICE_NAME --region us-west2
+  gcloud functions describe $SERVICE_NAME --region us-west2 ${EXTRA_FUNCTIONS_FLAGS-} &> /dev/null
   if [[ $? == 0 ]]; then
      echo "TRUE"
      exit 0
@@ -47,25 +47,29 @@ deploy() {
   set +e
   gcloud pubsub topics create $SERVICE_NAME 2>/dev/null
   set -e
-  # Note: functions only supports go111 and go113 at the moment
-  local RUNTIME="go113"
-  
+  # Note: functions only supports go111, go113 and go116 at the moment
+  local RUNTIME="go116"
+
+
   # Copy over local copy of library to use as dependency
   _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
   pushd $SUPERREPO_ROOT/logging
-    tar -cvf $_deployable_dir/lib.tar --exclude internal/env-tests-logging --exclude .nox --exclude docs --exclude __pycache__ .
+    tar -cvf $_deployable_dir/lib.tar \
+      --exclude logging --exclude */env-tests-logging  \
+      --exclude .nox --exclude docs --exclude __pycache__ .
   popd
   mkdir -p $_deployable_dir/logging
   tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/logging
-  
+
   # Create vendor folder based on local dependency
   pushd $REPO_ROOT/deployable/go
+    go mod tidy
     go mod vendor
   popd
 
   # move code into a temp directory used to deploy the cloud function
   cp -rf $REPO_ROOT/deployable/go/vendor $TMP_DIR/vendor
-  
+
   # Renames package as Cloud Functions cannot be 'main' packages. 
   sed 's/package main.*/package function/g' $REPO_ROOT/deployable/go/main.go > $TMP_DIR/main.go 
 
@@ -80,7 +84,8 @@ deploy() {
       --entry-point PubsubFunction \
       --trigger-topic $SERVICE_NAME \
       --runtime $RUNTIME \
-      --region us-west2
+      --region us-west2 \
+      ${EXTRA_FUNCTIONS_FLAGS-}
   popd
 }
 

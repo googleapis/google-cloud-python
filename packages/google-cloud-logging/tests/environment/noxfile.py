@@ -133,6 +133,7 @@ def blacken(session: nox.sessions.Session) -> None:
         "kubernetes",
         "cloudrun",
         "functions",
+        "functions_v2"
     ],
 )
 @nox.parametrize("language", ["python", "go", "nodejs", "java"])

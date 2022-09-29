@@ -28,13 +28,13 @@ destroy() {
   export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
   gcloud container images delete $GCR_PATH -q --force-delete-tags 2> /dev/null
   # delete service
-  gcloud compute instances delete $SERVICE_NAME -q
+  gcloud compute instances delete $SERVICE_NAME --zone us-west1-c -q
   set -e
 }
 
 verify() {
   set +e
-  gcloud compute instances describe $SERVICE_NAME > /dev/null 2> /dev/null
+  gcloud compute instances describe $SERVICE_NAME --zone us-west1-c > /dev/null 2> /dev/null
   if [[ $? == 0 ]]; then
      echo "TRUE"
      exit 0
@@ -50,6 +50,7 @@ deploy() {
   gcloud compute instances create-with-container \
     $SERVICE_NAME \
     --container-image $GCR_PATH \
+    --zone us-west1-c \
     --container-env PUBSUB_TOPIC="$SERVICE_NAME",ENABLE_SUBSCRIBER="true"
   # wait for the pub/sub subscriber to start
   NUM_SUBSCRIBERS=0

@@ -25,7 +25,7 @@ fi
 set -e
 
 # create and destroy temporary dir
-UUID=$(python  -c 'import uuid; print(uuid.uuid1())')
+UUID="${UUID:-$(python${ENV_TEST_PY_VERSION-}  -c 'import uuid; print(uuid.uuid1())')}"
 TMP_DIR=$REPO_ROOT/tmp-$UUID
 mkdir $TMP_DIR
 function finish {
@@ -41,6 +41,7 @@ build_container() {
   # copy super-repo into deployable dir
   _env_tests_relative_path=${REPO_ROOT#"$SUPERREPO_ROOT/"}
   _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
+  _dockerfile_name="${ENV_TEST_DOCKERFILE:-Dockerfile}"
   # copy over local copy of library
   pushd $SUPERREPO_ROOT
     tar -cvf $_deployable_dir/lib.tar \
@@ -52,7 +53,7 @@ build_container() {
   mkdir -p $_deployable_dir/_library
   tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/_library
   # build container
-  docker build -t $GCR_PATH $_deployable_dir
+  docker build -t $GCR_PATH -f $_deployable_dir/$_dockerfile_name $_deployable_dir
   if [[ "$ARG" != "nopush" ]]; then
     docker push $GCR_PATH
   fi
