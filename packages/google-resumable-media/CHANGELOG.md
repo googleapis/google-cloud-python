@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.4.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.3.3...v2.4.0) (2022-09-29)
+
+
+### Features
+
+* Handle interrupted downloads with decompressive transcoding ([#346](https://github.com/googleapis/google-resumable-media-python/issues/346)) ([f4d26b7](https://github.com/googleapis/google-resumable-media-python/commit/f4d26b7317bf452c8bc4e7f140f9d10e088b8644))
+
+
+### Bug Fixes
+
+* Allow recover to check the status of upload regardless of state ([#343](https://github.com/googleapis/google-resumable-media-python/issues/343)) ([3599267](https://github.com/googleapis/google-resumable-media-python/commit/3599267df25e54be8d1aa07a673f74d7230aa0b7))
+* Require python 3.7+ ([#337](https://github.com/googleapis/google-resumable-media-python/issues/337)) ([942665f](https://github.com/googleapis/google-resumable-media-python/commit/942665f1bb01d2efb604e0be52736690160973b9))
+* Use unittest.mock ([#329](https://github.com/googleapis/google-resumable-media-python/issues/329)) ([82f9769](https://github.com/googleapis/google-resumable-media-python/commit/82f9769f3368404d1854dd22eeed34eeb25ea835))
+
+
+### Documentation
+
+* Fix changelog header to consistent size ([#331](https://github.com/googleapis/google-resumable-media-python/issues/331)) ([7b1dc9c](https://github.com/googleapis/google-resumable-media-python/commit/7b1dc9cc547d6cff7d1340d5b688d1cb0c492e2a))
+
 ## [2.3.3](https://github.com/googleapis/google-resumable-media-python/compare/v2.3.2...v2.3.3) (2022-05-05)
 
 
