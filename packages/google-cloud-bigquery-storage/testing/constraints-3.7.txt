@@ -11,4 +11,4 @@ libcst==0.2.5
 fastavro==0.21.2
 pandas==1.0.5
 pyarrow==0.15.0
-protobuf==3.19.0
+protobuf==3.20.2
