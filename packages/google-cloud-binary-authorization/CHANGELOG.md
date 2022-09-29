@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-binary-authorization/compare/v1.3.1...v1.3.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#182](https://github.com/googleapis/python-binary-authorization/issues/182)) ([c469fcc](https://github.com/googleapis/python-binary-authorization/commit/c469fcc556309cf1bb47e64c362e877a9aab2f2c))
+
 ## [1.3.1](https://github.com/googleapis/python-binary-authorization/compare/v1.3.0...v1.3.1) (2022-08-11)
 
 
