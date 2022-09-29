@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/python-certificate-manager/compare/v1.0.0...v1.0.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#86](https://github.com/googleapis/python-certificate-manager/issues/86)) ([fa93aa2](https://github.com/googleapis/python-certificate-manager/commit/fa93aa2b21be386a905998c4d3484d98e6033634))
+
 ## [1.0.0](https://github.com/googleapis/python-certificate-manager/compare/v0.2.1...v1.0.0) (2022-08-15)
 
 
