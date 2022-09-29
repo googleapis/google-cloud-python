@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/python-eventarc/compare/v1.6.1...v1.6.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#174](https://github.com/googleapis/python-eventarc/issues/174)) ([0dcf87b](https://github.com/googleapis/python-eventarc/commit/0dcf87b9f81283e2bb45ef0a7f7ab71b91d70382))
+
 ## [1.6.1](https://github.com/googleapis/python-eventarc/compare/v1.6.0...v1.6.1) (2022-08-11)
 
 
