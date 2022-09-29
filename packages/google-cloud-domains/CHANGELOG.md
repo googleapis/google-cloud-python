@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/googleapis/python-domains/compare/v1.2.1...v1.2.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#175](https://github.com/googleapis/python-domains/issues/175)) ([b96d9f9](https://github.com/googleapis/python-domains/commit/b96d9f944515029de19c240919b94517746a6c05))
+
 ## [1.2.1](https://github.com/googleapis/python-domains/compare/v1.2.0...v1.2.1) (2022-08-11)
 
 
