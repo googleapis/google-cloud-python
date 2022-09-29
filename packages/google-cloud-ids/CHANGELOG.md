@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/googleapis/python-ids/compare/v1.2.2...v1.2.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#85](https://github.com/googleapis/python-ids/issues/85)) ([4fdbbe8](https://github.com/googleapis/python-ids/commit/4fdbbe890d28e3999446e10dade2ec2c2ca00abd))
+
 ## [1.2.2](https://github.com/googleapis/python-ids/compare/v1.2.1...v1.2.2) (2022-08-11)
 
 
