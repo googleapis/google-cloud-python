@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/python-data-fusion/compare/v1.5.1...v1.5.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#145](https://github.com/googleapis/python-data-fusion/issues/145)) ([04c9fb1](https://github.com/googleapis/python-data-fusion/commit/04c9fb187159f0212a514b2bf957bb8001d220b9))
+
 ## [1.5.1](https://github.com/googleapis/python-data-fusion/compare/v1.5.0...v1.5.1) (2022-08-11)
 
 
