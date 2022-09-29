@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.16.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.16.0...v2.16.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#517](https://github.com/googleapis/python-bigquery-storage/issues/517)) ([53d72c7](https://github.com/googleapis/python-bigquery-storage/commit/53d72c7bf8fbe63bc1ea769ed4d8f6e1daad5b87))
+
 ## [2.16.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.15.0...v2.16.0) (2022-09-19)
 
 
