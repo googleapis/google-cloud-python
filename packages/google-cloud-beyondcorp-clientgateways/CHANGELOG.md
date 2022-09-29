@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.1.1...v0.1.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#25](https://github.com/googleapis/python-beyondcorp-clientgateways/issues/25)) ([a218def](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/a218def33193241404ddc08dc7389395efc43123))
+
 ## [0.1.1](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.1.0...v0.1.1) (2022-08-15)
 
 
