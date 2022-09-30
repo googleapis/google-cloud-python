@@ -573,6 +573,47 @@ class TestCloudLoggingHandler(unittest.TestCase):
             ),
         )
 
+    def test_format_with_nested_json(self):
+        """
+        JSON can contain nested dictionaries of data
+        """
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+        import logging
+
+        client = _Client(self.PROJECT)
+        handler = self._make_one(
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
+        )
+        json_fields = {"outer": {"inner": {"hello": "world"}}}
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        handler.handle(record)
+        self.assertEqual(
+            handler.transport.send_called_with,
+            (
+                record,
+                json_fields,
+                _GLOBAL_RESOURCE,
+                None,
+                None,
+                None,
+                False,
+                None,
+                None,
+            ),
+        )
+
     def test_emit_with_encoded_json(self):
         """
         Handler should parse json encoded as a string

@@ -304,6 +304,28 @@ class TestLogger(unittest.TestCase):
 
         self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
+    def test_log_nested_struct(self):
+        from google.cloud.logging_v2.handlers._monitored_resources import (
+            detect_resource,
+        )
+
+        STRUCT = {"message": "MESSAGE", "weather": "cloudy", "nested": {"one": 2}}
+        RESOURCE = detect_resource(self.PROJECT)._to_dict()
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "jsonPayload": STRUCT,
+                "resource": RESOURCE,
+            }
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log(STRUCT)
+
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
     def test_log_struct_w_default_labels(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,
