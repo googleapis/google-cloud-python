@@ -30,7 +30,7 @@ from google.cloud.security.publicca_v1beta1.types import resources, service
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-private-ca",
+            "google-cloud-public-ca",
         ).version,
     )
 except pkg_resources.DistributionNotFound:

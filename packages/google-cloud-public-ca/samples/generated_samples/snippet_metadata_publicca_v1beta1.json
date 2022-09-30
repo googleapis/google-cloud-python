@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-private-ca"
+    "name": "google-cloud-public-ca"
   },
   "snippets": [
     {
@@ -141,7 +141,7 @@
         "shortName": "create_external_account_key"
       },
       "description": "Sample for CreateExternalAccountKey",
-      "file": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_fa3353b1.py",
+      "file": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_341af103.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "publicca_v1beta1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_sync",
@@ -177,7 +177,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_fa3353b1.py"
+      "title": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_341af103.py"
     },
     {
       "canonical": true,
@@ -225,7 +225,7 @@
         "shortName": "create_external_account_key"
       },
       "description": "Sample for CreateExternalAccountKey",
-      "file": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_341af103.py",
+      "file": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_fa3353b1.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "publicca_v1beta1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_sync",
@@ -261,7 +261,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_341af103.py"
+      "title": "publicca_v1beta1_generated_public_certificate_authority_service_create_external_account_key_sync_fa3353b1.py"
     }
   ]
 }
