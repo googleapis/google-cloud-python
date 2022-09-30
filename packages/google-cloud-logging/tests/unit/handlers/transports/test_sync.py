@@ -70,7 +70,7 @@ class TestSyncHandler(unittest.TestCase):
         client_name = "python"
         python_logger_name = "mylogger"
         transport = self._make_one(client, client_name)
-        message = {"message": "hello world", "extra": "test"}
+        message = {"message": "hello world", "extra": "test", "nested": {"one": 2}}
         record = logging.LogRecord(
             python_logger_name, logging.INFO, None, None, message, None, None
         )

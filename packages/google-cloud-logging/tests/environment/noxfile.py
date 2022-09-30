@@ -70,7 +70,7 @@ def _determine_local_import_names(start_dir: str) -> List[str]:
 # We also need to specify the rules which are ignored by default:
 # ['E226', 'W504', 'E126', 'E123', 'W503', 'E24', 'E704', 'E121']
 
-DEFAULT_PYTHON_VERSION = os.getenv("ENV_TEST_PY_VERSION","3.9")
+DEFAULT_PYTHON_VERSION = os.getenv("ENV_TEST_PY_VERSION", "3.9")
 BLACK_PATHS = ["./deployable/python"]
 BLACK_VERSION = "black==19.10b0"
 
@@ -133,7 +133,7 @@ def blacken(session: nox.sessions.Session) -> None:
         "kubernetes",
         "cloudrun",
         "functions",
-        "functions_v2"
+        "functions_v2",
     ],
 )
 @nox.parametrize("language", ["python", "go", "nodejs", "java"])

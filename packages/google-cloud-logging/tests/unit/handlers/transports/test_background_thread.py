@@ -69,6 +69,29 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             resource=_GLOBAL_RESOURCE,
         )
 
+    def test_send_json(self):
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+
+        client = _Client(self.PROJECT)
+        name = "python_logger"
+
+        transport, _ = self._make_one(client, name)
+
+        python_logger_name = "mylogger"
+        message = {"hello": {"world": "!"}}
+
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO, None, None, message, None, None
+        )
+
+        transport.send(record, message, resource=_GLOBAL_RESOURCE)
+
+        transport.worker.enqueue.assert_called_once_with(
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
+        )
+
     def test_trace_send(self):
         from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 

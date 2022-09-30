@@ -122,7 +122,10 @@ def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     else:
         logging.critical(log_text, extra=kwargs)
 
-def pylogging_json_extras(log_text="pylogging with json extras", severity="WARNING", **kwargs):
+
+def pylogging_json_extras(
+    log_text="pylogging with json extras", severity="WARNING", **kwargs
+):
     # allowed severity: debug, info, warning, error, critical
 
     # build json message
@@ -143,6 +146,7 @@ def pylogging_json_extras(log_text="pylogging with json extras", severity="WARNI
         logging.error(log_text, extra={"json_fields": metadata})
     else:
         logging.critical(log_text, extra={"json_fields": metadata})
+
 
 def pylogging_multiline(log_text="pylogging", second_line="line 2", **kwargs):
     logging.error(f"{log_text}\n{second_line}")
@@ -166,6 +170,7 @@ def pylogging_with_formatter(
 
 def pylogging_with_arg(log_text="my_arg", **kwargs):
     logging.error("Arg: %s", log_text)
+
 
 def pylogging_flask(
     log_text="pylogging_flask",

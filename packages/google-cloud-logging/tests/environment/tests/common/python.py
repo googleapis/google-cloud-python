@@ -362,11 +362,15 @@ class CommonPython:
         log_text = f"{inspect.currentframe().f_code.co_name} {uuid.uuid1()}"
         log_dict = {
             "jsonfield_component": "arbitrary-property",
-            "jsonfield_severity":"error",
-            "jsonfield_message": "duplicate message"
+            "jsonfield_severity": "error",
+            "jsonfield_message": "duplicate message",
         }
         log_list = self.trigger_and_retrieve(
-            log_text, "pylogging_json_extras", append_uuid=False, severity="info", **log_dict
+            log_text,
+            "pylogging_json_extras",
+            append_uuid=False,
+            severity="info",
+            **log_dict,
         )
 
         found_log = log_list[-1]
@@ -374,4 +378,6 @@ class CommonPython:
         self.assertIsNotNone(found_log, "expected log text not found")
         self.assertTrue(isinstance(found_log.payload, dict), "expected jsonPayload")
         self.assertEqual(found_log.payload["message"], log_text)
-        self.assertEqual(found_log.severity.lower(), "info", "severity should be set by logger")
+        self.assertEqual(
+            found_log.severity.lower(), "info", "severity should be set by logger"
+        )
