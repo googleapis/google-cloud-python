@@ -1,0 +1,7 @@
+Types for Google Cloud Bigquery Datapolicies v1beta1 API
+========================================================
+
+.. automodule:: google.cloud.bigquery.datapolicies_v1beta1.types
+    :members:
+    :undoc-members:
+    :show-inheritance:
