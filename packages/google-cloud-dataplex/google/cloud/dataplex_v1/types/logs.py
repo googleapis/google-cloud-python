@@ -328,7 +328,8 @@ class SessionEvent(proto.Message):
             The log message.
         user_id (str):
             The information about the user that created
-            the session.
+            the session. It will be the email address of the
+            user.
         session_id (str):
             Unique identifier for the session.
         type_ (google.cloud.dataplex_v1.types.SessionEvent.EventType):
@@ -337,6 +338,13 @@ class SessionEvent(proto.Message):
             The execution details of the query.
 
             This field is a member of `oneof`_ ``detail``.
+        event_succeeded (bool):
+            The status of the event.
+        warm_pool_enabled (bool):
+            If the session is a warm pooled session.
+        unassigned_duration (google.protobuf.duration_pb2.Duration):
+            The idle duration of a warm pooled session
+            before it is assigned to user.
     """
 
     class EventType(proto.Enum):
@@ -345,6 +353,7 @@ class SessionEvent(proto.Message):
         START = 1
         STOP = 2
         QUERY = 3
+        CREATE = 4
 
     class QueryDetail(proto.Message):
         r"""Execution details of the query.
@@ -419,6 +428,19 @@ class SessionEvent(proto.Message):
         number=5,
         oneof="detail",
         message=QueryDetail,
+    )
+    event_succeeded = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    warm_pool_enabled = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    unassigned_duration = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
     )
 
 

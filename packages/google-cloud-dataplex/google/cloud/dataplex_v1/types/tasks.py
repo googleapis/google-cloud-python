@@ -31,6 +31,11 @@ __protobuf__ = proto.module(
 class Task(proto.Message):
     r"""A task represents a user-visible job.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -69,6 +74,11 @@ class Task(proto.Message):
             executions.
         spark (google.cloud.dataplex_v1.types.Task.SparkTaskConfig):
             Config related to running custom Spark tasks.
+
+            This field is a member of `oneof`_ ``config``.
+        notebook (google.cloud.dataplex_v1.types.Task.NotebookTaskConfig):
+            Config related to running scheduled
+            Notebooks.
 
             This field is a member of `oneof`_ ``config``.
     """
@@ -445,6 +455,46 @@ class Task(proto.Message):
             message="Task.InfrastructureSpec",
         )
 
+    class NotebookTaskConfig(proto.Message):
+        r"""Config for running scheduled notebooks.
+
+        Attributes:
+            notebook (str):
+                Required. Path to input notebook. This can be the GCS URI of
+                the notebook file or the path to a Notebook Content. The
+                execution args are accessible as environment variables
+                (``TASK_key=value``).
+            infrastructure_spec (google.cloud.dataplex_v1.types.Task.InfrastructureSpec):
+                Optional. Infrastructure specification for
+                the execution.
+            file_uris (Sequence[str]):
+                Optional. GCS URIs of files to be placed in
+                the working directory of each executor.
+            archive_uris (Sequence[str]):
+                Optional. GCS URIs of archives to be
+                extracted into the working directory of each
+                executor. Supported file types: .jar, .tar,
+                .tar.gz, .tgz, and .zip.
+        """
+
+        notebook = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        infrastructure_spec = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Task.InfrastructureSpec",
+        )
+        file_uris = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+        archive_uris = proto.RepeatedField(
+            proto.STRING,
+            number=6,
+        )
+
     class ExecutionStatus(proto.Message):
         r"""Status of the task execution (e.g. Jobs).
 
@@ -522,6 +572,12 @@ class Task(proto.Message):
         number=300,
         oneof="config",
         message=SparkTaskConfig,
+    )
+    notebook = proto.Field(
+        proto.MESSAGE,
+        number=302,
+        oneof="config",
+        message=NotebookTaskConfig,
     )
 
 
