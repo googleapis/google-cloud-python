@@ -3,7 +3,7 @@ Python Client for Distributed Cloud Edge Container API
 
 |preview| |pypi| |versions|
 
-`Distributed Cloud Edge Container API`_: simplifies the deployment and management of public CAs without managing infrastructure.
+`Distributed Cloud Edge Container API`_: Google Distributed Cloud Edge allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

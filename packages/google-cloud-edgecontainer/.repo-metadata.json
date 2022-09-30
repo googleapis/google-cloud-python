@@ -13,5 +13,5 @@
     "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "edgecontainer",
-    "api_description": "simplifies the deployment and management of public CAs without managing infrastructure."
+    "api_description": "Google Distributed Cloud Edge allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center."
 }
