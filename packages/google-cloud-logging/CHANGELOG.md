@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.2.3](https://github.com/googleapis/python-logging/compare/v3.2.2...v3.2.3) (2022-09-30)
+
+
+### Bug Fixes
+
+* Mimic the pubsub test to clean up bigquery datasets ([#639](https://github.com/googleapis/python-logging/issues/639)) ([44deb1b](https://github.com/googleapis/python-logging/commit/44deb1bd63a1367528c57d6a732ba8a4e0dce318))
+* Nested json with structured log handler ([#636](https://github.com/googleapis/python-logging/issues/636)) ([b840435](https://github.com/googleapis/python-logging/commit/b8404351484cbec22a372a8c2b16dcb4bf4b756a))
+* Structured log handler drops reserved fields in json_fields ([#634](https://github.com/googleapis/python-logging/issues/634)) ([4ef38b3](https://github.com/googleapis/python-logging/commit/4ef38b3942f6750348916a28e995e2c1c169e071))
+
 ## [3.2.2](https://github.com/googleapis/python-logging/compare/v3.2.1...v3.2.2) (2022-08-12)
 
 
