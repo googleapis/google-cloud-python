@@ -26,6 +26,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.assuredworkloads_v1.types import assuredworkloads
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AssuredWorkloadsServiceTransport, DEFAULT_CLIENT_INFO
@@ -303,6 +304,42 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
         return self._stubs["update_workload"]
 
     @property
+    def restrict_allowed_resources(
+        self,
+    ) -> Callable[
+        [assuredworkloads.RestrictAllowedResourcesRequest],
+        assuredworkloads.RestrictAllowedResourcesResponse,
+    ]:
+        r"""Return a callable for the restrict allowed resources method over gRPC.
+
+        Restrict the list of resources allowed in the
+        Workload environment. The current list of allowed
+        products can be found at
+        https://cloud.google.com/assured-workloads/docs/supported-products
+        In addition to assuredworkloads.workload.update
+        permission, the user should also have
+        orgpolicy.policy.set permission on the folder resource
+        to use this functionality.
+
+        Returns:
+            Callable[[~.RestrictAllowedResourcesRequest],
+                    ~.RestrictAllowedResourcesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restrict_allowed_resources" not in self._stubs:
+            self._stubs["restrict_allowed_resources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/RestrictAllowedResources",
+                request_serializer=assuredworkloads.RestrictAllowedResourcesRequest.serialize,
+                response_deserializer=assuredworkloads.RestrictAllowedResourcesResponse.deserialize,
+            )
+        return self._stubs["restrict_allowed_resources"]
+
+    @property
     def delete_workload(
         self,
     ) -> Callable[[assuredworkloads.DeleteWorkloadRequest], empty_pb2.Empty]:
@@ -384,8 +421,138 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
             )
         return self._stubs["list_workloads"]
 
+    @property
+    def list_violations(
+        self,
+    ) -> Callable[
+        [assuredworkloads.ListViolationsRequest],
+        assuredworkloads.ListViolationsResponse,
+    ]:
+        r"""Return a callable for the list violations method over gRPC.
+
+        Lists the Violations in the AssuredWorkload Environment. Callers
+        may also choose to read across multiple Workloads as per
+        `AIP-159 <https://google.aip.dev/159>`__ by using '-' (the
+        hyphen or dash character) as a wildcard character instead of
+        workload-id in the parent. Format
+        ``organizations/{org_id}/locations/{location}/workloads/-``
+
+        Returns:
+            Callable[[~.ListViolationsRequest],
+                    ~.ListViolationsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_violations" not in self._stubs:
+            self._stubs["list_violations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/ListViolations",
+                request_serializer=assuredworkloads.ListViolationsRequest.serialize,
+                response_deserializer=assuredworkloads.ListViolationsResponse.deserialize,
+            )
+        return self._stubs["list_violations"]
+
+    @property
+    def get_violation(
+        self,
+    ) -> Callable[[assuredworkloads.GetViolationRequest], assuredworkloads.Violation]:
+        r"""Return a callable for the get violation method over gRPC.
+
+        Retrieves Assured Workload Violation based on ID.
+
+        Returns:
+            Callable[[~.GetViolationRequest],
+                    ~.Violation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_violation" not in self._stubs:
+            self._stubs["get_violation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/GetViolation",
+                request_serializer=assuredworkloads.GetViolationRequest.serialize,
+                response_deserializer=assuredworkloads.Violation.deserialize,
+            )
+        return self._stubs["get_violation"]
+
+    @property
+    def acknowledge_violation(
+        self,
+    ) -> Callable[
+        [assuredworkloads.AcknowledgeViolationRequest],
+        assuredworkloads.AcknowledgeViolationResponse,
+    ]:
+        r"""Return a callable for the acknowledge violation method over gRPC.
+
+        Acknowledges an existing violation. By acknowledging
+        a violation, users acknowledge the existence of a
+        compliance violation in their workload and decide to
+        ignore it due to a valid business justification.
+        Acknowledgement is a permanent operation and it cannot
+        be reverted.
+
+        Returns:
+            Callable[[~.AcknowledgeViolationRequest],
+                    ~.AcknowledgeViolationResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "acknowledge_violation" not in self._stubs:
+            self._stubs["acknowledge_violation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/AcknowledgeViolation",
+                request_serializer=assuredworkloads.AcknowledgeViolationRequest.serialize,
+                response_deserializer=assuredworkloads.AcknowledgeViolationResponse.deserialize,
+            )
+        return self._stubs["acknowledge_violation"]
+
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
 
     @property
     def kind(self) -> str:

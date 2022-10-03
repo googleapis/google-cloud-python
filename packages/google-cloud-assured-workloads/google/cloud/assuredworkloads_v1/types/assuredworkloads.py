@@ -31,6 +31,15 @@ __protobuf__ = proto.module(
         "ListWorkloadsResponse",
         "Workload",
         "CreateWorkloadOperationMetadata",
+        "RestrictAllowedResourcesRequest",
+        "RestrictAllowedResourcesResponse",
+        "AcknowledgeViolationRequest",
+        "AcknowledgeViolationResponse",
+        "TimeWindow",
+        "ListViolationsRequest",
+        "ListViolationsResponse",
+        "GetViolationRequest",
+        "Violation",
     },
 )
 
@@ -74,7 +83,7 @@ class UpdateWorkloadRequest(proto.Message):
 
     Attributes:
         workload (google.cloud.assuredworkloads_v1.types.Workload):
-            Required. The workload to update. The workload’s ``name``
+            Required. The workload to update. The workload's ``name``
             field is used to identify the workload to be updated.
             Format:
             organizations/{org_id}/locations/{location_id}/workloads/{workload_id}
@@ -231,12 +240,12 @@ class Workload(proto.Message):
             Output only. Immutable. The Workload creation
             timestamp.
         billing_account (str):
-            Required. Input only. The billing account used for the
-            resources which are direct children of workload. This
-            billing account is initially associated with the resources
-            created as part of Workload creation. After the initial
-            creation of these resources, the customer can change the
-            assigned billing account. The resource name has the form
+            Optional. The billing account used for the resources which
+            are direct children of workload. This billing account is
+            initially associated with the resources created as part of
+            Workload creation. After the initial creation of these
+            resources, the customer can change the assigned billing
+            account. The resource name has the form
             ``billingAccounts/{billing_account_id}``. For example,
             ``billingAccounts/012345-567890-ABCDEF``.
         etag (str):
@@ -253,10 +262,11 @@ class Workload(proto.Message):
             specified all resources are created under the parent
             organization. Format: folders/{folder_id}
         kms_settings (google.cloud.assuredworkloads_v1.types.Workload.KMSSettings):
-            Input only. Settings used to create a CMEK
-            crypto key. When set a project with a KMS CMEK
-            key is provisioned. This field is mandatory for
-            a subset of Compliance Regimes.
+            Input only. Settings used to create a CMEK crypto key. When
+            set, a project with a KMS CMEK key is provisioned. This
+            field is deprecated as of Feb 28, 2022. In order to create a
+            Keyring, callers should specify, ENCRYPTION_KEYS_PROJECT or
+            KEYRING in ResourceSettings.resource_type field.
         resource_settings (Sequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceSettings]):
             Input only. Resource properties that are used
             to customize workload resources. These
@@ -276,6 +286,17 @@ class Workload(proto.Message):
             response is queried during GetWorkload call. In
             failure cases, user friendly error message is
             shown in SAA details page.
+        compliant_but_disallowed_services (Sequence[str]):
+            Output only. Urls for services which are
+            compliant for this Assured Workload, but which
+            are currently disallowed by the
+            ResourceUsageRestriction org policy. Invoke
+            RestrictAllowedResources endpoint to allow your
+            project developers to use these services in
+            their environment.".
+        partner (google.cloud.assuredworkloads_v1.types.Workload.Partner):
+            Optional. Compliance Regime associated with
+            this workload.
     """
 
     class ComplianceRegime(proto.Enum):
@@ -291,12 +312,18 @@ class Workload(proto.Message):
         EU_REGIONS_AND_SUPPORT = 8
         CA_REGIONS_AND_SUPPORT = 9
         ITAR = 10
+        ASSURED_WORKLOADS_FOR_PARTNERS = 12
 
     class KajEnrollmentState(proto.Enum):
         r"""Key Access Justifications(KAJ) Enrollment State."""
         KAJ_ENROLLMENT_STATE_UNSPECIFIED = 0
         KAJ_ENROLLMENT_STATE_PENDING = 1
         KAJ_ENROLLMENT_STATE_COMPLETE = 2
+
+    class Partner(proto.Enum):
+        r"""Supported Assured Workloads Partners."""
+        PARTNER_UNSPECIFIED = 0
+        LOCAL_CONTROLS_BY_S3NS = 1
 
     class ResourceInfo(proto.Message):
         r"""Represent the resources that are children of this Workload.
@@ -313,6 +340,7 @@ class Workload(proto.Message):
             r"""The type of resource."""
             RESOURCE_TYPE_UNSPECIFIED = 0
             CONSUMER_PROJECT = 1
+            CONSUMER_FOLDER = 4
             ENCRYPTION_KEYS_PROJECT = 2
             KEYRING = 3
 
@@ -361,7 +389,9 @@ class Workload(proto.Message):
             resource_id (str):
                 Resource identifier. For a project this represents
                 project_id. If the project is already taken, the workload
-                creation will fail.
+                creation will fail. For KeyRing, this represents the
+                keyring_id. For a folder, don't set this value as folder_id
+                is assigned by Google.
             resource_type (google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo.ResourceType):
                 Indicates the type of resource. This field should be
                 specified to correspond the id to the right project type
@@ -491,6 +521,15 @@ class Workload(proto.Message):
         number=20,
         message=SaaEnrollmentResponse,
     )
+    compliant_but_disallowed_services = proto.RepeatedField(
+        proto.STRING,
+        number=24,
+    )
+    partner = proto.Field(
+        proto.ENUM,
+        number=25,
+        enum=Partner,
+    )
 
 
 class CreateWorkloadOperationMetadata(proto.Message):
@@ -527,6 +566,435 @@ class CreateWorkloadOperationMetadata(proto.Message):
         proto.ENUM,
         number=4,
         enum="Workload.ComplianceRegime",
+    )
+
+
+class RestrictAllowedResourcesRequest(proto.Message):
+    r"""Request for restricting list of available resources in
+    Workload environment.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Workload. This is the
+            workloads's relative path in the API, formatted as
+            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+            For example,
+            "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        restriction_type (google.cloud.assuredworkloads_v1.types.RestrictAllowedResourcesRequest.RestrictionType):
+            Required. The type of restriction for using
+            gcp products in the Workload environment.
+    """
+
+    class RestrictionType(proto.Enum):
+        r"""The type of restriction."""
+        RESTRICTION_TYPE_UNSPECIFIED = 0
+        ALLOW_ALL_GCP_RESOURCES = 1
+        ALLOW_COMPLIANT_RESOURCES = 2
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    restriction_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RestrictionType,
+    )
+
+
+class RestrictAllowedResourcesResponse(proto.Message):
+    r"""Response for restricting the list of allowed resources."""
+
+
+class AcknowledgeViolationRequest(proto.Message):
+    r"""Request for acknowledging the violation
+    Next Id: 4
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Violation
+            to acknowledge. Format:
+            organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
+        comment (str):
+            Required. Business justification explaining
+            the need for violation acknowledgement
+        non_compliant_org_policy (str):
+            Optional. Name of the OrgPolicy which was modified with
+            non-compliant change and resulted in this violation. Format:
+            projects/{project_number}/policies/{constraint_name}
+            folders/{folder_id}/policies/{constraint_name}
+            organizations/{organization_id}/policies/{constraint_name}
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    comment = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    non_compliant_org_policy = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AcknowledgeViolationResponse(proto.Message):
+    r"""Response for violation acknowledgement"""
+
+
+class TimeWindow(proto.Message):
+    r"""Interval defining a time window.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The start of the time window.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end of the time window.
+    """
+
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ListViolationsRequest(proto.Message):
+    r"""Request for fetching violations in an organization.
+
+    Attributes:
+        parent (str):
+            Required. The Workload name. Format
+            ``organizations/{org_id}/locations/{location}/workloads/{workload}``.
+        interval (google.cloud.assuredworkloads_v1.types.TimeWindow):
+            Optional. Specifies the time window for retrieving active
+            Violations. When specified, retrieves Violations that were
+            active between start_time and end_time.
+        page_size (int):
+            Optional. Page size.
+        page_token (str):
+            Optional. Page token returned from previous
+            request.
+        filter (str):
+            Optional. A custom filter for filtering by
+            the Violations properties.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    interval = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TimeWindow",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListViolationsResponse(proto.Message):
+    r"""Response of ListViolations endpoint.
+
+    Attributes:
+        violations (Sequence[google.cloud.assuredworkloads_v1.types.Violation]):
+            List of Violations under a Workload.
+        next_page_token (str):
+            The next page token. Returns empty if reached
+            the last page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    violations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Violation",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetViolationRequest(proto.Message):
+    r"""Request for fetching a Workload Violation.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Violation
+            to fetch (ie. Violation.name). Format:
+            organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class Violation(proto.Message):
+    r"""Workload monitoring Violation.
+
+    Attributes:
+        name (str):
+            Output only. Immutable. Name of the Violation. Format:
+            organizations/{organization}/locations/{location}/workloads/{workload_id}/violations/{violations_id}
+        description (str):
+            Output only. Description for the Violation.
+            e.g. OrgPolicy gcp.resourceLocations has non
+            compliant value.
+        begin_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time of the event which
+            triggered the Violation.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time when the Violation
+            record was updated.
+        resolve_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time of the event which fixed
+            the Violation. If the violation is ACTIVE this
+            will be empty.
+        category (str):
+            Output only. Category under which this
+            violation is mapped. e.g. Location, Service
+            Usage, Access, Encryption, etc.
+        state (google.cloud.assuredworkloads_v1.types.Violation.State):
+            Output only. State of the violation
+        org_policy_constraint (str):
+            Output only. Immutable. The
+            org-policy-constraint that was incorrectly
+            changed, which resulted in this violation.
+        audit_log_link (str):
+            Output only. Immutable. Audit Log Link for
+            violated resource Format:
+            https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{timeRange}{folder}
+        non_compliant_org_policy (str):
+            Output only. Immutable. Name of the OrgPolicy which was
+            modified with non-compliant change and resulted this
+            violation. Format:
+            projects/{project_number}/policies/{constraint_name}
+            folders/{folder_id}/policies/{constraint_name}
+            organizations/{organization_id}/policies/{constraint_name}
+        remediation (google.cloud.assuredworkloads_v1.types.Violation.Remediation):
+            Output only. Compliance violation remediation
+        acknowledged (bool):
+            Output only. A boolean that indicates if the
+            violation is acknowledged
+        acknowledgement_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp when this violation was
+            acknowledged last. This will be absent when
+            acknowledged field is marked as false.
+
+            This field is a member of `oneof`_ ``_acknowledgement_time``.
+    """
+
+    class State(proto.Enum):
+        r"""Violation State Values"""
+        STATE_UNSPECIFIED = 0
+        RESOLVED = 2
+        UNRESOLVED = 3
+        EXCEPTION = 4
+
+    class Remediation(proto.Message):
+        r"""Represents remediation guidance to resolve compliance
+        violation for AssuredWorkload
+
+        Attributes:
+            instructions (google.cloud.assuredworkloads_v1.types.Violation.Remediation.Instructions):
+                Required. Remediation instructions to resolve
+                violations
+            compliant_values (Sequence[str]):
+                Values that can resolve the violation
+                For example: for list org policy violations,
+                this will either be the list of allowed or
+                denied values
+            remediation_type (google.cloud.assuredworkloads_v1.types.Violation.Remediation.RemediationType):
+                Output only. Reemediation type based on the
+                type of org policy values violated
+        """
+
+        class RemediationType(proto.Enum):
+            r"""Classifying remediation into various types based on the kind
+            of violation. For example, violations caused due to changes in
+            boolean org policy requires different remediation instructions
+            compared to violation caused due to changes in allowed values of
+            list org policy.
+            """
+            REMEDIATION_TYPE_UNSPECIFIED = 0
+            REMEDIATION_BOOLEAN_ORG_POLICY_VIOLATION = 1
+            REMEDIATION_LIST_ALLOWED_VALUES_ORG_POLICY_VIOLATION = 2
+            REMEDIATION_LIST_DENIED_VALUES_ORG_POLICY_VIOLATION = 3
+            REMEDIATION_RESTRICT_CMEK_CRYPTO_KEY_PROJECTS_ORG_POLICY_VIOLATION = 4
+
+        class Instructions(proto.Message):
+            r"""Instructions to remediate violation
+
+            Attributes:
+                gcloud_instructions (google.cloud.assuredworkloads_v1.types.Violation.Remediation.Instructions.Gcloud):
+                    Remediation instructions to resolve violation
+                    via gcloud cli
+                console_instructions (google.cloud.assuredworkloads_v1.types.Violation.Remediation.Instructions.Console):
+                    Remediation instructions to resolve violation
+                    via cloud console
+            """
+
+            class Gcloud(proto.Message):
+                r"""Remediation instructions to resolve violation via gcloud cli
+
+                Attributes:
+                    gcloud_commands (Sequence[str]):
+                        Gcloud command to resolve violation
+                    steps (Sequence[str]):
+                        Steps to resolve violation via gcloud cli
+                    additional_links (Sequence[str]):
+                        Additional urls for more information about
+                        steps
+                """
+
+                gcloud_commands = proto.RepeatedField(
+                    proto.STRING,
+                    number=1,
+                )
+                steps = proto.RepeatedField(
+                    proto.STRING,
+                    number=2,
+                )
+                additional_links = proto.RepeatedField(
+                    proto.STRING,
+                    number=3,
+                )
+
+            class Console(proto.Message):
+                r"""Remediation instructions to resolve violation via cloud
+                console
+
+                Attributes:
+                    console_uris (Sequence[str]):
+                        Link to console page where violations can be
+                        resolved
+                    steps (Sequence[str]):
+                        Steps to resolve violation via cloud console
+                    additional_links (Sequence[str]):
+                        Additional urls for more information about
+                        steps
+                """
+
+                console_uris = proto.RepeatedField(
+                    proto.STRING,
+                    number=1,
+                )
+                steps = proto.RepeatedField(
+                    proto.STRING,
+                    number=2,
+                )
+                additional_links = proto.RepeatedField(
+                    proto.STRING,
+                    number=3,
+                )
+
+            gcloud_instructions = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Violation.Remediation.Instructions.Gcloud",
+            )
+            console_instructions = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="Violation.Remediation.Instructions.Console",
+            )
+
+        instructions = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Violation.Remediation.Instructions",
+        )
+        compliant_values = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        remediation_type = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="Violation.Remediation.RemediationType",
+        )
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    begin_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    resolve_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    category = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    org_policy_constraint = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    audit_log_link = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    non_compliant_org_policy = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    remediation = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=Remediation,
+    )
+    acknowledged = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    acknowledgement_time = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
     )
 
 

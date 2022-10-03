@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateWorkload
+# Snippet for ListViolations
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_v1_generated_AssuredWorkloadsService_CreateWorkload_async]
+# [START assuredworkloads_v1_generated_AssuredWorkloadsService_ListViolations_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,28 +34,20 @@
 from google.cloud import assuredworkloads_v1
 
 
-async def sample_create_workload():
+async def sample_list_violations():
     # Create a client
     client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
 
     # Initialize request argument(s)
-    workload = assuredworkloads_v1.Workload()
-    workload.display_name = "display_name_value"
-    workload.compliance_regime = "ASSURED_WORKLOADS_FOR_PARTNERS"
-
-    request = assuredworkloads_v1.CreateWorkloadRequest(
+    request = assuredworkloads_v1.ListViolationsRequest(
         parent="parent_value",
-        workload=workload,
     )
 
     # Make the request
-    operation = client.create_workload(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    page_result = client.list_violations(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END assuredworkloads_v1_generated_AssuredWorkloadsService_CreateWorkload_async]
+# [END assuredworkloads_v1_generated_AssuredWorkloadsService_ListViolations_async]

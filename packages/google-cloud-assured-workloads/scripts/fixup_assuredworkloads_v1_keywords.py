@@ -39,10 +39,14 @@ def partition(
 class assuredworkloadsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'acknowledge_violation': ('name', 'comment', 'non_compliant_org_policy', ),
         'create_workload': ('parent', 'workload', 'external_id', ),
         'delete_workload': ('name', 'etag', ),
+        'get_violation': ('name', ),
         'get_workload': ('name', ),
+        'list_violations': ('parent', 'interval', 'page_size', 'page_token', 'filter', ),
         'list_workloads': ('parent', 'page_size', 'page_token', 'filter', ),
+        'restrict_allowed_resources': ('name', 'restriction_type', ),
         'update_workload': ('workload', 'update_mask', ),
     }
 

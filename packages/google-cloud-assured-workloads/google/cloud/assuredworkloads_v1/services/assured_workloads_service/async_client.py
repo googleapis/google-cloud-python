@@ -35,6 +35,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.assuredworkloads_v1.services.assured_workloads_service import pagers
 from google.cloud.assuredworkloads_v1.types import assuredworkloads
+from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AssuredWorkloadsServiceTransport, DEFAULT_CLIENT_INFO
@@ -50,6 +51,10 @@ class AssuredWorkloadsServiceAsyncClient:
     DEFAULT_ENDPOINT = AssuredWorkloadsServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AssuredWorkloadsServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    violation_path = staticmethod(AssuredWorkloadsServiceClient.violation_path)
+    parse_violation_path = staticmethod(
+        AssuredWorkloadsServiceClient.parse_violation_path
+    )
     workload_path = staticmethod(AssuredWorkloadsServiceClient.workload_path)
     parse_workload_path = staticmethod(
         AssuredWorkloadsServiceClient.parse_workload_path
@@ -243,8 +248,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "ITAR"
-                workload.billing_account = "billing_account_value"
+                workload.compliance_regime = "ASSURED_WORKLOADS_FOR_PARTNERS"
 
                 request = assuredworkloads_v1.CreateWorkloadRequest(
                     parent="parent_value",
@@ -376,8 +380,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "ITAR"
-                workload.billing_account = "billing_account_value"
+                workload.compliance_regime = "ASSURED_WORKLOADS_FOR_PARTNERS"
 
                 request = assuredworkloads_v1.UpdateWorkloadRequest(
                     workload=workload,
@@ -393,7 +396,7 @@ class AssuredWorkloadsServiceAsyncClient:
             request (Union[google.cloud.assuredworkloads_v1.types.UpdateWorkloadRequest, dict]):
                 The request object. Request for Updating a workload.
             workload (:class:`google.cloud.assuredworkloads_v1.types.Workload`):
-                Required. The workload to update. The workload’s
+                Required. The workload to update. The workload's
                 ``name`` field is used to identify the workload to be
                 updated. Format:
                 organizations/{org_id}/locations/{location_id}/workloads/{workload_id}
@@ -454,6 +457,94 @@ class AssuredWorkloadsServiceAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata(
                 (("workload.name", request.workload.name),)
             ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def restrict_allowed_resources(
+        self,
+        request: Union[assuredworkloads.RestrictAllowedResourcesRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> assuredworkloads.RestrictAllowedResourcesResponse:
+        r"""Restrict the list of resources allowed in the
+        Workload environment. The current list of allowed
+        products can be found at
+        https://cloud.google.com/assured-workloads/docs/supported-products
+        In addition to assuredworkloads.workload.update
+        permission, the user should also have
+        orgpolicy.policy.set permission on the folder resource
+        to use this functionality.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import assuredworkloads_v1
+
+            async def sample_restrict_allowed_resources():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.RestrictAllowedResourcesRequest(
+                    name="name_value",
+                    restriction_type="ALLOW_COMPLIANT_RESOURCES",
+                )
+
+                # Make the request
+                response = await client.restrict_allowed_resources(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.assuredworkloads_v1.types.RestrictAllowedResourcesRequest, dict]):
+                The request object. Request for restricting list of
+                available resources in Workload environment.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.assuredworkloads_v1.types.RestrictAllowedResourcesResponse:
+                Response for restricting the list of
+                allowed resources.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = assuredworkloads.RestrictAllowedResourcesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.restrict_allowed_resources,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -774,6 +865,403 @@ class AssuredWorkloadsServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_violations(
+        self,
+        request: Union[assuredworkloads.ListViolationsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListViolationsAsyncPager:
+        r"""Lists the Violations in the AssuredWorkload Environment. Callers
+        may also choose to read across multiple Workloads as per
+        `AIP-159 <https://google.aip.dev/159>`__ by using '-' (the
+        hyphen or dash character) as a wildcard character instead of
+        workload-id in the parent. Format
+        ``organizations/{org_id}/locations/{location}/workloads/-``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import assuredworkloads_v1
+
+            async def sample_list_violations():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.ListViolationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_violations(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.assuredworkloads_v1.types.ListViolationsRequest, dict]):
+                The request object. Request for fetching violations in
+                an organization.
+            parent (:class:`str`):
+                Required. The Workload name. Format
+                ``organizations/{org_id}/locations/{location}/workloads/{workload}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.assuredworkloads_v1.services.assured_workloads_service.pagers.ListViolationsAsyncPager:
+                Response of ListViolations endpoint.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = assuredworkloads.ListViolationsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_violations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListViolationsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_violation(
+        self,
+        request: Union[assuredworkloads.GetViolationRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> assuredworkloads.Violation:
+        r"""Retrieves Assured Workload Violation based on ID.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import assuredworkloads_v1
+
+            async def sample_get_violation():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.GetViolationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_violation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.assuredworkloads_v1.types.GetViolationRequest, dict]):
+                The request object. Request for fetching a Workload
+                Violation.
+            name (:class:`str`):
+                Required. The resource name of the
+                Violation to fetch (ie. Violation.name).
+                Format:
+                organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.assuredworkloads_v1.types.Violation:
+                Workload monitoring Violation.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = assuredworkloads.GetViolationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_violation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def acknowledge_violation(
+        self,
+        request: Union[assuredworkloads.AcknowledgeViolationRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> assuredworkloads.AcknowledgeViolationResponse:
+        r"""Acknowledges an existing violation. By acknowledging
+        a violation, users acknowledge the existence of a
+        compliance violation in their workload and decide to
+        ignore it due to a valid business justification.
+        Acknowledgement is a permanent operation and it cannot
+        be reverted.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import assuredworkloads_v1
+
+            async def sample_acknowledge_violation():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.AcknowledgeViolationRequest(
+                    name="name_value",
+                    comment="comment_value",
+                )
+
+                # Make the request
+                response = await client.acknowledge_violation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.assuredworkloads_v1.types.AcknowledgeViolationRequest, dict]):
+                The request object. Request for acknowledging the
+                violation Next Id: 4
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.assuredworkloads_v1.types.AcknowledgeViolationResponse:
+                Response for violation
+                acknowledgement
+
+        """
+        # Create or coerce a protobuf request object.
+        request = assuredworkloads.AcknowledgeViolationRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.acknowledge_violation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: operations_pb2.GetOperationRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

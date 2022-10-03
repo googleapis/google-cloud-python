@@ -22,6 +22,12 @@ from google.cloud.assuredworkloads_v1.services.assured_workloads_service.async_c
 )
 
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    AcknowledgeViolationRequest,
+)
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    AcknowledgeViolationResponse,
+)
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     CreateWorkloadOperationMetadata,
 )
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
@@ -30,25 +36,49 @@ from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     DeleteWorkloadRequest,
 )
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import GetViolationRequest
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import GetWorkloadRequest
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    ListViolationsRequest,
+)
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    ListViolationsResponse,
+)
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import ListWorkloadsRequest
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     ListWorkloadsResponse,
 )
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    RestrictAllowedResourcesRequest,
+)
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    RestrictAllowedResourcesResponse,
+)
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import TimeWindow
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     UpdateWorkloadRequest,
 )
+from google.cloud.assuredworkloads_v1.types.assuredworkloads import Violation
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import Workload
 
 __all__ = (
     "AssuredWorkloadsServiceClient",
     "AssuredWorkloadsServiceAsyncClient",
+    "AcknowledgeViolationRequest",
+    "AcknowledgeViolationResponse",
     "CreateWorkloadOperationMetadata",
     "CreateWorkloadRequest",
     "DeleteWorkloadRequest",
+    "GetViolationRequest",
     "GetWorkloadRequest",
+    "ListViolationsRequest",
+    "ListViolationsResponse",
     "ListWorkloadsRequest",
     "ListWorkloadsResponse",
+    "RestrictAllowedResourcesRequest",
+    "RestrictAllowedResourcesResponse",
+    "TimeWindow",
     "UpdateWorkloadRequest",
+    "Violation",
     "Workload",
 )

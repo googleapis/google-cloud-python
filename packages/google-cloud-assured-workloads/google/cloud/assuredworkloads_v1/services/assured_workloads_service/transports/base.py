@@ -27,6 +27,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.assuredworkloads_v1.types import assuredworkloads
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -140,6 +141,11 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.restrict_allowed_resources: gapic_v1.method.wrap_method(
+                self.restrict_allowed_resources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_workload: gapic_v1.method.wrap_method(
                 self.delete_workload,
                 default_timeout=None,
@@ -152,6 +158,21 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
             ),
             self.list_workloads: gapic_v1.method.wrap_method(
                 self.list_workloads,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_violations: gapic_v1.method.wrap_method(
+                self.list_violations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_violation: gapic_v1.method.wrap_method(
+                self.get_violation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.acknowledge_violation: gapic_v1.method.wrap_method(
+                self.acknowledge_violation,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -190,6 +211,18 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def restrict_allowed_resources(
+        self,
+    ) -> Callable[
+        [assuredworkloads.RestrictAllowedResourcesRequest],
+        Union[
+            assuredworkloads.RestrictAllowedResourcesResponse,
+            Awaitable[assuredworkloads.RestrictAllowedResourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_workload(
         self,
     ) -> Callable[
@@ -216,6 +249,60 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
             assuredworkloads.ListWorkloadsResponse,
             Awaitable[assuredworkloads.ListWorkloadsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_violations(
+        self,
+    ) -> Callable[
+        [assuredworkloads.ListViolationsRequest],
+        Union[
+            assuredworkloads.ListViolationsResponse,
+            Awaitable[assuredworkloads.ListViolationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_violation(
+        self,
+    ) -> Callable[
+        [assuredworkloads.GetViolationRequest],
+        Union[assuredworkloads.Violation, Awaitable[assuredworkloads.Violation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def acknowledge_violation(
+        self,
+    ) -> Callable[
+        [assuredworkloads.AcknowledgeViolationRequest],
+        Union[
+            assuredworkloads.AcknowledgeViolationResponse,
+            Awaitable[assuredworkloads.AcknowledgeViolationResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -14,23 +14,41 @@
 # limitations under the License.
 #
 from .assuredworkloads import (
+    AcknowledgeViolationRequest,
+    AcknowledgeViolationResponse,
     CreateWorkloadOperationMetadata,
     CreateWorkloadRequest,
     DeleteWorkloadRequest,
+    GetViolationRequest,
     GetWorkloadRequest,
+    ListViolationsRequest,
+    ListViolationsResponse,
     ListWorkloadsRequest,
     ListWorkloadsResponse,
+    RestrictAllowedResourcesRequest,
+    RestrictAllowedResourcesResponse,
+    TimeWindow,
     UpdateWorkloadRequest,
+    Violation,
     Workload,
 )
 
 __all__ = (
+    "AcknowledgeViolationRequest",
+    "AcknowledgeViolationResponse",
     "CreateWorkloadOperationMetadata",
     "CreateWorkloadRequest",
     "DeleteWorkloadRequest",
+    "GetViolationRequest",
     "GetWorkloadRequest",
+    "ListViolationsRequest",
+    "ListViolationsResponse",
     "ListWorkloadsRequest",
     "ListWorkloadsResponse",
+    "RestrictAllowedResourcesRequest",
+    "RestrictAllowedResourcesResponse",
+    "TimeWindow",
     "UpdateWorkloadRequest",
+    "Violation",
     "Workload",
 )
