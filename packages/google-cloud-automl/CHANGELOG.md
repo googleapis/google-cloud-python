@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.8.2](https://github.com/googleapis/python-automl/compare/v2.8.1...v2.8.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf &gt;= 3.20.2 ([#439](https://github.com/googleapis/python-automl/issues/439)) ([33960ca](https://github.com/googleapis/python-automl/commit/33960ca1facc2f8c3171c51d9b16df4e78ecf922))
+
 ## [2.8.1](https://github.com/googleapis/python-automl/compare/v2.8.0...v2.8.1) (2022-08-11)
 
 
