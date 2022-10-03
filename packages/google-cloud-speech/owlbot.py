@@ -45,7 +45,7 @@ __all__ = (
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
-    s.move(library, excludes=["setup.py", "docs/index.rst", "README.rst"])
+    s.move(library, excludes=["setup.py"])
 
 s.remove_staging_dirs()
 
@@ -53,9 +53,8 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    samples=True,  # set to True only if there are samples
     microgenerator=True,
-    cov_level=100,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
 s.move(
     templated_files, excludes=[".coveragerc"]
