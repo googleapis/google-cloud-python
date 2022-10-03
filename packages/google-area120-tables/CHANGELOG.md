@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/googleapis/python-area120-tables/compare/v0.8.0...v0.8.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#198](https://github.com/googleapis/python-area120-tables/issues/198)) ([5813086](https://github.com/googleapis/python-area120-tables/commit/58130869fcf96d129dd0a72cada69df9ad868e19))
+
 ## [0.8.0](https://github.com/googleapis/python-area120-tables/compare/v0.7.1...v0.8.0) (2022-09-16)
 
 
