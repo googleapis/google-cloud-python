@@ -6,4 +6,4 @@
 # Then this file should have google-cloud-foo==1.14.0
 google-api-core==1.32.0
 proto-plus==1.22.0
-protobuf==3.19.0
+protobuf==3.20.2
