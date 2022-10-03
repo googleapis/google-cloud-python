@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/googleapis/python-appengine-logging/compare/v1.1.4...v1.1.5) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#123](https://github.com/googleapis/python-appengine-logging/issues/123)) ([24fb58d](https://github.com/googleapis/python-appengine-logging/commit/24fb58dbfe6a412feb4eda518367c3ba77855d96))
+
 ## [1.1.4](https://github.com/googleapis/python-appengine-logging/compare/v1.1.3...v1.1.4) (2022-08-11)
 
 
