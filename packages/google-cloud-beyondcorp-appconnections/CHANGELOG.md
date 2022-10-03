@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.2.0...v0.2.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#34](https://github.com/googleapis/python-beyondcorp-appconnections/issues/34)) ([90c7162](https://github.com/googleapis/python-beyondcorp-appconnections/commit/90c7162776a0f8ab4fc5bc9a0d88f4f6e442f3a6))
+
 ## [0.2.0](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.1.1...v0.2.0) (2022-09-16)
 
 
