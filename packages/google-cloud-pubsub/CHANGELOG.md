@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.8](https://github.com/googleapis/python-pubsub/compare/v2.13.7...v2.13.8) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#792](https://github.com/googleapis/python-pubsub/issues/792)) ([1a54f7c](https://github.com/googleapis/python-pubsub/commit/1a54f7cd3d997270e0a5d70f7caea32d8753be76))
+
 ## [2.13.7](https://github.com/googleapis/python-pubsub/compare/v2.13.6...v2.13.7) (2022-09-22)
 
 
