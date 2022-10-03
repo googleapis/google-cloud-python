@@ -29,7 +29,9 @@ import logging
 import time
 
 from google.cloud import spanner
+from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_v1 import param_types
+from google.protobuf import field_mask_pb2  # type: ignore
 
 OPERATION_TIMEOUT_SECONDS = 240
 
@@ -2114,6 +2116,96 @@ def set_request_tag(instance_id, database_id):
             print(u"SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
 
     # [END spanner_set_request_tag]
+
+
+# [START spanner_create_instance_config]
+def create_instance_config(user_config_name, base_config_id):
+    """Creates the new user-managed instance configuration using base instance config."""
+
+    # user_config_name = `custom-nam11`
+    # base_config_id = `projects/<project>/instanceConfigs/nam11`
+    spanner_client = spanner.Client()
+    base_config = spanner_client.instance_admin_api.get_instance_config(
+        name=base_config_id)
+
+    # The replicas for the custom instance configuration must include all the replicas of the base
+    # configuration, in addition to at least one from the list of optional replicas of the base
+    # configuration.
+    replicas = []
+    for replica in base_config.replicas:
+        replicas.append(replica)
+    replicas.append(base_config.optional_replicas[0])
+    operation = spanner_client.instance_admin_api.create_instance_config(
+        parent=spanner_client.project_name,
+        instance_config_id=user_config_name,
+        instance_config=spanner_instance_admin.InstanceConfig(
+            name="{}/instanceConfigs/{}".format(spanner_client.project_name, user_config_name),
+            display_name="custom-python-samples",
+            config_type=spanner_instance_admin.InstanceConfig.Type.USER_MANAGED,
+            replicas=replicas,
+            base_config=base_config.name,
+            labels={
+                "python_cloud_spanner_samples": "true"
+            }
+        ))
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print("Created instance configuration {}".format(user_config_name))
+
+
+# [END spanner_create_instance_config]
+
+# [START spanner_update_instance_config]
+def update_instance_config(user_config_name):
+    """Updates the user-managed instance configuration."""
+
+    # user_config_name = `custom-nam11`
+    spanner_client = spanner.Client()
+    config = spanner_client.instance_admin_api.get_instance_config(
+        name="{}/instanceConfigs/{}".format(spanner_client.project_name, user_config_name))
+    config.display_name = "updated custom instance config"
+    config.labels["updated"] = "true"
+    operation = spanner_client.instance_admin_api.update_instance_config(instance_config=config,
+                                                                         update_mask=field_mask_pb2.FieldMask(
+                                                                             paths=["display_name", "labels"]))
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+    print("Updated instance configuration {}".format(user_config_name))
+
+
+# [END spanner_update_instance_config]
+
+# [START spanner_delete_instance_config]
+def delete_instance_config(user_config_id):
+    """Deleted the user-managed instance configuration."""
+    spanner_client = spanner.Client()
+    spanner_client.instance_admin_api.delete_instance_config(
+        name=user_config_id)
+    print("Instance config {} successfully deleted".format(user_config_id))
+
+
+# [END spanner_delete_instance_config]
+
+
+# [START spanner_list_instance_config_operations]
+def list_instance_config_operations():
+    """List the user-managed instance configuration operations."""
+    spanner_client = spanner.Client()
+    operations = spanner_client.instance_admin_api.list_instance_config_operations(
+        request=spanner_instance_admin.ListInstanceConfigOperationsRequest(parent=spanner_client.project_name,
+                                                                           filter="(metadata.@type=type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata)"))
+    for op in operations:
+        metadata = spanner_instance_admin.CreateInstanceConfigMetadata.pb(spanner_instance_admin.CreateInstanceConfigMetadata())
+        op.metadata.Unpack(metadata)
+        print(
+            "List instance config operations {} is {}% completed.".format(
+                metadata.instance_config.name, metadata.progress.progress_percent
+            )
+        )
+
+
+# [END spanner_list_instance_config_operations]
 
 
 if __name__ == "__main__":  # noqa: C901

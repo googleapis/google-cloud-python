@@ -95,6 +95,20 @@ def default_leader():
     return "us-east4"
 
 
+@pytest.fixture(scope="module")
+def user_managed_instance_config_name(spanner_client):
+    name = f"custom-python-samples-config-{uuid.uuid4().hex[:10]}"
+    yield name
+    snippets.delete_instance_config("{}/instanceConfigs/{}".format(
+        spanner_client.project_name, name))
+    return
+
+
+@pytest.fixture(scope="module")
+def base_instance_config_id(spanner_client):
+    return "{}/instanceConfigs/{}".format(spanner_client.project_name, "nam7")
+
+
 def test_create_instance_explicit(spanner_client, create_instance_id):
     # Rather than re-use 'sample_isntance', we create a new instance, to
     # ensure that the 'create_instance' snippet is tested.
@@ -146,6 +160,35 @@ def test_list_instance_config(capsys):
     snippets.list_instance_config()
     out, _ = capsys.readouterr()
     assert "regional-us-central1" in out
+
+
+@pytest.mark.dependency(name="create_instance_config")
+def test_create_instance_config(capsys, user_managed_instance_config_name, base_instance_config_id):
+    snippets.create_instance_config(user_managed_instance_config_name, base_instance_config_id)
+    out, _ = capsys.readouterr()
+    assert "Created instance configuration" in out
+
+
+@pytest.mark.dependency(depends=["create_instance_config"])
+def test_update_instance_config(capsys, user_managed_instance_config_name):
+    snippets.update_instance_config(user_managed_instance_config_name)
+    out, _ = capsys.readouterr()
+    assert "Updated instance configuration" in out
+
+
+@pytest.mark.dependency(depends=["create_instance_config"])
+def test_delete_instance_config(capsys, user_managed_instance_config_name):
+    spanner_client = spanner.Client()
+    snippets.delete_instance_config("{}/instanceConfigs/{}".format(
+        spanner_client.project_name, user_managed_instance_config_name))
+    out, _ = capsys.readouterr()
+    assert "successfully deleted" in out
+
+
+def test_list_instance_config_operations(capsys):
+    snippets.list_instance_config_operations()
+    out, _ = capsys.readouterr()
+    assert "List instance config operations" in out
 
 
 def test_list_databases(capsys, instance_id):
