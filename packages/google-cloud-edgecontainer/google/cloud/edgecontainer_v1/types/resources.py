@@ -86,13 +86,6 @@ class Cluster(proto.Message):
         maintenance_policy (google.cloud.edgecontainer_v1.types.MaintenancePolicy):
             Optional. Cluster-wide maintenance policy
             configuration.
-        control_plane_version (str):
-            Output only. The control plane release
-            version
-        node_version (str):
-            Output only. The lowest release version among
-            all worker nodes. This field can be empty if the
-            cluster does not have any worker nodes.
     """
 
     name = proto.Field(
@@ -145,14 +138,6 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=12,
         message="MaintenancePolicy",
-    )
-    control_plane_version = proto.Field(
-        proto.STRING,
-        number=13,
-    )
-    node_version = proto.Field(
-        proto.STRING,
-        number=14,
     )
 
 
@@ -275,9 +260,6 @@ class NodePool(proto.Message):
         local_disk_encryption (google.cloud.edgecontainer_v1.types.NodePool.LocalDiskEncryption):
             Optional. Local disk encryption options. This
             field is only used when enabling CMEK support.
-        node_version (str):
-            Output only. The lowest release version among
-            all worker nodes.
     """
 
     class LocalDiskEncryption(proto.Message):
@@ -364,10 +346,6 @@ class NodePool(proto.Message):
         number=9,
         message=LocalDiskEncryption,
     )
-    node_version = proto.Field(
-        proto.STRING,
-        number=10,
-    )
 
 
 class Machine(proto.Message):
@@ -394,9 +372,10 @@ class Machine(proto.Message):
         zone (str):
             The Google Distributed Cloud Edge zone of
             this machine.
-        version (str):
-            Output only. The software version of the
-            machine.
+        disabled (bool):
+            Output only. Whether the machine is disabled.
+            If disabled, the machine is unable to enter
+            service.
     """
 
     name = proto.Field(
@@ -426,9 +405,9 @@ class Machine(proto.Message):
         proto.STRING,
         number=6,
     )
-    version = proto.Field(
-        proto.STRING,
-        number=7,
+    disabled = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 
@@ -462,9 +441,9 @@ class VpnConnection(proto.Message):
         vpc (str):
             The network ID of VPC to connect to.
         vpc_project (google.cloud.edgecontainer_v1.types.VpnConnection.VpcProject):
-            Project detail of the VPC network. Required
-            if VPC is in a different project than the
-            cluster project.
+            Optional. Project detail of the VPC network.
+            Required if VPC is in a different project than
+            the cluster project.
         enable_high_availability (bool):
             Whether this VPN connection has HA enabled on
             cluster side. If enabled, when creating VPN
@@ -489,12 +468,13 @@ class VpnConnection(proto.Message):
                 specified, it is the same as the cluster
                 project.
             service_account (str):
-                The service account in the VPC project configured by user.
-                It is used to create/delete Cloud Router and Cloud HA VPNs
-                for VPN connection. If this SA is changed during/after a VPN
-                connection is created, you need to remove the Cloud Router
-                and Cloud VPN resources in \|project_id|. Must be set if
-                \|project_id\| is set.
+                Optional. The service account in the VPC project configured
+                by user. It is used to create/delete Cloud Router and Cloud
+                HA VPNs for VPN connection. If this SA is changed
+                during/after a VPN connection is created, you need to remove
+                the Cloud Router and Cloud VPN resources in \|project_id|.
+                It is in the form of
+                service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
         """
 
         project_id = proto.Field(

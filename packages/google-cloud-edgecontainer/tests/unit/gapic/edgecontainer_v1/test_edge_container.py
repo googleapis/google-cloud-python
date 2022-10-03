@@ -1143,8 +1143,6 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             default_max_pods_per_node=2634,
             endpoint="endpoint_value",
             cluster_ca_certificate="cluster_ca_certificate_value",
-            control_plane_version="control_plane_version_value",
-            node_version="node_version_value",
         )
         response = client.get_cluster(request)
 
@@ -1159,8 +1157,6 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.default_max_pods_per_node == 2634
     assert response.endpoint == "endpoint_value"
     assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
-    assert response.control_plane_version == "control_plane_version_value"
-    assert response.node_version == "node_version_value"
 
 
 def test_get_cluster_empty_call():
@@ -1201,8 +1197,6 @@ async def test_get_cluster_async(
                 default_max_pods_per_node=2634,
                 endpoint="endpoint_value",
                 cluster_ca_certificate="cluster_ca_certificate_value",
-                control_plane_version="control_plane_version_value",
-                node_version="node_version_value",
             )
         )
         response = await client.get_cluster(request)
@@ -1218,8 +1212,6 @@ async def test_get_cluster_async(
     assert response.default_max_pods_per_node == 2634
     assert response.endpoint == "endpoint_value"
     assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
-    assert response.control_plane_version == "control_plane_version_value"
-    assert response.node_version == "node_version_value"
 
 
 @pytest.mark.asyncio
@@ -2769,7 +2761,6 @@ def test_get_node_pool(request_type, transport: str = "grpc"):
             node_location="node_location_value",
             node_count=1070,
             machine_filter="machine_filter_value",
-            node_version="node_version_value",
         )
         response = client.get_node_pool(request)
 
@@ -2784,7 +2775,6 @@ def test_get_node_pool(request_type, transport: str = "grpc"):
     assert response.node_location == "node_location_value"
     assert response.node_count == 1070
     assert response.machine_filter == "machine_filter_value"
-    assert response.node_version == "node_version_value"
 
 
 def test_get_node_pool_empty_call():
@@ -2825,7 +2815,6 @@ async def test_get_node_pool_async(
                 node_location="node_location_value",
                 node_count=1070,
                 machine_filter="machine_filter_value",
-                node_version="node_version_value",
             )
         )
         response = await client.get_node_pool(request)
@@ -2841,7 +2830,6 @@ async def test_get_node_pool_async(
     assert response.node_location == "node_location_value"
     assert response.node_count == 1070
     assert response.machine_filter == "machine_filter_value"
-    assert response.node_version == "node_version_value"
 
 
 @pytest.mark.asyncio
@@ -4144,7 +4132,7 @@ def test_get_machine(request_type, transport: str = "grpc"):
             name="name_value",
             hosted_node="hosted_node_value",
             zone="zone_value",
-            version="version_value",
+            disabled=True,
         )
         response = client.get_machine(request)
 
@@ -4158,7 +4146,7 @@ def test_get_machine(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.hosted_node == "hosted_node_value"
     assert response.zone == "zone_value"
-    assert response.version == "version_value"
+    assert response.disabled is True
 
 
 def test_get_machine_empty_call():
@@ -4198,7 +4186,7 @@ async def test_get_machine_async(
                 name="name_value",
                 hosted_node="hosted_node_value",
                 zone="zone_value",
-                version="version_value",
+                disabled=True,
             )
         )
         response = await client.get_machine(request)
@@ -4213,7 +4201,7 @@ async def test_get_machine_async(
     assert response.name == "name_value"
     assert response.hosted_node == "hosted_node_value"
     assert response.zone == "zone_value"
-    assert response.version == "version_value"
+    assert response.disabled is True
 
 
 @pytest.mark.asyncio
