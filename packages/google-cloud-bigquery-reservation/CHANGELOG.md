@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/python-bigquery-reservation/compare/v1.7.1...v1.7.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#310](https://github.com/googleapis/python-bigquery-reservation/issues/310)) ([9c5c59a](https://github.com/googleapis/python-bigquery-reservation/commit/9c5c59a6f8b164f4d323677be0de537616f2f664))
+
 ## [1.7.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.7.0...v1.7.1) (2022-08-11)
 
 
