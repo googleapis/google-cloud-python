@@ -38,7 +38,7 @@ dependencies = [
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-cloud-core >= 1.4.0, <3.0.0dev",
     "proto-plus >= 1.22.0, <2.0.0dev",
-    "protobuf >= 3.19.0, <5.0.0dev",
+    "protobuf >= 3.20.2, <5.0.0dev",
 ]
 extras = {"libcst": "libcst >= 0.2.5"}
 
