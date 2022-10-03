@@ -41,6 +41,7 @@ from .compliance import (
 from .cvss import (
     CVSS,
     CVSSv3,
+    CVSSVersion,
 )
 from .deployment import (
     DeploymentNote,
@@ -154,6 +155,7 @@ __all__ = (
     "NonCompliantFile",
     "CVSS",
     "CVSSv3",
+    "CVSSVersion",
     "DeploymentNote",
     "DeploymentOccurrence",
     "DiscoveryNote",

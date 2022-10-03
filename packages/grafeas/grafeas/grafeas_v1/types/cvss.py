@@ -19,10 +19,18 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="grafeas.v1",
     manifest={
+        "CVSSVersion",
         "CVSSv3",
         "CVSS",
     },
 )
+
+
+class CVSSVersion(proto.Enum):
+    r"""CVSS Version."""
+    CVSS_VERSION_UNSPECIFIED = 0
+    CVSS_VERSION_2 = 1
+    CVSS_VERSION_3 = 2
 
 
 class CVSSv3(proto.Message):

@@ -36,6 +36,7 @@ from .types.compliance import ComplianceVersion
 from .types.compliance import NonCompliantFile
 from .types.cvss import CVSS
 from .types.cvss import CVSSv3
+from .types.cvss import CVSSVersion
 from .types.deployment import DeploymentNote
 from .types.deployment import DeploymentOccurrence
 from .types.discovery import DiscoveryNote
@@ -119,6 +120,7 @@ __all__ = (
     "BuildProvenance",
     "BuilderConfig",
     "CVSS",
+    "CVSSVersion",
     "CVSSv3",
     "CloudRepoSourceContext",
     "Command",

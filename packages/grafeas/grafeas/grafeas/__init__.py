@@ -36,6 +36,7 @@ from grafeas.grafeas_v1.types.compliance import ComplianceVersion
 from grafeas.grafeas_v1.types.compliance import NonCompliantFile
 from grafeas.grafeas_v1.types.cvss import CVSS
 from grafeas.grafeas_v1.types.cvss import CVSSv3
+from grafeas.grafeas_v1.types.cvss import CVSSVersion
 from grafeas.grafeas_v1.types.deployment import DeploymentNote
 from grafeas.grafeas_v1.types.deployment import DeploymentOccurrence
 from grafeas.grafeas_v1.types.discovery import DiscoveryNote
@@ -125,6 +126,7 @@ __all__ = (
     "NonCompliantFile",
     "CVSS",
     "CVSSv3",
+    "CVSSVersion",
     "DeploymentNote",
     "DeploymentOccurrence",
     "DiscoveryNote",

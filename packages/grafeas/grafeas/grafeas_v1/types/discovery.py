@@ -57,6 +57,12 @@ class DiscoveryOccurrence(proto.Message):
             analyzed.
         analysis_status (grafeas.grafeas_v1.types.DiscoveryOccurrence.AnalysisStatus):
             The status of discovery for the resource.
+        analysis_completed (grafeas.grafeas_v1.types.DiscoveryOccurrence.AnalysisCompleted):
+
+        analysis_error (Sequence[google.rpc.status_pb2.Status]):
+            Indicates any errors encountered during
+            analysis of a resource. There could be 0 or more
+            of these errors.
         analysis_status_error (google.rpc.status_pb2.Status):
             When an error is encountered this will
             contain a LocalizedMessage under details to show
@@ -81,12 +87,28 @@ class DiscoveryOccurrence(proto.Message):
         r"""Analysis status for a resource. Currently for initial
         analysis only (not updated in continuous analysis).
         """
+        _pb_options = {"allow_alias": True}
         ANALYSIS_STATUS_UNSPECIFIED = 0
         PENDING = 1
         SCANNING = 2
         FINISHED_SUCCESS = 3
+        COMPLETE = 3
         FINISHED_FAILED = 4
         FINISHED_UNSUPPORTED = 5
+
+    class AnalysisCompleted(proto.Message):
+        r"""Indicates which analysis completed successfully. Multiple
+        types of analysis can be performed on a single resource.
+
+        Attributes:
+            analysis_type (Sequence[str]):
+
+        """
+
+        analysis_type = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
 
     continuous_analysis = proto.Field(
         proto.ENUM,
@@ -97,6 +119,16 @@ class DiscoveryOccurrence(proto.Message):
         proto.ENUM,
         number=2,
         enum=AnalysisStatus,
+    )
+    analysis_completed = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=AnalysisCompleted,
+    )
+    analysis_error = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=status_pb2.Status,
     )
     analysis_status_error = proto.Field(
         proto.MESSAGE,
