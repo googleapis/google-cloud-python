@@ -27,6 +27,7 @@ import glob
 from google.cloud.documentai_toolbox.wrappers import DocumentWrapper, document_wrapper
 
 from google.cloud import documentai
+from google.cloud import storage
 
 
 def get_bytes(file_name):
@@ -38,22 +39,22 @@ def get_bytes(file_name):
     return result
 
 
-def test_read_output_with_gcs_uri_contains_file_type():
+def test_get_shards_with_gcs_uri_contains_file_type():
     with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
-        document_wrapper._read_output(
+        document_wrapper._get_shards(
             "gs://test-directory/documentai/output/123456789/0.json"
         )
 
 
-def test_read_output_with_invalid_gcs_uri():
+def test_get_shards_with_invalid_gcs_uri():
     with pytest.raises(ValueError, match="gcs_prefix does not match accepted format"):
-        document_wrapper._read_output("test-directory/documentai/output/")
+        document_wrapper._get_shards("test-directory/documentai/output/")
 
 
-def test_read_output_with_valid_gcs_uri():
+def test_get_shards_with_valid_gcs_uri():
     with mock.patch.object(document_wrapper, "_get_bytes") as factory:
         factory.return_value = get_bytes("tests/unit/resources/0")
-        actual = document_wrapper._read_output(
+        actual = document_wrapper._get_shards(
             "gs://test-directory/documentai/output/123456789/0"
         )
         # We are testing only one of the fields to make sure the file content could be loaded.
@@ -92,3 +93,147 @@ def test_document_wrapper_with_multiple_shards():
         factory.return_value = get_bytes("tests/unit/resources/1")
         actual = DocumentWrapper("gs://test-directory/documentai/output/123456789/1")
         assert len(actual.pages) == 48
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document_wrapper.storage")
+def test_get_bytes(mock_storage):
+
+    client = mock_storage.Client.return_value
+
+    mock_bucket = mock.Mock()
+    mock_bucket.blob.return_value.download_as_string.return_value = "test".encode(
+        "utf-8"
+    )
+
+    client.Bucket.return_value = mock_bucket
+
+    blobs = [
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard1.json",
+            bucket=mock_bucket,
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard2.json",
+            bucket=mock_bucket,
+        ),
+    ]
+
+    client.list_blobs.return_value = blobs
+
+    actual = document_wrapper._get_bytes(
+        "gs://test-directory/documentai/", "output/123456789/1"
+    )
+    mock_storage.Client.assert_called_once()
+
+    assert actual == [b"", b""]
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document_wrapper.storage")
+def test_print_gcs_document_tree_with_3_documents(mock_storage, capfd):
+
+    client = mock_storage.Client.return_value
+
+    mock_bucket = mock.Mock()
+
+    client.Bucket.return_value = mock_bucket
+
+    blobs = [
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard1.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard2.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard3.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+    ]
+
+    client.list_blobs.return_value = blobs
+
+    document_wrapper.print_gcs_document_tree(
+        "gs://test-directory/documentai/output/123456789/1"
+    )
+
+    mock_storage.Client.assert_called_once()
+
+    out, err = capfd.readouterr()
+    assert (
+        out
+        == """gs://test-directory/documentai/output/123456789/1
+├──test_shard1.json
+├──test_shard2.json
+└──test_shard3.json\n\n"""
+    )
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document_wrapper.storage")
+def test_print_gcs_document_tree_with_more_than_5_document(mock_storage, capfd):
+
+    client = mock_storage.Client.return_value
+
+    mock_bucket = mock.Mock()
+
+    client.Bucket.return_value = mock_bucket
+
+    blobs = [
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard1.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard2.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard3.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard4.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard5.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+        storage.Blob(
+            name="gs://test-directory/documentai/output/123456789/1/test_shard6.json",
+            bucket="gs://test-directory/documentai/output/123456789/1",
+        ),
+    ]
+    client.list_blobs.return_value = blobs
+
+    document_wrapper.print_gcs_document_tree(
+        "gs://test-directory/documentai/output/123456789/1"
+    )
+
+    mock_storage.Client.assert_called_once()
+
+    out, err = capfd.readouterr()
+    assert (
+        out
+        == """gs://test-directory/documentai/output/123456789/1
+├──test_shard1.json
+├──test_shard2.json
+├──test_shard3.json
+├──test_shard4.json
+├──test_shard5.json
+│  ....
+└──test_shard6.json\n\n"""
+    )
+
+
+def test_print_gcs_document_tree_with_gcs_uri_contains_file_type():
+    with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
+        document_wrapper.print_gcs_document_tree(
+            "gs://test-directory/documentai/output/123456789/1/test_file.json"
+        )
+
+
+def test_print_gcs_document_tree_with_invalid_gcs_uri():
+    with pytest.raises(ValueError, match="gcs_prefix does not match accepted format"):
+        document_wrapper.print_gcs_document_tree("documentai/output/123456789/1")

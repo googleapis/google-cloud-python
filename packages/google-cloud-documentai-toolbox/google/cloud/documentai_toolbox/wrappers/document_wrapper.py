@@ -60,8 +60,8 @@ def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
     return result
 
 
-def _read_output(gcs_prefix: str) -> List[documentai.Document]:
-    """Returns a list of Document shards."""
+def _get_shards(gcs_prefix: str) -> List[documentai.Document]:
+    """Gets shards from gcs_prefix location and returns a list of shards."""
 
     shards = []
 
@@ -85,6 +85,57 @@ def _read_output(gcs_prefix: str) -> List[documentai.Document]:
     return shards
 
 
+def print_gcs_document_tree(gcs_prefix: str) -> None:
+    """Prints a tree of Documents in gcs_prefix location."""
+    display_filename_prefix_middle = "├──"
+    display_filename_prefix_last = "└──"
+
+    match = re.match(r"gs://(.*?)/(.*)", gcs_prefix)
+
+    if match is None:
+        raise ValueError("gcs_prefix does not match accepted format")
+
+    output_bucket, output_prefix = match.groups()
+
+    file_check = re.match(r"(.*[.].*$)", output_prefix)
+
+    if file_check is not None:
+        raise ValueError("gcs_prefix cannot contain file types")
+
+    storage_client = storage.Client()
+
+    blob_list = storage_client.list_blobs(output_bucket, prefix=output_prefix)
+
+    path_list = {}
+
+    for blob in blob_list:
+        file_path = blob.name.split("/")
+        file_name = file_path.pop()
+
+        file_path2 = "/".join(file_path)
+
+        if file_path2 in path_list:
+            path_list[file_path2] += f"{file_name},"
+        else:
+            path_list[file_path2] = f"{file_name},"
+
+    for key in path_list:
+        a = path_list[key].split(",")
+        a.pop()
+        print(f"{key}")
+        togo = 4
+        for idx, val in enumerate(a):
+            if idx == len(a) - 1:
+                if len(a) > 4:
+                    print("│  ....")
+                print(f"{display_filename_prefix_last}{val}\n")
+            elif len(a) > 4 and togo != -1:
+                togo -= 1
+                print(f"{display_filename_prefix_middle}{val}")
+            elif len(a) <= 4:
+                print(f"{display_filename_prefix_middle}{val}")
+
+
 @dataclasses.dataclass
 class DocumentWrapper:
     """Represents a wrapped Document.
@@ -98,7 +149,7 @@ class DocumentWrapper:
     gcs_prefix: str
 
     def __post_init__(self):
-        self._shards = _read_output(self.gcs_prefix)
+        self._shards = _get_shards(gcs_prefix=self.gcs_prefix)
         self.pages = _pages_from_shards(shards=self._shards)
         self.entities = _entities_from_shards(shards=self._shards)
 
