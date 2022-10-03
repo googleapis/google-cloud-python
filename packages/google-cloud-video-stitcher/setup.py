@@ -31,7 +31,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-google-cloud-video-stitcher",
+    url="https://github.com/googleapis/python-video-stitcher",
     version=version,
     long_description=readme,
     packages=setuptools.PEP420PackageFinder.find(),
