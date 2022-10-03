@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.16.0](https://github.com/googleapis/python-speech/compare/v2.15.1...v2.16.0) (2022-10-03)
+
+
+### Features
+
+* Added Speech-to-Text V2 API ([#447](https://github.com/googleapis/python-speech/issues/447)) ([b78cda4](https://github.com/googleapis/python-speech/commit/b78cda46f7b4cac01578832fb6d9ca07887bea52))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#446](https://github.com/googleapis/python-speech/issues/446)) ([89ceb17](https://github.com/googleapis/python-speech/commit/89ceb175e326fe63c7fa0363cd79cae05b72ed9b))
+
 ## [2.15.1](https://github.com/googleapis/python-speech/compare/v2.15.0...v2.15.1) (2022-08-11)
 
 
