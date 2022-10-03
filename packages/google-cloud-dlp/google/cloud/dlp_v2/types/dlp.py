@@ -8110,8 +8110,7 @@ class InfoTypeSummary(proto.Message):
         info_type (google.cloud.dlp_v2.types.InfoType):
             The infoType.
         estimated_prevalence (int):
-            Approximate percentage of non-null rows that
-            contained data detected by this infotype.
+            Not populated for predicted infotypes.
     """
 
     info_type = proto.Field(
