@@ -15,4 +15,4 @@ opentelemetry-api==1.1.0
 opentelemetry-sdk==1.1.0
 opentelemetry-instrumentation==0.20b0
 packaging==14.3
-protobuf==3.19.0
+protobuf==3.20.2
