@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.2.0...v0.2.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#29](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/issues/29)) ([78a1015](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/78a1015b7a8cfa8aa29c640f5b48e57c9431644a))
+
 ## [0.2.0](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.1.1...v0.2.0) (2022-09-16)
 
 
