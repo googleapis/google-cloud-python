@@ -27,6 +27,10 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import pkg_resources
 
+from google.cloud.certificate_manager_v1.types import certificate_issuance_config
+from google.cloud.certificate_manager_v1.types import (
+    certificate_issuance_config as gcc_certificate_issuance_config,
+)
 from google.cloud.certificate_manager_v1.types import certificate_manager
 
 try:
@@ -409,6 +413,62 @@ class CertificateManagerTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_certificate_issuance_configs: gapic_v1.method.wrap_method(
+                self.list_certificate_issuance_configs,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_certificate_issuance_config: gapic_v1.method.wrap_method(
+                self.get_certificate_issuance_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_certificate_issuance_config: gapic_v1.method.wrap_method(
+                self.create_certificate_issuance_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_certificate_issuance_config: gapic_v1.method.wrap_method(
+                self.delete_certificate_issuance_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -624,6 +684,50 @@ class CertificateManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [certificate_manager.DeleteDnsAuthorizationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_certificate_issuance_configs(
+        self,
+    ) -> Callable[
+        [certificate_issuance_config.ListCertificateIssuanceConfigsRequest],
+        Union[
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse,
+            Awaitable[
+                certificate_issuance_config.ListCertificateIssuanceConfigsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_certificate_issuance_config(
+        self,
+    ) -> Callable[
+        [certificate_issuance_config.GetCertificateIssuanceConfigRequest],
+        Union[
+            certificate_issuance_config.CertificateIssuanceConfig,
+            Awaitable[certificate_issuance_config.CertificateIssuanceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_certificate_issuance_config(
+        self,
+    ) -> Callable[
+        [gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_certificate_issuance_config(
+        self,
+    ) -> Callable[
+        [certificate_issuance_config.DeleteCertificateIssuanceConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

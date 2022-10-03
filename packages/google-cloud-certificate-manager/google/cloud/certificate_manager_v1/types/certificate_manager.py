@@ -905,12 +905,20 @@ class Certificate(proto.Message):
             dns_authorizations (Sequence[str]):
                 Immutable. Authorizations that will be used
                 for performing domain authorization.
+            issuance_config (str):
+                The resource name for a
+                [CertificateIssuanceConfig][google.cloud.certificatemanager.v1.CertificateIssuanceConfig]
+                used to configure private PKI certificates in the format
+                ``projects/*/locations/*/certificateIssuanceConfigs/*``. If
+                this field is not set, the certificates will instead be
+                publicly signed as documented at
+                https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
             state (google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.State):
                 Output only. State of the managed certificate
                 resource.
             provisioning_issue (google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.ProvisioningIssue):
-                Information about issues with provisioning a
-                Managed Certificate.
+                Output only. Information about issues with
+                provisioning a Managed Certificate.
             authorization_attempt_info (Sequence[google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.AuthorizationAttemptInfo]):
                 Output only. Detailed state of the latest
                 authorization attempt for each domain specified
@@ -930,12 +938,13 @@ class Certificate(proto.Message):
 
             Attributes:
                 reason (google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.ProvisioningIssue.Reason):
-                    Reason for provisioning failures.
+                    Output only. Reason for provisioning
+                    failures.
                 details (str):
-                    Human readable explanation about the issue.
-                    Provided to help address the configuration
-                    issues. Not guaranteed to be stable. For
-                    programmatic access use Reason enum.
+                    Output only. Human readable explanation about
+                    the issue. Provided to help address the
+                    configuration issues. Not guaranteed to be
+                    stable. For programmatic access use Reason enum.
             """
 
             class Reason(proto.Enum):
@@ -962,16 +971,17 @@ class Certificate(proto.Message):
                 domain (str):
                     Domain name of the authorization attempt.
                 state (google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.AuthorizationAttemptInfo.State):
-                    State of the domain for managed certificate
-                    issuance.
+                    Output only. State of the domain for managed
+                    certificate issuance.
                 failure_reason (google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.AuthorizationAttemptInfo.FailureReason):
                     Output only. Reason for failure of the
                     authorization attempt for the domain.
                 details (str):
-                    Human readable explanation for reaching the
-                    state. Provided to help address the
+                    Output only. Human readable explanation for
+                    reaching the state. Provided to help address the
                     configuration issues. Not guaranteed to be
-                    stable. For programmatic access use Reason enum.
+                    stable. For programmatic access use
+                    FailureReason enum.
             """
 
             class State(proto.Enum):
@@ -1014,6 +1024,10 @@ class Certificate(proto.Message):
         dns_authorizations = proto.RepeatedField(
             proto.STRING,
             number=2,
+        )
+        issuance_config = proto.Field(
+            proto.STRING,
+            number=6,
         )
         state = proto.Field(
             proto.ENUM,
@@ -1108,7 +1122,9 @@ class CertificateMap(proto.Message):
             Map.
         gclb_targets (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget]):
             Output only. A list of GCLB targets which use
-            this Certificate Map.
+            this Certificate Map. A Target Proxy is only
+            present on this list if it's attached to a
+            Forwarding Rule.
     """
 
     class GclbTarget(proto.Message):
@@ -1123,20 +1139,21 @@ class CertificateMap(proto.Message):
 
         Attributes:
             target_https_proxy (str):
-                This field returns the resource name in the following
-                format:
+                Output only. This field returns the resource name in the
+                following format:
                 ``//compute.googleapis.com/projects/*/global/targetHttpsProxies/*``.
 
                 This field is a member of `oneof`_ ``target_proxy``.
             target_ssl_proxy (str):
-                This field returns the resource name in the following
-                format:
+                Output only. This field returns the resource name in the
+                following format:
                 ``//compute.googleapis.com/projects/*/global/targetSslProxies/*``.
 
                 This field is a member of `oneof`_ ``target_proxy``.
             ip_configs (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget.IpConfig]):
-                IP configurations for this Target Proxy where
-                the Certificate Map is serving.
+                Output only. IP configurations for this
+                Target Proxy where the Certificate Map is
+                serving.
         """
 
         class IpConfig(proto.Message):
@@ -1145,9 +1162,9 @@ class CertificateMap(proto.Message):
 
             Attributes:
                 ip_address (str):
-                    An external IP address.
+                    Output only. An external IP address.
                 ports (Sequence[int]):
-                    Ports.
+                    Output only. Ports.
             """
 
             ip_address = proto.Field(

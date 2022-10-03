@@ -24,6 +24,10 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.certificate_manager_v1.types import certificate_issuance_config
+from google.cloud.certificate_manager_v1.types import (
+    certificate_issuance_config as gcc_certificate_issuance_config,
+)
 from google.cloud.certificate_manager_v1.types import certificate_manager
 
 from .base import DEFAULT_CLIENT_INFO, CertificateManagerTransport
@@ -866,6 +870,136 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_dns_authorization"]
+
+    @property
+    def list_certificate_issuance_configs(
+        self,
+    ) -> Callable[
+        [certificate_issuance_config.ListCertificateIssuanceConfigsRequest],
+        Awaitable[certificate_issuance_config.ListCertificateIssuanceConfigsResponse],
+    ]:
+        r"""Return a callable for the list certificate issuance
+        configs method over gRPC.
+
+        Lists CertificateIssuanceConfigs in a given project
+        and location.
+
+        Returns:
+            Callable[[~.ListCertificateIssuanceConfigsRequest],
+                    Awaitable[~.ListCertificateIssuanceConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_certificate_issuance_configs" not in self._stubs:
+            self._stubs[
+                "list_certificate_issuance_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateIssuanceConfigs",
+                request_serializer=certificate_issuance_config.ListCertificateIssuanceConfigsRequest.serialize,
+                response_deserializer=certificate_issuance_config.ListCertificateIssuanceConfigsResponse.deserialize,
+            )
+        return self._stubs["list_certificate_issuance_configs"]
+
+    @property
+    def get_certificate_issuance_config(
+        self,
+    ) -> Callable[
+        [certificate_issuance_config.GetCertificateIssuanceConfigRequest],
+        Awaitable[certificate_issuance_config.CertificateIssuanceConfig],
+    ]:
+        r"""Return a callable for the get certificate issuance
+        config method over gRPC.
+
+        Gets details of a single CertificateIssuanceConfig.
+
+        Returns:
+            Callable[[~.GetCertificateIssuanceConfigRequest],
+                    Awaitable[~.CertificateIssuanceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_certificate_issuance_config" not in self._stubs:
+            self._stubs[
+                "get_certificate_issuance_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificateIssuanceConfig",
+                request_serializer=certificate_issuance_config.GetCertificateIssuanceConfigRequest.serialize,
+                response_deserializer=certificate_issuance_config.CertificateIssuanceConfig.deserialize,
+            )
+        return self._stubs["get_certificate_issuance_config"]
+
+    @property
+    def create_certificate_issuance_config(
+        self,
+    ) -> Callable[
+        [gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create certificate issuance
+        config method over gRPC.
+
+        Creates a new CertificateIssuanceConfig in a given
+        project and location.
+
+        Returns:
+            Callable[[~.CreateCertificateIssuanceConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_certificate_issuance_config" not in self._stubs:
+            self._stubs[
+                "create_certificate_issuance_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateIssuanceConfig",
+                request_serializer=gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_certificate_issuance_config"]
+
+    @property
+    def delete_certificate_issuance_config(
+        self,
+    ) -> Callable[
+        [certificate_issuance_config.DeleteCertificateIssuanceConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete certificate issuance
+        config method over gRPC.
+
+        Deletes a single CertificateIssuanceConfig.
+
+        Returns:
+            Callable[[~.DeleteCertificateIssuanceConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_certificate_issuance_config" not in self._stubs:
+            self._stubs[
+                "delete_certificate_issuance_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateIssuanceConfig",
+                request_serializer=certificate_issuance_config.DeleteCertificateIssuanceConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_certificate_issuance_config"]
 
     def close(self):
         return self.grpc_channel.close()

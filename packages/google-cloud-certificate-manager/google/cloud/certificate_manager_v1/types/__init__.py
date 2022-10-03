@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .certificate_issuance_config import (
+    CertificateIssuanceConfig,
+    CreateCertificateIssuanceConfigRequest,
+    DeleteCertificateIssuanceConfigRequest,
+    GetCertificateIssuanceConfigRequest,
+    ListCertificateIssuanceConfigsRequest,
+    ListCertificateIssuanceConfigsResponse,
+)
 from .certificate_manager import (
     Certificate,
     CertificateMap,
@@ -47,6 +55,12 @@ from .certificate_manager import (
 )
 
 __all__ = (
+    "CertificateIssuanceConfig",
+    "CreateCertificateIssuanceConfigRequest",
+    "DeleteCertificateIssuanceConfigRequest",
+    "GetCertificateIssuanceConfigRequest",
+    "ListCertificateIssuanceConfigsRequest",
+    "ListCertificateIssuanceConfigsResponse",
     "Certificate",
     "CertificateMap",
     "CertificateMapEntry",

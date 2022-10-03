@@ -20,6 +20,14 @@ from google.cloud.certificate_manager_v1.services.certificate_manager.async_clie
 from google.cloud.certificate_manager_v1.services.certificate_manager.client import (
     CertificateManagerClient,
 )
+from google.cloud.certificate_manager_v1.types.certificate_issuance_config import (
+    CertificateIssuanceConfig,
+    CreateCertificateIssuanceConfigRequest,
+    DeleteCertificateIssuanceConfigRequest,
+    GetCertificateIssuanceConfigRequest,
+    ListCertificateIssuanceConfigsRequest,
+    ListCertificateIssuanceConfigsResponse,
+)
 from google.cloud.certificate_manager_v1.types.certificate_manager import (
     Certificate,
     CertificateMap,
@@ -56,6 +64,12 @@ from google.cloud.certificate_manager_v1.types.certificate_manager import (
 __all__ = (
     "CertificateManagerClient",
     "CertificateManagerAsyncClient",
+    "CertificateIssuanceConfig",
+    "CreateCertificateIssuanceConfigRequest",
+    "DeleteCertificateIssuanceConfigRequest",
+    "GetCertificateIssuanceConfigRequest",
+    "ListCertificateIssuanceConfigsRequest",
+    "ListCertificateIssuanceConfigsResponse",
     "Certificate",
     "CertificateMap",
     "CertificateMapEntry",

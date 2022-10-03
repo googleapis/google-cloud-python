@@ -42,6 +42,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
@@ -55,6 +56,10 @@ from google.cloud.certificate_manager_v1.services.certificate_manager import (
     CertificateManagerClient,
     pagers,
     transports,
+)
+from google.cloud.certificate_manager_v1.types import certificate_issuance_config
+from google.cloud.certificate_manager_v1.types import (
+    certificate_issuance_config as gcc_certificate_issuance_config,
 )
 from google.cloud.certificate_manager_v1.types import certificate_manager
 
@@ -6548,6 +6553,1279 @@ async def test_delete_dns_authorization_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
+        dict,
+    ],
+)
+def test_list_certificate_issuance_configs(request_type, transport: str = "grpc"):
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = client.list_certificate_issuance_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCertificateIssuanceConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_certificate_issuance_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        client.list_certificate_issuance_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
+):
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_certificate_issuance_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCertificateIssuanceConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_async_from_dict():
+    await test_list_certificate_issuance_configs_async(request_type=dict)
+
+
+def test_list_certificate_issuance_configs_field_headers():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        call.return_value = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse()
+        )
+        client.list_certificate_issuance_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_field_headers_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse()
+        )
+        await client.list_certificate_issuance_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_certificate_issuance_configs_flattened():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_certificate_issuance_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_certificate_issuance_configs_flattened_error():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_certificate_issuance_configs(
+            certificate_issuance_config.ListCertificateIssuanceConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_flattened_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_certificate_issuance_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_flattened_error_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_certificate_issuance_configs(
+            certificate_issuance_config.ListCertificateIssuanceConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_certificate_issuance_configs_pager(transport_name: str = "grpc"):
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[],
+                next_page_token="def",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_certificate_issuance_configs(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, certificate_issuance_config.CertificateIssuanceConfig)
+            for i in results
+        )
+
+
+def test_list_certificate_issuance_configs_pages(transport_name: str = "grpc"):
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[],
+                next_page_token="def",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_certificate_issuance_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_async_pager():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[],
+                next_page_token="def",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_certificate_issuance_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, certificate_issuance_config.CertificateIssuanceConfig)
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_async_pages():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[],
+                next_page_token="def",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                certificate_issuance_configs=[
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                    certificate_issuance_config.CertificateIssuanceConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_certificate_issuance_configs(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_issuance_config.GetCertificateIssuanceConfigRequest,
+        dict,
+    ],
+)
+def test_get_certificate_issuance_config(request_type, transport: str = "grpc"):
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = certificate_issuance_config.CertificateIssuanceConfig(
+            name="name_value",
+            description="description_value",
+            rotation_window_percentage=2788,
+            key_algorithm=certificate_issuance_config.CertificateIssuanceConfig.KeyAlgorithm.RSA_2048,
+        )
+        response = client.get_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, certificate_issuance_config.CertificateIssuanceConfig)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.rotation_window_percentage == 2788
+    assert (
+        response.key_algorithm
+        == certificate_issuance_config.CertificateIssuanceConfig.KeyAlgorithm.RSA_2048
+    )
+
+
+def test_get_certificate_issuance_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        client.get_certificate_issuance_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_issuance_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=certificate_issuance_config.GetCertificateIssuanceConfigRequest,
+):
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.CertificateIssuanceConfig(
+                name="name_value",
+                description="description_value",
+                rotation_window_percentage=2788,
+                key_algorithm=certificate_issuance_config.CertificateIssuanceConfig.KeyAlgorithm.RSA_2048,
+            )
+        )
+        response = await client.get_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, certificate_issuance_config.CertificateIssuanceConfig)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.rotation_window_percentage == 2788
+    assert (
+        response.key_algorithm
+        == certificate_issuance_config.CertificateIssuanceConfig.KeyAlgorithm.RSA_2048
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_issuance_config_async_from_dict():
+    await test_get_certificate_issuance_config_async(request_type=dict)
+
+
+def test_get_certificate_issuance_config_field_headers():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        call.return_value = certificate_issuance_config.CertificateIssuanceConfig()
+        client.get_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_issuance_config_field_headers_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.CertificateIssuanceConfig()
+        )
+        await client.get_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_certificate_issuance_config_flattened():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = certificate_issuance_config.CertificateIssuanceConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_certificate_issuance_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_certificate_issuance_config_flattened_error():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_certificate_issuance_config(
+            certificate_issuance_config.GetCertificateIssuanceConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_issuance_config_flattened_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = certificate_issuance_config.CertificateIssuanceConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.CertificateIssuanceConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_certificate_issuance_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_issuance_config_flattened_error_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_certificate_issuance_config(
+            certificate_issuance_config.GetCertificateIssuanceConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
+        dict,
+    ],
+)
+def test_create_certificate_issuance_config(request_type, transport: str = "grpc"):
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_certificate_issuance_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        client.create_certificate_issuance_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_issuance_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
+):
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_issuance_config_async_from_dict():
+    await test_create_certificate_issuance_config_async(request_type=dict)
+
+
+def test_create_certificate_issuance_config_field_headers():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_issuance_config_field_headers_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_certificate_issuance_config_flattened():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_certificate_issuance_config(
+            parent="parent_value",
+            certificate_issuance_config=gcc_certificate_issuance_config.CertificateIssuanceConfig(
+                name="name_value"
+            ),
+            certificate_issuance_config_id="certificate_issuance_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].certificate_issuance_config
+        mock_val = gcc_certificate_issuance_config.CertificateIssuanceConfig(
+            name="name_value"
+        )
+        assert arg == mock_val
+        arg = args[0].certificate_issuance_config_id
+        mock_val = "certificate_issuance_config_id_value"
+        assert arg == mock_val
+
+
+def test_create_certificate_issuance_config_flattened_error():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_certificate_issuance_config(
+            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(),
+            parent="parent_value",
+            certificate_issuance_config=gcc_certificate_issuance_config.CertificateIssuanceConfig(
+                name="name_value"
+            ),
+            certificate_issuance_config_id="certificate_issuance_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_issuance_config_flattened_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_certificate_issuance_config(
+            parent="parent_value",
+            certificate_issuance_config=gcc_certificate_issuance_config.CertificateIssuanceConfig(
+                name="name_value"
+            ),
+            certificate_issuance_config_id="certificate_issuance_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].certificate_issuance_config
+        mock_val = gcc_certificate_issuance_config.CertificateIssuanceConfig(
+            name="name_value"
+        )
+        assert arg == mock_val
+        arg = args[0].certificate_issuance_config_id
+        mock_val = "certificate_issuance_config_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_issuance_config_flattened_error_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_certificate_issuance_config(
+            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(),
+            parent="parent_value",
+            certificate_issuance_config=gcc_certificate_issuance_config.CertificateIssuanceConfig(
+                name="name_value"
+            ),
+            certificate_issuance_config_id="certificate_issuance_config_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_issuance_config.DeleteCertificateIssuanceConfigRequest,
+        dict,
+    ],
+)
+def test_delete_certificate_issuance_config(request_type, transport: str = "grpc"):
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_certificate_issuance_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        client.delete_certificate_issuance_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_issuance_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=certificate_issuance_config.DeleteCertificateIssuanceConfigRequest,
+):
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_issuance_config_async_from_dict():
+    await test_delete_certificate_issuance_config_async(request_type=dict)
+
+
+def test_delete_certificate_issuance_config_field_headers():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_issuance_config_field_headers_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_certificate_issuance_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_certificate_issuance_config_flattened():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_certificate_issuance_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_certificate_issuance_config_flattened_error():
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_certificate_issuance_config(
+            certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_issuance_config_flattened_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_certificate_issuance_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_issuance_config_flattened_error_async():
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_certificate_issuance_config(
+            certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CertificateManagerGrpcTransport(
@@ -6705,6 +7983,10 @@ def test_certificate_manager_base_transport():
         "create_dns_authorization",
         "update_dns_authorization",
         "delete_dns_authorization",
+        "list_certificate_issuance_configs",
+        "get_certificate_issuance_config",
+        "create_certificate_issuance_config",
+        "delete_certificate_issuance_config",
         "get_location",
         "list_locations",
         "get_operation",
@@ -7097,10 +8379,36 @@ def test_certificate_manager_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_certificate_path():
+def test_ca_pool_path():
     project = "squid"
     location = "clam"
-    certificate = "whelk"
+    ca_pool = "whelk"
+    expected = "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+        project=project,
+        location=location,
+        ca_pool=ca_pool,
+    )
+    actual = CertificateManagerClient.ca_pool_path(project, location, ca_pool)
+    assert expected == actual
+
+
+def test_parse_ca_pool_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "ca_pool": "nudibranch",
+    }
+    path = CertificateManagerClient.ca_pool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CertificateManagerClient.parse_ca_pool_path(path)
+    assert expected == actual
+
+
+def test_certificate_path():
+    project = "cuttlefish"
+    location = "mussel"
+    certificate = "winkle"
     expected = (
         "projects/{project}/locations/{location}/certificates/{certificate}".format(
             project=project,
@@ -7114,14 +8422,42 @@ def test_certificate_path():
 
 def test_parse_certificate_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "certificate": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "certificate": "abalone",
     }
     path = CertificateManagerClient.certificate_path(**expected)
 
     # Check that the path construction is reversible.
     actual = CertificateManagerClient.parse_certificate_path(path)
+    assert expected == actual
+
+
+def test_certificate_issuance_config_path():
+    project = "squid"
+    location = "clam"
+    certificate_issuance_config = "whelk"
+    expected = "projects/{project}/locations/{location}/certificateIssuanceConfigs/{certificate_issuance_config}".format(
+        project=project,
+        location=location,
+        certificate_issuance_config=certificate_issuance_config,
+    )
+    actual = CertificateManagerClient.certificate_issuance_config_path(
+        project, location, certificate_issuance_config
+    )
+    assert expected == actual
+
+
+def test_parse_certificate_issuance_config_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "certificate_issuance_config": "nudibranch",
+    }
+    path = CertificateManagerClient.certificate_issuance_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CertificateManagerClient.parse_certificate_issuance_config_path(path)
     assert expected == actual
 
 

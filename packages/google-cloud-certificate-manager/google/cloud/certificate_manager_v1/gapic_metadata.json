@@ -15,6 +15,11 @@
                 "create_certificate"
               ]
             },
+            "CreateCertificateIssuanceConfig": {
+              "methods": [
+                "create_certificate_issuance_config"
+              ]
+            },
             "CreateCertificateMap": {
               "methods": [
                 "create_certificate_map"
@@ -33,6 +38,11 @@
             "DeleteCertificate": {
               "methods": [
                 "delete_certificate"
+              ]
+            },
+            "DeleteCertificateIssuanceConfig": {
+              "methods": [
+                "delete_certificate_issuance_config"
               ]
             },
             "DeleteCertificateMap": {
@@ -55,6 +65,11 @@
                 "get_certificate"
               ]
             },
+            "GetCertificateIssuanceConfig": {
+              "methods": [
+                "get_certificate_issuance_config"
+              ]
+            },
             "GetCertificateMap": {
               "methods": [
                 "get_certificate_map"
@@ -68,6 +83,11 @@
             "GetDnsAuthorization": {
               "methods": [
                 "get_dns_authorization"
+              ]
+            },
+            "ListCertificateIssuanceConfigs": {
+              "methods": [
+                "list_certificate_issuance_configs"
               ]
             },
             "ListCertificateMapEntries": {
@@ -120,6 +140,11 @@
                 "create_certificate"
               ]
             },
+            "CreateCertificateIssuanceConfig": {
+              "methods": [
+                "create_certificate_issuance_config"
+              ]
+            },
             "CreateCertificateMap": {
               "methods": [
                 "create_certificate_map"
@@ -138,6 +163,11 @@
             "DeleteCertificate": {
               "methods": [
                 "delete_certificate"
+              ]
+            },
+            "DeleteCertificateIssuanceConfig": {
+              "methods": [
+                "delete_certificate_issuance_config"
               ]
             },
             "DeleteCertificateMap": {
@@ -160,6 +190,11 @@
                 "get_certificate"
               ]
             },
+            "GetCertificateIssuanceConfig": {
+              "methods": [
+                "get_certificate_issuance_config"
+              ]
+            },
             "GetCertificateMap": {
               "methods": [
                 "get_certificate_map"
@@ -173,6 +208,11 @@
             "GetDnsAuthorization": {
               "methods": [
                 "get_dns_authorization"
+              ]
+            },
+            "ListCertificateIssuanceConfigs": {
+              "methods": [
+                "list_certificate_issuance_configs"
               ]
             },
             "ListCertificateMapEntries": {
