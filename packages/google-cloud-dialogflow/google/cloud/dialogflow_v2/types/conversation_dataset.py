@@ -345,7 +345,19 @@ class ImportConversationDataOperationResponse(proto.Message):
 
 
 class CreateConversationDatasetOperationMetadata(proto.Message):
-    r"""Metadata for [ConversationDatasets][CreateConversationDataset]."""
+    r"""Metadata for [ConversationDatasets][CreateConversationDataset].
+
+    Attributes:
+        conversation_dataset (str):
+            The resource name of the conversation dataset that will be
+            created. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset Id>``
+    """
+
+    conversation_dataset = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteConversationDatasetOperationMetadata(proto.Message):
