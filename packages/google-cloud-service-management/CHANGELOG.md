@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-service-management/compare/v1.3.1...v1.3.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#171](https://github.com/googleapis/python-service-management/issues/171)) ([8c9ecfd](https://github.com/googleapis/python-service-management/commit/8c9ecfdb8a3cb31a95baa46bd703d63bdf4f5e39))
+
 ## [1.3.1](https://github.com/googleapis/python-service-management/compare/v1.3.0...v1.3.1) (2022-08-11)
 
 
