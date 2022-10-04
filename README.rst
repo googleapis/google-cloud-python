@@ -454,6 +454,12 @@ Libraries
    * - `BigQuery Analytics Hub <https://github.com/googleapis/python-bigquery-data-exchange>`_
      - |preview|
      - |PyPI-google-cloud-bigquery-data-exchange|
+   * - `BigQuery Analytics Hub <https://github.com/googleapis/python-bigquery-analyticshub>`_
+     - |preview|
+     - |PyPI-google-cloud-bigquery-analyticshub|
+   * - `BigQuery Data Policy <https://github.com/googleapis/python-bigquery-datapolicies>`_
+     - |preview|
+     - |PyPI-google-cloud-bigquery-datapolicies|
    * - `BigQuery Migration <https://github.com/googleapis/python-bigquery-migration>`_
      - |preview|
      - |PyPI-google-cloud-bigquery-migration|
@@ -475,6 +481,9 @@ Libraries
    * - `Dataform <https://github.com/googleapis/python-dataform>`_
      - |preview|
      - |PyPI-google-cloud-dataform|
+   * - `Distributed Edge Container <https://github.com/googleapis/python-edgecontainer>`_
+     - |preview|
+     - |PyPI-google-cloud-edgecontainer|
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |preview|
      - |PyPI-google-cloud-error-reporting|
@@ -502,6 +511,9 @@ Libraries
    * - `Private Catalog <https://github.com/googleapis/python-private-catalog>`_
      - |preview|
      - |PyPI-google-cloud-private-catalog|
+   * - `Public Certificate Authority <https://github.com/googleapis/python-security-public-ca>`_
+     - |preview|
+     - |PyPI-google-cloud-public-ca|
    * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
      - |preview|
      - |PyPI-google-cloud-recommendations-ai|
@@ -517,6 +529,9 @@ Libraries
    * - `Video Stitcher <https://github.com/googleapis/python-video-stitcher>`_
      - |preview|
      - |PyPI-google-cloud-video-stitcher|
+   * - `Workspace Add-ons API <https://github.com/googleapis/python-gsuiteaddons>`_
+     - |preview|
+     - |PyPI-google-cloud-gsuiteaddons|
 
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
@@ -774,6 +789,10 @@ Libraries
      :target: https://pypi.org/project/google-cloud-beyondcorp-clientgateways
 .. |PyPI-google-cloud-bigquery-data-exchange| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-data-exchange.svg
      :target: https://pypi.org/project/google-cloud-bigquery-data-exchange
+.. |PyPI-google-cloud-bigquery-analyticshub| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-analyticshub.svg
+     :target: https://pypi.org/project/google-cloud-bigquery-analyticshub
+.. |PyPI-google-cloud-bigquery-datapolicies| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-datapolicies.svg
+     :target: https://pypi.org/project/google-cloud-bigquery-datapolicies
 .. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
      :target: https://pypi.org/project/google-cloud-bigquery-migration
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
@@ -788,6 +807,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dataflow-client
 .. |PyPI-google-cloud-dataform| image:: https://img.shields.io/pypi/v/google-cloud-dataform.svg
      :target: https://pypi.org/project/google-cloud-dataform
+.. |PyPI-google-cloud-edgecontainer| image:: https://img.shields.io/pypi/v/google-cloud-edgecontainer.svg
+     :target: https://pypi.org/project/google-cloud-edgecontainer
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
@@ -806,6 +827,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-phishing-protection
 .. |PyPI-google-cloud-private-catalog| image:: https://img.shields.io/pypi/v/google-cloud-private-catalog.svg
      :target: https://pypi.org/project/google-cloud-private-catalog
+.. |PyPI-google-cloud-public-ca| image:: https://img.shields.io/pypi/v/google-cloud-public-ca.svg
+     :target: https://pypi.org/project/google-cloud-public-ca
 .. |PyPI-google-cloud-recommendations-ai| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
      :target: https://pypi.org/project/google-cloud-recommendations-ai
 .. |PyPI-google-cloud-run| image:: https://img.shields.io/pypi/v/google-cloud-run.svg
@@ -816,6 +839,8 @@ Libraries
      :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-google-cloud-video-stitcher| image:: https://img.shields.io/pypi/v/google-cloud-video-stitcher.svg
      :target: https://pypi.org/project/google-cloud-video-stitcher
+.. |PyPI-google-cloud-gsuiteaddons| image:: https://img.shields.io/pypi/v/google-cloud-gsuiteaddons.svg
+     :target: https://pypi.org/project/google-cloud-gsuiteaddons
 
 .. API_TABLE_END
 
