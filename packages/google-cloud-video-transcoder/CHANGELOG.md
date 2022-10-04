@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-video-transcoder/compare/v1.4.1...v1.4.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#241](https://github.com/googleapis/python-video-transcoder/issues/241)) ([e7dafea](https://github.com/googleapis/python-video-transcoder/commit/e7dafea508fb1c0d016cac8eb134978a75d05b10))
+
 ## [1.4.1](https://github.com/googleapis/python-video-transcoder/compare/v1.4.0...v1.4.1) (2022-08-11)
 
 
