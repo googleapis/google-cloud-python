@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/googleapis/python-analytics-data/compare/v0.14.0...v0.14.1) (2022-09-30)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#297](https://github.com/googleapis/python-analytics-data/issues/297)) ([d0d59ea](https://github.com/googleapis/python-analytics-data/commit/d0d59eae7d0a9cdb29c7668ddec54ca077939bfd))
+
 ## [0.14.0](https://github.com/googleapis/python-analytics-data/compare/v0.13.2...v0.14.0) (2022-09-19)
 
 
