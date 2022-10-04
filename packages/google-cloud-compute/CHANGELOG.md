@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-compute/compare/v1.5.2...v1.6.0) (2022-09-29)
+
+
+### Features
+
+* Update Compute Engine API to revision 20220831 ([#729](https://github.com/googleapis/python-compute/issues/729)) ([#345](https://github.com/googleapis/python-compute/issues/345)) ([cf5fab1](https://github.com/googleapis/python-compute/commit/cf5fab101239827a84fc05873af2774b91bd760b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=2.10.1 ([cf5fab1](https://github.com/googleapis/python-compute/commit/cf5fab101239827a84fc05873af2774b91bd760b))
+* **deps:** Require protobuf >= 3.20.2 ([#347](https://github.com/googleapis/python-compute/issues/347)) ([62ad9cb](https://github.com/googleapis/python-compute/commit/62ad9cb9e429b3971b8d316246dd88bfae91ef94))
+
 ## [1.5.2](https://github.com/googleapis/python-compute/compare/v1.5.1...v1.5.2) (2022-09-07)
 
 
