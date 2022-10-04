@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-resource-settings/compare/v1.4.1...v1.4.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#141](https://github.com/googleapis/python-resource-settings/issues/141)) ([9dc66a3](https://github.com/googleapis/python-resource-settings/commit/9dc66a3539283e141b8e606e91c1b28348149454))
+
 ## [1.4.1](https://github.com/googleapis/python-resource-settings/compare/v1.4.0...v1.4.1) (2022-08-11)
 
 
