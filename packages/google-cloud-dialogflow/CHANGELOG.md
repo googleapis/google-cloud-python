@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.16.0](https://github.com/googleapis/python-dialogflow/compare/v2.15.2...v2.16.0) (2022-10-03)
+
+
+### Features
+
+* Include conversation dataset name to be created with dataset creation metadata ([#582](https://github.com/googleapis/python-dialogflow/issues/582)) ([74d45fb](https://github.com/googleapis/python-dialogflow/commit/74d45fb4c69d6a150aa86bf249ba291e6bd72e13))
+* **v2beta1:** Add Agent Assist Summarization API (https://cloud.google.com/agent-assist/docs/summarization) ([1648b27](https://github.com/googleapis/python-dialogflow/commit/1648b27b87416806ea7fcc016ad3caa5f89f5789))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#579](https://github.com/googleapis/python-dialogflow/issues/579)) ([2159259](https://github.com/googleapis/python-dialogflow/commit/21592593540d1e058be7debf565f7b737a45f79b))
+
+
+### Documentation
+
+* clarify SuggestionFeature enums which are specific to chat agents ([74d45fb](https://github.com/googleapis/python-dialogflow/commit/74d45fb4c69d6a150aa86bf249ba291e6bd72e13))
+* **v2beta1:** clarify SuggestionFeature enums which are specific to chat agents ([1648b27](https://github.com/googleapis/python-dialogflow/commit/1648b27b87416806ea7fcc016ad3caa5f89f5789))
+
 ## [2.15.2](https://github.com/googleapis/python-dialogflow/compare/v2.15.1...v2.15.2) (2022-08-15)
 
 
