@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-gke-backup/compare/v0.2.0...v0.2.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#29](https://github.com/googleapis/python-gke-backup/issues/29)) ([4081d9f](https://github.com/googleapis/python-gke-backup/commit/4081d9f0e62358222a7bec96cca05703adfa3cd2))
+
 ## [0.2.0](https://github.com/googleapis/python-gke-backup/compare/v0.1.1...v0.2.0) (2022-09-16)
 
 
