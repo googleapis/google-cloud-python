@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-tpu/compare/v1.5.0...v1.5.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#192](https://github.com/googleapis/python-tpu/issues/192)) ([e65bac8](https://github.com/googleapis/python-tpu/commit/e65bac898636ab5588c581868e718231d88d11f6))
+
 ## [1.5.0](https://github.com/googleapis/python-tpu/compare/v1.4.1...v1.5.0) (2022-09-16)
 
 
