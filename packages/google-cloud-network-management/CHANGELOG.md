@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/googleapis/python-network-management/compare/v1.5.2...v1.5.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#152](https://github.com/googleapis/python-network-management/issues/152)) ([b54f9dc](https://github.com/googleapis/python-network-management/commit/b54f9dc200c55f9d19447ead06b4f16718533efe))
+
 ## [1.5.2](https://github.com/googleapis/python-network-management/compare/v1.5.1...v1.5.2) (2022-08-11)
 
 
