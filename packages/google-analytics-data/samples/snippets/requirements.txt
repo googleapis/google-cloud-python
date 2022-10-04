@@ -1,2 +1,2 @@
-google-analytics-data==0.14.0
+google-analytics-data==0.14.1
 google-auth-oauthlib==0.5.3
