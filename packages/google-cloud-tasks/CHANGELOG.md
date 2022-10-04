@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.10.3](https://github.com/googleapis/python-tasks/compare/v2.10.2...v2.10.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#306](https://github.com/googleapis/python-tasks/issues/306)) ([146ce62](https://github.com/googleapis/python-tasks/commit/146ce62f4a9a56cb396b2c8554680daec67457dc))
+
 ## [2.10.2](https://github.com/googleapis/python-tasks/compare/v2.10.1...v2.10.2) (2022-08-11)
 
 
