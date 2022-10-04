@@ -55,6 +55,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    transport = "grpc+rest",
 )
 
 # Credentials.
@@ -65,6 +66,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    transport = "grpc+rest",
 )
 
 py_test(
@@ -89,6 +91,7 @@ py_gapic_library(
         "python-gapic-name=eventarc",
         "autogen-snippets",
     ],
+    transport = "grpc+rest",
 )
 
 py_test(
@@ -113,6 +116,7 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
+    transport = "grpc+rest",
 )
 
 # Uncomment once https://github.com/googleapis/gapic-generator-python/issues/1359 is fixed
@@ -135,6 +139,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    transport = "grpc+rest",
 )
 
 py_test(

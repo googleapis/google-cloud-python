@@ -44,6 +44,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudRedisGrpcTransport
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
+from .transports.rest import CloudRedisRestTransport
 
 
 class CloudRedisClientMeta(type):
@@ -56,6 +57,7 @@ class CloudRedisClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]]
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
+    _transport_registry["rest"] = CloudRedisRestTransport
 
     def get_transport_class(cls,
             label: str = None,
@@ -327,6 +329,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             transport (Union[str, CloudRedisTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

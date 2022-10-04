@@ -990,6 +990,15 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     return request
 
 
+def _transport_type_from_transport(transport: str) -> str:
+    if transport == api.TRANSPORT_GRPC:
+        return "sync"
+    elif transport == api.TRANSPORT_GRPC_ASYNC:
+        return "async"
+    else:  # api.TRANSPORT_REST
+        return "rest"
+
+
 def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
     """Given an API, generate basic sample specs for each method.
 
@@ -1006,10 +1015,10 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
         api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
         api_version = api_schema.naming.version
         for transport, client in service.clients.items():
-            transport_type = "async" if transport == api.TRANSPORT_GRPC_ASYNC else "sync"
+            transport_type = _transport_type_from_transport(transport)
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
-                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async}]
+                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async|rest}]
                 region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{transport_type}"
                 spec = {
                     "rpc": rpc_name,

@@ -43,6 +43,7 @@ from google.type import expr_pb2  # type: ignore
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
+from .transports.rest import AssetServiceRestTransport
 
 
 class AssetServiceClientMeta(type):
@@ -55,6 +56,7 @@ class AssetServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AssetServiceTransport]]
     _transport_registry["grpc"] = AssetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssetServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = AssetServiceRestTransport
 
     def get_transport_class(cls,
             label: str = None,
@@ -316,6 +318,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             transport (Union[str, AssetServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

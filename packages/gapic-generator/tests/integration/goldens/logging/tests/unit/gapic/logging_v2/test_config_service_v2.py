@@ -23,10 +23,17 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
+from google.protobuf import json_format
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+from requests import Response
+from requests import Request, PreparedRequest
+from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -76,6 +83,7 @@ def test__get_default_mtls_endpoint():
 @pytest.mark.parametrize("client_class,transport_name", [
     (ConfigServiceV2Client, "grpc"),
     (ConfigServiceV2AsyncClient, "grpc_asyncio"),
+    (ConfigServiceV2Client, "rest"),
 ])
 def test_config_service_v2_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -88,12 +96,16 @@ def test_config_service_v2_client_from_service_account_info(client_class, transp
 
         assert client.transport._host == (
             'logging.googleapis.com:443'
+            if transport_name in ['grpc', 'grpc_asyncio']
+            else
+            'https://logging.googleapis.com'
         )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
     (transports.ConfigServiceV2GrpcTransport, "grpc"),
     (transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
+    (transports.ConfigServiceV2RestTransport, "rest"),
 ])
 def test_config_service_v2_client_service_account_always_use_jwt(transport_class, transport_name):
     with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
@@ -110,6 +122,7 @@ def test_config_service_v2_client_service_account_always_use_jwt(transport_class
 @pytest.mark.parametrize("client_class,transport_name", [
     (ConfigServiceV2Client, "grpc"),
     (ConfigServiceV2AsyncClient, "grpc_asyncio"),
+    (ConfigServiceV2Client, "rest"),
 ])
 def test_config_service_v2_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -125,6 +138,9 @@ def test_config_service_v2_client_from_service_account_file(client_class, transp
 
         assert client.transport._host == (
             'logging.googleapis.com:443'
+            if transport_name in ['grpc', 'grpc_asyncio']
+            else
+            'https://logging.googleapis.com'
         )
 
 
@@ -132,6 +148,7 @@ def test_config_service_v2_client_get_transport_class():
     transport = ConfigServiceV2Client.get_transport_class()
     available_transports = [
         transports.ConfigServiceV2GrpcTransport,
+        transports.ConfigServiceV2RestTransport,
     ]
     assert transport in available_transports
 
@@ -142,6 +159,7 @@ def test_config_service_v2_client_get_transport_class():
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc"),
     (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
+    (ConfigServiceV2Client, transports.ConfigServiceV2RestTransport, "rest"),
 ])
 @mock.patch.object(ConfigServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2Client))
 @mock.patch.object(ConfigServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2AsyncClient))
@@ -261,6 +279,8 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "true"),
     (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc", "false"),
     (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "false"),
+    (ConfigServiceV2Client, transports.ConfigServiceV2RestTransport, "rest", "true"),
+    (ConfigServiceV2Client, transports.ConfigServiceV2RestTransport, "rest", "false"),
 ])
 @mock.patch.object(ConfigServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2Client))
 @mock.patch.object(ConfigServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2AsyncClient))
@@ -398,6 +418,7 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc"),
     (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
+    (ConfigServiceV2Client, transports.ConfigServiceV2RestTransport, "rest"),
 ])
 def test_config_service_v2_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
@@ -422,6 +443,7 @@ def test_config_service_v2_client_client_options_scopes(client_class, transport_
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc", grpc_helpers),
     (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
+    (ConfigServiceV2Client, transports.ConfigServiceV2RestTransport, "rest", None),
 ])
 def test_config_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
@@ -5949,6 +5971,5126 @@ async def test_update_cmek_settings_field_headers_async():
     ) in kw['metadata']
 
 
+@pytest.mark.parametrize("request_type", [
+    logging_config.ListBucketsRequest,
+    dict,
+])
+def test_list_buckets_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListBucketsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListBucketsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_buckets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBucketsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_buckets_rest_required_fields(request_type=logging_config.ListBucketsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_buckets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_buckets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.ListBucketsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.ListBucketsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.list_buckets(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_list_buckets_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.list_buckets._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_buckets_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_list_buckets") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_list_buckets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.ListBucketsRequest.pb(logging_config.ListBucketsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.ListBucketsResponse.to_json(logging_config.ListBucketsResponse())
+
+        request = logging_config.ListBucketsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.ListBucketsResponse()
+
+        client.list_buckets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_buckets_rest_bad_request(transport: str = 'rest', request_type=logging_config.ListBucketsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_buckets(request)
+
+
+def test_list_buckets_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListBucketsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2/locations/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListBucketsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.list_buckets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*/locations/*}/buckets" % client.transport._host, args[1])
+
+
+def test_list_buckets_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_buckets(
+            logging_config.ListBucketsRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_buckets_rest_pager(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            logging_config.ListBucketsResponse(
+                buckets=[
+                    logging_config.LogBucket(),
+                    logging_config.LogBucket(),
+                    logging_config.LogBucket(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListBucketsResponse(
+                buckets=[],
+                next_page_token='def',
+            ),
+            logging_config.ListBucketsResponse(
+                buckets=[
+                    logging_config.LogBucket(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListBucketsResponse(
+                buckets=[
+                    logging_config.LogBucket(),
+                    logging_config.LogBucket(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(logging_config.ListBucketsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'parent': 'sample1/sample2/locations/sample3'}
+
+        pager = client.list_buckets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.LogBucket)
+                for i in results)
+
+        pages = list(client.list_buckets(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetBucketRequest,
+    dict,
+])
+def test_get_bucket_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogBucket(
+              name='name_value',
+              description='description_value',
+              retention_days=1512,
+              locked=True,
+              lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogBucket.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_bucket(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogBucket)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.retention_days == 1512
+    assert response.locked is True
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+def test_get_bucket_rest_required_fields(request_type=logging_config.GetBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogBucket()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogBucket.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_bucket(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_bucket_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_bucket._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_bucket_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_bucket") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_bucket") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetBucketRequest.pb(logging_config.GetBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogBucket.to_json(logging_config.LogBucket())
+
+        request = logging_config.GetBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogBucket()
+
+        client.get_bucket(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_bucket_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_bucket(request)
+
+
+def test_get_bucket_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.CreateBucketRequest,
+    dict,
+])
+def test_create_bucket_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogBucket(
+              name='name_value',
+              description='description_value',
+              retention_days=1512,
+              locked=True,
+              lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogBucket.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_bucket(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogBucket)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.retention_days == 1512
+    assert response.locked is True
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+def test_create_bucket_rest_required_fields(request_type=logging_config.CreateBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["bucket_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "bucketId" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "bucketId" in jsonified_request
+    assert jsonified_request["bucketId"] == request_init["bucket_id"]
+
+    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["bucketId"] = 'bucket_id_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_bucket._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("bucket_id", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+    assert "bucketId" in jsonified_request
+    assert jsonified_request["bucketId"] == 'bucket_id_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogBucket()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogBucket.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_bucket(request)
+
+            expected_params = [
+                (
+                    "bucketId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_bucket_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_bucket._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("bucketId", )) & set(("parent", "bucketId", "bucket", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_bucket_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_create_bucket") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_create_bucket") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CreateBucketRequest.pb(logging_config.CreateBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogBucket.to_json(logging_config.LogBucket())
+
+        request = logging_config.CreateBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogBucket()
+
+        client.create_bucket(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_bucket_rest_bad_request(transport: str = 'rest', request_type=logging_config.CreateBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_bucket(request)
+
+
+def test_create_bucket_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateBucketRequest,
+    dict,
+])
+def test_update_bucket_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogBucket(
+              name='name_value',
+              description='description_value',
+              retention_days=1512,
+              locked=True,
+              lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogBucket.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_bucket(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogBucket)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.retention_days == 1512
+    assert response.locked is True
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+def test_update_bucket_rest_required_fields(request_type=logging_config.UpdateBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_bucket._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogBucket()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "patch",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogBucket.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_bucket(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_bucket_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_bucket._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("name", "bucket", "updateMask", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_bucket_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_bucket") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_bucket") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateBucketRequest.pb(logging_config.UpdateBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogBucket.to_json(logging_config.LogBucket())
+
+        request = logging_config.UpdateBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogBucket()
+
+        client.update_bucket(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_bucket_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_bucket(request)
+
+
+def test_update_bucket_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.DeleteBucketRequest,
+    dict,
+])
+def test_delete_bucket_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_bucket(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_bucket_rest_required_fields(request_type=logging_config.DeleteBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "delete",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ''
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.delete_bucket(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_delete_bucket_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.delete_bucket._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_bucket_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_delete_bucket") as pre:
+        pre.assert_not_called()
+        pb_message = logging_config.DeleteBucketRequest.pb(logging_config.DeleteBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = logging_config.DeleteBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_bucket(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_delete_bucket_rest_bad_request(transport: str = 'rest', request_type=logging_config.DeleteBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_bucket(request)
+
+
+def test_delete_bucket_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UndeleteBucketRequest,
+    dict,
+])
+def test_undelete_bucket_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.undelete_bucket(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_undelete_bucket_rest_required_fields(request_type=logging_config.UndeleteBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).undelete_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).undelete_bucket._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ''
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.undelete_bucket(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_undelete_bucket_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.undelete_bucket._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_undelete_bucket_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_undelete_bucket") as pre:
+        pre.assert_not_called()
+        pb_message = logging_config.UndeleteBucketRequest.pb(logging_config.UndeleteBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = logging_config.UndeleteBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.undelete_bucket(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_undelete_bucket_rest_bad_request(transport: str = 'rest', request_type=logging_config.UndeleteBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.undelete_bucket(request)
+
+
+def test_undelete_bucket_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.ListViewsRequest,
+    dict,
+])
+def test_list_views_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListViewsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListViewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_views(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListViewsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_views_rest_required_fields(request_type=logging_config.ListViewsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_views._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_views._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.ListViewsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.ListViewsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.list_views(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_list_views_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.list_views._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_views_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_list_views") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_list_views") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.ListViewsRequest.pb(logging_config.ListViewsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.ListViewsResponse.to_json(logging_config.ListViewsResponse())
+
+        request = logging_config.ListViewsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.ListViewsResponse()
+
+        client.list_views(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_views_rest_bad_request(transport: str = 'rest', request_type=logging_config.ListViewsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_views(request)
+
+
+def test_list_views_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListViewsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListViewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.list_views(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*/locations/*/buckets/*}/views" % client.transport._host, args[1])
+
+
+def test_list_views_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_views(
+            logging_config.ListViewsRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_views_rest_pager(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListViewsResponse(
+                views=[],
+                next_page_token='def',
+            ),
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(logging_config.ListViewsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+
+        pager = client.list_views(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.LogView)
+                for i in results)
+
+        pages = list(client.list_views(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetViewRequest,
+    dict,
+])
+def test_get_view_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/views/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogView(
+              name='name_value',
+              description='description_value',
+              filter='filter_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogView.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_view(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogView)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.filter == 'filter_value'
+
+
+def test_get_view_rest_required_fields(request_type=logging_config.GetViewRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_view._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_view._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogView()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogView.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_view(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_view_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_view._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_view_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_view") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_view") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetViewRequest.pb(logging_config.GetViewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogView.to_json(logging_config.LogView())
+
+        request = logging_config.GetViewRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogView()
+
+        client.get_view(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_view_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetViewRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/views/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_view(request)
+
+
+def test_get_view_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.CreateViewRequest,
+    dict,
+])
+def test_create_view_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["view"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'filter': 'filter_value'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogView(
+              name='name_value',
+              description='description_value',
+              filter='filter_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogView.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_view(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogView)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.filter == 'filter_value'
+
+
+def test_create_view_rest_required_fields(request_type=logging_config.CreateViewRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["view_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "viewId" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_view._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "viewId" in jsonified_request
+    assert jsonified_request["viewId"] == request_init["view_id"]
+
+    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["viewId"] = 'view_id_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_view._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view_id", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+    assert "viewId" in jsonified_request
+    assert jsonified_request["viewId"] == 'view_id_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogView()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogView.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_view(request)
+
+            expected_params = [
+                (
+                    "viewId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_view_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_view._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("viewId", )) & set(("parent", "viewId", "view", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_view_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_create_view") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_create_view") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CreateViewRequest.pb(logging_config.CreateViewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogView.to_json(logging_config.LogView())
+
+        request = logging_config.CreateViewRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogView()
+
+        client.create_view(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_view_rest_bad_request(transport: str = 'rest', request_type=logging_config.CreateViewRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["view"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'filter': 'filter_value'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_view(request)
+
+
+def test_create_view_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateViewRequest,
+    dict,
+])
+def test_update_view_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/views/sample5'}
+    request_init["view"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'filter': 'filter_value'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogView(
+              name='name_value',
+              description='description_value',
+              filter='filter_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogView.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_view(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogView)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.filter == 'filter_value'
+
+
+def test_update_view_rest_required_fields(request_type=logging_config.UpdateViewRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_view._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_view._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogView()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "patch",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogView.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_view(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_view_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_view._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("name", "view", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_view_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_view") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_view") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateViewRequest.pb(logging_config.UpdateViewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogView.to_json(logging_config.LogView())
+
+        request = logging_config.UpdateViewRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogView()
+
+        client.update_view(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_view_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateViewRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/views/sample5'}
+    request_init["view"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'filter': 'filter_value'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_view(request)
+
+
+def test_update_view_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.DeleteViewRequest,
+    dict,
+])
+def test_delete_view_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/views/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_view(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_view_rest_required_fields(request_type=logging_config.DeleteViewRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_view._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_view._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "delete",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ''
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.delete_view(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_delete_view_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.delete_view._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_view_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_delete_view") as pre:
+        pre.assert_not_called()
+        pb_message = logging_config.DeleteViewRequest.pb(logging_config.DeleteViewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = logging_config.DeleteViewRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_view(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_delete_view_rest_bad_request(transport: str = 'rest', request_type=logging_config.DeleteViewRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/views/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_view(request)
+
+
+def test_delete_view_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.ListSinksRequest,
+    dict,
+])
+def test_list_sinks_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListSinksResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListSinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_sinks(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSinksPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_sinks_rest_required_fields(request_type=logging_config.ListSinksRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_sinks._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_sinks._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.ListSinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.ListSinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.list_sinks(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_list_sinks_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.list_sinks._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_sinks_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_list_sinks") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_list_sinks") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.ListSinksRequest.pb(logging_config.ListSinksRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.ListSinksResponse.to_json(logging_config.ListSinksResponse())
+
+        request = logging_config.ListSinksRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.ListSinksResponse()
+
+        client.list_sinks(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_sinks_rest_bad_request(transport: str = 'rest', request_type=logging_config.ListSinksRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_sinks(request)
+
+
+def test_list_sinks_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListSinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListSinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.list_sinks(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*}/sinks" % client.transport._host, args[1])
+
+
+def test_list_sinks_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sinks(
+            logging_config.ListSinksRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_sinks_rest_pager(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            logging_config.ListSinksResponse(
+                sinks=[
+                    logging_config.LogSink(),
+                    logging_config.LogSink(),
+                    logging_config.LogSink(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListSinksResponse(
+                sinks=[],
+                next_page_token='def',
+            ),
+            logging_config.ListSinksResponse(
+                sinks=[
+                    logging_config.LogSink(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListSinksResponse(
+                sinks=[
+                    logging_config.LogSink(),
+                    logging_config.LogSink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(logging_config.ListSinksResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'parent': 'sample1/sample2'}
+
+        pager = client.list_sinks(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.LogSink)
+                for i in results)
+
+        pages = list(client.list_sinks(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetSinkRequest,
+    dict,
+])
+def test_get_sink_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'sink_name': 'sample1/sample2/sinks/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogSink(
+              name='name_value',
+              destination='destination_value',
+              filter='filter_value',
+              description='description_value',
+              disabled=True,
+              output_version_format=logging_config.LogSink.VersionFormat.V2,
+              writer_identity='writer_identity_value',
+              include_children=True,
+              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogSink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_sink(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogSink)
+    assert response.name == 'name_value'
+    assert response.destination == 'destination_value'
+    assert response.filter == 'filter_value'
+    assert response.description == 'description_value'
+    assert response.disabled is True
+    assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
+    assert response.writer_identity == 'writer_identity_value'
+    assert response.include_children is True
+
+
+def test_get_sink_rest_required_fields(request_type=logging_config.GetSinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["sink_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_sink._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["sinkName"] = 'sink_name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_sink._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "sinkName" in jsonified_request
+    assert jsonified_request["sinkName"] == 'sink_name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogSink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogSink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_sink(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_sink_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_sink._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("sinkName", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_sink_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_sink") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_sink") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetSinkRequest.pb(logging_config.GetSinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogSink.to_json(logging_config.LogSink())
+
+        request = logging_config.GetSinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogSink()
+
+        client.get_sink(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_sink_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetSinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'sink_name': 'sample1/sample2/sinks/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_sink(request)
+
+
+def test_get_sink_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogSink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'sink_name': 'sample1/sample2/sinks/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            sink_name='sink_name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogSink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.get_sink(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{sink_name=*/*/sinks/*}" % client.transport._host, args[1])
+
+
+def test_get_sink_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_sink(
+            logging_config.GetSinkRequest(),
+            sink_name='sink_name_value',
+        )
+
+
+def test_get_sink_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.CreateSinkRequest,
+    dict,
+])
+def test_create_sink_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["sink"] = {'name': 'name_value', 'destination': 'destination_value', 'filter': 'filter_value', 'description': 'description_value', 'disabled': True, 'exclusions': [{'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}], 'output_version_format': 1, 'writer_identity': 'writer_identity_value', 'include_children': True, 'bigquery_options': {'use_partitioned_tables': True, 'uses_timestamp_column_partitioning': True}, 'create_time': {}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogSink(
+              name='name_value',
+              destination='destination_value',
+              filter='filter_value',
+              description='description_value',
+              disabled=True,
+              output_version_format=logging_config.LogSink.VersionFormat.V2,
+              writer_identity='writer_identity_value',
+              include_children=True,
+              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogSink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_sink(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogSink)
+    assert response.name == 'name_value'
+    assert response.destination == 'destination_value'
+    assert response.filter == 'filter_value'
+    assert response.description == 'description_value'
+    assert response.disabled is True
+    assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
+    assert response.writer_identity == 'writer_identity_value'
+    assert response.include_children is True
+
+
+def test_create_sink_rest_required_fields(request_type=logging_config.CreateSinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_sink._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_sink._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("unique_writer_identity", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogSink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogSink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_sink(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_sink_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_sink._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("uniqueWriterIdentity", )) & set(("parent", "sink", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_sink_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_create_sink") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_create_sink") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CreateSinkRequest.pb(logging_config.CreateSinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogSink.to_json(logging_config.LogSink())
+
+        request = logging_config.CreateSinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogSink()
+
+        client.create_sink(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_sink_rest_bad_request(transport: str = 'rest', request_type=logging_config.CreateSinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["sink"] = {'name': 'name_value', 'destination': 'destination_value', 'filter': 'filter_value', 'description': 'description_value', 'disabled': True, 'exclusions': [{'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}], 'output_version_format': 1, 'writer_identity': 'writer_identity_value', 'include_children': True, 'bigquery_options': {'use_partitioned_tables': True, 'uses_timestamp_column_partitioning': True}, 'create_time': {}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_sink(request)
+
+
+def test_create_sink_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogSink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+            sink=logging_config.LogSink(name='name_value'),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogSink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.create_sink(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*}/sinks" % client.transport._host, args[1])
+
+
+def test_create_sink_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_sink(
+            logging_config.CreateSinkRequest(),
+            parent='parent_value',
+            sink=logging_config.LogSink(name='name_value'),
+        )
+
+
+def test_create_sink_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateSinkRequest,
+    dict,
+])
+def test_update_sink_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'sink_name': 'sample1/sample2/sinks/sample3'}
+    request_init["sink"] = {'name': 'name_value', 'destination': 'destination_value', 'filter': 'filter_value', 'description': 'description_value', 'disabled': True, 'exclusions': [{'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}], 'output_version_format': 1, 'writer_identity': 'writer_identity_value', 'include_children': True, 'bigquery_options': {'use_partitioned_tables': True, 'uses_timestamp_column_partitioning': True}, 'create_time': {}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogSink(
+              name='name_value',
+              destination='destination_value',
+              filter='filter_value',
+              description='description_value',
+              disabled=True,
+              output_version_format=logging_config.LogSink.VersionFormat.V2,
+              writer_identity='writer_identity_value',
+              include_children=True,
+              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogSink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_sink(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogSink)
+    assert response.name == 'name_value'
+    assert response.destination == 'destination_value'
+    assert response.filter == 'filter_value'
+    assert response.description == 'description_value'
+    assert response.disabled is True
+    assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
+    assert response.writer_identity == 'writer_identity_value'
+    assert response.include_children is True
+
+
+def test_update_sink_rest_required_fields(request_type=logging_config.UpdateSinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["sink_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_sink._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["sinkName"] = 'sink_name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_sink._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("unique_writer_identity", "update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "sinkName" in jsonified_request
+    assert jsonified_request["sinkName"] == 'sink_name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogSink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "put",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogSink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_sink(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_sink_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_sink._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("uniqueWriterIdentity", "updateMask", )) & set(("sinkName", "sink", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_sink_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_sink") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_sink") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateSinkRequest.pb(logging_config.UpdateSinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogSink.to_json(logging_config.LogSink())
+
+        request = logging_config.UpdateSinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogSink()
+
+        client.update_sink(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_sink_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateSinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'sink_name': 'sample1/sample2/sinks/sample3'}
+    request_init["sink"] = {'name': 'name_value', 'destination': 'destination_value', 'filter': 'filter_value', 'description': 'description_value', 'disabled': True, 'exclusions': [{'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}], 'output_version_format': 1, 'writer_identity': 'writer_identity_value', 'include_children': True, 'bigquery_options': {'use_partitioned_tables': True, 'uses_timestamp_column_partitioning': True}, 'create_time': {}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_sink(request)
+
+
+def test_update_sink_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogSink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'sink_name': 'sample1/sample2/sinks/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            sink_name='sink_name_value',
+            sink=logging_config.LogSink(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogSink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.update_sink(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{sink_name=*/*/sinks/*}" % client.transport._host, args[1])
+
+
+def test_update_sink_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_sink(
+            logging_config.UpdateSinkRequest(),
+            sink_name='sink_name_value',
+            sink=logging_config.LogSink(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+
+def test_update_sink_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.DeleteSinkRequest,
+    dict,
+])
+def test_delete_sink_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'sink_name': 'sample1/sample2/sinks/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_sink(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_sink_rest_required_fields(request_type=logging_config.DeleteSinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["sink_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_sink._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["sinkName"] = 'sink_name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_sink._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "sinkName" in jsonified_request
+    assert jsonified_request["sinkName"] == 'sink_name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "delete",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ''
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.delete_sink(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_delete_sink_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.delete_sink._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("sinkName", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_sink_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_delete_sink") as pre:
+        pre.assert_not_called()
+        pb_message = logging_config.DeleteSinkRequest.pb(logging_config.DeleteSinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = logging_config.DeleteSinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_sink(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_delete_sink_rest_bad_request(transport: str = 'rest', request_type=logging_config.DeleteSinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'sink_name': 'sample1/sample2/sinks/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_sink(request)
+
+
+def test_delete_sink_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'sink_name': 'sample1/sample2/sinks/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            sink_name='sink_name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.delete_sink(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{sink_name=*/*/sinks/*}" % client.transport._host, args[1])
+
+
+def test_delete_sink_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_sink(
+            logging_config.DeleteSinkRequest(),
+            sink_name='sink_name_value',
+        )
+
+
+def test_delete_sink_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.ListExclusionsRequest,
+    dict,
+])
+def test_list_exclusions_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListExclusionsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListExclusionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_exclusions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExclusionsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_exclusions_rest_required_fields(request_type=logging_config.ListExclusionsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_exclusions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_exclusions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.ListExclusionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.ListExclusionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.list_exclusions(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_list_exclusions_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.list_exclusions._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_exclusions_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_list_exclusions") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_list_exclusions") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.ListExclusionsRequest.pb(logging_config.ListExclusionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.ListExclusionsResponse.to_json(logging_config.ListExclusionsResponse())
+
+        request = logging_config.ListExclusionsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.ListExclusionsResponse()
+
+        client.list_exclusions(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_exclusions_rest_bad_request(transport: str = 'rest', request_type=logging_config.ListExclusionsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_exclusions(request)
+
+
+def test_list_exclusions_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListExclusionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListExclusionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.list_exclusions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*}/exclusions" % client.transport._host, args[1])
+
+
+def test_list_exclusions_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_exclusions(
+            logging_config.ListExclusionsRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_exclusions_rest_pager(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            logging_config.ListExclusionsResponse(
+                exclusions=[
+                    logging_config.LogExclusion(),
+                    logging_config.LogExclusion(),
+                    logging_config.LogExclusion(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListExclusionsResponse(
+                exclusions=[],
+                next_page_token='def',
+            ),
+            logging_config.ListExclusionsResponse(
+                exclusions=[
+                    logging_config.LogExclusion(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListExclusionsResponse(
+                exclusions=[
+                    logging_config.LogExclusion(),
+                    logging_config.LogExclusion(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(logging_config.ListExclusionsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'parent': 'sample1/sample2'}
+
+        pager = client.list_exclusions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.LogExclusion)
+                for i in results)
+
+        pages = list(client.list_exclusions(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetExclusionRequest,
+    dict,
+])
+def test_get_exclusion_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/exclusions/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogExclusion(
+              name='name_value',
+              description='description_value',
+              filter='filter_value',
+              disabled=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogExclusion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_exclusion(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogExclusion)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.filter == 'filter_value'
+    assert response.disabled is True
+
+
+def test_get_exclusion_rest_required_fields(request_type=logging_config.GetExclusionRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogExclusion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogExclusion.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_exclusion(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_exclusion_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_exclusion._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_exclusion_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_exclusion") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_exclusion") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetExclusionRequest.pb(logging_config.GetExclusionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogExclusion.to_json(logging_config.LogExclusion())
+
+        request = logging_config.GetExclusionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogExclusion()
+
+        client.get_exclusion(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_exclusion_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetExclusionRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/exclusions/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_exclusion(request)
+
+
+def test_get_exclusion_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogExclusion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/exclusions/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogExclusion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.get_exclusion(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*/exclusions/*}" % client.transport._host, args[1])
+
+
+def test_get_exclusion_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_exclusion(
+            logging_config.GetExclusionRequest(),
+            name='name_value',
+        )
+
+
+def test_get_exclusion_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.CreateExclusionRequest,
+    dict,
+])
+def test_create_exclusion_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["exclusion"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogExclusion(
+              name='name_value',
+              description='description_value',
+              filter='filter_value',
+              disabled=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogExclusion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_exclusion(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogExclusion)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.filter == 'filter_value'
+    assert response.disabled is True
+
+
+def test_create_exclusion_rest_required_fields(request_type=logging_config.CreateExclusionRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogExclusion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogExclusion.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_exclusion(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_exclusion_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_exclusion._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent", "exclusion", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_exclusion_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_create_exclusion") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_create_exclusion") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CreateExclusionRequest.pb(logging_config.CreateExclusionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogExclusion.to_json(logging_config.LogExclusion())
+
+        request = logging_config.CreateExclusionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogExclusion()
+
+        client.create_exclusion(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_exclusion_rest_bad_request(transport: str = 'rest', request_type=logging_config.CreateExclusionRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["exclusion"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_exclusion(request)
+
+
+def test_create_exclusion_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogExclusion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+            exclusion=logging_config.LogExclusion(name='name_value'),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogExclusion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.create_exclusion(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*}/exclusions" % client.transport._host, args[1])
+
+
+def test_create_exclusion_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_exclusion(
+            logging_config.CreateExclusionRequest(),
+            parent='parent_value',
+            exclusion=logging_config.LogExclusion(name='name_value'),
+        )
+
+
+def test_create_exclusion_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateExclusionRequest,
+    dict,
+])
+def test_update_exclusion_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/exclusions/sample3'}
+    request_init["exclusion"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogExclusion(
+              name='name_value',
+              description='description_value',
+              filter='filter_value',
+              disabled=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogExclusion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_exclusion(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogExclusion)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.filter == 'filter_value'
+    assert response.disabled is True
+
+
+def test_update_exclusion_rest_required_fields(request_type=logging_config.UpdateExclusionRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_exclusion._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.LogExclusion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "patch",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.LogExclusion.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_exclusion(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_exclusion_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_exclusion._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("name", "exclusion", "updateMask", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_exclusion_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_exclusion") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_exclusion") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateExclusionRequest.pb(logging_config.UpdateExclusionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.LogExclusion.to_json(logging_config.LogExclusion())
+
+        request = logging_config.UpdateExclusionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.LogExclusion()
+
+        client.update_exclusion(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_exclusion_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateExclusionRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/exclusions/sample3'}
+    request_init["exclusion"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'disabled': True, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_exclusion(request)
+
+
+def test_update_exclusion_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.LogExclusion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/exclusions/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+            exclusion=logging_config.LogExclusion(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.LogExclusion.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.update_exclusion(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*/exclusions/*}" % client.transport._host, args[1])
+
+
+def test_update_exclusion_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_exclusion(
+            logging_config.UpdateExclusionRequest(),
+            name='name_value',
+            exclusion=logging_config.LogExclusion(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+
+def test_update_exclusion_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.DeleteExclusionRequest,
+    dict,
+])
+def test_delete_exclusion_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/exclusions/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_exclusion(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_exclusion_rest_required_fields(request_type=logging_config.DeleteExclusionRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_exclusion._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "delete",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ''
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.delete_exclusion(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_delete_exclusion_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.delete_exclusion._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_exclusion_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_delete_exclusion") as pre:
+        pre.assert_not_called()
+        pb_message = logging_config.DeleteExclusionRequest.pb(logging_config.DeleteExclusionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = logging_config.DeleteExclusionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_exclusion(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_delete_exclusion_rest_bad_request(transport: str = 'rest', request_type=logging_config.DeleteExclusionRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/exclusions/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_exclusion(request)
+
+
+def test_delete_exclusion_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/exclusions/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.delete_exclusion(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*/exclusions/*}" % client.transport._host, args[1])
+
+
+def test_delete_exclusion_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_exclusion(
+            logging_config.DeleteExclusionRequest(),
+            name='name_value',
+        )
+
+
+def test_delete_exclusion_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetCmekSettingsRequest,
+    dict,
+])
+def test_get_cmek_settings_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.CmekSettings(
+              name='name_value',
+              kms_key_name='kms_key_name_value',
+              service_account_id='service_account_id_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.CmekSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_cmek_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.CmekSettings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.service_account_id == 'service_account_id_value'
+
+
+def test_get_cmek_settings_rest_required_fields(request_type=logging_config.GetCmekSettingsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_cmek_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_cmek_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.CmekSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.CmekSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_cmek_settings(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_cmek_settings_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_cmek_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_cmek_settings_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_cmek_settings") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_cmek_settings") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetCmekSettingsRequest.pb(logging_config.GetCmekSettingsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.CmekSettings.to_json(logging_config.CmekSettings())
+
+        request = logging_config.GetCmekSettingsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.CmekSettings()
+
+        client.get_cmek_settings(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_cmek_settings_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetCmekSettingsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_cmek_settings(request)
+
+
+def test_get_cmek_settings_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateCmekSettingsRequest,
+    dict,
+])
+def test_update_cmek_settings_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request_init["cmek_settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'service_account_id': 'service_account_id_value'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.CmekSettings(
+              name='name_value',
+              kms_key_name='kms_key_name_value',
+              service_account_id='service_account_id_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.CmekSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_cmek_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.CmekSettings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.service_account_id == 'service_account_id_value'
+
+
+def test_update_cmek_settings_rest_required_fields(request_type=logging_config.UpdateCmekSettingsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_cmek_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_cmek_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.CmekSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "patch",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.CmekSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_cmek_settings(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_cmek_settings_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_cmek_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("name", "cmekSettings", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_cmek_settings_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_cmek_settings") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_cmek_settings") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateCmekSettingsRequest.pb(logging_config.UpdateCmekSettingsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.CmekSettings.to_json(logging_config.CmekSettings())
+
+        request = logging_config.UpdateCmekSettingsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.CmekSettings()
+
+        client.update_cmek_settings(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_cmek_settings_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateCmekSettingsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request_init["cmek_settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'service_account_id': 'service_account_id_value'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_cmek_settings(request)
+
+
+def test_update_cmek_settings_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConfigServiceV2GrpcTransport(
@@ -6027,6 +11169,7 @@ def test_transport_get_channel():
 @pytest.mark.parametrize("transport_class", [
     transports.ConfigServiceV2GrpcTransport,
     transports.ConfigServiceV2GrpcAsyncIOTransport,
+    transports.ConfigServiceV2RestTransport,
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -6037,6 +11180,7 @@ def test_transport_adc(transport_class):
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
+    "rest",
 ])
 def test_transport_kind(transport_name):
     transport = ConfigServiceV2Client.get_transport_class(transport_name)(
@@ -6186,6 +11330,7 @@ def test_config_service_v2_transport_auth_adc(transport_class):
     [
         transports.ConfigServiceV2GrpcTransport,
         transports.ConfigServiceV2GrpcAsyncIOTransport,
+        transports.ConfigServiceV2RestTransport,
     ],
 )
 def test_config_service_v2_transport_auth_gdch_credentials(transport_class):
@@ -6285,10 +11430,20 @@ def test_config_service_v2_grpc_transport_client_cert_source_for_mtls(
                 private_key=expected_key
             )
 
+def test_config_service_v2_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.ConfigServiceV2RestTransport (
+            credentials=cred,
+            client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
+    "rest",
 ])
 def test_config_service_v2_host_no_port(transport_name):
     client = ConfigServiceV2Client(
@@ -6298,11 +11453,14 @@ def test_config_service_v2_host_no_port(transport_name):
     )
     assert client.transport._host == (
         'logging.googleapis.com:443'
+        if transport_name in ['grpc', 'grpc_asyncio']
+        else 'https://logging.googleapis.com'
     )
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
+    "rest",
 ])
 def test_config_service_v2_host_with_port(transport_name):
     client = ConfigServiceV2Client(
@@ -6312,8 +11470,93 @@ def test_config_service_v2_host_with_port(transport_name):
     )
     assert client.transport._host == (
         'logging.googleapis.com:8000'
+        if transport_name in ['grpc', 'grpc_asyncio']
+        else 'https://logging.googleapis.com:8000'
     )
 
+@pytest.mark.parametrize("transport_name", [
+    "rest",
+])
+def test_config_service_v2_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ConfigServiceV2Client(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ConfigServiceV2Client(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_buckets._session
+    session2 = client2.transport.list_buckets._session
+    assert session1 != session2
+    session1 = client1.transport.get_bucket._session
+    session2 = client2.transport.get_bucket._session
+    assert session1 != session2
+    session1 = client1.transport.create_bucket._session
+    session2 = client2.transport.create_bucket._session
+    assert session1 != session2
+    session1 = client1.transport.update_bucket._session
+    session2 = client2.transport.update_bucket._session
+    assert session1 != session2
+    session1 = client1.transport.delete_bucket._session
+    session2 = client2.transport.delete_bucket._session
+    assert session1 != session2
+    session1 = client1.transport.undelete_bucket._session
+    session2 = client2.transport.undelete_bucket._session
+    assert session1 != session2
+    session1 = client1.transport.list_views._session
+    session2 = client2.transport.list_views._session
+    assert session1 != session2
+    session1 = client1.transport.get_view._session
+    session2 = client2.transport.get_view._session
+    assert session1 != session2
+    session1 = client1.transport.create_view._session
+    session2 = client2.transport.create_view._session
+    assert session1 != session2
+    session1 = client1.transport.update_view._session
+    session2 = client2.transport.update_view._session
+    assert session1 != session2
+    session1 = client1.transport.delete_view._session
+    session2 = client2.transport.delete_view._session
+    assert session1 != session2
+    session1 = client1.transport.list_sinks._session
+    session2 = client2.transport.list_sinks._session
+    assert session1 != session2
+    session1 = client1.transport.get_sink._session
+    session2 = client2.transport.get_sink._session
+    assert session1 != session2
+    session1 = client1.transport.create_sink._session
+    session2 = client2.transport.create_sink._session
+    assert session1 != session2
+    session1 = client1.transport.update_sink._session
+    session2 = client2.transport.update_sink._session
+    assert session1 != session2
+    session1 = client1.transport.delete_sink._session
+    session2 = client2.transport.delete_sink._session
+    assert session1 != session2
+    session1 = client1.transport.list_exclusions._session
+    session2 = client2.transport.list_exclusions._session
+    assert session1 != session2
+    session1 = client1.transport.get_exclusion._session
+    session2 = client2.transport.get_exclusion._session
+    assert session1 != session2
+    session1 = client1.transport.create_exclusion._session
+    session2 = client2.transport.create_exclusion._session
+    assert session1 != session2
+    session1 = client1.transport.update_exclusion._session
+    session2 = client2.transport.update_exclusion._session
+    assert session1 != session2
+    session1 = client1.transport.delete_exclusion._session
+    session2 = client2.transport.delete_exclusion._session
+    assert session1 != session2
+    session1 = client1.transport.get_cmek_settings._session
+    session2 = client2.transport.get_cmek_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_cmek_settings._session
+    session2 = client2.transport.update_cmek_settings._session
+    assert session1 != session2
 def test_config_service_v2_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
 
@@ -6643,6 +11886,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -6658,6 +11902,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        'rest',
         'grpc',
     ]
     for transport in transports:
