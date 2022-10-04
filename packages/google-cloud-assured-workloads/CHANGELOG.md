@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-assured-workloads/compare/v1.5.0...v1.6.0) (2022-10-03)
+
+
+### Features
+
+* Add apis for AssuredWorkload monitoring feature and to restrict allowed resources ([#207](https://github.com/googleapis/python-assured-workloads/issues/207)) ([a38f6af](https://github.com/googleapis/python-assured-workloads/commit/a38f6af69bd5d2e17493de56ed7a5e26660be9f8))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#206](https://github.com/googleapis/python-assured-workloads/issues/206)) ([daf4770](https://github.com/googleapis/python-assured-workloads/commit/daf4770a8acdffd7265a39ee7bf82d9eada106db))
+
 ## [1.5.0](https://github.com/googleapis/python-assured-workloads/compare/v1.4.2...v1.5.0) (2022-09-02)
 
 
