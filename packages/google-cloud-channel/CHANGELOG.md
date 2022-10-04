@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/python-channel/compare/v1.9.1...v1.9.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#205](https://github.com/googleapis/python-channel/issues/205)) ([83cecce](https://github.com/googleapis/python-channel/commit/83ceccec1c2d54e4acab0f84ef5e0f18d0504d69))
+
 ## [1.9.1](https://github.com/googleapis/python-channel/compare/v1.9.0...v1.9.1) (2022-08-15)
 
 
