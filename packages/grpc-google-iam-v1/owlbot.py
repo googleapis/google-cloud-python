@@ -47,6 +47,7 @@ s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
 s.move(templated_files / "LICENSE")
 s.move(templated_files / "CONTRIBUTING.rst")
 s.move(templated_files / "*.md")
+s.move(templated_files / "renovate.json")
 s.move(templated_files / ".github", excludes=["workflows"])
 
 python.py_samples(skip_readmes=True)
