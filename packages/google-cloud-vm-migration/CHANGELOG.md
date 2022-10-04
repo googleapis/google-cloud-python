@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-vm-migration/compare/v1.3.1...v1.3.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#92](https://github.com/googleapis/python-vm-migration/issues/92)) ([d962e5a](https://github.com/googleapis/python-vm-migration/commit/d962e5a7f9db2397c26cac2ebea0271e10b9341b))
+
 ## [1.3.1](https://github.com/googleapis/python-vm-migration/compare/v1.3.0...v1.3.1) (2022-08-11)
 
 
