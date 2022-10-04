@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.9.1](https://github.com/googleapis/python-dlp/compare/v3.9.0...v3.9.1) (2022-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#446](https://github.com/googleapis/python-dlp/issues/446)) ([2d63fa5](https://github.com/googleapis/python-dlp/commit/2d63fa547e8f593773722d049614570e01bba42a))
+
+
+### Documentation
+
+* Deprecate extra field to avoid confusion ([#447](https://github.com/googleapis/python-dlp/issues/447)) ([8ee182f](https://github.com/googleapis/python-dlp/commit/8ee182f1c5022bc7ef7e4d2295106e8d5ef247f5))
+
 ## [3.9.0](https://github.com/googleapis/python-dlp/compare/v3.8.1...v3.9.0) (2022-09-06)
 
 
