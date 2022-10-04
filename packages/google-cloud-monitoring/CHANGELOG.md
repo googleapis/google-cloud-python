@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.11.2](https://github.com/googleapis/python-monitoring/compare/v2.11.1...v2.11.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#496](https://github.com/googleapis/python-monitoring/issues/496)) ([7d8eeb8](https://github.com/googleapis/python-monitoring/commit/7d8eeb8e661ea3b4306124a0d50f22068615da41))
+
 ## [2.11.1](https://github.com/googleapis/python-monitoring/compare/v2.11.0...v2.11.1) (2022-08-12)
 
 
