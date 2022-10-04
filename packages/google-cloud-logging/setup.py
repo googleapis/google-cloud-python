@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-logging"
 description = "Stackdriver Logging API client library"
-version = "3.2.3"
+version = "3.2.4"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
