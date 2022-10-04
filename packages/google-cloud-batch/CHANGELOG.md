@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-batch/compare/v0.3.0...v0.3.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf &gt;= 3.20.2 ([#47](https://github.com/googleapis/python-batch/issues/47)) ([aa83e55](https://github.com/googleapis/python-batch/commit/aa83e556112d4649a7de59a91ae942830dde4688))
+
+
+### Documentation
+
+* **samples:** Adding sample for bucket mounting ([#43](https://github.com/googleapis/python-batch/issues/43)) ([af33ed9](https://github.com/googleapis/python-batch/commit/af33ed9ab12e7d72a21dab4f4fefb5f5104d0595))
+* **samples:** Adding samples for list and get tasks ([#50](https://github.com/googleapis/python-batch/issues/50)) ([9401da1](https://github.com/googleapis/python-batch/commit/9401da162fcde57dcbf9aff97f289e2cffb3dc9f))
+* **samples:** Adding samples for template usage ([#41](https://github.com/googleapis/python-batch/issues/41)) ([7376708](https://github.com/googleapis/python-batch/commit/73767084e1f63e68cb1ade22f390ef208017a6ac))
+
 ## [0.3.0](https://github.com/googleapis/python-batch/compare/v0.2.0...v0.3.0) (2022-09-16)
 
 
