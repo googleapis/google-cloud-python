@@ -2861,6 +2861,7 @@ class Blob(_PropertyMixin):
         client=None,
         timeout=_DEFAULT_TIMEOUT,
         checksum=None,
+        predefined_acl=None,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -2942,6 +2943,9 @@ class Blob(_PropertyMixin):
             delete the uploaded object automatically. Supported values
             are "md5", "crc32c" and None. The default is None.
 
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) Predefined access control list
+
         :type if_generation_match: long
         :param if_generation_match:
             (Optional) See :ref:`using-if-generation-match`
@@ -3015,7 +3019,7 @@ class Blob(_PropertyMixin):
                 content_type,
                 size,
                 None,
-                predefined_acl=None,
+                predefined_acl=predefined_acl,
                 if_generation_match=if_generation_match,
                 if_generation_not_match=if_generation_not_match,
                 if_metageneration_match=if_metageneration_match,

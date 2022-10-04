@@ -3572,6 +3572,7 @@ class Test_Blob(unittest.TestCase):
         origin=None,
         side_effect=None,
         timeout=None,
+        predefined_acl=None,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -3611,6 +3612,7 @@ class Test_Blob(unittest.TestCase):
                 size=size,
                 origin=origin,
                 client=client,
+                predefined_acl=predefined_acl,
                 if_generation_match=if_generation_match,
                 if_generation_not_match=if_generation_not_match,
                 if_metageneration_match=if_metageneration_match,
@@ -3629,6 +3631,9 @@ class Test_Blob(unittest.TestCase):
         )
 
         qs_params = [("uploadType", "resumable")]
+        if predefined_acl is not None:
+            qs_params.append(("predefinedAcl", predefined_acl))
+
         if if_generation_match is not None:
             qs_params.append(("ifGenerationMatch", if_generation_match))
 
@@ -3671,6 +3676,9 @@ class Test_Blob(unittest.TestCase):
 
     def test_create_resumable_upload_session_with_origin(self):
         self._create_resumable_upload_session_helper(origin="http://google.com")
+
+    def test_create_resumable_upload_session_with_predefined_acl(self):
+        self._create_resumable_upload_session_helper(predefined_acl="private")
 
     def test_create_resumable_upload_session_with_generation_match(self):
         self._create_resumable_upload_session_helper(
