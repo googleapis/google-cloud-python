@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-certificate-manager/compare/v1.0.1...v1.1.0) (2022-10-03)
+
+
+### Features
+
+* Added support for Private Trust to Certificate Manager API ([#88](https://github.com/googleapis/python-certificate-manager/issues/88)) ([5cf35e2](https://github.com/googleapis/python-certificate-manager/commit/5cf35e2e9bb8a6c15daf006451ef0cefe4b20b6f))
+
 ## [1.0.1](https://github.com/googleapis/python-certificate-manager/compare/v1.0.0...v1.0.1) (2022-09-29)
 
 
