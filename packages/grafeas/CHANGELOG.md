@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.6.0](https://github.com/googleapis/python-grafeas/compare/v1.5.1...v1.6.0) (2022-10-03)
+
+
+### Features
+
+* Add new analysis status and cvss version fields ([#214](https://github.com/googleapis/python-grafeas/issues/214)) ([f3aaadb](https://github.com/googleapis/python-grafeas/commit/f3aaadb44d99610b056565169d728d762c0d0465))
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#213](https://github.com/googleapis/python-grafeas/issues/213)) ([6a28e86](https://github.com/googleapis/python-grafeas/commit/6a28e86042bd3ad7eb7c9096d7e6486cd40878c8))
+
 ## [1.5.1](https://github.com/googleapis/python-grafeas/compare/v1.5.0...v1.5.1) (2022-08-11)
 
 
