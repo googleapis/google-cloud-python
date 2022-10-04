@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-run/compare/v0.4.0...v0.4.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#55](https://github.com/googleapis/python-run/issues/55)) ([7a85bac](https://github.com/googleapis/python-run/commit/7a85bac07e66efd965453fd0ecb093976edca2f2))
+
 ## [0.4.0](https://github.com/googleapis/python-run/compare/v0.3.0...v0.4.0) (2022-09-13)
 
 
