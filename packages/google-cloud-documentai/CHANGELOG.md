@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.2](https://github.com/googleapis/python-documentai/compare/v2.0.1...v2.0.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#385](https://github.com/googleapis/python-documentai/issues/385)) ([d65a0c7](https://github.com/googleapis/python-documentai/commit/d65a0c76a60d47fb022eeee5427e4fa517d6a363))
+
+
+### Documentation
+
+* **samples:** Added Processor Version Samples ([#382](https://github.com/googleapis/python-documentai/issues/382)) ([f9ce801](https://github.com/googleapis/python-documentai/commit/f9ce801119f96b632fddb73a4d314be1bb188639))
+
 ## [2.0.1](https://github.com/googleapis/python-documentai/compare/v2.0.0...v2.0.1) (2022-09-13)
 
 
