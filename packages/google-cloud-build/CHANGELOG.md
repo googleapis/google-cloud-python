@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.9.2](https://github.com/googleapis/python-cloudbuild/compare/v3.9.1...v3.9.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#342](https://github.com/googleapis/python-cloudbuild/issues/342)) ([c43b994](https://github.com/googleapis/python-cloudbuild/commit/c43b994f4b2d8ba3e612daefbeeb60454a5febea))
+
 ## [3.9.1](https://github.com/googleapis/python-cloudbuild/compare/v3.9.0...v3.9.1) (2022-08-11)
 
 
