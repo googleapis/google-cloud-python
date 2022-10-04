@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-shell/compare/v1.4.1...v1.4.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#137](https://github.com/googleapis/python-shell/issues/137)) ([3ad02f1](https://github.com/googleapis/python-shell/commit/3ad02f134e8fae58756252f6bac7e1478f303fc2))
+
 ## [1.4.1](https://github.com/googleapis/python-shell/compare/v1.4.0...v1.4.1) (2022-08-11)
 
 
