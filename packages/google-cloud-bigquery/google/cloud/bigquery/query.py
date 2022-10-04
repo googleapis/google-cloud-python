@@ -795,7 +795,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            Tuple: The contents of this :class:`~google.cloud.biquery.ArrayQueryParameter`.
+            Tuple: The contents of this :class:`~google.cloud.bigquery.ArrayQueryParameter`.
         """
         return (self.name, self.struct_types, self.struct_values)
 

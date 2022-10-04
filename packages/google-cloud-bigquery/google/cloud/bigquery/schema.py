@@ -144,7 +144,7 @@ class SchemaField(object):
                 :meth:`to_api_repr`.
 
         Returns:
-            google.cloud.biquery.schema.SchemaField: The ``SchemaField`` object.
+            google.cloud.bigquery.schema.SchemaField: The ``SchemaField`` object.
         """
         field_type = api_repr["type"].upper()
 
