@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-artifact-registry/compare/v1.3.1...v1.3.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#194](https://github.com/googleapis/python-artifact-registry/issues/194)) ([903c755](https://github.com/googleapis/python-artifact-registry/commit/903c755294263b900f720d6249eb129d086cdbd5))
+
 ## [1.3.1](https://github.com/googleapis/python-artifact-registry/compare/v1.3.0...v1.3.1) (2022-08-11)
 
 
