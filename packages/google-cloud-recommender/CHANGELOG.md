@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.8.2](https://github.com/googleapis/python-recommender/compare/v2.8.1...v2.8.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#242](https://github.com/googleapis/python-recommender/issues/242)) ([b908be3](https://github.com/googleapis/python-recommender/commit/b908be3c90fb4f2de616f1788711309ab20220e4))
+
 ## [2.8.1](https://github.com/googleapis/python-recommender/compare/v2.8.0...v2.8.1) (2022-08-11)
 
 
