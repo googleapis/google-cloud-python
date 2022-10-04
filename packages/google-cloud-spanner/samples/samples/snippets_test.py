@@ -128,7 +128,8 @@ def test_create_database_explicit(sample_instance, create_database_id):
 def test_create_instance_with_processing_units(capsys, lci_instance_id):
     processing_units = 500
     retry_429(snippets.create_instance_with_processing_units)(
-        lci_instance_id, processing_units,
+        lci_instance_id,
+        processing_units,
     )
     out, _ = capsys.readouterr()
     assert lci_instance_id in out
@@ -543,7 +544,8 @@ def test_create_table_with_datatypes(capsys, instance_id, sample_database):
 
 
 @pytest.mark.dependency(
-    name="insert_datatypes_data", depends=["create_table_with_datatypes"],
+    name="insert_datatypes_data",
+    depends=["create_table_with_datatypes"],
 )
 def test_insert_datatypes_data(capsys, instance_id, sample_database):
     snippets.insert_datatypes_data(instance_id, sample_database.database_id)
@@ -605,7 +607,8 @@ def test_query_data_with_string(capsys, instance_id, sample_database):
 
 
 @pytest.mark.dependency(
-    name="add_numeric_column", depends=["create_table_with_datatypes"],
+    name="add_numeric_column",
+    depends=["create_table_with_datatypes"],
 )
 def test_add_numeric_column(capsys, instance_id, sample_database):
     snippets.add_numeric_column(instance_id, sample_database.database_id)
@@ -628,7 +631,8 @@ def test_query_data_with_numeric_parameter(capsys, instance_id, sample_database)
 
 
 @pytest.mark.dependency(
-    name="add_json_column", depends=["create_table_with_datatypes"],
+    name="add_json_column",
+    depends=["create_table_with_datatypes"],
 )
 def test_add_json_column(capsys, instance_id, sample_database):
     snippets.add_json_column(instance_id, sample_database.database_id)

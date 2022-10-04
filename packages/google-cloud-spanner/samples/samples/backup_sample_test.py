@@ -26,12 +26,12 @@ def sample_name():
 
 
 def unique_database_id():
-    """ Creates a unique id for the database. """
+    """Creates a unique id for the database."""
     return f"test-db-{uuid.uuid4().hex[:10]}"
 
 
 def unique_backup_id():
-    """ Creates a unique id for the backup. """
+    """Creates a unique id for the backup."""
     return f"test-backup-{uuid.uuid4().hex[:10]}"
 
 
@@ -52,7 +52,10 @@ def test_create_backup(capsys, instance_id, sample_database):
         version_time = list(results)[0][0]
 
     backup_sample.create_backup(
-        instance_id, sample_database.database_id, BACKUP_ID, version_time,
+        instance_id,
+        sample_database.database_id,
+        BACKUP_ID,
+        version_time,
     )
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
@@ -74,10 +77,16 @@ def test_copy_backup(capsys, instance_id, spanner_client):
 
 @pytest.mark.dependency(name="create_backup_with_encryption_key")
 def test_create_backup_with_encryption_key(
-    capsys, instance_id, sample_database, kms_key_name,
+    capsys,
+    instance_id,
+    sample_database,
+    kms_key_name,
 ):
     backup_sample.create_backup_with_encryption_key(
-        instance_id, sample_database.database_id, CMEK_BACKUP_ID, kms_key_name,
+        instance_id,
+        sample_database.database_id,
+        CMEK_BACKUP_ID,
+        kms_key_name,
     )
     out, _ = capsys.readouterr()
     assert CMEK_BACKUP_ID in out
@@ -97,7 +106,10 @@ def test_restore_database(capsys, instance_id, sample_database):
 @pytest.mark.dependency(depends=["create_backup_with_encryption_key"])
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_restore_database_with_encryption_key(
-    capsys, instance_id, sample_database, kms_key_name,
+    capsys,
+    instance_id,
+    sample_database,
+    kms_key_name,
 ):
     backup_sample.restore_database_with_encryption_key(
         instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_name
@@ -123,10 +135,14 @@ def test_list_backup_operations(capsys, instance_id, sample_database):
 
 @pytest.mark.dependency(name="list_backup", depends=["create_backup", "copy_backup"])
 def test_list_backups(
-    capsys, instance_id, sample_database,
+    capsys,
+    instance_id,
+    sample_database,
 ):
     backup_sample.list_backups(
-        instance_id, sample_database.database_id, BACKUP_ID,
+        instance_id,
+        sample_database.database_id,
+        BACKUP_ID,
     )
     out, _ = capsys.readouterr()
     id_count = out.count(BACKUP_ID)
@@ -153,7 +169,9 @@ def test_delete_backup(capsys, instance_id):
 @pytest.mark.dependency(depends=["create_backup"])
 def test_cancel_backup(capsys, instance_id, sample_database):
     backup_sample.cancel_backup(
-        instance_id, sample_database.database_id, BACKUP_ID,
+        instance_id,
+        sample_database.database_id,
+        BACKUP_ID,
     )
     out, _ = capsys.readouterr()
     cancel_success = "Backup creation was successfully cancelled." in out
@@ -166,7 +184,9 @@ def test_cancel_backup(capsys, instance_id, sample_database):
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_create_database_with_retention_period(capsys, sample_instance):
     backup_sample.create_database_with_version_retention_period(
-        sample_instance.instance_id, RETENTION_DATABASE_ID, RETENTION_PERIOD,
+        sample_instance.instance_id,
+        RETENTION_DATABASE_ID,
+        RETENTION_PERIOD,
     )
     out, _ = capsys.readouterr()
     assert (RETENTION_DATABASE_ID + " created with ") in out

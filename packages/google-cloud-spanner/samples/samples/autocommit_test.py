@@ -25,7 +25,8 @@ def test_enable_autocommit_mode(capsys, instance_id, sample_database):
         op.result()
 
     autocommit.enable_autocommit_mode(
-        instance_id, sample_database.database_id,
+        instance_id,
+        sample_database.database_id,
     )
     out, _ = capsys.readouterr()
     assert "Autocommit mode is enabled." in out

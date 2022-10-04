@@ -57,7 +57,7 @@ def run_batch_query(instance_id, database_id):
         for future in concurrent.futures.as_completed(futures, timeout=3600):
             finish, row_ct = future.result()
             elapsed = finish - start
-            print(u"Completed {} rows in {} seconds".format(row_ct, elapsed))
+            print("Completed {} rows in {} seconds".format(row_ct, elapsed))
 
     # Clean up
     snapshot.close()
@@ -68,7 +68,7 @@ def process(snapshot, partition):
     print("Started processing partition.")
     row_ct = 0
     for row in snapshot.process_read_batch(partition):
-        print(u"SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
+        print("SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
         row_ct += 1
     return time.time(), row_ct
 

@@ -31,7 +31,7 @@ retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 @pytest.fixture(scope="module")
 def sample_name():
-    """ Sample testcase modules must define this fixture.
+    """Sample testcase modules must define this fixture.
 
     The name is used to label the instance created by the sample, to
     aid in debugging leaked instances.
@@ -98,7 +98,11 @@ def multi_region_instance_config(spanner_client):
 
 @pytest.fixture(scope="module")
 def sample_instance(
-    spanner_client, cleanup_old_instances, instance_id, instance_config, sample_name,
+    spanner_client,
+    cleanup_old_instances,
+    instance_id,
+    instance_config,
+    sample_name,
 ):
     sample_instance = spanner_client.instance(
         instance_id,
@@ -184,7 +188,8 @@ def database_ddl():
 def sample_database(sample_instance, database_id, database_ddl):
 
     sample_database = sample_instance.database(
-        database_id, ddl_statements=database_ddl,
+        database_id,
+        ddl_statements=database_ddl,
     )
 
     if not sample_database.exists():
