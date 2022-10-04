@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.12.2](https://github.com/googleapis/python-texttospeech/compare/v2.12.1...v2.12.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#335](https://github.com/googleapis/python-texttospeech/issues/335)) ([50b394d](https://github.com/googleapis/python-texttospeech/commit/50b394dc5684b2df6cf544ba7bb5296d384ee0f8))
+
 ## [2.12.1](https://github.com/googleapis/python-texttospeech/compare/v2.12.0...v2.12.1) (2022-08-11)
 
 
