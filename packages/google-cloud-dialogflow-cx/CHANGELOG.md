@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.13.3](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.2...v1.13.3) (2022-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#458](https://github.com/googleapis/python-dialogflow-cx/issues/458)) ([07e19d4](https://github.com/googleapis/python-dialogflow-cx/commit/07e19d476e3382ead73b44f4bc8b84e230aa6115))
+
+
+### Documentation
+
+* Clarified gcs_bucket field of the SecuritySettings message ([#460](https://github.com/googleapis/python-dialogflow-cx/issues/460)) ([f922211](https://github.com/googleapis/python-dialogflow-cx/commit/f922211c6dde44572303926f9456d040e041a224))
+* **samples:** Adding snippet to extract SessionInfo ([d6ef048](https://github.com/googleapis/python-dialogflow-cx/commit/d6ef04841975e9076c940802283d1a9ba8e05eb4))
+
 ## [1.13.2](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.1...v1.13.2) (2022-09-02)
 
 
