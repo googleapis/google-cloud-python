@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-video-stitcher/compare/v0.3.0...v0.3.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#84](https://github.com/googleapis/python-video-stitcher/issues/84)) ([825e000](https://github.com/googleapis/python-video-stitcher/commit/825e000049ad910395b7218f117a00ed6300a62f))
+
+
+### Documentation
+
+* **samples:** Fix Video Stitcher region tag prefix ([#86](https://github.com/googleapis/python-video-stitcher/issues/86)) ([5b70a6b](https://github.com/googleapis/python-video-stitcher/commit/5b70a6bb5e9f54fd8535a3cd6d18ecbafeb2ec5d))
+* Update github repo url ([#88](https://github.com/googleapis/python-video-stitcher/issues/88)) ([07adb7b](https://github.com/googleapis/python-video-stitcher/commit/07adb7bbea3905760c3e46c4200598c8e9cef50b))
+
 ## [0.3.0](https://github.com/googleapis/python-video-stitcher/compare/v0.2.1...v0.3.0) (2022-09-16)
 
 
