@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-orchestration-airflow/compare/v1.4.2...v1.4.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#141](https://github.com/googleapis/python-orchestration-airflow/issues/141)) ([ab36ee0](https://github.com/googleapis/python-orchestration-airflow/commit/ab36ee0f28e3528439a768b4ccfc51c7ef10eaa8))
+
 ## [1.4.2](https://github.com/googleapis/python-orchestration-airflow/compare/v1.4.1...v1.4.2) (2022-08-11)
 
 
