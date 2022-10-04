@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/googleapis/python-workflows/compare/v1.7.2...v1.7.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#221](https://github.com/googleapis/python-workflows/issues/221)) ([f2f0c01](https://github.com/googleapis/python-workflows/commit/f2f0c01c55bb525ba9edd65b8a37965e1bcd5200))
+
 ## [1.7.2](https://github.com/googleapis/python-workflows/compare/v1.7.1...v1.7.2) (2022-08-11)
 
 
