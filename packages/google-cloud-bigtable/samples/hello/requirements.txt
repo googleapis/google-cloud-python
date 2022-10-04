@@ -1,2 +1,2 @@
-google-cloud-bigtable==2.11.3
+google-cloud-bigtable==2.13.0
 google-cloud-core==2.3.2
