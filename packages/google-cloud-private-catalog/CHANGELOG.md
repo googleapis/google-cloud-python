@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/googleapis/python-private-catalog/compare/v0.7.0...v0.7.1) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#158](https://github.com/googleapis/python-private-catalog/issues/158)) ([1b86df6](https://github.com/googleapis/python-private-catalog/commit/1b86df625756bc321600454290bd03492948aafa))
+
 ## [0.7.0](https://github.com/googleapis/python-private-catalog/compare/v0.6.2...v0.7.0) (2022-09-16)
 
 
