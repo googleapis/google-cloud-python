@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-retail/compare/v1.10.0...v1.10.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#350](https://github.com/googleapis/python-retail/issues/350)) ([3e1cc13](https://github.com/googleapis/python-retail/commit/3e1cc135cabe286a5b3c29e95181e583464dec45))
+
 ## [1.10.0](https://github.com/googleapis/python-retail/compare/v1.9.0...v1.10.0) (2022-09-02)
 
 
