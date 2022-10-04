@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-api-gateway/compare/v1.3.1...v1.3.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#177](https://github.com/googleapis/python-api-gateway/issues/177)) ([d43f7af](https://github.com/googleapis/python-api-gateway/commit/d43f7afcebeda57d16b78eb3a58cc83119004bfe))
+
 ## [1.3.1](https://github.com/googleapis/python-api-gateway/compare/v1.3.0...v1.3.1) (2022-08-11)
 
 
