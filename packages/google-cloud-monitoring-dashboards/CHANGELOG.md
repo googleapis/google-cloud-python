@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.3](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.7.2...v2.7.3) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#233](https://github.com/googleapis/python-monitoring-dashboards/issues/233)) ([89e6fe2](https://github.com/googleapis/python-monitoring-dashboards/commit/89e6fe291c0a0c5a39b58e01b8a5dbba51b9ad3b))
+
 ## [2.7.2](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.7.1...v2.7.2) (2022-08-11)
 
 
