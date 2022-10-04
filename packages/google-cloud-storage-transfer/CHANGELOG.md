@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-storage-transfer/compare/v1.5.0...v1.5.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#126](https://github.com/googleapis/python-storage-transfer/issues/126)) ([97051d1](https://github.com/googleapis/python-storage-transfer/commit/97051d16a7df38782074ef079bdf81da36f2e32b))
+
 ## [1.5.0](https://github.com/googleapis/python-storage-transfer/compare/v1.4.1...v1.5.0) (2022-09-12)
 
 
