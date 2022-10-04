@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.2](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.2.1...v1.2.2) (2022-10-04)
+
+
+### Bug Fixes
+
+* Adding requirements ([#250](https://github.com/googleapis/python-spanner-sqlalchemy/issues/250)) ([61a13d4](https://github.com/googleapis/python-spanner-sqlalchemy/commit/61a13d4ba152a24d5fa6083594aa86f46d5395de))
+* Don't introspect internal UNIQUE constraints ([#244](https://github.com/googleapis/python-spanner-sqlalchemy/issues/244)) ([51cdc53](https://github.com/googleapis/python-spanner-sqlalchemy/commit/51cdc534856b5ab933213803257679faa33be41c))
+* Spanner auto managed indexes should not be introspected ([#241](https://github.com/googleapis/python-spanner-sqlalchemy/issues/241)) ([c3b5907](https://github.com/googleapis/python-spanner-sqlalchemy/commit/c3b59077ff8d6d8916007bf204f90e1d1ed41c00))
+* Update dialect name for ALTER operation overrides ([#234](https://github.com/googleapis/python-spanner-sqlalchemy/issues/234)) ([f9e8ebe](https://github.com/googleapis/python-spanner-sqlalchemy/commit/f9e8ebedc863b2b84b2decffc1831125001785c8))
+
+
+### Documentation
+
+* Add auto retry mechanism explanation ([#243](https://github.com/googleapis/python-spanner-sqlalchemy/issues/243)) ([68b9bc8](https://github.com/googleapis/python-spanner-sqlalchemy/commit/68b9bc8b389c29451317cf78989578e0a7369dad))
+* Mention autocommit_block as a solution for Aborted transaction … ([#239](https://github.com/googleapis/python-spanner-sqlalchemy/issues/239)) ([f23e599](https://github.com/googleapis/python-spanner-sqlalchemy/commit/f23e599ef6a9d8f198c41f32a586e42af840280d)), closes [#229](https://github.com/googleapis/python-spanner-sqlalchemy/issues/229)
+* Mention package install with pip ([#245](https://github.com/googleapis/python-spanner-sqlalchemy/issues/245)) ([528a9b0](https://github.com/googleapis/python-spanner-sqlalchemy/commit/528a9b0ba1bb9f0b96e35c809faa923f292684a0))
+
 ## [1.2.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.2.0...v1.2.1) (2022-08-09)
 
 
