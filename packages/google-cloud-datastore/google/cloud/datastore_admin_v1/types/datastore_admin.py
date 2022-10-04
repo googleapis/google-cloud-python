@@ -570,7 +570,7 @@ class DatastoreFirestoreMigrationMetadata(proto.Message):
     deviation from the LRO design pattern.
 
     This singleton resource can be accessed at:
-    ``projects/{project_id}/datastore-firestore-migration``
+    "projects/{project_id}/operations/datastore-firestore-migration"
 
     Attributes:
         migration_state (google.cloud.datastore_admin_v1.types.MigrationState):

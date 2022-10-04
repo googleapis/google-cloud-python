@@ -287,11 +287,18 @@ class DatastoreAdminAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
-            def sample_export_entities():
+            async def sample_export_entities():
                 # Create a client
-                client = datastore_admin_v1.DatastoreAdminClient()
+                client = datastore_admin_v1.DatastoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastore_admin_v1.ExportEntitiesRequest(
@@ -304,7 +311,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -409,6 +416,14 @@ class DatastoreAdminAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -450,11 +465,18 @@ class DatastoreAdminAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
-            def sample_import_entities():
+            async def sample_import_entities():
                 # Create a client
-                client = datastore_admin_v1.DatastoreAdminClient()
+                client = datastore_admin_v1.DatastoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastore_admin_v1.ImportEntitiesRequest(
@@ -467,7 +489,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -540,9 +562,6 @@ class DatastoreAdminAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -574,6 +593,14 @@ class DatastoreAdminAsyncClient:
             self._client._transport.import_entities,
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
         )
 
         # Send the request.
@@ -621,11 +648,18 @@ class DatastoreAdminAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
-            def sample_create_index():
+            async def sample_create_index():
                 # Create a client
-                client = datastore_admin_v1.DatastoreAdminClient()
+                client = datastore_admin_v1.DatastoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastore_admin_v1.CreateIndexRequest(
@@ -636,7 +670,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -669,6 +703,14 @@ class DatastoreAdminAsyncClient:
             self._client._transport.create_index,
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
         )
 
         # Send the request.
@@ -715,11 +757,18 @@ class DatastoreAdminAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
-            def sample_delete_index():
+            async def sample_delete_index():
                 # Create a client
-                client = datastore_admin_v1.DatastoreAdminClient()
+                client = datastore_admin_v1.DatastoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastore_admin_v1.DeleteIndexRequest(
@@ -730,7 +779,7 @@ class DatastoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -765,6 +814,17 @@ class DatastoreAdminAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("index_id", request.index_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -796,18 +856,25 @@ class DatastoreAdminAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
-            def sample_get_index():
+            async def sample_get_index():
                 # Create a client
-                client = datastore_admin_v1.DatastoreAdminClient()
+                client = datastore_admin_v1.DatastoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastore_admin_v1.GetIndexRequest(
                 )
 
                 # Make the request
-                response = client.get_index(request=request)
+                response = await client.get_index(request=request)
 
                 # Handle the response
                 print(response)
@@ -847,6 +914,17 @@ class DatastoreAdminAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("index_id", request.index_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -873,11 +951,18 @@ class DatastoreAdminAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
-            def sample_list_indexes():
+            async def sample_list_indexes():
                 # Create a client
-                client = datastore_admin_v1.DatastoreAdminClient()
+                client = datastore_admin_v1.DatastoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastore_admin_v1.ListIndexesRequest(
@@ -887,7 +972,7 @@ class DatastoreAdminAsyncClient:
                 page_result = client.list_indexes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -928,6 +1013,14 @@ class DatastoreAdminAsyncClient:
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
         )
 
         # Send the request.

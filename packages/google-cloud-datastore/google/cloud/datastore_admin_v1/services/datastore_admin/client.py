@@ -461,6 +461,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def export_entities(
@@ -488,6 +489,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
             def sample_export_entities():
@@ -609,6 +617,14 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_entities]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -650,6 +666,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
             def sample_import_entities():
@@ -740,9 +763,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -774,6 +794,14 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.import_entities]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -820,6 +848,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
             def sample_create_index():
@@ -871,6 +906,14 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_index]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -915,6 +958,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
             def sample_delete_index():
@@ -966,6 +1016,17 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_index]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("index_id", request.index_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -997,6 +1058,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
             def sample_get_index():
@@ -1039,6 +1107,17 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_index]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("index_id", request.index_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1065,6 +1144,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datastore_admin_v1
 
             def sample_list_indexes():
@@ -1112,6 +1198,14 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_indexes]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
 
         # Send the request.
         response = rpc(

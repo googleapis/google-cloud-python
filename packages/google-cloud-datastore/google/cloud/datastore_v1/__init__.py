@@ -17,6 +17,8 @@
 from .services.datastore import DatastoreClient
 from .services.datastore import DatastoreAsyncClient
 
+from .types.aggregation_result import AggregationResult
+from .types.aggregation_result import AggregationResultBatch
 from .types.datastore import AllocateIdsRequest
 from .types.datastore import AllocateIdsResponse
 from .types.datastore import BeginTransactionRequest
@@ -32,6 +34,8 @@ from .types.datastore import ReserveIdsRequest
 from .types.datastore import ReserveIdsResponse
 from .types.datastore import RollbackRequest
 from .types.datastore import RollbackResponse
+from .types.datastore import RunAggregationQueryRequest
+from .types.datastore import RunAggregationQueryResponse
 from .types.datastore import RunQueryRequest
 from .types.datastore import RunQueryResponse
 from .types.datastore import TransactionOptions
@@ -40,6 +44,7 @@ from .types.entity import Entity
 from .types.entity import Key
 from .types.entity import PartitionId
 from .types.entity import Value
+from .types.query import AggregationQuery
 from .types.query import CompositeFilter
 from .types.query import EntityResult
 from .types.query import Filter
@@ -55,6 +60,9 @@ from .types.query import QueryResultBatch
 
 __all__ = (
     "DatastoreAsyncClient",
+    "AggregationQuery",
+    "AggregationResult",
+    "AggregationResultBatch",
     "AllocateIdsRequest",
     "AllocateIdsResponse",
     "ArrayValue",
@@ -87,6 +95,8 @@ __all__ = (
     "ReserveIdsResponse",
     "RollbackRequest",
     "RollbackResponse",
+    "RunAggregationQueryRequest",
+    "RunAggregationQueryResponse",
     "RunQueryRequest",
     "RunQueryResponse",
     "TransactionOptions",

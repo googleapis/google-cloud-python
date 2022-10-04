@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     manifest={
         "EntityResult",
         "Query",
+        "AggregationQuery",
         "KindExpression",
         "PropertyReference",
         "Projection",
@@ -188,6 +189,137 @@ class Query(proto.Message):
     )
 
 
+class AggregationQuery(proto.Message):
+    r"""Datastore query for running an aggregation over a
+    [Query][google.datastore.v1.Query].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        nested_query (google.cloud.datastore_v1.types.Query):
+            Nested query for aggregation
+
+            This field is a member of `oneof`_ ``query_type``.
+        aggregations (Sequence[google.cloud.datastore_v1.types.AggregationQuery.Aggregation]):
+            Optional. Series of aggregations to apply over the results
+            of the ``nested_query``.
+
+            Requires:
+
+            -  A minimum of one and maximum of five aggregations per
+               query.
+    """
+
+    class Aggregation(proto.Message):
+        r"""Defines a aggregation that produces a single result.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            count (google.cloud.datastore_v1.types.AggregationQuery.Aggregation.Count):
+                Count aggregator.
+
+                This field is a member of `oneof`_ ``operator``.
+            alias (str):
+                Optional. Optional name of the property to store the result
+                of the aggregation.
+
+                If not provided, Datastore will pick a default name
+                following the format ``property_<incremental_id++>``. For
+                example:
+
+                ::
+
+                   AGGREGATE
+                     COUNT_UP_TO(1) AS count_up_to_1,
+                     COUNT_UP_TO(2),
+                     COUNT_UP_TO(3) AS count_up_to_3,
+                     COUNT_UP_TO(4)
+                   OVER (
+                     ...
+                   );
+
+                becomes:
+
+                ::
+
+                   AGGREGATE
+                     COUNT_UP_TO(1) AS count_up_to_1,
+                     COUNT_UP_TO(2) AS property_1,
+                     COUNT_UP_TO(3) AS count_up_to_3,
+                     COUNT_UP_TO(4) AS property_2
+                   OVER (
+                     ...
+                   );
+
+                Requires:
+
+                -  Must be unique across all aggregation aliases.
+                -  Conform to [entity property
+                   name][google.datastore.v1.Entity.properties] limitations.
+        """
+
+        class Count(proto.Message):
+            r"""Count of entities that match the query.
+
+            The ``COUNT(*)`` aggregation function operates on the entire entity
+            so it does not require a field reference.
+
+            Attributes:
+                up_to (google.protobuf.wrappers_pb2.Int64Value):
+                    Optional. Optional constraint on the maximum number of
+                    entities to count.
+
+                    This provides a way to set an upper bound on the number of
+                    entities to scan, limiting latency and cost.
+
+                    Unspecified is interpreted as no bound.
+
+                    If a zero value is provided, a count result of zero should
+                    always be expected.
+
+                    High-Level Example:
+
+                    ::
+
+                       AGGREGATE COUNT_UP_TO(1000) OVER ( SELECT * FROM k );
+
+                    Requires:
+
+                    -  Must be non-negative when present.
+            """
+
+            up_to = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message=wrappers_pb2.Int64Value,
+            )
+
+        count = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="operator",
+            message="AggregationQuery.Aggregation.Count",
+        )
+        alias = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    nested_query = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="query_type",
+        message="Query",
+    )
+    aggregations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Aggregation,
+    )
+
+
 class KindExpression(proto.Message):
     r"""A representation of a kind.
 
@@ -305,7 +437,10 @@ class CompositeFilter(proto.Message):
             The operator for combining multiple filters.
         filters (Sequence[google.cloud.datastore_v1.types.Filter]):
             The list of filters to combine.
-            Must contain at least one filter.
+
+            Requires:
+
+            -  At least one filter is present.
     """
 
     class Operator(proto.Enum):

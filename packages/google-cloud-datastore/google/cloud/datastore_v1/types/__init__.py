@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .aggregation_result import (
+    AggregationResult,
+    AggregationResultBatch,
+)
 from .datastore import (
     AllocateIdsRequest,
     AllocateIdsResponse,
@@ -29,6 +33,8 @@ from .datastore import (
     ReserveIdsResponse,
     RollbackRequest,
     RollbackResponse,
+    RunAggregationQueryRequest,
+    RunAggregationQueryResponse,
     RunQueryRequest,
     RunQueryResponse,
     TransactionOptions,
@@ -41,6 +47,7 @@ from .entity import (
     Value,
 )
 from .query import (
+    AggregationQuery,
     CompositeFilter,
     EntityResult,
     Filter,
@@ -56,6 +63,8 @@ from .query import (
 )
 
 __all__ = (
+    "AggregationResult",
+    "AggregationResultBatch",
     "AllocateIdsRequest",
     "AllocateIdsResponse",
     "BeginTransactionRequest",
@@ -71,6 +80,8 @@ __all__ = (
     "ReserveIdsResponse",
     "RollbackRequest",
     "RollbackResponse",
+    "RunAggregationQueryRequest",
+    "RunAggregationQueryResponse",
     "RunQueryRequest",
     "RunQueryResponse",
     "TransactionOptions",
@@ -79,6 +90,7 @@ __all__ = (
     "Key",
     "PartitionId",
     "Value",
+    "AggregationQuery",
     "CompositeFilter",
     "EntityResult",
     "Filter",

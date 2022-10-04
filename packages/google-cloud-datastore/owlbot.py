@@ -279,7 +279,7 @@ def mypy(session):
     session.install(
         "mypy", "types-setuptools", "types-mock", "types-protobuf", "types-requests"
     )
-    session.run("mypy", "google/", "tests/")
+    session.run("mypy", "google/")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

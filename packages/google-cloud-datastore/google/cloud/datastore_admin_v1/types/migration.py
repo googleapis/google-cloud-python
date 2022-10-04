@@ -98,6 +98,7 @@ class MigrationProgressEvent(proto.Message):
         CONCURRENCY_MODE_UNSPECIFIED = 0
         PESSIMISTIC = 1
         OPTIMISTIC = 2
+        OPTIMISTIC_WITH_ENTITY_GROUPS = 3
 
     class PrepareStepDetails(proto.Message):
         r"""Details for the ``PREPARE`` step.

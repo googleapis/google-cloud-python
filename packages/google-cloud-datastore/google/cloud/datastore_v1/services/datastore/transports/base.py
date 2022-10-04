@@ -26,6 +26,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.datastore_v1.types import datastore
+from google.longrunning import operations_pb2
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -57,6 +58,7 @@ class DatastoreTransport(abc.ABC):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -84,11 +86,6 @@ class DatastoreTransport(abc.ABC):
                 be used for service account credentials.
         """
 
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
-        self._host = host
-
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
@@ -109,6 +106,11 @@ class DatastoreTransport(abc.ABC):
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
+            # Don't apply audience if the credentials file passed from user.
+            if hasattr(credentials, "with_gdch_audience"):
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -120,6 +122,11 @@ class DatastoreTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ":" not in host:
+            host += ":443"
+        self._host = host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -141,6 +148,21 @@ class DatastoreTransport(abc.ABC):
             ),
             self.run_query: gapic_v1.method.wrap_method(
                 self.run_query,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.run_aggregation_query: gapic_v1.method.wrap_method(
+                self.run_aggregation_query,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -219,6 +241,18 @@ class DatastoreTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def run_aggregation_query(
+        self,
+    ) -> Callable[
+        [datastore.RunAggregationQueryRequest],
+        Union[
+            datastore.RunAggregationQueryResponse,
+            Awaitable[datastore.RunAggregationQueryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def begin_transaction(
         self,
     ) -> Callable[
@@ -264,6 +298,39 @@ class DatastoreTransport(abc.ABC):
         [datastore.ReserveIdsRequest],
         Union[datastore.ReserveIdsResponse, Awaitable[datastore.ReserveIdsResponse]],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

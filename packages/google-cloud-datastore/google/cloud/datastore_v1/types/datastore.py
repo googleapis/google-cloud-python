@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.datastore_v1.types import aggregation_result
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query as gd_query
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -27,6 +28,8 @@ __protobuf__ = proto.module(
         "LookupResponse",
         "RunQueryRequest",
         "RunQueryResponse",
+        "RunAggregationQueryRequest",
+        "RunAggregationQueryResponse",
         "BeginTransactionRequest",
         "BeginTransactionResponse",
         "RollbackRequest",
@@ -53,6 +56,11 @@ class LookupRequest(proto.Message):
         project_id (str):
             Required. The ID of the project against which
             to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         read_options (google.cloud.datastore_v1.types.ReadOptions):
             The options for this lookup request.
         keys (Sequence[google.cloud.datastore_v1.types.Key]):
@@ -62,6 +70,10 @@ class LookupRequest(proto.Message):
     project_id = proto.Field(
         proto.STRING,
         number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
     )
     read_options = proto.Field(
         proto.MESSAGE,
@@ -135,6 +147,11 @@ class RunQueryRequest(proto.Message):
         project_id (str):
             Required. The ID of the project against which
             to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         partition_id (google.cloud.datastore_v1.types.PartitionId):
             Entities are partitioned into subsets,
             identified by a partition ID. Queries are scoped
@@ -148,7 +165,8 @@ class RunQueryRequest(proto.Message):
 
             This field is a member of `oneof`_ ``query_type``.
         gql_query (google.cloud.datastore_v1.types.GqlQuery):
-            The GQL query to run.
+            The GQL query to run. This query must be a
+            non-aggregation query.
 
             This field is a member of `oneof`_ ``query_type``.
     """
@@ -156,6 +174,10 @@ class RunQueryRequest(proto.Message):
     project_id = proto.Field(
         proto.STRING,
         number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
     )
     partition_id = proto.Field(
         proto.MESSAGE,
@@ -205,6 +227,102 @@ class RunQueryResponse(proto.Message):
     )
 
 
+class RunAggregationQueryRequest(proto.Message):
+    r"""The request for
+    [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project_id (str):
+            Required. The ID of the project against which
+            to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
+        partition_id (google.cloud.datastore_v1.types.PartitionId):
+            Entities are partitioned into subsets,
+            identified by a partition ID. Queries are scoped
+            to a single partition. This partition ID is
+            normalized with the standard default context
+            partition ID.
+        read_options (google.cloud.datastore_v1.types.ReadOptions):
+            The options for this query.
+        aggregation_query (google.cloud.datastore_v1.types.AggregationQuery):
+            The query to run.
+
+            This field is a member of `oneof`_ ``query_type``.
+        gql_query (google.cloud.datastore_v1.types.GqlQuery):
+            The GQL query to run. This query must be an
+            aggregation query.
+
+            This field is a member of `oneof`_ ``query_type``.
+    """
+
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    partition_id = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=entity.PartitionId,
+    )
+    read_options = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ReadOptions",
+    )
+    aggregation_query = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="query_type",
+        message=gd_query.AggregationQuery,
+    )
+    gql_query = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="query_type",
+        message=gd_query.GqlQuery,
+    )
+
+
+class RunAggregationQueryResponse(proto.Message):
+    r"""The response for
+    [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
+
+    Attributes:
+        batch (google.cloud.datastore_v1.types.AggregationResultBatch):
+            A batch of aggregation results. Always
+            present.
+        query (google.cloud.datastore_v1.types.AggregationQuery):
+            The parsed form of the ``GqlQuery`` from the request, if it
+            was set.
+    """
+
+    batch = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=aggregation_result.AggregationResultBatch,
+    )
+    query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gd_query.AggregationQuery,
+    )
+
+
 class BeginTransactionRequest(proto.Message):
     r"""The request for
     [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
@@ -213,6 +331,11 @@ class BeginTransactionRequest(proto.Message):
         project_id (str):
             Required. The ID of the project against which
             to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         transaction_options (google.cloud.datastore_v1.types.TransactionOptions):
             Options for a new transaction.
     """
@@ -220,6 +343,10 @@ class BeginTransactionRequest(proto.Message):
     project_id = proto.Field(
         proto.STRING,
         number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
     )
     transaction_options = proto.Field(
         proto.MESSAGE,
@@ -251,6 +378,11 @@ class RollbackRequest(proto.Message):
         project_id (str):
             Required. The ID of the project against which
             to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         transaction (bytes):
             Required. The transaction identifier, returned by a call to
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
@@ -259,6 +391,10 @@ class RollbackRequest(proto.Message):
     project_id = proto.Field(
         proto.STRING,
         number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
     )
     transaction = proto.Field(
         proto.BYTES,
@@ -285,6 +421,11 @@ class CommitRequest(proto.Message):
         project_id (str):
             Required. The ID of the project against which
             to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         mode (google.cloud.datastore_v1.types.CommitRequest.Mode):
             The type of commit to perform. Defaults to
             ``TRANSACTIONAL``.
@@ -320,6 +461,10 @@ class CommitRequest(proto.Message):
     project_id = proto.Field(
         proto.STRING,
         number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
     )
     mode = proto.Field(
         proto.ENUM,
@@ -379,6 +524,11 @@ class AllocateIdsRequest(proto.Message):
         project_id (str):
             Required. The ID of the project against which
             to make the request.
+        database_id (str):
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         keys (Sequence[google.cloud.datastore_v1.types.Key]):
             Required. A list of keys with incomplete key
             paths for which to allocate IDs. No key may be
@@ -388,6 +538,10 @@ class AllocateIdsRequest(proto.Message):
     project_id = proto.Field(
         proto.STRING,
         number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
     )
     keys = proto.RepeatedField(
         proto.MESSAGE,
@@ -423,8 +577,10 @@ class ReserveIdsRequest(proto.Message):
             Required. The ID of the project against which
             to make the request.
         database_id (str):
-            If not empty, the ID of the database against
-            which to make the request.
+            The ID of the database against which to make
+            the request.
+            '(default)' is not allowed; please use empty
+            string '' to refer the default database.
         keys (Sequence[google.cloud.datastore_v1.types.Key]):
             Required. A list of keys with complete key
             paths whose numeric IDs should not be
@@ -602,8 +758,8 @@ class ReadOptions(proto.Message):
 
     Attributes:
         read_consistency (google.cloud.datastore_v1.types.ReadOptions.ReadConsistency):
-            The non-transactional read consistency to use. Cannot be set
-            to ``STRONG`` for global queries.
+            The non-transactional read consistency to
+            use.
 
             This field is a member of `oneof`_ ``consistency_type``.
         transaction (bytes):
