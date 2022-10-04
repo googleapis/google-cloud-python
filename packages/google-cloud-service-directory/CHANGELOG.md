@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/python-service-directory/compare/v1.5.1...v1.5.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#237](https://github.com/googleapis/python-service-directory/issues/237)) ([bd8c9dd](https://github.com/googleapis/python-service-directory/commit/bd8c9dd649a70c2c233c7077546f0ca5fc372b91))
+
 ## [1.5.1](https://github.com/googleapis/python-service-directory/compare/v1.5.0...v1.5.1) (2022-08-11)
 
 
