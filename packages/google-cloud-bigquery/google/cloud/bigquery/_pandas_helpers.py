@@ -57,15 +57,9 @@ else:
     if pandas is not None:  # pragma: NO COVER
 
         def _to_wkb():
-            # Create a closure that:
-            # - Adds a not-null check. This allows the returned function to
-            #   be used directly with apply, unlike `shapely.wkb.dumps`.
-            # - Avoid extra work done by `shapely.wkb.dumps` that we don't need.
-            # - Caches the WKBWriter (and write method lookup :) )
-            # - Avoids adding WKBWriter, lgeos, and notnull to the module namespace.
-            from shapely.geos import WKBWriter, lgeos  # type: ignore
+            from shapely import wkb  # type: ignore
 
-            write = WKBWriter(lgeos).write
+            write = wkb.dumps
             notnull = pandas.notnull
 
             def _to_wkb(v):

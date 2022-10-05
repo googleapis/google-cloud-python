@@ -39,11 +39,11 @@ else:
     _COORDINATE_REFERENCE_SYSTEM = "EPSG:4326"
 
 try:
-    import shapely.geos  # type: ignore
+    import shapely  # type: ignore
 except ImportError:
     shapely = None
 else:
-    _read_wkt = shapely.geos.WKTReader(shapely.geos.lgeos).read
+    _read_wkt = shapely.wkt.loads
 
 import google.api_core.exceptions
 from google.api_core.page_iterator import HTTPIterator
