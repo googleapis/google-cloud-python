@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.16.1](https://github.com/googleapis/python-speech/compare/v2.16.0...v2.16.1) (2022-10-05)
+
+
+### Bug Fixes
+
+* Remove SpeechHelpers from STT V2 client library ([#452](https://github.com/googleapis/python-speech/issues/452)) ([acfb24f](https://github.com/googleapis/python-speech/commit/acfb24f69e25c369388675f08e41062f090b4817))
+
 ## [2.16.0](https://github.com/googleapis/python-speech/compare/v2.15.1...v2.16.0) (2022-10-03)
 
 
