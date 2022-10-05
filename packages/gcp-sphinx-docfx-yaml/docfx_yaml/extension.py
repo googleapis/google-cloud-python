@@ -1429,6 +1429,33 @@ def highlight_md_codeblocks(mdfile):
         mdfile_iterator.write(new_content)
 
 
+def clean_image_links(mdfile_path: str) -> None:
+    """Cleans extra whitespace that breaks image links in index.html file."""
+    image_link_pattern='\[\s*!\[image\]\(.*\)\s*\]\(.*\)'
+    new_lines = []
+    with open(mdfile_path) as mdfile:
+        file_content = mdfile.read()
+
+        prev_start = prev_end = 0
+
+        for matched_obj in re.finditer(image_link_pattern, file_content):
+            start = matched_obj.start()
+            end = matched_obj.end()
+            matched_str = file_content[start:end]
+            # Clean up all whitespaces for the image link.
+            clean_str = ''.join(matched_str.split())
+
+            new_lines.append(file_content[prev_end:start])
+            new_lines.append(clean_str)
+            prev_start, prev_end = start, end
+
+        new_lines.append(file_content[prev_end:])
+
+    with open(mdfile_path, 'w') as mdfile:
+        new_content = ''.join(new_lines)
+        mdfile.write(new_content)
+
+
 def prepend_markdown_header(filename: str, mdfile: Iterable[str]):
     """Prepends the filename as a Markdown header.
 
@@ -1448,15 +1475,15 @@ def prepend_markdown_header(filename: str, mdfile: Iterable[str]):
 def find_markdown_pages(app, outdir):
     # Use this to ignore markdown files that are unnecessary.
     files_to_ignore = [
-        "index.md",     # merge index.md and README.md and index.yaml later.
-                        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/105.
+        "index.md",     # use readme.md instead
 
         "reference.md", # Reference docs overlap with Overview. Will try and incorporate this in later.
                         # See https://github.com/googleapis/sphinx-docfx-yaml/issues/106.
-
-        "readme.md",    # README does not seem to work in cloud site
-                        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/107.
     ]
+
+    files_to_rename = {
+        'readme.md': 'index.md',
+    }
 
     markdown_dir = Path(app.builder.outdir).parent / "markdown"
     if not markdown_dir.exists():
@@ -1467,7 +1494,6 @@ def find_markdown_pages(app, outdir):
     for mdfile in markdown_dir.iterdir():
         if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
             mdfile_name = ""
-            highlight_md_codeblocks(markdown_dir / mdfile.name)
 
             # Extract the header name for TOC.
             with open(mdfile) as mdfile_iterator:
@@ -1482,12 +1508,30 @@ def find_markdown_pages(app, outdir):
 
                     prepend_markdown_header(name, mdfile_iterator)
 
-            shutil.copy(mdfile, f"{outdir}/{mdfile.name.lower()}")
+            mdfile_name_to_use = mdfile.name.lower()
+            if mdfile_name_to_use in files_to_rename:
+                mdfile_name_to_use = files_to_rename[mdfile_name_to_use]
+
+            mdfile_outdir = f"{outdir}/{mdfile_name_to_use}"
+
+            shutil.copy(mdfile, mdfile_outdir)
+
+            highlight_md_codeblocks(mdfile_outdir)
+            clean_image_links(mdfile_outdir)
+
+            # Use Overview as the name for index file.
+            if mdfile_name_to_use == 'index.md':
+                # Place the Overview page at the top of the list.
+                app.env.markdown_pages.insert(
+                    0,
+                    {'name':'Overview', 'href': 'index.md'}
+                )
+                continue
 
             # Add the file to the TOC later.
             app.env.markdown_pages.append({
                 'name': name,
-                'href': mdfile.name.lower(),
+                'href': mdfile_name_to_use,
             })
 
 def find_uid_to_convert(
@@ -1941,7 +1985,7 @@ def build_finished(app, exception):
             dump(
                 [{
                     'name': app.config.project,
-                    'items': [{'name': 'Overview', 'uid': 'project-' + app.config.project}] + app.env.markdown_pages + pkg_toc_yaml
+                    'items': app.env.markdown_pages + pkg_toc_yaml
                 }],
                 default_flow_style=False,
             )
@@ -2001,25 +2045,6 @@ def build_finished(app, exception):
                 'fullname': item.get('uidname', ''),
                 'isExternal': False
             })
-    with open(index_file, 'w') as index_file_obj:
-        index_file_obj.write('### YamlMime:UniversalReference\n')
-        dump(
-            {
-                'items': [{
-                    'uid': 'project-' + app.config.project,
-                    'name': app.config.project,
-                    'fullName': app.config.project,
-                    'langs': ['python'],
-                    'type': 'package',
-                    'kind': 'distribution',
-                    'summary': 'Reference API documentation for `{}`.'.format(app.config.project),
-                    'children': index_children
-                }],
-                'references': index_references
-            },
-            index_file_obj,
-            default_flow_style=False
-        )
 
     '''
     # TODO: handle xref for other products.
