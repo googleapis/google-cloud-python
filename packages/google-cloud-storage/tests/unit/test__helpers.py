@@ -675,13 +675,13 @@ class Test__bucket_bound_hostname_url(unittest.TestCase):
         return _bucket_bound_hostname_url(**args)
 
     def test_full_hostname(self):
-        HOST = "scheme://domain.tcl/"
+        HOST = "scheme://domain.tcl"
         self.assertEqual(self._call_fut(host=HOST), HOST)
 
     def test_hostname_and_scheme(self):
         HOST = "domain.tcl"
         SCHEME = "scheme"
-        EXPECTED_URL = SCHEME + "://" + HOST + "/"
+        EXPECTED_URL = SCHEME + "://" + HOST
 
         self.assertEqual(self._call_fut(host=HOST, scheme=SCHEME), EXPECTED_URL)
 

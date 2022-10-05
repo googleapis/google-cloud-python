@@ -546,7 +546,7 @@ def _bucket_bound_hostname_url(host, scheme=None):
     if url_parts.scheme and url_parts.netloc:
         return host
 
-    return f"{scheme}://{host}/"
+    return f"{scheme}://{host}"
 
 
 def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):

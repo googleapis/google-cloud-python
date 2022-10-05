@@ -2572,7 +2572,7 @@ class TestClient(unittest.TestCase):
                 bucket_bound_hostname="https://bucket.bound_hostname",
                 credentials=_create_signing_credentials(),
             )
-        self.assertEqual(policy["url"], "https://bucket.bound_hostname")
+        self.assertEqual(policy["url"], "https://bucket.bound_hostname/")
 
     def test_get_signed_policy_v4_bucket_bound_hostname_with_scheme(self):
         import datetime
