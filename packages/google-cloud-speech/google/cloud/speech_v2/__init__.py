@@ -69,13 +69,6 @@ from .types.cloud_speech import UpdatePhraseSetRequest
 from .types.cloud_speech import UpdateRecognizerRequest
 from .types.cloud_speech import WordInfo
 
-from google.cloud.speech_v1.helpers import SpeechHelpers
-
-
-class SpeechClient(SpeechHelpers, SpeechClient):
-    __doc__ = SpeechClient.__doc__
-
-
 __all__ = (
     "SpeechAsyncClient",
     "AutoDetectDecodingConfig",
