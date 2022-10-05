@@ -20,6 +20,7 @@ import warnings
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
+from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.session import _get_retry_delay
 from google.cloud.spanner_v1.snapshot import Snapshot
 
@@ -103,6 +104,7 @@ class Connection:
         self._own_pool = True
         self._read_only = read_only
         self._staleness = None
+        self.request_priority = None
 
     @property
     def autocommit(self):
@@ -442,11 +444,18 @@ class Connection:
                 ResultsChecksum() if retried else statement.checksum,
             )
 
+        if self.request_priority is not None:
+            req_opts = RequestOptions(priority=self.request_priority)
+            self.request_priority = None
+        else:
+            req_opts = None
+
         return (
             transaction.execute_sql(
                 statement.sql,
                 statement.params,
                 param_types=statement.param_types,
+                request_options=req_opts,
             ),
             ResultsChecksum() if retried else statement.checksum,
         )

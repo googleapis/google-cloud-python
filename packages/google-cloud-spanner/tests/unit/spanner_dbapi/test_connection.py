@@ -883,6 +883,42 @@ class TestConnection(unittest.TestCase):
 
         connection.database.snapshot.assert_called_with(read_timestamp=timestamp)
 
+    def test_request_priority(self):
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_v1 import RequestOptions
+
+        sql = "SELECT 1"
+        params = []
+        param_types = {}
+        priority = 2
+
+        connection = self._make_connection()
+        connection._transaction = mock.Mock(committed=False, rolled_back=False)
+        connection._transaction.execute_sql = mock.Mock()
+
+        connection.request_priority = priority
+
+        req_opts = RequestOptions(priority=priority)
+
+        connection.run_statement(
+            Statement(sql, params, param_types, ResultsChecksum(), False)
+        )
+
+        connection._transaction.execute_sql.assert_called_with(
+            sql, params, param_types=param_types, request_options=req_opts
+        )
+        assert connection.request_priority is None
+
+        # check that priority is applied for only one request
+        connection.run_statement(
+            Statement(sql, params, param_types, ResultsChecksum(), False)
+        )
+
+        connection._transaction.execute_sql.assert_called_with(
+            sql, params, param_types=param_types, request_options=None
+        )
+
 
 def exit_ctx_func(self, exc_type, exc_value, traceback):
     """Context __exit__ method mock."""
