@@ -33,19 +33,10 @@ def _get_django_request():
     return getattr(_thread_locals, "request", None)
 
 
-try:
-    from django.utils.deprecation import MiddlewareMixin
-except ImportError:  # pragma: NO COVER
-    MiddlewareMixin = object
-
-
-class RequestMiddleware(MiddlewareMixin):
+def RequestMiddleware(get_response):
     """Saves the request in thread local"""
 
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def process_request(self, request):
+    def middleware(request):
         """Called on each request, before Django decides which view to execute.
 
         Args:
@@ -53,3 +44,9 @@ class RequestMiddleware(MiddlewareMixin):
                 Django http request.
         """
         _thread_locals.request = request
+        if get_response:
+            return get_response(request)
+        else:
+            return None
+
+    return middleware
