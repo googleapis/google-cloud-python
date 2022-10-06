@@ -1063,7 +1063,11 @@ class SearchAllResourcesRequest(proto.Message):
             -  ``labels.env:*`` to find Cloud resources that have a
                label "env".
             -  ``kmsKey:key`` to find Cloud resources encrypted with a
-               customer-managed encryption key whose name contains the
+               customer-managed encryption key whose name contains "key"
+               as a word. This field is deprecated. Please use the
+               ``kmsKeys`` field to retrieve KMS key information.
+            -  ``kmsKeys:key`` to find Cloud resources encrypted with
+               customer-managed encryption keys whose name contains the
                word "key".
             -  ``relationships:instance-group-1`` to find Cloud
                resources that have relationships with "instance-group-1"
@@ -1140,7 +1144,6 @@ class SearchAllResourcesRequest(proto.Message):
             -  displayName
             -  description
             -  location
-            -  kmsKey
             -  createTime
             -  updateTime
             -  state
@@ -1148,8 +1151,9 @@ class SearchAllResourcesRequest(proto.Message):
             -  parentAssetType
 
             All the other fields such as repeated fields (e.g.,
-            ``networkTags``), map fields (e.g., ``labels``) and struct
-            fields (e.g., ``additionalAttributes``) are not supported.
+            ``networkTags``, ``kmsKeys``), map fields (e.g., ``labels``)
+            and struct fields (e.g., ``additionalAttributes``) are not
+            supported.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. A comma-separated list of fields specifying which
             fields to be returned in ResourceSearchResult. Only '*' or
@@ -1172,7 +1176,9 @@ class SearchAllResourcesRequest(proto.Message):
             -  tagValueIds
             -  labels
             -  networkTags
-            -  kmsKey
+            -  kmsKey (This field is deprecated. Please use the
+               ``kmsKeys`` field to retrieve KMS key information.)
+            -  kmsKeys
             -  createTime
             -  updateTime
             -  state
@@ -2203,9 +2209,8 @@ class ListSavedQueriesRequest(proto.Message):
             Optional. The maximum number of saved queries
             to return per page. The service may return fewer
             than this value. If unspecified, at most 50 will
-            be returned.
-             The maximum value is 1000; values above 1000
-            will be coerced to 1000.
+            be returned.  The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListSavedQueries`` call. Provide this to retrieve the
@@ -2493,7 +2498,9 @@ class QueryAssetsOutputConfig(proto.Message):
                    BigQuery appends the data to the table or the latest
                    partition.
                 -  WRITE_EMPTY: If the table already exists and contains
-                   data, an error is returned.
+                   data, a 'duplicate' error is returned in the job result.
+
+                The default value is WRITE_EMPTY.
         """
 
         dataset = proto.Field(

@@ -496,7 +496,7 @@ class RelatedAsset(proto.Message):
 
 class ResourceSearchResult(proto.Message):
     r"""A result of Resource Search, containing information of a
-    cloud resource. Next ID: 29
+    cloud resource. Next ID: 31
 
     Attributes:
         name (str):
@@ -508,15 +508,15 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``name``:
 
-            -  use a field query. Example: ``name:instance1``
-            -  use a free text query. Example: ``instance1``
+            -  Use a field query. Example: ``name:instance1``
+            -  Use a free text query. Example: ``instance1``
         asset_type (str):
             The type of this resource. Example:
             ``compute.googleapis.com/Disk``.
 
             To search against the ``asset_type``:
 
-            -  specify the ``asset_type`` field in your search request.
+            -  Specify the ``asset_type`` field in your search request.
         project (str):
             The project that this resource belongs to, in the form of
             projects/{PROJECT_NUMBER}. This field is available when the
@@ -524,9 +524,9 @@ class ResourceSearchResult(proto.Message):
 
             To search against ``project``:
 
-            -  use a field query. Example: ``project:12345``
-            -  use a free text query. Example: ``12345``
-            -  specify the ``scope`` field as this project in your
+            -  Use a field query. Example: ``project:12345``
+            -  Use a free text query. Example: ``12345``
+            -  Specify the ``scope`` field as this project in your
                search request.
         folders (Sequence[str]):
             The folder(s) that this resource belongs to, in the form of
@@ -535,9 +535,9 @@ class ResourceSearchResult(proto.Message):
 
             To search against ``folders``:
 
-            -  use a field query. Example: ``folders:(123 OR 456)``
-            -  use a free text query. Example: ``123``
-            -  specify the ``scope`` field as this folder in your search
+            -  Use a field query. Example: ``folders:(123 OR 456)``
+            -  Use a free text query. Example: ``123``
+            -  Specify the ``scope`` field as this folder in your search
                request.
         organization (str):
             The organization that this resource belongs to, in the form
@@ -546,9 +546,9 @@ class ResourceSearchResult(proto.Message):
 
             To search against ``organization``:
 
-            -  use a field query. Example: ``organization:123``
-            -  use a free text query. Example: ``123``
-            -  specify the ``scope`` field as this organization in your
+            -  Use a field query. Example: ``organization:123``
+            -  Use a free text query. Example: ``123``
+            -  Specify the ``scope`` field as this organization in your
                search request.
         display_name (str):
             The display name of this resource. This field is available
@@ -556,8 +556,8 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``display_name``:
 
-            -  use a field query. Example: ``displayName:"My Instance"``
-            -  use a free text query. Example: ``"My Instance"``
+            -  Use a field query. Example: ``displayName:"My Instance"``
+            -  Use a free text query. Example: ``"My Instance"``
         description (str):
             One or more paragraphs of text description of this resource.
             Maximum length could be up to 1M bytes. This field is
@@ -565,9 +565,9 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``description``:
 
-            -  use a field query. Example:
+            -  Use a field query. Example:
                ``description:"important instance"``
-            -  use a free text query. Example: ``"important instance"``
+            -  Use a free text query. Example: ``"important instance"``
         location (str):
             Location can be ``global``, regional like ``us-east1``, or
             zonal like ``us-west1-b``. This field is available only when
@@ -575,8 +575,8 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``location``:
 
-            -  use a field query. Example: ``location:us-west*``
-            -  use a free text query. Example: ``us-west*``
+            -  Use a field query. Example: ``location:us-west*``
+            -  Use a free text query. Example: ``us-west*``
         labels (Mapping[str, str]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
@@ -586,7 +586,7 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``labels``:
 
-            -  use a field query:
+            -  Use a field query:
 
                -  query on any label's key or value. Example:
                   ``labels:prod``
@@ -594,7 +594,7 @@ class ResourceSearchResult(proto.Message):
                -  query by a given label's existence. Example:
                   ``labels.env:*``
 
-            -  use a free text query. Example: ``prod``
+            -  Use a free text query. Example: ``prod``
         network_tags (Sequence[str]):
             Network tags associated with this resource. Like labels,
             network tags are a type of annotations used to group GCP
@@ -605,20 +605,39 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``network_tags``:
 
-            -  use a field query. Example: ``networkTags:internal``
-            -  use a free text query. Example: ``internal``
+            -  Use a field query. Example: ``networkTags:internal``
+            -  Use a free text query. Example: ``internal``
         kms_key (str):
             The Cloud KMS
             `CryptoKey <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys>`__
             name or
             `CryptoKeyVersion <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions>`__
-            name. This field is available only when the resource's
-            Protobuf contains it.
+            name.
+
+            This field only presents for the purpose of backward
+            compatibility. Please use the ``kms_keys`` field to retrieve
+            KMS key information. This field is available only when the
+            resource's Protobuf contains it and will only be populated
+            for `these resource
+            types <https://cloud.google.com/asset-inventory/docs/legacy-field-names#resource_types_with_the_to_be_deprecated_kmskey_field>`__
+            for backward compatible purposes.
 
             To search against the ``kms_key``:
 
-            -  use a field query. Example: ``kmsKey:key``
-            -  use a free text query. Example: ``key``
+            -  Use a field query. Example: ``kmsKey:key``
+            -  Use a free text query. Example: ``key``
+        kms_keys (Sequence[str]):
+            The Cloud KMS
+            `CryptoKey <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys>`__
+            names or
+            `CryptoKeyVersion <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions>`__
+            names. This field is available only when the resource's
+            Protobuf contains it.
+
+            To search against the ``kms_keys``:
+
+            -  Use a field query. Example: ``kmsKeys:key``
+            -  Use a free text query. Example: ``key``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The create timestamp of this resource, at which the resource
             was created. The granularity is in seconds. Timestamp.nanos
@@ -627,7 +646,7 @@ class ResourceSearchResult(proto.Message):
 
             To search against ``create_time``:
 
-            -  use a field query.
+            -  Use a field query.
 
                -  value in seconds since unix epoch. Example:
                   ``createTime > 1609459200``
@@ -643,7 +662,7 @@ class ResourceSearchResult(proto.Message):
 
             To search against ``update_time``:
 
-            -  use a field query.
+            -  Use a field query.
 
                -  value in seconds since unix epoch. Example:
                   ``updateTime < 1609459200``
@@ -670,8 +689,8 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``state``:
 
-            -  use a field query. Example: ``state:RUNNING``
-            -  use a free text query. Example: ``RUNNING``
+            -  Use a field query. Example: ``state:RUNNING``
+            -  Use a free text query. Example: ``RUNNING``
         additional_attributes (google.protobuf.struct_pb2.Struct):
             The additional searchable attributes of this resource. The
             attributes may vary from one resource type to another.
@@ -690,7 +709,7 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``additional_attributes``:
 
-            -  use a free text query to match the attributes values.
+            -  Use a free text query to match the attributes values.
                Example: to search
                ``additional_attributes = { dnsName: "foobar" }``, you
                can issue a query ``foobar``.
@@ -698,9 +717,9 @@ class ResourceSearchResult(proto.Message):
             The full resource name of this resource's parent, if it has
             one. To search against the ``parent_full_resource_name``:
 
-            -  use a field query. Example:
+            -  Use a field query. Example:
                ``parentFullResourceName:"project-name"``
-            -  use a free text query. Example: ``project-name``
+            -  Use a free text query. Example: ``project-name``
         versioned_resources (Sequence[google.cloud.asset_v1.types.VersionedResource]):
             Versioned resource representations of this resource. This is
             repeated because there could be multiple versions of
@@ -732,13 +751,13 @@ class ResourceSearchResult(proto.Message):
             {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the
             ``tagKeys``:
 
-            -  use a field query. Example:
+            -  Use a field query. Example:
 
                -  ``tagKeys:"123456789/env*"``
                -  ``tagKeys="123456789/env"``
                -  ``tagKeys:"env"``
 
-            -  use a free text query. Example:
+            -  Use a free text query. Example:
 
                -  ``env``
         tag_values (Sequence[str]):
@@ -746,26 +765,26 @@ class ResourceSearchResult(proto.Message):
             {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To
             search against the ``tagValues``:
 
-            -  use a field query. Example:
+            -  Use a field query. Example:
 
                -  ``tagValues:"env"``
                -  ``tagValues:"env/prod"``
                -  ``tagValues:"123456789/env/prod*"``
                -  ``tagValues="123456789/env/prod"``
 
-            -  use a free text query. Example:
+            -  Use a free text query. Example:
 
                -  ``prod``
         tag_value_ids (Sequence[str]):
             TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}. To
             search against the ``tagValueIds``:
 
-            -  use a field query. Example:
+            -  Use a field query. Example:
 
                -  ``tagValueIds:"456"``
                -  ``tagValueIds="tagValues/456"``
 
-            -  use a free text query. Example:
+            -  Use a free text query. Example:
 
                -  ``456``
         parent_asset_type (str):
@@ -774,9 +793,9 @@ class ResourceSearchResult(proto.Message):
 
             To search against the ``parent_asset_type``:
 
-            -  use a field query. Example:
+            -  Use a field query. Example:
                ``parentAssetType:"cloudresourcemanager.googleapis.com/Project"``
-            -  use a free text query. Example:
+            -  Use a free text query. Example:
                ``cloudresourcemanager.googleapis.com/Project``
     """
 
@@ -824,6 +843,10 @@ class ResourceSearchResult(proto.Message):
     kms_key = proto.Field(
         proto.STRING,
         number=10,
+    )
+    kms_keys = proto.RepeatedField(
+        proto.STRING,
+        number=28,
     )
     create_time = proto.Field(
         proto.MESSAGE,

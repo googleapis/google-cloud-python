@@ -1209,7 +1209,12 @@ class AssetServiceAsyncClient:
                    label "env".
                 -  ``kmsKey:key`` to find Cloud resources encrypted with
                    a customer-managed encryption key whose name contains
-                   the word "key".
+                   "key" as a word. This field is deprecated. Please use
+                   the ``kmsKeys`` field to retrieve KMS key
+                   information.
+                -  ``kmsKeys:key`` to find Cloud resources encrypted
+                   with customer-managed encryption keys whose name
+                   contains the word "key".
                 -  ``relationships:instance-group-1`` to find Cloud
                    resources that have relationships with
                    "instance-group-1" in the related resource name.
@@ -1597,7 +1602,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.types.AnalyzeIamPolicyResponse:
                 A response message for
-                   [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
+                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
 
         """
         # Create or coerce a protobuf request object.
@@ -1711,8 +1716,10 @@ class AssetServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse` A response message for
-                   [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
+                The result type for the operation will be
+                :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse`
+                A response message for
+                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 
         """
         # Create or coerce a protobuf request object.
@@ -2593,7 +2600,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse:
                 A response message for
-                   [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+                [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
 
         """
         # Create or coerce a protobuf request object.
