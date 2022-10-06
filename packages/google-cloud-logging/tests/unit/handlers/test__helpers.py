@@ -153,7 +153,7 @@ class Test_get_request_data_from_django(unittest.TestCase):
         django_request = RequestFactory().get("/")
 
         middleware = request.RequestMiddleware(None)
-        middleware.process_request(django_request)
+        middleware(django_request)
         http_request, trace_id, span_id, sampled = self._call_fut()
 
         self.assertEqual(http_request["requestMethod"], "GET")
@@ -175,7 +175,7 @@ class Test_get_request_data_from_django(unittest.TestCase):
         )
 
         middleware = request.RequestMiddleware(None)
-        middleware.process_request(django_request)
+        middleware(django_request)
         http_request, trace_id, span_id, sampled = self._call_fut()
 
         self.assertEqual(trace_id, expected_trace_id)
@@ -195,7 +195,7 @@ class Test_get_request_data_from_django(unittest.TestCase):
         django_request = RequestFactory().get("/", **{django_trace_header: header})
 
         middleware = request.RequestMiddleware(None)
-        middleware.process_request(django_request)
+        middleware(django_request)
         http_request, trace_id, span_id, sampled = self._call_fut()
 
         self.assertEqual(trace_id, expected_trace_id)
@@ -222,7 +222,7 @@ class Test_get_request_data_from_django(unittest.TestCase):
         django_request.read()
 
         middleware = request.RequestMiddleware(None)
-        middleware.process_request(django_request)
+        middleware(django_request)
         http_request, *_ = self._call_fut()
         self.assertEqual(http_request["requestMethod"], "PUT")
         self.assertEqual(http_request["requestUrl"], expected_path)
@@ -236,7 +236,7 @@ class Test_get_request_data_from_django(unittest.TestCase):
         expected_path = "http://testserver/123"
         django_request = RequestFactory().put(expected_path)
         middleware = request.RequestMiddleware(None)
-        middleware.process_request(django_request)
+        middleware(django_request)
         http_request, *_ = self._call_fut()
         self.assertEqual(http_request["requestMethod"], "PUT")
         self.assertEqual(http_request["requestUrl"], expected_path)

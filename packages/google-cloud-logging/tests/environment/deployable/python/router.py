@@ -98,6 +98,7 @@ if __name__ == "__main__":
     initialize_client()
 
     if os.getenv("ENABLE_SUBSCRIBER", None):
+        from google.api_core.exceptions import AlreadyExists
         # set up pubsub listener
         topic_id = os.getenv("PUBSUB_TOPIC", "logging-test")
         _, project_id = google.auth.default()
@@ -105,7 +106,10 @@ if __name__ == "__main__":
         subscriber = pubsub_v1.SubscriberClient()
         topic_name = f"projects/{project_id}/topics/{topic_id}"
         subscription_name = f"projects/{project_id}/subscriptions/{subscription_id}"
-        subscriber.create_subscription(name=subscription_name, topic=topic_name)
+        try:
+            subscriber.create_subscription(name=subscription_name, topic=topic_name)
+        except AlreadyExists:
+            pass
         future = subscriber.subscribe(subscription_name, pubsub_callback)
         try:
             print(f"listening for pubsub messages at {topic_id}")
