@@ -2654,8 +2654,6 @@ class Bucket(_PropertyMixin):
             or
             :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
         """
-        if value not in self.STORAGE_CLASSES:
-            raise ValueError(f"Invalid storage class: {value}")
         self._patch_property("storageClass", value)
 
     @property

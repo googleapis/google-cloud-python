@@ -306,7 +306,7 @@ class BucketNotification(object):
         :raises ValueError: if the notification has no ID.
         """
         if self.notification_id is None:
-            raise ValueError("Notification not intialized by server")
+            raise ValueError("Notification ID not set: set an explicit notification_id")
 
         client = self._require_client(client)
 
@@ -352,7 +352,7 @@ class BucketNotification(object):
         :raises ValueError: if the notification has no ID.
         """
         if self.notification_id is None:
-            raise ValueError("Notification not intialized by server")
+            raise ValueError("Notification ID not set: set an explicit notification_id")
 
         client = self._require_client(client)
 
@@ -395,7 +395,7 @@ class BucketNotification(object):
         :raises ValueError: if the notification has no ID.
         """
         if self.notification_id is None:
-            raise ValueError("Notification not intialized by server")
+            raise ValueError("Notification ID not set: set an explicit notification_id")
 
         client = self._require_client(client)
 

@@ -3719,9 +3719,6 @@ class Blob(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        if new_class not in self.STORAGE_CLASSES:
-            raise ValueError(f"Invalid storage class: {new_class}")
-
         # Update current blob's storage class prior to rewrite
         self._patch_property("storageClass", new_class)
 
