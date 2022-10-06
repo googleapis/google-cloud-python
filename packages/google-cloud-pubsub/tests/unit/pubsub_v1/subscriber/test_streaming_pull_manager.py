@@ -1846,7 +1846,7 @@ def test__on_response_disable_exactly_once():
     assert manager._stream_ack_deadline == 60
 
 
-def test__on_response_exactly_once_immediate_modacks_fail():
+def test__on_response_exactly_once_immediate_modacks_fail(caplog):
     manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
 
@@ -1890,7 +1890,8 @@ def test__on_response_exactly_once_immediate_modacks_fail():
 
     fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10)
 
-    manager._on_response(response)
+    with caplog.at_level(logging.WARNING):
+        manager._on_response(response)
 
     # The second messages should be scheduled, and not the first.
 
@@ -1902,11 +1903,91 @@ def test__on_response_exactly_once_immediate_modacks_fail():
     assert call_args[1].message_id == "2"
 
     assert manager._messages_on_hold.size == 0
+
+    expected_warnings = [
+        record.message.lower()
+        for record in caplog.records
+        if "AcknowledgeError when lease-modacking a message." in record.message
+    ]
+    assert len(expected_warnings) == 1
+
     # No messages available
     assert manager._messages_on_hold.get() is None
 
     # do not add message
     assert manager.load == 0.001
+
+
+def test__on_response_exactly_once_immediate_modacks_fail_non_invalid(caplog):
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    def complete_futures_with_error(*args, **kwargs):
+        modack_requests = args[0]
+        for req in modack_requests:
+            if req.ack_id == "fack":
+                req.future.set_exception(
+                    subscriber_exceptions.AcknowledgeError(
+                        subscriber_exceptions.AcknowledgeStatus.OTHER, None
+                    )
+                )
+            else:
+                req.future.set_exception(
+                    subscriber_exceptions.AcknowledgeError(
+                        subscriber_exceptions.AcknowledgeStatus.SUCCESS, None
+                    )
+                )
+
+    dispatcher.modify_ack_deadline.side_effect = complete_futures_with_error
+
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="fack",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="good",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="2"),
+            ),
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=True
+        ),
+    )
+
+    # Actually run the method and prove that modack and schedule are called in
+    # the expected way.
+
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10)
+
+    with caplog.at_level(logging.WARNING):
+        manager._on_response(response)
+
+    # The second messages should be scheduled, and not the first.
+
+    schedule_calls = scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 2
+    call_args = schedule_calls[0][1]
+    assert call_args[0] == mock.sentinel.callback
+    assert isinstance(call_args[1], message.Message)
+    assert call_args[1].message_id == "1"
+
+    assert manager._messages_on_hold.size == 0
+
+    expected_warnings = [
+        record.message.lower()
+        for record in caplog.records
+        if "AcknowledgeError when lease-modacking a message." in record.message
+    ]
+    assert len(expected_warnings) == 2
+
+    # No messages available
+    assert manager._messages_on_hold.get() is None
+
+    # do not add message
+    assert manager.load == 0.002
 
 
 def test__should_recover_true():
