@@ -1,2 +1,2 @@
 google-cloud-bigtable==2.13.0
-backoff==2.1.2
+backoff==2.2.1
