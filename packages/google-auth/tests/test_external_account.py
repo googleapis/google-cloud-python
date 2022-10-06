@@ -289,6 +289,7 @@ class TestCredentials(object):
             "https://us-east-1-sts.googleapis.com",
             "https://US-WEST-1-sts.googleapis.com",
             "https://us-west-1-sts.googleapis.com/path?query",
+            "https://sts-us-east-1.p.googleapis.com",
         ]
 
         for url in valid_urls:
@@ -316,6 +317,15 @@ class TestCredentials(object):
             "https://us- -1.sts.googleapis.com",
             "https://-sts.googleapis.com",
             "https://us-east-1.sts.googleapis.com.evil.com",
+            "https://sts.pgoogleapis.com",
+            "https://p.googleapis.com",
+            "https://sts.p.com",
+            "http://sts.p.googleapis.com",
+            "https://xyz-sts.p.googleapis.com",
+            "https://sts-xyz.123.p.googleapis.com",
+            "https://sts-xyz.p1.googleapis.com",
+            "https://sts-xyz.p.foo.com",
+            "https://sts-xyz.p.foo.googleapis.com",
         ]
 
         for url in invalid_urls:
@@ -335,6 +345,7 @@ class TestCredentials(object):
             "https://us-east-1-iamcredentials.googleapis.com",
             "https://US-WEST-1-iamcredentials.googleapis.com",
             "https://us-west-1-iamcredentials.googleapis.com/path?query",
+            "https://iamcredentials-us-east-1.p.googleapis.com",
         ]
 
         for url in valid_urls:
@@ -362,6 +373,15 @@ class TestCredentials(object):
             "https://us- -1.iamcredentials.googleapis.com",
             "https://-iamcredentials.googleapis.com",
             "https://us-east-1.iamcredentials.googleapis.com.evil.com",
+            "https://iamcredentials.pgoogleapis.com",
+            "https://p.googleapis.com",
+            "https://iamcredentials.p.com",
+            "http://iamcredentials.p.googleapis.com",
+            "https://xyz-iamcredentials.p.googleapis.com",
+            "https://iamcredentials-xyz.123.p.googleapis.com",
+            "https://iamcredentials-xyz.p1.googleapis.com",
+            "https://iamcredentials-xyz.p.foo.com",
+            "https://iamcredentials-xyz.p.foo.googleapis.com",
         ]
 
         for url in invalid_urls:

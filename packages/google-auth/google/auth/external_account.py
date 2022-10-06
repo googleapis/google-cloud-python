@@ -443,6 +443,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             "^sts\\.googleapis\\.com$",
             "^sts\\.[^\\.\\s\\/\\\\]+\\.googleapis\\.com$",
             "^[^\\.\\s\\/\\\\]+\\-sts\\.googleapis\\.com$",
+            "^sts\\-[^\\.\\s\\/\\\\]+\\.p\\.googleapis\\.com$",
         ]
 
         if not Credentials.is_valid_url(_TOKEN_URL_PATTERNS, token_url):
@@ -455,6 +456,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             "^iamcredentials\\.googleapis\\.com$",
             "^iamcredentials\\.[^\\.\\s\\/\\\\]+\\.googleapis\\.com$",
             "^[^\\.\\s\\/\\\\]+\\-iamcredentials\\.googleapis\\.com$",
+            "^iamcredentials\\-[^\\.\\s\\/\\\\]+\\.p\\.googleapis\\.com$",
         ]
 
         if not Credentials.is_valid_url(
