@@ -460,19 +460,20 @@ class Task(proto.Message):
 
         Attributes:
             notebook (str):
-                Required. Path to input notebook. This can be the GCS URI of
-                the notebook file or the path to a Notebook Content. The
-                execution args are accessible as environment variables
-                (``TASK_key=value``).
+                Required. Path to input notebook. This can be the Cloud
+                Storage URI of the notebook file or the path to a Notebook
+                Content. The execution args are accessible as environment
+                variables (``TASK_key=value``).
             infrastructure_spec (google.cloud.dataplex_v1.types.Task.InfrastructureSpec):
                 Optional. Infrastructure specification for
                 the execution.
             file_uris (Sequence[str]):
-                Optional. GCS URIs of files to be placed in
-                the working directory of each executor.
+                Optional. Cloud Storage URIs of files to be
+                placed in the working directory of each
+                executor.
             archive_uris (Sequence[str]):
-                Optional. GCS URIs of archives to be
-                extracted into the working directory of each
+                Optional. Cloud Storage URIs of archives to
+                be extracted into the working directory of each
                 executor. Supported file types: .jar, .tar,
                 .tar.gz, .tgz, and .zip.
         """

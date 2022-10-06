@@ -340,8 +340,10 @@ class SessionEvent(proto.Message):
             This field is a member of `oneof`_ ``detail``.
         event_succeeded (bool):
             The status of the event.
-        warm_pool_enabled (bool):
-            If the session is a warm pooled session.
+        fast_startup_enabled (bool):
+            If the session is associated with an
+            Environment with fast startup enabled, and was
+            pre-created before being assigned to a user.
         unassigned_duration (google.protobuf.duration_pb2.Duration):
             The idle duration of a warm pooled session
             before it is assigned to user.
@@ -433,7 +435,7 @@ class SessionEvent(proto.Message):
         proto.BOOL,
         number=6,
     )
-    warm_pool_enabled = proto.Field(
+    fast_startup_enabled = proto.Field(
         proto.BOOL,
         number=7,
     )
