@@ -27,6 +27,13 @@ import nox
 
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.10.1"
+
+# NOTE: Pin the version of grpcio-tools to 1.48.2 for compatibility with
+# Protobuf 3.19.5. Please ensure that the minimum required version of
+# protobuf in setup.py is compatible with the pb2 files generated
+# by grpcio-tools before changing the pinned version below.
+GRPCIO_TOOLS_VERSION = "grpcio-tools==1.48.2"
+
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
@@ -88,7 +95,7 @@ def generate_protos(session):
 
     NOTE: This should be migrated to use bazel in the future.
     """
-    session.install("grpcio-tools")
+    session.install(GRPCIO_TOOLS_VERSION)
     protos = [str(p) for p in (pathlib.Path(".").glob("google/**/*.proto"))]
 
     session.run(
