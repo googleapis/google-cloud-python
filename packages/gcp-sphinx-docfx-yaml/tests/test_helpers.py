@@ -8,6 +8,8 @@ from docfx_yaml.extension import extract_product_name
 from docfx_yaml.extension import highlight_md_codeblocks
 from docfx_yaml.extension import prepend_markdown_header
 from docfx_yaml.extension import clean_image_links
+from docfx_yaml.extension import reformat_summary
+from docfx_yaml.extension import reformat_markdown_to_html
 
 import unittest
 from parameterized import parameterized
@@ -389,6 +391,76 @@ Take a look at <xref uid="google.cloud.resourcemanager_v3.set_iam_policy">docume
             current_word, words, index, uids, current_object_name, visited_words
         )
         self.assertEqual(cross_reference_got, cross_reference_want)
+
+    test_summary = [
+        [
+            """Retrieve the ``ID`` for the object.
+
+See https://cloud.google.com/storage/docs/json_api/v1/objects
+
+The ID consists of the bucket name, object name, and generation number.
+            """,
+            """Retrieve the `ID` for the object.
+
+See https://cloud.google.com/storage/docs/json_api/v1/objects
+
+The ID consists of the bucket name, object name, and generation number.
+            """,
+        ],
+        [
+            # Test that codeblocks don't get formatted.
+            """The ID of the blob or `None`.
+
+if the blob's resource has not been loaded from the server.
+
+For example:
+```
+    ID or None
+```
+            """,
+            """The ID of the blob or `None`.
+
+if the blob's resource has not been loaded from the server.
+
+For example:
+```
+    ID or None
+```
+            """,
+        ],
+    ]
+    @parameterized.expand(test_summary)
+    def test_reformat_summary(self, summary, summary_want):
+        summary_got = reformat_summary(summary)
+        self.assertEqual(summary_want, summary_got)
+
+
+    test_markdown_content = [
+        [
+            """The resource name or `None`
+
+if no Cloud KMS key was used, or the blob's resource has not been loaded from the server.
+
+For example:
+```
+    kms_key_name: ID
+```
+            """,
+            """The resource name or <code>None</code>
+
+if no Cloud KMS key was used, or the blob's resource has not been loaded from the server.
+
+For example:
+<pre>
+    kms_key_name: ID
+</pre>
+            """,
+        ],
+    ]
+    @parameterized.expand(test_markdown_content)
+    def test_reformat_markdown_to_html(self, content, content_want):
+        content_got = reformat_markdown_to_html(content)
+        self.assertEqual(content_want, content_got)
 
 
 if __name__ == '__main__':

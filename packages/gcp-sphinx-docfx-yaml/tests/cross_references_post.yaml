@@ -40,7 +40,7 @@ items:
       var_type: google.api_core.exceptions.GoogleAPICallError
     parameters:
     - description: Required. Name of the stream to start reading from, of the form
-        `projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}`
+        <code>projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}</code>
         with <xref uid="google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse">google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse</xref>
       id: row
       var_type: <xref uid="google.cloud.bigquery_storage_v1.types.AvroRows">google.cloud.bigquery_storage_v1.types.AvroRows</xref>

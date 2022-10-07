@@ -83,12 +83,12 @@ REFMETHOD = 'meth'
 REFFUNCTION = 'func'
 INITPY = '__init__.py'
 # Regex expression for checking references of pattern like ":class:`~package_v1.module`"
-REF_PATTERN = ':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_\.<> ]*(\(\))?`'
+REF_PATTERN = ':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_.<> ]*(\(\))?`'
 # Regex expression for checking references of pattern like "~package_v1.subpackage.module"
 REF_PATTERN_LAST = '~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
 # Regex expression for checking references of pattern like
 # "[module][google.cloud.cloudkms_v1.module]"
-REF_PATTERN_BRACKETS = '\[[a-zA-Z0-9\_\<\>\-\. ]+\]\[[a-zA-Z0-9\_\<\>\-\. ]+\]'
+REF_PATTERN_BRACKETS = '\[[a-zA-Z0-9_<>\-. ]+\]\[[a-zA-Z0-9_<>\-. ]+\]'
 
 REF_PATTERNS = [
     REF_PATTERN,
@@ -758,10 +758,101 @@ def _extract_docstring_info(summary_info, summary, name):
             words = []
         else:
             words.append(word)
-    
+
         index += 1
 
     return top_summary
+
+
+def _reformat_codeblocks(content: str) -> str:
+    """Formats codeblocks from ``` to <pre>."""
+    triple_backtick = '```'
+    current_tag = '<pre>'
+    next_tag = '</pre>'
+    # If there are no proper pairs of triple backticks, don't format docstring.
+    if content.count(triple_backtick) % 2 != 0:
+        print(f'Docstring is not formatted well, missing proper pairs of triple backticks (```): {content}')
+        return content
+    while triple_backtick in content:
+        content = content.replace(triple_backtick, current_tag, 1)
+        # Alternate between replacing with <pre> and </pre>.
+        current_tag, next_tag = next_tag, current_tag
+
+    return content
+
+
+def _reformat_code(content: str) -> str:
+    """Formats code from ` to <code>."""
+    reformatted_lines = []
+
+    code_pattern = '`[^`\n]+`'
+    code_start = '<code>'
+    code_end = '</code>'
+    prev_start = prev_end = 0
+    # Convert `text` to <code>text</code>
+    for matched_obj in re.finditer(code_pattern, content):
+        start = matched_obj.start()
+        end = matched_obj.end()
+        code_content = content[start+1:end-1]
+
+        reformatted_lines.append(content[prev_end:start])
+        reformatted_lines.append(f'{code_start}{code_content}{code_end}')
+        prev_start, prev_end = start, end
+
+    reformatted_lines.append(content[prev_end:])
+
+    return ''.join(reformatted_lines)
+
+
+def reformat_markdown_to_html(content: str) -> str:
+    """Applies changes from markdown syntax to equivalent HTML.
+
+    Acts as a wrapper function to format all Markdown to HTML.
+
+    Markdown syntax cannot be used within HTML elements, and must be converted
+    at YAML level.
+
+    Args:
+        content: the string to be reformatted.
+
+    Returns:
+        Content that has been formatted with proper HTML.
+    """
+
+    content = _reformat_codeblocks(content)
+    content = _reformat_code(content)
+
+    return content
+
+
+def reformat_summary(summary: str) -> str:
+    """Applies any style changes to be made specifically for DocFX YAML.
+
+    Makes the following changes:
+      - converts ``text`` to `text`
+
+    Args:
+        summary: The summary to be modified.
+
+    Returns:
+        Converted summary suitable for DocFX YAML.
+    """
+
+    reformatted_lines = []
+
+    single_backtick = '`'
+    double_backtick = '``'
+    triple_backtick = '```'
+    for line in summary.split('\n'):
+        # Check that we're only looking for double backtick (``) and not
+        # comments (```).
+        if triple_backtick not in line and double_backtick in line:
+            reformatted_lines.append(line.replace(double_backtick, single_backtick))
+
+        else:
+            reformatted_lines.append(line)
+
+    return '\n'.join(reformatted_lines)
 
 
 # Returns appropriate product name to display for given full name of entry.
@@ -953,6 +1044,7 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
 
         # Extract summary info into respective sections.
         if summary:
+            summary = reformat_summary(summary)
             top_summary = _extract_docstring_info(summary_info, summary, name)
             try:
                 datam['summary'], datam['attributes'] = _parse_docstring_summary(top_summary)
@@ -1645,81 +1737,94 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
         if obj["syntax"].get("parameters"):
             for param in obj["syntax"]["parameters"]:
                 if param.get("description"):
-                    param["description"] = convert_cross_references(
+                    param_description = convert_cross_references(
                         param["description"],
                         current_object_name,
                         known_uids
                     )
+                    param["description"] = reformat_markdown_to_html(param_description)
 
                 if param.get("id"):
-                    param["id"] = convert_cross_references(
+                    param_id = convert_cross_references(
                         param["id"],
                         current_object_name,
                         known_uids
                     )
+                    param["id"] = reformat_markdown_to_html(param_id)
 
                 if param.get("var_type"):
-                    param["var_type"] = convert_cross_references(
+                    param_type = convert_cross_references(
                         param["var_type"],
                         current_object_name,
                         known_uids
                     )
+                    param["var_type"] = reformat_markdown_to_html(param_type)
 
         if obj["syntax"].get("exceptions"):
             for exception in obj["syntax"]["exceptions"]:
                 if exception.get("description"):
-                    exception["description"] = convert_cross_references(
+                    exception_description = convert_cross_references(
                         exception["description"],
                         current_object_name,
                         known_uids
                     )
+                    exception["description"] = (
+                        reformat_markdown_to_html(exception_description))
 
                 if exception.get("var_type"):
-                    exception["var_type"] = convert_cross_references(
+                    exception_type = convert_cross_references(
                         exception["var_type"],
                         current_object_name,
                         known_uids
                     )
+                    exception["var_type"] = (
+                        reformat_markdown_to_html(exception_type))
 
         if obj["syntax"].get("returns"):
             for ret in obj["syntax"]["returns"]:
                 if ret.get("description"):
-                    ret["description"] = convert_cross_references(
+                    ret_description = convert_cross_references(
                         ret["description"],
                         current_object_name,
                         known_uids
                     )
+                    ret["description"] = reformat_markdown_to_html(ret_description)
 
                 if ret.get("var_type"):
-                    ret["var_type"] = convert_cross_references(
+                    ret_type = convert_cross_references(
                         ret["var_type"],
                         current_object_name,
                         known_uids
                     )
+                    ret["var_type"] = reformat_markdown_to_html(ret_type)
 
 
     if obj.get("attributes"):
         for attribute in obj["attributes"]:
             if attribute.get("description"):
-                attribute["description"] = convert_cross_references(
+                attribute_description = convert_cross_references(
                     attribute["description"],
                     current_object_name,
                     known_uids
                 )
+                attribute["description"] = (
+                    reformat_markdown_to_html(attribute_description))
 
             if attribute.get("id"):
-                attribute["id"] = convert_cross_references(
+                attribute_id = convert_cross_references(
                     attribute["id"],
                     current_object_name,
                     known_uids
                 )
+                attribute["id"] = reformat_markdown_to_html(attribute_id)
 
             if attribute.get("var_type"):
-                attribute["var_type"] = convert_cross_references(
+                attribute_type = convert_cross_references(
                     attribute["var_type"],
                     current_object_name,
                     known_uids
                 )
+                attribute["var_type"] = reformat_markdown_to_html(attribute_type)
 
 
 def build_finished(app, exception):
