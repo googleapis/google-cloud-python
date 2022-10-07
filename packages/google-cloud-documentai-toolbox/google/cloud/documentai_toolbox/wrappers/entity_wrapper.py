@@ -22,19 +22,41 @@ from google.cloud import documentai
 
 @dataclasses.dataclass
 class EntityWrapper:
-    """Represents a wrapped documentai.Document.Entity .
+    r"""Represents a wrapped google.cloud.documentai.Document.Entity.
 
-    This class hides away the complexity of documentai Entity message type.
+    Attributes:
+        _documentai_entity (google.cloud.documentai.Document.Entity):
+            Required.The original google.cloud.documentai.Document.Entity object.
+        type_ (str):
+            Required. Entity type from a schema e.g. ``Address``.
+        mention_text (str):
+            Optional. Text value in the document e.g.
+            ``1600 Amphitheatre Pkwy``. If the entity is not present in
+            the document, this field will be empty.
     """
-
-    type_: str
-    mention_text: str
-    _documentai_entity: documentai.Document.Entity
+    _documentai_entity: documentai.Document.Entity = dataclasses.field(
+        init=True, repr=False
+    )
+    type_: str = dataclasses.field(init=True, repr=False)
+    mention_text: str = dataclasses.field(init=True, repr=False, default="")
 
     @classmethod
     def from_documentai_entity(
         cls, documentai_entity: documentai.Document.Entity
     ) -> "EntityWrapper":
+        r"""Returns a EntityWrapper from google.cloud.documentai.Document.Entity.
+
+        Args:
+            documentai_entity (google.cloud.documentai.Document.Entity):
+                Required. A single entity object.
+
+        Returns:
+            EntityWrapper:
+                A EntityWrapper from google.cloud.documentai.Document.Entity.
+
+        """
         return EntityWrapper(
-            documentai_entity.type, documentai_entity.mention_text, documentai_entity
+            _documentai_entity=documentai_entity,
+            type_=documentai_entity.type,
+            mention_text=documentai_entity.mention_text,
         )

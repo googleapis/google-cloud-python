@@ -41,6 +41,7 @@ setuptools.setup(
         "google-api-core[grpc] >= 2.8.0, < 3.0.0dev",
         "libcst >= 0.2.5",
         "googleapis-common-protos >= 1.55.0, <2.0.0dev",
+        "pandas >= 1.0.0, <1.5.0",
         "proto-plus >= 1.19.7",
         "grpc-google-iam-v1 >= 0.12.4, < 0.13dev",
         "google-cloud-documentai >= 1.2.1, < 2.0.0dev",

@@ -30,7 +30,17 @@ ElementWithLayout = Union[
 def _text_from_element_with_layout(
     element_with_layout: List[ElementWithLayout], text: str
 ) -> List[str]:
-    """Returns a list of texts from Document.page ."""
+    r"""Returns a list of strings extracted from the element with layout.
+
+    Args:
+        element_with_layout (List[ElementWithLayout]):
+            Required. A element containing a layout object.
+
+    Returns:
+        List[str]:
+            A list of strings extracted from the element with layout.
+
+    """
     result = []
     # If a text segment spans several lines, it will
     # be stored in different text segments.
@@ -48,23 +58,45 @@ def _text_from_element_with_layout(
 class PageWrapper:
     """Represents a wrapped documentai.Document.Page .
 
-    This class hides away the complexity of documentai page message type and
-    implements convenient methods for searching and extracting information within
-    the Document.
+    Attributes:
+        _documentai_page (google.cloud.documentai.Document.Page):
+            Required.The original google.cloud.documentai.Document.Page object.
+        lines (List[str]):
+            Required.A list of visually detected text lines on the
+            page. A collection of tokens that a human would
+            perceive as a line.
+        paragraphs (List[str]):
+            Required.A list of visually detected text paragraphs
+            on the page. A collection of lines that a human
+            would perceive as a paragraph.
     """
 
-    lines: List[str]
-    paragraphs: List[str]
-    tokens: List[str]
-    _documentai_page: documentai.Document.Page
+    _documentai_page: documentai.Document.Page = dataclasses.field(
+        init=True, repr=False
+    )
+    lines: List[str] = dataclasses.field(init=True, repr=False)
+    paragraphs: List[str] = dataclasses.field(init=True, repr=False)
 
     @classmethod
     def from_documentai_page(
         cls, documentai_page: documentai.Document.Page, text: str
     ) -> "PageWrapper":
+        r"""Returns a PageWrapper from google.cloud.documentai.Document.Page.
+
+        Args:
+            documentai_page (google.cloud.documentai.Document.Page):
+                Required. A single page object.
+            text (str):
+                Required. UTF-8 encoded text in reading order
+                from the document.
+
+        Returns:
+            PageWrapper:
+                A PageWrapper from google.cloud.documentai.Document.Page.
+
+        """
         return PageWrapper(
-            _text_from_element_with_layout(documentai_page.lines, text),
-            _text_from_element_with_layout(documentai_page.paragraphs, text),
-            _text_from_element_with_layout(documentai_page.tokens, text),
-            documentai_page,
+            _documentai_page=documentai_page,
+            lines=_text_from_element_with_layout(documentai_page.lines, text),
+            paragraphs=_text_from_element_with_layout(documentai_page.paragraphs, text),
         )
