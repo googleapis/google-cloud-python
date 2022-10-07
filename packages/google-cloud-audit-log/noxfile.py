@@ -29,6 +29,12 @@ nox.options.error_on_missing_interpreters = True
 
 BLACK_VERSION = "black==19.3b0"
 
+# NOTE: Pin the version of grpcio-tools to 1.48.2 for compatibility with 
+# Protobuf 3.19.5. Please ensure that the minimum required version of 
+# protobuf in setup.py is compatible with the pb2 files generated
+# by grpcio-tools before changing the pinned version below.
+GRPCIO_TOOLS_VERSION = "grpcio-tools==1.48.2"
+
 
 @nox.session(python="3.8")
 def blacken(session):
@@ -52,7 +58,7 @@ def generate_protos(session):
        files.
     NOTE: This should be migrated to use bazel in the future.
     """
-    session.install("grpcio-tools")
+    session.install(GRPCIO_TOOLS_VERSION)
     protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
 
     session.run(
