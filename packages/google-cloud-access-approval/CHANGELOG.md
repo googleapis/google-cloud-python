@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.5](https://github.com/googleapis/python-access-approval/compare/v1.7.4...v1.7.5) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#247](https://github.com/googleapis/python-access-approval/issues/247)) ([679c5b7](https://github.com/googleapis/python-access-approval/commit/679c5b7fd907002b23aa2a07edb89773bbf352e1))
+
 ## [1.7.4](https://github.com/googleapis/python-access-approval/compare/v1.7.3...v1.7.4) (2022-10-03)
 
 
