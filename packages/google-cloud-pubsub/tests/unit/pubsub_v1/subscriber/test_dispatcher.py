@@ -437,7 +437,7 @@ def test_ack_splitting_large_payload():
     dispatcher_.ack(items)
 
     calls = manager.send_unary_ack.call_args_list
-    assert len(calls) == 3
+    assert len(calls) == 6
 
     all_ack_ids = {item.ack_id for item in items}
     sent_ack_ids = collections.Counter()
@@ -689,7 +689,7 @@ def test_modify_ack_deadline_splitting_large_payload():
     dispatcher_.modify_ack_deadline(items)
 
     calls = manager.send_unary_modack.call_args_list
-    assert len(calls) == 3
+    assert len(calls) == 6
 
     all_ack_ids = {item.ack_id for item in items}
     sent_ack_ids = collections.Counter()
