@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.5.3...v1.5.4) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#159](https://github.com/googleapis/python-policy-troubleshooter/issues/159)) ([a21385b](https://github.com/googleapis/python-policy-troubleshooter/commit/a21385b794b75192f2c2c9df66e2132659899997))
+
 ## [1.5.3](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.5.2...v1.5.3) (2022-09-29)
 
 
