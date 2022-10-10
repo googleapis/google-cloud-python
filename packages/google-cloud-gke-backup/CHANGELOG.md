@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/python-gke-backup/compare/v0.2.1...v0.2.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#32](https://github.com/googleapis/python-gke-backup/issues/32)) ([273e5e3](https://github.com/googleapis/python-gke-backup/commit/273e5e37839caf413d854313955f6031098b0b86))
+* **deps:** require google-api-core&gt;=1.33.2 ([273e5e3](https://github.com/googleapis/python-gke-backup/commit/273e5e37839caf413d854313955f6031098b0b86))
+
 ## [0.2.1](https://github.com/googleapis/python-gke-backup/compare/v0.2.0...v0.2.1) (2022-10-03)
 
 
