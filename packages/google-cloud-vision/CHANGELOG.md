@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.1.4](https://github.com/googleapis/python-vision/compare/v3.1.3...v3.1.4) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#494](https://github.com/googleapis/python-vision/issues/494)) ([391673a](https://github.com/googleapis/python-vision/commit/391673a5828745df271085383d97137a507d80de))
+
 ## [3.1.3](https://github.com/googleapis/python-vision/compare/v3.1.2...v3.1.3) (2022-09-29)
 
 
