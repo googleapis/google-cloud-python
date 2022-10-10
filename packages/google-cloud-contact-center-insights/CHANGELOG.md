@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.5](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.4...v1.4.5) (2022-10-08)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#253](https://github.com/googleapis/python-contact-center-insights/issues/253)) ([0db00ac](https://github.com/googleapis/python-contact-center-insights/commit/0db00ac9cbfbdfe688d3d0c2200113f03e50b797))
+
 ## [1.4.4](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.3...v1.4.4) (2022-10-03)
 
 
