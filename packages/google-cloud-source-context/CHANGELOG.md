@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.8](https://github.com/googleapis/python-source-context/compare/v1.2.7...v1.2.8) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#118](https://github.com/googleapis/python-source-context/issues/118)) ([45a19ad](https://github.com/googleapis/python-source-context/commit/45a19addbc6f1d24048b1566c23c761bdc30fea7))
+
 ## [1.2.7](https://github.com/googleapis/python-source-context/compare/v1.2.6...v1.2.7) (2022-09-29)
 
 
