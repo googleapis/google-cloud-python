@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.6...v1.0.7) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#125](https://github.com/googleapis/python-bigquery-logging/issues/125)) ([78e0dd3](https://github.com/googleapis/python-bigquery-logging/commit/78e0dd3ae9ba3007c27342314a8a19e128155d08))
+
 ## [1.0.6](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.5...v1.0.6) (2022-10-03)
 
 
