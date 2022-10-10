@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/python-gke-multicloud/compare/v0.2.1...v0.2.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#34](https://github.com/googleapis/python-gke-multicloud/issues/34)) ([36ffc90](https://github.com/googleapis/python-gke-multicloud/commit/36ffc90db52dfd0a90d26fd4c8c7bbac74269058))
+* **deps:** require google-api-core&gt;=1.33.2 ([36ffc90](https://github.com/googleapis/python-gke-multicloud/commit/36ffc90db52dfd0a90d26fd4c8c7bbac74269058))
+
 ## [0.2.1](https://github.com/googleapis/python-gke-multicloud/compare/v0.2.0...v0.2.1) (2022-10-03)
 
 
