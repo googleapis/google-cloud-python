@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.16.1](https://github.com/googleapis/python-dialogflow/compare/v2.16.0...v2.16.1) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#585](https://github.com/googleapis/python-dialogflow/issues/585)) ([4030787](https://github.com/googleapis/python-dialogflow/commit/40307877bbc467e6475a5614d315de4e6d902683))
+
+
+### Documentation
+
+* **samples:** Add sample code for StreamingAnalyzeContent for live transcription. ([#575](https://github.com/googleapis/python-dialogflow/issues/575)) ([b6bbd62](https://github.com/googleapis/python-dialogflow/commit/b6bbd62a3d3293e3ae031b2fdd8940343da08e74))
+
 ## [2.16.0](https://github.com/googleapis/python-dialogflow/compare/v2.15.2...v2.16.0) (2022-10-03)
 
 
