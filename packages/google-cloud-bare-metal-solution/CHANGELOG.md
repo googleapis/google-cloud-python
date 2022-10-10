@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/googleapis/python-bare-metal-solution/compare/v1.1.2...v1.1.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#62](https://github.com/googleapis/python-bare-metal-solution/issues/62)) ([1e954d9](https://github.com/googleapis/python-bare-metal-solution/commit/1e954d9e925b69aaec45a152dd134b2911f28f3f))
+
 ## [1.1.2](https://github.com/googleapis/python-bare-metal-solution/compare/v1.1.1...v1.1.2) (2022-10-03)
 
 
