@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/python-run/compare/v0.4.1...v0.4.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#58](https://github.com/googleapis/python-run/issues/58)) ([87dcb78](https://github.com/googleapis/python-run/commit/87dcb781affd73e25e3850e01a240e0e985f0570))
+* **deps:** require google-api-core&gt;=1.33.2 ([87dcb78](https://github.com/googleapis/python-run/commit/87dcb781affd73e25e3850e01a240e0e985f0570))
+
 ## [0.4.1](https://github.com/googleapis/python-run/compare/v0.4.0...v0.4.1) (2022-10-03)
 
 
