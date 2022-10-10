@@ -20,7 +20,7 @@ import os
 
 import setuptools  # type: ignore
 
-version = "1.4.2"
+version = "1.4.3"
 description = "Resource Settings API client library"
 package_root = os.path.abspath(os.path.dirname(__file__))
 
