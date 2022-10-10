@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/python-api-keys/compare/v0.2.1...v0.2.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#22](https://github.com/googleapis/python-api-keys/issues/22)) ([b8024ae](https://github.com/googleapis/python-api-keys/commit/b8024ae2779ad5bb15d4e95db7149217c59017d5))
+* **deps:** require google-api-core&gt;=1.33.2 ([b8024ae](https://github.com/googleapis/python-api-keys/commit/b8024ae2779ad5bb15d4e95db7149217c59017d5))
+
 ## [0.2.1](https://github.com/googleapis/python-api-keys/compare/v0.2.0...v0.2.1) (2022-10-03)
 
 
