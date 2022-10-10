@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/python-network-services/compare/v0.2.1...v0.2.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#50](https://github.com/googleapis/python-network-services/issues/50)) ([c05d701](https://github.com/googleapis/python-network-services/commit/c05d7015b39317876ec7d63819345ef63431a3cc))
+
 ## [0.2.1](https://github.com/googleapis/python-network-services/compare/v0.2.0...v0.2.1) (2022-09-29)
 
 
