@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2](https://github.com/googleapis/python-network-security/compare/v0.7.1...v0.7.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#145](https://github.com/googleapis/python-network-security/issues/145)) ([78f436a](https://github.com/googleapis/python-network-security/commit/78f436a852ae5f0e54665b45de42b391a0aca67d))
+* **deps:** require google-api-core&gt;=1.33.2 ([78f436a](https://github.com/googleapis/python-network-security/commit/78f436a852ae5f0e54665b45de42b391a0aca67d))
+
 ## [0.7.1](https://github.com/googleapis/python-network-security/compare/v0.7.0...v0.7.1) (2022-09-29)
 
 
