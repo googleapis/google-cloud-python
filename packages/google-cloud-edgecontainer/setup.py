@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-edgecontainer"
 description = "Distributed Cloud Edge Container API client library"
-version = "0.2.0"
+version = "0.2.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
