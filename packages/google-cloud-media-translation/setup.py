@@ -19,7 +19,7 @@ import os
 
 import setuptools  # type: ignore
 
-version = "0.9.3"
+version = "0.9.4"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
