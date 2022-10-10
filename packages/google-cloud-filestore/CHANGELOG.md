@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/googleapis/python-filestore/compare/v1.2.2...v1.2.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#113](https://github.com/googleapis/python-filestore/issues/113)) ([44b1f4b](https://github.com/googleapis/python-filestore/commit/44b1f4bf289a8d10ea1012829d50953e347f221a))
+
 ## [1.2.2](https://github.com/googleapis/python-filestore/compare/v1.2.1...v1.2.2) (2022-09-29)
 
 
