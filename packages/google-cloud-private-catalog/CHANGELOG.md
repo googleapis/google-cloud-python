@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2](https://github.com/googleapis/python-private-catalog/compare/v0.7.1...v0.7.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#162](https://github.com/googleapis/python-private-catalog/issues/162)) ([7ff79fe](https://github.com/googleapis/python-private-catalog/commit/7ff79fe6d012c4f9fbfd22749afc2d3918e1bc21))
+* **deps:** require google-api-core&gt;=1.33.2 ([7ff79fe](https://github.com/googleapis/python-private-catalog/commit/7ff79fe6d012c4f9fbfd22749afc2d3918e1bc21))
+
 ## [0.7.1](https://github.com/googleapis/python-private-catalog/compare/v0.7.0...v0.7.1) (2022-10-03)
 
 
