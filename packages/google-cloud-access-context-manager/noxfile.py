@@ -28,6 +28,12 @@ BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.10.1"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
+# NOTE: Pin the version of grpcio-tools to 1.48.2 for compatibility with
+# Protobuf 3.19.5. Please ensure that the minimum required version of
+# protobuf in setup.py is compatible with the pb2 files generated
+# by grpcio-tools before changing the pinned version below.
+GRPCIO_TOOLS_VERSION = "grpcio-tools==1.48.2"
+
 DEFAULT_PYTHON_VERSION = "3.8"
 
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
@@ -253,7 +259,7 @@ def generate_protos(session):
        If a new subdirectory is added, you will need to create more `__init__.py`
        files.
     """
-    session.install("grpcio-tools")
+    session.install(GRPCIO_TOOLS_VERSION)
     protos = [str(p) for p in (pathlib.Path(".").glob("google/**/*.proto"))]
 
     session.run(
