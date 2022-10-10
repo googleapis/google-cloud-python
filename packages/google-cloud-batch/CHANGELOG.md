@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-batch/compare/v0.3.1...v0.3.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#53](https://github.com/googleapis/python-batch/issues/53)) ([db79e36](https://github.com/googleapis/python-batch/commit/db79e36e9c7193a5b81351b63eb7d4985fc981da))
+* **deps:** require google-api-core&gt;=1.33.2 ([db79e36](https://github.com/googleapis/python-batch/commit/db79e36e9c7193a5b81351b63eb7d4985fc981da))
+
 ## [0.3.1](https://github.com/googleapis/python-batch/compare/v0.3.0...v0.3.1) (2022-10-03)
 
 
