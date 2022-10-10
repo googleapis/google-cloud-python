@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-apigee-connect/compare/v1.4.2...v1.4.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#151](https://github.com/googleapis/python-apigee-connect/issues/151)) ([baca117](https://github.com/googleapis/python-apigee-connect/commit/baca117237ee80e889366fa54ff1bd0fb54e2661))
+
 ## [1.4.2](https://github.com/googleapis/python-apigee-connect/compare/v1.4.1...v1.4.2) (2022-09-29)
 
 
