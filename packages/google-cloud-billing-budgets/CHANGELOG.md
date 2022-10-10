@@ -1,4 +1,11 @@
 # Changelog
+## [1.7.3](https://github.com/googleapis/python-billingbudgets/compare/v1.7.2...v1.7.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#245](https://github.com/googleapis/python-billingbudgets/issues/245)) ([234a5ca](https://github.com/googleapis/python-billingbudgets/commit/234a5caba3f8e58ecc3406b09c42e6a77ad9b253))
+
 ## [1.7.2](https://github.com/googleapis/python-billingbudgets/compare/v1.7.1...v1.7.2) (2022-09-29)
 
 
