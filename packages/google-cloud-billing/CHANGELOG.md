@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/googleapis/python-billing/compare/v1.7.2...v1.7.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#217](https://github.com/googleapis/python-billing/issues/217)) ([d974efc](https://github.com/googleapis/python-billing/commit/d974efc71c363f39f3f850d1960b8ae41ab9b478))
+
 ## [1.7.2](https://github.com/googleapis/python-billing/compare/v1.7.1...v1.7.2) (2022-09-29)
 
 
