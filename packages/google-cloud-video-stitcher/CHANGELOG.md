@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-video-stitcher/compare/v0.3.1...v0.3.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf 3.19.5 ([61653d5](https://github.com/googleapis/python-video-stitcher/commit/61653d5627762a886718478a232053841a63b947))
+* **deps:** require google-api-core&gt;=1.33.2 ([61653d5](https://github.com/googleapis/python-video-stitcher/commit/61653d5627762a886718478a232053841a63b947))
+
 ## [0.3.1](https://github.com/googleapis/python-video-stitcher/compare/v0.3.0...v0.3.1) (2022-10-03)
 
 
