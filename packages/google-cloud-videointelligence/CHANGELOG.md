@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.8.3](https://github.com/googleapis/python-videointelligence/compare/v2.8.2...v2.8.3) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#375](https://github.com/googleapis/python-videointelligence/issues/375)) ([2042093](https://github.com/googleapis/python-videointelligence/commit/2042093b5520c7990cfa6cce07931cc020d47a63))
+
 ## [2.8.2](https://github.com/googleapis/python-videointelligence/compare/v2.8.1...v2.8.2) (2022-09-29)
 
 
