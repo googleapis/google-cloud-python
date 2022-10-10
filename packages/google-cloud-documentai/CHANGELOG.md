@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/googleapis/python-documentai/compare/v2.0.2...v2.0.3) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#388](https://github.com/googleapis/python-documentai/issues/388)) ([fd72e6e](https://github.com/googleapis/python-documentai/commit/fd72e6e9eb3ab90b37ce352bc2c138147ff0777b))
+
 ## [2.0.2](https://github.com/googleapis/python-documentai/compare/v2.0.1...v2.0.2) (2022-10-03)
 
 
