@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/googleapis/python-bigquery-migration/compare/v0.7.1...v0.7.2) (2022-10-08)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#139](https://github.com/googleapis/python-bigquery-migration/issues/139)) ([5258fa6](https://github.com/googleapis/python-bigquery-migration/commit/5258fa6112f7f47ec0b3351f45dd90f18eaa5181))
+
 ## [0.7.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.7.0...v0.7.1) (2022-09-29)
 
 
