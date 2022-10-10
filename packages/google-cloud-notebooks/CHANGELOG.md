@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/googleapis/python-notebooks/compare/v1.4.3...v1.4.4) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#206](https://github.com/googleapis/python-notebooks/issues/206)) ([8e6980a](https://github.com/googleapis/python-notebooks/commit/8e6980afc220c84539da26e9d950a87dc4b75b61))
+
 ## [1.4.3](https://github.com/googleapis/python-notebooks/compare/v1.4.2...v1.4.3) (2022-09-29)
 
 
