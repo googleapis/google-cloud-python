@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.9.2](https://github.com/googleapis/python-websecurityscanner/compare/v1.9.1...v1.9.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#244](https://github.com/googleapis/python-websecurityscanner/issues/244)) ([9950ae9](https://github.com/googleapis/python-websecurityscanner/commit/9950ae9f1b55ad24cd67d1f6d95b43efcb62b127))
+
 ## [1.9.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.9.0...v1.9.1) (2022-09-29)
 
 
