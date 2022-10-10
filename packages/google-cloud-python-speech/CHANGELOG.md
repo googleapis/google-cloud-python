@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.16.2](https://github.com/googleapis/python-speech/compare/v2.16.1...v2.16.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#456](https://github.com/googleapis/python-speech/issues/456)) ([01f7324](https://github.com/googleapis/python-speech/commit/01f732416cebc4ead860eea1e987afe136018f62))
+
+
+### Documentation
+
+* **samples:** Add create_recognizer code sample ([#450](https://github.com/googleapis/python-speech/issues/450)) ([4ea3edc](https://github.com/googleapis/python-speech/commit/4ea3edc7b62b1a815caa7af34383e9cd2eddf5fe))
+* **samples:** Add quickstart code sample for STT V2 ([#451](https://github.com/googleapis/python-speech/issues/451)) ([5b1ce98](https://github.com/googleapis/python-speech/commit/5b1ce983f812a63837c8f9338ed46b11e2c21ddc))
+
 ## [2.16.1](https://github.com/googleapis/python-speech/compare/v2.16.0...v2.16.1) (2022-10-05)
 
 
