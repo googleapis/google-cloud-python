@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/googleapis/python-network-connectivity/compare/v1.4.3...v1.4.4) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#214](https://github.com/googleapis/python-network-connectivity/issues/214)) ([61c7752](https://github.com/googleapis/python-network-connectivity/commit/61c77527df08902a589708352326b5a75fabe6be))
+
 ## [1.4.3](https://github.com/googleapis/python-network-connectivity/compare/v1.4.2...v1.4.3) (2022-09-29)
 
 
