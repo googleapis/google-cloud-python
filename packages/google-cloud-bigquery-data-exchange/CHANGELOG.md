@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.3.1...v0.3.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#45](https://github.com/googleapis/python-bigquery-data-exchange/issues/45)) ([6d2e4d3](https://github.com/googleapis/python-bigquery-data-exchange/commit/6d2e4d3f7a6ff270d7eb6c73687810b5cbd4698f))
+
 ## [0.3.1](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.3.0...v0.3.1) (2022-09-29)
 
 
