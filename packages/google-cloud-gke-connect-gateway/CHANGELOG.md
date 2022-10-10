@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.6.2...v0.6.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#134](https://github.com/googleapis/python-gke-connect-gateway/issues/134)) ([8abbac1](https://github.com/googleapis/python-gke-connect-gateway/commit/8abbac1f3a0ac59e659e60d2c8ca98d2acf5fea1))
+
 ## [0.6.2](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.6.1...v0.6.2) (2022-09-29)
 
 
