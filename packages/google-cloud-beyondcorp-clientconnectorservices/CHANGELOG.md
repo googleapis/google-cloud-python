@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.2.1...v0.2.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#32](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/issues/32)) ([2d5853a](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/2d5853ad56ea54d92aa720c7503c2b75a2bbc067))
+* **deps:** require google-api-core&gt;=1.33.2 ([2d5853a](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/commit/2d5853ad56ea54d92aa720c7503c2b75a2bbc067))
+
 ## [0.2.1](https://github.com/googleapis/python-beyondcorp-clientconnectorservices/compare/v0.2.0...v0.2.1) (2022-10-03)
 
 
