@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/python-vpc-access/compare/v1.5.1...v1.5.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#147](https://github.com/googleapis/python-vpc-access/issues/147)) ([797e8d9](https://github.com/googleapis/python-vpc-access/commit/797e8d9a206d6843da69a8a17ebc050d632783e9))
+
 ## [1.5.1](https://github.com/googleapis/python-vpc-access/compare/v1.5.0...v1.5.1) (2022-09-29)
 
 
