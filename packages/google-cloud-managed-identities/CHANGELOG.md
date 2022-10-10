@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/googleapis/python-managed-identities/compare/v1.5.3...v1.5.4) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#185](https://github.com/googleapis/python-managed-identities/issues/185)) ([3818154](https://github.com/googleapis/python-managed-identities/commit/381815414a1cfc480d5b7b3810fd6a1ab7d452f7))
+
 ## [1.5.3](https://github.com/googleapis/python-managed-identities/compare/v1.5.2...v1.5.3) (2022-09-29)
 
 
