@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.2](https://github.com/googleapis/python-data-qna/compare/v0.8.1...v0.8.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#192](https://github.com/googleapis/python-data-qna/issues/192)) ([89df145](https://github.com/googleapis/python-data-qna/commit/89df145b57975f709927468b5f7ee2a884c982f8))
+* **deps:** require google-api-core&gt;=1.33.2 ([89df145](https://github.com/googleapis/python-data-qna/commit/89df145b57975f709927468b5f7ee2a884c982f8))
+
 ## [0.8.1](https://github.com/googleapis/python-data-qna/compare/v0.8.0...v0.8.1) (2022-10-03)
 
 
