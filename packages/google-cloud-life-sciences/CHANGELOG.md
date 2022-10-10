@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2](https://github.com/googleapis/python-life-sciences/compare/v0.7.1...v0.7.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#145](https://github.com/googleapis/python-life-sciences/issues/145)) ([720b116](https://github.com/googleapis/python-life-sciences/commit/720b11643c78d94498f3714c4bb9f48604e67b14))
+* **deps:** require google-api-core&gt;=1.33.2 ([720b116](https://github.com/googleapis/python-life-sciences/commit/720b11643c78d94498f3714c4bb9f48604e67b14))
+
 ## [0.7.1](https://github.com/googleapis/python-life-sciences/compare/v0.7.0...v0.7.1) (2022-10-03)
 
 
