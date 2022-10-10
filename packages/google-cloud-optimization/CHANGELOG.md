@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/googleapis/python-optimization/compare/v1.1.2...v1.1.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#84](https://github.com/googleapis/python-optimization/issues/84)) ([5eb6739](https://github.com/googleapis/python-optimization/commit/5eb6739abc3d4992b1f8b2c62f4f4c9fef655121))
+
 ## [1.1.2](https://github.com/googleapis/python-optimization/compare/v1.1.1...v1.1.2) (2022-09-29)
 
 
