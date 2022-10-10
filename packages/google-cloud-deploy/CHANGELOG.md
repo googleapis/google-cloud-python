@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-deploy/compare/v1.4.0...v1.4.1) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#137](https://github.com/googleapis/python-deploy/issues/137)) ([045381a](https://github.com/googleapis/python-deploy/commit/045381a445a610629d06016b0637b365f1299983))
+
 ## [1.4.0](https://github.com/googleapis/python-deploy/compare/v1.3.1...v1.4.0) (2022-09-29)
 
 
