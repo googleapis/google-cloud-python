@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-compute/compare/v1.6.0...v1.6.1) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#351](https://github.com/googleapis/python-compute/issues/351)) ([f64b468](https://github.com/googleapis/python-compute/commit/f64b468833cbd188ad8300959fa35fd8bbbee028))
+* **deps:** require google-api-core &gt;=2.10.2 ([f64b468](https://github.com/googleapis/python-compute/commit/f64b468833cbd188ad8300959fa35fd8bbbee028))
+
+
+### Documentation
+
+* **samples:** Fixing an issue with listing all instances ([#349](https://github.com/googleapis/python-compute/issues/349)) ([8f47a01](https://github.com/googleapis/python-compute/commit/8f47a01f1be3a9b29a80adba2637363c4a3e0a65))
+
 ## [1.6.0](https://github.com/googleapis/python-compute/compare/v1.5.2...v1.6.0) (2022-09-29)
 
 
