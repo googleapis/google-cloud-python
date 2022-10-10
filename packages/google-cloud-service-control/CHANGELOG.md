@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/googleapis/python-service-control/compare/v1.5.2...v1.5.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#176](https://github.com/googleapis/python-service-control/issues/176)) ([dd6d7b9](https://github.com/googleapis/python-service-control/commit/dd6d7b951158269328f46a653d5cd9a6739e7acb))
+
 ## [1.5.2](https://github.com/googleapis/python-service-control/compare/v1.5.1...v1.5.2) (2022-10-03)
 
 
