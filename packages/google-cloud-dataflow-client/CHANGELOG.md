@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-dataflow-client/compare/v0.6.1...v0.6.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#150](https://github.com/googleapis/python-dataflow-client/issues/150)) ([216c6e2](https://github.com/googleapis/python-dataflow-client/commit/216c6e2b74db6b61d85e67df39c490cb99d71835))
+* **deps:** require google-api-core&gt;=1.33.2 ([216c6e2](https://github.com/googleapis/python-dataflow-client/commit/216c6e2b74db6b61d85e67df39c490cb99d71835))
+
 ## [0.6.1](https://github.com/googleapis/python-dataflow-client/compare/v0.6.0...v0.6.1) (2022-10-03)
 
 
