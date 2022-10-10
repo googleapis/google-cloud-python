@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-apigee-registry/compare/v0.3.1...v0.3.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#42](https://github.com/googleapis/python-apigee-registry/issues/42)) ([d3a30ab](https://github.com/googleapis/python-apigee-registry/commit/d3a30abbca1f51b0312983132063387a55b0f8d6))
+* **deps:** require google-api-core&gt;=1.33.2 ([d3a30ab](https://github.com/googleapis/python-apigee-registry/commit/d3a30abbca1f51b0312983132063387a55b0f8d6))
+
 ## [0.3.1](https://github.com/googleapis/python-apigee-registry/compare/v0.3.0...v0.3.1) (2022-09-30)
 
 
