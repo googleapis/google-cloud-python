@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/python-eventarc-publishing/compare/v0.4.1...v0.4.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#75](https://github.com/googleapis/python-eventarc-publishing/issues/75)) ([22f1a06](https://github.com/googleapis/python-eventarc-publishing/commit/22f1a06b81422bf239f62113d01b83fef9d9faf3))
+* **deps:** require google-api-core&gt;=1.33.2 ([22f1a06](https://github.com/googleapis/python-eventarc-publishing/commit/22f1a06b81422bf239f62113d01b83fef9d9faf3))
+
 ## [0.4.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.4.0...v0.4.1) (2022-09-29)
 
 
