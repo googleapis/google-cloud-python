@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/googleapis/python-datastream/compare/v1.2.1...v1.2.2) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#140](https://github.com/googleapis/python-datastream/issues/140)) ([7665324](https://github.com/googleapis/python-datastream/commit/766532478952874ece0ce943f576a80a94f33e26))
+
 ## [1.2.1](https://github.com/googleapis/python-datastream/compare/v1.2.0...v1.2.1) (2022-10-03)
 
 
