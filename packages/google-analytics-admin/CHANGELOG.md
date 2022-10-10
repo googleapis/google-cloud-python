@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.2](https://github.com/googleapis/python-analytics-admin/compare/v0.11.1...v0.11.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#283](https://github.com/googleapis/python-analytics-admin/issues/283)) ([e686492](https://github.com/googleapis/python-analytics-admin/commit/e6864926c0f2691ed6233858969634fc40c93e5a))
+* **deps:** require google-api-core&gt;=1.33.2 ([e686492](https://github.com/googleapis/python-analytics-admin/commit/e6864926c0f2691ed6233858969634fc40c93e5a))
+
 ## [0.11.1](https://github.com/googleapis/python-analytics-admin/compare/v0.11.0...v0.11.1) (2022-10-03)
 
 
