@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-assured-workloads/compare/v1.6.0...v1.6.1) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#209](https://github.com/googleapis/python-assured-workloads/issues/209)) ([a420318](https://github.com/googleapis/python-assured-workloads/commit/a420318a79c80e0be11c335475f8f759df92a93f))
+
 ## [1.6.0](https://github.com/googleapis/python-assured-workloads/compare/v1.5.0...v1.6.0) (2022-10-03)
 
 
