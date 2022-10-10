@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/googleapis/python-iap/compare/v1.5.3...v1.5.4) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#137](https://github.com/googleapis/python-iap/issues/137)) ([c5fd70f](https://github.com/googleapis/python-iap/commit/c5fd70f7168a5a87a52afb25a399a6990ab2c9e0))
+
 ## [1.5.3](https://github.com/googleapis/python-iap/compare/v1.5.2...v1.5.3) (2022-10-03)
 
 

@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-iap"
 description = "Identity-Aware Proxy API client library"
-version = "1.5.3"
+version = "1.5.4"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-iap"
 dependencies = [
