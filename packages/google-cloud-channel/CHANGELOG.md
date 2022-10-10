@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.3](https://github.com/googleapis/python-channel/compare/v1.9.2...v1.9.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#207](https://github.com/googleapis/python-channel/issues/207)) ([320de8f](https://github.com/googleapis/python-channel/commit/320de8fb8bd85c154b1b0aa61c49b2c651ecfecd))
+
 ## [1.9.2](https://github.com/googleapis/python-channel/compare/v1.9.1...v1.9.2) (2022-10-03)
 
 
