@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.7.3](https://github.com/googleapis/python-talent/compare/v2.7.2...v2.7.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#297](https://github.com/googleapis/python-talent/issues/297)) ([21315d0](https://github.com/googleapis/python-talent/commit/21315d00960e8eeb22090a465ae917698b271bfa))
+
 ## [2.7.2](https://github.com/googleapis/python-talent/compare/v2.7.1...v2.7.2) (2022-09-29)
 
 
