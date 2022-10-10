@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.2.1...v0.2.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#30](https://github.com/googleapis/python-beyondcorp-appgateways/issues/30)) ([bef20fa](https://github.com/googleapis/python-beyondcorp-appgateways/commit/bef20fa45913a05b9efa07ac29bfd1bce9037ea2))
+* **deps:** require google-api-core&gt;=1.33.2 ([bef20fa](https://github.com/googleapis/python-beyondcorp-appgateways/commit/bef20fa45913a05b9efa07ac29bfd1bce9037ea2))
+
 ## [0.2.1](https://github.com/googleapis/python-beyondcorp-appgateways/compare/v0.2.0...v0.2.1) (2022-10-03)
 
 
