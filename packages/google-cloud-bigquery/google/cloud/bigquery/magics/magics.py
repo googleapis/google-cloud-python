@@ -125,7 +125,7 @@ class Context(object):
         self._default_query_job_config = bigquery.QueryJobConfig()
         self._bigquery_client_options = client_options.ClientOptions()
         self._bqstorage_client_options = client_options.ClientOptions()
-        self._progress_bar_type = "tqdm"
+        self._progress_bar_type = "tqdm_notebook"
 
     @property
     def credentials(self):
@@ -269,7 +269,7 @@ class Context(object):
             Manually setting the progress_bar_type:
 
             >>> from google.cloud.bigquery import magics
-            >>> magics.context.progress_bar_type = "tqdm"
+            >>> magics.context.progress_bar_type = "tqdm_notebook"
         """
         return self._progress_bar_type
 
@@ -286,7 +286,7 @@ def _handle_error(error, destination_var=None):
 
     Args:
         error (Exception):
-            An exception that ocurred during the query exectution.
+            An exception that ocurred during the query execution.
         destination_var (Optional[str]):
             The name of the IPython session variable to store the query job.
     """
@@ -329,22 +329,25 @@ def _run_query(client, query, job_config=None):
         Query complete after 2.07s
         'bf633912-af2c-4780-b568-5d868058632b'
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
     query_job = client.query(query, job_config=job_config)
 
     if job_config and job_config.dry_run:
         return query_job
 
-    print("Executing query with job ID: {}".format(query_job.job_id))
+    print(f"Executing query with job ID: {query_job.job_id}")
 
     while True:
-        print("\rQuery executing: {:0.2f}s".format(time.time() - start_time), end="")
+        print(
+            f"\rQuery executing: {time.perf_counter() - start_time:.2f}s".format(),
+            end="",
+        )
         try:
             query_job.result(timeout=0.5)
             break
         except futures.TimeoutError:
             continue
-    print("\nQuery complete after {:0.2f}s".format(time.time() - start_time))
+    print(f"\nJob ID {query_job.job_id} successfully executed")
     return query_job
 
 
@@ -365,7 +368,7 @@ def _create_dataset_if_necessary(client, dataset_id):
         pass
     dataset = bigquery.Dataset(dataset_reference)
     dataset.location = client.location
-    print("Creating dataset: {}".format(dataset_id))
+    print(f"Creating dataset: {dataset_id}")
     dataset = client.create_dataset(dataset)
 
 
@@ -500,7 +503,7 @@ def _create_dataset_if_necessary(client, dataset_id):
     default=None,
     help=(
         "Sets progress bar type to display a progress bar while executing the query."
-        "Defaults to use tqdm. Install the ``tqdm`` package to use this feature."
+        "Defaults to use tqdm_notebook. Install the ``tqdm`` package to use this feature."
     ),
 )
 def _cell_magic(line, query):
