@@ -55,7 +55,11 @@ _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projec
 
 
 @six.add_metaclass(abc.ABCMeta)
-class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
+class Credentials(
+    credentials.Scoped,
+    credentials.CredentialsWithQuotaProject,
+    credentials.CredentialsWithTokenUri,
+):
     """Base class for all external account credentials.
 
     This is used to instantiate Credentials for exchanging external account
@@ -374,6 +378,26 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             client_id=self._client_id,
             client_secret=self._client_secret,
             quota_project_id=quota_project_id,
+            scopes=self._scopes,
+            default_scopes=self._default_scopes,
+            workforce_pool_user_project=self._workforce_pool_user_project,
+        )
+        if not self.is_workforce_pool:
+            d.pop("workforce_pool_user_project")
+        return self.__class__(**d)
+
+    @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
+    def with_token_uri(self, token_uri):
+        d = dict(
+            audience=self._audience,
+            subject_token_type=self._subject_token_type,
+            token_url=token_uri,
+            credential_source=self._credential_source,
+            service_account_impersonation_url=self._service_account_impersonation_url,
+            service_account_impersonation_options=self._service_account_impersonation_options,
+            client_id=self._client_id,
+            client_secret=self._client_secret,
+            quota_project_id=self._quota_project_id,
             scopes=self._scopes,
             default_scopes=self._default_scopes,
             workforce_pool_user_project=self._workforce_pool_user_project,

@@ -154,7 +154,11 @@ _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _DEFAULT_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
 
 
-class IDTokenCredentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
+class IDTokenCredentials(
+    credentials.CredentialsWithQuotaProject,
+    credentials.Signing,
+    credentials.CredentialsWithTokenUri,
+):
     """Open ID Connect ID Token-based service account credentials.
 
     These credentials relies on the default service account of a GCE instance.
@@ -300,6 +304,27 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject, credentials.Si
                 signer=self.signer,
                 use_metadata_identity_endpoint=False,
                 quota_project_id=quota_project_id,
+            )
+
+    @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
+    def with_token_uri(self, token_uri):
+
+        # since the signer is already instantiated,
+        # the request is not needed
+        if self._use_metadata_identity_endpoint:
+            raise ValueError(
+                "If use_metadata_identity_endpoint is set, token_uri" " must not be set"
+            )
+        else:
+            return self.__class__(
+                None,
+                service_account_email=self._service_account_email,
+                token_uri=token_uri,
+                target_audience=self._target_audience,
+                additional_claims=self._additional_claims.copy(),
+                signer=self.signer,
+                use_metadata_identity_endpoint=False,
+                quota_project_id=self.quota_project_id,
             )
 
     def _make_authorization_grant_assertion(self):

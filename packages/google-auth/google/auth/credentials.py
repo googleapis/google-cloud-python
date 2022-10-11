@@ -150,6 +150,21 @@ class CredentialsWithQuotaProject(Credentials):
         raise NotImplementedError("This credential does not support quota project.")
 
 
+class CredentialsWithTokenUri(Credentials):
+    """Abstract base for credentials supporting ``with_token_uri`` factory"""
+
+    def with_token_uri(self, token_uri):
+        """Returns a copy of these credentials with a modified token uri.
+
+        Args:
+            token_uri (str): The uri to use for fetching/exchanging tokens
+
+        Returns:
+            google.oauth2.credentials.Credentials: A new credentials instance.
+        """
+        raise NotImplementedError("This credential does not use token uri.")
+
+
 class AnonymousCredentials(Credentials):
     """Credentials that do not provide any authentication information.
 

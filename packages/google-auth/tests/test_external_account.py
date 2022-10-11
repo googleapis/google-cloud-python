@@ -542,6 +542,33 @@ class TestCredentials(object):
             workforce_pool_user_project=None,
         )
 
+    def test_with_token_uri(self):
+        credentials = self.make_credentials()
+        new_token_uri = "https://eu-sts.googleapis.com/v1/token"
+
+        assert credentials._token_url == self.TOKEN_URL
+
+        creds_with_new_token_uri = credentials.with_token_uri(new_token_uri)
+
+        assert creds_with_new_token_uri._token_url == new_token_uri
+
+    def test_with_token_uri_workforce_pool(self):
+        credentials = self.make_workforce_pool_credentials(
+            workforce_pool_user_project=self.WORKFORCE_POOL_USER_PROJECT
+        )
+
+        new_token_uri = "https://eu-sts.googleapis.com/v1/token"
+
+        assert credentials._token_url == self.TOKEN_URL
+
+        creds_with_new_token_uri = credentials.with_token_uri(new_token_uri)
+
+        assert creds_with_new_token_uri._token_url == new_token_uri
+        assert (
+            creds_with_new_token_uri.info.get("workforce_pool_user_project")
+            == self.WORKFORCE_POOL_USER_PROJECT
+        )
+
     def test_with_quota_project(self):
         credentials = self.make_credentials()
 

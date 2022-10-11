@@ -84,7 +84,10 @@ _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
 class Credentials(
-    credentials.Signing, credentials.Scoped, credentials.CredentialsWithQuotaProject
+    credentials.Signing,
+    credentials.Scoped,
+    credentials.CredentialsWithQuotaProject,
+    credentials.CredentialsWithTokenUri,
 ):
     """Service account credentials
 
@@ -364,6 +367,22 @@ class Credentials(
             always_use_jwt_access=self._always_use_jwt_access,
         )
 
+    @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
+    def with_token_uri(self, token_uri):
+
+        return self.__class__(
+            self._signer,
+            service_account_email=self._service_account_email,
+            default_scopes=self._default_scopes,
+            scopes=self._scopes,
+            token_uri=token_uri,
+            subject=self._subject,
+            project_id=self._project_id,
+            quota_project_id=self._quota_project_id,
+            additional_claims=self._additional_claims.copy(),
+            always_use_jwt_access=self._always_use_jwt_access,
+        )
+
     def _make_authorization_grant_assertion(self):
         """Create the OAuth 2.0 assertion.
 
@@ -455,7 +474,11 @@ class Credentials(
         return self._service_account_email
 
 
-class IDTokenCredentials(credentials.Signing, credentials.CredentialsWithQuotaProject):
+class IDTokenCredentials(
+    credentials.Signing,
+    credentials.CredentialsWithQuotaProject,
+    credentials.CredentialsWithTokenUri,
+):
     """Open ID Connect ID Token-based service account credentials.
 
     These credentials are largely similar to :class:`.Credentials`, but instead
@@ -625,6 +648,17 @@ class IDTokenCredentials(credentials.Signing, credentials.CredentialsWithQuotaPr
             target_audience=self._target_audience,
             additional_claims=self._additional_claims.copy(),
             quota_project_id=quota_project_id,
+        )
+
+    @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
+    def with_token_uri(self, token_uri):
+        return self.__class__(
+            self._signer,
+            service_account_email=self._service_account_email,
+            token_uri=token_uri,
+            target_audience=self._target_audience,
+            additional_claims=self._additional_claims.copy(),
+            quota_project_id=self._quota_project_id,
         )
 
     def _make_authorization_grant_assertion(self):

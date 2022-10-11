@@ -701,6 +701,18 @@ class TestCredentials(object):
         creds.apply(headers)
         assert "x-goog-user-project" in headers
 
+    def test_with_token_uri(self):
+        info = AUTH_USER_INFO.copy()
+
+        creds = credentials.Credentials.from_authorized_user_info(info)
+        new_token_uri = "https://oauth2-eu.googleapis.com/token"
+
+        assert creds._token_uri == credentials._GOOGLE_OAUTH2_TOKEN_ENDPOINT
+
+        creds_with_new_token_uri = creds.with_token_uri(new_token_uri)
+
+        assert creds_with_new_token_uri._token_uri == new_token_uri
+
     def test_from_authorized_user_info(self):
         info = AUTH_USER_INFO.copy()
 

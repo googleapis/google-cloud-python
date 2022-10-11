@@ -483,6 +483,50 @@ class TestIDTokenCredentials(object):
         # Check that the signer have been initialized with a Request object
         assert isinstance(self.credentials._signer._request, transport.Request)
 
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.utcfromtimestamp(0),
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    @mock.patch("google.auth.iam.Signer.sign", autospec=True)
+    def test_with_token_uri(self, sign, get, utcnow):
+        get.side_effect = [
+            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+        ]
+        sign.side_effect = [b"signature"]
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        self.credentials = credentials.IDTokenCredentials(
+            request=request,
+            target_audience="https://audience.com",
+            token_uri="http://xyz.com",
+        )
+        assert self.credentials._token_uri == "http://xyz.com"
+        creds_with_token_uri = self.credentials.with_token_uri("http://abc.com")
+        assert creds_with_token_uri._token_uri == "http://abc.com"
+
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.utcfromtimestamp(0),
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    @mock.patch("google.auth.iam.Signer.sign", autospec=True)
+    def test_with_token_uri_exception(self, sign, get, utcnow):
+        get.side_effect = [
+            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+        ]
+        sign.side_effect = [b"signature"]
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        self.credentials = credentials.IDTokenCredentials(
+            request=request,
+            target_audience="https://audience.com",
+            use_metadata_identity_endpoint=True,
+        )
+        assert self.credentials._token_uri is None
+        with pytest.raises(ValueError):
+            self.credentials.with_token_uri("http://abc.com")
+
     @responses.activate
     def test_with_quota_project_integration(self):
         """ Test that it is possible to refresh credentials

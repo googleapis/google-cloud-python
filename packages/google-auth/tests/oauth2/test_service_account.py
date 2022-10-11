@@ -155,6 +155,13 @@ class TestCredentials(object):
         new_credentials.apply(hdrs, token="tok")
         assert "x-goog-user-project" in hdrs
 
+    def test_with_token_uri(self):
+        credentials = self.make_credentials()
+        new_token_uri = "https://example2.com/oauth2/token"
+        assert credentials._token_uri == self.TOKEN_URI
+        creds_with_new_token_uri = credentials.with_token_uri(new_token_uri)
+        assert creds_with_new_token_uri._token_uri == new_token_uri
+
     def test__with_always_use_jwt_access(self):
         credentials = self.make_credentials()
         assert not credentials._always_use_jwt_access
@@ -463,6 +470,13 @@ class TestIDTokenCredentials(object):
         credentials = self.make_credentials()
         new_credentials = credentials.with_quota_project("project-foo")
         assert new_credentials._quota_project_id == "project-foo"
+
+    def test_with_token_uri(self):
+        credentials = self.make_credentials()
+        new_token_uri = "https://example2.com/oauth2/token"
+        assert credentials._token_uri == self.TOKEN_URI
+        creds_with_new_token_uri = credentials.with_token_uri(new_token_uri)
+        assert creds_with_new_token_uri._token_uri == new_token_uri
 
     def test__make_authorization_grant_assertion(self):
         credentials = self.make_credentials()
