@@ -235,6 +235,31 @@ if any of the records does not already exist.
     )
 
 
+Connection API
+--------------
+Connection API represents a wrap-around for Python Spanner API, written in accordance with PEP-249, and provides a simple way of communication with a Spanner database through connection objects:
+
+.. code:: python
+
+   from google.cloud.spanner_dbapi.connection import connect
+
+   connection = connect("instance-id", "database-id")
+   connection.autocommit = True
+
+   cursor = connection.cursor()   
+   cursor.execute("SELECT * FROM table_name")
+
+   result = cursor.fetchall()
+
+
+Aborted Transactions Retry Mechanism
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In ``!autocommit`` mode, transactions can be aborted due to transient errors. In most cases retry of an aborted transaction solves the problem. To simplify it, connection tracks SQL statements, executed in the current transaction. In case the transaction aborted, the connection initiates a new one and re-executes all the statements. In the process, the connection checks that retried statements are returning the same results that the original statements did. If results are different, the transaction is dropped, as the underlying data changed, and auto retry is impossible.
+
+Auto-retry of aborted transactions is enabled only for ``!autocommit`` mode, as in ``autocommit`` mode transactions are never aborted.
+
+
 Next Steps
 ~~~~~~~~~~
 
