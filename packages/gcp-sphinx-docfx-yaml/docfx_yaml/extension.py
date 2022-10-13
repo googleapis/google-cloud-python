@@ -51,6 +51,7 @@ from .settings import API_ROOT
 from .monkeypatch import patch_docfields
 from .directives import RemarksDirective, TodoDirective
 from .nodes import remarks
+from docfx_yaml import markdown_utils
 
 import subprocess
 import ast
@@ -131,29 +132,10 @@ NOTICES = {
 # Disable blib2to3 output that clutters debugging log.
 logging.getLogger("blib2to3").setLevel(logging.ERROR)
 
-# Run sphinx-build with Markdown builder in the plugin.
-def run_sphinx_markdown():
-    cwd = os.getcwd()
-    # Skip running sphinx-build for Markdown for some unit tests.
-    # Not required other than to output DocFX YAML.
-    if "docs" in cwd:
-        return
-
-    return shell.run(
-        [
-            "sphinx-build",
-            "-M",
-            "markdown",
-            "docs/",
-            "docs/_build",
-        ],
-        hide_output=False
-    )
-
 
 def build_init(app):
     print("Running sphinx-build with Markdown first...")
-    run_sphinx_markdown()
+    markdown_utils.run_sphinx_markdown()
     print("Completed running sphinx-build with Markdown files.")
 
     """
@@ -764,67 +746,6 @@ def _extract_docstring_info(summary_info, summary, name):
     return top_summary
 
 
-def _reformat_codeblocks(content: str) -> str:
-    """Formats codeblocks from ``` to <pre>."""
-    triple_backtick = '```'
-    current_tag = '<pre>'
-    next_tag = '</pre>'
-    # If there are no proper pairs of triple backticks, don't format docstring.
-    if content.count(triple_backtick) % 2 != 0:
-        print(f'Docstring is not formatted well, missing proper pairs of triple backticks (```): {content}')
-        return content
-    while triple_backtick in content:
-        content = content.replace(triple_backtick, current_tag, 1)
-        # Alternate between replacing with <pre> and </pre>.
-        current_tag, next_tag = next_tag, current_tag
-
-    return content
-
-
-def _reformat_code(content: str) -> str:
-    """Formats code from ` to <code>."""
-    reformatted_lines = []
-
-    code_pattern = '`[^`\n]+`'
-    code_start = '<code>'
-    code_end = '</code>'
-    prev_start = prev_end = 0
-    # Convert `text` to <code>text</code>
-    for matched_obj in re.finditer(code_pattern, content):
-        start = matched_obj.start()
-        end = matched_obj.end()
-        code_content = content[start+1:end-1]
-
-        reformatted_lines.append(content[prev_end:start])
-        reformatted_lines.append(f'{code_start}{code_content}{code_end}')
-        prev_start, prev_end = start, end
-
-    reformatted_lines.append(content[prev_end:])
-
-    return ''.join(reformatted_lines)
-
-
-def reformat_markdown_to_html(content: str) -> str:
-    """Applies changes from markdown syntax to equivalent HTML.
-
-    Acts as a wrapper function to format all Markdown to HTML.
-
-    Markdown syntax cannot be used within HTML elements, and must be converted
-    at YAML level.
-
-    Args:
-        content: the string to be reformatted.
-
-    Returns:
-        Content that has been formatted with proper HTML.
-    """
-
-    content = _reformat_codeblocks(content)
-    content = _reformat_code(content)
-
-    return content
-
-
 def reformat_summary(summary: str) -> str:
     """Applies any style changes to be made specifically for DocFX YAML.
 
@@ -1426,206 +1347,6 @@ def pretty_package_name(package_group):
     return " ".join(capitalized_name)
 
 
-# Check is the current lines conform to markdown header format.
-def parse_markdown_header(header_line, prev_line):
-    # Markdown h1 prefix should have only 1 of '#' character followed by exactly one space.
-    h1_header_prefix = "# "
-    if h1_header_prefix in header_line and header_line.count("#") == 1:
-        # Check for proper h1 header formatting, ensure there's more than just
-        # the hashtag character, and exactly only one space after the hashtag.
-        if not header_line[header_line.index(h1_header_prefix)+2].isspace() and \
-            len(header_line) > 2:
-
-            return header_line[header_line.index(h1_header_prefix):].strip("#").strip()
-
-    elif "=" in header_line:
-        # Check if we're inspecting an empty or undefined lines.
-        if not prev_line:
-            return ""
-
-        # Check if the current line only has equal sign divider.
-        if header_line.count("=") == len(header_line.strip()):
-            # Update header to the previous line.
-            return prev_line.strip()
-
-    return ""
-
-
-def extract_header_from_markdown(mdfile: Iterable[str]) -> str:
-    """For a given markdown file, extract its header line.
-
-    Args:
-        mdfile: iterator to the markdown file.
-
-    Returns:
-        A string for header or empty string if header is not found.
-    """
-    prev_line = ""
-
-    for header_line in mdfile:
-
-        # Ignore licenses and other non-headers prior to the header.
-        header = parse_markdown_header(header_line, prev_line)
-        # If we've found the header, return the header.
-        if header != "":
-            return header
-
-        prev_line = header_line
-
-    return ""
-
-
-# For a given markdown file, adds syntax highlighting to code blocks.
-def highlight_md_codeblocks(mdfile):
-    fence = '```'
-    fence_with_python = '```python'
-    new_lines = []
-
-    with open(mdfile) as mdfile_iterator:
-        file_content = mdfile_iterator.read()
-        # If there is an odd number of code block annotations, do not syntax
-        # highlight.
-        if file_content.count(fence) % 2 != 0:
-            print(f'{mdfile_iterator.name} contains wrong format of code blocks. Skipping syntax highlighting.')
-            return
-        # Retrieve code block positions to replace
-        codeblocks = [[m.start(), m.end()] for m in re.finditer(
-                                                      fence,
-                                                      file_content)]
-
-        # This is equivalent to grabbing every odd index item.
-        codeblocks = codeblocks[::2]
-        # Used to store code blocks that come without language indicators.
-        blocks_without_indicators = []
-
-        # Check if the fence comes without a language indicator. If so, include
-        # this to a list to render.
-        for start, end in codeblocks:
-            if file_content[end] == '\n':
-                blocks_without_indicators.append([start, end])
-
-        # Stitch content that does not need to be parsed, and replace with
-        # `fence_with_python` for parsed portions.
-        prev_start = prev_end = 0
-        for start, end in blocks_without_indicators:
-            new_lines.append(file_content[prev_end:start])
-            new_lines.append(fence_with_python)
-            prev_start, prev_end = start, end
-
-        # Include rest of the content.
-        new_lines.append(file_content[prev_end:])
-
-    # Overwrite with newly parsed content.
-    with open(mdfile, 'w') as mdfile_iterator:
-        new_content = ''.join(new_lines)
-        mdfile_iterator.write(new_content)
-
-
-def clean_image_links(mdfile_path: str) -> None:
-    """Cleans extra whitespace that breaks image links in index.html file."""
-    image_link_pattern='\[\s*!\[image\]\(.*\)\s*\]\(.*\)'
-    new_lines = []
-    with open(mdfile_path) as mdfile:
-        file_content = mdfile.read()
-
-        prev_start = prev_end = 0
-
-        for matched_obj in re.finditer(image_link_pattern, file_content):
-            start = matched_obj.start()
-            end = matched_obj.end()
-            matched_str = file_content[start:end]
-            # Clean up all whitespaces for the image link.
-            clean_str = ''.join(matched_str.split())
-
-            new_lines.append(file_content[prev_end:start])
-            new_lines.append(clean_str)
-            prev_start, prev_end = start, end
-
-        new_lines.append(file_content[prev_end:])
-
-    with open(mdfile_path, 'w') as mdfile:
-        new_content = ''.join(new_lines)
-        mdfile.write(new_content)
-
-
-def prepend_markdown_header(filename: str, mdfile: Iterable[str]):
-    """Prepends the filename as a Markdown header.
-
-    Args:
-        filename: the name of the markdown file to prepend.
-        mdfile: iterator to the markdown file that is both readable
-          and writable.
-    """
-    file_content = f'# {filename}\n\n' + mdfile.read()
-    # Reset file position to the beginning to write
-    mdfile.seek(0)
-    mdfile.write(file_content)
-
-
-# Given generated markdown files, incorporate them into the docfx_yaml output.
-# The markdown file metadata will be added to top level of the TOC.
-def find_markdown_pages(app, outdir):
-    # Use this to ignore markdown files that are unnecessary.
-    files_to_ignore = [
-        "index.md",     # use readme.md instead
-
-        "reference.md", # Reference docs overlap with Overview. Will try and incorporate this in later.
-                        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/106.
-    ]
-
-    files_to_rename = {
-        'readme.md': 'index.md',
-    }
-
-    markdown_dir = Path(app.builder.outdir).parent / "markdown"
-    if not markdown_dir.exists():
-        print("There's no markdown file to move.")
-        return
-
-    # For each file, if it is a markdown file move to the top level pages.
-    for mdfile in markdown_dir.iterdir():
-        if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
-            mdfile_name = ""
-
-            # Extract the header name for TOC.
-            with open(mdfile) as mdfile_iterator:
-                name = extract_header_from_markdown(mdfile_iterator)
-
-            if not name:
-                with open(mdfile, 'r+') as mdfile_iterator:
-                    mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
-
-                    print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
-                    name = mdfile_name
-
-                    prepend_markdown_header(name, mdfile_iterator)
-
-            mdfile_name_to_use = mdfile.name.lower()
-            if mdfile_name_to_use in files_to_rename:
-                mdfile_name_to_use = files_to_rename[mdfile_name_to_use]
-
-            mdfile_outdir = f"{outdir}/{mdfile_name_to_use}"
-
-            shutil.copy(mdfile, mdfile_outdir)
-
-            highlight_md_codeblocks(mdfile_outdir)
-            clean_image_links(mdfile_outdir)
-
-            # Use Overview as the name for index file.
-            if mdfile_name_to_use == 'index.md':
-                # Place the Overview page at the top of the list.
-                app.env.markdown_pages.insert(
-                    0,
-                    {'name':'Overview', 'href': 'index.md'}
-                )
-                continue
-
-            # Add the file to the TOC later.
-            app.env.markdown_pages.append({
-                'name': name,
-                'href': mdfile_name_to_use,
-            })
-
 def find_uid_to_convert(
     current_word: str,
     words: List[str],
@@ -1742,7 +1463,8 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         current_object_name,
                         known_uids
                     )
-                    param["description"] = reformat_markdown_to_html(param_description)
+                    param["description"] = (
+                        markdown_utils.reformat_markdown_to_html(param_description))
 
                 if param.get("id"):
                     param_id = convert_cross_references(
@@ -1750,7 +1472,7 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         current_object_name,
                         known_uids
                     )
-                    param["id"] = reformat_markdown_to_html(param_id)
+                    param["id"] = markdown_utils.reformat_markdown_to_html(param_id)
 
                 if param.get("var_type"):
                     param_type = convert_cross_references(
@@ -1758,7 +1480,8 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         current_object_name,
                         known_uids
                     )
-                    param["var_type"] = reformat_markdown_to_html(param_type)
+                    param["var_type"] = (
+                        markdown_utils.reformat_markdown_to_html(param_type))
 
         if obj["syntax"].get("exceptions"):
             for exception in obj["syntax"]["exceptions"]:
@@ -1769,7 +1492,7 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         known_uids
                     )
                     exception["description"] = (
-                        reformat_markdown_to_html(exception_description))
+                        markdown_utils.reformat_markdown_to_html(exception_description))
 
                 if exception.get("var_type"):
                     exception_type = convert_cross_references(
@@ -1778,7 +1501,7 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         known_uids
                     )
                     exception["var_type"] = (
-                        reformat_markdown_to_html(exception_type))
+                        markdown_utils.reformat_markdown_to_html(exception_type))
 
         if obj["syntax"].get("returns"):
             for ret in obj["syntax"]["returns"]:
@@ -1788,7 +1511,8 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         current_object_name,
                         known_uids
                     )
-                    ret["description"] = reformat_markdown_to_html(ret_description)
+                    ret["description"] = (
+                        markdown_utils.reformat_markdown_to_html(ret_description))
 
                 if ret.get("var_type"):
                     ret_type = convert_cross_references(
@@ -1796,7 +1520,7 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                         current_object_name,
                         known_uids
                     )
-                    ret["var_type"] = reformat_markdown_to_html(ret_type)
+                    ret["var_type"] = markdown_utils.reformat_markdown_to_html(ret_type)
 
 
     if obj.get("attributes"):
@@ -1808,7 +1532,7 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                     known_uids
                 )
                 attribute["description"] = (
-                    reformat_markdown_to_html(attribute_description))
+                    markdown_utils.reformat_markdown_to_html(attribute_description))
 
             if attribute.get("id"):
                 attribute_id = convert_cross_references(
@@ -1816,7 +1540,7 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                     current_object_name,
                     known_uids
                 )
-                attribute["id"] = reformat_markdown_to_html(attribute_id)
+                attribute["id"] = markdown_utils.reformat_markdown_to_html(attribute_id)
 
             if attribute.get("var_type"):
                 attribute_type = convert_cross_references(
@@ -1824,7 +1548,8 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                     current_object_name,
                     known_uids
                 )
-                attribute["var_type"] = reformat_markdown_to_html(attribute_type)
+                attribute["var_type"] = (
+                    markdown_utils.reformat_markdown_to_html(attribute_type))
 
 
 def build_finished(app, exception):
@@ -1875,7 +1600,7 @@ def build_finished(app, exception):
     ensuredir(normalized_outdir)
 
     # Add markdown pages to the configured output directory.
-    find_markdown_pages(app, normalized_outdir)
+    markdown_utils.move_markdown_pages(app, normalized_outdir)
 
     pkg_toc_yaml = []
     # Used to record filenames dumped to avoid confliction
