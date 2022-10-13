@@ -172,7 +172,10 @@ class Cursor(object):
 
     def _do_execute_update(self, transaction, sql, params):
         result = transaction.execute_update(
-            sql, params=params, param_types=get_param_types(params)
+            sql,
+            params=params,
+            param_types=get_param_types(params),
+            request_options=self.connection.request_options,
         )
         self._itr = None
         if type(result) == int:
@@ -278,7 +281,9 @@ class Cursor(object):
                 _helpers.handle_insert(self.connection, sql, args or None)
             else:
                 self.connection.database.run_in_transaction(
-                    self._do_execute_update, sql, args or None
+                    self._do_execute_update,
+                    sql,
+                    args or None,
                 )
         except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
             raise IntegrityError(getattr(e, "details", e)) from e
@@ -421,7 +426,12 @@ class Cursor(object):
         return items
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
-        self._result_set = snapshot.execute_sql(sql, params, get_param_types(params))
+        self._result_set = snapshot.execute_sql(
+            sql,
+            params,
+            get_param_types(params),
+            request_options=self.connection.request_options,
+        )
         # Read the first element so that the StreamedResultSet can
         # return the metadata after a DQL statement.
         self._itr = PeekIterator(self._result_set)

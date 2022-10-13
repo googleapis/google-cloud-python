@@ -37,7 +37,9 @@ class TestHelpers(unittest.TestCase):
 
                 mock_pyformat.assert_called_once_with(params[0], params[1])
                 mock_param_types.assert_called_once_with(None)
-                mock_update.assert_called_once_with(sql, None, None)
+                mock_update.assert_called_once_with(
+                    sql, None, None, request_options=None
+                )
 
     def test__execute_insert_heterogenous_error(self):
         from google.cloud.spanner_dbapi import _helpers
@@ -62,7 +64,9 @@ class TestHelpers(unittest.TestCase):
 
                 mock_pyformat.assert_called_once_with(params[0], params[1])
                 mock_param_types.assert_called_once_with(None)
-                mock_update.assert_called_once_with(sql, None, None)
+                mock_update.assert_called_once_with(
+                    sql, None, None, request_options=None
+                )
 
     def test_handle_insert(self):
         from google.cloud.spanner_dbapi import _helpers

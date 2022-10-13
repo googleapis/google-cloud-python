@@ -748,6 +748,29 @@ class TestCursor(unittest.TestCase):
         self.assertIsInstance(cursor._itr, utils.PeekIterator)
         self.assertEqual(cursor._row_count, _UNSET_COUNT)
 
+    def test_handle_dql_priority(self):
+        from google.cloud.spanner_dbapi import utils
+        from google.cloud.spanner_dbapi.cursor import _UNSET_COUNT
+        from google.cloud.spanner_v1 import RequestOptions
+
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        connection.database.snapshot.return_value.__enter__.return_value = (
+            mock_snapshot
+        ) = mock.MagicMock()
+        connection.request_priority = 1
+
+        cursor = self._make_one(connection)
+
+        sql = "sql"
+        mock_snapshot.execute_sql.return_value = ["0"]
+        cursor._handle_DQL(sql, params=None)
+        self.assertEqual(cursor._result_set, ["0"])
+        self.assertIsInstance(cursor._itr, utils.PeekIterator)
+        self.assertEqual(cursor._row_count, _UNSET_COUNT)
+        mock_snapshot.execute_sql.assert_called_with(
+            sql, None, None, request_options=RequestOptions(priority=1)
+        )
+
     def test_context(self):
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)

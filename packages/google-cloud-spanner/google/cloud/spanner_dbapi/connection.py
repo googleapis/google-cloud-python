@@ -184,6 +184,21 @@ class Connection:
         self._read_only = value
 
     @property
+    def request_options(self):
+        """Options for the next SQL operations.
+
+        Returns:
+            google.cloud.spanner_v1.RequestOptions:
+                Request options.
+        """
+        if self.request_priority is None:
+            return
+
+        req_opts = RequestOptions(priority=self.request_priority)
+        self.request_priority = None
+        return req_opts
+
+    @property
     def staleness(self):
         """Current read staleness option value of this `Connection`.
 
@@ -437,25 +452,19 @@ class Connection:
 
         if statement.is_insert:
             _execute_insert_heterogenous(
-                transaction, ((statement.sql, statement.params),)
+                transaction, ((statement.sql, statement.params),), self.request_options
             )
             return (
                 iter(()),
                 ResultsChecksum() if retried else statement.checksum,
             )
 
-        if self.request_priority is not None:
-            req_opts = RequestOptions(priority=self.request_priority)
-            self.request_priority = None
-        else:
-            req_opts = None
-
         return (
             transaction.execute_sql(
                 statement.sql,
                 statement.params,
                 param_types=statement.param_types,
-                request_options=req_opts,
+                request_options=self.request_options,
             ),
             ResultsChecksum() if retried else statement.checksum,
         )

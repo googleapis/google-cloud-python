@@ -47,15 +47,21 @@ CODE_TO_DISPLAY_SIZE = {
 }
 
 
-def _execute_insert_heterogenous(transaction, sql_params_list):
+def _execute_insert_heterogenous(
+    transaction,
+    sql_params_list,
+    request_options=None,
+):
     for sql, params in sql_params_list:
         sql, params = sql_pyformat_args_to_spanner(sql, params)
-        transaction.execute_update(sql, params, get_param_types(params))
+        transaction.execute_update(
+            sql, params, get_param_types(params), request_options=request_options
+        )
 
 
 def handle_insert(connection, sql, params):
     return connection.database.run_in_transaction(
-        _execute_insert_heterogenous, ((sql, params),)
+        _execute_insert_heterogenous, ((sql, params),), connection.request_options
     )
 
 
