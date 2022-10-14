@@ -402,6 +402,23 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
             stacklevel=2,
         )
 
+    def test_close_errors(self):
+        blob = mock.Mock(chunk_size=None)
+
+        upload = mock.Mock()
+        transport = mock.Mock()
+
+        blob._initiate_resumable_upload.return_value = (upload, transport)
+
+        writer = self._make_blob_writer(blob)
+
+        writer.close()
+        # Close a second time to verify it successfully does nothing.
+        writer.close()
+        # Try to write to closed file.
+        with self.assertRaises(ValueError):
+            writer.write(TEST_BINARY_DATA)
+
     def test_flush_fails(self):
         blob = mock.Mock(chunk_size=None)
         writer = self._make_blob_writer(blob)

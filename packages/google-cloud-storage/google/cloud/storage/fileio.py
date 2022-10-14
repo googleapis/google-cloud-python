@@ -423,9 +423,8 @@ class BlobWriter(io.BufferedIOBase):
             )
 
     def close(self):
-        self._checkClosed()  # Raises ValueError if closed.
-
-        self._upload_chunks_from_buffer(1)
+        if not self._buffer.closed:
+            self._upload_chunks_from_buffer(1)
         self._buffer.close()
 
     def _checkClosed(self):
