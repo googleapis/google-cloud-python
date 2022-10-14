@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.5.0...v1.6.0) (2022-10-13)
+
+
+### Features
+
+* Use GitHub's default README as index page ([#255](https://github.com/googleapis/sphinx-docfx-yaml/issues/255)) ([17f6ca0](https://github.com/googleapis/sphinx-docfx-yaml/commit/17f6ca0ef8fe6aeed096a5356cac8944f8884b82))
+
+
+### Bug Fixes
+
+* Render emphasis properly and markdown in tables ([#258](https://github.com/googleapis/sphinx-docfx-yaml/issues/258)) ([4bbd921](https://github.com/googleapis/sphinx-docfx-yaml/commit/4bbd921f116cccd86d30597a254087f25f074728))
+
 ## [1.5.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.8...v1.5.0) (2022-07-11)
 
 
