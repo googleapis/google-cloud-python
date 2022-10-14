@@ -50,6 +50,11 @@ class TestStsClient(object):
         "expires_in": 3600,
         "scope": "scope1 scope2",
     }
+    SUCCESS_RESPONSE_WITH_REFRESH = {
+        "access_token": "abc",
+        "refresh_token": "xyz",
+        "expires_in": 3600,
+    }
     ERROR_RESPONSE = {
         "error": "invalid_request",
         "error_description": "Invalid subject token",
@@ -389,6 +394,86 @@ class TestStsClient(object):
                 self.ADDON_OPTIONS,
                 self.ADDON_HEADERS,
             )
+
+        assert excinfo.match(
+            r"Error code invalid_request: Invalid subject token - https://tools.ietf.org/html/rfc6749"
+        )
+
+    def test_refresh_token_success(self):
+        """Test refresh token with successful response."""
+        client = self.make_client(self.CLIENT_AUTH_BASIC)
+        request = self.make_mock_request(
+            status=http_client.OK, data=self.SUCCESS_RESPONSE
+        )
+
+        response = client.refresh_token(request, "refreshtoken")
+
+        headers = {
+            "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+        request_data = {"grant_type": "refresh_token", "refresh_token": "refreshtoken"}
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
+        assert response == self.SUCCESS_RESPONSE
+
+    def test_refresh_token_success_with_refresh(self):
+        """Test refresh token with successful response."""
+        client = self.make_client(self.CLIENT_AUTH_BASIC)
+        request = self.make_mock_request(
+            status=http_client.OK, data=self.SUCCESS_RESPONSE_WITH_REFRESH
+        )
+
+        response = client.refresh_token(request, "refreshtoken")
+
+        headers = {
+            "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+        request_data = {"grant_type": "refresh_token", "refresh_token": "refreshtoken"}
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
+        assert response == self.SUCCESS_RESPONSE_WITH_REFRESH
+
+    def test_refresh_token_failure(self):
+        """Test refresh token with failure response."""
+        client = self.make_client(self.CLIENT_AUTH_BASIC)
+        request = self.make_mock_request(
+            status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE
+        )
+
+        with pytest.raises(exceptions.OAuthError) as excinfo:
+            client.refresh_token(request, "refreshtoken")
+
+        assert excinfo.match(
+            r"Error code invalid_request: Invalid subject token - https://tools.ietf.org/html/rfc6749"
+        )
+
+    def test__make_request_success(self):
+        """Test base method with successful response."""
+        client = self.make_client(self.CLIENT_AUTH_BASIC)
+        request = self.make_mock_request(
+            status=http_client.OK, data=self.SUCCESS_RESPONSE
+        )
+
+        response = client._make_request(request, {"a": "b"}, {"c": "d"})
+
+        headers = {
+            "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "a": "b",
+        }
+        request_data = {"c": "d"}
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
+        assert response == self.SUCCESS_RESPONSE
+
+    def test_make_request_failure(self):
+        """Test refresh token with failure response."""
+        client = self.make_client(self.CLIENT_AUTH_BASIC)
+        request = self.make_mock_request(
+            status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE
+        )
+
+        with pytest.raises(exceptions.OAuthError) as excinfo:
+            client._make_request(request, {"a": "b"}, {"c": "d"})
 
         assert excinfo.match(
             r"Error code invalid_request: Invalid subject token - https://tools.ietf.org/html/rfc6749"

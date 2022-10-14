@@ -26,6 +26,7 @@ from google.auth import credentials
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import external_account
+from google.auth import external_account_authorized_user
 from google.auth import identity_pool
 from google.auth import impersonated_credentials
 from google.auth import pluggable
@@ -151,6 +152,9 @@ IMPERSONATED_SERVICE_ACCOUNT_SERVICE_ACCOUNT_SOURCE_FILE = os.path.join(
     DATA_DIR, "impersonated_service_account_service_account_source.json"
 )
 
+EXTERNAL_ACCOUNT_AUTHORIZED_USER_FILE = os.path.join(
+    DATA_DIR, "external_account_authorized_user.json"
+)
 
 MOCK_CREDENTIALS = mock.Mock(spec=credentials.CredentialsWithQuotaProject)
 MOCK_CREDENTIALS.with_quota_project.return_value = MOCK_CREDENTIALS
@@ -538,6 +542,29 @@ def test_load_credentials_from_file_external_account_explicit_request(
 @mock.patch.dict(os.environ, {}, clear=True)
 def test__get_explicit_environ_credentials_no_env():
     assert _default._get_explicit_environ_credentials() == (None, None)
+
+
+def test_load_credentials_from_file_external_account_authorized_user():
+    credentials, project_id = _default.load_credentials_from_file(
+        EXTERNAL_ACCOUNT_AUTHORIZED_USER_FILE, request=mock.sentinel.request
+    )
+
+    assert isinstance(credentials, external_account_authorized_user.Credentials)
+    assert project_id is None
+
+
+def test_load_credentials_from_file_external_account_authorized_user_bad_format(tmpdir):
+    filename = tmpdir.join("external_account_authorized_user_bad.json")
+    filename.write(json.dumps({"type": "external_account_authorized_user"}))
+
+    with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+        _default.load_credentials_from_file(str(filename))
+
+    assert excinfo.match(
+        "Failed to load external account authorized user credentials from {}".format(
+            str(filename)
+        )
+    )
 
 
 @pytest.mark.parametrize("quota_project_id", [None, "project-foo"])
