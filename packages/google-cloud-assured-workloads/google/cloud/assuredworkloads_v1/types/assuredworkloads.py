@@ -133,7 +133,7 @@ class GetWorkloadRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the Workload to fetch. This
-            is the workloads's relative path in the API, formatted as
+            is the workload's relative path in the API, formatted as
             "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
             For example,
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
@@ -210,7 +210,7 @@ class ListWorkloadsResponse(proto.Message):
 
 
 class Workload(proto.Message):
-    r"""An Workload object for managing highly regulated workloads of
+    r"""A Workload object for managing highly regulated workloads of
     cloud customers.
 
     Attributes:
@@ -312,6 +312,7 @@ class Workload(proto.Message):
         EU_REGIONS_AND_SUPPORT = 8
         CA_REGIONS_AND_SUPPORT = 9
         ITAR = 10
+        AU_REGIONS_AND_US_SUPPORT = 11
         ASSURED_WORKLOADS_FOR_PARTNERS = 12
 
     class KajEnrollmentState(proto.Enum):
@@ -355,7 +356,10 @@ class Workload(proto.Message):
         )
 
     class KMSSettings(proto.Message):
-        r"""Settings specific to the Key Management Service.
+        r"""Settings specific to the Key Management Service. This message is
+        deprecated. In order to create a Keyring, callers should specify,
+        ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type
+        field.
 
         Attributes:
             next_rotation_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -394,8 +398,8 @@ class Workload(proto.Message):
                 is assigned by Google.
             resource_type (google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo.ResourceType):
                 Indicates the type of resource. This field should be
-                specified to correspond the id to the right project type
-                (CONSUMER_PROJECT or ENCRYPTION_KEYS_PROJECT)
+                specified to correspond the id to the right resource type
+                (CONSUMER_FOLDER or ENCRYPTION_KEYS_PROJECT)
             display_name (str):
                 User-assigned resource display name.
                 If not empty it will be used to create a
@@ -619,8 +623,10 @@ class AcknowledgeViolationRequest(proto.Message):
             Required. Business justification explaining
             the need for violation acknowledgement
         non_compliant_org_policy (str):
-            Optional. Name of the OrgPolicy which was modified with
-            non-compliant change and resulted in this violation. Format:
+            Optional. This field is deprecated and will be removed in
+            future version of the API. Name of the OrgPolicy which was
+            modified with non-compliant change and resulted in this
+            violation. Format:
             projects/{project_number}/policies/{constraint_name}
             folders/{folder_id}/policies/{constraint_name}
             organizations/{organization_id}/policies/{constraint_name}
@@ -805,6 +811,11 @@ class Violation(proto.Message):
             acknowledged field is marked as false.
 
             This field is a member of `oneof`_ ``_acknowledgement_time``.
+        exception_audit_log_link (str):
+            Output only. Immutable. Audit Log link to
+            find business justification provided for
+            violation exception. Format:
+            https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{protoPayload.methodName}{timeRange}{organization}
     """
 
     class State(proto.Enum):
@@ -995,6 +1006,10 @@ class Violation(proto.Message):
         number=15,
         optional=True,
         message=timestamp_pb2.Timestamp,
+    )
+    exception_audit_log_link = proto.Field(
+        proto.STRING,
+        number=16,
     )
 
 

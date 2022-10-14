@@ -2709,6 +2709,7 @@ def test_get_violation(request_type, transport: str = "grpc"):
             audit_log_link="audit_log_link_value",
             non_compliant_org_policy="non_compliant_org_policy_value",
             acknowledged=True,
+            exception_audit_log_link="exception_audit_log_link_value",
         )
         response = client.get_violation(request)
 
@@ -2727,6 +2728,7 @@ def test_get_violation(request_type, transport: str = "grpc"):
     assert response.audit_log_link == "audit_log_link_value"
     assert response.non_compliant_org_policy == "non_compliant_org_policy_value"
     assert response.acknowledged is True
+    assert response.exception_audit_log_link == "exception_audit_log_link_value"
 
 
 def test_get_violation_empty_call():
@@ -2771,6 +2773,7 @@ async def test_get_violation_async(
                 audit_log_link="audit_log_link_value",
                 non_compliant_org_policy="non_compliant_org_policy_value",
                 acknowledged=True,
+                exception_audit_log_link="exception_audit_log_link_value",
             )
         )
         response = await client.get_violation(request)
@@ -2790,6 +2793,7 @@ async def test_get_violation_async(
     assert response.audit_log_link == "audit_log_link_value"
     assert response.non_compliant_org_policy == "non_compliant_org_policy_value"
     assert response.acknowledged is True
+    assert response.exception_audit_log_link == "exception_audit_log_link_value"
 
 
 @pytest.mark.asyncio

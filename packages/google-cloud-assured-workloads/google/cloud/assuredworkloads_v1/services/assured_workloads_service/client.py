@@ -529,7 +529,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.assuredworkloads_v1.types.Workload` An Workload object for managing highly regulated workloads of cloud
+                The result type for the operation will be :class:`google.cloud.assuredworkloads_v1.types.Workload` A Workload object for managing highly regulated workloads of cloud
                    customers.
 
         """
@@ -657,9 +657,8 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
         Returns:
             google.cloud.assuredworkloads_v1.types.Workload:
-                An Workload object for managing
-                highly regulated workloads of cloud
-                customers.
+                A Workload object for managing highly
+                regulated workloads of cloud customers.
 
         """
         # Create or coerce a protobuf request object.
@@ -933,7 +932,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 The request object. Request for fetching a workload.
             name (str):
                 Required. The resource name of the Workload to fetch.
-                This is the workloads's relative path in the API,
+                This is the workload's relative path in the API,
                 formatted as
                 "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
                 For example,
@@ -950,9 +949,8 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
         Returns:
             google.cloud.assuredworkloads_v1.types.Workload:
-                An Workload object for managing
-                highly regulated workloads of cloud
-                customers.
+                A Workload object for managing highly
+                regulated workloads of cloud customers.
 
         """
         # Create or coerce a protobuf request object.

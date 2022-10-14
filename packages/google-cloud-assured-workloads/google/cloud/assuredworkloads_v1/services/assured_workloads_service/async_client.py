@@ -291,7 +291,7 @@ class AssuredWorkloadsServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.assuredworkloads_v1.types.Workload` An Workload object for managing highly regulated workloads of cloud
+                The result type for the operation will be :class:`google.cloud.assuredworkloads_v1.types.Workload` A Workload object for managing highly regulated workloads of cloud
                    customers.
 
         """
@@ -419,9 +419,8 @@ class AssuredWorkloadsServiceAsyncClient:
 
         Returns:
             google.cloud.assuredworkloads_v1.types.Workload:
-                An Workload object for managing
-                highly regulated workloads of cloud
-                customers.
+                A Workload object for managing highly
+                regulated workloads of cloud customers.
 
         """
         # Create or coerce a protobuf request object.
@@ -692,7 +691,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 The request object. Request for fetching a workload.
             name (:class:`str`):
                 Required. The resource name of the Workload to fetch.
-                This is the workloads's relative path in the API,
+                This is the workload's relative path in the API,
                 formatted as
                 "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
                 For example,
@@ -709,9 +708,8 @@ class AssuredWorkloadsServiceAsyncClient:
 
         Returns:
             google.cloud.assuredworkloads_v1.types.Workload:
-                An Workload object for managing
-                highly regulated workloads of cloud
-                customers.
+                A Workload object for managing highly
+                regulated workloads of cloud customers.
 
         """
         # Create or coerce a protobuf request object.
