@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.10](https://github.com/googleapis/python-pubsub/compare/v2.13.8...v2.13.10) (2022-10-14)
+
+
+### Bug Fixes
+
+* Batch at most 1,000 ack ids per request ([#802](https://github.com/googleapis/python-pubsub/issues/802)) ([4361e67](https://github.com/googleapis/python-pubsub/commit/4361e6735004a5600ee73979b99e6b9dd587c49b))
+* **deps:** Allow protobuf 3.19.5 ([#801](https://github.com/googleapis/python-pubsub/issues/801)) ([fa23503](https://github.com/googleapis/python-pubsub/commit/fa235033481783c2ec378b2a26b223bdff206461))
+* Silence invalid_ack_id warnings for receipt modacks ([#798](https://github.com/googleapis/python-pubsub/issues/798)) ([17feea5](https://github.com/googleapis/python-pubsub/commit/17feea5783f3a878b4dcfb3a8570585f7637378f))
+
+
+### Miscellaneous Chores
+
+* release as 2.13.10 ([34f022b](https://github.com/googleapis/python-pubsub/commit/34f022b4ee62d53a193bc2babafad508e2f2540b))
+
 ## [2.13.8](https://github.com/googleapis/python-pubsub/compare/v2.13.7...v2.13.8) (2022-10-03)
 
 
