@@ -40,7 +40,7 @@ def sample_search_hashes():
 
     # Initialize request argument(s)
     request = webrisk_v1.SearchHashesRequest(
-        threat_types="UNWANTED_SOFTWARE",
+        threat_types="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
     )
 
     # Make the request

@@ -41,7 +41,7 @@ async def sample_search_uris():
     # Initialize request argument(s)
     request = webrisk_v1.SearchUrisRequest(
         uri="uri_value",
-        threat_types="UNWANTED_SOFTWARE",
+        threat_types="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
     )
 
     # Make the request

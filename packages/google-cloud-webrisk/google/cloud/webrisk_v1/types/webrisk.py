@@ -39,13 +39,14 @@ __protobuf__ = proto.module(
 
 
 class ThreatType(proto.Enum):
-    r"""The type of threat. This maps dirrectly to the threat list a
+    r"""The type of threat. This maps directly to the threat list a
     threat may belong to.
     """
     THREAT_TYPE_UNSPECIFIED = 0
     MALWARE = 1
     SOCIAL_ENGINEERING = 2
     UNWANTED_SOFTWARE = 3
+    SOCIAL_ENGINEERING_EXTENDED_COVERAGE = 4
 
 
 class CompressionType(proto.Enum):
@@ -61,7 +62,10 @@ class ComputeThreatListDiffRequest(proto.Message):
     Attributes:
         threat_type (google.cloud.webrisk_v1.types.ThreatType):
             Required. The threat list to update. Only a
-            single ThreatType should be specified.
+            single ThreatType should be specified per
+            request. If you want to handle multiple
+            ThreatTypes, you must make one request per
+            ThreatType.
         version_token (bytes):
             The current version token of the client for
             the requested list (the client version that was
@@ -238,8 +242,8 @@ class SearchUrisResponse(proto.Message):
 
     Attributes:
         threat (google.cloud.webrisk_v1.types.SearchUrisResponse.ThreatUri):
-            The threat list matches. This may be empty if
-            the URI is on no list.
+            The threat list matches. This might be empty
+            if the URI is on no list.
     """
 
     class ThreatUri(proto.Message):
@@ -281,6 +285,9 @@ class SearchHashesRequest(proto.Message):
             A hash prefix, consisting of the most
             significant 4-32 bytes of a SHA256 hash. For
             JSON requests, this field is base64-encoded.
+            Note that if this parameter is provided by a
+            URI, it must be encoded using the web safe
+            base64 variant (RFC 4648).
         threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
             Required. The ThreatLists to search in.
             Multiple ThreatLists may be specified.
@@ -500,12 +507,12 @@ class RiceDeltaEncoding(proto.Message):
 
 
 class Submission(proto.Message):
-    r"""Wraps a URI that might be displaying phishing content.
+    r"""Wraps a URI that might be displaying malicious content.
 
     Attributes:
         uri (str):
             Required. The URI that is being reported for
-            phishing content to be analyzed.
+            malicious content to be analyzed.
     """
 
     uri = proto.Field(

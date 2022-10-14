@@ -174,7 +174,7 @@ class WebRiskServiceTransport(abc.ABC):
             ),
             self.create_submission: gapic_v1.method.wrap_method(
                 self.create_submission,
-                default_timeout=60.0,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

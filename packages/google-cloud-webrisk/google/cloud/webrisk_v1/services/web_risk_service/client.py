@@ -446,7 +446,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = webrisk_v1.ComputeThreatListDiffRequest(
-                    threat_type="UNWANTED_SOFTWARE",
+                    threat_type="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
                 )
 
                 # Make the request
@@ -461,7 +461,9 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
             threat_type (google.cloud.webrisk_v1.types.ThreatType):
                 Required. The threat list to update.
                 Only a single ThreatType should be
-                specified.
+                specified per request. If you want to
+                handle multiple ThreatTypes, you must
+                make one request per ThreatType.
 
                 This corresponds to the ``threat_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -572,7 +574,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 # Initialize request argument(s)
                 request = webrisk_v1.SearchUrisRequest(
                     uri="uri_value",
-                    threat_types="UNWANTED_SOFTWARE",
+                    threat_types="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
                 )
 
                 # Make the request
@@ -682,7 +684,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = webrisk_v1.SearchHashesRequest(
-                    threat_types="UNWANTED_SOFTWARE",
+                    threat_types="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
                 )
 
                 # Make the request
@@ -699,7 +701,10 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 A hash prefix, consisting of the most
                 significant 4-32 bytes of a SHA256 hash.
                 For JSON requests, this field is
-                base64-encoded.
+                base64-encoded. Note that if this
+                parameter is provided by a URI, it must
+                be encoded using the web safe base64
+                variant (RFC 4648).
 
                 This corresponds to the ``hash_prefix`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -776,8 +781,9 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         `Google's Social Engineering
         lists <https://support.google.com/webmasters/answer/6350487/>`__
         in order to protect users that could get exposed to this threat
-        in the future. Only projects with CREATE_SUBMISSION_USERS
-        visibility can use this method.
+        in the future. Only allowlisted projects can use this method
+        during Early Access. Please reach out to Sales or your customer
+        engineer to obtain access.
 
         .. code-block:: python
 
@@ -838,7 +844,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         Returns:
             google.cloud.webrisk_v1.types.Submission:
                 Wraps a URI that might be displaying
-                phishing content.
+                malicious content.
 
         """
         # Create or coerce a protobuf request object.

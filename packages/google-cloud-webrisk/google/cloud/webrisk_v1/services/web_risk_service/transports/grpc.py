@@ -338,8 +338,9 @@ class WebRiskServiceGrpcTransport(WebRiskServiceTransport):
         `Google's Social Engineering
         lists <https://support.google.com/webmasters/answer/6350487/>`__
         in order to protect users that could get exposed to this threat
-        in the future. Only projects with CREATE_SUBMISSION_USERS
-        visibility can use this method.
+        in the future. Only allowlisted projects can use this method
+        during Early Access. Please reach out to Sales or your customer
+        engineer to obtain access.
 
         Returns:
             Callable[[~.CreateSubmissionRequest],

@@ -40,7 +40,7 @@ def sample_compute_threat_list_diff():
 
     # Initialize request argument(s)
     request = webrisk_v1.ComputeThreatListDiffRequest(
-        threat_type="UNWANTED_SOFTWARE",
+        threat_type="SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
     )
 
     # Make the request
