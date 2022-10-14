@@ -60,6 +60,11 @@
                 "migrate_key"
               ]
             },
+            "RetrieveLegacySecretKey": {
+              "methods": [
+                "retrieve_legacy_secret_key"
+              ]
+            },
             "SearchRelatedAccountGroupMemberships": {
               "methods": [
                 "search_related_account_group_memberships"
@@ -123,6 +128,11 @@
             "MigrateKey": {
               "methods": [
                 "migrate_key"
+              ]
+            },
+            "RetrieveLegacySecretKey": {
+              "methods": [
+                "retrieve_legacy_secret_key"
               ]
             },
             "SearchRelatedAccountGroupMemberships": {

@@ -354,6 +354,37 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["list_keys"]
 
     @property
+    def retrieve_legacy_secret_key(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.RetrieveLegacySecretKeyRequest],
+        Awaitable[recaptchaenterprise.RetrieveLegacySecretKeyResponse],
+    ]:
+        r"""Return a callable for the retrieve legacy secret key method over gRPC.
+
+        Returns the secret key related to the specified
+        public key. You must use the legacy secret key only in a
+        3rd party integration with legacy reCAPTCHA.
+
+        Returns:
+            Callable[[~.RetrieveLegacySecretKeyRequest],
+                    Awaitable[~.RetrieveLegacySecretKeyResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "retrieve_legacy_secret_key" not in self._stubs:
+            self._stubs["retrieve_legacy_secret_key"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
+                request_serializer=recaptchaenterprise.RetrieveLegacySecretKeyRequest.serialize,
+                response_deserializer=recaptchaenterprise.RetrieveLegacySecretKeyResponse.deserialize,
+            )
+        return self._stubs["retrieve_legacy_secret_key"]
+
+    @property
     def get_key(
         self,
     ) -> Callable[
@@ -537,7 +568,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         r"""Return a callable for the list related account group
         memberships method over gRPC.
 
-        Get the memberships in a group of related accounts.
+        Get memberships in a group of related accounts.
 
         Returns:
             Callable[[~.ListRelatedAccountGroupMembershipsRequest],

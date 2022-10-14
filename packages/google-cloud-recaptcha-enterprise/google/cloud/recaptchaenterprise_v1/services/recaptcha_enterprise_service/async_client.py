@@ -639,6 +639,112 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def retrieve_legacy_secret_key(
+        self,
+        request: Union[recaptchaenterprise.RetrieveLegacySecretKeyRequest, dict] = None,
+        *,
+        key: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.RetrieveLegacySecretKeyResponse:
+        r"""Returns the secret key related to the specified
+        public key. You must use the legacy secret key only in a
+        3rd party integration with legacy reCAPTCHA.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            async def sample_retrieve_legacy_secret_key():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.RetrieveLegacySecretKeyRequest(
+                    key="key_value",
+                )
+
+                # Make the request
+                response = await client.retrieve_legacy_secret_key(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.RetrieveLegacySecretKeyRequest, dict]):
+                The request object. The retrieve legacy secret key
+                request message.
+            key (:class:`str`):
+                Required. The public key name linked
+                to the requested secret key in the
+                format "projects/{project}/keys/{key}".
+
+                This corresponds to the ``key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.RetrieveLegacySecretKeyResponse:
+                Secret key is used only in legacy
+                reCAPTCHA. It must be used in a 3rd
+                party integration with legacy reCAPTCHA.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([key])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recaptchaenterprise.RetrieveLegacySecretKeyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if key is not None:
+            request.key = key
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.retrieve_legacy_secret_key,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("key", request.key),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_key(
         self,
         request: Union[recaptchaenterprise.GetKeyRequest, dict] = None,
@@ -1184,7 +1290,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRelatedAccountGroupMembershipsAsyncPager:
-        r"""Get the memberships in a group of related accounts.
+        r"""Get memberships in a group of related accounts.
 
         .. code-block:: python
 
@@ -1339,8 +1445,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
             project (:class:`str`):
                 Required. The name of the project to
                 search related account group memberships
-                from, in the format
-                "projects/{project}".
+                from. Specify the project name in the
+                following format: "projects/{project}".
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1349,7 +1455,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 Optional. The unique stable hashed user identifier we
                 should search connections to. The identifier should
                 correspond to a ``hashed_account_id`` provided in a
-                previous CreateAssessment or AnnotateAssessment call.
+                previous ``CreateAssessment`` or ``AnnotateAssessment``
+                call.
 
                 This corresponds to the ``hashed_account_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

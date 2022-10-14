@@ -23,21 +23,23 @@ __protobuf__ = proto.module(
         "CreateAssessmentRequest",
         "AnnotateAssessmentRequest",
         "AnnotateAssessmentResponse",
+        "PrivatePasswordLeakVerification",
         "Assessment",
         "Event",
         "RiskAnalysis",
         "TokenProperties",
         "AccountDefenderAssessment",
-        "PrivatePasswordLeakVerification",
         "CreateKeyRequest",
         "ListKeysRequest",
         "ListKeysResponse",
+        "RetrieveLegacySecretKeyRequest",
         "GetKeyRequest",
         "UpdateKeyRequest",
         "DeleteKeyRequest",
         "MigrateKeyRequest",
         "GetMetricsRequest",
         "Metrics",
+        "RetrieveLegacySecretKeyResponse",
         "Key",
         "TestingOptions",
         "WebKeySettings",
@@ -100,12 +102,12 @@ class AnnotateAssessmentRequest(proto.Message):
             Optional. Optional reasons for the annotation
             that will be assigned to the Event.
         hashed_account_id (bytes):
-            Optional. Optional unique stable hashed user identifier to
-            apply to the assessment. This is an alternative to setting
-            the hashed_account_id in CreateAssessment, for example when
-            the account identifier is not yet known in the initial
-            request. It is recommended that the identifier is hashed
-            using hmac-sha256 with stable secret.
+            Optional. Unique stable hashed user identifier to apply to
+            the assessment. This is an alternative to setting the
+            hashed_account_id in CreateAssessment, for example when the
+            account identifier is not yet known in the initial request.
+            It is recommended that the identifier is hashed using
+            hmac-sha256 with stable secret.
     """
 
     class Annotation(proto.Enum):
@@ -124,12 +126,17 @@ class AnnotateAssessmentRequest(proto.Message):
         CHARGEBACK = 1
         CHARGEBACK_FRAUD = 8
         CHARGEBACK_DISPUTE = 9
+        REFUND = 10
+        REFUND_FRAUD = 11
+        TRANSACTION_ACCEPTED = 12
+        TRANSACTION_DECLINED = 13
         PAYMENT_HEURISTICS = 2
         INITIATED_TWO_FACTOR = 7
         PASSED_TWO_FACTOR = 3
         FAILED_TWO_FACTOR = 4
         CORRECT_PASSWORD = 5
         INCORRECT_PASSWORD = 6
+        SOCIAL_SPAM = 14
 
     name = proto.Field(
         proto.STRING,
@@ -155,6 +162,49 @@ class AnnotateAssessmentResponse(proto.Message):
     r"""Empty response for AnnotateAssessment."""
 
 
+class PrivatePasswordLeakVerification(proto.Message):
+    r"""Private password leak verification info.
+
+    Attributes:
+        lookup_hash_prefix (bytes):
+            Optional. Exactly 26-bit prefix of the
+            SHA-256 hash of the canonicalized username. It
+            is used to look up password leaks associated
+            with that hash prefix.
+        encrypted_user_credentials_hash (bytes):
+            Optional. Encrypted Scrypt hash of the canonicalized
+            username+password. It is re-encrypted by the server and
+            returned through ``reencrypted_user_credentials_hash``.
+        encrypted_leak_match_prefixes (Sequence[bytes]):
+            Output only. List of prefixes of the encrypted potential
+            password leaks that matched the given parameters. They must
+            be compared with the client-side decryption prefix of
+            ``reencrypted_user_credentials_hash``
+        reencrypted_user_credentials_hash (bytes):
+            Output only. Corresponds to the re-encryption of the
+            ``encrypted_user_credentials_hash`` field. It is used to
+            match potential password leaks within
+            ``encrypted_leak_match_prefixes``.
+    """
+
+    lookup_hash_prefix = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    encrypted_user_credentials_hash = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    encrypted_leak_match_prefixes = proto.RepeatedField(
+        proto.BYTES,
+        number=3,
+    )
+    reencrypted_user_credentials_hash = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+
+
 class Assessment(proto.Message):
     r"""A recaptcha assessment resource.
 
@@ -172,10 +222,13 @@ class Assessment(proto.Message):
             Output only. Properties of the provided event
             token.
         account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
-            Assessment returned by Account Defender when a
+            Assessment returned by account defender when a
             hashed_account_id is provided.
         private_password_leak_verification (google.cloud.recaptchaenterprise_v1.types.PrivatePasswordLeakVerification):
-            Password leak verification info.
+            The private password leak verification field
+            contains the parameters that are used to to
+            check for leaks privately without sharing user
+            credentials.
     """
 
     name = proto.Field(
@@ -235,10 +288,9 @@ class Event(proto.Message):
             platforms already integrated with recaptcha
             enterprise.
         hashed_account_id (bytes):
-            Optional. Optional unique stable hashed user
-            identifier for the request. The identifier
-            should ideally be hashed using sha256 with
-            stable secret.
+            Optional. Unique stable hashed user
+            identifier for the request. The identifier must
+            be hashed using hmac-sha256 with stable secret.
     """
 
     token = proto.Field(
@@ -319,7 +371,7 @@ class TokenProperties(proto.Message):
             of the token.
         hostname (str):
             The hostname of the page on which the token
-            was generated.
+            was generated (Web keys only).
         action (str):
             Action name provided at token generation.
     """
@@ -359,7 +411,7 @@ class TokenProperties(proto.Message):
 
 
 class AccountDefenderAssessment(proto.Message):
-    r"""Account Defender risk assessment.
+    r"""Account defender risk assessment.
 
     Attributes:
         labels (Sequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountDefenderLabel]):
@@ -367,7 +419,7 @@ class AccountDefenderAssessment(proto.Message):
     """
 
     class AccountDefenderLabel(proto.Enum):
-        r"""Labels returned by Account Defender for this request."""
+        r"""Labels returned by account defender for this request."""
         ACCOUNT_DEFENDER_LABEL_UNSPECIFIED = 0
         PROFILE_MATCH = 1
         SUSPICIOUS_LOGIN_ACTIVITY = 2
@@ -378,49 +430,6 @@ class AccountDefenderAssessment(proto.Message):
         proto.ENUM,
         number=1,
         enum=AccountDefenderLabel,
-    )
-
-
-class PrivatePasswordLeakVerification(proto.Message):
-    r"""Private password leak verification info.
-
-    Attributes:
-        lookup_hash_prefix (bytes):
-            Exactly 26-bit prefix of the SHA-256 hash of
-            the canonicalized username. It is used to look
-            up password leaks associated with that hash
-            prefix.
-        encrypted_user_credentials_hash (bytes):
-            Encrypted Scrypt hash of the canonicalized
-            username+password. It is re-encrypted by the server and
-            returned through ``reencrypted_user_credentials_hash``.
-        encrypted_leak_match_prefixes (Sequence[bytes]):
-            List of prefixes of the encrypted potential password leaks
-            that matched the given parameters. They should be compared
-            with the client-side decryption prefix of
-            ``reencrypted_user_credentials_hash``
-        reencrypted_user_credentials_hash (bytes):
-            Corresponds to the re-encryption of the
-            ``encrypted_user_credentials_hash`` field. Used to match
-            potential password leaks within
-            ``encrypted_leak_match_prefixes``.
-    """
-
-    lookup_hash_prefix = proto.Field(
-        proto.BYTES,
-        number=1,
-    )
-    encrypted_user_credentials_hash = proto.Field(
-        proto.BYTES,
-        number=2,
-    )
-    encrypted_leak_match_prefixes = proto.RepeatedField(
-        proto.BYTES,
-        number=3,
-    )
-    reencrypted_user_credentials_hash = proto.Field(
-        proto.BYTES,
-        number=4,
     )
 
 
@@ -501,6 +510,22 @@ class ListKeysResponse(proto.Message):
     next_page_token = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class RetrieveLegacySecretKeyRequest(proto.Message):
+    r"""The retrieve legacy secret key request message.
+
+    Attributes:
+        key (str):
+            Required. The public key name linked to the
+            requested secret key in the format
+            "projects/{project}/keys/{key}".
+    """
+
+    key = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -627,6 +652,26 @@ class Metrics(proto.Message):
         proto.MESSAGE,
         number=3,
         message="ChallengeMetrics",
+    )
+
+
+class RetrieveLegacySecretKeyResponse(proto.Message):
+    r"""Secret key is used only in legacy reCAPTCHA. It must be used
+    in a 3rd party integration with legacy reCAPTCHA.
+
+    Attributes:
+        legacy_secret_key (str):
+            The secret key (also known as shared secret)
+            authorizes communication between your
+            application backend and the reCAPTCHA Enterprise
+            server to create an assessment.
+            The secret key needs to be kept safe for
+            security purposes.
+    """
+
+    legacy_secret_key = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -964,10 +1009,10 @@ class ListRelatedAccountGroupMembershipsRequest(proto.Message):
             ``projects/{project}/relatedaccountgroups/{relatedaccountgroup}``.
         page_size (int):
             Optional. The maximum number of accounts to
-            return. The service may return fewer than this
-            value. If unspecified, at most 50 accounts will
-            be returned. The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            return. The service might return fewer than this
+            value. If unspecified, at most 50 accounts are
+            returned. The maximum value is 1000; values
+            above 1000 are coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListRelatedAccountGroupMemberships`` call.
@@ -1028,10 +1073,10 @@ class ListRelatedAccountGroupsRequest(proto.Message):
             "projects/{project}".
         page_size (int):
             Optional. The maximum number of groups to
-            return. The service may return fewer than this
-            value. If unspecified, at most 50 groups will be
+            return. The service might return fewer than this
+            value. If unspecified, at most 50 groups are
             returned. The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            above 1000 are coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListRelatedAccountGroups`` call. Provide this to retrieve
@@ -1091,19 +1136,20 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
     Attributes:
         project (str):
             Required. The name of the project to search
-            related account group memberships from, in the
-            format "projects/{project}".
+            related account group memberships from. Specify
+            the project name in the following format:
+            "projects/{project}".
         hashed_account_id (bytes):
             Optional. The unique stable hashed user identifier we should
             search connections to. The identifier should correspond to a
             ``hashed_account_id`` provided in a previous
-            CreateAssessment or AnnotateAssessment call.
+            ``CreateAssessment`` or ``AnnotateAssessment`` call.
         page_size (int):
             Optional. The maximum number of groups to
-            return. The service may return fewer than this
-            value. If unspecified, at most 50 groups will be
+            return. The service might return fewer than this
+            value. If unspecified, at most 50 groups are
             returned. The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            above 1000 are coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``SearchRelatedAccountGroupMemberships`` call. Provide this
@@ -1170,7 +1216,8 @@ class RelatedAccountGroupMembership(proto.Message):
         hashed_account_id (bytes):
             The unique stable hashed user identifier of the member. The
             identifier corresponds to a ``hashed_account_id`` provided
-            in a previous CreateAssessment or AnnotateAssessment call.
+            in a previous ``CreateAssessment`` or ``AnnotateAssessment``
+            call.
     """
 
     name = proto.Field(

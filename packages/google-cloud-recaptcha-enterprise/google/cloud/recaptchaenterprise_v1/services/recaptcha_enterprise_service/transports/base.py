@@ -148,6 +148,11 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.retrieve_legacy_secret_key: gapic_v1.method.wrap_method(
+                self.retrieve_legacy_secret_key,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_key: gapic_v1.method.wrap_method(
                 self.get_key,
                 default_timeout=600.0,
@@ -239,6 +244,18 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         Union[
             recaptchaenterprise.ListKeysResponse,
             Awaitable[recaptchaenterprise.ListKeysResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def retrieve_legacy_secret_key(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.RetrieveLegacySecretKeyRequest],
+        Union[
+            recaptchaenterprise.RetrieveLegacySecretKeyResponse,
+            Awaitable[recaptchaenterprise.RetrieveLegacySecretKeyResponse],
         ],
     ]:
         raise NotImplementedError()

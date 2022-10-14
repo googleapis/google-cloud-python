@@ -1718,6 +1718,253 @@ async def test_list_keys_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        recaptchaenterprise.RetrieveLegacySecretKeyRequest,
+        dict,
+    ],
+)
+def test_retrieve_legacy_secret_key(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.RetrieveLegacySecretKeyResponse(
+            legacy_secret_key="legacy_secret_key_value",
+        )
+        response = client.retrieve_legacy_secret_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.RetrieveLegacySecretKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.RetrieveLegacySecretKeyResponse)
+    assert response.legacy_secret_key == "legacy_secret_key_value"
+
+
+def test_retrieve_legacy_secret_key_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        client.retrieve_legacy_secret_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.RetrieveLegacySecretKeyRequest()
+
+
+@pytest.mark.asyncio
+async def test_retrieve_legacy_secret_key_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.RetrieveLegacySecretKeyRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RetrieveLegacySecretKeyResponse(
+                legacy_secret_key="legacy_secret_key_value",
+            )
+        )
+        response = await client.retrieve_legacy_secret_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.RetrieveLegacySecretKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.RetrieveLegacySecretKeyResponse)
+    assert response.legacy_secret_key == "legacy_secret_key_value"
+
+
+@pytest.mark.asyncio
+async def test_retrieve_legacy_secret_key_async_from_dict():
+    await test_retrieve_legacy_secret_key_async(request_type=dict)
+
+
+def test_retrieve_legacy_secret_key_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.RetrieveLegacySecretKeyRequest()
+
+    request.key = "key_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.RetrieveLegacySecretKeyResponse()
+        client.retrieve_legacy_secret_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "key=key_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_retrieve_legacy_secret_key_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.RetrieveLegacySecretKeyRequest()
+
+    request.key = "key_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RetrieveLegacySecretKeyResponse()
+        )
+        await client.retrieve_legacy_secret_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "key=key_value",
+    ) in kw["metadata"]
+
+
+def test_retrieve_legacy_secret_key_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.RetrieveLegacySecretKeyResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.retrieve_legacy_secret_key(
+            key="key_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].key
+        mock_val = "key_value"
+        assert arg == mock_val
+
+
+def test_retrieve_legacy_secret_key_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.retrieve_legacy_secret_key(
+            recaptchaenterprise.RetrieveLegacySecretKeyRequest(),
+            key="key_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_retrieve_legacy_secret_key_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_legacy_secret_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.RetrieveLegacySecretKeyResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RetrieveLegacySecretKeyResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.retrieve_legacy_secret_key(
+            key="key_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].key
+        mock_val = "key_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_retrieve_legacy_secret_key_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.retrieve_legacy_secret_key(
+            recaptchaenterprise.RetrieveLegacySecretKeyRequest(),
+            key="key_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         recaptchaenterprise.GetKeyRequest,
         dict,
     ],
@@ -4078,6 +4325,7 @@ def test_recaptcha_enterprise_service_base_transport():
         "annotate_assessment",
         "create_key",
         "list_keys",
+        "retrieve_legacy_secret_key",
         "get_key",
         "update_key",
         "delete_key",
