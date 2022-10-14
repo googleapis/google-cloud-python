@@ -25,9 +25,13 @@ from .types.k8s_min import Container
 from .types.k8s_min import ContainerPort
 from .types.k8s_min import EnvVar
 from .types.k8s_min import EnvVarSource
+from .types.k8s_min import HTTPGetAction
+from .types.k8s_min import HTTPHeader
+from .types.k8s_min import Probe
 from .types.k8s_min import ResourceRequirements
 from .types.k8s_min import SecretKeySelector
 from .types.k8s_min import SecretVolumeSource
+from .types.k8s_min import TCPSocketAction
 from .types.k8s_min import VersionToPath
 from .types.k8s_min import Volume
 from .types.k8s_min import VolumeMount
@@ -69,11 +73,14 @@ __all__ = (
     "ExecutionEnvironment",
     "GetRevisionRequest",
     "GetServiceRequest",
+    "HTTPGetAction",
+    "HTTPHeader",
     "IngressTraffic",
     "ListRevisionsRequest",
     "ListRevisionsResponse",
     "ListServicesRequest",
     "ListServicesResponse",
+    "Probe",
     "ResourceRequirements",
     "Revision",
     "RevisionScaling",
@@ -83,6 +90,7 @@ __all__ = (
     "SecretVolumeSource",
     "Service",
     "ServicesClient",
+    "TCPSocketAction",
     "TrafficTarget",
     "TrafficTargetAllocationType",
     "TrafficTargetStatus",

@@ -123,6 +123,7 @@ class Condition(proto.Message):
         EXECUTION_REASON_UNDEFINED = 0
         JOB_STATUS_SERVICE_POLLING_ERROR = 1
         NON_ZERO_EXIT_CODE = 2
+        CANCELLED = 3
 
     type_ = proto.Field(
         proto.STRING,

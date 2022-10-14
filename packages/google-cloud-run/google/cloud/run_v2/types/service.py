@@ -42,14 +42,17 @@ class CreateServiceRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The location and project in which
-            this service should be created. Format:
-            projects/{projectnumber}/locations/{location}
+            The location and project in which this
+            service should be created. Format:
+            projects/{project}/locations/{location} Only
+            lowercase characters, digits, and hyphens.
         service (google.cloud.run_v2.types.Service):
             Required. The Service instance to create.
         service_id (str):
-            Required. The unique identifier for the Service. The name of
-            the service becomes {parent}/services/{service_id}.
+            Required. The unique identifier for the Service. It must
+            begin with letter, and may not end with hyphen; must contain
+            fewer than 50 characters. The name of the service becomes
+            {parent}/services/{service_id}.
         validate_only (bool):
             Indicates that the request should be
             validated and default values populated, without
@@ -117,7 +120,7 @@ class ListServicesRequest(proto.Message):
             Required. The location and project to list
             resources on. Location must be a valid GCP
             region, and may not be the "-" wildcard. Format:
-            projects/{projectnumber}/locations/{location}
+            projects/{project}/locations/{location}
         page_size (int):
             Maximum number of Services to return in this
             call.
@@ -180,7 +183,7 @@ class GetServiceRequest(proto.Message):
         name (str):
             Required. The full name of the Service.
             Format:
-            projects/{projectnumber}/locations/{location}/services/{service}
+            projects/{project}/locations/{location}/services/{service}
     """
 
     name = proto.Field(
@@ -196,7 +199,7 @@ class DeleteServiceRequest(proto.Message):
         name (str):
             Required. The full name of the Service.
             Format:
-            projects/{projectnumber}/locations/{location}/services/{service}
+            projects/{project}/locations/{location}/services/{service}
         validate_only (bool):
             Indicates that the request should be
             validated without actually deleting any

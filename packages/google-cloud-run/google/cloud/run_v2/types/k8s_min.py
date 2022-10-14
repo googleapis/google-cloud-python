@@ -30,6 +30,10 @@ __protobuf__ = proto.module(
         "SecretVolumeSource",
         "VersionToPath",
         "CloudSqlInstance",
+        "Probe",
+        "HTTPGetAction",
+        "HTTPHeader",
+        "TCPSocketAction",
     },
 )
 
@@ -89,6 +93,24 @@ class Container(proto.Message):
         volume_mounts (Sequence[google.cloud.run_v2.types.VolumeMount]):
             Volume to mount into the container's
             filesystem.
+        working_dir (str):
+            Container's working directory.
+            If not specified, the container runtime's
+            default will be used, which might be configured
+            in the container image.
+        liveness_probe (google.cloud.run_v2.types.Probe):
+            Periodic probe of container liveness.
+            Container will be restarted if the probe fails.
+            More info:
+            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        startup_probe (google.cloud.run_v2.types.Probe):
+            Startup probe of application within the
+            container. All other probes are disabled if a
+            startup probe is provided, until it succeeds.
+            Container will not be added to service endpoints
+            if the probe fails.
+            More info:
+            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
     """
 
     name = proto.Field(
@@ -126,6 +148,20 @@ class Container(proto.Message):
         proto.MESSAGE,
         number=8,
         message="VolumeMount",
+    )
+    working_dir = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    liveness_probe = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="Probe",
+    )
+    startup_probe = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="Probe",
     )
 
 
@@ -369,7 +405,7 @@ class SecretVolumeSource(proto.Message):
         default_mode (int):
             Integer representation of mode bits to use on created files
             by default. Must be a value between 0000 and 0777 (octal),
-            defaulting to 0644. Directories within the path are not
+            defaulting to 0444. Directories within the path are not
             affected by this setting.
 
             Notes
@@ -471,6 +507,144 @@ class CloudSqlInstance(proto.Message):
 
     instances = proto.RepeatedField(
         proto.STRING,
+        number=1,
+    )
+
+
+class Probe(proto.Message):
+    r"""Probe describes a health check to be performed against a
+    container to determine whether it is alive or ready to receive
+    traffic.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        initial_delay_seconds (int):
+            Number of seconds after the container has
+            started before the probe is initiated.
+            Defaults to 0 seconds. Minimum value is 0.
+            Maximum value for liveness probe is 3600.
+            Maximum value for startup probe is 240. More
+            info:
+            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        timeout_seconds (int):
+            Number of seconds after which the probe times out. Defaults
+            to 1 second. Minimum value is 1. Maximum value is 3600. Must
+            be smaller than period_seconds. More info:
+            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        period_seconds (int):
+            How often (in seconds) to perform the probe. Default to 10
+            seconds. Minimum value is 1. Maximum value for liveness
+            probe is 3600. Maximum value for startup probe is 240. Must
+            be greater or equal than timeout_seconds.
+        failure_threshold (int):
+            Minimum consecutive failures for the probe to
+            be considered failed after having succeeded.
+            Defaults to 3. Minimum value is 1.
+        http_get (google.cloud.run_v2.types.HTTPGetAction):
+            HTTPGet specifies the http request to
+            perform. Exactly one of HTTPGet or TCPSocket
+            must be specified.
+
+            This field is a member of `oneof`_ ``probe_type``.
+        tcp_socket (google.cloud.run_v2.types.TCPSocketAction):
+            TCPSocket specifies an action involving a TCP
+            port. Exactly one of HTTPGet or TCPSocket must
+            be specified.
+
+            This field is a member of `oneof`_ ``probe_type``.
+    """
+
+    initial_delay_seconds = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    timeout_seconds = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    period_seconds = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    failure_threshold = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    http_get = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="probe_type",
+        message="HTTPGetAction",
+    )
+    tcp_socket = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="probe_type",
+        message="TCPSocketAction",
+    )
+
+
+class HTTPGetAction(proto.Message):
+    r"""HTTPGetAction describes an action based on HTTP Get requests.
+
+    Attributes:
+        path (str):
+            Path to access on the HTTP server. Defaults
+            to '/'.
+        http_headers (Sequence[google.cloud.run_v2.types.HTTPHeader]):
+            Custom headers to set in the request. HTTP
+            allows repeated headers.
+    """
+
+    path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    http_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="HTTPHeader",
+    )
+
+
+class HTTPHeader(proto.Message):
+    r"""HTTPHeader describes a custom header to be used in HTTP
+    probes
+
+    Attributes:
+        name (str):
+            Required. The header field name
+        value (str):
+            The header field value
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class TCPSocketAction(proto.Message):
+    r"""TCPSocketAction describes an action based on opening a socket
+
+    Attributes:
+        port (int):
+            Port number to access on the container. Must
+            be in the range 1 to 65535.
+    """
+
+    port = proto.Field(
+        proto.INT32,
         number=1,
     )
 
