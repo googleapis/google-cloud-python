@@ -1,0 +1,11 @@
+# This constraints file is required for unit tests.
+# List all library dependencies and extras in this file.
+google-api-core
+proto-plus
+protobuf
+{% if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods or api.has_iam_mixin %}
+grpc-google-iam-v1
+{% endif %}
+{% if api.requires_package(('google', 'cloud', 'documentai', 'v1')) %}
+google-cloud-documentai
+{% endif %}

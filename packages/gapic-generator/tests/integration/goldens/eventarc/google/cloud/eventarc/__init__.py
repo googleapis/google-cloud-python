@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.eventarc import version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.eventarc_v1.services.eventarc.client import EventarcClient
 from google.cloud.eventarc_v1.services.eventarc.async_client import EventarcAsyncClient

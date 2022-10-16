@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.redis import version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.cloud_redis import CloudRedisClient
 from .services.cloud_redis import CloudRedisAsyncClient

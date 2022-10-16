@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.logging import version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.logging_v2.services.config_service_v2.client import ConfigServiceV2Client
 from google.cloud.logging_v2.services.config_service_v2.async_client import ConfigServiceV2AsyncClient

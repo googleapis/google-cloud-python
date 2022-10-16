@@ -15,44 +15,76 @@
 #
 import io
 import os
-import setuptools  # type: ignore
 
-version = '0.1.0'
+import setuptools # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-readme_filename = os.path.join(package_root, 'README.rst')
-with io.open(readme_filename, encoding='utf-8') as readme_file:
+name = 'google-cloud-eventarc'
+
+
+description = "Google Cloud Eventarc API client library"
+
+version = {}
+with open(os.path.join(package_root, 'google/cloud/eventarc/version.py')) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
+dependencies = [
+    "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
+    "proto-plus >= 1.22.0, <2.0.0dev",
+    "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+]
+url = "https://github.com/googleapis/python-eventarc"
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+readme_filename = os.path.join(package_root, "README.rst")
+with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
+]
+
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
+
 setuptools.setup(
-    name='google-cloud-eventarc',
+    name=name,
+    version=version,
+    description=description,
+    long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    url="https://github.com/googleapis/python-google-cloud-eventarc",
-    version=version,
-    long_description=readme,
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages=('google', 'google.cloud'),
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    install_requires=(
-        'google-api-core[grpc] >= 2.10.0, < 3.0.0dev',
-        'libcst >= 0.2.5',
-        'googleapis-common-protos >= 1.55.0, <2.0.0dev',
-        'proto-plus >= 1.19.7',
-    ),
-    python_requires='>=3.7',
+    license="Apache 2.0",
+    url=url,
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Topic :: Internet',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        release_status,
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
+    python_requires=">=3.7",
+    namespace_packages=namespaces,
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )

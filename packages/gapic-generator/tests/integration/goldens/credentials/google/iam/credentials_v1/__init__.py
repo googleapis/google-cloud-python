@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.iam.credentials import version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.iam_credentials import IAMCredentialsClient
 from .services.iam_credentials import IAMCredentialsAsyncClient

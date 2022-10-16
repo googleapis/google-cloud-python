@@ -2,6 +2,11 @@
 
 {% block content %}
 
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.module_name %}
+from {{package_path}} import version as package_version
+
+__version__ = package_version.__version__
+
 {#  Import subpackages. -#}
 {% for subpackage, _ in api.subpackages|dictsort %}
 from . import {{ subpackage }}
