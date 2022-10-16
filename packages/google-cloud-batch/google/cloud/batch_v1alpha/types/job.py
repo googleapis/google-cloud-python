@@ -75,7 +75,7 @@ class Job(proto.Message):
             Output only. Job status. It is read only for
             users.
         notification (google.cloud.batch_v1alpha.types.JobNotification):
-            Job notification.
+            Deprecated: please use notifications instead.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the Job was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -399,26 +399,19 @@ class AllocationPolicy(proto.Message):
             Location where compute resources should be
             allocated for the Job.
         instance (google.cloud.batch_v1alpha.types.AllocationPolicy.InstancePolicy):
-            Create only instances allowed by this policy.
+            Deprecated: please use instances[0].policy instead.
         instances (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.InstancePolicyOrTemplate]):
             Describe instances that can be created by this
             AllocationPolicy. Only instances[0] is supported now.
         instance_templates (Sequence[str]):
-            Instance templates that are used to VMs. If specified, only
-            instance_templates[0] is used.
+            Deprecated: please use instances[0].template instead.
         provisioning_models (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel]):
-            Create only instances in the listed provisiong models.
-            Default to allow all.
-
-            Currently only the first model of the provisioning_models
-            list will be considered; specifying additional models (e.g.,
-            2nd, 3rd, etc.) is a no-op.
+            Deprecated: please use
+            instances[i].policy.provisioning_model instead.
         service_account_email (str):
-            Email of the service account that VMs will
-            run as.
+            Deprecated: please use service_account instead.
         service_account (google.cloud.batch_v1alpha.types.ServiceAccount):
             Service account that VMs will run as.
-            Not yet implemented.
         labels (Mapping[str, str]):
             Labels applied to all VM instances and other resources
             created by AllocationPolicy. Labels could be user provided
@@ -550,9 +543,10 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``attached``.
             device_name (str):
-                Device name that the guest operating system
-                will see. If not specified, this is default to
-                the disk name.
+                Device name that the guest operating system will see. It is
+                used by Runnable.volumes field to mount disks. So please
+                specify the device_name if you want Batch to help mount the
+                disk, and it should match the device_name field in volumes.
         """
 
         new_disk = proto.Field(
@@ -582,7 +576,8 @@ class AllocationPolicy(proto.Message):
             count (int):
                 The number of accelerators of this type.
             install_gpu_drivers (bool):
-
+                Deprecated: please use instances[0].install_gpu_drivers
+                instead.
         """
 
         type_ = proto.Field(
@@ -604,7 +599,7 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             allowed_machine_types (Sequence[str]):
-
+                Deprecated: please use machine_type instead.
             machine_type (str):
                 The Compute Engine machine type.
             min_cpu_platform (str):
@@ -672,7 +667,10 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``policy_template``.
             install_gpu_drivers (bool):
-
+                Set this field true if users want Batch to help fetch
+                drivers from a third party location and install them for
+                GPUs specified in policy.accelerators or instance_template
+                on their behalf. Default is false.
         """
 
         policy = proto.Field(
@@ -912,7 +910,11 @@ class ServiceAccount(proto.Message):
         email (str):
             Email address of the service account. If not
             specified, the default Compute Engine service
-            account for the project will be used.
+            account for the project will be used. If
+            instance template is being used, the service
+            account has to be specified in the instance
+            template and it has to match the email field
+            here.
         scopes (Sequence[str]):
             List of scopes to be enabled for this service
             account on the VM, in addition to the

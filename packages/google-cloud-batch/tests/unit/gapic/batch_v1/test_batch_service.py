@@ -2615,8 +2615,10 @@ def test_create_job_rest(request_type):
                         ],
                     },
                     "instance_template": "instance_template_value",
+                    "install_gpu_drivers": True,
                 }
             ],
+            "service_account": {"email": "email_value"},
             "labels": {},
             "network": {
                 "network_interfaces": [
@@ -2948,8 +2950,10 @@ def test_create_job_rest_bad_request(
                         ],
                     },
                     "instance_template": "instance_template_value",
+                    "install_gpu_drivers": True,
                 }
             ],
+            "service_account": {"email": "email_value"},
             "labels": {},
             "network": {
                 "network_interfaces": [

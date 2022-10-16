@@ -30,6 +30,7 @@ from .job import (
     JobNotification,
     JobStatus,
     LogsPolicy,
+    ServiceAccount,
     TaskGroup,
 )
 from .task import (
@@ -64,6 +65,7 @@ __all__ = (
     "JobNotification",
     "JobStatus",
     "LogsPolicy",
+    "ServiceAccount",
     "TaskGroup",
     "ComputeResource",
     "Environment",

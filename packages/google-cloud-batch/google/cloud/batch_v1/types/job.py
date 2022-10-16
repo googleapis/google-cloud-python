@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "JobNotification",
         "AllocationPolicy",
         "TaskGroup",
+        "ServiceAccount",
     },
 )
 
@@ -336,6 +337,8 @@ class AllocationPolicy(proto.Message):
         instances (Sequence[google.cloud.batch_v1.types.AllocationPolicy.InstancePolicyOrTemplate]):
             Describe instances that can be created by this
             AllocationPolicy. Only instances[0] is supported now.
+        service_account (google.cloud.batch_v1.types.ServiceAccount):
+            Service account that VMs will run as.
         labels (Mapping[str, str]):
             Labels applied to all VM instances and other resources
             created by AllocationPolicy. Labels could be user provided
@@ -460,9 +463,10 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``attached``.
             device_name (str):
-                Device name that the guest operating system
-                will see. If not specified, this is default to
-                the disk name.
+                Device name that the guest operating system will see. It is
+                used by Runnable.volumes field to mount disks. So please
+                specify the device_name if you want Batch to help mount the
+                disk, and it should match the device_name field in volumes.
         """
 
         new_disk = proto.Field(
@@ -492,7 +496,8 @@ class AllocationPolicy(proto.Message):
             count (int):
                 The number of accelerators of this type.
             install_gpu_drivers (bool):
-
+                Deprecated: please use instances[0].install_gpu_drivers
+                instead.
         """
 
         type_ = proto.Field(
@@ -575,6 +580,11 @@ class AllocationPolicy(proto.Message):
                 c++ keyword conflict.
 
                 This field is a member of `oneof`_ ``policy_template``.
+            install_gpu_drivers (bool):
+                Set this field true if users want Batch to help fetch
+                drivers from a third party location and install them for
+                GPUs specified in policy.accelerators or instance_template
+                on their behalf. Default is false.
         """
 
         policy = proto.Field(
@@ -587,6 +597,10 @@ class AllocationPolicy(proto.Message):
             proto.STRING,
             number=2,
             oneof="policy_template",
+        )
+        install_gpu_drivers = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     class NetworkInterface(proto.Message):
@@ -646,6 +660,11 @@ class AllocationPolicy(proto.Message):
         proto.MESSAGE,
         number=8,
         message=InstancePolicyOrTemplate,
+    )
+    service_account = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ServiceAccount",
     )
     labels = proto.MapField(
         proto.STRING,
@@ -742,6 +761,26 @@ class TaskGroup(proto.Message):
     permissive_ssh = proto.Field(
         proto.BOOL,
         number=12,
+    )
+
+
+class ServiceAccount(proto.Message):
+    r"""Carries information about a Google Cloud service account.
+
+    Attributes:
+        email (str):
+            Email address of the service account. If not
+            specified, the default Compute Engine service
+            account for the project will be used. If
+            instance template is being used, the service
+            account has to be specified in the instance
+            template and it has to match the email field
+            here.
+    """
+
+    email = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

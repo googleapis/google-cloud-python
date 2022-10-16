@@ -31,6 +31,7 @@ from .types.job import Job
 from .types.job import JobNotification
 from .types.job import JobStatus
 from .types.job import LogsPolicy
+from .types.job import ServiceAccount
 from .types.job import TaskGroup
 from .types.task import ComputeResource
 from .types.task import Environment
@@ -68,6 +69,7 @@ __all__ = (
     "NFS",
     "OperationMetadata",
     "Runnable",
+    "ServiceAccount",
     "StatusEvent",
     "Task",
     "TaskExecution",
