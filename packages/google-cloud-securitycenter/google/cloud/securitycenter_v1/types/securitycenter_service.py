@@ -220,7 +220,8 @@ class CreateNotificationConfigRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the new notification config's
-            parent. Its format is "organizations/[organization_id]".
+            parent. Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
         config_id (str):
             Required.
             Unique identifier provided by the client within
@@ -957,7 +958,8 @@ class ListNotificationConfigsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Name of the organization to list notification
-            configs. Its format is "organizations/[organization_id]".
+            configs. Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
         page_token (str):
             The value returned by the last
             ``ListNotificationConfigsResponse``; indicates that this is

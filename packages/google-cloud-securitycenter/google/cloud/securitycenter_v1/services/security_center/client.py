@@ -1211,7 +1211,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 notification config.
             parent (str):
                 Required. Resource name of the new notification config's
-                parent. Its format is "organizations/[organization_id]".
+                parent. Its format is "organizations/[organization_id]",
+                "folders/[folder_id]", or "projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2795,7 +2796,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             parent (str):
                 Required. Name of the organization to list notification
                 configs. Its format is
-                "organizations/[organization_id]".
+                "organizations/[organization_id]",
+                "folders/[folder_id]", or "projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
