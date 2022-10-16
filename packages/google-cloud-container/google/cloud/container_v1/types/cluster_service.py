@@ -27,6 +27,8 @@ __protobuf__ = proto.module(
         "UpgradeResourceType",
         "DatapathProvider",
         "NodePoolUpdateStrategy",
+        "StackType",
+        "IPv6AccessType",
         "LinuxNodeConfig",
         "NodeKubeletConfig",
         "NodeConfig",
@@ -55,6 +57,7 @@ __protobuf__ = proto.module(
         "ConfigConnectorConfig",
         "GcePersistentDiskCsiDriverConfig",
         "GcpFilestoreCsiDriverConfig",
+        "GkeBackupAgentConfig",
         "MasterAuthorizedNetworksConfig",
         "LegacyAbac",
         "NetworkPolicy",
@@ -128,6 +131,7 @@ __protobuf__ = proto.module(
         "Jwk",
         "GetJSONWebKeysResponse",
         "ReleaseChannel",
+        "CostManagementConfig",
         "IntraNodeVisibilityConfig",
         "ILBSubsettingConfig",
         "DNSConfig",
@@ -196,6 +200,20 @@ class NodePoolUpdateStrategy(proto.Enum):
     NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED = 0
     BLUE_GREEN = 2
     SURGE = 3
+
+
+class StackType(proto.Enum):
+    r"""Possible values for IP stack type"""
+    STACK_TYPE_UNSPECIFIED = 0
+    IPV4 = 1
+    IPV4_IPV6 = 2
+
+
+class IPv6AccessType(proto.Enum):
+    r"""Possible values for IPv6 access type"""
+    IPV6_ACCESS_TYPE_UNSPECIFIED = 0
+    INTERNAL = 1
+    EXTERNAL = 2
 
 
 class LinuxNodeConfig(proto.Message):
@@ -1055,6 +1073,9 @@ class AddonsConfig(proto.Message):
         gcp_filestore_csi_driver_config (google.cloud.container_v1.types.GcpFilestoreCsiDriverConfig):
             Configuration for the GCP Filestore CSI
             driver.
+        gke_backup_agent_config (google.cloud.container_v1.types.GkeBackupAgentConfig):
+            Configuration for the Backup for GKE agent
+            addon.
     """
 
     http_load_balancing = proto.Field(
@@ -1101,6 +1122,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=14,
         message="GcpFilestoreCsiDriverConfig",
+    )
+    gke_backup_agent_config = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="GkeBackupAgentConfig",
     )
 
 
@@ -1366,6 +1392,21 @@ class GcpFilestoreCsiDriverConfig(proto.Message):
     )
 
 
+class GkeBackupAgentConfig(proto.Message):
+    r"""Configuration for the Backup for GKE Agent.
+
+    Attributes:
+        enabled (bool):
+            Whether the Backup for GKE agent is enabled
+            for this cluster.
+    """
+
+    enabled = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class MasterAuthorizedNetworksConfig(proto.Message):
     r"""Configuration options for the master authorized networks
     feature. Enabled master authorized networks will disallow all
@@ -1612,6 +1653,11 @@ class IPAllocationPolicy(proto.Message):
             true if use_ip_aliases is true. If both use_ip_aliases and
             use_routes are false, then the server picks the default IP
             allocation mode
+        stack_type (google.cloud.container_v1.types.StackType):
+            The IP stack type of the cluster
+        ipv6_access_type (google.cloud.container_v1.types.IPv6AccessType):
+            The ipv6 access type (internal or external) when
+            create_subnetwork is true
     """
 
     use_ip_aliases = proto.Field(
@@ -1665,6 +1711,16 @@ class IPAllocationPolicy(proto.Message):
     use_routes = proto.Field(
         proto.BOOL,
         number=15,
+    )
+    stack_type = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum="StackType",
+    )
+    ipv6_access_type = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum="IPv6AccessType",
     )
 
 
@@ -1844,6 +1900,9 @@ class Cluster(proto.Message):
         mesh_certificates (google.cloud.container_v1.types.MeshCertificates):
             Configuration for issuance of mTLS keys and
             certificates to Kubernetes pods.
+        cost_management_config (google.cloud.container_v1.types.CostManagementConfig):
+            Configuration for the fine-grained cost
+            management feature.
         notification_config (google.cloud.container_v1.types.NotificationConfig):
             Notification configuration of the cluster.
         confidential_nodes (google.cloud.container_v1.types.ConfidentialNodes):
@@ -2133,6 +2192,11 @@ class Cluster(proto.Message):
         number=67,
         message="MeshCertificates",
     )
+    cost_management_config = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        message="CostManagementConfig",
+    )
     notification_config = proto.Field(
         proto.MESSAGE,
         number=49,
@@ -2370,6 +2434,9 @@ class ClusterUpdate(proto.Message):
             certificates to Kubernetes pods.
         desired_shielded_nodes (google.cloud.container_v1.types.ShieldedNodes):
             Configuration for Shielded Nodes.
+        desired_cost_management_config (google.cloud.container_v1.types.CostManagementConfig):
+            The desired configuration for the
+            fine-grained cost management feature.
         desired_dns_config (google.cloud.container_v1.types.DNSConfig):
             DNSConfig contains clusterDNS config for this
             cluster.
@@ -2514,6 +2581,11 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=48,
         message="ShieldedNodes",
+    )
+    desired_cost_management_config = proto.Field(
+        proto.MESSAGE,
+        number=49,
+        message="CostManagementConfig",
     )
     desired_dns_config = proto.Field(
         proto.MESSAGE,
@@ -6085,6 +6157,20 @@ class ReleaseChannel(proto.Message):
         proto.ENUM,
         number=1,
         enum=Channel,
+    )
+
+
+class CostManagementConfig(proto.Message):
+    r"""Configuration for fine-grained cost management feature.
+
+    Attributes:
+        enabled (bool):
+            Whether the feature is enabled or not.
+    """
+
+    enabled = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 

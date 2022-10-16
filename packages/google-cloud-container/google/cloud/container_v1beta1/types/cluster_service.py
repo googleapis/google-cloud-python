@@ -2639,13 +2639,32 @@ class ProtectConfig(proto.Message):
             enabled for a cluster's workload configurations.
 
             This field is a member of `oneof`_ ``_workload_config``.
+        workload_vulnerability_mode (google.cloud.container_v1beta1.types.ProtectConfig.WorkloadVulnerabilityMode):
+            Sets which mode to use for Protect workload
+            vulnerability scanning feature.
+
+            This field is a member of `oneof`_ ``_workload_vulnerability_mode``.
     """
+
+    class WorkloadVulnerabilityMode(proto.Enum):
+        r"""WorkloadVulnerabilityMode defines mode to perform
+        vulnerability scanning.
+        """
+        WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        BASIC = 2
 
     workload_config = proto.Field(
         proto.MESSAGE,
         number=1,
         optional=True,
         message="WorkloadConfig",
+    )
+    workload_vulnerability_mode = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=WorkloadVulnerabilityMode,
     )
 
 
