@@ -26,7 +26,7 @@ name = 'google-cloud-redis'
 description = "Google Cloud Redis API client library"
 
 version = {}
-with open(os.path.join(package_root, 'google/cloud/redis/version.py')) as fp:
+with open(os.path.join(package_root, 'google/cloud/redis/gapic_version.py')) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 

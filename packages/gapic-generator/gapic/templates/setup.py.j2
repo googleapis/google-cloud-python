@@ -17,7 +17,7 @@ name = '{{ api.naming.warehouse_package_name }}'
 description = "{{ warehouse_description }} API client library"
 
 version = {}
-with open(os.path.join(package_root, '{{ package_path }}/version.py')) as fp:
+with open(os.path.join(package_root, '{{ package_path }}/gapic_version.py')) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 

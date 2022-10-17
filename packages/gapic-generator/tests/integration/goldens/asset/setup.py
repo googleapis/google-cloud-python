@@ -26,7 +26,7 @@ name = 'google-cloud-asset'
 description = "Google Cloud Asset API client library"
 
 version = {}
-with open(os.path.join(package_root, 'google/cloud/asset/version.py')) as fp:
+with open(os.path.join(package_root, 'google/cloud/asset/gapic_version.py')) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
