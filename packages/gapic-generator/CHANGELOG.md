@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [1.5.0](https://github.com/googleapis/gapic-generator-python/compare/v1.4.4...v1.5.0) (2022-10-17)
+
+
+### Features
+
+* Add __version__ in GAPIC clients ([#1350](https://github.com/googleapis/gapic-generator-python/issues/1350)) ([1c91347](https://github.com/googleapis/gapic-generator-python/commit/1c913476b9d2efe8a8db803bfe1d47ad8697bc72))
+
+
+### Bug Fixes
+
+* Add supported dict typing for client_options ([#1464](https://github.com/googleapis/gapic-generator-python/issues/1464)) ([de62f12](https://github.com/googleapis/gapic-generator-python/commit/de62f12b23ce8f434dd429f7761ae0001c8ad34f)), closes [#1380](https://github.com/googleapis/gapic-generator-python/issues/1380)
+* Fix multiple gapic-generator-python bugs ([#1458](https://github.com/googleapis/gapic-generator-python/issues/1458)) ([ab3e361](https://github.com/googleapis/gapic-generator-python/commit/ab3e361c5e69060afb721e76e6fd4fac0d367d15))
+* Snippetgen skip REST snippets ([#1463](https://github.com/googleapis/gapic-generator-python/issues/1463)) ([119a3f1](https://github.com/googleapis/gapic-generator-python/commit/119a3f18d671664309efbf1aee7bafc94b401eed))
+
 ## [1.4.4](https://github.com/googleapis/gapic-generator-python/compare/v1.4.3...v1.4.4) (2022-09-20)
 
 
