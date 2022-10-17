@@ -306,7 +306,7 @@ class Test_LoggingAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._make_one(client)
 
-        api.write_entries([ENTRY])
+        api.write_entries([ENTRY], partial_success=False)
 
         self.assertEqual(conn._called_with["method"], "POST")
         path = f"/{self.WRITE_ENTRIES_PATH}"
@@ -325,7 +325,7 @@ class Test_LoggingAPI(unittest.TestCase):
             "resource": RESOURCE,
             "labels": LABELS,
             "entries": [ENTRY1, ENTRY2],
-            "partialSuccess": False,
+            "partialSuccess": True,
             "dry_run": False,
         }
         conn = _Connection({})
