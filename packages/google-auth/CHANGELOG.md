@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.13.0](https://github.com/googleapis/google-auth-library-python/compare/v2.12.0...v2.13.0) (2022-10-14)
+
+
+### Features
+
+* Adds new external account authorized user credentials ([#1160](https://github.com/googleapis/google-auth-library-python/issues/1160)) ([523f811](https://github.com/googleapis/google-auth-library-python/commit/523f8117a72548d91f1bb169a3c91b095477ce3b))
+* Implement pluggable auth interactive mode ([#1131](https://github.com/googleapis/google-auth-library-python/issues/1131)) ([44a189f](https://github.com/googleapis/google-auth-library-python/commit/44a189fc6185bf33e9d5609cf8d57a846cd98aaf))
+* Introduce the functionality to override token_uri in credentials ([#1159](https://github.com/googleapis/google-auth-library-python/issues/1159)) ([73bc7e9](https://github.com/googleapis/google-auth-library-python/commit/73bc7e9e0e72b6c5057a13cdb4ac996b754ddb58))
+
+
+### Bug Fixes
+
+* Adding one more pattern to relax the regex check for sts and impersonation url endpoints ([#1158](https://github.com/googleapis/google-auth-library-python/issues/1158)) ([75326e3](https://github.com/googleapis/google-auth-library-python/commit/75326e397c619a2b58963d3fd9fc1a1a5eda13a0))
+
 ## [2.12.0](https://github.com/googleapis/google-auth-library-python/compare/v2.11.1...v2.12.0) (2022-09-26)
 
 
