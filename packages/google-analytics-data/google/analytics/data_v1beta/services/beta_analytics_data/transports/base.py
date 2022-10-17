@@ -152,7 +152,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
             ),
             self.get_metadata: gapic_v1.method.wrap_method(
                 self.get_metadata,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.run_realtime_report: gapic_v1.method.wrap_method(
@@ -162,7 +162,7 @@ class BetaAnalyticsDataTransport(abc.ABC):
             ),
             self.check_compatibility: gapic_v1.method.wrap_method(
                 self.check_compatibility,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
         }

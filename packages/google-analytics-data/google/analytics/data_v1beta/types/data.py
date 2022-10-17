@@ -151,9 +151,9 @@ class MinuteRange(proto.Message):
 
             If unspecified, ``startMinutesAgo`` is defaulted to 29.
             Standard Analytics properties can request up to the last 30
-            minutes of event data (``startMinutesAgo <= 29``), and
-            Google Analytics 360 properties can request up to the last
-            60 minutes of event data (``startMinutesAgo <= 59``).
+            minutes of event data (``startMinutesAgo <= 29``), and 360
+            Analytics properties can request up to the last 60 minutes
+            of event data (``startMinutesAgo <= 59``).
 
             This field is a member of `oneof`_ ``_start_minutes_ago``.
         end_minutes_ago (int):
@@ -165,8 +165,8 @@ class MinuteRange(proto.Message):
             If unspecified, ``endMinutesAgo`` is defaulted to 0.
             Standard Analytics properties can request any minute in the
             last 30 minutes of event data (``endMinutesAgo <= 29``), and
-            Google Analytics 360 properties can request any minute in
-            the last 60 minutes of event data (``endMinutesAgo <= 59``).
+            360 Analytics properties can request any minute in the last
+            60 minutes of event data (``endMinutesAgo <= 59``).
 
             This field is a member of `oneof`_ ``_end_minutes_ago``.
         name (str):
@@ -198,8 +198,8 @@ class Dimension(proto.Message):
     r"""Dimensions are attributes of your data. For example, the
     dimension city indicates the city from which an event
     originates. Dimension values in report responses are strings;
-    for example, city could be "Paris" or "New York". Requests are
-    allowed up to 9 dimensions.
+    for example, the city could be "Paris" or "New York". Requests
+    are allowed up to 9 dimensions.
 
     Attributes:
         name (str):
@@ -376,9 +376,9 @@ class Metric(proto.Message):
 
 
 class FilterExpression(proto.Message):
-    r"""To express dimension or metric filters.
-    The fields in the same FilterExpression need to be either all
-    dimensions or all metrics.
+    r"""To express dimension or metric filters. The fields in the
+    same FilterExpression need to be either all dimensions or all
+    metrics.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -401,9 +401,10 @@ class FilterExpression(proto.Message):
 
             This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.data_v1beta.types.Filter):
-            A primitive filter.
-            All fields in filter in same FilterExpression
-            needs to be either all dimensions or metrics.
+            A primitive filter. In the same
+            FilterExpression, all of the filter's field
+            names need to be either all dimensions or all
+            metrics.
 
             This field is a member of `oneof`_ ``expr``.
     """
@@ -461,8 +462,12 @@ class Filter(proto.Message):
 
     Attributes:
         field_name (str):
-            The dimension name or metric name. Must be a
-            name defined in dimensions or metrics.
+            The dimension name or metric name.
+            In most methods, dimensions & metrics can be
+            used for the first time in this field. However
+            in a RunPivotReportRequest, this field must be
+            additionally specified by name in the
+            RunPivotReportRequest's dimensions or metrics.
         string_filter (google.analytics.data_v1beta.types.Filter.StringFilter):
             Strings related filter.
 
@@ -620,7 +625,10 @@ class Filter(proto.Message):
 
 
 class OrderBy(proto.Message):
-    r"""The sort options.
+    r"""Order bys define how rows will be sorted in the response. For
+    example, ordering rows by descending event count is one
+    ordering, and ordering rows by the event name string is a
+    different ordering.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1072,6 +1080,18 @@ class ResponseMetaData(proto.Message):
             empty for this reason.
 
             This field is a member of `oneof`_ ``_empty_reason``.
+        subject_to_thresholding (bool):
+            If ``subjectToThresholding`` is true, this report is subject
+            to thresholding and only returns data that meets the minimum
+            aggregation thresholds. It is possible for a request to be
+            subject to thresholding thresholding and no data is absent
+            from the report, and this happens when all data is above the
+            thresholds. To learn more, see `Data
+            thresholds <https://support.google.com/analytics/answer/9383630>`__
+            and `About Demographics and
+            Interests <https://support.google.com/analytics/answer/2799357>`__.
+
+            This field is a member of `oneof`_ ``_subject_to_thresholding``.
     """
 
     class SchemaRestrictionResponse(proto.Message):
@@ -1140,6 +1160,11 @@ class ResponseMetaData(proto.Message):
     empty_reason = proto.Field(
         proto.STRING,
         number=7,
+        optional=True,
+    )
+    subject_to_thresholding = proto.Field(
+        proto.BOOL,
+        number=8,
         optional=True,
     )
 
@@ -1373,8 +1398,8 @@ class PropertyQuota(proto.Message):
             5,000 tokens per hour; Analytics 360 Properties
             can use 50,000 tokens per hour. An API request
             consumes a single number of tokens, and that
-            number is deducted from both the hourly and
-            daily quotas.
+            number is deducted from all of the hourly,
+            daily, and per project hourly quotas.
         concurrent_requests (google.analytics.data_v1beta.types.QuotaStatus):
             Standard Analytics Properties can send up to
             10 concurrent requests; Analytics 360 Properties
@@ -1392,6 +1417,16 @@ class PropertyQuota(proto.Message):
             request is individually counted for this quota
             if the request contains potentially thresholded
             dimensions.
+        tokens_per_project_per_hour (google.analytics.data_v1beta.types.QuotaStatus):
+            Analytics Properties can use up to 25% of
+            their tokens per project per hour. This amounts
+            to standard Analytics Properties can use up to
+            1,250 tokens per project per hour, and Analytics
+            360 Properties can use 12,500 tokens per project
+            per hour. An API request consumes a single
+            number of tokens, and that number is deducted
+            from all of the hourly, daily, and per project
+            hourly quotas.
     """
 
     tokens_per_day = proto.Field(
@@ -1417,6 +1452,11 @@ class PropertyQuota(proto.Message):
     potentially_thresholded_requests_per_hour = proto.Field(
         proto.MESSAGE,
         number=5,
+        message="QuotaStatus",
+    )
+    tokens_per_project_per_hour = proto.Field(
+        proto.MESSAGE,
+        number=6,
         message="QuotaStatus",
     )
 

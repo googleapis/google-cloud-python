@@ -433,15 +433,18 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunReportResponse:
-        r"""Returns a customized report of your Google Analytics
-        event data. Reports contain statistics derived from data
-        collected by the Google Analytics tracking code. The
-        data returned from the API is as a table with columns
-        for the requested dimensions and metrics. Metrics are
-        individual measurements of user activity on your
-        property, such as active users or event count.
-        Dimensions break down metrics across some common
-        criteria, such as country or event name.
+        r"""Returns a customized report of your Google Analytics event data.
+        Reports contain statistics derived from data collected by the
+        Google Analytics tracking code. The data returned from the API
+        is as a table with columns for the requested dimensions and
+        metrics. Metrics are individual measurements of user activity on
+        your property, such as active users or event count. Dimensions
+        break down metrics across some common criteria, such as country
+        or event name.
+
+        For a guide to constructing requests & understanding responses,
+        see `Creating a
+        Report <https://developers.google.com/analytics/devguides/reporting/data/v1/basics>`__.
 
         .. code-block:: python
 
@@ -889,10 +892,16 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunRealtimeReportResponse:
-        r"""The Google Analytics Realtime API returns a
-        customized report of realtime event data for your
-        property. These reports show events and usage from the
-        last 30 minutes.
+        r"""Returns a customized report of realtime event data for your
+        property. Events appear in realtime reports seconds after they
+        have been sent to the Google Analytics. Realtime reports show
+        events and usage data for the periods of time ranging from the
+        present moment to 30 minutes ago (up to 60 minutes for Google
+        Analytics 360 properties).
+
+        For a guide to constructing realtime requests & understanding
+        responses, see `Creating a Realtime
+        Report <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics>`__.
 
         .. code-block:: python
 

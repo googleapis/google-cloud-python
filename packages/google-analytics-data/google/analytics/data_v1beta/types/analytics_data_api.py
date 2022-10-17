@@ -192,9 +192,10 @@ class RunReportRequest(proto.Message):
             Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
             for examples. Metrics cannot be used in this filter.
         metric_filter (google.analytics.data_v1beta.types.FilterExpression):
-            The filter clause of metrics. Applied at post
-            aggregation phase, similar to SQL having-clause.
-            Dimensions cannot be used in this filter.
+            The filter clause of metrics. Applied after
+            aggregating the report's rows, similar to SQL
+            having-clause. Dimensions cannot be used in this
+            filter.
         offset (int):
             The row count of the start row. The first row is counted as
             row 0.
@@ -798,15 +799,12 @@ class RunRealtimeReportRequest(proto.Message):
         metrics (Sequence[google.analytics.data_v1beta.types.Metric]):
             The metrics requested and displayed.
         dimension_filter (google.analytics.data_v1beta.types.FilterExpression):
-            The filter clause of dimensions. Dimensions
-            must be requested to be used in this filter.
-            Metrics cannot be used in this filter.
+            The filter clause of dimensions. Metrics
+            cannot be used in this filter.
         metric_filter (google.analytics.data_v1beta.types.FilterExpression):
             The filter clause of metrics. Applied at post
             aggregation phase, similar to SQL having-clause.
-            Metrics must be requested to be used in this
-            filter. Dimensions cannot be used in this
-            filter.
+            Dimensions cannot be used in this filter.
         limit (int):
             The number of rows to return. If unspecified, 10,000 rows
             are returned. The API returns a maximum of 100,000 rows per
