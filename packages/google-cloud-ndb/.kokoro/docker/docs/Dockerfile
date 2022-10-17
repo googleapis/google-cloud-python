@@ -22,7 +22,7 @@ ENV PATH /usr/local/bin:$PATH
 # Install dependencies.
 # Spell check related
 RUN apt-get update && apt-get install -y dictionaries-common aspell aspell-en \
-  hunspell-en-us libenchant1c2a enchant
+  hunspell-en-us libenchant-2-2 enchant-2
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     apt-transport-https \

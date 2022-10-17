@@ -60,7 +60,7 @@ s.replace(
     "# Install dependencies.\n",
     """\g<0># Spell check related
 RUN apt-get update && apt-get install -y dictionaries-common aspell aspell-en \\
-  hunspell-en-us libenchant1c2a enchant
+  hunspell-en-us libenchant-2-2 enchant-2
 """
 )
 
