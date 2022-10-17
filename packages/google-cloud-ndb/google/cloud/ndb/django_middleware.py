@@ -12,7 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Django middleware for ``ndb``."""
+"""Django middleware for ``ndb``.
+
+This class is not implemented and is no longer necessary.
+
+To use Django middleware with NDB, follow the steps in
+https://cloud.google.com/appengine/docs/standard/python3/migrating-to-cloud-ndb#using_a_runtime_context_with_django
+"""
 
 
 __all__ = ["NdbDjangoMiddleware"]
