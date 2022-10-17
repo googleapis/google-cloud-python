@@ -135,7 +135,6 @@ class Logger(object):
         kw["log_name"] = kw.pop("log_name", self.full_name)
         kw["labels"] = kw.pop("labels", self.labels)
         kw["resource"] = kw.pop("resource", self.default_resource)
-        partial_success = False
 
         severity = kw.get("severity", None)
         if isinstance(severity, str) and not severity.isupper():
@@ -159,11 +158,10 @@ class Logger(object):
         api_repr = entry.to_api_repr()
         entries = [api_repr]
         if google.cloud.logging_v2._instrumentation_emitted is False:
-            partial_success = True
             entries = _add_instrumentation(entries, **kw)
             google.cloud.logging_v2._instrumentation_emitted = True
-
-        client.logging_api.write_entries(entries, partial_success=partial_success)
+        # partial_success is true to avoid dropping instrumentation logs
+        client.logging_api.write_entries(entries, partial_success=True)
 
     def log_empty(self, *, client=None, **kw):
         """Log an empty message
@@ -437,13 +435,17 @@ class Batch(object):
             entry_type = TextEntry
         self.entries.append(entry_type(payload=message, **kw))
 
-    def commit(self, *, client=None):
+    def commit(self, *, client=None, partial_success=True):
         """Send saved log entries as a single API call.
 
         Args:
             client (Optional[~logging_v2.client.Client]):
                 The client to use.  If not passed, falls back to the
                 ``client`` stored on the current batch.
+            partial_success (Optional[bool]):
+                Whether a batch's valid entries should be written even
+                if some other entry failed due to a permanent error such
+                as INVALID_ARGUMENT or PERMISSION_DENIED.
         """
         if client is None:
             client = self.client
@@ -458,5 +460,7 @@ class Batch(object):
 
         entries = [entry.to_api_repr() for entry in self.entries]
 
-        client.logging_api.write_entries(entries, **kwargs)
+        client.logging_api.write_entries(
+            entries, partial_success=partial_success, **kwargs
+        )
         del self.entries[:]

@@ -167,7 +167,7 @@ class Test_LoggingAPI(unittest.TestCase):
         # Check the request
         call.assert_called_once()
         request = call.call_args.args[0]
-        assert request.partial_success is False
+        assert request.partial_success is True
         assert len(request.entries) == 1
         assert request.entries[0].log_name == entry["logName"]
         assert request.entries[0].resource.type == entry["resource"]["type"]

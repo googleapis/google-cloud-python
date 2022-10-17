@@ -123,7 +123,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_empty()
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_empty_w_explicit(self):
         import datetime
@@ -177,7 +179,9 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_text_defaults(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -199,7 +203,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_text(TEXT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_text_w_unicode_and_default_labels(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -223,7 +229,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_text(TEXT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_text_explicit(self):
         import datetime
@@ -280,7 +288,9 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_struct_defaults(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -302,7 +312,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_struct(STRUCT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_nested_struct(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -324,7 +336,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log(STRUCT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_struct_w_default_labels(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -348,7 +362,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_struct(STRUCT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_struct_w_explicit(self):
         import datetime
@@ -405,7 +421,9 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_struct_inference(self):
         """
@@ -439,7 +457,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_struct(STRUCT, resource=RESOURCE)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_w_dict_resource(self):
         """
@@ -467,7 +487,9 @@ class TestLogger(unittest.TestCase):
             }
         ]
         logger.log(MESSAGE, resource=resource)
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_lowercase_severity(self):
         """
@@ -505,7 +527,7 @@ class TestLogger(unittest.TestCase):
             logger.log(MESSAGE, severity=lower_severity)
 
             self.assertEqual(
-                api._write_entries_called_with, (ENTRIES, None, None, None)
+                api._write_entries_called_with, (ENTRIES, None, None, None, True)
             )
 
     def test_log_proto_defaults(self):
@@ -530,7 +552,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_proto(message)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_proto_w_default_labels(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -556,7 +580,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log_proto(message)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_proto_w_explicit(self):
         import json
@@ -617,7 +643,9 @@ class TestLogger(unittest.TestCase):
             trace_sampled=True,
         )
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_inference_empty(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -638,7 +666,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log()
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_inference_text(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -659,7 +689,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log(TEXT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_inference_struct(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
@@ -680,7 +712,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log(STRUCT)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_log_inference_proto(self):
         import json
@@ -704,7 +738,9 @@ class TestLogger(unittest.TestCase):
 
         logger.log(message)
 
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -1033,12 +1069,16 @@ class TestLogger(unittest.TestCase):
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
         logger.log_empty()
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
         ENTRIES = ENTRIES[-1:]
         api = client.logging_api = _DummyLoggingAPI()
         logger.log_empty()
-        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+        self.assertEqual(
+            api._write_entries_called_with, (ENTRIES, None, None, None, True)
+        )
 
 
 class TestBatch(unittest.TestCase):
@@ -1436,7 +1476,8 @@ class TestBatch(unittest.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(
-            api._write_entries_called_with, ([ENTRY], logger.full_name, None, None)
+            api._write_entries_called_with,
+            ([ENTRY], logger.full_name, None, None, True),
         )
 
     def test_commit_w_resource_specified(self):
@@ -1461,7 +1502,7 @@ class TestBatch(unittest.TestCase):
         batch.commit()
         self.assertEqual(
             api._write_entries_called_with,
-            (ENTRIES, logger.full_name, RESOURCE._to_dict(), None),
+            (ENTRIES, logger.full_name, RESOURCE._to_dict(), None, True),
         )
 
     def test_commit_w_bound_client(self):
@@ -1550,7 +1591,8 @@ class TestBatch(unittest.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(
-            api._write_entries_called_with, (ENTRIES, logger.full_name, None, None)
+            api._write_entries_called_with,
+            (ENTRIES, logger.full_name, None, None, True),
         )
 
     def test_commit_w_alternate_client(self):
@@ -1597,12 +1639,12 @@ class TestBatch(unittest.TestCase):
         batch.log_text(TEXT, labels=LABELS)
         batch.log_struct(STRUCT, severity=SEVERITY)
         batch.log_proto(message, http_request=REQUEST)
-        batch.commit(client=client2)
+        batch.commit(client=client2, partial_success=False)
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(
             api._write_entries_called_with,
-            (ENTRIES, logger.full_name, None, DEFAULT_LABELS),
+            (ENTRIES, logger.full_name, None, DEFAULT_LABELS, False),
         )
 
     def test_context_mgr_success(self):
@@ -1653,7 +1695,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(
             api._write_entries_called_with,
-            (ENTRIES, logger.full_name, None, DEFAULT_LABELS),
+            (ENTRIES, logger.full_name, None, DEFAULT_LABELS, True),
         )
 
     def test_context_mgr_failure(self):
@@ -1719,7 +1761,13 @@ class _DummyLoggingAPI(object):
         labels=None,
         partial_success=False,
     ):
-        self._write_entries_called_with = (entries, logger_name, resource, labels)
+        self._write_entries_called_with = (
+            entries,
+            logger_name,
+            resource,
+            labels,
+            partial_success,
+        )
 
     def logger_delete(self, logger_name):
         self._logger_delete_called_with = logger_name

@@ -144,7 +144,7 @@ class _LoggingAPI(object):
         logger_name=None,
         resource=None,
         labels=None,
-        partial_success=False,
+        partial_success=True,
         dry_run=False,
     ):
         """Log an entry resource via a POST request
