@@ -257,15 +257,6 @@ may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.org/project/google-cloud/
 
-**********************
-CircleCI Configuration
-**********************
-
-All build scripts in the ``.circleci/config.yml`` configuration file which have
-Python dependencies are specified in the ``nox.py`` configuration.
-They are executed in the Travis build via ``nox -s ${ENV}`` where
-``${ENV}`` is the environment being tested.
-
 
 *************************
 Supported Python Versions
