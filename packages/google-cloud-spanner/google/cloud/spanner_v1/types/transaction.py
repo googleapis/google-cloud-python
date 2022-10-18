@@ -401,7 +401,24 @@ class TransactionOptions(proto.Message):
         r"""Message type to initiate a read-write transaction. Currently
         this transaction type has no options.
 
+        Attributes:
+            read_lock_mode (google.cloud.spanner_v1.types.TransactionOptions.ReadWrite.ReadLockMode):
+                Read lock mode for the transaction.
         """
+
+        class ReadLockMode(proto.Enum):
+            r"""``ReadLockMode`` is used to set the read lock mode for read-write
+            transactions.
+            """
+            READ_LOCK_MODE_UNSPECIFIED = 0
+            PESSIMISTIC = 1
+            OPTIMISTIC = 2
+
+        read_lock_mode = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="TransactionOptions.ReadWrite.ReadLockMode",
+        )
 
     class PartitionedDml(proto.Message):
         r"""Message type to initiate a Partitioned DML transaction."""
