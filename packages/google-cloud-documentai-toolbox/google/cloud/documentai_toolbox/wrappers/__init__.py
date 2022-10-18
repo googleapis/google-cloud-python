@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-from .document_wrapper import DocumentWrapper
-from .page_wrapper import PageWrapper
-from .entity_wrapper import EntityWrapper
+from .document import Document
+from .page import Page
+from .entity import Entity
 
 __all__ = (
-    "DocumentWrapper",
-    "PageWrapper",
-    "EntityWrapper",
+    "Document",
+    "Page",
+    "Entity",
 )

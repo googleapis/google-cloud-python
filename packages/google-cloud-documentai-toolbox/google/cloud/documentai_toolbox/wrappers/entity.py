@@ -21,7 +21,7 @@ from google.cloud import documentai
 
 
 @dataclasses.dataclass
-class EntityWrapper:
+class Entity:
     r"""Represents a wrapped google.cloud.documentai.Document.Entity.
 
     Attributes:
@@ -43,19 +43,19 @@ class EntityWrapper:
     @classmethod
     def from_documentai_entity(
         cls, documentai_entity: documentai.Document.Entity
-    ) -> "EntityWrapper":
-        r"""Returns a EntityWrapper from google.cloud.documentai.Document.Entity.
+    ) -> "Entity":
+        r"""Returns a Entity from google.cloud.documentai.Document.Entity.
 
         Args:
             documentai_entity (google.cloud.documentai.Document.Entity):
                 Required. A single entity object.
 
         Returns:
-            EntityWrapper:
-                A EntityWrapper from google.cloud.documentai.Document.Entity.
+            Entity:
+                A Entity from google.cloud.documentai.Document.Entity.
 
         """
-        return EntityWrapper(
+        return Entity(
             _documentai_entity=documentai_entity,
             type_=documentai_entity.type,
             mention_text=documentai_entity.mention_text,
