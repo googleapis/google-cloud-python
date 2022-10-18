@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+from .services.cloud_channel_reports_service import (
+    CloudChannelReportsServiceAsyncClient,
+    CloudChannelReportsServiceClient,
+)
 from .services.cloud_channel_service import (
     CloudChannelServiceAsyncClient,
     CloudChannelServiceClient,
@@ -55,6 +59,22 @@ from .types.offers import (
 )
 from .types.operations import OperationMetadata
 from .types.products import MarketingInfo, Media, MediaType, Product, Sku
+from .types.reports_service import (
+    Column,
+    DateRange,
+    FetchReportResultsRequest,
+    FetchReportResultsResponse,
+    ListReportsRequest,
+    ListReportsResponse,
+    Report,
+    ReportJob,
+    ReportResultsMetadata,
+    ReportStatus,
+    ReportValue,
+    Row,
+    RunReportJobRequest,
+    RunReportJobResponse,
+)
 from .types.repricing import (
     ChannelPartnerRepricingConfig,
     CustomerRepricingConfig,
@@ -134,6 +154,7 @@ from .types.service import (
 from .types.subscriber_event import CustomerEvent, EntitlementEvent, SubscriberEvent
 
 __all__ = (
+    "CloudChannelReportsServiceAsyncClient",
     "CloudChannelServiceAsyncClient",
     "ActivateEntitlementRequest",
     "AdminUser",
@@ -148,9 +169,11 @@ __all__ = (
     "ChannelPartnerRepricingConfig",
     "CheckCloudIdentityAccountsExistRequest",
     "CheckCloudIdentityAccountsExistResponse",
+    "CloudChannelReportsServiceClient",
     "CloudChannelServiceClient",
     "CloudIdentityCustomerAccount",
     "CloudIdentityInfo",
+    "Column",
     "CommitmentSettings",
     "Constraints",
     "ContactInfo",
@@ -163,12 +186,15 @@ __all__ = (
     "CustomerConstraints",
     "CustomerEvent",
     "CustomerRepricingConfig",
+    "DateRange",
     "DeleteChannelPartnerRepricingConfigRequest",
     "DeleteCustomerRepricingConfigRequest",
     "DeleteCustomerRequest",
     "EduData",
     "Entitlement",
     "EntitlementEvent",
+    "FetchReportResultsRequest",
+    "FetchReportResultsResponse",
     "GetChannelPartnerLinkRequest",
     "GetChannelPartnerRepricingConfigRequest",
     "GetCustomerRepricingConfigRequest",
@@ -193,6 +219,8 @@ __all__ = (
     "ListPurchasableOffersResponse",
     "ListPurchasableSkusRequest",
     "ListPurchasableSkusResponse",
+    "ListReportsRequest",
+    "ListReportsResponse",
     "ListSkusRequest",
     "ListSkusResponse",
     "ListSubscribersRequest",
@@ -229,9 +257,17 @@ __all__ = (
     "RegisterSubscriberRequest",
     "RegisterSubscriberResponse",
     "RenewalSettings",
+    "Report",
+    "ReportJob",
+    "ReportResultsMetadata",
+    "ReportStatus",
+    "ReportValue",
     "RepricingAdjustment",
     "RepricingConfig",
     "ResourceType",
+    "Row",
+    "RunReportJobRequest",
+    "RunReportJobResponse",
     "Sku",
     "StartPaidServiceRequest",
     "SubscriberEvent",

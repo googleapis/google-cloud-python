@@ -14,6 +14,12 @@
 # limitations under the License.
 #
 
+from google.cloud.channel_v1.services.cloud_channel_reports_service.async_client import (
+    CloudChannelReportsServiceAsyncClient,
+)
+from google.cloud.channel_v1.services.cloud_channel_reports_service.client import (
+    CloudChannelReportsServiceClient,
+)
 from google.cloud.channel_v1.services.cloud_channel_service.async_client import (
     CloudChannelServiceAsyncClient,
 )
@@ -67,6 +73,22 @@ from google.cloud.channel_v1.types.products import (
     MediaType,
     Product,
     Sku,
+)
+from google.cloud.channel_v1.types.reports_service import (
+    Column,
+    DateRange,
+    FetchReportResultsRequest,
+    FetchReportResultsResponse,
+    ListReportsRequest,
+    ListReportsResponse,
+    Report,
+    ReportJob,
+    ReportResultsMetadata,
+    ReportStatus,
+    ReportValue,
+    Row,
+    RunReportJobRequest,
+    RunReportJobResponse,
 )
 from google.cloud.channel_v1.types.repricing import (
     ChannelPartnerRepricingConfig,
@@ -151,6 +173,8 @@ from google.cloud.channel_v1.types.subscriber_event import (
 )
 
 __all__ = (
+    "CloudChannelReportsServiceClient",
+    "CloudChannelReportsServiceAsyncClient",
     "CloudChannelServiceClient",
     "CloudChannelServiceAsyncClient",
     "ChannelPartnerLink",
@@ -192,6 +216,20 @@ __all__ = (
     "Product",
     "Sku",
     "MediaType",
+    "Column",
+    "DateRange",
+    "FetchReportResultsRequest",
+    "FetchReportResultsResponse",
+    "ListReportsRequest",
+    "ListReportsResponse",
+    "Report",
+    "ReportJob",
+    "ReportResultsMetadata",
+    "ReportStatus",
+    "ReportValue",
+    "Row",
+    "RunReportJobRequest",
+    "RunReportJobResponse",
     "ChannelPartnerRepricingConfig",
     "CustomerRepricingConfig",
     "PercentageAdjustment",

@@ -50,6 +50,22 @@ from .offers import (
 )
 from .operations import OperationMetadata
 from .products import MarketingInfo, Media, MediaType, Product, Sku
+from .reports_service import (
+    Column,
+    DateRange,
+    FetchReportResultsRequest,
+    FetchReportResultsResponse,
+    ListReportsRequest,
+    ListReportsResponse,
+    Report,
+    ReportJob,
+    ReportResultsMetadata,
+    ReportStatus,
+    ReportValue,
+    Row,
+    RunReportJobRequest,
+    RunReportJobResponse,
+)
 from .repricing import (
     ChannelPartnerRepricingConfig,
     CustomerRepricingConfig,
@@ -168,6 +184,20 @@ __all__ = (
     "Product",
     "Sku",
     "MediaType",
+    "Column",
+    "DateRange",
+    "FetchReportResultsRequest",
+    "FetchReportResultsResponse",
+    "ListReportsRequest",
+    "ListReportsResponse",
+    "Report",
+    "ReportJob",
+    "ReportResultsMetadata",
+    "ReportStatus",
+    "ReportValue",
+    "Row",
+    "RunReportJobRequest",
+    "RunReportJobResponse",
     "ChannelPartnerRepricingConfig",
     "CustomerRepricingConfig",
     "PercentageAdjustment",

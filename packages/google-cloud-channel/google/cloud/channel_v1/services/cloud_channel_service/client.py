@@ -1686,7 +1686,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
            -  The customer doesn't belong to the reseller and has no
               auth token.
-           -  The supplied auth token is invalid.
+           -  The customer provided incorrect reseller information when
+              generating auth token.
            -  The reseller account making the request is different from
               the reseller account in the query.
 

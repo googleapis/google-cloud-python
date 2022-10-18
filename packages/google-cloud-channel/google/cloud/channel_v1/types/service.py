@@ -558,11 +558,11 @@ class ListTransferableSkusRequest(proto.Message):
             [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus]
             call. Optional.
         auth_token (str):
-            The super admin of the resold customer
-            generates this token to authorize a reseller to
-            access their Cloud Identity and purchase
-            entitlements on their behalf. You can omit this
-            token after authorization. See
+            Optional. The super admin of the resold
+            customer generates this token to authorize a
+            reseller to access their Cloud Identity and
+            purchase entitlements on their behalf. You can
+            omit this token after authorization. See
             https://support.google.com/a/answer/7643790 for
             more details.
         language_code (str):
@@ -673,10 +673,10 @@ class ListTransferableOffersRequest(proto.Message):
         sku (str):
             Required. The SKU to look up Offers for.
         language_code (str):
-            The BCP-47 language code. For example,
-            "en-US". The response will localize in the
-            corresponding language code, if specified. The
-            default value is "en-US".
+            Optional. The BCP-47 language code. For
+            example, "en-US". The response will localize in
+            the corresponding language code, if specified.
+            The default value is "en-US".
     """
 
     cloud_identity_id = proto.Field(
