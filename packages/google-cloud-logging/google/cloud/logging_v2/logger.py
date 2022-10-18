@@ -15,6 +15,7 @@
 """Define API Loggers."""
 
 import collections
+import re
 
 from google.cloud.logging_v2._helpers import _add_defaults_to_filter
 from google.cloud.logging_v2.entries import LogEntry
@@ -24,6 +25,9 @@ from google.cloud.logging_v2.entries import TextEntry
 from google.cloud.logging_v2.resource import Resource
 from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
 from google.cloud.logging_v2._instrumentation import _add_instrumentation
+
+from google.api_core.exceptions import InvalidArgument
+from google.rpc.error_details_pb2 import DebugInfo
 
 import google.protobuf.message
 
@@ -459,8 +463,39 @@ class Batch(object):
             kwargs["labels"] = self.logger.labels
 
         entries = [entry.to_api_repr() for entry in self.entries]
-
-        client.logging_api.write_entries(
-            entries, partial_success=partial_success, **kwargs
-        )
+        try:
+            client.logging_api.write_entries(
+                entries, partial_success=partial_success, **kwargs
+            )
+        except InvalidArgument as e:
+            # InvalidArgument is often sent when a log is too large
+            # attempt to attach extra contex on which log caused error
+            self._append_context_to_error(e)
+            raise e
         del self.entries[:]
+
+    def _append_context_to_error(self, err):
+        """
+        Attempts to Modify `write_entries` exception messages to contain
+        context on which log in the batch caused the error.
+
+        Best-effort basis. If another exception occurs while processing the
+        input exception, the input will be left unmodified
+
+        Args:
+            err (~google.api_core.exceptions.InvalidArgument):
+                The original exception object
+        """
+        try:
+            # find debug info proto if in details
+            debug_info = next(x for x in err.details if isinstance(x, DebugInfo))
+            # parse out the index of the faulty entry
+            error_idx = re.search("(?<=key: )[0-9]+", debug_info.detail).group(0)
+            # find the faulty entry object
+            found_entry = self.entries[int(error_idx)]
+            str_entry = str(found_entry.to_api_repr())
+            # modify error message to contain extra context
+            err.message = f"{err.message}: {str_entry:.2000}..."
+        except Exception:
+            # if parsing fails, abort changes and leave err unmodified
+            pass

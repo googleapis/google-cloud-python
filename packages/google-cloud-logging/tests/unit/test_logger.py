@@ -16,8 +16,10 @@ from copy import deepcopy
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
+import sys
 
 import unittest
+import pytest
 
 import mock
 
@@ -1739,6 +1741,87 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(batch.entries), UNSENT)
         self.assertIsNone(api._write_entries_called_with)
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 8),
+        reason="InvalidArgument init with details requires python3.8+",
+    )
+    def test_append_context_to_error(self):
+        """
+        If an InvalidArgument exception contains info on the log that threw it,
+        we should be able to add it to the exceptiom message. If not, the
+        exception should be unchanged
+        """
+        from google.api_core.exceptions import InvalidArgument
+        from google.rpc.error_details_pb2 import DebugInfo
+        from google.cloud.logging import TextEntry
+
+        logger = _Logger()
+        client = _Client(project=self.PROJECT)
+        batch = self._make_one(logger, client=client)
+        test_entries = [TextEntry(payload=str(i)) for i in range(11)]
+        batch.entries = test_entries
+        starting_message = "test"
+        # test that properly formatted exceptions add log details
+        for idx, entry in enumerate(test_entries):
+            api_entry = entry.to_api_repr()
+            err = InvalidArgument(
+                starting_message, details=["padding", DebugInfo(detail=f"key: {idx}")]
+            )
+            batch._append_context_to_error(err)
+            self.assertEqual(err.message, f"{starting_message}: {str(api_entry)}...")
+            self.assertIn(str(idx), str(entry))
+        # test with missing debug info
+        err = InvalidArgument(starting_message, details=[])
+        batch._append_context_to_error(err)
+        self.assertEqual(
+            err.message, starting_message, "message should have been unchanged"
+        )
+        # test with missing key
+        err = InvalidArgument(
+            starting_message, details=["padding", DebugInfo(detail="no k e y here")]
+        )
+        batch._append_context_to_error(err)
+        self.assertEqual(
+            err.message, starting_message, "message should have been unchanged"
+        )
+        # test with key out of range
+        err = InvalidArgument(
+            starting_message, details=["padding", DebugInfo(detail="key: 100")]
+        )
+        batch._append_context_to_error(err)
+        self.assertEqual(
+            err.message, starting_message, "message should have been unchanged"
+        )
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 8),
+        reason="InvalidArgument init with details requires python3.8+",
+    )
+    def test_batch_error_gets_context(self):
+        """
+        Simulate an InvalidArgument sent as part of a batch commit, to ensure
+        _append_context_to_error is thrown
+        """
+        from google.api_core.exceptions import InvalidArgument
+        from google.rpc.error_details_pb2 import DebugInfo
+        from google.cloud.logging import TextEntry
+
+        logger = _Logger()
+        client = _Client(project=self.PROJECT)
+        starting_message = "hello"
+        exception = InvalidArgument(
+            starting_message, details=[DebugInfo(detail="key: 1")]
+        )
+        client.logging_api = _DummyLoggingExceptionAPI(exception)
+        batch = self._make_one(logger, client=client)
+        test_entries = [TextEntry(payload=str(i)) for i in range(11)]
+        batch.entries = test_entries
+        with self.assertRaises(InvalidArgument) as e:
+            batch.commit()
+            expected_log = test_entries[1]
+            api_entry = expected_log.to_api_repr()
+            self.assertEqual(e.message, f"{starting_message}: {str(api_entry)}...")
+
 
 class _Logger(object):
 
@@ -1771,6 +1854,25 @@ class _DummyLoggingAPI(object):
 
     def logger_delete(self, logger_name):
         self._logger_delete_called_with = logger_name
+
+
+class _DummyLoggingExceptionAPI(object):
+    def __init__(self, exception):
+        self.exception = exception
+
+    def write_entries(
+        self,
+        entries,
+        *,
+        logger_name=None,
+        resource=None,
+        labels=None,
+        partial_success=False,
+    ):
+        raise self.exception
+
+    def logger_delete(self, logger_name):
+        raise self.exception
 
 
 class _Client(object):
