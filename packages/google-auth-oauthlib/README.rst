@@ -6,9 +6,7 @@ oauthlib integration for Google Auth
 This library provides `oauthlib`_ integration with `google-auth`_.
 
 .. |build| image:: https://travis-ci.org/googleapis/google-auth-library-python-oauthlib.svg?branch=main
-   :target: https://travis-ci.org/googleapis/google-auth-library-python-oauthlib
-.. |docs| image:: https://readthedocs.org/projects/google-auth-oauthlib/badge/?version=latest
-   :target: https://google-auth-oauthlib.readthedocs.io/en/latest/
+   :target: https://googleapis.dev/python/google-auth-oauthlib/latest/index.html
 .. |pypi| image:: https://img.shields.io/pypi/v/google-auth-oauthlib.svg
    :target: https://pypi.python.org/pypi/google-auth-oauthlib
 
@@ -27,9 +25,9 @@ You can install using `pip`_::
 Documentation
 -------------
 
-The latest documentation is available at `google-auth-oauthlib.readthedocs.io`_.
+The latest documentation is available at `google-auth-oauthlib.googleapis.dev`_.
 
-.. _google-auth-oauthlib.readthedocs.io: http://google-auth-oauthlib.readthedocs.io/
+.. _google-auth-oauthlib.googleapis.dev: https://googleapis.dev/python/google-auth-oauthlib/latest/index.html
 
 Supported Python Versions
 -------------------------
