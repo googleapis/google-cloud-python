@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.9.0](https://github.com/googleapis/python-datastore/compare/v2.8.2...v2.9.0) (2022-10-18)
+
+
+### Features
+
+* Add datastore aggregation query APIs ([#306](https://github.com/googleapis/python-datastore/issues/306)) ([96d98e5](https://github.com/googleapis/python-datastore/commit/96d98e5204d71dfeb9547052cbdd073292ae4c6a))
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#372](https://github.com/googleapis/python-datastore/issues/372)) ([9305154](https://github.com/googleapis/python-datastore/commit/9305154e8853f9038506c86163dfb4cde36c0d8e))
+
 ## [2.8.2](https://github.com/googleapis/python-datastore/compare/v2.8.1...v2.8.2) (2022-10-03)
 
 
