@@ -76,7 +76,7 @@ fi
 
 # Check only the staged files.
 NUM_TOTAL_FILES_CHANGED=$(git diff --cached --name-only | wc -l)
-NUM_PYTHON_FILES_CHANGED=$(git diff --cached --name-only "*.java" | wc -l)
+NUM_PYTHON_FILES_CHANGED=$(git diff --cached --name-only "*.py" | wc -l)
 NUM_UNIT_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "src/test/*/*.golden" | wc -l)
 NUM_INTEGRATION_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/integration/goldens/*/*.golden" | wc -l)
 NUM_INTEGRATION_BAZEL_FILES_CHANGED=$(git diff --cached --name-only "tests/integration/*/BUILD.bazel" | wc -l)
