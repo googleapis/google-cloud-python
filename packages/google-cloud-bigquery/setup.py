@@ -45,7 +45,7 @@ dependencies = [
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",  # For the legacy proto-based types.
     "python-dateutil >= 2.7.2, <3.0dev",
     "pyarrow >= 3.0.0, < 10.0dev",
-    "requests >= 2.18.0, < 3.0.0dev",
+    "requests >= 2.21.0, < 3.0.0dev",
 ]
 extras = {
     # Keep the no-op bqstorage extra for backward compatibility.
