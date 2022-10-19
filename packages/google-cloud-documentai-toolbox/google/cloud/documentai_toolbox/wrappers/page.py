@@ -34,7 +34,7 @@ class Table:
     """Represents a wrapped documentai.Document.Page.Table.
 
     Attributes:
-        _documentai_table (google.cloud.documentai.Document.Page.Table):
+        documentai_table (google.cloud.documentai.Document.Page.Table):
             Required. The original google.cloud.documentai.Document.Page.Table object.
         body_rows (List[List[str]]):
             Required. A list of body rows.
@@ -42,39 +42,11 @@ class Table:
             Required. A list of headers.
     """
 
-    _documentai_table: documentai.Document.Page.Table = dataclasses.field(
+    documentai_table: documentai.Document.Page.Table = dataclasses.field(
         init=True, repr=False
     )
     body_rows: List[List[str]] = dataclasses.field(init=True, repr=False)
     header_rows: List[List[str]] = dataclasses.field(init=True, repr=False)
-
-    @classmethod
-    def from_documentai_table(
-        cls,
-        documentai_table: documentai.Document.Page.Table,
-        header_rows: List[List[str]],
-        body_rows: List[List[str]],
-    ) -> "Table":
-        r"""Returns a Table from google.cloud.documentai.Document.Page.
-
-        Args:
-            documentai_table (google.cloud.documentai.Document.Page.Table):
-                Required. A single table object.
-            header_rows (List[List[str]]):
-                Required. a list of header rows.
-            body_rows (List[List[str]]):
-                Required. a list of body rows.
-
-        Returns:
-            Table:
-                A Table from google.cloud.documentai.Document.Page.Table.
-
-        """
-        return Table(
-            _documentai_table=documentai_table,
-            header_rows=header_rows,
-            body_rows=body_rows,
-        )
 
     def to_dataframe(self) -> pd.DataFrame:
         r"""Returns pd.DataFrame from documentai.table
@@ -153,13 +125,99 @@ def _table_wrapper_from_documentai_table(
     body_rows = []
 
     header_rows = _table_row_from_documentai_table_row(
-        documentai_table.header_rows, text
+        table_rows=documentai_table.header_rows, text=text
     )
-    body_rows = _table_row_from_documentai_table_row(documentai_table.body_rows, text)
+    body_rows = _table_row_from_documentai_table_row(
+        table_rows=documentai_table.body_rows, text=text
+    )
 
-    result = Table.from_documentai_table(
+    result = Table(
         documentai_table=documentai_table, body_rows=body_rows, header_rows=header_rows
     )
+
+    return result
+
+
+@dataclasses.dataclass
+class Paragraph:
+    """Represents a wrapped documentai.Document.Page.Paragraph.
+    Attributes:
+        _documentai_table (google.cloud.documentai.Document.Page.Paragraph):
+            Required.The original google.cloud.documentai.Document.Page.Paragraph object.
+        text (str):
+            Required. UTF-8 encoded text.
+    """
+
+    documentai_paragraph: documentai.Document.Page.Paragraph
+    text: str
+
+
+@dataclasses.dataclass
+class Line:
+    """Represents a wrapped documentai.Document.Page.Line.
+    Attributes:
+        _documentai_line (google.cloud.documentai.Document.Page.Line):
+            Required.The original google.cloud.documentai.Document.Page.Line object.
+        text (str):
+            Required. UTF-8 encoded text.
+    """
+
+    documentai_line: documentai.Document.Page.Line
+    text: str
+
+
+def _get_paragraphs(
+    paragraphs: List[documentai.Document.Page.Paragraph], text: str
+) -> List[Paragraph]:
+    r"""Returns a list of ParagraphWrapper.
+    Args:
+        paragraphs (List[documentai.Document.Page.Paragraph]):
+            Required. a list of documentai.Document.Page.Paragraph objects.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        List[str]:
+            A list of texts from a List[ParagraphWrapper].
+    """
+    result = []
+
+    for paragraph in paragraphs:
+        result.append(
+            Paragraph(
+                documentai_paragraph=paragraph,
+                text=_text_from_element_with_layout(
+                    element_with_layout=paragraph, text=text
+                ),
+            )
+        )
+
+    return result
+
+
+def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Line]:
+    r"""Returns a list of LineWrapper.
+    Args:
+        paragraphs (List[documentai.Document.Page.Line]):
+            Required. a list of documentai.Document.Page.Line objects.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        List[str]:
+            A list of texts from a List[LineWrapper].
+    """
+    result = []
+
+    for line in lines:
+        result.append(
+            Line(
+                documentai_line=line,
+                text=_text_from_element_with_layout(
+                    element_with_layout=line, text=text
+                ),
+            )
+        )
 
     return result
 
@@ -228,7 +286,7 @@ class Page:
     """Represents a wrapped documentai.Document.Page .
 
     Attributes:
-        _documentai_page (google.cloud.documentai.Document.Page):
+        documentai_page (google.cloud.documentai.Document.Page):
             Required.The original google.cloud.documentai.Document.Page object.
         lines (List[str]):
             Required.A list of visually detected text lines on the
@@ -243,52 +301,25 @@ class Page:
             page.
     """
 
-    _documentai_page: documentai.Document.Page = dataclasses.field(
-        init=True, repr=False
-    )
-    lines: List[str] = dataclasses.field(init=True, repr=False)
-    paragraphs: List[str] = dataclasses.field(init=True, repr=False)
-    tables: List[Table] = dataclasses.field(init=True, repr=False)
+    documentai_page: documentai.Document.Page = dataclasses.field(init=True, repr=False)
+    text: str = dataclasses.field(init=True, repr=False)
 
-    @classmethod
-    def from_documentai_page(
-        cls, documentai_page: documentai.Document.Page, text: str
-    ) -> "Page":
-        r"""Returns a Page from google.cloud.documentai.Document.Page.
+    lines: List[Line] = dataclasses.field(init=False, repr=False)
+    paragraphs: List[Paragraph] = dataclasses.field(init=False, repr=False)
+    tables: List[Table] = dataclasses.field(init=False, repr=False)
 
-        Args:
-            documentai_page (google.cloud.documentai.Document.Page):
-                Required. A single page object.
-            text (str):
-                Required. UTF-8 encoded text in reading order
-                from the document.
-        Returns:
-            Page:
-                A Page from google.cloud.documentai.Document.Page.
-        """
-
-        lines = []
-        paragraphs = []
+    def __post_init__(self):
         tables = []
 
-        for line in documentai_page.lines:
-            lines.append(
-                _text_from_element_with_layout(element_with_layout=line, text=text)
-            )
-
-        for paragraph in documentai_page.paragraphs:
-            paragraphs.append(
-                _text_from_element_with_layout(element_with_layout=paragraph, text=text)
-            )
-
-        for table in documentai_page.tables:
+        for table in self.documentai_page.tables:
             tables.append(
-                _table_wrapper_from_documentai_table(documentai_table=table, text=text)
+                _table_wrapper_from_documentai_table(
+                    documentai_table=table, text=self.text
+                )
             )
 
-        return Page(
-            _documentai_page=documentai_page,
-            lines=lines,
-            paragraphs=paragraphs,
-            tables=tables,
+        self.lines = _get_lines(lines=self.documentai_page.lines, text=self.text)
+        self.paragraphs = _get_paragraphs(
+            paragraphs=self.documentai_page.paragraphs, text=self.text
         )
+        self.tables = tables

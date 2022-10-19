@@ -43,7 +43,7 @@ def _entities_from_shards(
     result = []
     for shard in shards:
         for entity in shard.entities:
-            result.append(Entity.from_documentai_entity(entity))
+            result.append(Entity(documentai_entity=entity))
     return result
 
 
@@ -63,7 +63,7 @@ def _pages_from_shards(shards: documentai.Document) -> List[Page]:
     for shard in shards:
         text = shard.text
         for page in shard.pages:
-            result.append(Page.from_documentai_page(page, text))
+            result.append(Page(documentai_page=page, text=text))
 
     return result
 
@@ -219,11 +219,11 @@ class Document:
 
     gcs_prefix: str
 
+    pages: List[Page] = dataclasses.field(init=False, repr=False)
+    entities: List[Entity] = dataclasses.field(init=False, repr=False)
+    _shards: List[documentai.Document] = dataclasses.field(init=False, repr=False)
+
     def __post_init__(self):
         self._shards = _get_shards(gcs_prefix=self.gcs_prefix)
         self.pages = _pages_from_shards(shards=self._shards)
         self.entities = _entities_from_shards(shards=self._shards)
-
-    pages: List[Page] = dataclasses.field(init=False, repr=False)
-    entities: List[Entity] = dataclasses.field(init=False, repr=False)
-    _shards: List[documentai.Document] = dataclasses.field(init=False, repr=False)
