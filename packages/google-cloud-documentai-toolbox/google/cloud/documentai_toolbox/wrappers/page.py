@@ -142,7 +142,7 @@ def _table_wrapper_from_documentai_table(
 class Paragraph:
     """Represents a wrapped documentai.Document.Page.Paragraph.
     Attributes:
-        _documentai_table (google.cloud.documentai.Document.Page.Paragraph):
+        documentai_paragraph (google.cloud.documentai.Document.Page.Paragraph):
             Required.The original google.cloud.documentai.Document.Page.Paragraph object.
         text (str):
             Required. UTF-8 encoded text.
@@ -156,7 +156,7 @@ class Paragraph:
 class Line:
     """Represents a wrapped documentai.Document.Page.Line.
     Attributes:
-        _documentai_line (google.cloud.documentai.Document.Page.Line):
+        documentai_line (google.cloud.documentai.Document.Page.Line):
             Required.The original google.cloud.documentai.Document.Page.Line object.
         text (str):
             Required. UTF-8 encoded text.
@@ -169,7 +169,7 @@ class Line:
 def _get_paragraphs(
     paragraphs: List[documentai.Document.Page.Paragraph], text: str
 ) -> List[Paragraph]:
-    r"""Returns a list of ParagraphWrapper.
+    r"""Returns a list of Paragraph.
     Args:
         paragraphs (List[documentai.Document.Page.Paragraph]):
             Required. a list of documentai.Document.Page.Paragraph objects.
@@ -177,8 +177,8 @@ def _get_paragraphs(
             Required. UTF-8 encoded text in reading order
             from the document.
     Returns:
-        List[str]:
-            A list of texts from a List[ParagraphWrapper].
+        List[Paragraph]:
+             A list of Paragraph.
     """
     result = []
 
@@ -196,7 +196,7 @@ def _get_paragraphs(
 
 
 def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Line]:
-    r"""Returns a list of LineWrapper.
+    r"""Returns a list of Line.
     Args:
         paragraphs (List[documentai.Document.Page.Line]):
             Required. a list of documentai.Document.Page.Line objects.
@@ -204,8 +204,8 @@ def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Li
             Required. UTF-8 encoded text in reading order
             from the document.
     Returns:
-        List[str]:
-            A list of texts from a List[LineWrapper].
+        List[Line]:
+            A list of Line.
     """
     result = []
 

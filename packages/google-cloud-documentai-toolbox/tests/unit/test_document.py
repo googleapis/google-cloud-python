@@ -39,6 +39,20 @@ def get_bytes(file_name):
     return result
 
 
+@pytest.fixture
+def get_bytes_single_file_mock():
+    with mock.patch.object(document, "_get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/0")
+        yield byte_factory
+
+
+@pytest.fixture
+def get_bytes_multiple_files_mock():
+    with mock.patch.object(document, "_get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/1")
+        yield byte_factory
+
+
 def test_get_shards_with_gcs_uri_contains_file_type():
     with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
         document._get_shards("gs://test-directory/documentai/output/123456789/0.json")
@@ -49,14 +63,12 @@ def test_get_shards_with_invalid_gcs_uri():
         document._get_shards("test-directory/documentai/output/")
 
 
-def test_get_shards_with_valid_gcs_uri():
-    with mock.patch.object(document, "_get_bytes") as factory:
-        factory.return_value = get_bytes("tests/unit/resources/0")
-        actual = document._get_shards(
-            "gs://test-directory/documentai/output/123456789/0"
-        )
-        # We are testing only one of the fields to make sure the file content could be loaded.
-        assert actual[0].pages[0].page_number == 1
+def test_get_shards_with_valid_gcs_uri(get_bytes_single_file_mock):
+    actual = document._get_shards("gs://test-directory/documentai/output/123456789/0")
+
+    get_bytes_single_file_mock.called_once()
+    # We are testing only one of the fields to make sure the file content could be loaded.
+    assert actual[0].pages[0].page_number == 1
 
 
 def test_pages_from_shards():
@@ -79,18 +91,16 @@ def test_entities_from_shard():
     assert actual[0].type_ == "vat"
 
 
-def test_wrapped_document_with_single_shard():
-    with mock.patch.object(document, "_get_bytes") as factory:
-        factory.return_value = get_bytes("tests/unit/resources/0")
-        actual = document.Document("gs://test-directory/documentai/output/123456789/0")
-        assert len(actual.pages) == 1
+def test_wrapped_document_with_single_shard(get_bytes_single_file_mock):
+    actual = document.Document("gs://test-directory/documentai/output/123456789/0")
+    get_bytes_single_file_mock.called_once()
+    assert len(actual.pages) == 1
 
 
-def test_wrapped_document_with_multiple_shards():
-    with mock.patch.object(document, "_get_bytes") as factory:
-        factory.return_value = get_bytes("tests/unit/resources/1")
-        actual = document.Document("gs://test-directory/documentai/output/123456789/1")
-        assert len(actual.pages) == 48
+def test_wrapped_document_with_multiple_shards(get_bytes_multiple_files_mock):
+    actual = document.Document("gs://test-directory/documentai/output/123456789/1")
+    get_bytes_multiple_files_mock.called_once()
+    assert len(actual.pages) == 48
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
@@ -235,3 +245,58 @@ def test_print_gcs_document_tree_with_gcs_uri_contains_file_type():
 def test_print_gcs_document_tree_with_invalid_gcs_uri():
     with pytest.raises(ValueError, match="gcs_prefix does not match accepted format"):
         document.print_gcs_document_tree("documentai/output/123456789/1")
+
+
+def test_search_page_with_target_string(get_bytes_single_file_mock):
+
+    doc = document.Document("gs://test-directory/documentai/output/123456789/0")
+
+    actual_string = doc.search_pages(target_string="contract")
+
+    get_bytes_single_file_mock.called_once()
+    assert len(actual_string) == 1
+
+
+def test_search_page_with_target_pattern(get_bytes_single_file_mock):
+    doc = document.Document("gs://test-directory/documentai/output/123456789/0")
+
+    actual_regex = doc.search_pages(pattern=r"\$\d+(?:\.\d+)?")
+
+    get_bytes_single_file_mock.called_once()
+    assert len(actual_regex) == 1
+
+
+def test_search_page_with_regex_and_str(get_bytes_single_file_mock):
+    with pytest.raises(
+        ValueError,
+        match="Exactly one of target_string and pattern must be specified.",
+    ):
+
+        doc = document.Document("gs://test-directory/documentai/output/123456789/0")
+        doc.search_pages(pattern=r"^\$?(\d*(\d\.?|\.\d{1,2}))$", target_string="hello")
+
+        get_bytes_single_file_mock.called_once()
+
+
+def test_search_page_with_none(get_bytes_single_file_mock):
+    with pytest.raises(
+        ValueError,
+        match="Exactly one of target_string and pattern must be specified.",
+    ):
+        doc = document.Document("gs://test-directory/documentai/output/123456789/0")
+        doc.search_pages()
+
+        get_bytes_single_file_mock.called_once()
+
+
+def test_get_entity_by_type(get_bytes_single_file_mock):
+
+    doc = document.Document("gs://test-directory/documentai/output/123456789/0")
+
+    actual = doc.get_entity_by_type(target_type="receiver_address")
+
+    get_bytes_single_file_mock.called_once()
+
+    assert len(actual) == 1
+    assert actual[0].type_ == "receiver_address"
+    assert actual[0].mention_text == "222 Main Street\nAnytown, USA"
