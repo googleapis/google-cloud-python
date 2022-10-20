@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-batch/compare/v0.3.2...v0.4.0) (2022-10-18)
+
+
+### Features
+
+* Enable install_gpu_drivers flag in v1 proto ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+
+
+### Documentation
+
+* Refine comments for deprecated proto fields ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+* Refine comments for deprecated proto fields ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+* Refine GPU drivers installation proto description ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+* Refine GPU drivers installation proto description ([#57](https://github.com/googleapis/python-batch/issues/57)) ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+* Update the API comments about the device_name ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+* Update the API comments about the device_name ([e7b8681](https://github.com/googleapis/python-batch/commit/e7b868119425531b402240452af810d706662e80))
+
 ## [0.3.2](https://github.com/googleapis/python-batch/compare/v0.3.1...v0.3.2) (2022-10-10)
 
 
