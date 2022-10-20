@@ -282,15 +282,11 @@ def generate_signed_url_v2(
     .. note::
 
         If you are on Google Compute Engine, you can't generate a signed URL.
-        Follow `Issue 922`_ for updates on this. If you'd like to be able to
-        generate a signed URL from GCE, you can use a standard service account
-        from a JSON file rather than a GCE service account.
+        If you'd like to be able to generate a signed URL from GCE, you can use a
+        standard service account from a JSON file rather than a GCE service account.
 
-    See headers `reference`_ for more details on optional arguments.
-
-    .. _Issue 922: https://github.com/GoogleCloudPlatform/\
-                   google-cloud-python/issues/922
-    .. _reference: https://cloud.google.com/storage/docs/reference-headers
+    See headers [reference](https://cloud.google.com/storage/docs/reference-headers)
+    for more details on optional arguments.
 
     :type credentials: :class:`google.auth.credentials.Signing`
     :param credentials: Credentials object with an associated private key to
@@ -382,6 +378,8 @@ def generate_signed_url_v2(
     elements_to_sign.append(canonical.resource)
     string_to_sign = "\n".join(elements_to_sign)
 
+    # If you are on Google Compute Engine, you can't generate a signed URL.
+    # See https://github.com/googleapis/google-cloud-python/issues/922
     # Set the right query parameters.
     if access_token and service_account_email:
         signature = _sign_message(string_to_sign, access_token, service_account_email)
@@ -446,16 +444,11 @@ def generate_signed_url_v4(
     .. note::
 
         If you are on Google Compute Engine, you can't generate a signed URL.
-        Follow `Issue 922`_ for updates on this. If you'd like to be able to
-        generate a signed URL from GCE, you can use a standard service account
-        from a JSON file rather than a GCE service account.
+        If you'd like to be able to generate a signed URL from GCE,you can use a
+        standard service account from a JSON file rather than a GCE service account.
 
-    See headers `reference`_ for more details on optional arguments.
-
-    .. _Issue 922: https://github.com/GoogleCloudPlatform/\
-                   google-cloud-python/issues/922
-    .. _reference: https://cloud.google.com/storage/docs/reference-headers
-
+    See headers [reference](https://cloud.google.com/storage/docs/reference-headers)
+    for more details on optional arguments.
 
     :type credentials: :class:`google.auth.credentials.Signing`
     :param credentials: Credentials object with an associated private key to
@@ -543,6 +536,8 @@ def generate_signed_url_v4(
         request_timestamp = _request_timestamp
         datestamp = _request_timestamp[:8]
 
+    # If you are on Google Compute Engine, you can't generate a signed URL.
+    # See https://github.com/googleapis/google-cloud-python/issues/922
     client_email = service_account_email
     if not access_token or not service_account_email:
         ensure_signed_credentials(credentials)

@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Helpers for configuring retries with exponential back-off.
+
+See [Retry Strategy for Google Cloud Storage](https://cloud.google.com/storage/docs/retry-strategy#client-libraries)
+"""
+
 import requests
 import requests.exceptions as requests_exceptions
 

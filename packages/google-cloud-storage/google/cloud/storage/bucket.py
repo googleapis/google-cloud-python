@@ -730,6 +730,13 @@ class Bucket(_PropertyMixin):
     def from_string(cls, uri, client=None):
         """Get a constructor for bucket object by URI.
 
+        .. code-block:: python
+
+            from google.cloud import storage
+            from google.cloud.storage.bucket import Bucket
+            client = storage.Client()
+            bucket = Bucket.from_string("gs://bucket", client=client)
+
         :type uri: str
         :param uri: The bucket uri pass to get bucket object.
 
@@ -740,14 +747,6 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.
-
-        Example:
-            Get a constructor for bucket object by URI..
-
-            >>> from google.cloud import storage
-            >>> from google.cloud.storage.bucket import Bucket
-            >>> client = storage.Client()
-            >>> bucket = Bucket.from_string("gs://bucket", client=client)
         """
         scheme, netloc, path, query, frag = urlsplit(uri)
 
@@ -1196,12 +1195,8 @@ class Bucket(_PropertyMixin):
     ):
         """Get a blob object by name.
 
-        This will return None if the blob doesn't exist:
-
-        .. literalinclude:: snippets.py
-          :start-after: START get_blob
-          :end-before: END get_blob
-          :dedent: 4
+        See a [code sample](https://cloud.google.com/storage/docs/samples/storage-get-metadata#storage_get_metadata-python)
+        on how to retrieve metadata of an object.
 
         If :attr:`user_project` is set, bills the API request to that project.
 
@@ -1385,15 +1380,6 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
-
-        Example:
-            List blobs in the bucket with user_project.
-
-            >>> from google.cloud import storage
-            >>> client = storage.Client()
-
-            >>> bucket = storage.Bucket(client, "my-bucket-name", user_project="my-project")
-            >>> all_blobs = list(client.list_blobs(bucket))
         """
         client = self._require_client(client)
         return client.list_blobs(
@@ -1458,8 +1444,8 @@ class Bucket(_PropertyMixin):
     ):
         """Get Pub / Sub notification for this bucket.
 
-        See:
-        https://cloud.google.com/storage/docs/json_api/v1/notifications/get
+        See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/notifications/get)
+        and a [code sample](https://cloud.google.com/storage/docs/samples/storage-print-pubsub-bucket-notification#storage_print_pubsub_bucket_notification-python).
 
         If :attr:`user_project` is set, bills the API request to that project.
 
@@ -1481,15 +1467,6 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`.BucketNotification`
         :returns: notification instance.
-
-        Example:
-            Get notification using notification id.
-
-            >>> from google.cloud import storage
-            >>> client = storage.Client()
-            >>> bucket = client.get_bucket('my-bucket-name')  # API request.
-            >>> notification = bucket.get_notification(notification_id='id')  # API request.
-
         """
         notification = self.notification(notification_id=notification_id)
         notification.reload(client=client, timeout=timeout, retry=retry)
@@ -1612,16 +1589,6 @@ class Bucket(_PropertyMixin):
     ):
         """Deletes a blob from the current bucket.
 
-        If the blob isn't found (backend 404), raises a
-        :class:`google.cloud.exceptions.NotFound`.
-
-        For example:
-
-        .. literalinclude:: snippets.py
-          :start-after: START delete_blob
-          :end-before: END delete_blob
-          :dedent: 4
-
         If :attr:`user_project` is set, bills the API request to that project.
 
         :type blob_name: str
@@ -1661,15 +1628,10 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
-        :raises: :class:`google.cloud.exceptions.NotFound` (to suppress
-                 the exception, call ``delete_blobs``, passing a no-op
-                 ``on_error`` callback, e.g.:
-
-        .. literalinclude:: snippets.py
-            :start-after: START delete_blobs
-            :end-before: END delete_blobs
-            :dedent: 4
-
+        :raises: :class:`google.cloud.exceptions.NotFound` Raises a NotFound
+                 if the blob isn't found. To suppress
+                 the exception, use :meth:`delete_blobs` by passing a no-op
+                 ``on_error`` callback.
         """
         client = self._require_client(client)
         blob = Blob(blob_name, bucket=self, generation=generation)
@@ -1721,8 +1683,8 @@ class Bucket(_PropertyMixin):
                       blob names to delete.
 
         :type on_error: callable
-        :param on_error: (Optional) Takes single argument: ``blob``. Called
-                         called once for each blob raising
+        :param on_error: (Optional) Takes single argument: ``blob``.
+                         Called once for each blob raising
                          :class:`~google.cloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
@@ -1768,20 +1730,6 @@ class Bucket(_PropertyMixin):
 
         :raises: :class:`~google.cloud.exceptions.NotFound` (if
                  `on_error` is not passed).
-
-        Example:
-            Delete blobs using generation match preconditions.
-
-            >>> from google.cloud import storage
-
-            >>> client = storage.Client()
-            >>> bucket = client.bucket("bucket-name")
-
-            >>> blobs = [bucket.blob("blob-name-1"), bucket.blob("blob-name-2")]
-            >>> if_generation_match = [None] * len(blobs)
-            >>> if_generation_match[0] = "123"  # precondition for "blob-name-1"
-
-            >>> bucket.delete_blobs(blobs, if_generation_match=if_generation_match)
         """
         _raise_if_len_differs(
             len(blobs),
@@ -1842,6 +1790,9 @@ class Bucket(_PropertyMixin):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         If :attr:`user_project` is set, bills the API request to that project.
+
+        See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/objects/copy)
+        and a [code sample](https://cloud.google.com/storage/docs/samples/storage-copy-file#storage_copy_file-python).
 
         :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be copied.
@@ -1922,20 +1873,6 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
-
-        Example:
-            Copy a blob including ACL.
-
-            >>> from google.cloud import storage
-
-            >>> client = storage.Client(project="project")
-
-            >>> bucket = client.bucket("bucket")
-            >>> dst_bucket = client.bucket("destination-bucket")
-
-            >>> blob = bucket.blob("file.ext")
-            >>> new_blob = bucket.copy_blob(blob, dst_bucket)
-            >>> new_blob.acl.save(blob.acl)
         """
         client = self._require_client(client)
         query_params = {}
@@ -2300,8 +2237,8 @@ class Bucket(_PropertyMixin):
            >>> bucket.lifecycle_rules = rules
            >>> bucket.update()
 
-        :setter: Set lifestyle rules for this bucket.
-        :getter: Gets the lifestyle rules for this bucket.
+        :setter: Set lifecycle rules for this bucket.
+        :getter: Gets the lifecycle rules for this bucket.
 
         :rtype: generator(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
@@ -2326,7 +2263,7 @@ class Bucket(_PropertyMixin):
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
-        """Set lifestyle rules configured for this bucket.
+        """Set lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2338,7 +2275,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("lifecycle", {"rule": rules})
 
     def clear_lifecyle_rules(self):
-        """Set lifestyle rules configured for this bucket.
+        """Clear lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2346,15 +2283,12 @@ class Bucket(_PropertyMixin):
         self.lifecycle_rules = []
 
     def add_lifecycle_delete_rule(self, **kw):
-        """Add a "delete" rule to lifestyle rules configured for this bucket.
+        """Add a "delete" rule to lifecycle rules configured for this bucket.
 
-        See https://cloud.google.com/storage/docs/lifecycle and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
-
-        .. literalinclude:: snippets.py
-          :start-after: START add_lifecycle_delete_rule
-          :end-before: END add_lifecycle_delete_rule
-          :dedent: 4
+        This defines a [lifecycle configuration](https://cloud.google.com/storage/docs/lifecycle),
+        which is set on the bucket. For the general format of a lifecycle configuration, see the
+        [bucket resource representation for JSON](https://cloud.google.com/storage/docs/json_api/v1/buckets).
+        See also a [code sample](https://cloud.google.com/storage/docs/samples/storage-enable-bucket-lifecycle-management#storage_enable_bucket_lifecycle_management-python).
 
         :type kw: dict
         :params kw: arguments passed to :class:`LifecycleRuleConditions`.
@@ -2364,15 +2298,11 @@ class Bucket(_PropertyMixin):
         self.lifecycle_rules = rules
 
     def add_lifecycle_set_storage_class_rule(self, storage_class, **kw):
-        """Add a "set storage class" rule to lifestyle rules.
+        """Add a "set storage class" rule to lifecycle rules.
 
-        See https://cloud.google.com/storage/docs/lifecycle and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
-
-        .. literalinclude:: snippets.py
-          :start-after: START add_lifecycle_set_storage_class_rule
-          :end-before: END add_lifecycle_set_storage_class_rule
-          :dedent: 4
+        This defines a [lifecycle configuration](https://cloud.google.com/storage/docs/lifecycle),
+        which is set on the bucket. For the general format of a lifecycle configuration, see the
+        [bucket resource representation for JSON](https://cloud.google.com/storage/docs/json_api/v1/buckets).
 
         :type storage_class: str, one of :attr:`STORAGE_CLASSES`.
         :param storage_class: new storage class to assign to matching items.
@@ -2385,13 +2315,15 @@ class Bucket(_PropertyMixin):
         self.lifecycle_rules = rules
 
     def add_lifecycle_abort_incomplete_multipart_upload_rule(self, **kw):
-        """Add a "abort incomplete multipart upload" rule to lifestyle rules.
+        """Add a "abort incomplete multipart upload" rule to lifecycle rules.
 
-        Note that the "age" lifecycle condition is the only supported condition
-        for this rule.
+        .. note::
+          The "age" lifecycle condition is the only supported condition
+          for this rule.
 
-        See https://cloud.google.com/storage/docs/lifecycle and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
+        This defines a [lifecycle configuration](https://cloud.google.com/storage/docs/lifecycle),
+        which is set on the bucket. For the general format of a lifecycle configuration, see the
+        [bucket resource representation for JSON](https://cloud.google.com/storage/docs/json_api/v1/buckets).
 
         :type kw: dict
         :params kw: arguments passed to :class:`LifecycleRuleConditions`.
@@ -2731,31 +2663,14 @@ class Bucket(_PropertyMixin):
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
 
-        See https://cloud.google.com/storage/docs/hosting-static-website
+        See https://cloud.google.com/storage/docs/static-website
 
         .. note::
-          This (apparently) only works
-          if your bucket name is a domain name
-          (and to do that, you need to get approved somehow...).
-
-        If you want this bucket to host a website, just provide the name
-        of an index page and a page to use when a blob isn't found:
-
-        .. literalinclude:: snippets.py
-          :start-after: START configure_website
-          :end-before: END configure_website
-          :dedent: 4
-
-        You probably should also make the whole bucket public:
-
-        .. literalinclude:: snippets.py
-            :start-after: START make_public
-            :end-before: END make_public
-            :dedent: 4
-
-        This says: "Make the bucket public, and all the stuff already in
-        the bucket, and anything else I add to the bucket.  Just make it
-        all public."
+          This configures the bucket's website-related properties,controlling how
+          the service behaves when accessing bucket contents as a web site.
+          See [tutorials](https://cloud.google.com/storage/docs/hosting-static-website) and
+          [code samples](https://cloud.google.com/storage/docs/samples/storage-define-bucket-website-configuration#storage_define_bucket_website_configuration-python)
+          for more information.
 
         :type main_page_suffix: str
         :param main_page_suffix: The page to use as the main page
@@ -2785,8 +2700,8 @@ class Bucket(_PropertyMixin):
     ):
         """Retrieve the IAM policy for the bucket.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy
+        See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy)
+        and a [code sample](https://cloud.google.com/storage/docs/samples/storage-view-bucket-iam-members#storage_view_bucket_iam_members-python).
 
         If :attr:`user_project` is set, bills the API request to that project.
 
@@ -2819,30 +2734,6 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
-
-        Example:
-
-        .. code-block:: python
-
-           from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
-
-           policy = bucket.get_iam_policy(requested_policy_version=3)
-
-           policy.version = 3
-
-           # Add a binding to the policy via it's bindings property
-           policy.bindings.append({
-               "role": STORAGE_OBJECT_VIEWER_ROLE,
-               "members": {"serviceAccount:account@project.iam.gserviceaccount.com", ...},
-               # Optional:
-               "condition": {
-                   "title": "prefix"
-                   "description": "Objects matching prefix"
-                   "expression": "resource.name.startsWith(\"projects/project-name/buckets/bucket-name/objects/prefix\")"
-               }
-           })
-
-           bucket.set_iam_policy(policy)
         """
         client = self._require_client(client)
         query_params = {}
@@ -3159,19 +3050,10 @@ class Bucket(_PropertyMixin):
         """Create a signed upload policy for uploading objects.
 
         This method generates and signs a policy document. You can use
-        `policy documents`_ to allow visitors to a website to upload files to
+        [`policy documents`](https://cloud.google.com/storage/docs/xml-api/post-object-forms)
+        to allow visitors to a website to upload files to
         Google Cloud Storage without giving them direct write access.
-
-        For example:
-
-        .. literalinclude:: snippets.py
-            :start-after: START policy_document
-            :end-before: END policy_document
-            :dedent: 4
-
-        .. _policy documents:
-            https://cloud.google.com/storage/docs/xml-api\
-            /post-object#policydocument
+        See a [code sample](https://cloud.google.com/storage/docs/xml-api/post-object-forms#python).
 
         :type expiration: datetime
         :param expiration: (Optional) Expiration in UTC. If not specified, the
@@ -3179,7 +3061,7 @@ class Bucket(_PropertyMixin):
 
         :type conditions: list
         :param conditions: A list of conditions as described in the
-                          `policy documents`_ documentation.
+                          `policy documents` documentation.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -3290,13 +3172,9 @@ class Bucket(_PropertyMixin):
         .. note::
 
             If you are on Google Compute Engine, you can't generate a signed
-            URL using GCE service account. Follow `Issue 50`_ for updates on
-            this. If you'd like to be able to generate a signed URL from GCE,
-            you can use a standard service account from a JSON file rather
-            than a GCE service account.
-
-        .. _Issue 50: https://github.com/GoogleCloudPlatform/\
-                      google-auth-library-python/issues/50
+            URL using GCE service account. If you'd like to be able to generate
+            a signed URL from GCE, you can use a standard service account from a
+            JSON file rather than a GCE service account.
 
         If you have a bucket that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
@@ -3304,21 +3182,6 @@ class Bucket(_PropertyMixin):
 
         If ``bucket_bound_hostname`` is set as an argument of :attr:`api_access_endpoint`,
         ``https`` works only if using a ``CDN``.
-
-        Example:
-            Generates a signed URL for this bucket using bucket_bound_hostname and scheme.
-
-            >>> from google.cloud import storage
-            >>> client = storage.Client()
-            >>> bucket = client.get_bucket('my-bucket-name')
-            >>> url = bucket.generate_signed_url(expiration='url-expiration-time', bucket_bound_hostname='mydomain.tld',
-            >>>                                  version='v4')
-            >>> url = bucket.generate_signed_url(expiration='url-expiration-time', bucket_bound_hostname='mydomain.tld',
-            >>>                                  version='v4',scheme='https')  # If using ``CDN``
-
-        This is particularly useful if you don't want publicly
-        accessible buckets, but don't want to require users to explicitly
-        log in.
 
         :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
         :param expiration: Point in time when the signed URL should expire. If
@@ -3393,6 +3256,9 @@ class Bucket(_PropertyMixin):
         elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
+        # If you are on Google Compute Engine, you can't generate a signed URL
+        # using GCE service account.
+        # See https://github.com/googleapis/google-auth-library-python/issues/50
         if virtual_hosted_style:
             api_access_endpoint = f"https://{self.name}.storage.googleapis.com"
         elif bucket_bound_hostname:

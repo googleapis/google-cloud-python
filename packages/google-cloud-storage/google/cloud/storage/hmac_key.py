@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Configure HMAC keys that can be used to authenticate requests to Google Cloud Storage.
+
+See [HMAC keys documentation](https://cloud.google.com/storage/docs/authentication/hmackeys)
+"""
+
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 
