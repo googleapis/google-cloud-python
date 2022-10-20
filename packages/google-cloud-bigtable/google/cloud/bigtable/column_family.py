@@ -20,6 +20,7 @@ from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 from google.cloud.bigtable_admin_v2.types import (
     bigtable_table_admin as table_admin_v2_pb2,
 )
+from google.api_core.gapic_v1.method import DEFAULT
 
 
 class GarbageCollectionRule(object):
@@ -275,7 +276,8 @@ class ColumnFamily(object):
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client.table_admin_client.modify_column_families(
-            request={"name": self._table.name, "modifications": [modification]}
+            request={"name": self._table.name, "modifications": [modification]},
+            timeout=DEFAULT,
         )
 
     def update(self):
@@ -302,7 +304,8 @@ class ColumnFamily(object):
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client.table_admin_client.modify_column_families(
-            request={"name": self._table.name, "modifications": [modification]}
+            request={"name": self._table.name, "modifications": [modification]},
+            timeout=DEFAULT,
         )
 
     def delete(self):
@@ -324,7 +327,8 @@ class ColumnFamily(object):
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client.table_admin_client.modify_column_families(
-            request={"name": self._table.name, "modifications": [modification]}
+            request={"name": self._table.name, "modifications": [modification]},
+            timeout=DEFAULT,
         )
 
 
