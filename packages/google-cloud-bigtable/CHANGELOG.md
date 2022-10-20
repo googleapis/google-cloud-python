@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.13.2](https://github.com/googleapis/python-bigtable/compare/v2.13.1...v2.13.2) (2022-10-20)
+
+
+### Bug Fixes
+
+* Respect deadlines for column family operations ([#687](https://github.com/googleapis/python-bigtable/issues/687)) ([df2e64a](https://github.com/googleapis/python-bigtable/commit/df2e64a79bbd8b28d0991706607af99d539320d1))
+
 ## [2.13.1](https://github.com/googleapis/python-bigtable/compare/v2.13.0...v2.13.1) (2022-10-10)
 
 
