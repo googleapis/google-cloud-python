@@ -19,6 +19,8 @@ import os
 import mock
 import pytest
 
+from google.auth import external_account_authorized_user
+import google.oauth2.credentials
 from google_auth_oauthlib import helpers
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
@@ -85,6 +87,7 @@ def test_credentials_from_session(session):
 
     credentials = helpers.credentials_from_session(session, CLIENT_SECRETS_INFO["web"])
 
+    assert isinstance(credentials, google.oauth2.credentials.Credentials)
     assert credentials.token == mock.sentinel.access_token
     assert credentials.expiry == datetime.datetime(1990, 5, 29, 8, 20, 0)
     assert credentials._refresh_token == mock.sentinel.refresh_token
@@ -92,6 +95,27 @@ def test_credentials_from_session(session):
     assert credentials._client_id == CLIENT_SECRETS_INFO["web"]["client_id"]
     assert credentials._client_secret == CLIENT_SECRETS_INFO["web"]["client_secret"]
     assert credentials._token_uri == CLIENT_SECRETS_INFO["web"]["token_uri"]
+
+
+def test_credentials_from_session_3pi(session):
+    session.token = {
+        "access_token": mock.sentinel.access_token,
+        "refresh_token": mock.sentinel.refresh_token,
+        "id_token": mock.sentinel.id_token,
+        "expires_at": 643969200.0,
+    }
+
+    client_secrets_info = CLIENT_SECRETS_INFO["web"].copy()
+    client_secrets_info["3pi"] = True
+    credentials = helpers.credentials_from_session(session, client_secrets_info)
+
+    assert isinstance(credentials, external_account_authorized_user.Credentials)
+    assert credentials.token == mock.sentinel.access_token
+    assert credentials.expiry == datetime.datetime(1990, 5, 29, 8, 20, 0)
+    assert credentials._refresh_token == mock.sentinel.refresh_token
+    assert credentials._client_id == CLIENT_SECRETS_INFO["web"]["client_id"]
+    assert credentials._client_secret == CLIENT_SECRETS_INFO["web"]["client_secret"]
+    assert credentials._token_url == CLIENT_SECRETS_INFO["web"]["token_uri"]
 
 
 def test_bad_credentials(session):
