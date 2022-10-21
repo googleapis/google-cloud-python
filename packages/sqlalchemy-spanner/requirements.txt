@@ -174,9 +174,9 @@ grpcio==1.50.0 \
     #   googleapis-common-protos
     #   grpc-google-iam-v1
     #   grpcio-status
-grpcio-status==1.49.1 \
-    --hash=sha256:658f48dc146ee0c7b6eebd302d74e0d45c00727c20035ff51d68750dbaccf5d9 \
-    --hash=sha256:fe4ae9f624f03e50ccf6f6ead60727ab20b17735bb3d0dd506ef355349282378
+grpcio-status==1.50.0 \
+    --hash=sha256:69be81c4317ec77983fb0eab80221a01e86e833e0fcf2f6acea0a62597c84b93 \
+    --hash=sha256:6bcf86b1cb1a8929c9cb75c8593ea001a667f5167cf692627f4b3fc1ae0eded4
     # via google-api-core
 idna==3.4 \
     --hash=sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4 \
