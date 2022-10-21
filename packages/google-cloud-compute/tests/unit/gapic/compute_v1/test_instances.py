@@ -8859,6 +8859,7 @@ def test_insert_rest(request_type):
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -9271,6 +9272,7 @@ def test_insert_rest_bad_request(
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -9547,6 +9549,7 @@ def test_insert_unary_rest(request_type):
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -9937,6 +9940,7 @@ def test_insert_unary_rest_bad_request(
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -24742,6 +24746,7 @@ def test_update_rest(request_type):
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -25159,6 +25164,7 @@ def test_update_rest_bad_request(
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -25441,6 +25447,7 @@ def test_update_unary_rest(request_type):
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
@@ -25836,6 +25843,7 @@ def test_update_unary_rest_bad_request(
             "values": ["values_value1", "values_value2"],
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {"physical_host": "physical_host_value"},
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,

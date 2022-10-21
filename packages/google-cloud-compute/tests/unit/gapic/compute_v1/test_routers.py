@@ -2551,6 +2551,7 @@ def test_insert_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -2575,6 +2576,7 @@ def test_insert_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -2891,6 +2893,7 @@ def test_insert_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -2915,6 +2918,7 @@ def test_insert_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -3103,6 +3107,7 @@ def test_insert_unary_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -3127,6 +3132,7 @@ def test_insert_unary_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -3421,6 +3427,7 @@ def test_insert_unary_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -3445,6 +3452,7 @@ def test_insert_unary_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -3986,6 +3994,7 @@ def test_patch_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -4010,6 +4019,7 @@ def test_patch_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -4331,6 +4341,7 @@ def test_patch_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -4355,6 +4366,7 @@ def test_patch_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -4549,6 +4561,7 @@ def test_patch_unary_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -4573,6 +4586,7 @@ def test_patch_unary_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -4872,6 +4886,7 @@ def test_patch_unary_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -4896,6 +4911,7 @@ def test_patch_unary_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -5090,6 +5106,7 @@ def test_preview_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -5114,6 +5131,7 @@ def test_preview_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -5390,6 +5408,7 @@ def test_preview_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -5414,6 +5433,7 @@ def test_preview_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -5608,6 +5628,7 @@ def test_update_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -5632,6 +5653,7 @@ def test_update_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -5953,6 +5975,7 @@ def test_update_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -5977,6 +6000,7 @@ def test_update_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -6171,6 +6195,7 @@ def test_update_unary_rest(request_type):
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -6195,6 +6220,7 @@ def test_update_unary_rest(request_type):
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {
@@ -6494,6 +6520,7 @@ def test_update_unary_rest_bad_request(
                 "ip_address": "ip_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
+                "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
@@ -6518,6 +6545,7 @@ def test_update_unary_rest_bad_request(
             }
         ],
         "kind": "kind_value",
+        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
         "name": "name_value",
         "nats": [
             {

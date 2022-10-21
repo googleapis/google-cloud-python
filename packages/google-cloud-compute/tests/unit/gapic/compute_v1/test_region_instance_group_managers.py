@@ -4816,6 +4816,7 @@ def test_get_rest(request_type):
             instance_group="instance_group_value",
             instance_template="instance_template_value",
             kind="kind_value",
+            list_managed_instances_results="list_managed_instances_results_value",
             name="name_value",
             region="region_value",
             self_link="self_link_value",
@@ -4844,6 +4845,10 @@ def test_get_rest(request_type):
     assert response.instance_group == "instance_group_value"
     assert response.instance_template == "instance_template_value"
     assert response.kind == "kind_value"
+    assert (
+        response.list_managed_instances_results
+        == "list_managed_instances_results_value"
+    )
     assert response.name == "name_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
@@ -5156,6 +5161,7 @@ def test_insert_rest(request_type):
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -5455,6 +5461,7 @@ def test_insert_rest_bad_request(
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -5627,6 +5634,7 @@ def test_insert_unary_rest(request_type):
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -5904,6 +5912,7 @@ def test_insert_unary_rest_bad_request(
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -7623,6 +7632,7 @@ def test_patch_rest(request_type):
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -7930,6 +7940,7 @@ def test_patch_rest_bad_request(
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -8112,6 +8123,7 @@ def test_patch_unary_rest(request_type):
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
@@ -8397,6 +8409,7 @@ def test_patch_unary_rest_bad_request(
         "instance_group": "instance_group_value",
         "instance_template": "instance_template_value",
         "kind": "kind_value",
+        "list_managed_instances_results": "list_managed_instances_results_value",
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",

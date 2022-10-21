@@ -1077,7 +1077,11 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified policy with the data included
-        in the request.
+        in the request. To clear fields in the rule, leave the
+        fields empty and specify them in the updateMask. This
+        cannot be used to be update the rules in the policy.
+        Please use the per rule methods like addRule, patchRule,
+        and removeRule instead.
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSecurityPolicyRequest, dict]):
@@ -1189,7 +1193,11 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified policy with the data included
-        in the request.
+        in the request. To clear fields in the rule, leave the
+        fields empty and specify them in the updateMask. This
+        cannot be used to be update the rules in the policy.
+        Please use the per rule methods like addRule, patchRule,
+        and removeRule instead.
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSecurityPolicyRequest, dict]):

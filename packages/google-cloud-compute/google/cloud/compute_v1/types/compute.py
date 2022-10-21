@@ -782,6 +782,7 @@ __protobuf__ = proto.module(
         "NetworkEndpointGroupCloudFunction",
         "NetworkEndpointGroupCloudRun",
         "NetworkEndpointGroupList",
+        "NetworkEndpointGroupPscData",
         "NetworkEndpointGroupsAttachEndpointsRequest",
         "NetworkEndpointGroupsDetachEndpointsRequest",
         "NetworkEndpointGroupsListEndpointsRequest",
@@ -905,6 +906,7 @@ __protobuf__ = proto.module(
         "PublicDelegatedPrefixPublicDelegatedSubPrefix",
         "PublicDelegatedPrefixesScopedList",
         "Quota",
+        "QuotaExceededInfo",
         "RawDisk",
         "RecreateInstancesInstanceGroupManagerRequest",
         "RecreateInstancesRegionInstanceGroupManagerRequest",
@@ -986,6 +988,7 @@ __protobuf__ = proto.module(
         "ResourcePolicySnapshotSchedulePolicySnapshotProperties",
         "ResourcePolicyWeeklyCycle",
         "ResourcePolicyWeeklyCycleDayOfWeek",
+        "ResourceStatus",
         "ResumeInstanceRequest",
         "Route",
         "RouteAsPath",
@@ -998,6 +1001,7 @@ __protobuf__ = proto.module(
         "RouterBgpPeerBfd",
         "RouterInterface",
         "RouterList",
+        "RouterMd5AuthenticationKey",
         "RouterNat",
         "RouterNatLogConfig",
         "RouterNatRule",
@@ -3028,6 +3032,15 @@ class Address(proto.Message):
             possible values.
 
             This field is a member of `oneof`_ ``_ip_version``.
+        ipv6_endpoint_type (str):
+            The endpoint type of this address, which
+            should be VM or NETLB. This is used for deciding
+            which type of endpoint this address can be used
+            after the external IPv6 address reservation.
+            Check the Ipv6EndpointType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_ipv6_endpoint_type``.
         kind (str):
             [Output Only] Type of the resource. Always compute#address
             for addresses.
@@ -3144,6 +3157,15 @@ class Address(proto.Message):
         IPV6 = 2254343
         UNSPECIFIED_VERSION = 21850000
 
+    class Ipv6EndpointType(proto.Enum):
+        r"""The endpoint type of this address, which should be VM or
+        NETLB. This is used for deciding which type of endpoint this
+        address can be used after the external IPv6 address reservation.
+        """
+        UNDEFINED_IPV6_ENDPOINT_TYPE = 0
+        NETLB = 74173363
+        VM = 2743
+
     class NetworkTier(proto.Enum):
         r"""This signifies the networking tier used for configuring this
         address and can only take the following values: PREMIUM or
@@ -3227,6 +3249,11 @@ class Address(proto.Message):
     ip_version = proto.Field(
         proto.STRING,
         number=294959552,
+        optional=True,
+    )
+    ipv6_endpoint_type = proto.Field(
+        proto.STRING,
+        number=97501004,
         optional=True,
     )
     kind = proto.Field(
@@ -11719,12 +11746,10 @@ class BackendService(proto.Message):
             the load balancing pool for the backend service. If not set,
             this feature is considered disabled. This field is
             applicable to either: - A regional backend service with the
-            service_protocol set to HTTP, HTTPS, or HTTP2, and
+            service_protocol set to HTTP, HTTPS, HTTP2, or GRPC, and
             load_balancing_scheme set to INTERNAL_MANAGED. - A global
             backend service with the load_balancing_scheme set to
-            INTERNAL_SELF_MANAGED. Not supported when the backend
-            service is referenced by a URL map that is bound to target
-            gRPC proxy that has validateForProxyless field set to true.
+            INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_outlier_detection``.
         port (int):
@@ -20976,6 +21001,9 @@ class ErrorDetails(proto.Message):
         localized_message (google.cloud.compute_v1.types.LocalizedMessage):
 
             This field is a member of `oneof`_ ``_localized_message``.
+        quota_info (google.cloud.compute_v1.types.QuotaExceededInfo):
+
+            This field is a member of `oneof`_ ``_quota_info``.
     """
 
     error_info = proto.Field(
@@ -20995,6 +21023,12 @@ class ErrorDetails(proto.Message):
         number=404537155,
         optional=True,
         message="LocalizedMessage",
+    )
+    quota_info = proto.Field(
+        proto.MESSAGE,
+        number=93923861,
+        optional=True,
+        message="QuotaExceededInfo",
     )
 
 
@@ -23025,6 +23059,18 @@ class ForwardingRule(proto.Message):
 
             This field is a member of `oneof`_ ``_subnetwork``.
         target (str):
+            The URL of the target resource to receive the matched
+            traffic. For regional forwarding rules, this target must be
+            in the same region as the forwarding rule. For global
+            forwarding rules, this target must be a global load
+            balancing resource. The forwarded traffic must be of a type
+            appropriate to the target object. For more information, see
+            the "Target" column in `Port
+            specifications <https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>`__.
+            For Private Service Connect forwarding rules that forward
+            traffic to Google APIs, provide the name of a supported
+            Google API bundle: - vpc-sc - APIs that support VPC Service
+            Controls. - all-apis - All supported Google APIs.
 
             This field is a member of `oneof`_ ``_target``.
     """
@@ -23501,43 +23547,66 @@ class GRPCHealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_grpc_service_name``.
         port (int):
-            The port number for the health check request. Must be
-            specified if port_name and port_specification are not set or
-            if port_specification is USE_FIXED_PORT. Valid values are 1
-            through 65535.
+            The TCP port number to which the health check
+            prober sends packets. Valid values are 1 through
+            65535.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
-            Port name as defined in InstanceGroup#NamedPort#name. If
-            both port and port_name are defined, port takes precedence.
-            The port_name should conform to RFC1035.
+            Not supported.
 
             This field is a member of `oneof`_ ``_port_name``.
         port_specification (str):
-            Specifies how port is selected for health checking, can be
-            one of following values: USE_FIXED_PORT: The port number in
-            port is used for health checking. USE_NAMED_PORT: The
-            portName is used for health checking. USE_SERVING_PORT: For
-            NetworkEndpointGroup, the port specified for each network
-            endpoint is used for health checking. For other backends,
-            the port or named port specified in the Backend Service is
-            used for health checking. If not specified, gRPC health
-            check follows behavior specified in port and portName
-            fields. Check the PortSpecification enum for the list of
-            possible values.
+            Specifies how a port is selected for health checking. Can be
+            one of the following values: USE_FIXED_PORT: Specifies a
+            port number explicitly using the port field in the health
+            check. Supported by backend services for pass-through load
+            balancers and backend services for proxy load balancers. Not
+            supported by target pools. The health check supports all
+            backends supported by the backend service provided the
+            backend can be health checked. For example, GCE_VM_IP
+            network endpoint groups, GCE_VM_IP_PORT network endpoint
+            groups, and instance group backends. USE_NAMED_PORT: Not
+            supported. USE_SERVING_PORT: Provides an indirect method of
+            specifying the health check port by referring to the backend
+            service. Only supported by backend services for proxy load
+            balancers. Not supported by target pools. Not supported by
+            backend services for pass-through load balancers. Supports
+            all backends that can be health checked; for example,
+            GCE_VM_IP_PORT network endpoint groups and instance group
+            backends. For GCE_VM_IP_PORT network endpoint group
+            backends, the health check uses the port number specified
+            for each endpoint in the network endpoint group. For
+            instance group backends, the health check uses the port
+            number determined by looking up the backend service's named
+            port in the instance group's list of named ports. Check the
+            PortSpecification enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
     """
 
     class PortSpecification(proto.Enum):
-        r"""Specifies how port is selected for health checking, can be one of
-        following values: USE_FIXED_PORT: The port number in port is used
-        for health checking. USE_NAMED_PORT: The portName is used for health
-        checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port
-        specified for each network endpoint is used for health checking. For
-        other backends, the port or named port specified in the Backend
-        Service is used for health checking. If not specified, gRPC health
-        check follows behavior specified in port and portName fields.
+        r"""Specifies how a port is selected for health checking. Can be one of
+        the following values: USE_FIXED_PORT: Specifies a port number
+        explicitly using the port field in the health check. Supported by
+        backend services for pass-through load balancers and backend
+        services for proxy load balancers. Not supported by target pools.
+        The health check supports all backends supported by the backend
+        service provided the backend can be health checked. For example,
+        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
+        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        USE_SERVING_PORT: Provides an indirect method of specifying the
+        health check port by referring to the backend service. Only
+        supported by backend services for proxy load balancers. Not
+        supported by target pools. Not supported by backend services for
+        pass-through load balancers. Supports all backends that can be
+        health checked; for example, GCE_VM_IP_PORT network endpoint groups
+        and instance group backends. For GCE_VM_IP_PORT network endpoint
+        group backends, the health check uses the port number specified for
+        each endpoint in the network endpoint group. For instance group
+        backends, the health check uses the port number determined by
+        looking up the backend service's named port in the instance group's
+        list of named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -27578,33 +27647,49 @@ class HTTP2HealthCheck(proto.Message):
         host (str):
             The value of the host header in the HTTP/2
             health check request. If left empty (default
-            value), the IP on behalf of which this health
-            check is performed will be used.
+            value), the host header is set to the
+            destination IP address to which health check
+            packets are sent. The destination IP address
+            depends on the type of load balancer. For
+            details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
 
             This field is a member of `oneof`_ ``_host``.
         port (int):
-            The TCP port number for the health check
-            request. The default value is 443. Valid values
-            are 1 through 65535.
+            The TCP port number to which the health check
+            prober sends packets. The default value is 443.
+            Valid values are 1 through 65535.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
-            Port name as defined in InstanceGroup#NamedPort#name. If
-            both port and port_name are defined, port takes precedence.
+            Not supported.
 
             This field is a member of `oneof`_ ``_port_name``.
         port_specification (str):
-            Specifies how port is selected for health checking, can be
-            one of following values: USE_FIXED_PORT: The port number in
-            port is used for health checking. USE_NAMED_PORT: The
-            portName is used for health checking. USE_SERVING_PORT: For
-            NetworkEndpointGroup, the port specified for each network
-            endpoint is used for health checking. For other backends,
-            the port or named port specified in the Backend Service is
-            used for health checking. If not specified, HTTP2 health
-            check follows behavior specified in port and portName
-            fields. Check the PortSpecification enum for the list of
-            possible values.
+            Specifies how a port is selected for health checking. Can be
+            one of the following values: USE_FIXED_PORT: Specifies a
+            port number explicitly using the port field in the health
+            check. Supported by backend services for pass-through load
+            balancers and backend services for proxy load balancers. Not
+            supported by target pools. The health check supports all
+            backends supported by the backend service provided the
+            backend can be health checked. For example, GCE_VM_IP
+            network endpoint groups, GCE_VM_IP_PORT network endpoint
+            groups, and instance group backends. USE_NAMED_PORT: Not
+            supported. USE_SERVING_PORT: Provides an indirect method of
+            specifying the health check port by referring to the backend
+            service. Only supported by backend services for proxy load
+            balancers. Not supported by target pools. Not supported by
+            backend services for pass-through load balancers. Supports
+            all backends that can be health checked; for example,
+            GCE_VM_IP_PORT network endpoint groups and instance group
+            backends. For GCE_VM_IP_PORT network endpoint group
+            backends, the health check uses the port number specified
+            for each endpoint in the network endpoint group. For
+            instance group backends, the health check uses the port
+            number determined by looking up the backend service's named
+            port in the instance group's list of named ports. Check the
+            PortSpecification enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
         proxy_header (str):
@@ -27620,23 +27705,39 @@ class HTTP2HealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
-            The string to match anywhere in the first
-            1024 bytes of the response body. If left empty
-            (the default value), the status code determines
-            health. The response data can only be ASCII.
+            Creates a content-based HTTP/2 health check.
+            In addition to the required HTTP 200 (OK) status
+            code, you can configure the health check to pass
+            only when the backend sends this specific ASCII
+            response string within the first 1024 bytes of
+            the HTTP response body. For details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
 
             This field is a member of `oneof`_ ``_response``.
     """
 
     class PortSpecification(proto.Enum):
-        r"""Specifies how port is selected for health checking, can be one of
-        following values: USE_FIXED_PORT: The port number in port is used
-        for health checking. USE_NAMED_PORT: The portName is used for health
-        checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port
-        specified for each network endpoint is used for health checking. For
-        other backends, the port or named port specified in the Backend
-        Service is used for health checking. If not specified, HTTP2 health
-        check follows behavior specified in port and portName fields.
+        r"""Specifies how a port is selected for health checking. Can be one of
+        the following values: USE_FIXED_PORT: Specifies a port number
+        explicitly using the port field in the health check. Supported by
+        backend services for pass-through load balancers and backend
+        services for proxy load balancers. Not supported by target pools.
+        The health check supports all backends supported by the backend
+        service provided the backend can be health checked. For example,
+        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
+        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        USE_SERVING_PORT: Provides an indirect method of specifying the
+        health check port by referring to the backend service. Only
+        supported by backend services for proxy load balancers. Not
+        supported by target pools. Not supported by backend services for
+        pass-through load balancers. Supports all backends that can be
+        health checked; for example, GCE_VM_IP_PORT network endpoint groups
+        and instance group backends. For GCE_VM_IP_PORT network endpoint
+        group backends, the health check uses the port number specified for
+        each endpoint in the network endpoint group. For instance group
+        backends, the health check uses the port number determined by
+        looking up the backend service's named port in the instance group's
+        list of named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -27695,33 +27796,50 @@ class HTTPHealthCheck(proto.Message):
         host (str):
             The value of the host header in the HTTP
             health check request. If left empty (default
-            value), the IP on behalf of which this health
-            check is performed will be used.
+            value), the host header is set to the
+            destination IP address to which health check
+            packets are sent. The destination IP address
+            depends on the type of load balancer. For
+            details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
 
             This field is a member of `oneof`_ ``_host``.
         port (int):
-            The TCP port number for the health check
-            request. The default value is 80. Valid values
-            are 1 through 65535.
+            The TCP port number to which the health check
+            prober sends packets. The default value is 80.
+            Valid values are 1 through 65535.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
-            Port name as defined in InstanceGroup#NamedPort#name. If
-            both port and port_name are defined, port takes precedence.
+            Not supported.
 
             This field is a member of `oneof`_ ``_port_name``.
         port_specification (str):
-            Specifies how port is selected for health checking, can be
-            one of following values: USE_FIXED_PORT: The port number in
-            port is used for health checking. USE_NAMED_PORT: The
-            portName is used for health checking. USE_SERVING_PORT: For
-            NetworkEndpointGroup, the port specified for each network
-            endpoint is used for health checking. For other backends,
-            the port or named port specified in the Backend Service is
-            used for health checking. If not specified, HTTP health
-            check follows behavior specified in port and portName
-            fields. Check the PortSpecification enum for the list of
-            possible values.
+            Specifies how a port is selected for health checking. Can be
+            one of the following values: USE_FIXED_PORT: Specifies a
+            port number explicitly using the port field in the health
+            check. Supported by backend services for pass-through load
+            balancers and backend services for proxy load balancers.
+            Also supported in legacy HTTP health checks for target
+            pools. The health check supports all backends supported by
+            the backend service provided the backend can be health
+            checked. For example, GCE_VM_IP network endpoint groups,
+            GCE_VM_IP_PORT network endpoint groups, and instance group
+            backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT:
+            Provides an indirect method of specifying the health check
+            port by referring to the backend service. Only supported by
+            backend services for proxy load balancers. Not supported by
+            target pools. Not supported by backend services for
+            pass-through load balancers. Supports all backends that can
+            be health checked; for example, GCE_VM_IP_PORT network
+            endpoint groups and instance group backends. For
+            GCE_VM_IP_PORT network endpoint group backends, the health
+            check uses the port number specified for each endpoint in
+            the network endpoint group. For instance group backends, the
+            health check uses the port number determined by looking up
+            the backend service's named port in the instance group's
+            list of named ports. Check the PortSpecification enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
         proxy_header (str):
@@ -27737,23 +27855,39 @@ class HTTPHealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
-            The string to match anywhere in the first
-            1024 bytes of the response body. If left empty
-            (the default value), the status code determines
-            health. The response data can only be ASCII.
+            Creates a content-based HTTP health check. In
+            addition to the required HTTP 200 (OK) status
+            code, you can configure the health check to pass
+            only when the backend sends this specific ASCII
+            response string within the first 1024 bytes of
+            the HTTP response body. For details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
 
             This field is a member of `oneof`_ ``_response``.
     """
 
     class PortSpecification(proto.Enum):
-        r"""Specifies how port is selected for health checking, can be one of
-        following values: USE_FIXED_PORT: The port number in port is used
-        for health checking. USE_NAMED_PORT: The portName is used for health
-        checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port
-        specified for each network endpoint is used for health checking. For
-        other backends, the port or named port specified in the Backend
-        Service is used for health checking. If not specified, HTTP health
-        check follows behavior specified in port and portName fields.
+        r"""Specifies how a port is selected for health checking. Can be one of
+        the following values: USE_FIXED_PORT: Specifies a port number
+        explicitly using the port field in the health check. Supported by
+        backend services for pass-through load balancers and backend
+        services for proxy load balancers. Also supported in legacy HTTP
+        health checks for target pools. The health check supports all
+        backends supported by the backend service provided the backend can
+        be health checked. For example, GCE_VM_IP network endpoint groups,
+        GCE_VM_IP_PORT network endpoint groups, and instance group backends.
+        USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an
+        indirect method of specifying the health check port by referring to
+        the backend service. Only supported by backend services for proxy
+        load balancers. Not supported by target pools. Not supported by
+        backend services for pass-through load balancers. Supports all
+        backends that can be health checked; for example, GCE_VM_IP_PORT
+        network endpoint groups and instance group backends. For
+        GCE_VM_IP_PORT network endpoint group backends, the health check
+        uses the port number specified for each endpoint in the network
+        endpoint group. For instance group backends, the health check uses
+        the port number determined by looking up the backend service's named
+        port in the instance group's list of named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -27812,33 +27946,49 @@ class HTTPSHealthCheck(proto.Message):
         host (str):
             The value of the host header in the HTTPS
             health check request. If left empty (default
-            value), the IP on behalf of which this health
-            check is performed will be used.
+            value), the host header is set to the
+            destination IP address to which health check
+            packets are sent. The destination IP address
+            depends on the type of load balancer. For
+            details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
 
             This field is a member of `oneof`_ ``_host``.
         port (int):
-            The TCP port number for the health check
-            request. The default value is 443. Valid values
-            are 1 through 65535.
+            The TCP port number to which the health check
+            prober sends packets. The default value is 443.
+            Valid values are 1 through 65535.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
-            Port name as defined in InstanceGroup#NamedPort#name. If
-            both port and port_name are defined, port takes precedence.
+            Not supported.
 
             This field is a member of `oneof`_ ``_port_name``.
         port_specification (str):
-            Specifies how port is selected for health checking, can be
-            one of following values: USE_FIXED_PORT: The port number in
-            port is used for health checking. USE_NAMED_PORT: The
-            portName is used for health checking. USE_SERVING_PORT: For
-            NetworkEndpointGroup, the port specified for each network
-            endpoint is used for health checking. For other backends,
-            the port or named port specified in the Backend Service is
-            used for health checking. If not specified, HTTPS health
-            check follows behavior specified in port and portName
-            fields. Check the PortSpecification enum for the list of
-            possible values.
+            Specifies how a port is selected for health checking. Can be
+            one of the following values: USE_FIXED_PORT: Specifies a
+            port number explicitly using the port field in the health
+            check. Supported by backend services for pass-through load
+            balancers and backend services for proxy load balancers. Not
+            supported by target pools. The health check supports all
+            backends supported by the backend service provided the
+            backend can be health checked. For example, GCE_VM_IP
+            network endpoint groups, GCE_VM_IP_PORT network endpoint
+            groups, and instance group backends. USE_NAMED_PORT: Not
+            supported. USE_SERVING_PORT: Provides an indirect method of
+            specifying the health check port by referring to the backend
+            service. Only supported by backend services for proxy load
+            balancers. Not supported by target pools. Not supported by
+            backend services for pass-through load balancers. Supports
+            all backends that can be health checked; for example,
+            GCE_VM_IP_PORT network endpoint groups and instance group
+            backends. For GCE_VM_IP_PORT network endpoint group
+            backends, the health check uses the port number specified
+            for each endpoint in the network endpoint group. For
+            instance group backends, the health check uses the port
+            number determined by looking up the backend service's named
+            port in the instance group's list of named ports. Check the
+            PortSpecification enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
         proxy_header (str):
@@ -27854,23 +28004,39 @@ class HTTPSHealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
-            The string to match anywhere in the first
-            1024 bytes of the response body. If left empty
-            (the default value), the status code determines
-            health. The response data can only be ASCII.
+            Creates a content-based HTTPS health check.
+            In addition to the required HTTP 200 (OK) status
+            code, you can configure the health check to pass
+            only when the backend sends this specific ASCII
+            response string within the first 1024 bytes of
+            the HTTP response body. For details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
 
             This field is a member of `oneof`_ ``_response``.
     """
 
     class PortSpecification(proto.Enum):
-        r"""Specifies how port is selected for health checking, can be one of
-        following values: USE_FIXED_PORT: The port number in port is used
-        for health checking. USE_NAMED_PORT: The portName is used for health
-        checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port
-        specified for each network endpoint is used for health checking. For
-        other backends, the port or named port specified in the Backend
-        Service is used for health checking. If not specified, HTTPS health
-        check follows behavior specified in port and portName fields.
+        r"""Specifies how a port is selected for health checking. Can be one of
+        the following values: USE_FIXED_PORT: Specifies a port number
+        explicitly using the port field in the health check. Supported by
+        backend services for pass-through load balancers and backend
+        services for proxy load balancers. Not supported by target pools.
+        The health check supports all backends supported by the backend
+        service provided the backend can be health checked. For example,
+        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
+        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        USE_SERVING_PORT: Provides an indirect method of specifying the
+        health check port by referring to the backend service. Only
+        supported by backend services for proxy load balancers. Not
+        supported by target pools. Not supported by backend services for
+        pass-through load balancers. Supports all backends that can be
+        health checked; for example, GCE_VM_IP_PORT network endpoint groups
+        and instance group backends. For GCE_VM_IP_PORT network endpoint
+        group backends, the health check uses the port number specified for
+        each endpoint in the network endpoint group. For instance group
+        backends, the health check uses the port number determined by
+        looking up the backend service's named port in the instance group's
+        list of named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -34117,6 +34283,12 @@ class Instance(proto.Message):
             This field is a member of `oneof`_ ``_reservation_affinity``.
         resource_policies (Sequence[str]):
             Resource policies applied to this instance.
+        resource_status (google.cloud.compute_v1.types.ResourceStatus):
+            [Output Only] Specifies values set for instance attributes
+            as compared to the values requested by user in the
+            corresponding input only field.
+
+            This field is a member of `oneof`_ ``_resource_status``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -34383,6 +34555,12 @@ class Instance(proto.Message):
     resource_policies = proto.RepeatedField(
         proto.STRING,
         number=22220385,
+    )
+    resource_status = proto.Field(
+        proto.MESSAGE,
+        number=249429315,
+        optional=True,
+        message="ResourceStatus",
     )
     satisfies_pzs = proto.Field(
         proto.BOOL,
@@ -35001,6 +35179,14 @@ class InstanceGroupManager(proto.Message):
             compute#instanceGroupManager for managed instance groups.
 
             This field is a member of `oneof`_ ``_kind``.
+        list_managed_instances_results (str):
+            Pagination behavior of the
+            listManagedInstances API method for this managed
+            instance group. Check the
+            ListManagedInstancesResults enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_list_managed_instances_results``.
         name (str):
             The name of the managed instance group. The
             name must be 1-63 characters long, and comply
@@ -35068,6 +35254,14 @@ class InstanceGroupManager(proto.Message):
             This field is a member of `oneof`_ ``_zone``.
     """
 
+    class ListManagedInstancesResults(proto.Enum):
+        r"""Pagination behavior of the listManagedInstances API method
+        for this managed instance group.
+        """
+        UNDEFINED_LIST_MANAGED_INSTANCES_RESULTS = 0
+        PAGELESS = 32183464
+        PAGINATED = 40190637
+
     auto_healing_policies = proto.RepeatedField(
         proto.MESSAGE,
         number=456799109,
@@ -35123,6 +35317,11 @@ class InstanceGroupManager(proto.Message):
     kind = proto.Field(
         proto.STRING,
         number=3292052,
+        optional=True,
+    )
+    list_managed_instances_results = proto.Field(
+        proto.STRING,
+        number=296047156,
         optional=True,
     )
     name = proto.Field(
@@ -54720,6 +54919,9 @@ class NetworkEndpointGroup(proto.Message):
             values.
 
             This field is a member of `oneof`_ ``_network_endpoint_type``.
+        psc_data (google.cloud.compute_v1.types.NetworkEndpointGroupPscData):
+
+            This field is a member of `oneof`_ ``_psc_data``.
         psc_target_service (str):
             The target service url used to set up private
             service connection to a Google API or a PSC
@@ -54830,6 +55032,12 @@ class NetworkEndpointGroup(proto.Message):
         proto.STRING,
         number=118301523,
         optional=True,
+    )
+    psc_data = proto.Field(
+        proto.MESSAGE,
+        number=71937481,
+        optional=True,
+        message="NetworkEndpointGroupPscData",
     )
     psc_target_service = proto.Field(
         proto.STRING,
@@ -55167,6 +55375,57 @@ class NetworkEndpointGroupList(proto.Message):
         number=50704284,
         optional=True,
         message="Warning",
+    )
+
+
+class NetworkEndpointGroupPscData(proto.Message):
+    r"""All data that is specifically relevant to only network endpoint
+    groups of type PRIVATE_SERVICE_CONNECT.
+
+    Attributes:
+        consumer_psc_address (str):
+            [Output Only] Address allocated from given subnetwork for
+            PSC. This IP address acts as a VIP for a PSC NEG, allowing
+            it to act as an endpoint in L7 PSC-XLB.
+
+            This field is a member of `oneof`_ ``_consumer_psc_address``.
+        psc_connection_id (int):
+            [Output Only] The PSC connection id of the PSC Network
+            Endpoint Group Consumer.
+
+            This field is a member of `oneof`_ ``_psc_connection_id``.
+        psc_connection_status (str):
+            [Output Only] The connection status of the PSC Forwarding
+            Rule. Check the PscConnectionStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_psc_connection_status``.
+    """
+
+    class PscConnectionStatus(proto.Enum):
+        r"""[Output Only] The connection status of the PSC Forwarding Rule."""
+        UNDEFINED_PSC_CONNECTION_STATUS = 0
+        ACCEPTED = 246714279
+        CLOSED = 380163436
+        NEEDS_ATTENTION = 344491452
+        PENDING = 35394935
+        REJECTED = 174130302
+        STATUS_UNSPECIFIED = 42133066
+
+    consumer_psc_address = proto.Field(
+        proto.STRING,
+        number=452646572,
+        optional=True,
+    )
+    psc_connection_id = proto.Field(
+        proto.UINT64,
+        number=292082397,
+        optional=True,
+    )
+    psc_connection_status = proto.Field(
+        proto.STRING,
+        number=184149172,
+        optional=True,
     )
 
 
@@ -58228,7 +58487,10 @@ class OutlierDetection(proto.Message):
             Number of errors before a host is ejected
             from the connection pool. When the backend host
             is accessed over HTTP, a 5xx return code
-            qualifies as an error. Defaults to 5.
+            qualifies as an error. Defaults to 5. Not
+            supported when the backend service is referenced
+            by a URL map that is bound to target gRPC proxy
+            that has validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_consecutive_errors``.
         consecutive_gateway_failure (int):
@@ -58236,7 +58498,10 @@ class OutlierDetection(proto.Message):
             (502, 503, 504 status or connection errors that
             are mapped to one of those status codes) before
             a consecutive gateway failure ejection occurs.
-            Defaults to 3.
+            Defaults to 3. Not supported when the backend
+            service is referenced by a URL map that is bound
+            to target gRPC proxy that has
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_consecutive_gateway_failure``.
         enforcing_consecutive_errors (int):
@@ -58244,7 +58509,10 @@ class OutlierDetection(proto.Message):
             actually ejected when an outlier status is
             detected through consecutive 5xx. This setting
             can be used to disable ejection or to ramp it up
-            slowly. Defaults to 0.
+            slowly. Defaults to 0. Not supported when the
+            backend service is referenced by a URL map that
+            is bound to target gRPC proxy that has
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_enforcing_consecutive_errors``.
         enforcing_consecutive_gateway_failure (int):
@@ -58252,7 +58520,10 @@ class OutlierDetection(proto.Message):
             actually ejected when an outlier status is
             detected through consecutive gateway failures.
             This setting can be used to disable ejection or
-            to ramp it up slowly. Defaults to 100.
+            to ramp it up slowly. Defaults to 100. Not
+            supported when the backend service is referenced
+            by a URL map that is bound to target gRPC proxy
+            that has validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_enforcing_consecutive_gateway_failure``.
         enforcing_success_rate (int):
@@ -63281,6 +63552,7 @@ class Quota(proto.Message):
         SSL_CERTIFICATES = 378372399
         STATIC_ADDRESSES = 93624049
         STATIC_BYOIP_ADDRESSES = 275809649
+        STATIC_EXTERNAL_IPV6_ADDRESS_RANGES = 472346774
         SUBNETWORKS = 421330469
         T2A_CPUS = 522170599
         T2D_CPUS = 71187140
@@ -63314,6 +63586,50 @@ class Quota(proto.Message):
     usage = proto.Field(
         proto.DOUBLE,
         number=111574433,
+        optional=True,
+    )
+
+
+class QuotaExceededInfo(proto.Message):
+    r"""Additional details for quota exceeded error for resource
+    quota.
+
+    Attributes:
+        dimensions (Mapping[str, str]):
+            The map holding related quota dimensions.
+        limit (float):
+            Current effective quota limit. The limit's
+            unit depends on the quota type or metric.
+
+            This field is a member of `oneof`_ ``_limit``.
+        limit_name (str):
+            The name of the quota limit.
+
+            This field is a member of `oneof`_ ``_limit_name``.
+        metric_name (str):
+            The Compute Engine quota metric name.
+
+            This field is a member of `oneof`_ ``_metric_name``.
+    """
+
+    dimensions = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=414334925,
+    )
+    limit = proto.Field(
+        proto.DOUBLE,
+        number=102976443,
+        optional=True,
+    )
+    limit_name = proto.Field(
+        proto.STRING,
+        number=398197903,
+        optional=True,
+    )
+    metric_name = proto.Field(
+        proto.STRING,
+        number=409881530,
         optional=True,
     )
 
@@ -67226,6 +67542,26 @@ class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
     )
 
 
+class ResourceStatus(proto.Message):
+    r"""Contains output only fields. Use this sub-message for actual
+    values set on Instance attributes as compared to the value
+    requested by the user (intent) in their instance CRUD calls.
+
+    Attributes:
+        physical_host (str):
+            [Output Only] An opaque ID of the host on which the VM is
+            running.
+
+            This field is a member of `oneof`_ ``_physical_host``.
+    """
+
+    physical_host = proto.Field(
+        proto.STRING,
+        number=464370704,
+        optional=True,
+    )
+
+
 class ResumeInstanceRequest(proto.Message):
     r"""A request message for Instances.Resume. See the method
     description for details.
@@ -67705,6 +68041,8 @@ class Router(proto.Message):
             routers.
 
             This field is a member of `oneof`_ ``_kind``.
+        md5_authentication_keys (Sequence[google.cloud.compute_v1.types.RouterMd5AuthenticationKey]):
+            Keys used for MD5 authentication.
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -67776,6 +68114,11 @@ class Router(proto.Message):
         proto.STRING,
         number=3292052,
         optional=True,
+    )
+    md5_authentication_keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=71063322,
+        message="RouterMd5AuthenticationKey",
     )
     name = proto.Field(
         proto.STRING,
@@ -68081,6 +68424,13 @@ class RouterBgpPeer(proto.Message):
             values.
 
             This field is a member of `oneof`_ ``_management_type``.
+        md5_authentication_key_name (str):
+            Present if MD5 authentication is enabled for the peering.
+            Must be the name of one of the entries in the
+            Router.md5_authentication_keys. The field must comply with
+            RFC1035.
+
+            This field is a member of `oneof`_ ``_md5_authentication_key_name``.
         name (str):
             Name of this BGP peer. The name must be 1-63 characters
             long, and comply with RFC1035. Specifically, the name must
@@ -68208,6 +68558,11 @@ class RouterBgpPeer(proto.Message):
     management_type = proto.Field(
         proto.STRING,
         number=173703606,
+        optional=True,
+    )
+    md5_authentication_key_name = proto.Field(
+        proto.STRING,
+        number=281075345,
         optional=True,
     )
     name = proto.Field(
@@ -68531,6 +68886,38 @@ class RouterList(proto.Message):
         number=50704284,
         optional=True,
         message="Warning",
+    )
+
+
+class RouterMd5AuthenticationKey(proto.Message):
+    r"""
+
+    Attributes:
+        key (str):
+            [Input only] Value of the key. For patch and update calls,
+            it can be skipped to copy the value from the previous
+            configuration. This is allowed if the key with the same name
+            existed before the operation. Maximum length is 80
+            characters. Can only contain printable ASCII characters.
+
+            This field is a member of `oneof`_ ``_key``.
+        name (str):
+            Name used to identify the key. Must be unique
+            within a router. Must be referenced by at least
+            one bgpPeer. Must comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_name``.
+    """
+
+    key = proto.Field(
+        proto.STRING,
+        number=106079,
+        optional=True,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
     )
 
 
@@ -69031,15 +69418,29 @@ class RouterStatusBgpPeerStatus(proto.Message):
         bfd_status (google.cloud.compute_v1.types.BfdStatus):
 
             This field is a member of `oneof`_ ``_bfd_status``.
+        enable_ipv6 (bool):
+            Enable IPv6 traffic over BGP Peer. If not
+            specified, it is disabled by default.
+
+            This field is a member of `oneof`_ ``_enable_ipv6``.
         ip_address (str):
             IP address of the local BGP interface.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv6_nexthop_address (str):
+            IPv6 address of the local BGP interface.
+
+            This field is a member of `oneof`_ ``_ipv6_nexthop_address``.
         linked_vpn_tunnel (str):
             URL of the VPN tunnel that this BGP peer
             controls.
 
             This field is a member of `oneof`_ ``_linked_vpn_tunnel``.
+        md5_auth_enabled (bool):
+            Informs whether MD5 authentication is enabled
+            on this BGP peer.
+
+            This field is a member of `oneof`_ ``_md5_auth_enabled``.
         name (str):
             Name of this BGP peer. Unique within the
             Routers resource.
@@ -69054,6 +69455,10 @@ class RouterStatusBgpPeerStatus(proto.Message):
             IP address of the remote BGP interface.
 
             This field is a member of `oneof`_ ``_peer_ip_address``.
+        peer_ipv6_nexthop_address (str):
+            IPv6 address of the remote BGP interface.
+
+            This field is a member of `oneof`_ ``_peer_ipv6_nexthop_address``.
         router_appliance_instance (str):
             [Output only] URI of the VM instance that is used as
             third-party router appliances such as Next Gen Firewalls,
@@ -69073,6 +69478,12 @@ class RouterStatusBgpPeerStatus(proto.Message):
             values.
 
             This field is a member of `oneof`_ ``_status``.
+        status_reason (str):
+            Indicates why particular status was returned.
+            Check the StatusReason enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_status_reason``.
         uptime (str):
             Time this session has been up. Format: 14
             years, 51 weeks, 6 days, 23 hours, 59 minutes,
@@ -69093,6 +69504,12 @@ class RouterStatusBgpPeerStatus(proto.Message):
         UNKNOWN = 433141802
         UP = 2715
 
+    class StatusReason(proto.Enum):
+        r"""Indicates why particular status was returned."""
+        UNDEFINED_STATUS_REASON = 0
+        MD5_AUTH_INTERNAL_PROBLEM = 140462259
+        STATUS_REASON_UNSPECIFIED = 394331913
+
     advertised_routes = proto.RepeatedField(
         proto.MESSAGE,
         number=333393068,
@@ -69104,14 +69521,29 @@ class RouterStatusBgpPeerStatus(proto.Message):
         optional=True,
         message="BfdStatus",
     )
+    enable_ipv6 = proto.Field(
+        proto.BOOL,
+        number=181467939,
+        optional=True,
+    )
     ip_address = proto.Field(
         proto.STRING,
         number=406272220,
         optional=True,
     )
+    ipv6_nexthop_address = proto.Field(
+        proto.STRING,
+        number=27968211,
+        optional=True,
+    )
     linked_vpn_tunnel = proto.Field(
         proto.STRING,
         number=352296953,
+        optional=True,
+    )
+    md5_auth_enabled = proto.Field(
+        proto.BOOL,
+        number=451152075,
         optional=True,
     )
     name = proto.Field(
@@ -69129,6 +69561,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         number=207735769,
         optional=True,
     )
+    peer_ipv6_nexthop_address = proto.Field(
+        proto.STRING,
+        number=491486608,
+        optional=True,
+    )
     router_appliance_instance = proto.Field(
         proto.STRING,
         number=468312989,
@@ -69142,6 +69579,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
     status = proto.Field(
         proto.STRING,
         number=181260274,
+        optional=True,
+    )
+    status_reason = proto.Field(
+        proto.STRING,
+        number=342706993,
         optional=True,
     )
     uptime = proto.Field(
@@ -69441,28 +69883,40 @@ class SSLHealthCheck(proto.Message):
 
     Attributes:
         port (int):
-            The TCP port number for the health check
-            request. The default value is 443. Valid values
-            are 1 through 65535.
+            The TCP port number to which the health check
+            prober sends packets. The default value is 443.
+            Valid values are 1 through 65535.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
-            Port name as defined in InstanceGroup#NamedPort#name. If
-            both port and port_name are defined, port takes precedence.
+            Not supported.
 
             This field is a member of `oneof`_ ``_port_name``.
         port_specification (str):
-            Specifies how port is selected for health checking, can be
-            one of following values: USE_FIXED_PORT: The port number in
-            port is used for health checking. USE_NAMED_PORT: The
-            portName is used for health checking. USE_SERVING_PORT: For
-            NetworkEndpointGroup, the port specified for each network
-            endpoint is used for health checking. For other backends,
-            the port or named port specified in the Backend Service is
-            used for health checking. If not specified, SSL health check
-            follows behavior specified in port and portName fields.
-            Check the PortSpecification enum for the list of possible
-            values.
+            Specifies how a port is selected for health checking. Can be
+            one of the following values: USE_FIXED_PORT: Specifies a
+            port number explicitly using the port field in the health
+            check. Supported by backend services for pass-through load
+            balancers and backend services for proxy load balancers. Not
+            supported by target pools. The health check supports all
+            backends supported by the backend service provided the
+            backend can be health checked. For example, GCE_VM_IP
+            network endpoint groups, GCE_VM_IP_PORT network endpoint
+            groups, and instance group backends. USE_NAMED_PORT: Not
+            supported. USE_SERVING_PORT: Provides an indirect method of
+            specifying the health check port by referring to the backend
+            service. Only supported by backend services for proxy load
+            balancers. Not supported by target pools. Not supported by
+            backend services for pass-through load balancers. Supports
+            all backends that can be health checked; for example,
+            GCE_VM_IP_PORT network endpoint groups and instance group
+            backends. For GCE_VM_IP_PORT network endpoint group
+            backends, the health check uses the port number specified
+            for each endpoint in the network endpoint group. For
+            instance group backends, the health check uses the port
+            number determined by looking up the backend service's named
+            port in the instance group's list of named ports. Check the
+            PortSpecification enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
         proxy_header (str):
@@ -69473,32 +69927,46 @@ class SSLHealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request (str):
-            The application data to send once the SSL
-            connection has been established (default value
-            is empty). If both request and response are
-            empty, the connection establishment alone will
-            indicate health. The request data can only be
-            ASCII.
+            Instructs the health check prober to send
+            this exact ASCII string, up to 1024 bytes in
+            length, after establishing the TCP connection
+            and SSL handshake.
 
             This field is a member of `oneof`_ ``_request``.
         response (str):
-            The bytes to match against the beginning of
-            the response data. If left empty (the default
-            value), any response will indicate health. The
-            response data can only be ASCII.
+            Creates a content-based SSL health check. In
+            addition to establishing a TCP connection and
+            the TLS handshake, you can configure the health
+            check to pass only when the backend sends this
+            exact response ASCII string, up to 1024 bytes in
+            length. For details, see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp
 
             This field is a member of `oneof`_ ``_response``.
     """
 
     class PortSpecification(proto.Enum):
-        r"""Specifies how port is selected for health checking, can be one of
-        following values: USE_FIXED_PORT: The port number in port is used
-        for health checking. USE_NAMED_PORT: The portName is used for health
-        checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port
-        specified for each network endpoint is used for health checking. For
-        other backends, the port or named port specified in the Backend
-        Service is used for health checking. If not specified, SSL health
-        check follows behavior specified in port and portName fields.
+        r"""Specifies how a port is selected for health checking. Can be one of
+        the following values: USE_FIXED_PORT: Specifies a port number
+        explicitly using the port field in the health check. Supported by
+        backend services for pass-through load balancers and backend
+        services for proxy load balancers. Not supported by target pools.
+        The health check supports all backends supported by the backend
+        service provided the backend can be health checked. For example,
+        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
+        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        USE_SERVING_PORT: Provides an indirect method of specifying the
+        health check port by referring to the backend service. Only
+        supported by backend services for proxy load balancers. Not
+        supported by target pools. Not supported by backend services for
+        pass-through load balancers. Supports all backends that can be
+        health checked; for example, GCE_VM_IP_PORT network endpoint groups
+        and instance group backends. For GCE_VM_IP_PORT network endpoint
+        group backends, the health check uses the port number specified for
+        each endpoint in the network endpoint group. For instance group
+        backends, the health check uses the port number determined by
+        looking up the backend service's named port in the instance group's
+        list of named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
@@ -70330,8 +70798,11 @@ class SecurityPolicy(proto.Message):
             This field is a member of `oneof`_ ``_region``.
         rules (Sequence[google.cloud.compute_v1.types.SecurityPolicyRule]):
             A list of rules that belong to this policy. There must
-            always be a default rule (rule with priority 2147483647 and
-            match "*"). If no rules are provided when creating a
+            always be a default rule which is a rule with priority
+            2147483647 and match all condition (for the match condition
+            this means match "*" for srcIpRanges and for the
+            networkMatch condition every field must be either match "*"
+            or not set). If no rules are provided when creating a
             security policy, a default rule with action "allow" will be
             added.
         self_link (str):
@@ -70989,8 +71460,14 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
             The value of the HTTP cookie whose name is configured under
             "enforce_on_key_name". The key value is truncated to the
             first 128 bytes of the cookie value. If no such cookie is
-            present in the request, the key type defaults to ALL. Check
-            the EnforceOnKey enum for the list of possible values.
+            present in the request, the key type defaults to ALL. -
+            HTTP_PATH: The URL path of the HTTP request. The key value
+            is truncated to the first 128 bytes. - SNI: Server name
+            indication in the TLS session of the HTTPS request. The key
+            value is truncated to the first 128 bytes. The key type
+            defaults to ALL on a HTTP session. - REGION_CODE: The
+            country/region from which the request originates. Check the
+            EnforceOnKey enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_enforce_on_key``.
         enforce_on_key_name (str):
@@ -71040,13 +71517,21 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
         type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is
         configured under "enforce_on_key_name". The key value is truncated
         to the first 128 bytes of the cookie value. If no such cookie is
-        present in the request, the key type defaults to ALL.
+        present in the request, the key type defaults to ALL. - HTTP_PATH:
+        The URL path of the HTTP request. The key value is truncated to the
+        first 128 bytes. - SNI: Server name indication in the TLS session of
+        the HTTPS request. The key value is truncated to the first 128
+        bytes. The key type defaults to ALL on a HTTP session. -
+        REGION_CODE: The country/region from which the request originates.
         """
         UNDEFINED_ENFORCE_ON_KEY = 0
         ALL = 64897
         HTTP_COOKIE = 494981627
         HTTP_HEADER = 91597348
+        HTTP_PATH = 311503228
         IP = 2343
+        REGION_CODE = 79559768
+        SNI = 82254
         XFF_IP = 438707118
 
     ban_duration_sec = proto.Field(
@@ -78368,28 +78853,40 @@ class TCPHealthCheck(proto.Message):
 
     Attributes:
         port (int):
-            The TCP port number for the health check
-            request. The default value is 80. Valid values
-            are 1 through 65535.
+            The TCP port number to which the health check
+            prober sends packets. The default value is 80.
+            Valid values are 1 through 65535.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
-            Port name as defined in InstanceGroup#NamedPort#name. If
-            both port and port_name are defined, port takes precedence.
+            Not supported.
 
             This field is a member of `oneof`_ ``_port_name``.
         port_specification (str):
-            Specifies how port is selected for health checking, can be
-            one of following values: USE_FIXED_PORT: The port number in
-            port is used for health checking. USE_NAMED_PORT: The
-            portName is used for health checking. USE_SERVING_PORT: For
-            NetworkEndpointGroup, the port specified for each network
-            endpoint is used for health checking. For other backends,
-            the port or named port specified in the Backend Service is
-            used for health checking. If not specified, TCP health check
-            follows behavior specified in port and portName fields.
-            Check the PortSpecification enum for the list of possible
-            values.
+            Specifies how a port is selected for health checking. Can be
+            one of the following values: USE_FIXED_PORT: Specifies a
+            port number explicitly using the port field in the health
+            check. Supported by backend services for pass-through load
+            balancers and backend services for proxy load balancers. Not
+            supported by target pools. The health check supports all
+            backends supported by the backend service provided the
+            backend can be health checked. For example, GCE_VM_IP
+            network endpoint groups, GCE_VM_IP_PORT network endpoint
+            groups, and instance group backends. USE_NAMED_PORT: Not
+            supported. USE_SERVING_PORT: Provides an indirect method of
+            specifying the health check port by referring to the backend
+            service. Only supported by backend services for proxy load
+            balancers. Not supported by target pools. Not supported by
+            backend services for pass-through load balancers. Supports
+            all backends that can be health checked; for example,
+            GCE_VM_IP_PORT network endpoint groups and instance group
+            backends. For GCE_VM_IP_PORT network endpoint group
+            backends, the health check uses the port number specified
+            for each endpoint in the network endpoint group. For
+            instance group backends, the health check uses the port
+            number determined by looking up the backend service's named
+            port in the instance group's list of named ports. Check the
+            PortSpecification enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
         proxy_header (str):
@@ -78400,32 +78897,45 @@ class TCPHealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request (str):
-            The application data to send once the TCP
-            connection has been established (default value
-            is empty). If both request and response are
-            empty, the connection establishment alone will
-            indicate health. The request data can only be
-            ASCII.
+            Instructs the health check prober to send
+            this exact ASCII string, up to 1024 bytes in
+            length, after establishing the TCP connection.
 
             This field is a member of `oneof`_ ``_request``.
         response (str):
-            The bytes to match against the beginning of
-            the response data. If left empty (the default
-            value), any response will indicate health. The
-            response data can only be ASCII.
+            Creates a content-based TCP health check. In
+            addition to establishing a TCP connection, you
+            can configure the health check to pass only when
+            the backend sends this exact response ASCII
+            string, up to 1024 bytes in length. For details,
+            see:
+            https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp
 
             This field is a member of `oneof`_ ``_response``.
     """
 
     class PortSpecification(proto.Enum):
-        r"""Specifies how port is selected for health checking, can be one of
-        following values: USE_FIXED_PORT: The port number in port is used
-        for health checking. USE_NAMED_PORT: The portName is used for health
-        checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port
-        specified for each network endpoint is used for health checking. For
-        other backends, the port or named port specified in the Backend
-        Service is used for health checking. If not specified, TCP health
-        check follows behavior specified in port and portName fields.
+        r"""Specifies how a port is selected for health checking. Can be one of
+        the following values: USE_FIXED_PORT: Specifies a port number
+        explicitly using the port field in the health check. Supported by
+        backend services for pass-through load balancers and backend
+        services for proxy load balancers. Not supported by target pools.
+        The health check supports all backends supported by the backend
+        service provided the backend can be health checked. For example,
+        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
+        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        USE_SERVING_PORT: Provides an indirect method of specifying the
+        health check port by referring to the backend service. Only
+        supported by backend services for proxy load balancers. Not
+        supported by target pools. Not supported by backend services for
+        pass-through load balancers. Supports all backends that can be
+        health checked; for example, GCE_VM_IP_PORT network endpoint groups
+        and instance group backends. For GCE_VM_IP_PORT network endpoint
+        group backends, the health check uses the port number specified for
+        each endpoint in the network endpoint group. For instance group
+        backends, the health check uses the port number determined by
+        looking up the backend service's named port in the instance group's
+        list of named ports.
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748

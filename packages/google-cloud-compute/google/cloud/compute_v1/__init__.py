@@ -871,6 +871,7 @@ from .types.compute import NetworkEndpointGroupAppEngine
 from .types.compute import NetworkEndpointGroupCloudFunction
 from .types.compute import NetworkEndpointGroupCloudRun
 from .types.compute import NetworkEndpointGroupList
+from .types.compute import NetworkEndpointGroupPscData
 from .types.compute import NetworkEndpointGroupsAttachEndpointsRequest
 from .types.compute import NetworkEndpointGroupsDetachEndpointsRequest
 from .types.compute import NetworkEndpointGroupsListEndpointsRequest
@@ -994,6 +995,7 @@ from .types.compute import PublicDelegatedPrefixesScopedList
 from .types.compute import PublicDelegatedPrefixList
 from .types.compute import PublicDelegatedPrefixPublicDelegatedSubPrefix
 from .types.compute import Quota
+from .types.compute import QuotaExceededInfo
 from .types.compute import RawDisk
 from .types.compute import RecreateInstancesInstanceGroupManagerRequest
 from .types.compute import RecreateInstancesRegionInstanceGroupManagerRequest
@@ -1077,6 +1079,7 @@ from .types.compute import ResourcePolicySnapshotSchedulePolicySchedule
 from .types.compute import ResourcePolicySnapshotSchedulePolicySnapshotProperties
 from .types.compute import ResourcePolicyWeeklyCycle
 from .types.compute import ResourcePolicyWeeklyCycleDayOfWeek
+from .types.compute import ResourceStatus
 from .types.compute import ResumeInstanceRequest
 from .types.compute import Route
 from .types.compute import RouteAsPath
@@ -1089,6 +1092,7 @@ from .types.compute import RouterBgpPeer
 from .types.compute import RouterBgpPeerBfd
 from .types.compute import RouterInterface
 from .types.compute import RouterList
+from .types.compute import RouterMd5AuthenticationKey
 from .types.compute import RouterNat
 from .types.compute import RouterNatLogConfig
 from .types.compute import RouterNatRule
@@ -2199,6 +2203,7 @@ __all__ = (
     "NetworkEndpointGroupCloudFunction",
     "NetworkEndpointGroupCloudRun",
     "NetworkEndpointGroupList",
+    "NetworkEndpointGroupPscData",
     "NetworkEndpointGroupsAttachEndpointsRequest",
     "NetworkEndpointGroupsClient",
     "NetworkEndpointGroupsDetachEndpointsRequest",
@@ -2332,6 +2337,7 @@ __all__ = (
     "PublicDelegatedPrefixesClient",
     "PublicDelegatedPrefixesScopedList",
     "Quota",
+    "QuotaExceededInfo",
     "RawDisk",
     "RecreateInstancesInstanceGroupManagerRequest",
     "RecreateInstancesRegionInstanceGroupManagerRequest",
@@ -2437,6 +2443,7 @@ __all__ = (
     "ResourcePolicySnapshotSchedulePolicySnapshotProperties",
     "ResourcePolicyWeeklyCycle",
     "ResourcePolicyWeeklyCycleDayOfWeek",
+    "ResourceStatus",
     "ResumeInstanceRequest",
     "Route",
     "RouteAsPath",
@@ -2449,6 +2456,7 @@ __all__ = (
     "RouterBgpPeerBfd",
     "RouterInterface",
     "RouterList",
+    "RouterMd5AuthenticationKey",
     "RouterNat",
     "RouterNatLogConfig",
     "RouterNatRule",

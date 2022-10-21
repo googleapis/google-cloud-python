@@ -1566,6 +1566,7 @@ def test_get_rest(request_type):
             description="description_value",
             id=205,
             ip_version="ip_version_value",
+            ipv6_endpoint_type="ipv6_endpoint_type_value",
             kind="kind_value",
             name="name_value",
             network="network_value",
@@ -1597,6 +1598,7 @@ def test_get_rest(request_type):
     assert response.description == "description_value"
     assert response.id == 205
     assert response.ip_version == "ip_version_value"
+    assert response.ipv6_endpoint_type == "ipv6_endpoint_type_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
@@ -1878,6 +1880,7 @@ def test_insert_rest(request_type):
         "description": "description_value",
         "id": 205,
         "ip_version": "ip_version_value",
+        "ipv6_endpoint_type": "ipv6_endpoint_type_value",
         "kind": "kind_value",
         "name": "name_value",
         "network": "network_value",
@@ -2124,6 +2127,7 @@ def test_insert_rest_bad_request(
         "description": "description_value",
         "id": 205,
         "ip_version": "ip_version_value",
+        "ipv6_endpoint_type": "ipv6_endpoint_type_value",
         "kind": "kind_value",
         "name": "name_value",
         "network": "network_value",
@@ -2238,6 +2242,7 @@ def test_insert_unary_rest(request_type):
         "description": "description_value",
         "id": 205,
         "ip_version": "ip_version_value",
+        "ipv6_endpoint_type": "ipv6_endpoint_type_value",
         "kind": "kind_value",
         "name": "name_value",
         "network": "network_value",
@@ -2462,6 +2467,7 @@ def test_insert_unary_rest_bad_request(
         "description": "description_value",
         "id": 205,
         "ip_version": "ip_version_value",
+        "ipv6_endpoint_type": "ipv6_endpoint_type_value",
         "kind": "kind_value",
         "name": "name_value",
         "network": "network_value",

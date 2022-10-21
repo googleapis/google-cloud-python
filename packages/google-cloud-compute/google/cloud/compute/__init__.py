@@ -1171,6 +1171,7 @@ from google.cloud.compute_v1.types.compute import NetworkEndpointGroupAppEngine
 from google.cloud.compute_v1.types.compute import NetworkEndpointGroupCloudFunction
 from google.cloud.compute_v1.types.compute import NetworkEndpointGroupCloudRun
 from google.cloud.compute_v1.types.compute import NetworkEndpointGroupList
+from google.cloud.compute_v1.types.compute import NetworkEndpointGroupPscData
 from google.cloud.compute_v1.types.compute import (
     NetworkEndpointGroupsAttachEndpointsRequest,
 )
@@ -1322,6 +1323,7 @@ from google.cloud.compute_v1.types.compute import (
     PublicDelegatedPrefixPublicDelegatedSubPrefix,
 )
 from google.cloud.compute_v1.types.compute import Quota
+from google.cloud.compute_v1.types.compute import QuotaExceededInfo
 from google.cloud.compute_v1.types.compute import RawDisk
 from google.cloud.compute_v1.types.compute import (
     RecreateInstancesInstanceGroupManagerRequest,
@@ -1465,6 +1467,7 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import ResourcePolicyWeeklyCycle
 from google.cloud.compute_v1.types.compute import ResourcePolicyWeeklyCycleDayOfWeek
+from google.cloud.compute_v1.types.compute import ResourceStatus
 from google.cloud.compute_v1.types.compute import ResumeInstanceRequest
 from google.cloud.compute_v1.types.compute import Route
 from google.cloud.compute_v1.types.compute import RouteAsPath
@@ -1477,6 +1480,7 @@ from google.cloud.compute_v1.types.compute import RouterBgpPeer
 from google.cloud.compute_v1.types.compute import RouterBgpPeerBfd
 from google.cloud.compute_v1.types.compute import RouterInterface
 from google.cloud.compute_v1.types.compute import RouterList
+from google.cloud.compute_v1.types.compute import RouterMd5AuthenticationKey
 from google.cloud.compute_v1.types.compute import RouterNat
 from google.cloud.compute_v1.types.compute import RouterNatLogConfig
 from google.cloud.compute_v1.types.compute import RouterNatRule
@@ -2740,6 +2744,7 @@ __all__ = (
     "NetworkEndpointGroupCloudFunction",
     "NetworkEndpointGroupCloudRun",
     "NetworkEndpointGroupList",
+    "NetworkEndpointGroupPscData",
     "NetworkEndpointGroupsAttachEndpointsRequest",
     "NetworkEndpointGroupsDetachEndpointsRequest",
     "NetworkEndpointGroupsListEndpointsRequest",
@@ -2863,6 +2868,7 @@ __all__ = (
     "PublicDelegatedPrefixList",
     "PublicDelegatedPrefixPublicDelegatedSubPrefix",
     "Quota",
+    "QuotaExceededInfo",
     "RawDisk",
     "RecreateInstancesInstanceGroupManagerRequest",
     "RecreateInstancesRegionInstanceGroupManagerRequest",
@@ -2944,6 +2950,7 @@ __all__ = (
     "ResourcePolicySnapshotSchedulePolicySnapshotProperties",
     "ResourcePolicyWeeklyCycle",
     "ResourcePolicyWeeklyCycleDayOfWeek",
+    "ResourceStatus",
     "ResumeInstanceRequest",
     "Route",
     "RouteAsPath",
@@ -2956,6 +2963,7 @@ __all__ = (
     "RouterBgpPeerBfd",
     "RouterInterface",
     "RouterList",
+    "RouterMd5AuthenticationKey",
     "RouterNat",
     "RouterNatLogConfig",
     "RouterNatRule",
