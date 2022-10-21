@@ -243,13 +243,10 @@ class SecuritySettings(proto.Message):
             Cloud logging, which is owned by the user - not
             Dialogflow.
             User must set a value lower than Dialogflow's
-            default 365d TTL. Setting a value higher than
-            that has no effect.
-            A missing value or setting to 0 also means we
-            use Dialogflow's default TTL.
-            Note: Interaction logging is a limited access
-            feature. Talk to your Google representative to
-            check availability for you.
+            default 365d TTL (time to live). Setting a value
+            higher than that has no effect. A missing value
+            or setting to 0 also means we use Dialogflow's
+            default TTL.
 
             This field is a member of `oneof`_ ``data_retention``.
         purge_data_types (Sequence[google.cloud.dialogflowcx_v3.types.SecuritySettings.PurgeDataType]):
