@@ -501,12 +501,23 @@ class SpeechToTextConfig(proto.Message):
             request. If enhanced model variant is specified and an
             enhanced version of the specified model for the language
             does not exist, then it would emit an error.
+        model (str):
+            Which Speech model to select. Select the model best suited
+            to your domain to get best results. If a model is not
+            explicitly specified, then a default model is used. Refer to
+            `Cloud Speech API
+            documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
+            for more details.
     """
 
     speech_model_variant = proto.Field(
         proto.ENUM,
         number=1,
         enum="SpeechModelVariant",
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
