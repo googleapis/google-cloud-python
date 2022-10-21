@@ -435,9 +435,9 @@ requests==2.28.1 \
     #   google-cloud-storage
     #   requests-toolbelt
     #   twine
-requests-toolbelt==0.9.1 \
-    --hash=sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f \
-    --hash=sha256:968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0
+requests-toolbelt==0.10.0 \
+    --hash=sha256:64c6b8c51b515d123f9f708a29743f44eb70c4479440641ed2df8c4dea56d985 \
+    --hash=sha256:f695d6207931200b46c8ef6addbc8a921fb5d77cc4cd209c2e7d39293fcd2b30
     # via twine
 rfc3986==2.0.0 \
     --hash=sha256:50b1502b60e289cb37883f3dfd34532b8873c7de9f49bb546641ce9cbd256ebd \
