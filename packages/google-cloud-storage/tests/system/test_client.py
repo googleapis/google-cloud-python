@@ -14,6 +14,7 @@
 
 import io
 import re
+import os
 import tempfile
 
 import pytest
@@ -23,9 +24,15 @@ from test_utils.vpcsc_config import vpcsc_config
 from . import _helpers
 
 
+dual_data_loc_1 = os.getenv("DUAL_REGION_LOC_1", "US-EAST1")
+dual_data_loc_2 = os.getenv("DUAL_REGION_LOC_2", "US-WEST1")
 public_bucket = "gcp-public-data-landsat"
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
 @vpcsc_config.skip_if_inside_vpcsc
 def test_anonymous_client_access_to_public_bucket():
     from google.cloud.storage.client import Client
@@ -40,6 +47,10 @@ def test_anonymous_client_access_to_public_bucket():
         _helpers.retry_429_503(blob.download_to_file)(stream)
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
 def test_get_service_account_email(storage_client, service_account):
     domain = "gs-project-accounts.iam.gserviceaccount.com"
     email = storage_client.get_service_account_email()
@@ -69,7 +80,8 @@ def test_create_bucket_dual_region(storage_client, buckets_to_delete):
 
     new_bucket_name = _helpers.unique_name("dual-region-bucket")
     location = "US"
-    data_locations = ["US-EAST1", "US-WEST1"]
+
+    data_locations = [dual_data_loc_1, dual_data_loc_2]
 
     with pytest.raises(exceptions.NotFound):
         storage_client.get_bucket(new_bucket_name)

@@ -60,6 +60,8 @@ from google.cloud.storage._helpers import _get_default_headers
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
+from google.cloud.storage._helpers import _DEFAULT_STORAGE_HOST
+from google.cloud.storage._helpers import _API_VERSION
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
@@ -78,10 +80,12 @@ from google.cloud.storage.fileio import BlobReader
 from google.cloud.storage.fileio import BlobWriter
 
 
-_API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
+_API_ACCESS_ENDPOINT = _DEFAULT_STORAGE_HOST
 _DEFAULT_CONTENT_TYPE = "application/octet-stream"
-_DOWNLOAD_URL_TEMPLATE = "{hostname}/download/storage/v1{path}?alt=media"
-_BASE_UPLOAD_TEMPLATE = "{hostname}/upload/storage/v1{bucket_path}/o?uploadType="
+_DOWNLOAD_URL_TEMPLATE = "{hostname}/download/storage/{api_version}{path}?alt=media"
+_BASE_UPLOAD_TEMPLATE = (
+    "{hostname}/upload/storage/{api_version}{bucket_path}/o?uploadType="
+)
 _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
 # NOTE: "acl" is also writeable but we defer ACL management to
@@ -823,7 +827,9 @@ class Blob(_PropertyMixin):
         name_value_pairs = []
         if self.media_link is None:
             hostname = _get_host_name(client._connection)
-            base_url = _DOWNLOAD_URL_TEMPLATE.format(hostname=hostname, path=self.path)
+            base_url = _DOWNLOAD_URL_TEMPLATE.format(
+                hostname=hostname, path=self.path, api_version=_API_VERSION
+            )
             if self.generation is not None:
                 name_value_pairs.append(("generation", f"{self.generation:d}"))
         else:
@@ -1838,7 +1844,7 @@ class Blob(_PropertyMixin):
 
         hostname = _get_host_name(client._connection)
         base_url = _MULTIPART_URL_TEMPLATE.format(
-            hostname=hostname, bucket_path=self.bucket.path
+            hostname=hostname, bucket_path=self.bucket.path, api_version=_API_VERSION
         )
         name_value_pairs = []
 
@@ -2025,7 +2031,7 @@ class Blob(_PropertyMixin):
 
         hostname = _get_host_name(client._connection)
         base_url = _RESUMABLE_URL_TEMPLATE.format(
-            hostname=hostname, bucket_path=self.bucket.path
+            hostname=hostname, bucket_path=self.bucket.path, api_version=_API_VERSION
         )
         name_value_pairs = []
 

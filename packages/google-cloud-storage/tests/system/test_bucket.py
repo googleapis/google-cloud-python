@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import datetime
-
 import pytest
 
 from google.api_core import exceptions
@@ -124,6 +123,10 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
     assert list(bucket.lifecycle_rules) == []
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
 def test_bucket_update_labels(storage_client, buckets_to_delete):
     bucket_name = _helpers.unique_name("update-labels")
     bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
@@ -797,6 +800,10 @@ def test_bucket_lock_retention_policy(
         bucket.patch()
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
 def test_new_bucket_w_ubla(
     storage_client,
     buckets_to_delete,
@@ -966,6 +973,10 @@ def test_new_bucket_created_w_enforced_pap(
     assert not bucket.iam_configuration.uniform_bucket_level_access_enabled
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
 def test_new_bucket_with_rpo(
     storage_client,
     buckets_to_delete,

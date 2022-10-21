@@ -17,7 +17,7 @@ import datetime
 import hashlib
 import os
 import time
-
+import pytest
 import requests
 
 from google.api_core import path_template
@@ -41,7 +41,11 @@ def _create_signed_list_blobs_url_helper(
     expiration = _morph_expiration(version, expiration)
 
     signed_url = bucket.generate_signed_url(
-        expiration=expiration, method=method, client=client, version=version
+        expiration=expiration,
+        method=method,
+        client=client,
+        version=version,
+        api_access_endpoint=_helpers._DEFAULT_STORAGE_HOST,
     )
 
     response = requests.get(signed_url)
@@ -371,6 +375,10 @@ def test_create_signed_resumable_upload_url_v4(storage_client, signing_bucket, n
     )
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Test does not yet support endpoint override",
+)
 def test_generate_signed_post_policy_v4(
     storage_client, buckets_to_delete, blobs_to_delete, service_account, no_mtls
 ):

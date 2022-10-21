@@ -111,6 +111,7 @@ def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
+    rerun_count = 0
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
@@ -121,6 +122,12 @@ def system(session):
     # mTLS tests requires pyopenssl.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "") == "true":
         session.install("pyopenssl")
+    # Check if endpoint is being overriden for rerun_count
+    if (
+        os.getenv("API_ENDPOINT_OVERRIDE", "https://storage.googleapis.com")
+        != "https://storage.googleapis.com"
+    ):
+        rerun_count = 3
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
@@ -138,7 +145,7 @@ def system(session):
     # 2021-05-06: defer installing 'google-cloud-*' to after this package,
     #             in order to work around Python 2.7 googolapis-common-protos
     #             issue.
-    session.install("mock", "pytest", "-c", constraints_path)
+    session.install("mock", "pytest", "pytest-rerunfailures", "-c", constraints_path)
     session.install("-e", ".", "-c", constraints_path)
     session.install(
         "google-cloud-testutils",
@@ -151,9 +158,21 @@ def system(session):
 
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--quiet", system_test_path, *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            "--reruns={}".format(rerun_count),
+            system_test_path,
+            *session.posargs,
+        )
     if system_test_folder_exists:
-        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            "--reruns={}".format(rerun_count),
+            system_test_folder_path,
+            *session.posargs,
+        )
 
 
 @nox.session(python=CONFORMANCE_TEST_PYTHON_VERSIONS)
