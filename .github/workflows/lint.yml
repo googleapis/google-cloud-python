@@ -1,0 +1,37 @@
+on:
+  pull_request:
+    branches:
+      - main
+name: lint
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run lint
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: lint
+        PY_VERSION: "3.9"
+      run: |
+        ci/run_conditional_tests.sh
+    - name: Run lint_setup_py
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: lint_setup_py
+        PY_VERSION: "3.9"
+      run: |
+        ci/run_conditional_tests.sh
