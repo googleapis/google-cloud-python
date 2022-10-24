@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.9.0](https://github.com/googleapis/python-iam/compare/v2.8.2...v2.9.0) (2022-10-24)
+
+
+### Features
+
+* Add client for IAM Deny v2 API ([#230](https://github.com/googleapis/python-iam/issues/230)) ([07a2025](https://github.com/googleapis/python-iam/commit/07a20255498ec1ccb6cff501936546cc4814c969))
+* **v2beta:** Update the public IAM Deny v2beta API ([#226](https://github.com/googleapis/python-iam/issues/226)) ([bbe8e3d](https://github.com/googleapis/python-iam/commit/bbe8e3d3e1be719d4d617e3e7536d6a331f85f66))
+
+
+### Bug Fixes
+
+* **v2beta:** remove google.api.resource_reference annotations ([bbe8e3d](https://github.com/googleapis/python-iam/commit/bbe8e3d3e1be719d4d617e3e7536d6a331f85f66))
+
 ## [2.8.2](https://github.com/googleapis/python-iam/compare/v2.8.1...v2.8.2) (2022-08-11)
 
 

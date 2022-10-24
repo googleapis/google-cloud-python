@@ -12,7 +12,6 @@ branchProtectionRules:
     - 'docs'
     - 'docfx'
     - 'lint'
-    - 'unit (3.6)'
     - 'unit (3.7)'
     - 'unit (3.8)'
     - 'unit (3.9)'
