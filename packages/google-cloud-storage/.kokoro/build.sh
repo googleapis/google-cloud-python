@@ -24,15 +24,6 @@ cd "${PROJECT_ROOT}"
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
-# Debug: show build environment
-env | grep KOKORO
-
-# Setup service account credentials.
-export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
-
-# Setup project id.
-export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
-
 # Export variable to override api endpoint
 export API_ENDPOINT_OVERRIDE
 
@@ -42,6 +33,15 @@ export API_VERSION_OVERRIDE
 # Export dual region locations
 export DUAL_REGION_LOC_1
 export DUAL_REGION_LOC_2
+
+# Debug: show build environment
+env | grep KOKORO
+
+# Setup service account credentials.
+export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+
+# Setup project id.
+export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
 # Remove old nox
 python3 -m pip uninstall --yes --quiet nox-automation
