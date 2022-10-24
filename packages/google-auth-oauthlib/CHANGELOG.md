@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [0.6.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.3...v0.6.0) (2022-10-20)
+
+
+### Features
+
+* Update to allow for 3PI credentials ([#240](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/240)) ([4a37dec](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/4a37dec027e3d742ed6615f9828ab51a594d2ca2))
+
+
+### Bug Fixes
+
+* Add timeout to run_local_server when waiting for response ([#245](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/245)) ([8d53bc3](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/8d53bc304a079d011df2757be1b88211baf47549))
+
+
+### Documentation
+
+* Update readme to point to current docs url ([#241](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/241)) ([8c29d2e](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/8c29d2ed0d8fda7319617fdd6ac2cde70319b6bd))
+
 ## [0.5.3](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.2...v0.5.3) (2022-09-02)
 
 
