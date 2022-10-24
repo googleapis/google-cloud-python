@@ -2,9 +2,14 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Identity and Access Management.
-By default, you will get version ``iam_credentials_v1``.
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    iam_v2/services
+    iam_v2/types
 
 API Reference
 -------------
@@ -21,7 +26,6 @@ API Reference
 
     iam_v2beta/services
     iam_v2beta/types
-
 
 Migration Guide
 ---------------

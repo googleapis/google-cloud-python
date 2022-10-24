@@ -234,6 +234,13 @@ class IAMCredentialsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iam_credentials_v1
 
             async def sample_generate_access_token():
@@ -243,7 +250,7 @@ class IAMCredentialsAsyncClient:
                 # Initialize request argument(s)
                 request = iam_credentials_v1.GenerateAccessTokenRequest(
                     name="name_value",
-                    scope=['scope_value_1', 'scope_value_2'],
+                    scope=['scope_value1', 'scope_value2'],
                 )
 
                 # Make the request
@@ -391,6 +398,13 @@ class IAMCredentialsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iam_credentials_v1
 
             async def sample_generate_id_token():
@@ -541,6 +555,13 @@ class IAMCredentialsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iam_credentials_v1
 
             async def sample_sign_blob():
@@ -678,6 +699,13 @@ class IAMCredentialsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iam_credentials_v1
 
             async def sample_sign_jwt():
