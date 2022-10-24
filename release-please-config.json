@@ -1,0 +1,12 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+    "release-type": "python",
+    "packages": {
+        "packages/google-cloud-workflows": {
+          "component": "google-cloud-workflows"
+        }
+    },
+    "extra-files": [
+        "**/gapic_version.py"
+    ]
+}
