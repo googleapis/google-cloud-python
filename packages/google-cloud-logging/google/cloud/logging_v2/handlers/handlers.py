@@ -252,6 +252,7 @@ def _format_and_parse_message(record, formatter_handler):
         pass
     # if json_fields was set, create a dictionary using that
     if passed_json_fields and isinstance(passed_json_fields, collections.abc.Mapping):
+        passed_json_fields = passed_json_fields.copy()
         if message != "None":
             passed_json_fields["message"] = message
         return passed_json_fields
