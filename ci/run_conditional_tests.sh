@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This script requires the following environment variables to be set:
+# `BUILD_TYPE` should be one of ["presubmit", "continuous"]
+# `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease"]
+# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+# `TEST_TYPE` and `PY_VERSION` are required by the `ci/run_single_test.sh`
+
 # This script will determine which directories have changed
 # under the `packages` folder. For `BUILD_TYPE=="presubmit"`,
 # we'll compare against the `packages` folder in HEAD,
