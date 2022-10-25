@@ -511,6 +511,36 @@ class TestStructuredLogHandler(unittest.TestCase):
         result = json.loads(handler.format(record))
         self.assertEqual(result["outer"], json_fields["outer"])
 
+    def test_json_fields_input_unmodified(self):
+        # Related issue: https://github.com/googleapis/python-logging/issues/652
+        import logging
+
+        handler = self._make_one()
+        message = "hello world"
+        json_fields = {
+            "hello": "world",
+        }
+        json_fields_orig = json_fields.copy()
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            message,
+            None,
+            None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        handler.filter(record)
+        handler.format(record)
+        # ensure json_fields has no side-effects
+        self.assertEqual(set(json_fields.keys()), set(json_fields_orig.keys()))
+        for (key, value) in json_fields_orig.items():
+            self.assertEqual(
+                value, json_fields[key], f"expected_payload[{key}] != result[{key}]"
+            )
+
     def test_emits_instrumentation_info(self):
         import logging
         import mock

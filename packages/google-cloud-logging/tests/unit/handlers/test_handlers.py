@@ -846,6 +846,24 @@ class TestFormatAndParseMessage(unittest.TestCase):
         self.assertEqual(result["key_m"], message["key_m"])
         self.assertEqual(result["key_j"], json_fields["key_j"])
 
+    def test_json_fields_input_unmodified(self):
+        # Related issue: https://github.com/googleapis/python-logging/issues/652
+        from google.cloud.logging_v2.handlers.handlers import _format_and_parse_message
+
+        message = "hello world"
+        json_fields = {"hello": "world"}
+        json_fields_orig = json_fields.copy()
+        record = logging.LogRecord("logname", None, None, None, message, None, None)
+        setattr(record, "json_fields", json_fields)
+        handler = logging.StreamHandler()
+        _format_and_parse_message(record, handler)
+        # ensure json_fields has no side-effects
+        self.assertEqual(set(json_fields.keys()), set(json_fields_orig.keys()))
+        for (key, value) in json_fields_orig.items():
+            self.assertEqual(
+                value, json_fields[key], f"expected_payload[{key}] != result[{key}]"
+            )
+
 
 class TestSetupLogging(unittest.TestCase):
     def _call_fut(self, handler, excludes=None):
