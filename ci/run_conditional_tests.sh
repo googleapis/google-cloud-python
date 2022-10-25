@@ -15,8 +15,8 @@
 
 
 # `-e` enables the script to automatically fail when a command fails
-# `-o pipefail` sets the exit code to the rightmost comment to exit
-# with a non-zero
+# `-o pipefail` sets the exit code to non-zero if any command fails,
+# or zero if all commands in the pipeline exit successfully.
 set -eo pipefail
 
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
