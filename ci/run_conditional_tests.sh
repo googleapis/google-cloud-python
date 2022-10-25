@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This script will determine which directories have changed
+# under the `packages` folder. For `BUILD_TYPE=="presubmit"`,
+# we'll compare against the `packages` folder in HEAD,
+# whereas for `BUILD_TYPE=="continuous"` we'll compare changes
+# with HEAD~1. For all directories that have changed files, we will
+# run the script located at `${PROJECT_ROOT}/ci/run_single_test.sh`.
 
 # `-e` enables the script to automatically fail when a command fails
 # `-o pipefail` sets the exit code to non-zero if any command fails,
