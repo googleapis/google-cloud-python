@@ -1,0 +1,50 @@
+on:
+  pull_request:
+    branches:
+      - main
+name: docs
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run docs
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: docs
+        PY_VERSION: "3.9"
+      run: |
+        ci/run_conditional_tests.sh
+  docfx:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run docfx
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: docfx
+        PY_VERSION: "3.9"
+      run: |
+        ci/run_conditional_tests.sh
