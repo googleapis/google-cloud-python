@@ -14,6 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This script requires the following environment variables to be set:
+# `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease"]
+# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+# This script is called by the `ci/run_conditional_tests.sh` script.
+# A specific `nox` session will be run, depending on the value of 
+# `TEST_TYPE` and `PY_VERSION`. For example, if `TEST_TYPE` is
+# `lint`, the `nox -s lint` session will be run.
+
+
 set -e
 
 if [ -z "${TEST_TYPE}" ]; then
