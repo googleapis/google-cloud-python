@@ -167,12 +167,6 @@ Running System Tests
     "IAM & Admin". Additionally, ``cloud-logs@google.com`` must be given
     ``Editor`` permissions on the project.
 
-- Examples of these can be found in ``system_tests/local_test_setup.sample``. We
-  recommend copying this to ``system_tests/local_test_setup``, editing the
-  values and sourcing them into your environment::
-
-   $ source system_tests/local_test_setup
-
 - For datastore tests, you'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
   with the ``gcloud`` command line
