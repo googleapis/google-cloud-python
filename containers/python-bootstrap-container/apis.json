@@ -1,0 +1,1446 @@
+{
+  "apis": [
+    {
+      "api_shortname": null,
+      "display_name": "Google Workspace Admin SDK",
+      "github_label": "product: admin_sdk",
+      "docs_root_url": "developers.google.com/admin-sdk/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Street View Static API",
+      "github_label": "api: streetviewstaticapi",
+      "docs_root_url": "developers.google.com/maps/documentation/streetview/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Cloud SQL for MySQL",
+      "github_label": "api: cloudsql-mysql",
+      "docs_root_url": "cloud.google.com/sql/docs/mysql/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Cloud SQL",
+      "github_label": "api: cloudsql",
+      "docs_root_url": "cloud.google.com/sql/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Cloud SQL for PostgreSQL",
+      "github_label": "api: cloudsql-postgres",
+      "docs_root_url": "cloud.google.com/sql/docs/postgres/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Cloud SQL for SQL Server",
+      "github_label": "api: cloudsql-sqlserver",
+      "docs_root_url": "cloud.google.com/sql/docs/sqlserver/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Apps Script",
+      "github_label": "product: apps_script",
+      "docs_root_url": "developers.google.com/apps-script/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Cloud Secure Web Gateway",
+      "github_label": "api: cloud_swg",
+      "docs_root_url": "cloud.google.com/secure-web-gateway/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": null,
+      "display_name": "Drive Picker",
+      "github_label": "product: drive_picker",
+      "docs_root_url": "developers.google.com/picker/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "accessapproval",
+      "display_name": "Access Approval",
+      "github_label": "api: accessapproval",
+      "docs_root_url": "cloud.google.com/cloud-provider-access-management/docs/access-approval/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "accesscontextmanager",
+      "display_name": "Access Context Manager",
+      "github_label": "api: accesscontextmanager",
+      "docs_root_url": "cloud.google.com/access-context-manager/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "actions",
+      "display_name": "Google Actions",
+      "github_label": "api: actions",
+      "docs_root_url": "developers.google.com/assistant/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "address-validation-backend",
+      "display_name": "Address Validation API",
+      "github_label": "api: addressvalidationapi",
+      "docs_root_url": "developers.google.com/maps/documentation/address-validation/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "adexperiencereport",
+      "display_name": "Ad Experience Report API",
+      "github_label": "api: adexperiencereport",
+      "docs_root_url": "developers.google.com/ad-experience-report/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "ads",
+      "display_name": "Ad Manager API",
+      "github_label": "api: ads",
+      "docs_root_url": "developers.google.com/ad-manager/api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "adsdatahub",
+      "display_name": "Ads Data Hub",
+      "github_label": "api: adsdatahub",
+      "docs_root_url": "developers.google.com/ads-data-hub/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "adsense",
+      "display_name": "AdSense Management API",
+      "github_label": "api: adsense",
+      "docs_root_url": "developers.google.com/adsense/management/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "adsensehost",
+      "display_name": "AdSense Host API",
+      "github_label": "api: adsensehost",
+      "docs_root_url": "developers.google.com/adsense/host/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "advisorynotifications",
+      "display_name": "Advisory Notifications",
+      "github_label": "api: advisorynotifications",
+      "docs_root_url": "cloud.google.com/advisory-notifications/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "adwords",
+      "display_name": "AdWords API",
+      "github_label": "api: adwords",
+      "docs_root_url": "developers.google.com/adwords/api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "aiplatform",
+      "display_name": "AI Platform",
+      "github_label": "api: aiplatform",
+      "docs_root_url": "cloud.google.com/ai-platform/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "ai_platform_unified",
+      "display_name": "Vertex AI",
+      "github_label": "api: vertex-ai",
+      "docs_root_url": "cloud.google.com/vertex-ai/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "alloydb",
+      "display_name": "AlloyDB",
+      "github_label": "api: alloydb",
+      "docs_root_url": "cloud.google.com/alloydb/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "analyticsadmin",
+      "display_name": "Analytics Admin API",
+      "github_label": "api: analyticsadmin",
+      "docs_root_url": "developers.google.com/analytics/",
+      "launch_stage": "ALPHA"
+    },
+    {
+      "api_shortname": "analyticsdata",
+      "display_name": "Analytics Data API",
+      "github_label": "api: analyticsdata",
+      "docs_root_url": "developers.google.com/analytics/devguides/reporting/data/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "analyticshub",
+      "display_name": "Analytics Hub API",
+      "github_label": "api: analyticshub",
+      "docs_root_url": null,
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "apigateway",
+      "display_name": "API Gateway",
+      "github_label": "api: apigateway",
+      "docs_root_url": "cloud.google.com/api-gateway/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "apigee",
+      "display_name": "Apigee Edge",
+      "github_label": "api: apigee",
+      "docs_root_url": "cloud.google.com/apigee/edge/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "apigeeconnect",
+      "display_name": "Apigee Connect API",
+      "github_label": "api: apigeeconnect",
+      "docs_root_url": "cloud.google.com/apigee/docs/hybrid/latest/apigee-connect/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "apikeys",
+      "display_name": "API Keys API",
+      "github_label": "api: apikeys",
+      "docs_root_url": "cloud.google.com/api-keys/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "appengine",
+      "display_name": "App Engine Admin API",
+      "github_label": "api: appengine",
+      "docs_root_url": "cloud.google.com/appengine/docs/admin-api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "area120tables",
+      "display_name": "Area 120 Tables API",
+      "github_label": "api: area120tables",
+      "docs_root_url": "tables.area120.google.com/u/0/about#/",
+      "launch_stage": "ALPHA"
+    },
+    {
+      "api_shortname": "artifactregistry",
+      "display_name": "Artifact Registry",
+      "github_label": "api: artifactregistry",
+      "docs_root_url": "cloud.google.com/artifact-registry/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "assuredworkloads",
+      "display_name": "Assured Workloads",
+      "github_label": "api: assuredworkloads",
+      "docs_root_url": "cloud.google.com/assured-workloads/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "automl",
+      "display_name": "AutoML",
+      "github_label": "api: automl",
+      "docs_root_url": "cloud.google.com/automl/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "baremetalsolution",
+      "display_name": "Bare Metal Solution",
+      "github_label": "api: baremetalsolution",
+      "docs_root_url": "cloud.google.com/bare-metal/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "batch",
+      "display_name": "Batch",
+      "github_label": "api: batch",
+      "docs_root_url": "cloud.google.com/batch/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "bigquery",
+      "display_name": "BigQuery",
+      "github_label": "api: bigquery",
+      "docs_root_url": "cloud.google.com/bigquery/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigqueryconnection",
+      "display_name": "BigQuery Connection API",
+      "github_label": "api: bigqueryconnection",
+      "docs_root_url": "cloud.google.com/bigquery/docs/reference/bigqueryconnection/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigquerydatapolicy",
+      "display_name": "BigQuery DataPolicy API",
+      "github_label": "api: bigquerydatapolicy",
+      "docs_root_url": "cloud.google.com/bigquery/docs/reference/datapolicy/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "bigquerydatatransfer",
+      "display_name": "BigQuery Data Transfer Service",
+      "github_label": "api: bigquerydatatransfer",
+      "docs_root_url": "cloud.google.com/bigquery/docs/dts-introduction/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigquerymigration",
+      "display_name": "BigQuery Migration",
+      "github_label": "api: bigquerymigration",
+      "docs_root_url": "cloud.google.com/bigquery/docs/reference/migration/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigqueryml",
+      "display_name": "BigQuery ML",
+      "github_label": "api: bigqueryml",
+      "docs_root_url": "cloud.google.com/bigquery-ml/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigqueryreservation",
+      "display_name": "BigQuery Reservation API",
+      "github_label": "api: bigqueryreservation",
+      "docs_root_url": "cloud.google.com/bigquery/docs/reference/reservations/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigquerystorage",
+      "display_name": "BigQuery Storage",
+      "github_label": "api: bigquerystorage",
+      "docs_root_url": "cloud.google.com/bigquery/docs/reference/storage/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigtable",
+      "display_name": "Cloud Bigtable",
+      "github_label": "api: bigtable",
+      "docs_root_url": "cloud.google.com/bigtable/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "bigtableadmin",
+      "display_name": "Cloud Bigtable Admin API",
+      "github_label": "api: bigtableadmin",
+      "docs_root_url": "cloud.google.com/bigtable/docs/reference/admin/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "billingbudgets",
+      "display_name": "Cloud Billing Budget API",
+      "github_label": "api: billingbudgets",
+      "docs_root_url": "cloud.google.com/billing/docs/how-to/budget-api-overview/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "binaryauthorization",
+      "display_name": "Binary Authorization",
+      "github_label": "api: binaryauthorization",
+      "docs_root_url": "cloud.google.com/binary-authorization/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "calendar",
+      "display_name": "Calendar API",
+      "github_label": "api: calendar",
+      "docs_root_url": "developers.google.com/calendar/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "chat",
+      "display_name": "Chat API",
+      "github_label": "api: chat",
+      "docs_root_url": "developers.google.com/chat/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "chromeosmoblab",
+      "display_name": "Chrome OS Moblab API",
+      "github_label": "api: chromeosmoblab",
+      "docs_root_url": null,
+      "launch_stage": "LAUNCH_STAGE_UNSPECIFIED"
+    },
+    {
+      "api_shortname": "classroom",
+      "display_name": "Classroom API",
+      "github_label": "api: classroom",
+      "docs_root_url": "developers.google.com/classroom/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudasset",
+      "display_name": "Cloud Asset Inventory",
+      "github_label": "api: cloudasset",
+      "docs_root_url": "cloud.google.com/asset-inventory/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudbilling",
+      "display_name": "Cloud Billing",
+      "github_label": "api: cloudbilling",
+      "docs_root_url": "cloud.google.com/billing/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudbuild",
+      "display_name": "Cloud Build",
+      "github_label": "api: cloudbuild",
+      "docs_root_url": "cloud.google.com/build/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudchannel",
+      "display_name": "Channel Services",
+      "github_label": "api: cloudchannel",
+      "docs_root_url": "cloud.google.com/channel/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "clouddebugger",
+      "display_name": "Cloud Debugger",
+      "github_label": "api: clouddebugger",
+      "docs_root_url": "cloud.google.com/debugger/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "clouddeploy",
+      "display_name": "Google Cloud Deploy",
+      "github_label": "api: clouddeploy",
+      "docs_root_url": "cloud.google.com/deploy/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "clouderrorreporting",
+      "display_name": "Error Reporting",
+      "github_label": "api: clouderrorreporting",
+      "docs_root_url": "cloud.google.com/error-reporting/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "cloudfunctions",
+      "display_name": "Cloud Functions",
+      "github_label": "api: cloudfunctions",
+      "docs_root_url": "cloud.google.com/functions/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudidentity",
+      "display_name": "Cloud Identity",
+      "github_label": "api: cloudidentity",
+      "docs_root_url": "cloud.google.com/identity/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudiot",
+      "display_name": "IoT Core",
+      "github_label": "api: cloudiot",
+      "docs_root_url": "cloud.google.com/iot/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudkms",
+      "display_name": "Cloud Key Management Service",
+      "github_label": "api: cloudkms",
+      "docs_root_url": "cloud.google.com/kms/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudprofiler",
+      "display_name": "Cloud Profiler",
+      "github_label": "api: cloudprofiler",
+      "docs_root_url": "cloud.google.com/profiler/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudresourcemanager",
+      "display_name": "Resource Manager",
+      "github_label": "api: cloudresourcemanager",
+      "docs_root_url": "cloud.google.com/resource-manager/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudscheduler",
+      "display_name": "Cloud Scheduler",
+      "github_label": "api: cloudscheduler",
+      "docs_root_url": "cloud.google.com/scheduler/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudsearch",
+      "display_name": "Cloud Search",
+      "github_label": "api: cloudsearch",
+      "docs_root_url": "developers.google.com/cloud-search/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudservicecatalog",
+      "display_name": "Service Catalog",
+      "github_label": "api: cloudprivatecatalog",
+      "docs_root_url": "cloud.google.com/service-catalog/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudshell",
+      "display_name": "Cloud Shell",
+      "github_label": "api: cloudshell",
+      "docs_root_url": "cloud.google.com/shell/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudtasks",
+      "display_name": "Cloud Tasks",
+      "github_label": "api: cloudtasks",
+      "docs_root_url": "cloud.google.com/tasks/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "cloudtrace",
+      "display_name": "Cloud Trace",
+      "github_label": "api: cloudtrace",
+      "docs_root_url": "cloud.google.com/trace/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "composer",
+      "display_name": "Cloud Composer",
+      "github_label": "api: composer",
+      "docs_root_url": "cloud.google.com/composer/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "compute",
+      "display_name": "Compute Engine",
+      "github_label": "api: compute",
+      "docs_root_url": "cloud.google.com/compute/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "confidentialcomputing",
+      "display_name": "Confidential VM",
+      "github_label": "api: confidentialcomputing",
+      "docs_root_url": "cloud.google.com/compute/confidential-vm/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "connectgateway",
+      "display_name": "Connect Gateway API",
+      "github_label": "api: connectgateway",
+      "docs_root_url": "cloud.google.com/anthos/multicluster-management/gateway/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "contactcenterinsights",
+      "display_name": "Contact Center AI Insights API",
+      "github_label": "api: contactcenterinsights",
+      "docs_root_url": "cloud.google.com/contact-center/insights/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "container",
+      "display_name": "Kubernetes Engine API",
+      "github_label": "api: container",
+      "docs_root_url": "cloud.google.com/kubernetes-engine/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "containeranalysis",
+      "display_name": "Container Analysis",
+      "github_label": "api: containeranalysis",
+      "docs_root_url": "cloud.google.com/container-registry/docs/container-analysis/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "contentwarehouse",
+      "display_name": "Document AI Warehouse",
+      "github_label": "api: contentwarehouse",
+      "docs_root_url": "cloud.google.com/document-warehouse/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "datacatalog",
+      "display_name": "Data Catalog",
+      "github_label": "api: datacatalog",
+      "docs_root_url": "cloud.google.com/data-catalog/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "datacommons",
+      "display_name": "Data Commons",
+      "github_label": "api: datacommons",
+      "docs_root_url": "docs.datacommons.org/",
+      "launch_stage": "LAUNCH_STAGE_UNSPECIFIED"
+    },
+    {
+      "api_shortname": "dataflow",
+      "display_name": "Dataflow",
+      "github_label": "api: dataflow",
+      "docs_root_url": "cloud.google.com/dataflow/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "datafusion",
+      "display_name": "Cloud Data Fusion",
+      "github_label": "api: datafusion",
+      "docs_root_url": "cloud.google.com/data-fusion/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "datalabeling",
+      "display_name": "AI Platform Data Labeling Service",
+      "github_label": "api: datalabeling",
+      "docs_root_url": "cloud.google.com/ai-platform/data-labeling/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "dataplex",
+      "display_name": "Dataplex",
+      "github_label": "api: dataplex",
+      "docs_root_url": "cloud.google.com/dataplex/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "dataproc",
+      "display_name": "Dataproc",
+      "github_label": "api: dataproc",
+      "docs_root_url": "cloud.google.com/dataproc/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "datastore",
+      "display_name": "Datastore",
+      "github_label": "api: datastore",
+      "docs_root_url": "cloud.google.com/datastore/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "datastream",
+      "display_name": "Datastream",
+      "github_label": "api: datastream",
+      "docs_root_url": "cloud.google.com/datastream/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "datastudio",
+      "display_name": "Data Studio",
+      "github_label": "api: datastudio",
+      "docs_root_url": "developers.google.com/datastudio/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "deploymentmanager",
+      "display_name": "Cloud Deployment Manager",
+      "github_label": "api: deploymentmanager",
+      "docs_root_url": "cloud.google.com/deployment-manager/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "dialogflow",
+      "display_name": "Dialogflow",
+      "github_label": "api: dialogflow",
+      "docs_root_url": "cloud.google.com/dialogflow/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "directions-backend",
+      "display_name": "Directions API",
+      "github_label": "api: directions",
+      "docs_root_url": "developers.google.com/maps/documentation/directions/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "discoveryengine",
+      "display_name": "Discovery Engine API",
+      "github_label": "api: discoveryengine",
+      "docs_root_url": "cloud.google.com/discovery-engine/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "distance-matrix-backend",
+      "display_name": "Distance Matrix API",
+      "github_label": "api: distancematrixapi",
+      "docs_root_url": "developers.google.com/maps/documentation/distance-matrix/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "dlp",
+      "display_name": "Cloud Data Loss Prevention",
+      "github_label": "api: dlp",
+      "docs_root_url": "cloud.google.com/dlp/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "dns",
+      "display_name": "Cloud DNS",
+      "github_label": "api: dns",
+      "docs_root_url": "cloud.google.com/dns/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "docs",
+      "display_name": "Docs API",
+      "github_label": "api: docs",
+      "docs_root_url": "developers.google.com/docs/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "documentai",
+      "display_name": "Document AI",
+      "github_label": "api: documentai",
+      "docs_root_url": "cloud.google.com/document-ai/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "domains",
+      "display_name": "Cloud Domains",
+      "github_label": "api: domains",
+      "docs_root_url": "cloud.google.com/domains/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "drive",
+      "display_name": "Drive API",
+      "github_label": "api: drive",
+      "docs_root_url": "developers.google.com/drive/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "driveactivity",
+      "display_name": "Drive Activity API",
+      "github_label": "api: driveactivity",
+      "docs_root_url": "developers.google.com/drive/activity/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "earthengine",
+      "display_name": "Google Earth Engine",
+      "github_label": "api: earthengine",
+      "docs_root_url": "developers.google.com/earth-engine/",
+      "launch_stage": "LAUNCH_STAGE_UNSPECIFIED"
+    },
+    {
+      "api_shortname": "elevation-backend",
+      "display_name": "Elevation API",
+      "github_label": "api: elevationapi",
+      "docs_root_url": "developers.google.com/maps/documentation/elevation/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "endpoints",
+      "display_name": "Cloud Endpoints",
+      "github_label": "api: endpoints",
+      "docs_root_url": "cloud.google.com/endpoints/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "eventarc",
+      "display_name": "Eventarc",
+      "github_label": "api: eventarc",
+      "docs_root_url": "cloud.google.com/eventarc/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "fcm",
+      "display_name": "Firebase Cloud Messaging",
+      "github_label": "api: fcm",
+      "docs_root_url": "firebase.google.com/docs/cloud-messaging/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "file",
+      "display_name": "Filestore",
+      "github_label": "api: file",
+      "docs_root_url": "cloud.google.com/filestore/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "firebasedynamiclinks",
+      "display_name": "Firebase Dynamic Links",
+      "github_label": "api: firebasedynamiclinks",
+      "docs_root_url": "firebase.google.com/docs/dynamic-links/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "firebaseinappmessaging",
+      "display_name": "Firebase In-App Messaging",
+      "github_label": "api: firebaseinappmessaging",
+      "docs_root_url": "firebase.google.com/docs/in-app-messaging/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "firestore",
+      "display_name": "Firestore",
+      "github_label": "api: firestore",
+      "docs_root_url": "cloud.google.com/firestore/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "gameservices",
+      "display_name": "Game Servers",
+      "github_label": "api: gameservices",
+      "docs_root_url": "cloud.google.com/game-servers/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "geocoding-backend",
+      "display_name": "Geocoding API",
+      "github_label": "api: geocodingapi",
+      "docs_root_url": "developers.google.com/maps/documentation/geocoding/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "geolocation",
+      "display_name": "Geolocation API",
+      "github_label": "api: geolocationapi",
+      "docs_root_url": "developers.google.com/maps/documentation/geolocation/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "gkehub",
+      "display_name": "GKE Hub API",
+      "github_label": "api: gkehub",
+      "docs_root_url": "cloud.google.com/anthos/gke/docs/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "gmail",
+      "display_name": "Gmail API",
+      "github_label": "api: gmail",
+      "docs_root_url": "developers.google.com/gmail/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "googleads",
+      "display_name": "Google Ads API Beta",
+      "github_label": "api: googleads",
+      "docs_root_url": "developers.google.com/google-ads/api/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "gsuiteaddons",
+      "display_name": "Google Workspace Add-ons API",
+      "github_label": "api: gsuiteaddons",
+      "docs_root_url": "developers.google.com/workspace/add-ons/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "healthcare",
+      "display_name": "Cloud Healthcare API",
+      "github_label": "api: healthcare",
+      "docs_root_url": "cloud.google.com/healthcare-api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "homegraph",
+      "display_name": "Smart Home (HomeGraph API)",
+      "github_label": "api: homegraph",
+      "docs_root_url": "developers.google.com/assistant/smarthome/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "iam",
+      "display_name": "Identity and Access Management",
+      "github_label": "api: iam",
+      "docs_root_url": "cloud.google.com/iam/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "iamcredentials",
+      "display_name": "IAM Service Account Credentials API",
+      "github_label": "api: iamcredentials",
+      "docs_root_url": null,
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "iap",
+      "display_name": "Identity-Aware Proxy",
+      "github_label": "api: iap",
+      "docs_root_url": "cloud.google.com/iap/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "identitytoolkit",
+      "display_name": "Identity Platform",
+      "github_label": "api: identitytoolkit",
+      "docs_root_url": "cloud.google.com/identity-platform/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "ids",
+      "display_name": "Cloud IDS",
+      "github_label": "api: ids",
+      "docs_root_url": "cloud.google.com/intrusion-detection-system/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "jobs",
+      "display_name": "Cloud Talent Solution Job Search",
+      "github_label": "api: jobs",
+      "docs_root_url": "cloud.google.com/talent-solution/job-search/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "language",
+      "display_name": "Cloud Natural Language API",
+      "github_label": "api: language",
+      "docs_root_url": "cloud.google.com/natural-language/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "lifesciences",
+      "display_name": "Cloud Life Sciences",
+      "github_label": "api: lifesciences",
+      "docs_root_url": "cloud.google.com/life-sciences/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "livestream",
+      "display_name": "Live Stream API",
+      "github_label": "api: livestream",
+      "docs_root_url": "cloud.google.com/livestream/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "logging",
+      "display_name": "Cloud Logging",
+      "github_label": "api: logging",
+      "docs_root_url": "cloud.google.com/logging/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "managedidentities",
+      "display_name": "Managed Service for Microsoft Active Directory",
+      "github_label": "api: managedidentities",
+      "docs_root_url": "cloud.google.com/managed-microsoft-ad/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "maps-embed-backend",
+      "display_name": "Maps Embedded API",
+      "github_label": "api: mapsembeddedapi",
+      "docs_root_url": "developers.google.com/maps/documentation/embed/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "mapsjsapi",
+      "display_name": "Maps JavaScript API",
+      "github_label": "api: mapsjsapi",
+      "docs_root_url": "developers.google.com/maps/documentation/javascript/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "mediatranslation",
+      "display_name": "Media Translation",
+      "github_label": "api: mediatranslation",
+      "docs_root_url": "cloud.google.com/translate/media/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "memcache",
+      "display_name": "Memorystore for Memcached",
+      "github_label": "api: memcache",
+      "docs_root_url": "cloud.google.com/memorystore/docs/memcached/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "metastore",
+      "display_name": "Dataproc Metastore",
+      "github_label": "api: metastore",
+      "docs_root_url": "cloud.google.com/dataproc-metastore/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "ml",
+      "display_name": "AI Platform Training & Prediction API",
+      "github_label": "api: ml",
+      "docs_root_url": "cloud.google.com/ai-platform/training/docs/reference/rest/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "monitoring",
+      "display_name": "Cloud Monitoring",
+      "github_label": "api: monitoring",
+      "docs_root_url": "cloud.google.com/monitoring/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "monitoring-dashboards",
+      "display_name": "Cloud Monitoring Dashboards API",
+      "github_label": "api: monitoring-dashboards",
+      "docs_root_url": "cloud.google.com/monitoring/dashboards/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "networkconnectivity",
+      "display_name": "Network Connectivity Center",
+      "github_label": "api: networkconnectivity",
+      "docs_root_url": "cloud.google.com/network-connectivity/docs/network-connectivity-center/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "networkmanagement",
+      "display_name": "Network Management API",
+      "github_label": "api: networkmanagement",
+      "docs_root_url": "cloud.google.com/network-intelligence-center/docs/connectivity-tests/reference/networkmanagement/rest/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "networksecurity",
+      "display_name": "Network Security API",
+      "github_label": "api: networksecurity",
+      "docs_root_url": "cloud.google.com/traffic-director/docs/reference/network-security/rest/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "networkservices",
+      "display_name": "Media CDN",
+      "github_label": "api: edgecache",
+      "docs_root_url": "cloud.google.com/media-cdn/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "notebooks",
+      "display_name": "Vertex AI Workbench",
+      "github_label": "api: notebooks",
+      "docs_root_url": "cloud.google.com/vertex-ai/docs/workbench/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "orgpolicy",
+      "display_name": "Organization Policy",
+      "github_label": "api: orgpolicy",
+      "docs_root_url": "cloud.google.com/resource-manager/docs/organization-policy/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "osconfig",
+      "display_name": "Cloud OS Config",
+      "github_label": "api: osconfig",
+      "docs_root_url": "cloud.google.com/compute/docs/osconfig/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "oslogin",
+      "display_name": "Cloud OS Login API",
+      "github_label": "api: oslogin",
+      "docs_root_url": "cloud.google.com/compute/docs/oslogin/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "payments",
+      "display_name": "Google Pay",
+      "github_label": "api: payments",
+      "docs_root_url": "developers.google.com/pay/",
+      "launch_stage": "LAUNCH_STAGE_UNSPECIFIED"
+    },
+    {
+      "api_shortname": "people",
+      "display_name": "People API",
+      "github_label": "api: people",
+      "docs_root_url": "developers.google.com/people/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "phishingprotection",
+      "display_name": "Phishing Protection",
+      "github_label": "api: phishingprotection",
+      "docs_root_url": "cloud.google.com/phishing-protection/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "places-backend",
+      "display_name": "Places API",
+      "github_label": "api: places",
+      "docs_root_url": "developers.google.com/maps/documentation/places/web-service/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "playablelocations",
+      "display_name": "Playable Locations API",
+      "github_label": "api: playablelocations",
+      "docs_root_url": "developers.google.com/maps/documentation/gaming/overview_locations/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "policytroubleshooter",
+      "display_name": "IAM Policy Troubleshooter API",
+      "github_label": "api: policytroubleshooter",
+      "docs_root_url": "cloud.google.com/iam/docs/troubleshooting-access#rest-api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "privateca",
+      "display_name": "Certificate Authority Service",
+      "github_label": "api: security-privateca",
+      "docs_root_url": "cloud.google.com/certificate-authority-service/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "publicca",
+      "display_name": "Public Certificate Authority",
+      "github_label": "api: publicca",
+      "docs_root_url": "cloud.google.com/certificate-manager/docs/public-ca/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "pubsub",
+      "display_name": "Pub/Sub",
+      "github_label": "api: pubsub",
+      "docs_root_url": "cloud.google.com/pubsub/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "pubsublite",
+      "display_name": "Pub/Sub Lite",
+      "github_label": "api: pubsublite",
+      "docs_root_url": "cloud.google.com/pubsub/lite/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "recaptchaenterprise",
+      "display_name": "reCAPTCHA Enterprise",
+      "github_label": "api: recaptchaenterprise",
+      "docs_root_url": "cloud.google.com/recaptcha-enterprise/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "recommendationengine",
+      "display_name": "Recommendations AI",
+      "github_label": "api: recommendationengine",
+      "docs_root_url": "cloud.google.com/recommendations-ai/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "recommender",
+      "display_name": "Recommender",
+      "github_label": "api: recommender",
+      "docs_root_url": "cloud.google.com/recommender/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "redis",
+      "display_name": "Memorystore for Redis",
+      "github_label": "api: redis",
+      "docs_root_url": "cloud.google.com/memorystore/docs/redis/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "resourcesettings",
+      "display_name": "Resource Settings API",
+      "github_label": "api: resourcesettings",
+      "docs_root_url": "cloud.google.com/resource-manager/docs/resource-settings/overview/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "retail",
+      "display_name": "Retail API",
+      "github_label": "api: retail",
+      "docs_root_url": "cloud.google.com/retail/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "riskmanager",
+      "display_name": "Risk Manager",
+      "github_label": "api: riskmanager",
+      "docs_root_url": "cloud.google.com/risk-manager/",
+      "launch_stage": "PREVIEW"
+    },
+    {
+      "api_shortname": "roads",
+      "display_name": "Roads API",
+      "github_label": "api: roads",
+      "docs_root_url": "developers.google.com/maps/documentation/roads/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "run",
+      "display_name": "Cloud Run",
+      "github_label": "api: run",
+      "docs_root_url": "cloud.google.com/run/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "runtimeconfig",
+      "display_name": "Cloud Runtime Config API",
+      "github_label": "api: runtimeconfig",
+      "docs_root_url": "cloud.google.com/deployment-manager/runtime-configurator/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "script",
+      "display_name": "Apps Script API",
+      "github_label": "api: script",
+      "docs_root_url": "developers.google.com/apps-script/api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "secretmanager",
+      "display_name": "Secret Manager",
+      "github_label": "api: secretmanager",
+      "docs_root_url": "cloud.google.com/secret-manager/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "securitycenter",
+      "display_name": "Security Command Center",
+      "github_label": "api: securitycenter",
+      "docs_root_url": "cloud.google.com/security-command-center/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "serviceconsumermanagement",
+      "display_name": "Service Infrastructure",
+      "github_label": "api: serviceconsumermanagement",
+      "docs_root_url": "cloud.google.com/service-infrastructure/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "servicecontrol",
+      "display_name": "Service Control API",
+      "github_label": "api: servicecontrol",
+      "docs_root_url": "cloud.google.com/service-infrastructure/docs/overview/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "servicedirectory",
+      "display_name": "Service Directory",
+      "github_label": "api: servicedirectory",
+      "docs_root_url": "cloud.google.com/service-directory/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "servicemanagement",
+      "display_name": "Service Management API",
+      "github_label": "api: servicemanagement",
+      "docs_root_url": "cloud.google.com/service-infrastructure/docs/overview/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "serviceusage",
+      "display_name": "Service Usage",
+      "github_label": "api: serviceusage",
+      "docs_root_url": "cloud.google.com/service-usage/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "sheets",
+      "display_name": "Sheets API",
+      "github_label": "api: sheets",
+      "docs_root_url": "developers.google.com/sheets/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "slides",
+      "display_name": "Slides API",
+      "github_label": "api: slides",
+      "docs_root_url": "developers.google.com/slides/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "smartdevicemanagement",
+      "display_name": "Smart Device Management API",
+      "github_label": "api: smartdevicemanagement",
+      "docs_root_url": "developers.google.com/nest/device-access/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "sourcerepo",
+      "display_name": "Cloud Source Repositories",
+      "github_label": "api: sourcerepo",
+      "docs_root_url": "cloud.google.com/source-repositories/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "spanner",
+      "display_name": "Cloud Spanner",
+      "github_label": "api: spanner",
+      "docs_root_url": "cloud.google.com/spanner/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "speech",
+      "display_name": "Speech-to-Text",
+      "github_label": "api: speech",
+      "docs_root_url": "cloud.google.com/speech-to-text/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "sqladmin",
+      "display_name": "Cloud SQL Admin API",
+      "github_label": "api: sqladmin",
+      "docs_root_url": "cloud.google.com/sql/docs/mysql/admin-api/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "static-maps-backend",
+      "display_name": "Maps Static API",
+      "github_label": "api: mapsstaticapi",
+      "docs_root_url": "developers.google.com/maps/documentation/maps-static/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "storage",
+      "display_name": "Cloud Storage",
+      "github_label": "api: storage",
+      "docs_root_url": "cloud.google.com/storage/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "storagetransfer",
+      "display_name": "Storage Transfer Service",
+      "github_label": "api: storagetransfer",
+      "docs_root_url": "cloud.google.com/storage-transfer/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "tasks",
+      "display_name": "Tasks API",
+      "github_label": "api: tasks",
+      "docs_root_url": "developers.google.com/tasks/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "texttospeech",
+      "display_name": "Text-to-Speech",
+      "github_label": "api: texttospeech",
+      "docs_root_url": "cloud.google.com/text-to-speech/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "timezone-backend",
+      "display_name": "Time Zone API",
+      "github_label": "api: timezoneapi",
+      "docs_root_url": "developers.google.com/maps/documentation/timezone/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "tpu",
+      "display_name": "Cloud TPU",
+      "github_label": "api: tpu",
+      "docs_root_url": "cloud.google.com/tpu/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "trafficdirector",
+      "display_name": "Traffic Director",
+      "github_label": "api: trafficdirector",
+      "docs_root_url": "cloud.google.com/traffic-director/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "transcoder",
+      "display_name": "Transcoder API",
+      "github_label": "api: transcoder",
+      "docs_root_url": "cloud.google.com/transcoder/",
+      "launch_stage": "BETA"
+    },
+    {
+      "api_shortname": "translate",
+      "display_name": "Cloud Translation",
+      "github_label": "api: translate",
+      "docs_root_url": "cloud.google.com/translate/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "t_systems_sovereign_cloud",
+      "display_name": "T-Systems Sovereign Cloud",
+      "github_label": "api: t_systems_sovereign_cloud",
+      "docs_root_url": "cloud.google.com/t-systems-sovereign-cloud/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "vault",
+      "display_name": "Vault API",
+      "github_label": "api: vault",
+      "docs_root_url": "developers.google.com/vault/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "videointelligence",
+      "display_name": "Video Intelligence API",
+      "github_label": "api: videointelligence",
+      "docs_root_url": "cloud.google.com/video-intelligence/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "videostitcher",
+      "display_name": "Video Stitcher API",
+      "github_label": "api: videostitcher",
+      "docs_root_url": "cloud.google.com/video-stitcher/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "vision",
+      "display_name": "Cloud Vision",
+      "github_label": "api: vision",
+      "docs_root_url": "cloud.google.com/vision/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "vmwareengine",
+      "display_name": "Google Cloud VMware Engine",
+      "github_label": "api: vmwareengine",
+      "docs_root_url": "cloud.google.com/vmware-engine/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "vpcaccess",
+      "display_name": "Virtual Private Cloud",
+      "github_label": "api: vpcaccess",
+      "docs_root_url": "cloud.google.com/vpc/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "walletobjects",
+      "display_name": "Google Wallet",
+      "github_label": "api: walletobjects",
+      "docs_root_url": "developers.google.com/wallet/",
+      "launch_stage": "LAUNCH_STAGE_UNSPECIFIED"
+    },
+    {
+      "api_shortname": "watcher",
+      "display_name": "Google Watcher API",
+      "github_label": "api: watcher",
+      "docs_root_url": null,
+      "launch_stage": "LAUNCH_STAGE_UNSPECIFIED"
+    },
+    {
+      "api_shortname": "webrisk",
+      "display_name": "Web Risk",
+      "github_label": "api: webrisk",
+      "docs_root_url": "cloud.google.com/web-risk/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "websecurityscanner",
+      "display_name": "Web Security Scanner",
+      "github_label": "api: websecurityscanner",
+      "docs_root_url": "cloud.google.com/security-scanner/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "workflowexecutions",
+      "display_name": "Workflow Executions API",
+      "github_label": "api: workflowexecutions",
+      "docs_root_url": "cloud.google.com/workflows/docs/reference/executions/rest/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "workflows",
+      "display_name": "Workflows",
+      "github_label": "api: workflows",
+      "docs_root_url": "cloud.google.com/workflows/",
+      "launch_stage": "GA"
+    },
+    {
+      "api_shortname": "workstations",
+      "display_name": "Cloud Workstations",
+      "github_label": "api: workstations",
+      "docs_root_url": "cloud.google.com/workstations/",
+      "launch_stage": "PREVIEW"
+    }
+  ]
+}
