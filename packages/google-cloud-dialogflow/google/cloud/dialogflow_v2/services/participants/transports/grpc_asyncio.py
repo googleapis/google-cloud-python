@@ -387,6 +387,50 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         return self._stubs["analyze_content"]
 
     @property
+    def streaming_analyze_content(
+        self,
+    ) -> Callable[
+        [participant.StreamingAnalyzeContentRequest],
+        Awaitable[participant.StreamingAnalyzeContentResponse],
+    ]:
+        r"""Return a callable for the streaming analyze content method over gRPC.
+
+        Adds a text (chat, for example), or audio (phone recording, for
+        example) message from a participant into the conversation. Note:
+        This method is only available through the gRPC API (not REST).
+
+        The top-level message sent to the client by the server is
+        ``StreamingAnalyzeContentResponse``. Multiple response messages
+        can be returned in order. The first one or more messages contain
+        the ``recognition_result`` field. Each result represents a more
+        complete transcript of what the user said. The next message
+        contains the ``reply_text`` field and potentially the
+        ``reply_audio`` field. The message can also contain the
+        ``automated_agent_reply`` field.
+
+        Note: Always use agent versions for production traffic sent to
+        virtual agents. See `Versions and
+        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+
+        Returns:
+            Callable[[~.StreamingAnalyzeContentRequest],
+                    Awaitable[~.StreamingAnalyzeContentResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "streaming_analyze_content" not in self._stubs:
+            self._stubs["streaming_analyze_content"] = self.grpc_channel.stream_stream(
+                "/google.cloud.dialogflow.v2.Participants/StreamingAnalyzeContent",
+                request_serializer=participant.StreamingAnalyzeContentRequest.serialize,
+                response_deserializer=participant.StreamingAnalyzeContentResponse.deserialize,
+            )
+        return self._stubs["streaming_analyze_content"]
+
+    @property
     def suggest_articles(
         self,
     ) -> Callable[

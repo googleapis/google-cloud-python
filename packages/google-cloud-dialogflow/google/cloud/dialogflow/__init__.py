@@ -116,11 +116,13 @@ from google.cloud.dialogflow_v2.types.audio_config import SpeechContext
 from google.cloud.dialogflow_v2.types.audio_config import SpeechToTextConfig
 from google.cloud.dialogflow_v2.types.audio_config import SpeechWordInfo
 from google.cloud.dialogflow_v2.types.audio_config import SynthesizeSpeechConfig
+from google.cloud.dialogflow_v2.types.audio_config import TelephonyDtmfEvents
 from google.cloud.dialogflow_v2.types.audio_config import VoiceSelectionParams
 from google.cloud.dialogflow_v2.types.audio_config import AudioEncoding
 from google.cloud.dialogflow_v2.types.audio_config import OutputAudioEncoding
 from google.cloud.dialogflow_v2.types.audio_config import SpeechModelVariant
 from google.cloud.dialogflow_v2.types.audio_config import SsmlVoiceGender
+from google.cloud.dialogflow_v2.types.audio_config import TelephonyDtmf
 from google.cloud.dialogflow_v2.types.context import Context
 from google.cloud.dialogflow_v2.types.context import CreateContextRequest
 from google.cloud.dialogflow_v2.types.context import DeleteAllContextsRequest
@@ -347,6 +349,7 @@ from google.cloud.dialogflow_v2.types.participant import CreateParticipantReques
 from google.cloud.dialogflow_v2.types.participant import DtmfParameters
 from google.cloud.dialogflow_v2.types.participant import FaqAnswer
 from google.cloud.dialogflow_v2.types.participant import GetParticipantRequest
+from google.cloud.dialogflow_v2.types.participant import InputTextConfig
 from google.cloud.dialogflow_v2.types.participant import ListParticipantsRequest
 from google.cloud.dialogflow_v2.types.participant import ListParticipantsResponse
 from google.cloud.dialogflow_v2.types.participant import Message
@@ -354,6 +357,8 @@ from google.cloud.dialogflow_v2.types.participant import MessageAnnotation
 from google.cloud.dialogflow_v2.types.participant import OutputAudio
 from google.cloud.dialogflow_v2.types.participant import Participant
 from google.cloud.dialogflow_v2.types.participant import SmartReplyAnswer
+from google.cloud.dialogflow_v2.types.participant import StreamingAnalyzeContentRequest
+from google.cloud.dialogflow_v2.types.participant import StreamingAnalyzeContentResponse
 from google.cloud.dialogflow_v2.types.participant import SuggestArticlesRequest
 from google.cloud.dialogflow_v2.types.participant import SuggestArticlesResponse
 from google.cloud.dialogflow_v2.types.participant import SuggestFaqAnswersRequest
@@ -467,11 +472,13 @@ __all__ = (
     "SpeechToTextConfig",
     "SpeechWordInfo",
     "SynthesizeSpeechConfig",
+    "TelephonyDtmfEvents",
     "VoiceSelectionParams",
     "AudioEncoding",
     "OutputAudioEncoding",
     "SpeechModelVariant",
     "SsmlVoiceGender",
+    "TelephonyDtmf",
     "Context",
     "CreateContextRequest",
     "DeleteAllContextsRequest",
@@ -616,6 +623,7 @@ __all__ = (
     "DtmfParameters",
     "FaqAnswer",
     "GetParticipantRequest",
+    "InputTextConfig",
     "ListParticipantsRequest",
     "ListParticipantsResponse",
     "Message",
@@ -623,6 +631,8 @@ __all__ = (
     "OutputAudio",
     "Participant",
     "SmartReplyAnswer",
+    "StreamingAnalyzeContentRequest",
+    "StreamingAnalyzeContentResponse",
     "SuggestArticlesRequest",
     "SuggestArticlesResponse",
     "SuggestFaqAnswersRequest",

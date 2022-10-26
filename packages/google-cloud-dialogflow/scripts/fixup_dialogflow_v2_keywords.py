@@ -122,6 +122,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'search_agents': ('parent', 'page_size', 'page_token', ),
         'set_agent': ('agent', 'update_mask', ),
         'set_suggestion_feature_config': ('conversation_profile', 'participant_role', 'suggestion_feature_config', ),
+        'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'enable_partial_automated_agent_reply', ),
         'streaming_detect_intent': ('session', 'query_input', 'query_params', 'single_utterance', 'output_audio_config', 'output_audio_config_mask', 'input_audio', ),
         'suggest_articles': ('parent', 'latest_message', 'context_size', 'assist_query_params', ),
         'suggest_faq_answers': ('parent', 'latest_message', 'context_size', 'assist_query_params', ),

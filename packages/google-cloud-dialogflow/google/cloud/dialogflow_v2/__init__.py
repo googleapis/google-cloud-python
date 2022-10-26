@@ -74,11 +74,13 @@ from .types.audio_config import SpeechContext
 from .types.audio_config import SpeechToTextConfig
 from .types.audio_config import SpeechWordInfo
 from .types.audio_config import SynthesizeSpeechConfig
+from .types.audio_config import TelephonyDtmfEvents
 from .types.audio_config import VoiceSelectionParams
 from .types.audio_config import AudioEncoding
 from .types.audio_config import OutputAudioEncoding
 from .types.audio_config import SpeechModelVariant
 from .types.audio_config import SsmlVoiceGender
+from .types.audio_config import TelephonyDtmf
 from .types.context import Context
 from .types.context import CreateContextRequest
 from .types.context import DeleteAllContextsRequest
@@ -223,6 +225,7 @@ from .types.participant import CreateParticipantRequest
 from .types.participant import DtmfParameters
 from .types.participant import FaqAnswer
 from .types.participant import GetParticipantRequest
+from .types.participant import InputTextConfig
 from .types.participant import ListParticipantsRequest
 from .types.participant import ListParticipantsResponse
 from .types.participant import Message
@@ -230,6 +233,8 @@ from .types.participant import MessageAnnotation
 from .types.participant import OutputAudio
 from .types.participant import Participant
 from .types.participant import SmartReplyAnswer
+from .types.participant import StreamingAnalyzeContentRequest
+from .types.participant import StreamingAnalyzeContentResponse
 from .types.participant import SuggestArticlesRequest
 from .types.participant import SuggestArticlesResponse
 from .types.participant import SuggestFaqAnswersRequest
@@ -418,6 +423,7 @@ __all__ = (
     "InputAudioConfig",
     "InputConfig",
     "InputDataset",
+    "InputTextConfig",
     "Intent",
     "IntentBatch",
     "IntentView",
@@ -491,6 +497,8 @@ __all__ = (
     "SpeechToTextConfig",
     "SpeechWordInfo",
     "SsmlVoiceGender",
+    "StreamingAnalyzeContentRequest",
+    "StreamingAnalyzeContentResponse",
     "StreamingDetectIntentRequest",
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
@@ -503,6 +511,8 @@ __all__ = (
     "SuggestionFeature",
     "SuggestionResult",
     "SynthesizeSpeechConfig",
+    "TelephonyDtmf",
+    "TelephonyDtmfEvents",
     "TextInput",
     "TextToSpeechSettings",
     "TrainAgentRequest",

@@ -25,12 +25,14 @@ __protobuf__ = proto.module(
         "SpeechModelVariant",
         "SsmlVoiceGender",
         "OutputAudioEncoding",
+        "TelephonyDtmf",
         "SpeechContext",
         "SpeechWordInfo",
         "InputAudioConfig",
         "VoiceSelectionParams",
         "SynthesizeSpeechConfig",
         "OutputAudioConfig",
+        "TelephonyDtmfEvents",
         "SpeechToTextConfig",
     },
 )
@@ -87,6 +89,29 @@ class OutputAudioEncoding(proto.Enum):
     OUTPUT_AUDIO_ENCODING_MP3_64_KBPS = 4
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
     OUTPUT_AUDIO_ENCODING_MULAW = 5
+
+
+class TelephonyDtmf(proto.Enum):
+    r"""`DTMF <https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>`__
+    digit in Telephony Gateway.
+    """
+    TELEPHONY_DTMF_UNSPECIFIED = 0
+    DTMF_ONE = 1
+    DTMF_TWO = 2
+    DTMF_THREE = 3
+    DTMF_FOUR = 4
+    DTMF_FIVE = 5
+    DTMF_SIX = 6
+    DTMF_SEVEN = 7
+    DTMF_EIGHT = 8
+    DTMF_NINE = 9
+    DTMF_ZERO = 10
+    DTMF_A = 11
+    DTMF_B = 12
+    DTMF_C = 13
+    DTMF_D = 14
+    DTMF_STAR = 15
+    DTMF_POUND = 16
 
 
 class SpeechContext(proto.Message):
@@ -441,6 +466,21 @@ class OutputAudioConfig(proto.Message):
     )
 
 
+class TelephonyDtmfEvents(proto.Message):
+    r"""A wrapper of repeated TelephonyDtmf digits.
+
+    Attributes:
+        dtmf_events (Sequence[google.cloud.dialogflow_v2.types.TelephonyDtmf]):
+            A sequence of TelephonyDtmf digits.
+    """
+
+    dtmf_events = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="TelephonyDtmf",
+    )
+
+
 class SpeechToTextConfig(proto.Message):
     r"""Configures speech transcription for
     [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile].
@@ -456,12 +496,23 @@ class SpeechToTextConfig(proto.Message):
             request. If enhanced model variant is specified and an
             enhanced version of the specified model for the language
             does not exist, then it would emit an error.
+        model (str):
+            Which Speech model to select. Select the model best suited
+            to your domain to get best results. If a model is not
+            explicitly specified, then a default model is used. Refer to
+            `Cloud Speech API
+            documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
+            for more details.
     """
 
     speech_model_variant = proto.Field(
         proto.ENUM,
         number=1,
         enum="SpeechModelVariant",
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

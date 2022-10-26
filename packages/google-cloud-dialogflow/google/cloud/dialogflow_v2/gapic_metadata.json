@@ -1022,6 +1022,11 @@
                 "list_participants"
               ]
             },
+            "StreamingAnalyzeContent": {
+              "methods": [
+                "streaming_analyze_content"
+              ]
+            },
             "SuggestArticles": {
               "methods": [
                 "suggest_articles"
@@ -1065,6 +1070,11 @@
             "ListParticipants": {
               "methods": [
                 "list_participants"
+              ]
+            },
+            "StreamingAnalyzeContent": {
+              "methods": [
+                "streaming_analyze_content"
               ]
             },
             "SuggestArticles": {
