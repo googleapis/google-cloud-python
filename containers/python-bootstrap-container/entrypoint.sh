@@ -60,7 +60,7 @@ sed -i -e "s|apiDashes|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packag
 cp ".repo-metadata.json" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
 # Get the API shortname
-# API_ID has the form google.cloud.*.vX or `google.*.*.vX`
+# API_PATH has the form google/cloud/*/vX or `google/*/*/vX`
 # We want the API shortname which is right before the version
 # For example, the `API_SHORTNAME`` for `google.cloud.workflows.v1`
 # is workflows
