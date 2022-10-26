@@ -3,7 +3,7 @@
 ## Introduction
 
 This is an updated version of the `ndb` client library for use with
-[Google Cloud Datastore][0]. 
+[Google Cloud Datastore][0].
 
 * [Client Library Documentation](https://googleapis.dev/python/python-ndb/latest)
 
