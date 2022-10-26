@@ -25,7 +25,6 @@ function save_to_temp_then_file() {
 
 MONO_REPO_NAME="google-cloud-python"
 WORKSPACE_DIR="/workspace"
-#WORKSPACE_DIR="/usr/local/google/home/partheniou/git"
 PATH_TO_CONTAINER_VARS="$WORKSPACE_DIR/interContainerVars.json"
 
 cd "$WORKSPACE_DIR/$MONO_REPO_NAME/containers/python-bootstrap-container"
