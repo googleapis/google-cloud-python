@@ -17,6 +17,9 @@ import time
 import uuid
 
 from google.api_core import exceptions
+
+from google.cloud import spanner_admin_database_v1
+from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 from google.cloud.spanner_v1 import backup
 from google.cloud.spanner_v1 import client
 from google.cloud.spanner_v1 import database
@@ -26,6 +29,8 @@ from test_utils import retry
 
 INSTANCE_CREATION_TIMEOUT = 560  # seconds
 
+OPERATION_TIMEOUT_SECONDS = 120  # seconds
+
 retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 
@@ -33,10 +38,23 @@ retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
 def sample_name():
     """Sample testcase modules must define this fixture.
 
-    The name is used to label the instance created by the sample, to
-    aid in debugging leaked instances.
-    """
-    raise NotImplementedError("Define 'sample_name' fixture in sample test driver")
+      The name is used to label the instance created by the sample, to
+      aid in debugging leaked instances.
+      """
+    raise NotImplementedError(
+      "Define 'sample_name' fixture in sample test driver")
+
+
+@pytest.fixture(scope="module")
+def database_dialect():
+    """Database dialect to be used for this sample.
+
+      The dialect is used to initialize the dialect for the database.
+      It can either be GoogleStandardSql or PostgreSql.
+      """
+    # By default, we consider GOOGLE_STANDARD_SQL dialect. Other specific tests
+    # can override this if required.
+    return DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 @pytest.fixture(scope="session")
@@ -87,7 +105,7 @@ def multi_region_instance_id():
 @pytest.fixture(scope="module")
 def instance_config(spanner_client):
     return "{}/instanceConfigs/{}".format(
-        spanner_client.project_name, "regional-us-central1"
+      spanner_client.project_name, "regional-us-central1"
     )
 
 
@@ -98,20 +116,20 @@ def multi_region_instance_config(spanner_client):
 
 @pytest.fixture(scope="module")
 def sample_instance(
-    spanner_client,
-    cleanup_old_instances,
-    instance_id,
-    instance_config,
-    sample_name,
+  spanner_client,
+  cleanup_old_instances,
+  instance_id,
+  instance_config,
+  sample_name,
 ):
     sample_instance = spanner_client.instance(
-        instance_id,
-        instance_config,
-        labels={
-            "cloud_spanner_samples": "true",
-            "sample_name": sample_name,
-            "created": str(int(time.time())),
-        },
+      instance_id,
+      instance_config,
+      labels={
+        "cloud_spanner_samples": "true",
+        "sample_name": sample_name,
+        "created": str(int(time.time())),
+      },
     )
     op = retry_429(sample_instance.create)()
     op.result(INSTANCE_CREATION_TIMEOUT)  # block until completion
@@ -133,20 +151,20 @@ def sample_instance(
 
 @pytest.fixture(scope="module")
 def multi_region_instance(
-    spanner_client,
-    cleanup_old_instances,
-    multi_region_instance_id,
-    multi_region_instance_config,
-    sample_name,
+  spanner_client,
+  cleanup_old_instances,
+  multi_region_instance_id,
+  multi_region_instance_config,
+  sample_name,
 ):
     multi_region_instance = spanner_client.instance(
-        multi_region_instance_id,
-        multi_region_instance_config,
-        labels={
-            "cloud_spanner_samples": "true",
-            "sample_name": sample_name,
-            "created": str(int(time.time())),
-        },
+      multi_region_instance_id,
+      multi_region_instance_config,
+      labels={
+        "cloud_spanner_samples": "true",
+        "sample_name": sample_name,
+        "created": str(int(time.time())),
+      },
     )
     op = retry_429(multi_region_instance.create)()
     op.result(INSTANCE_CREATION_TIMEOUT)  # block until completion
@@ -170,8 +188,8 @@ def multi_region_instance(
 def database_id():
     """Id for the database used in samples.
 
-    Sample testcase modules can override as needed.
-    """
+      Sample testcase modules can override as needed.
+      """
     return "my-database-id"
 
 
@@ -179,21 +197,50 @@ def database_id():
 def database_ddl():
     """Sequence of DDL statements used to set up the database.
 
-    Sample testcase modules can override as needed.
-    """
+      Sample testcase modules can override as needed.
+      """
     return []
 
 
 @pytest.fixture(scope="module")
-def sample_database(sample_instance, database_id, database_ddl):
+def sample_database(
+  spanner_client,
+  sample_instance,
+  database_id,
+  database_ddl,
+  database_dialect):
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        sample_database = sample_instance.database(
+          database_id,
+          database_dialect=DatabaseDialect.POSTGRESQL,
+        )
+
+        if not sample_database.exists():
+            operation = sample_database.create()
+            operation.result(OPERATION_TIMEOUT_SECONDS)
+
+        request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
+          database=sample_database.name,
+          statements=database_ddl,
+        )
+
+        operation =\
+            spanner_client.database_admin_api.update_database_ddl(request)
+        operation.result(OPERATION_TIMEOUT_SECONDS)
+
+        yield sample_database
+
+        sample_database.drop()
+        return
 
     sample_database = sample_instance.database(
-        database_id,
-        ddl_statements=database_ddl,
+      database_id,
+      ddl_statements=database_ddl,
     )
 
     if not sample_database.exists():
-        sample_database.create()
+        operation = sample_database.create()
+        operation.result(OPERATION_TIMEOUT_SECONDS)
 
     yield sample_database
 
@@ -203,8 +250,8 @@ def sample_database(sample_instance, database_id, database_ddl):
 @pytest.fixture(scope="module")
 def kms_key_name(spanner_client):
     return "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        spanner_client.project,
-        "us-central1",
-        "spanner-test-keyring",
-        "spanner-test-cmek",
+      spanner_client.project,
+      "us-central1",
+      "spanner-test-keyring",
+      "spanner-test-cmek",
     )

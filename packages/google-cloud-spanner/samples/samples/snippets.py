@@ -626,7 +626,7 @@ def read_data_with_storing_index(instance_id, database_id):
     clause.
 
     The index must exist before running this sample. You can add the index
-    by running the `add_soring_index` sample or by running this DDL statement
+    by running the `add_scoring_index` sample or by running this DDL statement
     against your database:
 
         CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle)
@@ -1275,7 +1275,7 @@ def insert_data_with_dml(instance_id, database_id):
 
     def insert_singers(transaction):
         row_ct = transaction.execute_update(
-            "INSERT Singers (SingerId, FirstName, LastName) "
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
             " VALUES (10, 'Virginia', 'Watson')"
         )
 
@@ -1401,7 +1401,7 @@ def dml_write_read_transaction(instance_id, database_id):
     def write_then_read(transaction):
         # Insert record.
         row_ct = transaction.execute_update(
-            "INSERT Singers (SingerId, FirstName, LastName) "
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
             " VALUES (11, 'Timothy', 'Campbell')"
         )
         print("{} record(s) inserted.".format(row_ct))
@@ -1460,7 +1460,7 @@ def insert_with_dml(instance_id, database_id):
 
     def insert_singers(transaction):
         row_ct = transaction.execute_update(
-            "INSERT Singers (SingerId, FirstName, LastName) VALUES "
+            "INSERT INTO Singers (SingerId, FirstName, LastName) VALUES "
             "(12, 'Melissa', 'Garcia'), "
             "(13, 'Russell', 'Morales'), "
             "(14, 'Jacqueline', 'Long'), "
@@ -1630,7 +1630,7 @@ def update_with_batch_dml(instance_id, database_id):
 
 
 def create_table_with_datatypes(instance_id, database_id):
-    """Creates a table with supported dataypes."""
+    """Creates a table with supported datatypes. """
     # [START spanner_create_table_with_datatypes]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -2123,7 +2123,8 @@ def create_instance_config(user_config_name, base_config_id):
     # base_config_id = `projects/<project>/instanceConfigs/nam11`
     spanner_client = spanner.Client()
     base_config = spanner_client.instance_admin_api.get_instance_config(
-        name=base_config_id)
+        name=base_config_id
+    )
 
     # The replicas for the custom instance configuration must include all the replicas of the base
     # configuration, in addition to at least one from the list of optional replicas of the base
@@ -2136,15 +2137,16 @@ def create_instance_config(user_config_name, base_config_id):
         parent=spanner_client.project_name,
         instance_config_id=user_config_name,
         instance_config=spanner_instance_admin.InstanceConfig(
-            name="{}/instanceConfigs/{}".format(spanner_client.project_name, user_config_name),
+            name="{}/instanceConfigs/{}".format(
+                spanner_client.project_name, user_config_name
+            ),
             display_name="custom-python-samples",
             config_type=spanner_instance_admin.InstanceConfig.Type.USER_MANAGED,
             replicas=replicas,
             base_config=base_config.name,
-            labels={
-                "python_cloud_spanner_samples": "true"
-            }
-        ))
+            labels={"python_cloud_spanner_samples": "true"},
+        ),
+    )
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
@@ -2160,12 +2162,16 @@ def update_instance_config(user_config_name):
     # user_config_name = `custom-nam11`
     spanner_client = spanner.Client()
     config = spanner_client.instance_admin_api.get_instance_config(
-        name="{}/instanceConfigs/{}".format(spanner_client.project_name, user_config_name))
+        name="{}/instanceConfigs/{}".format(
+            spanner_client.project_name, user_config_name
+        )
+    )
     config.display_name = "updated custom instance config"
     config.labels["updated"] = "true"
-    operation = spanner_client.instance_admin_api.update_instance_config(instance_config=config,
-                                                                         update_mask=field_mask_pb2.FieldMask(
-                                                                             paths=["display_name", "labels"]))
+    operation = spanner_client.instance_admin_api.update_instance_config(
+        instance_config=config,
+        update_mask=field_mask_pb2.FieldMask(paths=["display_name", "labels"]),
+    )
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
     print("Updated instance configuration {}".format(user_config_name))
@@ -2177,8 +2183,7 @@ def update_instance_config(user_config_name):
 def delete_instance_config(user_config_id):
     """Deleted the user-managed instance configuration."""
     spanner_client = spanner.Client()
-    spanner_client.instance_admin_api.delete_instance_config(
-        name=user_config_id)
+    spanner_client.instance_admin_api.delete_instance_config(name=user_config_id)
     print("Instance config {} successfully deleted".format(user_config_id))
 
 
@@ -2190,10 +2195,15 @@ def list_instance_config_operations():
     """List the user-managed instance configuration operations."""
     spanner_client = spanner.Client()
     operations = spanner_client.instance_admin_api.list_instance_config_operations(
-        request=spanner_instance_admin.ListInstanceConfigOperationsRequest(parent=spanner_client.project_name,
-                                                                           filter="(metadata.@type=type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata)"))
+        request=spanner_instance_admin.ListInstanceConfigOperationsRequest(
+            parent=spanner_client.project_name,
+            filter="(metadata.@type=type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata)",
+        )
+    )
     for op in operations:
-        metadata = spanner_instance_admin.CreateInstanceConfigMetadata.pb(spanner_instance_admin.CreateInstanceConfigMetadata())
+        metadata = spanner_instance_admin.CreateInstanceConfigMetadata.pb(
+            spanner_instance_admin.CreateInstanceConfigMetadata()
+        )
         op.metadata.Unpack(metadata)
         print(
             "List instance config operations {} is {}% completed.".format(
@@ -2235,9 +2245,9 @@ if __name__ == "__main__":  # noqa: C901
     )
     query_data_with_index_parser.add_argument("--start_title", default="Aardvark")
     query_data_with_index_parser.add_argument("--end_title", default="Goo")
-    subparsers.add_parser("read_data_with_index", help=insert_data.__doc__)
+    subparsers.add_parser("read_data_with_index", help=read_data_with_index.__doc__)
     subparsers.add_parser("add_storing_index", help=add_storing_index.__doc__)
-    subparsers.add_parser("read_data_with_storing_index", help=insert_data.__doc__)
+    subparsers.add_parser("read_data_with_storing_index", help=read_data_with_storing_index.__doc__)
     subparsers.add_parser(
         "create_table_with_timestamp", help=create_table_with_timestamp.__doc__
     )

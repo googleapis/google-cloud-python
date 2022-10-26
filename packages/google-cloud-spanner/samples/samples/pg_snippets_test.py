@@ -1,4 +1,4 @@
-# Copyright 2016 Google, Inc.
+# Copyright 2022 Google, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@ import time
 import uuid
 
 from google.api_core import exceptions
-from google.cloud import spanner
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 import pytest
 from test_utils.retry import RetryErrors
 
-import snippets
+import pg_snippets as snippets
 
 CREATE_TABLE_SINGERS = """\
 CREATE TABLE Singers (
-    SingerId     INT64 NOT NULL,
-    FirstName    STRING(1024),
-    LastName     STRING(1024),
-    SingerInfo   BYTES(MAX)
-) PRIMARY KEY (SingerId)
+    SingerId     BIGINT NOT NULL,
+    FirstName    CHARACTER VARYING(1024),
+    LastName     CHARACTER VARYING(1024),
+    SingerInfo   BYTEA,
+    PRIMARY KEY (SingerId)
+)
 """
 
 CREATE_TABLE_ALBUMS = """\
 CREATE TABLE Albums (
-    SingerId     INT64 NOT NULL,
-    AlbumId      INT64 NOT NULL,
-    AlbumTitle   STRING(MAX)
-) PRIMARY KEY (SingerId, AlbumId),
-INTERLEAVE IN PARENT Singers ON DELETE CASCADE
+    SingerId     BIGINT NOT NULL,
+    AlbumId      BIGINT NOT NULL,
+    AlbumTitle   CHARACTER VARYING(1024),
+    PRIMARY KEY (SingerId, AlbumId)
+    ) INTERLEAVE IN PARENT Singers ON DELETE CASCADE
 """
 
 retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
@@ -46,7 +46,7 @@ retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 @pytest.fixture(scope="module")
 def sample_name():
-    return "snippets"
+    return "pg_snippets"
 
 
 @pytest.fixture(scope="module")
@@ -56,7 +56,7 @@ def database_dialect():
     The dialect is used to initialize the dialect for the database.
     It can either be GoogleStandardSql or PostgreSql.
     """
-    return DatabaseDialect.GOOGLE_STANDARD_SQL
+    return DatabaseDialect.POSTGRESQL
 
 
 @pytest.fixture(scope="module")
@@ -106,21 +106,6 @@ def default_leader():
     return "us-east4"
 
 
-@pytest.fixture(scope="module")
-def user_managed_instance_config_name(spanner_client):
-    name = f"custom-python-samples-config-{uuid.uuid4().hex[:10]}"
-    yield name
-    snippets.delete_instance_config(
-      "{}/instanceConfigs/{}".format(spanner_client.project_name, name)
-    )
-    return
-
-
-@pytest.fixture(scope="module")
-def base_instance_config_id(spanner_client):
-    return "{}/instanceConfigs/{}".format(spanner_client.project_name, "nam7")
-
-
 def test_create_instance_explicit(spanner_client, create_instance_id):
     # Rather than re-use 'sample_isntance', we create a new instance, to
     # ensure that the 'create_instance' snippet is tested.
@@ -135,138 +120,6 @@ def test_create_database_explicit(sample_instance, create_database_id):
     snippets.create_database(sample_instance.instance_id, create_database_id)
     database = sample_instance.database(create_database_id)
     database.drop()
-
-
-def test_create_instance_with_processing_units(capsys, lci_instance_id):
-    processing_units = 500
-    retry_429(snippets.create_instance_with_processing_units)(
-      lci_instance_id,
-      processing_units,
-    )
-    out, _ = capsys.readouterr()
-    assert lci_instance_id in out
-    assert "{} processing units".format(processing_units) in out
-    spanner_client = spanner.Client()
-    instance = spanner_client.instance(lci_instance_id)
-    retry_429(instance.delete)()
-
-
-def test_create_database_with_encryption_config(
-  capsys, instance_id, cmek_database_id, kms_key_name
-):
-    snippets.create_database_with_encryption_key(
-      instance_id, cmek_database_id, kms_key_name
-    )
-    out, _ = capsys.readouterr()
-    assert cmek_database_id in out
-    assert kms_key_name in out
-
-
-def test_get_instance_config(capsys):
-    instance_config = "nam6"
-    snippets.get_instance_config(instance_config)
-    out, _ = capsys.readouterr()
-    assert instance_config in out
-
-
-def test_list_instance_config(capsys):
-    snippets.list_instance_config()
-    out, _ = capsys.readouterr()
-    assert "regional-us-central1" in out
-
-
-@pytest.mark.dependency(name="create_instance_config")
-def test_create_instance_config(
-  capsys, user_managed_instance_config_name, base_instance_config_id
-):
-    snippets.create_instance_config(
-      user_managed_instance_config_name, base_instance_config_id
-    )
-    out, _ = capsys.readouterr()
-    assert "Created instance configuration" in out
-
-
-@pytest.mark.dependency(depends=["create_instance_config"])
-def test_update_instance_config(capsys, user_managed_instance_config_name):
-    snippets.update_instance_config(user_managed_instance_config_name)
-    out, _ = capsys.readouterr()
-    assert "Updated instance configuration" in out
-
-
-@pytest.mark.dependency(depends=["create_instance_config"])
-def test_delete_instance_config(capsys, user_managed_instance_config_name):
-    spanner_client = spanner.Client()
-    snippets.delete_instance_config(
-      "{}/instanceConfigs/{}".format(
-        spanner_client.project_name, user_managed_instance_config_name
-      )
-    )
-    out, _ = capsys.readouterr()
-    assert "successfully deleted" in out
-
-
-def test_list_instance_config_operations(capsys):
-    snippets.list_instance_config_operations()
-    out, _ = capsys.readouterr()
-    assert "List instance config operations" in out
-
-
-def test_list_databases(capsys, instance_id):
-    snippets.list_databases(instance_id)
-    out, _ = capsys.readouterr()
-    assert "has default leader" in out
-
-
-def test_create_database_with_default_leader(
-  capsys,
-  multi_region_instance,
-  multi_region_instance_id,
-  default_leader_database_id,
-  default_leader,
-):
-    retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
-    retry_429(snippets.create_database_with_default_leader)(
-      multi_region_instance_id, default_leader_database_id, default_leader
-    )
-    out, _ = capsys.readouterr()
-    assert default_leader_database_id in out
-    assert default_leader in out
-
-
-def test_update_database_with_default_leader(
-  capsys,
-  multi_region_instance,
-  multi_region_instance_id,
-  default_leader_database_id,
-  default_leader,
-):
-    retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
-    retry_429(snippets.update_database_with_default_leader)(
-      multi_region_instance_id, default_leader_database_id, default_leader
-    )
-    out, _ = capsys.readouterr()
-    assert default_leader_database_id in out
-    assert default_leader in out
-
-
-def test_get_database_ddl(capsys, instance_id, sample_database):
-    snippets.get_database_ddl(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert sample_database.database_id in out
-
-
-def test_query_information_schema_database_options(
-  capsys,
-  multi_region_instance,
-  multi_region_instance_id,
-  default_leader_database_id,
-  default_leader,
-):
-    snippets.query_information_schema_database_options(
-      multi_region_instance_id, default_leader_database_id
-    )
-    out, _ = capsys.readouterr()
-    assert default_leader in out
 
 
 @pytest.mark.dependency(name="insert_data")
@@ -350,15 +203,6 @@ def test_add_index(capsys, instance_id, sample_database):
 
 
 @pytest.mark.dependency(depends=["add_index"])
-def test_query_data_with_index(capsys, instance_id, sample_database):
-    snippets.query_data_with_index(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "Go, Go, Go" in out
-    assert "Forever Hold Your Peace" in out
-    assert "Green" not in out
-
-
-@pytest.mark.dependency(depends=["add_index"])
 def test_read_data_with_index(capsys, instance_id, sample_database):
     snippets.read_data_with_index(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
@@ -429,58 +273,11 @@ def test_insert_data_with_timestamp(capsys, instance_id, sample_database):
     assert "Inserted data." in out
 
 
-@pytest.mark.dependency(name="write_struct_data")
-def test_write_struct_data(capsys, instance_id, sample_database):
-    snippets.write_struct_data(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "Inserted sample data for STRUCT queries" in out
-
-
-@pytest.mark.dependency(depends=["write_struct_data"])
-def test_query_with_struct(capsys, instance_id, sample_database):
-    snippets.query_with_struct(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "SingerId: 6" in out
-
-
-@pytest.mark.dependency(depends=["write_struct_data"])
-def test_query_with_array_of_struct(capsys, instance_id, sample_database):
-    snippets.query_with_array_of_struct(instance_id,
-                                        sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "SingerId: 8" in out
-    assert "SingerId: 7" in out
-    assert "SingerId: 6" in out
-
-
-@pytest.mark.dependency(depends=["write_struct_data"])
-def test_query_struct_field(capsys, instance_id, sample_database):
-    snippets.query_struct_field(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "SingerId: 6" in out
-
-
-@pytest.mark.dependency(depends=["write_struct_data"])
-def test_query_nested_struct_field(capsys, instance_id, sample_database):
-    snippets.query_nested_struct_field(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "SingerId: 6 SongName: Imagination" in out
-    assert "SingerId: 9 SongName: Imagination" in out
-
-
 @pytest.mark.dependency(name="insert_data_with_dml")
 def test_insert_data_with_dml(capsys, instance_id, sample_database):
     snippets.insert_data_with_dml(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "1 record(s) inserted." in out
-
-
-@pytest.mark.dependency(name="log_commit_stats")
-def test_log_commit_stats(capsys, instance_id, sample_database):
-    snippets.log_commit_stats(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "1 record(s) inserted." in out
-    assert "3 mutation(s) in transaction." in out
 
 
 @pytest.mark.dependency(depends=["insert_data"])
@@ -497,14 +294,6 @@ def test_delete_data_with_dml(capsys, instance_id, sample_database):
     assert "1 record(s) deleted." in out
 
 
-@pytest.mark.dependency(depends=["add_timestamp_column"])
-def test_update_data_with_dml_timestamp(capsys, instance_id, sample_database):
-    snippets.update_data_with_dml_timestamp(instance_id,
-                                            sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "2 record(s) updated." in out
-
-
 @pytest.mark.dependency(name="dml_write_read_transaction")
 def test_dml_write_read_transaction(capsys, instance_id, sample_database):
     snippets.dml_write_read_transaction(instance_id,
@@ -512,14 +301,6 @@ def test_dml_write_read_transaction(capsys, instance_id, sample_database):
     out, _ = capsys.readouterr()
     assert "1 record(s) inserted." in out
     assert "FirstName: Timothy, LastName: Campbell" in out
-
-
-@pytest.mark.dependency(depends=["dml_write_read_transaction"])
-def test_update_data_with_dml_struct(capsys, instance_id, sample_database):
-    snippets.update_data_with_dml_struct(instance_id,
-                                         sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "1 record(s) updated" in out
 
 
 @pytest.mark.dependency(name="insert_with_dml")
@@ -557,7 +338,7 @@ def test_delete_data_with_partitioned_dml(capsys, instance_id, sample_database):
     snippets.delete_data_with_partitioned_dml(instance_id,
                                               sample_database.database_id)
     out, _ = capsys.readouterr()
-    assert "6 record(s) deleted" in out
+    assert "5 record(s) deleted" in out
 
 
 @pytest.mark.dependency(depends=["add_column"])
@@ -586,14 +367,6 @@ def test_insert_datatypes_data(capsys, instance_id, sample_database):
 
 
 @pytest.mark.dependency(depends=["insert_datatypes_data"])
-def test_query_data_with_array(capsys, instance_id, sample_database):
-    snippets.query_data_with_array(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "VenueId: 19, VenueName: Venue 19, AvailableDate: 2020-11-01" in out
-    assert "VenueId: 42, VenueName: Venue 42, AvailableDate: 2020-10-01" in out
-
-
-@pytest.mark.dependency(depends=["insert_datatypes_data"])
 def test_query_data_with_bool(capsys, instance_id, sample_database):
     snippets.query_data_with_bool(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
@@ -605,14 +378,6 @@ def test_query_data_with_bytes(capsys, instance_id, sample_database):
     snippets.query_data_with_bytes(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "VenueId: 4, VenueName: Venue 4" in out
-
-
-@pytest.mark.dependency(depends=["insert_datatypes_data"])
-def test_query_data_with_date(capsys, instance_id, sample_database):
-    snippets.query_data_with_date(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "VenueId: 4, VenueName: Venue 4, LastContactDate: 2018-09-02" in out
-    assert "VenueId: 42, VenueName: Venue 42, LastContactDate: 2018-10-01" in out
 
 
 @pytest.mark.dependency(depends=["insert_datatypes_data"])
@@ -638,55 +403,20 @@ def test_query_data_with_string(capsys, instance_id, sample_database):
     assert "VenueId: 42, VenueName: Venue 42" in out
 
 
-@pytest.mark.dependency(
-  name="add_numeric_column",
-  depends=["create_table_with_datatypes"],
-)
-def test_add_numeric_column(capsys, instance_id, sample_database):
-    snippets.add_numeric_column(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert 'Altered table "Venues" on database ' in out
-
-
-@pytest.mark.dependency(depends=["add_numeric_column", "insert_datatypes_data"])
+@pytest.mark.dependency(depends=["insert_datatypes_data"])
 def test_update_data_with_numeric(capsys, instance_id, sample_database):
     snippets.update_data_with_numeric(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "Updated data" in out
 
 
-@pytest.mark.dependency(depends=["add_numeric_column"])
+@pytest.mark.dependency(depends=["insert_datatypes_data"])
 def test_query_data_with_numeric_parameter(capsys, instance_id,
                                            sample_database):
     snippets.query_data_with_numeric_parameter(instance_id,
                                                sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "VenueId: 4, Revenue: 35000" in out
-
-
-@pytest.mark.dependency(
-  name="add_json_column",
-  depends=["create_table_with_datatypes"],
-)
-def test_add_json_column(capsys, instance_id, sample_database):
-    snippets.add_json_column(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert 'Altered table "Venues" on database ' in out
-
-
-@pytest.mark.dependency(depends=["add_json_column", "insert_datatypes_data"])
-def test_update_data_with_json(capsys, instance_id, sample_database):
-    snippets.update_data_with_json(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "Updated data" in out
-
-
-@pytest.mark.dependency(depends=["add_json_column"])
-def test_query_data_with_json_parameter(capsys, instance_id, sample_database):
-    snippets.query_data_with_json_parameter(instance_id,
-                                            sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "VenueId: 19, VenueDetails: {'open': True, 'rating': 9}" in out
 
 
 @pytest.mark.dependency(depends=["insert_datatypes_data"])
@@ -719,18 +449,3 @@ def test_create_client_with_query_options(capsys, instance_id, sample_database):
     assert "VenueId: 4, VenueName: Venue 4, LastUpdateTime:" in out
     assert "VenueId: 19, VenueName: Venue 19, LastUpdateTime:" in out
     assert "VenueId: 42, VenueName: Venue 42, LastUpdateTime:" in out
-
-
-@pytest.mark.dependency(depends=["insert_datatypes_data"])
-def test_set_transaction_tag(capsys, instance_id, sample_database):
-    snippets.set_transaction_tag(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "Venue capacities updated." in out
-    assert "New venue inserted." in out
-
-
-@pytest.mark.dependency(depends=["insert_data"])
-def test_set_request_tag(capsys, instance_id, sample_database):
-    snippets.set_request_tag(instance_id, sample_database.database_id)
-    out, _ = capsys.readouterr()
-    assert "SingerId: 1, AlbumId: 1, AlbumTitle: Total Junk" in out
