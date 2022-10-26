@@ -62,12 +62,15 @@ class StructuredLogHandler(logging.StreamHandler):
     and write them to standard output
     """
 
-    def __init__(self, *, labels=None, stream=None, project_id=None):
+    def __init__(
+        self, *, labels=None, stream=None, project_id=None, json_encoder_cls=None
+    ):
         """
         Args:
             labels (Optional[dict]): Additional labels to attach to logs.
             stream (Optional[IO]): Stream to be used by the handler.
             project (Optional[str]): Project Id associated with the logs.
+            json_encoder_cls (Optional[Type[JSONEncoder]]): Custom JSON encoder. Defaults to json.JSONEncoder
         """
         super(StructuredLogHandler, self).__init__(stream=stream)
         self.project_id = project_id
@@ -78,6 +81,8 @@ class StructuredLogHandler(logging.StreamHandler):
 
         # make logs appear in GCP structured logging format
         self._gcp_formatter = logging.Formatter(GCP_FORMAT)
+
+        self._json_encoder_cls = json_encoder_cls or json.JSONEncoder
 
     def format(self, record):
         """Format the message into structured log JSON.
@@ -95,14 +100,18 @@ class StructuredLogHandler(logging.StreamHandler):
                 if key in GCP_STRUCTURED_LOGGING_FIELDS:
                     del message[key]
             # if input is a dictionary, encode it as a json string
-            encoded_msg = json.dumps(message, ensure_ascii=False)
+            encoded_msg = json.dumps(
+                message, ensure_ascii=False, cls=self._json_encoder_cls
+            )
             # all json.dumps strings should start and end with parentheses
             # strip them out to embed these fields in the larger JSON payload
             if len(encoded_msg) > 2:
                 payload = encoded_msg[1:-1] + ","
         elif message:
             # properly break any formatting in string to make it json safe
-            encoded_message = json.dumps(message, ensure_ascii=False)
+            encoded_message = json.dumps(
+                message, ensure_ascii=False, cls=self._json_encoder_cls
+            )
             payload = '"message": {},'.format(encoded_message)
 
         record._payload_str = payload or ""

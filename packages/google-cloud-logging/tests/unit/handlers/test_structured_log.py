@@ -46,6 +46,15 @@ class TestStructuredLogHandler(unittest.TestCase):
         handler = self._make_one(project_id="foo")
         self.assertEqual(handler.project_id, "foo")
 
+    def test_ctor_w_encoder(self):
+        import json
+
+        class CustomJSONEncoder(json.JSONEncoder):
+            pass
+
+        handler = self._make_one(json_encoder_cls=CustomJSONEncoder)
+        self.assertEqual(handler._json_encoder_cls, CustomJSONEncoder)
+
     def test_format(self):
         import logging
         import json
@@ -206,6 +215,51 @@ class TestStructuredLogHandler(unittest.TestCase):
         result = handler.format(record)
         self.assertIn(expected_result, result)
         self.assertIn("message", result)
+
+    def test_format_with_custom_json_encoder(self):
+        import json
+        import logging
+
+        from pathlib import Path
+        from typing import Any
+
+        class CustomJSONEncoder(json.JSONEncoder):
+            def default(self, obj: Any) -> Any:
+                if isinstance(obj, Path):
+                    return str(obj)
+                return json.JSONEncoder.default(self, obj)
+
+        handler = self._make_one(json_encoder_cls=CustomJSONEncoder)
+
+        message = "hello world"
+        json_fields = {"path": Path("/path")}
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            message,
+            None,
+            None,
+        )
+        setattr(record, "json_fields", json_fields)
+        expected_payload = {
+            "message": message,
+            "severity": "INFO",
+            "logging.googleapis.com/trace": "",
+            "logging.googleapis.com/spanId": "",
+            "logging.googleapis.com/trace_sampled": False,
+            "logging.googleapis.com/sourceLocation": {},
+            "httpRequest": {},
+            "logging.googleapis.com/labels": {},
+            "path": "/path",
+        }
+        handler.filter(record)
+
+        result = json.loads(handler.format(record))
+
+        self.assertEqual(set(expected_payload.keys()), set(result.keys()))
+        self.assertEqual(result["path"], "/path")
 
     def test_format_with_reserved_json_field(self):
         # drop json_field data with reserved names
