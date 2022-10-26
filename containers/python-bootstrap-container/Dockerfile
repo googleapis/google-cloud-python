@@ -14,8 +14,6 @@
 
 # Use a multi-stage docker build to limit production dependencies.
 
-# Use the official lightweight Node.js 14 image.
-# https://hub.docker.com/_/node
 FROM python:3.10.6-buster
 
 RUN apt update
