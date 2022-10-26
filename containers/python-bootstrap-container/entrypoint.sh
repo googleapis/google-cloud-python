@@ -40,7 +40,7 @@ mkdir -p "$WORKSPACE_DIR/$MONO_REPO_NAME/packages/$FOLDER_NAME"
 
 # This is the path to the .OwlBot.yaml that will 
 # be used by the bootstrapping container
-PATH_TO_YAML="packages/$FOLDER_NAME/.github/.OwlBot.yaml"
+PATH_TO_YAML="packages/$FOLDER_NAME/.OwlBot.yaml"
 
 # Write the Path to .OwlBot.yaml in the interContainerVars.json folder
 jq --arg PATH_TO_YAML "$PATH_TO_YAML" '. += {"owlbotYamlPath": $PATH_TO_YAML}' $PATH_TO_CONTAINER_VARS | save_to_temp_then_file $PATH_TO_CONTAINER_VARS
