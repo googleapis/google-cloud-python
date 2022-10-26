@@ -3,22 +3,9 @@ steps:
     - name: 'gcr.io/cloud-builders/docker'
       dir: 'containers/python-bootstrap-container'
       args: [ 'build',
-        '-t', 'gcr.io/owlbot-bootstrap-prod/python-bootstrapper:$SHORT_SHA',
-        '-t', 'us-docker.pkg.dev/owlbot-bootstrap-prod/owlbot-bootstrapper-images/python-bootstrapper:$SHORT_SHA',
-        '-t', 'gcr.io/owlbot-bootstrap-prod/python-bootstrapper:latest',
-        '-t', 'us-docker.pkg.dev/owlbot-bootstrap-prod/owlbot-bootstrapper-images/python-bootstrapper:latest',
-        '-t', 'gcr.io/owlbot-bootstrap-staging/python-bootstrapper:$SHORT_SHA',
-        '-t', 'us-docker.pkg.dev/owlbot-bootstrap-staging/owlbot-bootstrapper-images/python-bootstrapper:$SHORT_SHA',
-        '-t', 'gcr.io/owlbot-bootstrap-staging/python-bootstrapper:latest', 
-        '-t', 'us-docker.pkg.dev/owlbot-bootstrap-staging/owlbot-bootstrapper-images/python-bootstrapper:latest',
+        '-t', 'gcr.io/$PROJECT_ID/python-bootstrapper:$SHORT_SHA',
+        '-t', 'gcr.io/$PROJECT_ID/python-bootstrapper:latest',
         '.' ]
-    # Push the docker image.
 images:
-  - gcr.io/owlbot-bootstrap-prod/python-bootstrapper:$SHORT_SHA
-  - us-docker.pkg.dev/owlbot-bootstrap-prod/owlbot-bootstrapper-images/python-bootstrapper:$SHORT_SHA
-  - gcr.io/owlbot-bootstrap-prod/python-bootstrapper:latest
-  - us-docker.pkg.dev/owlbot-bootstrap-prod/owlbot-bootstrapper-images/python-bootstrapper:latest
-  - gcr.io/owlbot-bootstrap-staging/python-bootstrapper:$SHORT_SHA
-  - us-docker.pkg.dev/owlbot-bootstrap-staging/owlbot-bootstrapper-images/python-bootstrapper:$SHORT_SHA
-  - gcr.io/owlbot-bootstrap-staging/python-bootstrapper:latest
-  - us-docker.pkg.dev/owlbot-bootstrap-staging/owlbot-bootstrapper-images/python-bootstrapper:latest
+  - gcr.io/$PROJECT_ID/python-bootstrapper:$SHORT_SHA
+  - gcr.io/$PROJECT_ID/python-bootstrapper:latest
