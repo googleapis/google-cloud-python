@@ -11,7 +11,7 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "apiPackage",
     "api_id": "apiName.googleapis.com",
-    "default_version": "",
+    "default_version": "apiVersion",
     "codeowner_team": "",
     "api_shortname": "apiName"
 }
