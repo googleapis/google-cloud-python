@@ -32,13 +32,19 @@ CLIENT_SECRET = "password"
 # Base64 encoding of "username:password".
 BASIC_AUTH_ENCODING = "dXNlcm5hbWU6cGFzc3dvcmQ="
 SERVICE_ACCOUNT_EMAIL = "service-1234@service-name.iam.gserviceaccount.com"
+SERVICE_ACCOUNT_IMPERSONATION_URL_BASE = (
+    "https://us-east1-iamcredentials.googleapis.com"
+)
+SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE = "/v1/projects/-/serviceAccounts/{}:generateAccessToken".format(
+    SERVICE_ACCOUNT_EMAIL
+)
 SERVICE_ACCOUNT_IMPERSONATION_URL = (
-    "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
-    + "/serviceAccounts/{}:generateAccessToken".format(SERVICE_ACCOUNT_EMAIL)
+    SERVICE_ACCOUNT_IMPERSONATION_URL_BASE + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
 )
 QUOTA_PROJECT_ID = "QUOTA_PROJECT_ID"
 SCOPES = ["scope1", "scope2"]
 TOKEN_URL = "https://sts.googleapis.com/v1/token"
+TOKEN_INFO_URL = "https://sts.googleapis.com/v1/introspect"
 SUBJECT_TOKEN_TYPE = "urn:ietf:params:aws:token-type:aws4_request"
 AUDIENCE = "//iam.googleapis.com/projects/123456/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID"
 REGION_URL = "http://169.254.169.254/latest/meta-data/placement/availability-zone"
@@ -56,6 +62,89 @@ TOKEN = "IQoJb3JpZ2luX2VjEIz//////////wEaCXVzLWVhc3QtMiJGMEQCIH7MHX/Oy/OB8OlLQa9
 REQUEST_PARAMS = '{"KeySchema":[{"KeyType":"HASH","AttributeName":"Id"}],"TableName":"TestTable","AttributeDefinitions":[{"AttributeName":"Id","AttributeType":"S"}],"ProvisionedThroughput":{"WriteCapacityUnits":5,"ReadCapacityUnits":5}}'
 # Each tuple contains the following entries:
 # region, time, credentials, original_request, signed_request
+
+VALID_TOKEN_URLS = [
+    "https://sts.googleapis.com",
+    "https://us-east-1.sts.googleapis.com",
+    "https://US-EAST-1.sts.googleapis.com",
+    "https://sts.us-east-1.googleapis.com",
+    "https://sts.US-WEST-1.googleapis.com",
+    "https://us-east-1-sts.googleapis.com",
+    "https://US-WEST-1-sts.googleapis.com",
+    "https://us-west-1-sts.googleapis.com/path?query",
+    "https://sts-us-east-1.p.googleapis.com",
+]
+INVALID_TOKEN_URLS = [
+    "https://iamcredentials.googleapis.com",
+    "sts.googleapis.com",
+    "https://",
+    "http://sts.googleapis.com",
+    "https://st.s.googleapis.com",
+    "https://us-eas\t-1.sts.googleapis.com",
+    "https:/us-east-1.sts.googleapis.com",
+    "https://US-WE/ST-1-sts.googleapis.com",
+    "https://sts-us-east-1.googleapis.com",
+    "https://sts-US-WEST-1.googleapis.com",
+    "testhttps://us-east-1.sts.googleapis.com",
+    "https://us-east-1.sts.googleapis.comevil.com",
+    "https://us-east-1.us-east-1.sts.googleapis.com",
+    "https://us-ea.s.t.sts.googleapis.com",
+    "https://sts.googleapis.comevil.com",
+    "hhttps://us-east-1.sts.googleapis.com",
+    "https://us- -1.sts.googleapis.com",
+    "https://-sts.googleapis.com",
+    "https://us-east-1.sts.googleapis.com.evil.com",
+    "https://sts.pgoogleapis.com",
+    "https://p.googleapis.com",
+    "https://sts.p.com",
+    "http://sts.p.googleapis.com",
+    "https://xyz-sts.p.googleapis.com",
+    "https://sts-xyz.123.p.googleapis.com",
+    "https://sts-xyz.p1.googleapis.com",
+    "https://sts-xyz.p.foo.com",
+    "https://sts-xyz.p.foo.googleapis.com",
+]
+VALID_SERVICE_ACCOUNT_IMPERSONATION_URLS = [
+    "https://iamcredentials.googleapis.com",
+    "https://us-east-1.iamcredentials.googleapis.com",
+    "https://US-EAST-1.iamcredentials.googleapis.com",
+    "https://iamcredentials.us-east-1.googleapis.com",
+    "https://iamcredentials.US-WEST-1.googleapis.com",
+    "https://us-east-1-iamcredentials.googleapis.com",
+    "https://US-WEST-1-iamcredentials.googleapis.com",
+    "https://us-west-1-iamcredentials.googleapis.com/path?query",
+    "https://iamcredentials-us-east-1.p.googleapis.com",
+]
+INVALID_SERVICE_ACCOUNT_IMPERSONATION_URLS = [
+    "https://sts.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "https://",
+    "http://iamcredentials.googleapis.com",
+    "https://iamcre.dentials.googleapis.com",
+    "https://us-eas\t-1.iamcredentials.googleapis.com",
+    "https:/us-east-1.iamcredentials.googleapis.com",
+    "https://US-WE/ST-1-iamcredentials.googleapis.com",
+    "https://iamcredentials-us-east-1.googleapis.com",
+    "https://iamcredentials-US-WEST-1.googleapis.com",
+    "testhttps://us-east-1.iamcredentials.googleapis.com",
+    "https://us-east-1.iamcredentials.googleapis.comevil.com",
+    "https://us-east-1.us-east-1.iamcredentials.googleapis.com",
+    "https://us-ea.s.t.iamcredentials.googleapis.com",
+    "https://iamcredentials.googleapis.comevil.com",
+    "hhttps://us-east-1.iamcredentials.googleapis.com",
+    "https://us- -1.iamcredentials.googleapis.com",
+    "https://-iamcredentials.googleapis.com",
+    "https://us-east-1.iamcredentials.googleapis.com.evil.com",
+    "https://iamcredentials.pgoogleapis.com",
+    "https://p.googleapis.com",
+    "https://iamcredentials.p.com",
+    "http://iamcredentials.p.googleapis.com",
+    "https://xyz-iamcredentials.p.googleapis.com",
+    "https://iamcredentials-xyz.123.p.googleapis.com",
+    "https://iamcredentials-xyz.p1.googleapis.com",
+    "https://iamcredentials-xyz.p.foo.com",
+    "https://iamcredentials-xyz.p.foo.googleapis.com",
+]
 TEST_FIXTURES = [
     # GET request (AWS botocore tests).
     # https://github.com/boto/botocore/blob/879f8440a4e9ace5d3cf145ce8b3d5e5ffb892ef/tests/unit/auth/aws4_testsuite/get-vanilla.req
@@ -727,6 +816,8 @@ class TestCredentials(object):
     def make_credentials(
         cls,
         credential_source,
+        token_url=TOKEN_URL,
+        token_info_url=TOKEN_INFO_URL,
         client_id=None,
         client_secret=None,
         quota_project_id=None,
@@ -737,7 +828,8 @@ class TestCredentials(object):
         return aws.Credentials(
             audience=AUDIENCE,
             subject_token_type=SUBJECT_TOKEN_TYPE,
-            token_url=TOKEN_URL,
+            token_url=token_url,
+            token_info_url=token_info_url,
             service_account_impersonation_url=service_account_impersonation_url,
             credential_source=credential_source,
             client_id=client_id,
@@ -796,6 +888,7 @@ class TestCredentials(object):
                 "audience": AUDIENCE,
                 "subject_token_type": SUBJECT_TOKEN_TYPE,
                 "token_url": TOKEN_URL,
+                "token_info_url": TOKEN_INFO_URL,
                 "service_account_impersonation_url": SERVICE_ACCOUNT_IMPERSONATION_URL,
                 "service_account_impersonation": {"token_lifetime_seconds": 2800},
                 "client_id": CLIENT_ID,
@@ -811,6 +904,7 @@ class TestCredentials(object):
             audience=AUDIENCE,
             subject_token_type=SUBJECT_TOKEN_TYPE,
             token_url=TOKEN_URL,
+            token_info_url=TOKEN_INFO_URL,
             service_account_impersonation_url=SERVICE_ACCOUNT_IMPERSONATION_URL,
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
             client_id=CLIENT_ID,
@@ -837,6 +931,7 @@ class TestCredentials(object):
             audience=AUDIENCE,
             subject_token_type=SUBJECT_TOKEN_TYPE,
             token_url=TOKEN_URL,
+            token_info_url=None,
             service_account_impersonation_url=None,
             service_account_impersonation_options={},
             client_id=None,
@@ -852,6 +947,7 @@ class TestCredentials(object):
             "audience": AUDIENCE,
             "subject_token_type": SUBJECT_TOKEN_TYPE,
             "token_url": TOKEN_URL,
+            "token_info_url": TOKEN_INFO_URL,
             "service_account_impersonation_url": SERVICE_ACCOUNT_IMPERSONATION_URL,
             "service_account_impersonation": {"token_lifetime_seconds": 2800},
             "client_id": CLIENT_ID,
@@ -869,6 +965,7 @@ class TestCredentials(object):
             audience=AUDIENCE,
             subject_token_type=SUBJECT_TOKEN_TYPE,
             token_url=TOKEN_URL,
+            token_info_url=TOKEN_INFO_URL,
             service_account_impersonation_url=SERVICE_ACCOUNT_IMPERSONATION_URL,
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
             client_id=CLIENT_ID,
@@ -896,6 +993,7 @@ class TestCredentials(object):
             audience=AUDIENCE,
             subject_token_type=SUBJECT_TOKEN_TYPE,
             token_url=TOKEN_URL,
+            token_info_url=None,
             service_account_impersonation_url=None,
             service_account_impersonation_options={},
             client_id=None,
@@ -954,8 +1052,88 @@ class TestCredentials(object):
             "audience": AUDIENCE,
             "subject_token_type": SUBJECT_TOKEN_TYPE,
             "token_url": TOKEN_URL,
+            "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE,
         }
+
+    def test_token_info_url(self):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE.copy()
+        )
+
+        assert credentials.token_info_url == TOKEN_INFO_URL
+
+    def test_token_info_url_custom(self):
+        for url in VALID_TOKEN_URLS:
+            credentials = self.make_credentials(
+                credential_source=self.CREDENTIAL_SOURCE.copy(),
+                token_info_url=(url + "/introspect"),
+            )
+
+            assert credentials.token_info_url == (url + "/introspect")
+
+    def test_token_info_url_bad(self):
+        for url in INVALID_TOKEN_URLS:
+            with pytest.raises(ValueError) as excinfo:
+                self.make_credentials(
+                    credential_source=self.CREDENTIAL_SOURCE.copy(),
+                    token_info_url=(url + "/introspect"),
+                )
+
+            assert excinfo.match(r"The provided token info URL is invalid\.")
+
+    def test_token_info_url_negative(self):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE.copy(), token_info_url=None
+        )
+
+        assert not credentials.token_info_url
+
+    def test_token_url_custom(self):
+        for url in VALID_TOKEN_URLS:
+            credentials = self.make_credentials(
+                credential_source=self.CREDENTIAL_SOURCE.copy(),
+                token_url=(url + "/token"),
+            )
+
+            assert credentials._token_url == (url + "/token")
+
+    def test_token_url_bad(self):
+        for url in INVALID_TOKEN_URLS:
+            with pytest.raises(ValueError) as excinfo:
+                self.make_credentials(
+                    credential_source=self.CREDENTIAL_SOURCE.copy(),
+                    token_url=(url + "/token"),
+                )
+
+            assert excinfo.match(r"The provided token URL is invalid\.")
+
+    def test_service_account_impersonation_url_custom(self):
+        for url in VALID_SERVICE_ACCOUNT_IMPERSONATION_URLS:
+            credentials = self.make_credentials(
+                credential_source=self.CREDENTIAL_SOURCE.copy(),
+                service_account_impersonation_url=(
+                    url + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
+                ),
+            )
+
+            assert credentials._service_account_impersonation_url == (
+                url + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
+            )
+
+    def test_service_account_impersonation_url_bad(self):
+        for url in INVALID_SERVICE_ACCOUNT_IMPERSONATION_URLS:
+            with pytest.raises(ValueError) as excinfo:
+                self.make_credentials(
+                    credential_source=self.CREDENTIAL_SOURCE.copy(),
+                    service_account_impersonation_url=(
+                        url + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
+                    ),
+                )
+
+            assert excinfo.match(
+                r"The provided service account impersonation URL is invalid\."
+            )
 
     def test_retrieve_subject_token_missing_region_url(self):
         # When AWS_REGION envvar is not available, region_url is required for

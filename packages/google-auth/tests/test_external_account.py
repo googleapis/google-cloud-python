@@ -65,37 +65,93 @@ TEST_NON_USER_AUDIENCES = [
     "//iam.googleapis.com/locations//workforcePool/pool-id/providers/provider-id",
 ]
 
+VALID_TOKEN_URLS = [
+    "https://sts.googleapis.com",
+    "https://us-east-1.sts.googleapis.com",
+    "https://US-EAST-1.sts.googleapis.com",
+    "https://sts.us-east-1.googleapis.com",
+    "https://sts.US-WEST-1.googleapis.com",
+    "https://us-east-1-sts.googleapis.com",
+    "https://US-WEST-1-sts.googleapis.com",
+    "https://us-west-1-sts.googleapis.com/path?query",
+    "https://sts-us-east-1.p.googleapis.com",
+]
+INVALID_TOKEN_URLS = [
+    "https://iamcredentials.googleapis.com",
+    "sts.googleapis.com",
+    "https://",
+    "http://sts.googleapis.com",
+    "https://st.s.googleapis.com",
+    "https://us-eas\t-1.sts.googleapis.com",
+    "https:/us-east-1.sts.googleapis.com",
+    "https://US-WE/ST-1-sts.googleapis.com",
+    "https://sts-us-east-1.googleapis.com",
+    "https://sts-US-WEST-1.googleapis.com",
+    "testhttps://us-east-1.sts.googleapis.com",
+    "https://us-east-1.sts.googleapis.comevil.com",
+    "https://us-east-1.us-east-1.sts.googleapis.com",
+    "https://us-ea.s.t.sts.googleapis.com",
+    "https://sts.googleapis.comevil.com",
+    "hhttps://us-east-1.sts.googleapis.com",
+    "https://us- -1.sts.googleapis.com",
+    "https://-sts.googleapis.com",
+    "https://us-east-1.sts.googleapis.com.evil.com",
+    "https://sts.pgoogleapis.com",
+    "https://p.googleapis.com",
+    "https://sts.p.com",
+    "http://sts.p.googleapis.com",
+    "https://xyz-sts.p.googleapis.com",
+    "https://sts-xyz.123.p.googleapis.com",
+    "https://sts-xyz.p1.googleapis.com",
+    "https://sts-xyz.p.foo.com",
+    "https://sts-xyz.p.foo.googleapis.com",
+]
+VALID_SERVICE_ACCOUNT_IMPERSONATION_URLS = [
+    "https://iamcredentials.googleapis.com",
+    "https://us-east-1.iamcredentials.googleapis.com",
+    "https://US-EAST-1.iamcredentials.googleapis.com",
+    "https://iamcredentials.us-east-1.googleapis.com",
+    "https://iamcredentials.US-WEST-1.googleapis.com",
+    "https://us-east-1-iamcredentials.googleapis.com",
+    "https://US-WEST-1-iamcredentials.googleapis.com",
+    "https://us-west-1-iamcredentials.googleapis.com/path?query",
+    "https://iamcredentials-us-east-1.p.googleapis.com",
+]
+INVALID_SERVICE_ACCOUNT_IMPERSONATION_URLS = [
+    "https://sts.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "https://",
+    "http://iamcredentials.googleapis.com",
+    "https://iamcre.dentials.googleapis.com",
+    "https://us-eas\t-1.iamcredentials.googleapis.com",
+    "https:/us-east-1.iamcredentials.googleapis.com",
+    "https://US-WE/ST-1-iamcredentials.googleapis.com",
+    "https://iamcredentials-us-east-1.googleapis.com",
+    "https://iamcredentials-US-WEST-1.googleapis.com",
+    "testhttps://us-east-1.iamcredentials.googleapis.com",
+    "https://us-east-1.iamcredentials.googleapis.comevil.com",
+    "https://us-east-1.us-east-1.iamcredentials.googleapis.com",
+    "https://us-ea.s.t.iamcredentials.googleapis.com",
+    "https://iamcredentials.googleapis.comevil.com",
+    "hhttps://us-east-1.iamcredentials.googleapis.com",
+    "https://us- -1.iamcredentials.googleapis.com",
+    "https://-iamcredentials.googleapis.com",
+    "https://us-east-1.iamcredentials.googleapis.com.evil.com",
+    "https://iamcredentials.pgoogleapis.com",
+    "https://p.googleapis.com",
+    "https://iamcredentials.p.com",
+    "http://iamcredentials.p.googleapis.com",
+    "https://xyz-iamcredentials.p.googleapis.com",
+    "https://iamcredentials-xyz.123.p.googleapis.com",
+    "https://iamcredentials-xyz.p1.googleapis.com",
+    "https://iamcredentials-xyz.p.foo.com",
+    "https://iamcredentials-xyz.p.foo.googleapis.com",
+]
+
 
 class CredentialsImpl(external_account.Credentials):
-    def __init__(
-        self,
-        audience,
-        subject_token_type,
-        token_url,
-        credential_source,
-        service_account_impersonation_url=None,
-        service_account_impersonation_options={},
-        client_id=None,
-        client_secret=None,
-        quota_project_id=None,
-        scopes=None,
-        default_scopes=None,
-        workforce_pool_user_project=None,
-    ):
-        super(CredentialsImpl, self).__init__(
-            audience=audience,
-            subject_token_type=subject_token_type,
-            token_url=token_url,
-            credential_source=credential_source,
-            service_account_impersonation_url=service_account_impersonation_url,
-            service_account_impersonation_options=service_account_impersonation_options,
-            client_id=client_id,
-            client_secret=client_secret,
-            quota_project_id=quota_project_id,
-            scopes=scopes,
-            default_scopes=default_scopes,
-            workforce_pool_user_project=workforce_pool_user_project,
-        )
+    def __init__(self, **kwargs):
+        super(CredentialsImpl, self).__init__(**kwargs)
         self._counter = 0
 
     def retrieve_subject_token(self, request):
@@ -106,6 +162,7 @@ class CredentialsImpl(external_account.Credentials):
 
 class TestCredentials(object):
     TOKEN_URL = "https://sts.googleapis.com/v1/token"
+    TOKEN_INFO_URL = "https://sts.googleapis.com/v1/introspect"
     PROJECT_NUMBER = "123456"
     POOL_ID = "POOL_ID"
     PROVIDER_ID = "PROVIDER_ID"
@@ -165,6 +222,7 @@ class TestCredentials(object):
         client_id=None,
         client_secret=None,
         quota_project_id=None,
+        token_info_url=None,
         scopes=None,
         default_scopes=None,
         service_account_impersonation_url=None,
@@ -174,6 +232,7 @@ class TestCredentials(object):
             audience=cls.AUDIENCE,
             subject_token_type=cls.SUBJECT_TOKEN_TYPE,
             token_url=cls.TOKEN_URL,
+            token_info_url=token_info_url,
             service_account_impersonation_url=service_account_impersonation_url,
             service_account_impersonation_options=service_account_impersonation_options,
             credential_source=cls.CREDENTIAL_SOURCE,
@@ -280,53 +339,14 @@ class TestCredentials(object):
         assert "body" not in request_kwargs
 
     def test_valid_token_url_shall_pass_validation(self):
-        valid_urls = [
-            "https://sts.googleapis.com",
-            "https://us-east-1.sts.googleapis.com",
-            "https://US-EAST-1.sts.googleapis.com",
-            "https://sts.us-east-1.googleapis.com",
-            "https://sts.US-WEST-1.googleapis.com",
-            "https://us-east-1-sts.googleapis.com",
-            "https://US-WEST-1-sts.googleapis.com",
-            "https://us-west-1-sts.googleapis.com/path?query",
-            "https://sts-us-east-1.p.googleapis.com",
-        ]
+        valid_urls = VALID_TOKEN_URLS
 
         for url in valid_urls:
             # A valid url shouldn't throw exception and a None value should be returned
             external_account.Credentials.validate_token_url(url)
 
     def test_invalid_token_url_shall_throw_exceptions(self):
-        invalid_urls = [
-            "https://iamcredentials.googleapis.com",
-            "sts.googleapis.com",
-            "https://",
-            "http://sts.googleapis.com",
-            "https://st.s.googleapis.com",
-            "https://us-eas\t-1.sts.googleapis.com",
-            "https:/us-east-1.sts.googleapis.com",
-            "https://US-WE/ST-1-sts.googleapis.com",
-            "https://sts-us-east-1.googleapis.com",
-            "https://sts-US-WEST-1.googleapis.com",
-            "testhttps://us-east-1.sts.googleapis.com",
-            "https://us-east-1.sts.googleapis.comevil.com",
-            "https://us-east-1.us-east-1.sts.googleapis.com",
-            "https://us-ea.s.t.sts.googleapis.com",
-            "https://sts.googleapis.comevil.com",
-            "hhttps://us-east-1.sts.googleapis.com",
-            "https://us- -1.sts.googleapis.com",
-            "https://-sts.googleapis.com",
-            "https://us-east-1.sts.googleapis.com.evil.com",
-            "https://sts.pgoogleapis.com",
-            "https://p.googleapis.com",
-            "https://sts.p.com",
-            "http://sts.p.googleapis.com",
-            "https://xyz-sts.p.googleapis.com",
-            "https://sts-xyz.123.p.googleapis.com",
-            "https://sts-xyz.p1.googleapis.com",
-            "https://sts-xyz.p.foo.com",
-            "https://sts-xyz.p.foo.googleapis.com",
-        ]
+        invalid_urls = INVALID_TOKEN_URLS
 
         for url in invalid_urls:
             # An invalid url should throw a ValueError exception
@@ -336,53 +356,14 @@ class TestCredentials(object):
             assert excinfo.match("The provided token URL is invalid.")
 
     def test_valid_service_account_impersonation_url_shall_pass_validation(self):
-        valid_urls = [
-            "https://iamcredentials.googleapis.com",
-            "https://us-east-1.iamcredentials.googleapis.com",
-            "https://US-EAST-1.iamcredentials.googleapis.com",
-            "https://iamcredentials.us-east-1.googleapis.com",
-            "https://iamcredentials.US-WEST-1.googleapis.com",
-            "https://us-east-1-iamcredentials.googleapis.com",
-            "https://US-WEST-1-iamcredentials.googleapis.com",
-            "https://us-west-1-iamcredentials.googleapis.com/path?query",
-            "https://iamcredentials-us-east-1.p.googleapis.com",
-        ]
+        valid_urls = VALID_SERVICE_ACCOUNT_IMPERSONATION_URLS
 
         for url in valid_urls:
             # A valid url shouldn't throw exception and a None value should be returned
             external_account.Credentials.validate_service_account_impersonation_url(url)
 
     def test_invalid_service_account_impersonate_url_shall_throw_exceptions(self):
-        invalid_urls = [
-            "https://sts.googleapis.com",
-            "iamcredentials.googleapis.com",
-            "https://",
-            "http://iamcredentials.googleapis.com",
-            "https://iamcre.dentials.googleapis.com",
-            "https://us-eas\t-1.iamcredentials.googleapis.com",
-            "https:/us-east-1.iamcredentials.googleapis.com",
-            "https://US-WE/ST-1-iamcredentials.googleapis.com",
-            "https://iamcredentials-us-east-1.googleapis.com",
-            "https://iamcredentials-US-WEST-1.googleapis.com",
-            "testhttps://us-east-1.iamcredentials.googleapis.com",
-            "https://us-east-1.iamcredentials.googleapis.comevil.com",
-            "https://us-east-1.us-east-1.iamcredentials.googleapis.com",
-            "https://us-ea.s.t.iamcredentials.googleapis.com",
-            "https://iamcredentials.googleapis.comevil.com",
-            "hhttps://us-east-1.iamcredentials.googleapis.com",
-            "https://us- -1.iamcredentials.googleapis.com",
-            "https://-iamcredentials.googleapis.com",
-            "https://us-east-1.iamcredentials.googleapis.com.evil.com",
-            "https://iamcredentials.pgoogleapis.com",
-            "https://p.googleapis.com",
-            "https://iamcredentials.p.com",
-            "http://iamcredentials.p.googleapis.com",
-            "https://xyz-iamcredentials.p.googleapis.com",
-            "https://iamcredentials-xyz.123.p.googleapis.com",
-            "https://iamcredentials-xyz.p1.googleapis.com",
-            "https://iamcredentials-xyz.p.foo.com",
-            "https://iamcredentials-xyz.p.foo.googleapis.com",
-        ]
+        invalid_urls = INVALID_SERVICE_ACCOUNT_IMPERSONATION_URLS
 
         for url in invalid_urls:
             # An invalid url should throw a ValueError exception
@@ -413,6 +394,8 @@ class TestCredentials(object):
         assert not credentials.scopes
         assert credentials.requires_scopes
         assert not credentials.quota_project_id
+        # Token info url not set yet
+        assert not credentials.token_info_url
 
     def test_invalid_token_url(self):
         with pytest.raises(ValueError) as excinfo:
@@ -515,6 +498,7 @@ class TestCredentials(object):
             client_secret=CLIENT_SECRET,
             quota_project_id=self.QUOTA_PROJECT_ID,
             scopes=self.SCOPES,
+            token_info_url=self.TOKEN_INFO_URL,
             default_scopes=["default1"],
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
@@ -531,6 +515,7 @@ class TestCredentials(object):
             audience=self.AUDIENCE,
             subject_token_type=self.SUBJECT_TOKEN_TYPE,
             token_url=self.TOKEN_URL,
+            token_info_url=self.TOKEN_INFO_URL,
             credential_source=self.CREDENTIAL_SOURCE,
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
@@ -539,7 +524,6 @@ class TestCredentials(object):
             quota_project_id=self.QUOTA_PROJECT_ID,
             scopes=["email"],
             default_scopes=["default2"],
-            workforce_pool_user_project=None,
         )
 
     def test_with_token_uri(self):
@@ -599,6 +583,7 @@ class TestCredentials(object):
         credentials = self.make_credentials(
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
+            token_info_url=self.TOKEN_INFO_URL,
             quota_project_id=self.QUOTA_PROJECT_ID,
             scopes=self.SCOPES,
             default_scopes=["default1"],
@@ -617,6 +602,7 @@ class TestCredentials(object):
             audience=self.AUDIENCE,
             subject_token_type=self.SUBJECT_TOKEN_TYPE,
             token_url=self.TOKEN_URL,
+            token_info_url=self.TOKEN_INFO_URL,
             credential_source=self.CREDENTIAL_SOURCE,
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
@@ -625,7 +611,6 @@ class TestCredentials(object):
             quota_project_id="project-foo",
             scopes=self.SCOPES,
             default_scopes=["default1"],
-            workforce_pool_user_project=None,
         )
 
     def test_with_invalid_impersonation_target_principal(self):
@@ -668,6 +653,7 @@ class TestCredentials(object):
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             quota_project_id=self.QUOTA_PROJECT_ID,
+            token_info_url=self.TOKEN_INFO_URL,
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
@@ -677,6 +663,7 @@ class TestCredentials(object):
             "audience": self.AUDIENCE,
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
             "token_url": self.TOKEN_URL,
+            "token_info_url": self.TOKEN_INFO_URL,
             "service_account_impersonation_url": self.SERVICE_ACCOUNT_IMPERSONATION_URL,
             "service_account_impersonation": {"token_lifetime_seconds": 2800},
             "credential_source": self.CREDENTIAL_SOURCE.copy(),
