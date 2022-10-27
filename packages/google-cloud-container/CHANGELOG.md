@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.13.0](https://github.com/googleapis/python-container/compare/v2.12.2...v2.13.0) (2022-10-26)
+
+
+### Features
+
+* launch GKE Cost Allocations configuration to the v1 GKE API ([d625e34](https://github.com/googleapis/python-container/commit/d625e3456bd37aa6cca4b0cf9de44c9ddb69ec21))
+* vulnerability scanning exposed to public ([d625e34](https://github.com/googleapis/python-container/commit/d625e3456bd37aa6cca4b0cf9de44c9ddb69ec21))
+
 ## [2.12.2](https://github.com/googleapis/python-container/compare/v2.12.1...v2.12.2) (2022-10-07)
 
 
