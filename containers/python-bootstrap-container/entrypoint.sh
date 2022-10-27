@@ -33,7 +33,7 @@ cd "$WORKSPACE_DIR/$MONO_REPO_NAME/containers/python-bootstrap-container"
 # Get the version of the API (the value after the last `.`)
 # For example, the `API_VERSION` for `google.cloud.workflows.v1`
 # will be `v1`
-API_VERSION = "$(echo $API_ID | sed 's/.*\.//')"
+API_VERSION="$(echo $API_ID | sed 's/.*\.//')"
 
 # API_ID has the form google.cloud.*.vX or `google.*.*.vX`
 # Replace `.`` with `-` and remove the trailing version
