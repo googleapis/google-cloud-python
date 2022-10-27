@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.8.3...v1.9.0) (2022-10-26)
+
+
+### Features
+
+* add annotation reasons REFUND, REFUND_FRAUD, TRANSACTION_ACCEPTED, TRANSACTION_DECLINED and SOCIAL_SPAM ([1d254d0](https://github.com/googleapis/python-recaptcha-enterprise/commit/1d254d0f4b2aab473b41505a0c31d8a46469a8e4))
+* Add RetrieveLegacySecretKey method ([#311](https://github.com/googleapis/python-recaptcha-enterprise/issues/311)) ([1d254d0](https://github.com/googleapis/python-recaptcha-enterprise/commit/1d254d0f4b2aab473b41505a0c31d8a46469a8e4))
+
 ## [1.8.3](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.8.2...v1.8.3) (2022-10-07)
 
 
