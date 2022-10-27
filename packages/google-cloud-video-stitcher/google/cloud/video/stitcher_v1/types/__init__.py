@@ -20,7 +20,7 @@ from .ad_tag_details import (
     ResponseMetadata,
     VodAdTagDetail,
 )
-from .cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey
+from .cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey, MediaCdnKey
 from .companions import (
     Companion,
     CompanionAds,
@@ -79,6 +79,7 @@ __all__ = (
     "AkamaiCdnKey",
     "CdnKey",
     "GoogleCdnKey",
+    "MediaCdnKey",
     "Companion",
     "CompanionAds",
     "HtmlAdResource",

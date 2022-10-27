@@ -21,6 +21,7 @@ __protobuf__ = proto.module(
         "CdnKey",
         "GoogleCdnKey",
         "AkamaiCdnKey",
+        "MediaCdnKey",
     },
 )
 
@@ -46,6 +47,10 @@ class CdnKey(proto.Message):
             The configuration for an Akamai CDN key.
 
             This field is a member of `oneof`_ ``cdn_key_config``.
+        media_cdn_key (google.cloud.video.stitcher_v1.types.MediaCdnKey):
+            The configuration for a Media CDN key.
+
+            This field is a member of `oneof`_ ``cdn_key_config``.
         name (str):
             The resource name of the CDN key, in the form of
             ``projects/{project}/locations/{location}/cdnKeys/{id}``.
@@ -65,6 +70,12 @@ class CdnKey(proto.Message):
         number=6,
         oneof="cdn_key_config",
         message="AkamaiCdnKey",
+    )
+    media_cdn_key = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="cdn_key_config",
+        message="MediaCdnKey",
     )
     name = proto.Field(
         proto.STRING,
@@ -109,6 +120,27 @@ class AkamaiCdnKey(proto.Message):
     token_key = proto.Field(
         proto.BYTES,
         number=1,
+    )
+
+
+class MediaCdnKey(proto.Message):
+    r"""Configuration for a Media CDN key.
+
+    Attributes:
+        private_key (bytes):
+            Input only. 64-byte ed25519 private key for
+            this Media CDN key.
+        key_name (str):
+            The keyset name of the Media CDN key.
+    """
+
+    private_key = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    key_name = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

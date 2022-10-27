@@ -31,6 +31,7 @@ from google.cloud.video.stitcher_v1.types.cdn_keys import (
     AkamaiCdnKey,
     CdnKey,
     GoogleCdnKey,
+    MediaCdnKey,
 )
 from google.cloud.video.stitcher_v1.types.companions import (
     Companion,
@@ -95,6 +96,7 @@ __all__ = (
     "AkamaiCdnKey",
     "CdnKey",
     "GoogleCdnKey",
+    "MediaCdnKey",
     "Companion",
     "CompanionAds",
     "HtmlAdResource",

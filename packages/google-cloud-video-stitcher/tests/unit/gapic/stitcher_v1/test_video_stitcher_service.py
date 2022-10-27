@@ -6694,6 +6694,10 @@ def test_create_cdn_key_rest(request_type):
             "key_name": "key_name_value",
         },
         "akamai_cdn_key": {"token_key": b"token_key_blob"},
+        "media_cdn_key": {
+            "private_key": b"private_key_blob",
+            "key_name": "key_name_value",
+        },
         "name": "name_value",
         "hostname": "hostname_value",
     }
@@ -6905,6 +6909,10 @@ def test_create_cdn_key_rest_bad_request(
             "key_name": "key_name_value",
         },
         "akamai_cdn_key": {"token_key": b"token_key_blob"},
+        "media_cdn_key": {
+            "private_key": b"private_key_blob",
+            "key_name": "key_name_value",
+        },
         "name": "name_value",
         "hostname": "hostname_value",
     }
@@ -7881,6 +7889,10 @@ def test_update_cdn_key_rest(request_type):
             "key_name": "key_name_value",
         },
         "akamai_cdn_key": {"token_key": b"token_key_blob"},
+        "media_cdn_key": {
+            "private_key": b"private_key_blob",
+            "key_name": "key_name_value",
+        },
         "name": "projects/sample1/locations/sample2/cdnKeys/sample3",
         "hostname": "hostname_value",
     }
@@ -8076,6 +8088,10 @@ def test_update_cdn_key_rest_bad_request(
             "key_name": "key_name_value",
         },
         "akamai_cdn_key": {"token_key": b"token_key_blob"},
+        "media_cdn_key": {
+            "private_key": b"private_key_blob",
+            "key_name": "key_name_value",
+        },
         "name": "projects/sample1/locations/sample2/cdnKeys/sample3",
         "hostname": "hostname_value",
     }

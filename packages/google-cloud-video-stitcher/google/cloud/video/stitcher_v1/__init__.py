@@ -25,7 +25,7 @@ from .types.ad_tag_details import (
     ResponseMetadata,
     VodAdTagDetail,
 )
-from .types.cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey
+from .types.cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey, MediaCdnKey
 from .types.companions import (
     Companion,
     CompanionAds,
@@ -115,6 +115,7 @@ __all__ = (
     "LiveAdTagDetail",
     "LiveSession",
     "ManifestOptions",
+    "MediaCdnKey",
     "ProgressEvent",
     "RenditionFilter",
     "RequestMetadata",
