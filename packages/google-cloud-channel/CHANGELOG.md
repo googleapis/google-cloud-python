@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-channel/compare/v1.9.3...v1.10.0) (2022-10-18)
+
+
+### Features
+
+* Add CloudChannelReportsService to CloudChannel API ([#209](https://github.com/googleapis/python-channel/issues/209)) ([347ed65](https://github.com/googleapis/python-channel/commit/347ed657f5f83bc9b83fa14a0bc8a3fabfcd22b3))
+
 ## [1.9.3](https://github.com/googleapis/python-channel/compare/v1.9.2...v1.9.3) (2022-10-07)
 
 
