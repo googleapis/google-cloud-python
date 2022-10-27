@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-assured-workloads/compare/v1.6.1...v1.7.0) (2022-10-14)
+
+
+### Features
+
+* Add new field for exception audit log link ([#211](https://github.com/googleapis/python-assured-workloads/issues/211)) ([9fafdd4](https://github.com/googleapis/python-assured-workloads/commit/9fafdd4317417673ca86727d7fdc603e7ba1bb35))
+
 ## [1.6.1](https://github.com/googleapis/python-assured-workloads/compare/v1.6.0...v1.6.1) (2022-10-07)
 
 
