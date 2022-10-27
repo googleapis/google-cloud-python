@@ -30,8 +30,14 @@ PATH_TO_CONTAINER_VARS="$WORKSPACE_DIR/interContainerVars.json"
 cd "$WORKSPACE_DIR/$MONO_REPO_NAME/containers/python-bootstrap-container"
 
 # API_ID has the form google.cloud.*.vX or `google.*.*.vX`
+# Get the version of the API (the value after the last `.`)
+# For example, the `API_VERSION` for `google.cloud.workflows.v1`
+# will be `v1`
+API_VERSION="$(echo $API_ID | sed 's/.*\.//')"
+
+# API_ID has the form google.cloud.*.vX or `google.*.*.vX`
 # Replace `.`` with `-` and remove the trailing version
-# For example, the `FOLDER_NAME`` for `google.cloud.workflows.v1`
+# For example, the `FOLDER_NAME` for `google.cloud.workflows.v1`
 # should be `google-cloud-workflows`
 FOLDER_NAME="$(echo $API_ID | sed -E 's/\./-/g' | sed 's/-[^-]*$//')"
 
@@ -81,6 +87,8 @@ DOCS_ROOT_URL=$(jq --arg API_SHORTNAME "$API_SHORTNAME" -r '.apis | to_entries[]
 # Update apiProductDocumentation in .repo-metadata.json
 sed -i -e "s|apiProductDocumentation|$DOCS_ROOT_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
-# Update distribution_name in .repo-metadata.json
+# Update apiPackage in .repo-metadata.json
 sed -i -e "s|apiPackage|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
+# Update apiVersion in .repo-metadata.json
+sed -i -e "s|apiVersion|$API_VERSION|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
