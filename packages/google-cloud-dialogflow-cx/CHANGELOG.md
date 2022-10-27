@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.5](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.4...v1.13.5) (2022-10-26)
+
+
+### Documentation
+
+* Clarified TTL as time-to-live ([#465](https://github.com/googleapis/python-dialogflow-cx/issues/465)) ([5e8fc34](https://github.com/googleapis/python-dialogflow-cx/commit/5e8fc34f7a40351c2a3092fb835bf8ac0f3e63d1))
+
 ## [1.13.4](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.3...v1.13.4) (2022-10-07)
 
 
