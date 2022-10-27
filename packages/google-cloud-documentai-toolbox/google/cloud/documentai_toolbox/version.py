@@ -13,19 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from google.cloud.documentai_toolbox import version as package_version
-
-__version__ = package_version.__version__
-
-from .wrappers import (
-    Document,
-    Page,
-    Entity,
-)
-
-__all__ = (
-    "Document",
-    "Page",
-    "Entity",
-)
+__version__ = "0.1.0"

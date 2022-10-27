@@ -13,19 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .base import USER_AGENT_PRODUCT
 
-from google.cloud.documentai_toolbox import version as package_version
-
-__version__ = package_version.__version__
-
-from .wrappers import (
-    Document,
-    Page,
-    Entity,
-)
-
-__all__ = (
-    "Document",
-    "Page",
-    "Entity",
-)
+__all__ = USER_AGENT_PRODUCT

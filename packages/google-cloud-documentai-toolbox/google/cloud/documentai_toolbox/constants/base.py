@@ -14,18 +14,4 @@
 # limitations under the License.
 #
 
-from google.cloud.documentai_toolbox import version as package_version
-
-__version__ = package_version.__version__
-
-from .wrappers import (
-    Document,
-    Page,
-    Entity,
-)
-
-__all__ = (
-    "Document",
-    "Page",
-    "Entity",
-)
+USER_AGENT_PRODUCT = "documentai-toolbox"
