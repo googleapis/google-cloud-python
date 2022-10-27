@@ -61,7 +61,12 @@ class TimeSeriesQuery(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         time_series_query_language (str):
-            A query used to fetch time series.
+            A query used to fetch time series with MQL.
+
+            This field is a member of `oneof`_ ``source``.
+        prometheus_query (str):
+            A query used to fetch time series with
+            PromQL.
 
             This field is a member of `oneof`_ ``source``.
         unit_override (str):
@@ -87,6 +92,11 @@ class TimeSeriesQuery(proto.Message):
     time_series_query_language = proto.Field(
         proto.STRING,
         number=3,
+        oneof="source",
+    )
+    prometheus_query = proto.Field(
+        proto.STRING,
+        number=6,
         oneof="source",
     )
     unit_override = proto.Field(
