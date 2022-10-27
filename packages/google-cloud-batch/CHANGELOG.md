@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/python-batch/compare/v0.4.0...v0.4.1) (2022-10-27)
+
+
+### Documentation
+
+* **samples:** Adding code samples for log reading ([#56](https://github.com/googleapis/python-batch/issues/56)) ([9b44e35](https://github.com/googleapis/python-batch/commit/9b44e35f3da228deae8815ba91a0710fea760b2b))
+
 ## [0.4.0](https://github.com/googleapis/python-batch/compare/v0.3.2...v0.4.0) (2022-10-18)
 
 
