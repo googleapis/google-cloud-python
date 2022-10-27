@@ -11,7 +11,7 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-discoveryengine",
     "api_id": "discoveryengine.googleapis.com",
-    "default_version": "",
+    "default_version": "v1beta",
     "codeowner_team": "",
     "api_shortname": "discoveryengine"
 }
