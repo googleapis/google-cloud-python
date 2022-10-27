@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.7.4...v2.8.0) (2022-10-27)
+
+
+### Features
+
+* Added support for PromQL queries ([#237](https://github.com/googleapis/python-monitoring-dashboards/issues/237)) ([8b11cdc](https://github.com/googleapis/python-monitoring-dashboards/commit/8b11cdc126bfdd0c2b13bd67f087b3d8efc4daf3))
+
 ## [2.7.4](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.7.3...v2.7.4) (2022-10-10)
 
 
