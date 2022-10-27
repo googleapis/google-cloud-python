@@ -14,7 +14,7 @@
 
 # Use a multi-stage docker build to limit production dependencies.
 
-FROM python:3.10.6-buster
+FROM python:3.11.0-buster
 
 RUN apt update
 
