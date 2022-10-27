@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-video-stitcher/compare/v0.3.2...v0.4.0) (2022-10-27)
+
+
+### Features
+
+* Add support for Media CDN ([#98](https://github.com/googleapis/python-video-stitcher/issues/98)) ([df58bb7](https://github.com/googleapis/python-video-stitcher/commit/df58bb77d5109c0d08c10cbc0a4d0f3ebd7c2c69))
+
 ## [0.3.2](https://github.com/googleapis/python-video-stitcher/compare/v0.3.1...v0.3.2) (2022-10-10)
 
 
