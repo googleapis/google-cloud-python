@@ -474,6 +474,22 @@ class BuildStep(proto.Message):
             this time, build step status is only updated on
             build completion; step status is not updated in
             real-time as the build progresses.
+        allow_failure (bool):
+            Allow this build step to fail without failing the entire
+            build.
+
+            If false, the entire build will fail if this step fails.
+            Otherwise, the build will succeed, but this step will still
+            have a failure status. Error information will be reported in
+            the failure_detail field.
+        exit_code (int):
+            Output only. Return code from running the
+            step.
+        allow_exit_codes (Sequence[int]):
+            Allow this build step to fail without failing the entire
+            build if and only if the exit code is one of the specified
+            codes. If allow_failure is also specified, this field will
+            take precedence.
         script (str):
             A shell script to be executed in the step.
             When script is provided, the user cannot specify
@@ -536,6 +552,18 @@ class BuildStep(proto.Message):
         proto.ENUM,
         number=12,
         enum="Build.Status",
+    )
+    allow_failure = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    exit_code = proto.Field(
+        proto.INT32,
+        number=16,
+    )
+    allow_exit_codes = proto.RepeatedField(
+        proto.INT32,
+        number=18,
     )
     script = proto.Field(
         proto.STRING,
