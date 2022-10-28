@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.discoveryengine import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.discoveryengine_v1beta.services.document_service.async_client import (
     DocumentServiceAsyncClient,

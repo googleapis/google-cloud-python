@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetDocument
+# Snippet for WriteUserEvent
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_DocumentService_GetDocument_sync_67f593f8]
+# [START discoveryengine_v1beta_generated_UserEventService_WriteUserEvent_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,19 @@
 from google.cloud import discoveryengine_v1beta
 
 
-def sample_get_document():
+def sample_write_user_event():
     # Create a client
-    client = discoveryengine_v1beta.DocumentServiceClient()
+    client = discoveryengine_v1beta.UserEventServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1beta.GetDocumentRequest(
-        name="name_value",
+    request = discoveryengine_v1beta.WriteUserEventRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_document(request=request)
+    response = client.write_user_event(request=request)
 
     # Handle the response
     print(response)
 
-# [END discoveryengine_v1beta_generated_DocumentService_GetDocument_sync_67f593f8]
+# [END discoveryengine_v1beta_generated_UserEventService_WriteUserEvent_sync]

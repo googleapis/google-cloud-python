@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetDocument
+# Snippet for CreateDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_DocumentService_GetDocument_sync_0c19e949]
+# [START discoveryengine_v1beta_generated_DocumentService_CreateDocument_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,24 @@
 from google.cloud import discoveryengine_v1beta
 
 
-def sample_get_document():
+def sample_create_document():
     # Create a client
     client = discoveryengine_v1beta.DocumentServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1beta.GetDocumentRequest(
-        name="name_value",
+    document = discoveryengine_v1beta.Document()
+    document.schema_id = "schema_id_value"
+
+    request = discoveryengine_v1beta.CreateDocumentRequest(
+        parent="parent_value",
+        document=document,
+        document_id="document_id_value",
     )
 
     # Make the request
-    response = client.get_document(request=request)
+    response = client.create_document(request=request)
 
     # Handle the response
     print(response)
 
-# [END discoveryengine_v1beta_generated_DocumentService_GetDocument_sync_0c19e949]
+# [END discoveryengine_v1beta_generated_DocumentService_CreateDocument_sync]

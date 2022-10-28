@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ImportUserEvents
+# Snippet for UpdateDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_UserEventService_ImportUserEvents_sync_0c2cb585]
+# [START discoveryengine_v1beta_generated_DocumentService_UpdateDocument_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,28 +34,22 @@
 from google.cloud import discoveryengine_v1beta
 
 
-def sample_import_user_events():
+def sample_update_document():
     # Create a client
-    client = discoveryengine_v1beta.UserEventServiceClient()
+    client = discoveryengine_v1beta.DocumentServiceClient()
 
     # Initialize request argument(s)
-    inline_source = discoveryengine_v1beta.InlineSource()
-    inline_source.user_events.event_type = "event_type_value"
-    inline_source.user_events.user_pseudo_id = "user_pseudo_id_value"
+    document = discoveryengine_v1beta.Document()
+    document.schema_id = "schema_id_value"
 
-    request = discoveryengine_v1beta.ImportUserEventsRequest(
-        inline_source=inline_source,
-        parent="parent_value",
+    request = discoveryengine_v1beta.UpdateDocumentRequest(
+        document=document,
     )
 
     # Make the request
-    operation = client.import_user_events(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.update_document(request=request)
 
     # Handle the response
     print(response)
 
-# [END discoveryengine_v1beta_generated_UserEventService_ImportUserEvents_sync_0c2cb585]
+# [END discoveryengine_v1beta_generated_DocumentService_UpdateDocument_sync]

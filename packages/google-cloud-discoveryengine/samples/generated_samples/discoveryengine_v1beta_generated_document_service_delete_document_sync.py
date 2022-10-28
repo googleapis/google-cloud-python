@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CollectUserEvent
+# Snippet for DeleteDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_UserEventService_CollectUserEvent_sync_cb46ad23]
+# [START discoveryengine_v1beta_generated_DocumentService_DeleteDocument_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,17 @@
 from google.cloud import discoveryengine_v1beta
 
 
-def sample_collect_user_event():
+def sample_delete_document():
     # Create a client
-    client = discoveryengine_v1beta.UserEventServiceClient()
+    client = discoveryengine_v1beta.DocumentServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1beta.CollectUserEventRequest(
-        parent="parent_value",
-        user_event="user_event_value",
+    request = discoveryengine_v1beta.DeleteDocumentRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.collect_user_event(request=request)
+    client.delete_document(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END discoveryengine_v1beta_generated_UserEventService_CollectUserEvent_sync_cb46ad23]
+# [END discoveryengine_v1beta_generated_DocumentService_DeleteDocument_sync]

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_RecommendationService_Recommend_sync_c3ab2832]
+# [START discoveryengine_v1beta_generated_RecommendationService_Recommend_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -54,4 +54,4 @@ def sample_recommend():
     # Handle the response
     print(response)
 
-# [END discoveryengine_v1beta_generated_RecommendationService_Recommend_sync_c3ab2832]
+# [END discoveryengine_v1beta_generated_RecommendationService_Recommend_sync]

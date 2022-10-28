@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListDocuments
+# Snippet for ImportDocuments
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_DocumentService_ListDocuments_sync_144dfaad]
+# [START discoveryengine_v1beta_generated_DocumentService_ImportDocuments_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,27 @@
 from google.cloud import discoveryengine_v1beta
 
 
-def sample_list_documents():
+def sample_import_documents():
     # Create a client
     client = discoveryengine_v1beta.DocumentServiceClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1beta.ListDocumentsRequest(
+    inline_source = discoveryengine_v1beta.InlineSource()
+    inline_source.documents.schema_id = "schema_id_value"
+
+    request = discoveryengine_v1beta.ImportDocumentsRequest(
+        inline_source=inline_source,
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_documents(request=request)
+    operation = client.import_documents(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END discoveryengine_v1beta_generated_DocumentService_ListDocuments_sync_144dfaad]
+# [END discoveryengine_v1beta_generated_DocumentService_ImportDocuments_sync]

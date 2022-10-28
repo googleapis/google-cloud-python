@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateDocument
+# Snippet for GetDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_DocumentService_UpdateDocument_sync_e74ea256]
+# [START discoveryengine_v1beta_generated_DocumentService_GetDocument_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,22 +34,19 @@
 from google.cloud import discoveryengine_v1beta
 
 
-def sample_update_document():
+def sample_get_document():
     # Create a client
     client = discoveryengine_v1beta.DocumentServiceClient()
 
     # Initialize request argument(s)
-    document = discoveryengine_v1beta.Document()
-    document.schema_id = "schema_id_value"
-
-    request = discoveryengine_v1beta.UpdateDocumentRequest(
-        document=document,
+    request = discoveryengine_v1beta.GetDocumentRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.update_document(request=request)
+    response = client.get_document(request=request)
 
     # Handle the response
     print(response)
 
-# [END discoveryengine_v1beta_generated_DocumentService_UpdateDocument_sync_e74ea256]
+# [END discoveryengine_v1beta_generated_DocumentService_GetDocument_sync]

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-discoveryengine
 
 
-# [START discoveryengine_v1beta_generated_DocumentService_ListDocuments_sync_a6c5b84d]
+# [START discoveryengine_v1beta_generated_DocumentService_ListDocuments_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -50,4 +50,4 @@ def sample_list_documents():
     for response in page_result:
         print(response)
 
-# [END discoveryengine_v1beta_generated_DocumentService_ListDocuments_sync_a6c5b84d]
+# [END discoveryengine_v1beta_generated_DocumentService_ListDocuments_sync]
