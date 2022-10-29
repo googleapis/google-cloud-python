@@ -73,6 +73,7 @@ class Credentials(
         token_url=None,
         token_info_url=None,
         revoke_url=None,
+        scopes=None,
         quota_project_id=None,
     ):
         """Instantiates a external account authorized user credentials object.
@@ -90,8 +91,8 @@ class Credentials(
             None if the token can not be refreshed.
         client_secret (str): The OAuth 2.0 client secret. Must be specified for refresh, can be
             left as None if the token can not be refreshed.
-        token_url (str): The optional STS token exchange endpoint. Must be specified fro refresh,
-            can be leftas None if the token can not be refreshed.
+        token_url (str): The optional STS token exchange endpoint for refresh. Must be specified for
+            refresh, can be left as None if the token can not be refreshed.
         token_info_url (str): The optional STS endpoint URL for token introspection.
         revoke_url (str): The optional STS endpoint URL for revoking tokens.
         quota_project_id (str): The optional project ID used for quota and billing.
@@ -102,9 +103,6 @@ class Credentials(
             google.auth.external_account_authorized_user.Credentials: The
                 constructed credentials.
         """
-        if not any((refresh_token, token)):
-            raise ValueError("Either `refresh_token` or `token` should be set.")
-
         super(Credentials, self).__init__()
 
         self.token = token
@@ -117,6 +115,14 @@ class Credentials(
         self._client_secret = client_secret
         self._revoke_url = revoke_url
         self._quota_project_id = quota_project_id
+        self._scopes = scopes
+
+        if not self.valid and not self.can_refresh:
+            raise ValueError(
+                "Token should be created with fields to make it valid (`token` and "
+                "`expiry`), or fields to allow it to refresh (`refresh_token`, "
+                "`token_url`, `client_id`, `client_secret`)."
+            )
 
         self._client_auth = None
         if self._client_id:
@@ -154,8 +160,14 @@ class Credentials(
             "token": self.token,
             "expiry": self.expiry,
             "revoke_url": self._revoke_url,
+            "scopes": self._scopes,
             "quota_project_id": self._quota_project_id,
         }
+
+    @property
+    def scopes(self):
+        """Optional[str]: The OAuth 2.0 permission scopes."""
+        return self._scopes
 
     @property
     def requires_scopes(self):
@@ -164,9 +176,51 @@ class Credentials(
         return False
 
     @property
+    def client_id(self):
+        """Optional[str]: The OAuth 2.0 client ID."""
+        return self._client_id
+
+    @property
+    def client_secret(self):
+        """Optional[str]: The OAuth 2.0 client secret."""
+        return self._client_secret
+
+    @property
+    def audience(self):
+        """Optional[str]: The STS audience which contains the resource name for the
+            workforce pool and the provider identifier in that pool."""
+        return self._audience
+
+    @property
+    def refresh_token(self):
+        """Optional[str]: The OAuth 2.0 refresh token."""
+        return self._refresh_token
+
+    @property
+    def token_url(self):
+        """Optional[str]: The STS token exchange endpoint for refresh."""
+        return self._token_url
+
+    @property
+    def token_info_url(self):
+        """Optional[str]: The STS endpoint for token info."""
+        return self._token_info_url
+
+    @property
+    def revoke_url(self):
+        """Optional[str]: The STS endpoint for token revocation."""
+        return self._revoke_url
+
+    @property
     def is_user(self):
         """ True: This credential always represents a user."""
         return True
+
+    @property
+    def can_refresh(self):
+        return all(
+            (self._refresh_token, self._token_url, self._client_id, self._client_secret)
+        )
 
     def get_project_id(self):
         """Retrieves the project ID corresponding to the workload identity or workforce pool.
@@ -203,9 +257,7 @@ class Credentials(
             google.auth.exceptions.RefreshError: If the credentials could
                 not be refreshed.
         """
-        if not all(
-            (self._refresh_token, self._token_url, self._client_id, self._client_secret)
-        ):
+        if not self.can_refresh:
             raise exceptions.RefreshError(
                 "The credentials do not contain the necessary fields need to "
                 "refresh the access token. You must specify refresh_token, "
@@ -270,6 +322,7 @@ class Credentials(
             expiry=expiry,
             revoke_url=info.get("revoke_url"),
             quota_project_id=info.get("quota_project_id"),
+            scopes=info.get("scopes"),
             **kwargs
         )
 
