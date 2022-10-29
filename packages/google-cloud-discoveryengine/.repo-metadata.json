@@ -2,7 +2,7 @@
     "name": "discoveryengine",
     "name_pretty": "Discovery Engine API",
     "api_description": "",
-    "product_documentation": "cloud.google.com/discovery-engine/",
+    "product_documentation": "https://cloud.google.com/discovery-engine/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/discoveryengine/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
