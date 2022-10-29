@@ -74,7 +74,7 @@ jobs:
         python-version: "3.10"
     - name: Set number of files changes in packages directory
       id: packages
-      run: echo "::set-output name=num_files_changed::$(git diff HEAD~1 -- packages/*.yml | wc -l)"
+      run: echo "::set-output name=num_files_changed::$(git diff HEAD~1 -- packages | wc -l)"
     - name: Install coverage
       if: ${{ steps.date.packages.num_files_changed > 0 }}
       run: |
