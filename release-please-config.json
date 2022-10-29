@@ -1,6 +1,8 @@
 {
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-    "packages": {},
+    "packages": {
+        "packages/google-cloud-discoveryengine": {}
+    },
     "release-type": "python",
     "extra-files": [
         "**/gapic_version.py"
