@@ -84,8 +84,11 @@ sed -i -e "s|apiPrettyName|$DISPLAY_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/p
 # Get the "docs_root_url" field from apis.json (DRIFT)
 DOCS_ROOT_URL=$(jq --arg API_SHORTNAME "$API_SHORTNAME" -r '.apis | to_entries[] | select(.value.api_shortname==$API_SHORTNAME) | .value.docs_root_url' apis.json)
 
+# Build the docs URL
+DOCS_URL="$(echo https://$DOCS_ROOT_URL)"
+
 # Update apiProductDocumentation in .repo-metadata.json
-sed -i -e "s|apiProductDocumentation|$DOCS_ROOT_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
+sed -i -e "s|apiProductDocumentation|$DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
 # Update apiPackage in .repo-metadata.json
 sed -i -e "s|apiPackage|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
