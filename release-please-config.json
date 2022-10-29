@@ -2,13 +2,14 @@
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
     "packages": {
         "packages/google-cloud-discoveryengine": {
-            "component": "google-cloud-discoveryengine"
+            "component": "google-cloud-discoveryengine",
+            "release-type": "python",
+            "extra-files": [
+                "packages/google-cloud-discoveryengine/googleclouddiscoveryengine/gapic_version.py"
+            ]
         }
     },
     "release-type": "python",
-    "extra-files": [
-        "**/gapic_version.py"
-    ],
     "plugins": [
         {
             "type": "sentence-case"
