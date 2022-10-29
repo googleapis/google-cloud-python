@@ -9,10 +9,6 @@
             ]
         }
     },
-    "release-type": "python",
-    "extra-files": [
-        "**/gapic_version.py"
-    ],
     "plugins": [
         {
             "type": "sentence-case"
