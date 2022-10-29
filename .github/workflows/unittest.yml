@@ -76,7 +76,7 @@ jobs:
       id: packages
       run: echo "::set-output name=num_files_changed::$(git diff HEAD~1 -- packages | wc -l)"
     - name: Install coverage
-      if: ${{ steps.date.packages.num_files_changed > 0 }}
+      if: steps.packages.num_files_changed > 0
       run: |
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
