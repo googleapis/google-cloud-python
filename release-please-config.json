@@ -2,7 +2,7 @@
     "packages": {
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
-            "release-type": "simple",
+            "release-type": "python",
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py"
             ]
