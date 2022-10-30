@@ -9,7 +9,7 @@
         },
         "packages/google-cloud-enterpriseknowledgegraph": {
             "component": "google-cloud-enterpriseknowledgegraph",
-            "release-type": "simple",
+            "release-type": "python",
             "extra-files": [
                 "google/cloud/enterpriseknowledgegraph/gapic_version.py"
             ]
