@@ -1,3 +1,4 @@
 {
-    "packages/google-cloud-discoveryengine": "0.1.0"
+    "packages/google-cloud-discoveryengine": "0.1.0",
+    "packages/google-cloud-contentwarehouse": "0.0.0"
 }

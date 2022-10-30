@@ -6,6 +6,13 @@
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py"
             ]
+        },
+        "packages/google-cloud-contentwarehouse": {
+            "component": "google-cloud-contentwarehouse",
+            "release-type": "simple",
+            "extra-files": [
+                "google/cloud/contentwarehouse/gapic_version.py"
+            ]
         }
     }
 }
