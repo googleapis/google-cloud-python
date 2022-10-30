@@ -1,8 +1,8 @@
 {
     "name": "enterpriseknowledgegraph",
-    "name_pretty": "",
+    "name_pretty": "Enterprise Knowledge Graph",
     "api_description": "",
-    "product_documentation": "https://",
+    "product_documentation": "https://cloud.google.com/enterprise-knowledge-graph/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/enterpriseknowledgegraph/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
