@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.accessapproval import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.accessapproval_v1.services.access_approval.async_client import (
     AccessApprovalAsyncClient,

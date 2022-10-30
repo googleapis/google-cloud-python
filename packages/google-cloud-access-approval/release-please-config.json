@@ -1,0 +1,10 @@
+{
+    "packages": {
+        ".": {
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/accessapproval/gapic_version.py"
+            ]
+        }
+    }
+}
