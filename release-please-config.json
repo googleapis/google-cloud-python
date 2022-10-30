@@ -6,6 +6,13 @@
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py"
             ]
+        },
+        "packages/google-cloud-enterpriseknowledgegraph": {
+            "component": "google-cloud-enterpriseknowledgegraph",
+            "release-type": "simple",
+            "extra-files": [
+                "google/cloud/enterpriseknowledgegraph/gapic_version.py"
+            ]
         }
     }
 }
