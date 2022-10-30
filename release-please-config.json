@@ -6,6 +6,13 @@
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py"
             ]
+        },
+        "packages/google-maps-addressvalidation": {
+            "component": "google-maps-addressvalidation",
+            "release-type": "simple",
+            "extra-files": [
+                "google/maps/addressvalidation/gapic_version.py"
+            ]
         }
     }
 }
