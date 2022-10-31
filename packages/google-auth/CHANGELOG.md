@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.14.0](https://github.com/googleapis/google-auth-library-python/compare/v2.13.0...v2.14.0) (2022-10-31)
+
+
+### Features
+
+* Add token_info_url to external account credentials ([#1168](https://github.com/googleapis/google-auth-library-python/issues/1168)) ([9adee75](https://github.com/googleapis/google-auth-library-python/commit/9adee75712202234aa0b124a9ca0424654022428))
+* Read Quota Project from Environment Variable ([#1163](https://github.com/googleapis/google-auth-library-python/issues/1163)) ([57b3e42](https://github.com/googleapis/google-auth-library-python/commit/57b3e424927a5d86fbab8b231109a5aae1233745))
+
+
+### Bug Fixes
+
+* Adding more properties to external_account_authorized_user ([#1169](https://github.com/googleapis/google-auth-library-python/issues/1169)) ([a12b96d](https://github.com/googleapis/google-auth-library-python/commit/a12b96dcfa7cb58d9171fd7f2a7ea8331a228419))
+
 ## [2.13.0](https://github.com/googleapis/google-auth-library-python/compare/v2.12.0...v2.13.0) (2022-10-14)
 
 
