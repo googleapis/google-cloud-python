@@ -45,7 +45,6 @@ class Entity(dict):
         import uuid
 
         from google.cloud import datastore
-        from google.cloud import datastore
 
         unique = str(uuid.uuid4())[0:8]
         client = datastore.Client(namespace='ns{}'.format(unique))
