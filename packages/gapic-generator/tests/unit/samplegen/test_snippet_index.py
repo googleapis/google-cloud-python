@@ -255,7 +255,8 @@ def test_get_metadata_json(sample_str):
                     }
                 ],
             "language": "PYTHON",
-            "name": "google-mollusca"
+            "name": "google-mollusca",
+            "version": "0.1.0"
             },
         "snippets": [
             {

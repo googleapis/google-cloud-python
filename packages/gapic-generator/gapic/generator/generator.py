@@ -217,9 +217,10 @@ class Generator:
 
         if index.metadata_index.snippets:
             # NOTE(busunkim): Not all fields are yet populated in the snippet metadata.
-            # Expected filename: snippet_metadata_{apishortname}_{apiversion}.json
+            # Expected filename: snippet_metadata.{proto_package}.json
+            # For example: snippet_metadata_google.cloud.aiplatform.v1.json
             snippet_metadata_path = str(pathlib.Path(
-                out_dir) / f"snippet_metadata_{api_schema.naming.name}_{api_schema.naming.version}.json").lower()
+                out_dir) / f"snippet_metadata_{api_schema.naming.proto_package}.json").lower()
             output_files[snippet_metadata_path] = CodeGeneratorResponse.File(
                 content=formatter.fix_whitespace(index.get_metadata_json()), name=snippet_metadata_path)
 

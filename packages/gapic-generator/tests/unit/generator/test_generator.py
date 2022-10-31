@@ -464,7 +464,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             },
             )},
         naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca"),
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca.v1"),
     )
 
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
@@ -474,11 +474,12 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
     expected_snippet_index_json = {
         "clientLibrary": {
             "apis": [{
-                "id": "google.mollusca",
+                "id": "google.mollusca.v1",
                 "version": "v1"
             }],
             "language": "PYTHON",
-            "name": "mollusc-cephalopod-teuthida-"
+            "name": "mollusc-cephalopod-teuthida-",
+            "version": "0.1.0"
             },
         "snippets": [
             {
@@ -532,7 +533,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
     assert actual_response.file[1] == CodeGeneratorResponse.File(
         name="samples/generated_samples/clam_sample.py", content="\n",)
 
-    assert actual_response.file[2].name == "samples/generated_samples/snippet_metadata_mollusc_v1.json"
+    assert actual_response.file[2].name == "samples/generated_samples/snippet_metadata_google.mollusca.v1.json"
 
     assert json.loads(
         actual_response.file[2].content) == expected_snippet_index_json
@@ -616,7 +617,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             },
             )},
         naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca"),
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca.v1"),
     )
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(api_schema,
@@ -626,12 +627,13 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
         "clientLibrary": {
             "apis": [
                 {
-                    "id": "google.mollusca",
+                    "id": "google.mollusca.v1",
                     "version": "v1"
                     }
             ],
             "language": "PYTHON",
-            "name": "mollusc-cephalopod-teuthida-"
+            "name": "mollusc-cephalopod-teuthida-",
+            "version": "0.1.0"
         },
         "snippets": [
             {
@@ -709,7 +711,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
         name="samples/generated_samples/7384949e.py", content="\n",
     )
     print(actual_response.file[3].content)
-    assert actual_response.file[3].name == "samples/generated_samples/snippet_metadata_mollusc_v1.json"
+    assert actual_response.file[3].name == "samples/generated_samples/snippet_metadata_google.mollusca.v1.json"
     assert json.loads(
         actual_response.file[3].content) == expected_snippet_metadata_json
 
