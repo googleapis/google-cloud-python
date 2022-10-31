@@ -28,9 +28,9 @@ class Entity:
         documentai_entity (google.cloud.documentai.Document.Entity):
             Required.The original google.cloud.documentai.Document.Entity object.
         type_ (str):
-            Required. Entity type from a schema e.g. ``Address``.
+            Entity type from a schema e.g. ``Address``.
         mention_text (str):
-            Optional. Text value in the document e.g.
+            Text value in the document e.g.
             ``1600 Amphitheatre Pkwy``. If the entity is not present in
             the document, this field will be empty.
     """
@@ -38,7 +38,7 @@ class Entity:
         init=True, repr=False
     )
     type_: str = dataclasses.field(init=False, repr=False)
-    mention_text: str = dataclasses.field(init=True, repr=False, default="")
+    mention_text: str = dataclasses.field(init=False, repr=False, default="")
 
     def __post_init__(self):
         self.type_ = self.documentai_entity.type

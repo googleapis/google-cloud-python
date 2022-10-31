@@ -234,16 +234,24 @@ class Document:
                     and `{folder_id}` is the number corresponding to the target document.
     """
 
-    gcs_prefix: str
+    shards: List[documentai.Document] = dataclasses.field(init=True, repr=False)
+    gcs_prefix: str = dataclasses.field(init=True, repr=False, default=None)
 
     pages: List[Page] = dataclasses.field(init=False, repr=False)
     entities: List[Entity] = dataclasses.field(init=False, repr=False)
-    _shards: List[documentai.Document] = dataclasses.field(init=False, repr=False)
 
     def __post_init__(self):
-        self._shards = _get_shards(gcs_prefix=self.gcs_prefix)
-        self.pages = _pages_from_shards(shards=self._shards)
-        self.entities = _entities_from_shards(shards=self._shards)
+        self.pages = _pages_from_shards(shards=self.shards)
+        self.entities = _entities_from_shards(shards=self.shards)
+
+    @classmethod
+    def from_documentai_document(cls, documentai_document: documentai.Document):
+        return Document(shards=[documentai_document])
+
+    @classmethod
+    def from_gcs_prefix(cls, gcs_prefix: str):
+        shards = _get_shards(gcs_prefix=gcs_prefix)
+        return Document(shards=shards, gcs_prefix=gcs_prefix)
 
     def search_pages(
         self, target_string: str = None, pattern: str = None
