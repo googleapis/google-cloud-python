@@ -42,6 +42,7 @@ s.move(
         ".kokoro/samples/**", # no samples
         ".kokoro/test-sample*",
         ".kokoro/requirements.txt", # using custom requirements.txt file
+        ".kokoro/requirements.in", # using custom requirements.in file
         "CONTRIBUTING.rst",  # repo has a CONTRIBUTING.md
         ".github/CONTRIBUTING.md",
         ".github/PULL_REQUEST_TEMPLATE.md",
@@ -52,8 +53,3 @@ s.move(
     ],
 )
 
-s.replace(
-    ".kokoro/requirements.in",
-    r"nox",
-    "\\g<0>\ntox\nsphinx==4.5.0\nrecommonmark\ndjango==2.2\nipython\nblack==22.8.0\nparameterized==0.8.1"
-)

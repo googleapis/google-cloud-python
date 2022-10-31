@@ -1,15 +1,12 @@
+# Library specific extra installations.
+# Extra installations are required to ensure all documentation can be
+# generated and not missed out with the generate-docs script.
+django==2.2
+google-cloud-aiplatform[prediction]
+grpcio-status==1.48.2 # must be pinned due to protobuf compatibility.
+ipython
+
+# General installations.
 gcp-docuploader
 gcp-releasetool
 importlib-metadata
-typing-extensions
-twine
-wheel
-setuptools
-nox
-tox
-sphinx==4.5.0
-recommonmark
-django==2.2
-ipython
-black==22.8.0
-parameterized==0.8.1
