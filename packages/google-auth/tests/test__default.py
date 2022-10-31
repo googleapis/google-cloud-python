@@ -1214,3 +1214,23 @@ def test_default_gdch_service_account_credentials(get_adc_path):
     assert creds._token_uri == "https://service-identity.<Domain>/authenticate"
     assert creds._ca_cert_path == "/path/to/ca/cert"
     assert project == "project_foo"
+
+
+@mock.patch.dict(os.environ)
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_quota_project_from_environment(get_adc_path):
+    get_adc_path.return_value = AUTHORIZED_USER_CLOUD_SDK_WITH_QUOTA_PROJECT_ID_FILE
+
+    credentials, _ = _default.default(quota_project_id=None)
+    assert credentials.quota_project_id == "quota_project_id"
+
+    quota_from_env = "quota_from_env"
+    os.environ[environment_vars.GOOGLE_CLOUD_QUOTA_PROJECT] = quota_from_env
+    credentials, _ = _default.default(quota_project_id=None)
+    assert credentials.quota_project_id == quota_from_env
+
+    explicit_quota = "explicit_quota"
+    credentials, _ = _default.default(quota_project_id=explicit_quota)
+    assert credentials.quota_project_id == explicit_quota

@@ -479,6 +479,8 @@ def _get_gdch_service_account_credentials(filename, info):
 def _apply_quota_project_id(credentials, quota_project_id):
     if quota_project_id:
         credentials = credentials.with_quota_project(quota_project_id)
+    else:
+        credentials = credentials.with_quota_project_from_environment()
 
     from google.oauth2 import credentials as authorized_user_credentials
 

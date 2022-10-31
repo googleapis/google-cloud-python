@@ -29,6 +29,10 @@ This environment variable is used instead of the current one in some
 situations (such as Google App Engine).
 """
 
+GOOGLE_CLOUD_QUOTA_PROJECT = "GOOGLE_CLOUD_QUOTA_PROJECT"
+"""Environment variable defining the project to be used for
+quota and billing."""
+
 CREDENTIALS = "GOOGLE_APPLICATION_CREDENTIALS"
 """Environment variable defining the location of Google application default
 credentials."""
