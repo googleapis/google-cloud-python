@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.10.0](https://github.com/googleapis/python-datastore/compare/v2.9.0...v2.10.0) (2022-11-01)
+
+
+### Features
+
+* Support the Count aggregation query ([#368](https://github.com/googleapis/python-datastore/issues/368)) ([b400a9a](https://github.com/googleapis/python-datastore/commit/b400a9ac0d8f0c0da22fe92c2c229e2e90e21007))
+
 ## [2.9.0](https://github.com/googleapis/python-datastore/compare/v2.8.2...v2.9.0) (2022-10-18)
 
 
