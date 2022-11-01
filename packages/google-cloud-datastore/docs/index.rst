@@ -18,6 +18,7 @@ API Reference
   entities
   keys
   queries
+  aggregations
   transactions
   batches
   helpers

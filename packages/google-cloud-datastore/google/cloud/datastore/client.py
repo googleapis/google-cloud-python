@@ -28,6 +28,8 @@ from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
+from google.cloud.datastore.aggregation import AggregationQuery
+
 from google.cloud.datastore.transaction import Transaction
 
 try:
@@ -836,6 +838,86 @@ class Client(ClientWithProject):
         if "namespace" not in kwargs:
             kwargs["namespace"] = self.namespace
         return Query(self, **kwargs)
+
+    def aggregation_query(self, query):
+        """Proxy to :class:`google.cloud.datastore.aggregation.AggregationQuery`.
+
+        Using aggregation_query to count over a query:
+
+        .. testsetup:: aggregation_query
+
+            import uuid
+
+            from google.cloud import datastore
+            from google.cloud.datastore.aggregation import CountAggregation
+
+            unique = str(uuid.uuid4())[0:8]
+            client = datastore.Client(namespace='ns{}'.format(unique))
+
+            def do_something_with(entity):
+                pass
+
+        .. doctest:: aggregation_query
+
+            >>> query = client.query(kind='MyKind')
+            >>> aggregation_query = client.aggregation_query(query)
+            >>> aggregation_query.count(alias='total')
+            <google.cloud.datastore.aggregation.AggregationQuery object at ...>
+            >>> aggregation_query.fetch()
+            <google.cloud.datastore.aggregation.AggregationResultIterator object at ...>
+
+        Adding an aggregation to the aggregation_query
+
+        .. doctest:: aggregation_query
+
+            >>> query = client.query(kind='MyKind')
+            >>> aggregation_query.add_aggregation(CountAggregation(alias='total'))
+            >>> aggregation_query.fetch()
+            <google.cloud.datastore.aggregation.AggregationResultIterator object at ...>
+
+        Adding multiple aggregations to the aggregation_query
+
+        .. doctest:: aggregation_query
+
+            >>> query = client.query(kind='MyKind')
+            >>> total_count = CountAggregation(alias='total')
+            >>> all_count = CountAggregation(alias='all')
+            >>> aggregation_query.add_aggregations([total_count, all_count])
+            >>> aggregation_query.fetch()
+            <google.cloud.datastore.aggregation.AggregationResultIterator object at ...>
+
+
+        Using the aggregation_query iterator
+
+        .. doctest:: aggregation_query
+
+            >>> query = client.query(kind='MyKind')
+            >>> aggregation_query = client.aggregation_query(query)
+            >>> aggregation_query.count(alias='total')
+            <google.cloud.datastore.aggregation.AggregationQuery object at ...>
+            >>> aggregation_query_iter = aggregation_query.fetch()
+            >>> for aggregation_result in aggregation_query_iter:
+            ...     do_something_with(aggregation_result)
+
+        or manually page through results
+
+        .. doctest:: aggregation_query
+
+            >>> aggregation_query_iter = aggregation_query.fetch()
+            >>> pages = aggregation_query_iter.pages
+            >>>
+            >>> first_page = next(pages)
+            >>> first_page_entities = list(first_page)
+            >>> aggregation_query_iter.next_page_token is None
+            True
+
+        :param kwargs: Parameters for initializing and instance of
+                       :class:`~google.cloud.datastore.aggregation.AggregationQuery`.
+
+        :rtype: :class:`~google.cloud.datastore.aggregation.AggregationQuery`
+        :returns: An AggregationQuery object.
+        """
+        return AggregationQuery(self, query)
 
     def reserve_ids_sequential(self, complete_key, num_ids, retry=None, timeout=None):
         """Reserve a list of IDs sequentially from a complete key.

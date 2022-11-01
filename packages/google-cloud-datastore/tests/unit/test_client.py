@@ -1515,6 +1515,42 @@ def test_client_query_w_namespace_collision():
         )
 
 
+def test_client_aggregation_query_w_defaults():
+    creds = _make_credentials()
+    client = _make_client(credentials=creds)
+    query = client.query()
+    patch = mock.patch(
+        "google.cloud.datastore.client.AggregationQuery", spec=["__call__"]
+    )
+    with patch as mock_klass:
+        aggregation_query = client.aggregation_query(query=query)
+        assert aggregation_query is mock_klass.return_value
+        mock_klass.assert_called_once_with(client, query)
+
+
+def test_client_aggregation_query_w_namespace():
+    namespace = object()
+
+    creds = _make_credentials()
+    client = _make_client(namespace=namespace, credentials=creds)
+    query = client.query()
+
+    aggregation_query = client.aggregation_query(query=query)
+    assert aggregation_query.namespace == namespace
+
+
+def test_client_aggregation_query_w_namespace_collision():
+    namespace1 = object()
+    namespace2 = object()
+
+    creds = _make_credentials()
+    client = _make_client(namespace=namespace1, credentials=creds)
+    query = client.query(namespace=namespace2)
+
+    aggregation_query = client.aggregation_query(query=query)
+    assert aggregation_query.namespace == namespace2
+
+
 def test_client_reserve_ids_multi_w_partial_key():
     incomplete_key = _Key(_Key.kind, None)
     creds = _make_credentials()

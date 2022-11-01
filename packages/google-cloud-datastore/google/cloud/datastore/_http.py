@@ -280,6 +280,39 @@ class HTTPDatastoreAPI(object):
             timeout=timeout,
         )
 
+    def run_aggregation_query(self, request, retry=None, timeout=None):
+        """Perform a ``runAggregationQuery`` request.
+
+        :type request: :class:`_datastore_pb2.BeginTransactionRequest` or dict
+        :param request:
+            Parameter bundle for API request.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
+
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
+
+        :rtype: :class:`.datastore_pb2.RunAggregationQueryResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _make_request_pb(
+            request, _datastore_pb2.RunAggregationQueryRequest
+        )
+        project_id = request_pb.project_id
+
+        return _rpc(
+            self.client._http,
+            project_id,
+            "runAggregationQuery",
+            self.client._base_url,
+            self.client._client_info,
+            request_pb,
+            _datastore_pb2.RunAggregationQueryResponse,
+            retry=retry,
+            timeout=timeout,
+        )
+
     def begin_transaction(self, request, retry=None, timeout=None):
         """Perform a ``beginTransaction`` request.
 

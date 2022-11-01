@@ -557,6 +557,98 @@ def test_api_run_query_w_namespace_nonempty_result():
     _run_query_helper(namespace=namespace, found=1)
 
 
+def _run_aggregation_query_helper(
+    transaction=None,
+    retry=None,
+    timeout=None,
+):
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore_v1.types import query as query_pb2
+    from google.cloud.datastore_v1.types import aggregation_result
+
+    project = "PROJECT"
+    kind = "Nonesuch"
+    query_pb = query_pb2.Query(kind=[query_pb2.KindExpression(name=kind)])
+
+    aggregation_query_pb = query_pb2.AggregationQuery()
+    aggregation_query_pb.nested_query = query_pb
+    count_aggregation = query_pb2.AggregationQuery.Aggregation()
+    count_aggregation.alias = "total"
+    aggregation_query_pb.aggregations.append(count_aggregation)
+    partition_kw = {"project_id": project}
+
+    partition_id = entity_pb2.PartitionId(**partition_kw)
+
+    options_kw = {}
+
+    if transaction is not None:
+        options_kw["transaction"] = transaction
+    read_options = datastore_pb2.ReadOptions(**options_kw)
+
+    batch_kw = {
+        "more_results": query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
+    }
+    rsp_pb = datastore_pb2.RunAggregationQueryResponse(
+        batch=aggregation_result.AggregationResultBatch(**batch_kw)
+    )
+
+    http = _make_requests_session(
+        [_make_response(content=rsp_pb._pb.SerializeToString())]
+    )
+    client_info = _make_client_info()
+    client = mock.Mock(
+        _http=http,
+        _base_url="test.invalid",
+        _client_info=client_info,
+        spec=["_http", "_base_url", "_client_info"],
+    )
+    ds_api = _make_http_datastore_api(client)
+    request = {
+        "project_id": project,
+        "partition_id": partition_id,
+        "read_options": read_options,
+        "aggregation_query": aggregation_query_pb,
+    }
+    kwargs = _retry_timeout_kw(retry, timeout, http)
+
+    response = ds_api.run_aggregation_query(request=request, **kwargs)
+
+    assert response == rsp_pb._pb
+
+    uri = _build_expected_url(client._base_url, project, "runAggregationQuery")
+    request = _verify_protobuf_call(
+        http,
+        uri,
+        datastore_pb2.RunAggregationQueryRequest(),
+        retry=retry,
+        timeout=timeout,
+    )
+
+    assert request.partition_id == partition_id._pb
+    assert request.aggregation_query == aggregation_query_pb._pb
+    assert request.read_options == read_options._pb
+
+
+def test_api_run_aggregation_query_simple():
+    _run_aggregation_query_helper()
+
+
+def test_api_run_aggregation_query_w_retry():
+    retry = mock.MagicMock()
+    _run_aggregation_query_helper(retry=retry)
+
+
+def test_api_run_aggregation_query_w_timeout():
+    timeout = 5.0
+    _run_aggregation_query_helper(timeout=timeout)
+
+
+def test_api_run_aggregation_query_w_transaction():
+    transaction = b"TRANSACTION"
+    _run_aggregation_query_helper(transaction=transaction)
+
+
 def _begin_transaction_helper(options=None, retry=None, timeout=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
