@@ -286,6 +286,10 @@ not be the same size as the other chunks:
 In addition, a :class:`.ChunkedDownload` can also take optional
 ``start`` and ``end`` byte positions.
 
+Usually, no checksum is returned with a chunked download. Even if one is returned,
+it is not validated. If you need to validate the checksum, you can do so
+by buffering the chunks and validating the checksum against the completed download.
+
 ==============
 Simple Uploads
 ==============

@@ -101,6 +101,29 @@ class TestDownload(object):
         assert error.args[0] == msg
 
     @pytest.mark.asyncio
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    async def test__write_to_stream_no_checksum_validation_for_partial_response(
+        self, checksum
+    ):
+        stream = io.BytesIO()
+        download = download_mod.Download(
+            sync_test.EXAMPLE_URL, stream=stream, checksum=checksum
+        )
+
+        chunk1 = b"first chunk"
+        response = _mock_response(status=http.client.PARTIAL_CONTENT, chunks=[chunk1])
+
+        # Make sure that the checksum is not validated.
+        with mock.patch(
+            "google.resumable_media._helpers.prepare_checksum_digest",
+            return_value=None,
+        ) as prepare_checksum_digest:
+            await download._write_to_stream(response)
+            assert not prepare_checksum_digest.called
+
+        assert not download.finished
+
+    @pytest.mark.asyncio
     async def test__write_to_stream_with_invalid_checksum_type(self):
         BAD_CHECKSUM_TYPE = "badsum"
 
