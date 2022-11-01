@@ -1,0 +1,42 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes: []
+  children: []
+  class: google.cloud.texttospeech_v1beta1.types.AudioEncoding
+  fullName: google.cloud.texttospeech_v1beta1.types.AudioEncoding
+  inheritance:
+  - inheritance:
+    - inheritance:
+      - inheritance:
+        - type: builtins.object
+        type: builtins.int
+      - inheritance:
+        - type: builtins.object
+        type: enum.Enum
+      type: enum.IntEnum
+    type: proto.enums.Enum
+  langs:
+  - python
+  module: google.cloud.texttospeech_v1beta1.types
+  name: AudioEncoding
+  source:
+    id: AudioEncoding
+    path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
+    remote:
+      branch: add_goldens
+      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: 47
+  summary: 'Configuration to set up audio encoder. The encoding
+
+    determines the output audio format that we''d like.
+
+
+    '
+  syntax:
+    content: AudioEncoding(value)
+    parameters: []
+  type: class
+  uid: google.cloud.texttospeech_v1beta1.types.AudioEncoding
+references: []

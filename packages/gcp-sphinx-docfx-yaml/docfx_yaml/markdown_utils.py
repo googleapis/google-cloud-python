@@ -259,6 +259,9 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
         print("There's no markdown file to move.")
         return
 
+    # Used to keep track of the index page entry to insert later.
+    index_page_entry = None
+
     # For each file, if it is a markdown file move to the top level pages.
     for mdfile in markdown_dir.iterdir():
         if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
@@ -291,11 +294,11 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
 
             # Use Overview as the name for index file.
             if mdfile_name_to_use == 'index.md':
-                # Place the Overview page at the top of the list.
-                app.env.markdown_pages.insert(
-                    0,
-                    {'name':'Overview', 'href': 'index.md'}
-                )
+                # Save the index page entry.
+                index_page_entry = {
+                    'name': 'Overview',
+                    'href': 'index.md'
+                }
                 continue
 
             # Add the file to the TOC later.
@@ -303,6 +306,22 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
                 'name': name,
                 'href': mdfile_name_to_use,
             })
+
+    if app.env.markdown_pages:
+        # Sort the TOC alphabetically based on href entry.
+        app.env.markdown_pages = sorted(
+            app.env.markdown_pages,
+            key=lambda entry: entry['href'],
+        )
+
+        if index_page_entry is None:
+            return
+
+        # Place the Overview page at the top of the list.
+        app.env.markdown_pages.insert(
+            0,
+            index_page_entry,
+        )
 
 
 def run_sphinx_markdown() -> None:

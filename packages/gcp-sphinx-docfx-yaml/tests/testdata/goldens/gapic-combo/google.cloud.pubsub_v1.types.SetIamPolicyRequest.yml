@@ -1,0 +1,30 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- children: []
+  class: google.cloud.pubsub_v1.types.SetIamPolicyRequest
+  fullName: google.cloud.pubsub_v1.types.SetIamPolicyRequest
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: google._upb._message.Message
+  - inheritance:
+    - type: builtins.object
+    type: google.protobuf.message.Message
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types
+  name: SetIamPolicyRequest
+  source:
+    id: SetIamPolicyRequest
+    path: null
+    remote:
+      branch: add_goldens
+      path: null
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: null
+  summary: API documentation for `pubsub_v1.types.SetIamPolicyRequest` class.
+  syntax: {}
+  type: class
+  uid: google.cloud.pubsub_v1.types.SetIamPolicyRequest
+references: []

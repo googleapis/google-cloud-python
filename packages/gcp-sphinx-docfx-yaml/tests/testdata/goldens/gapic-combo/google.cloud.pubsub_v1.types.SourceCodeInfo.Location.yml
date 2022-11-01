@@ -1,0 +1,30 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- children: []
+  class: google.cloud.pubsub_v1.types.SourceCodeInfo.Location
+  fullName: google.cloud.pubsub_v1.types.SourceCodeInfo.Location
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: google._upb._message.Message
+  - inheritance:
+    - type: builtins.object
+    type: google.protobuf.message.Message
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types.SourceCodeInfo
+  name: Location
+  source:
+    id: Location
+    path: null
+    remote:
+      branch: add_goldens
+      path: null
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: null
+  summary: API documentation for `pubsub_v1.types.SourceCodeInfo.Location` class.
+  syntax: {}
+  type: class
+  uid: google.cloud.pubsub_v1.types.SourceCodeInfo.Location
+references: []

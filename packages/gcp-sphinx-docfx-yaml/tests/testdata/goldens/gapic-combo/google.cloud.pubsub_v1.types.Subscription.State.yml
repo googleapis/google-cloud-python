@@ -1,0 +1,40 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes: []
+  children: []
+  class: google.cloud.pubsub_v1.types.Subscription.State
+  fullName: google.cloud.pubsub_v1.types.Subscription.State
+  inheritance:
+  - inheritance:
+    - inheritance:
+      - inheritance:
+        - type: builtins.object
+        type: builtins.int
+      - inheritance:
+        - type: builtins.object
+        type: enum.Enum
+      type: enum.IntEnum
+    type: proto.enums.Enum
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types.Subscription
+  name: State
+  source:
+    id: State
+    path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
+    remote:
+      branch: add_goldens
+      path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: 717
+  summary: 'Possible states for a subscription.
+
+
+    '
+  syntax:
+    content: State(value)
+    parameters: []
+  type: class
+  uid: google.cloud.pubsub_v1.types.Subscription.State
+references: []

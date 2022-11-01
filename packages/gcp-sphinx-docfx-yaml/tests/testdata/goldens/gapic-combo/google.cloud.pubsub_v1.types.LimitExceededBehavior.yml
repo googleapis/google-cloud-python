@@ -1,0 +1,36 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes: []
+  children: []
+  class: google.cloud.pubsub_v1.types.LimitExceededBehavior
+  fullName: google.cloud.pubsub_v1.types.LimitExceededBehavior
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: builtins.str
+  - inheritance:
+    - type: builtins.object
+    type: enum.Enum
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types
+  name: LimitExceededBehavior
+  source:
+    id: LimitExceededBehavior
+    path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
+    remote:
+      branch: add_goldens
+      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: 87
+  summary: 'The possible actions when exceeding the publish flow control limits.
+
+
+    '
+  syntax:
+    content: LimitExceededBehavior(value)
+    parameters: []
+  type: class
+  uid: google.cloud.pubsub_v1.types.LimitExceededBehavior
+references: []

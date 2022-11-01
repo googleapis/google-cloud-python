@@ -1,0 +1,36 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes:
+  - description: "Required. The subscription to delete. Format is\n   <code>projects/{project}/subscriptions/{sub}</code>."
+    id: subscription
+    var_type: str
+  children: []
+  class: google.cloud.pubsub_v1.types.DeleteSubscriptionRequest
+  fullName: google.cloud.pubsub_v1.types.DeleteSubscriptionRequest
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: proto.message.Message
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types
+  name: DeleteSubscriptionRequest
+  source:
+    id: DeleteSubscriptionRequest
+    path: null
+    remote:
+      branch: add_goldens
+      path: null
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: null
+  summary: 'Request for the DeleteSubscription method.
+
+    '
+  syntax:
+    content: DeleteSubscriptionRequest(mapping=None, *, ignore_unknown_fields=False,
+      **kwargs)
+    parameters: []
+  type: class
+  uid: google.cloud.pubsub_v1.types.DeleteSubscriptionRequest
+references: []

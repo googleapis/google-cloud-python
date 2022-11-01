@@ -1,0 +1,35 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes:
+  - description: "Required. The name of the snapshot to delete. Format is\n   <code>projects/{project}/snapshots/{snap}</code>."
+    id: snapshot
+    var_type: str
+  children: []
+  class: google.cloud.pubsub_v1.types.DeleteSnapshotRequest
+  fullName: google.cloud.pubsub_v1.types.DeleteSnapshotRequest
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: proto.message.Message
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types
+  name: DeleteSnapshotRequest
+  source:
+    id: DeleteSnapshotRequest
+    path: null
+    remote:
+      branch: add_goldens
+      path: null
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: null
+  summary: 'Request for the `DeleteSnapshot` method.
+
+    '
+  syntax:
+    content: DeleteSnapshotRequest(mapping=None, *, ignore_unknown_fields=False, **kwargs)
+    parameters: []
+  type: class
+  uid: google.cloud.pubsub_v1.types.DeleteSnapshotRequest
+references: []

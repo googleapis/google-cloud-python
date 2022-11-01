@@ -1,4 +1,4 @@
-name: ci
+name: Presubmit tests
 
 on: [push]
 
@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v3
@@ -21,11 +21,5 @@ jobs:
           pip install tox
       - name: Run tests
         run: |
-          tox -e docs
-      - name: Run unittest
-        run: |
-          tox -e unittest
-      - name: Run librarytest
-        run: |
-          tox -e librarytest
+          tox -e tests
 

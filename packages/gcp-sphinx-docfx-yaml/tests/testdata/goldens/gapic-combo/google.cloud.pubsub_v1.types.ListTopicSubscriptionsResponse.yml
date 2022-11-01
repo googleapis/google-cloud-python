@@ -1,0 +1,42 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes:
+  - description: "The names of subscriptions attached to the\n   topic specified in\
+      \ the request."
+    id: subscriptions
+    var_type: Sequence[str]
+  - description: "If not empty, indicates that there may be more subscriptions\n \
+      \  that match the request; this value should be passed in a new\n   <code>ListTopicSubscriptionsRequest</code>\
+      \ to get more subscriptions."
+    id: next_page_token
+    var_type: str
+  children: []
+  class: google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse
+  fullName: google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse
+  inheritance:
+  - inheritance:
+    - type: builtins.object
+    type: proto.message.Message
+  langs:
+  - python
+  module: google.cloud.pubsub_v1.types
+  name: ListTopicSubscriptionsResponse
+  source:
+    id: ListTopicSubscriptionsResponse
+    path: null
+    remote:
+      branch: add_goldens
+      path: null
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: null
+  summary: 'Response for the `ListTopicSubscriptions` method.
+
+    '
+  syntax:
+    content: "ListTopicSubscriptionsResponse(\n    mapping=None, *, ignore_unknown_fields=False,\
+      \ **kwargs\n)"
+    parameters: []
+  type: class
+  uid: google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse
+references: []

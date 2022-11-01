@@ -1,0 +1,42 @@
+### YamlMime:UniversalReference
+api_name: []
+items:
+- attributes: []
+  children: []
+  class: google.cloud.texttospeech_v1beta1.types.SsmlVoiceGender
+  fullName: google.cloud.texttospeech_v1beta1.types.SsmlVoiceGender
+  inheritance:
+  - inheritance:
+    - inheritance:
+      - inheritance:
+        - type: builtins.object
+        type: builtins.int
+      - inheritance:
+        - type: builtins.object
+        type: enum.Enum
+      type: enum.IntEnum
+    type: proto.enums.Enum
+  langs:
+  - python
+  module: google.cloud.texttospeech_v1beta1.types
+  name: SsmlVoiceGender
+  source:
+    id: SsmlVoiceGender
+    path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
+    remote:
+      branch: add_goldens
+      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
+      repo: https://github.com/googleapis/sphinx-docfx-yaml
+    startLine: 37
+  summary: 'Gender of the voice as described in `SSML voice
+
+    element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`__.
+
+
+    '
+  syntax:
+    content: SsmlVoiceGender(value)
+    parameters: []
+  type: class
+  uid: google.cloud.texttospeech_v1beta1.types.SsmlVoiceGender
+references: []
