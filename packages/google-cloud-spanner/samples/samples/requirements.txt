@@ -1,2 +1,2 @@
 google-cloud-spanner==3.22.2
-futures==3.3.0; python_version < "3"
+futures==3.4.0; python_version < "3"
