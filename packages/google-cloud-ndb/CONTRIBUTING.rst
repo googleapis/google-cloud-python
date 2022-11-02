@@ -183,17 +183,6 @@ Running System Tests
    # Create the indexes
    $ gcloud datastore indexes create tests/system/index.yaml
 
-- For datastore query tests, you'll need stored data in your dataset.
-  To populate this data, run::
-
-   $ python datastore/tests/system/utils/populate_datastore.py
-
-- If you make a mistake during development (i.e. a failing test that
-  prevents clean-up) you can clear all system test data from your
-  datastore instance via::
-
-   $ python datastore/tests/system/utils/clear_datastore.py
-
 
 *************
 Test Coverage
