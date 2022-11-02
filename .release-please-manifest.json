@@ -1,4 +1,4 @@
 {
-    "packages/google-cloud-discoveryengine": "0.1.0",
-    "packages/google-cloud-enterpriseknowledgegraph": "0.0.0"
+    "packages/google-cloud-discoveryengine": "0.1.1",
+    "packages/google-cloud-enterpriseknowledgegraph": "0.1.0"
 }
