@@ -15,10 +15,6 @@ items:
   source:
     id: ListTopicSnapshotsAsyncPager
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 348
   summary: 'A pager for iterating through `list_topic_snapshots` requests.
 
@@ -70,10 +66,6 @@ items:
   source:
     id: ListTopicSnapshotsAsyncPager
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 348
   summary: 'Instantiates the pager.
 

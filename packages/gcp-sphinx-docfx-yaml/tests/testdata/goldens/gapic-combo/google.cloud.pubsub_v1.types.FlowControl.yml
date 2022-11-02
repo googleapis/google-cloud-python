@@ -22,10 +22,6 @@ items:
   source:
     id: FlowControl
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 142
   summary: 'The settings for controlling the rate at which messages are pulled
 
@@ -54,10 +50,6 @@ items:
   source:
     id: FlowControl
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 142
   summary: 'Create new instance of FlowControl(max_bytes, max_messages, max_lease_duration,
     min_duration_per_lease_extension, max_duration_per_lease_extension)
@@ -81,10 +73,6 @@ items:
   source:
     id: max_bytes
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The maximum total size of received - but not yet processed - messages
     before pausing the message stream.
@@ -104,10 +92,6 @@ items:
   source:
     id: max_duration_per_lease_extension
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The max amount of time in seconds for a single lease extension attempt.
     Bounds the delay before a message redelivery if the subscriber fails to extend
@@ -128,10 +112,6 @@ items:
   source:
     id: max_lease_duration
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The maximum amount of time in seconds to hold a lease on a message before
     dropping it from the lease management.
@@ -151,10 +131,6 @@ items:
   source:
     id: max_messages
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The maximum number of received - but not yet processed - messages before
     pausing the message stream.
@@ -174,10 +150,6 @@ items:
   source:
     id: min_duration_per_lease_extension
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The min amount of time in seconds for a single lease extension attempt.
     Must be between 10 and 600 (inclusive). Ignored by default, but set to 60 seconds

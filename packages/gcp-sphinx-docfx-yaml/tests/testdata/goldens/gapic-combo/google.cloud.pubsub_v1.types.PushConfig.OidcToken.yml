@@ -30,10 +30,6 @@ items:
   source:
     id: OidcToken
     path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 960
   summary: 'Contains information needed for generating an `OpenID Connect
 

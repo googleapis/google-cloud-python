@@ -25,10 +25,6 @@ items:
   source:
     id: ListVoicesRequest
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 60
   summary: 'The top-level message sent by the client for the `ListVoices`
 

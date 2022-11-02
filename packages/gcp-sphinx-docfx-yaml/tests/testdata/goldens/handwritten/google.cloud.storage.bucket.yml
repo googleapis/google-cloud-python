@@ -17,10 +17,6 @@ items:
   source:
     id: bucket
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Create / interact with Google Cloud Storage buckets.
 

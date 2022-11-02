@@ -23,10 +23,6 @@ items:
   source:
     id: TimepointType
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 154
   summary: 'The type of timepoint information that is returned in the
 

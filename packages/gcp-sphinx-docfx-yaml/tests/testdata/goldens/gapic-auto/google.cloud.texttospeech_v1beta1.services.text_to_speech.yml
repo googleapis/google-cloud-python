@@ -12,10 +12,6 @@ items:
   source:
     id: text_to_speech
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/services/text_to_speech/__init__.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/services/text_to_speech/__init__.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: API documentation for `texttospeech_v1beta1.services.text_to_speech` package.
   syntax: {}

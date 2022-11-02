@@ -35,10 +35,6 @@ items:
   source:
     id: ReceivedMessage
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'A message and its corresponding acknowledgment ID.
 

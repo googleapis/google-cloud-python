@@ -24,10 +24,6 @@ items:
   source:
     id: ListSubscriptionsResponse
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Response for the `ListSubscriptions` method.
 

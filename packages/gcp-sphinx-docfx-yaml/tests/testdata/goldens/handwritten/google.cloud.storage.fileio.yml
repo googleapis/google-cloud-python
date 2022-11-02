@@ -14,10 +14,6 @@ items:
   source:
     id: fileio
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Module for file-like access of blobs, usually invoked via Blob.open().
 

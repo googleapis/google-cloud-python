@@ -13,10 +13,6 @@ items:
   source:
     id: scheduler
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Schedulers provide means to *schedule* callbacks asynchronously.
 

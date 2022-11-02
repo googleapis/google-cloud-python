@@ -17,10 +17,6 @@ items:
   source:
     id: Scheduler
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 32
   summary: 'Abstract base class for schedulers.
 
@@ -44,10 +40,6 @@ items:
   source:
     id: queue
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Queue: A concurrency-safe queue specific to the underlying
 
@@ -72,10 +64,6 @@ items:
   source:
     id: schedule
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 48
   summary: 'Schedule the callback to be called asynchronously.
 
@@ -95,10 +83,6 @@ items:
   source:
     id: shutdown
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/scheduler.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 62
   summary: 'Shuts down the scheduler and immediately end all pending callbacks.
 

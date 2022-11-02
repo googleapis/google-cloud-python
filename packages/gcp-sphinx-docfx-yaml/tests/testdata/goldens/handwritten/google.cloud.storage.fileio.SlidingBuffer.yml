@@ -20,10 +20,6 @@ items:
   source:
     id: SlidingBuffer
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 448
   summary: 'A non-rewindable buffer that frees memory of chunks already consumed.
 
@@ -71,10 +67,6 @@ items:
   source:
     id: __len__
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 531
   summary: 'Determine the size of the buffer by seeking to the end.
 
@@ -95,10 +87,6 @@ items:
   source:
     id: flush
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 489
   summary: 'Delete already-read data (all data to the left of the position).
 
@@ -119,10 +107,6 @@ items:
   source:
     id: read
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 481
   summary: 'Read and move the cursor.
 
@@ -143,10 +127,6 @@ items:
   source:
     id: seek
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 505
   summary: 'Seek to a position (backwards only) within the internal buffer.
 
@@ -177,10 +157,6 @@ items:
   source:
     id: tell
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 501
   summary: 'Report how many bytes have been read from the buffer in total.
 
@@ -201,10 +177,6 @@ items:
   source:
     id: write
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 471
   summary: 'Append to the end of the buffer without changing the position.
 

@@ -28,10 +28,6 @@ items:
   source:
     id: LifecycleRuleDelete
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 342
   summary: 'Map a lifecycle rule deleting matching items.
 
@@ -50,10 +46,6 @@ items:
   source:
     id: clear
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleDelete.clear` method.
   syntax:
@@ -69,10 +61,6 @@ items:
   source:
     id: copy
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleDelete.copy` method.
   syntax:
@@ -89,10 +77,6 @@ items:
   source:
     id: from_api_repr
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 354
   summary: 'Factory:  construct instance from resource.
 
@@ -118,10 +102,6 @@ items:
   source:
     id: fromkeys
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Create a new dictionary with keys from iterable and values set to value.
 
@@ -142,10 +122,6 @@ items:
   source:
     id: get
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the value for key if key is in the dictionary, else default.
 
@@ -165,10 +141,6 @@ items:
   source:
     id: items
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleDelete.items` method.
   syntax:
@@ -184,10 +156,6 @@ items:
   source:
     id: keys
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleDelete.keys` method.
   syntax:
@@ -204,10 +172,6 @@ items:
   source:
     id: pop
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'If key is not found, default is returned if given, otherwise KeyError
     is raised
@@ -228,10 +192,6 @@ items:
   source:
     id: popitem
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Remove and return a (key, value) pair as a 2-tuple.
 
@@ -257,10 +217,6 @@ items:
   source:
     id: setdefault
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Insert key with a value of default if key is not in the dictionary.
 
@@ -284,10 +240,6 @@ items:
   source:
     id: update
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'If E is present and has a .keys() method, then does:  for k in E: D[k]
     = E[k]
@@ -312,10 +264,6 @@ items:
   source:
     id: values
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleDelete.values` method.
   syntax:

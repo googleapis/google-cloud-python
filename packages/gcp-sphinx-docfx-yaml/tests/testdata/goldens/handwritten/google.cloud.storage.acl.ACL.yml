@@ -33,10 +33,6 @@ items:
   source:
     id: ACL
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 105
   summary: 'Container class representing a list of access controls.
 
@@ -57,10 +53,6 @@ items:
   source:
     id: PREDEFINED_JSON_ACLS
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'See
 
@@ -81,10 +73,6 @@ items:
   source:
     id: add_entity
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 250
   summary: 'Add an entity to the ACL.
 
@@ -107,10 +95,6 @@ items:
   source:
     id: all
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 318
   summary: 'Factory method for an Entity representing all users.
 
@@ -133,10 +117,6 @@ items:
   source:
     id: all_authenticated
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 326
   summary: 'Factory method for an Entity representing all authenticated users.
 
@@ -159,10 +139,6 @@ items:
   source:
     id: clear
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 621
   summary: 'Remove all ACL entries.
 
@@ -220,10 +196,6 @@ items:
   source:
     id: client
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Abstract getter for the object client.
 
@@ -243,10 +215,6 @@ items:
   source:
     id: domain
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 307
   summary: 'Factory method for a domain Entity.
 
@@ -272,10 +240,6 @@ items:
   source:
     id: entity
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 259
   summary: 'Factory method for creating an Entity.
 
@@ -315,10 +279,6 @@ items:
   source:
     id: entity_from_dict
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 189
   summary: 'Build an _ACLEntity object from a dictionary of data.
 
@@ -351,10 +311,6 @@ items:
   source:
     id: get_entities
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 334
   summary: 'Get a list of all Entity objects.
 
@@ -377,10 +333,6 @@ items:
   source:
     id: get_entity
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 233
   summary: 'Gets an entity object from the ACL.
 
@@ -409,10 +361,6 @@ items:
   source:
     id: group
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 296
   summary: 'Factory method for a group Entity.
 
@@ -438,10 +386,6 @@ items:
   source:
     id: has_entity
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 221
   summary: 'Returns whether or not this ACL has any entries for an entity.
 
@@ -467,10 +411,6 @@ items:
   source:
     id: reload
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 363
   summary: 'Reload the ACL data from Cloud Storage.
 
@@ -504,10 +444,6 @@ items:
   source:
     id: reset
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 176
   summary: 'Remove all entities from the ACL, and clear the `loaded` flag.
 
@@ -528,10 +464,6 @@ items:
   source:
     id: save
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 488
   summary: 'Save this ACL for the current bucket.
 
@@ -583,10 +515,6 @@ items:
   source:
     id: save_predefined
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 556
   summary: 'Save this ACL for the current bucket using a predefined ACL.
 
@@ -640,10 +568,6 @@ items:
   source:
     id: user
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 285
   summary: 'Factory method for a user Entity.
 
@@ -669,10 +593,6 @@ items:
   source:
     id: validate_predefined
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 159
   summary: 'Ensures predefined is in list of predefined json values
 

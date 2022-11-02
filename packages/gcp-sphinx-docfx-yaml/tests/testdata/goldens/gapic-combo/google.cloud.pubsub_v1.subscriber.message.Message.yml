@@ -29,10 +29,6 @@ items:
   source:
     id: Message
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 67
   summary: "A representation of a single Pub/Sub message.\n\nThe common way to interact\
     \ with\n`.pubsub_v1.subscriber.message.Message` objects is to receive\nthem in\
@@ -60,10 +56,6 @@ items:
   source:
     id: Message
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 67
   summary: 'Construct the Message.
 
@@ -94,10 +86,6 @@ items:
   source:
     id: ack
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 234
   summary: 'Acknowledge the given message.
 
@@ -150,10 +138,6 @@ items:
   source:
     id: ack_id
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'the ID used to ack the message.
 
@@ -173,10 +157,6 @@ items:
   source:
     id: ack_with_response
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 265
   summary: 'Acknowledge the given message.
 
@@ -241,10 +221,6 @@ items:
   source:
     id: attributes
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the attributes of the underlying Pub/Sub Message.
 
@@ -281,10 +257,6 @@ items:
   source:
     id: data
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the data for the underlying Pub/Sub Message.
 
@@ -304,10 +276,6 @@ items:
   source:
     id: delivery_attempt
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The delivery attempt counter is 1 + (the sum of number of NACKs
 
@@ -346,10 +314,6 @@ items:
   source:
     id: drop
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 322
   summary: 'Release the message from lease management.
 
@@ -389,10 +353,6 @@ items:
   source:
     id: modify_ack_deadline
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 341
   summary: 'Resets the deadline for acknowledgement.
 
@@ -426,10 +386,6 @@ items:
   source:
     id: modify_ack_deadline_with_response
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 361
   summary: 'Resets the deadline for acknowledgement and returns the response
 
@@ -496,10 +452,6 @@ items:
   source:
     id: nack
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 422
   summary: 'Decline to acknowledge the given message.
 
@@ -527,10 +479,6 @@ items:
   source:
     id: nack_with_response
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/message.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 438
   summary: 'Decline to acknowledge the given message, returning the response status
     via
@@ -584,10 +532,6 @@ items:
   source:
     id: ordering_key
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The ordering key used to publish the message.
 
@@ -608,10 +552,6 @@ items:
   source:
     id: publish_time
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the time that the message was originally published.
 
@@ -631,10 +571,6 @@ items:
   source:
     id: size
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the size of the underlying message, in bytes.
 

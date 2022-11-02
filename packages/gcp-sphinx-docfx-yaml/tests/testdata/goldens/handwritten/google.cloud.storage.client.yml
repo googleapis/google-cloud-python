@@ -12,10 +12,6 @@ items:
   source:
     id: client
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Client for interacting with the Google Cloud Storage API.
 

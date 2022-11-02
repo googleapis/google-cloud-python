@@ -32,10 +32,6 @@ items:
   source:
     id: BlobReader
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 59
   summary: 'A file-like object that reads from a blob.
 
@@ -80,10 +76,6 @@ items:
   source:
     id: close
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 211
   summary: 'Flush and close the IO object.
 
@@ -107,10 +99,6 @@ items:
   source:
     id: read
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 123
   summary: 'Read and return up to n bytes.
 
@@ -157,10 +145,6 @@ items:
   source:
     id: read1
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 168
   summary: 'Read and return up to n bytes, with at most one read() call
 
@@ -188,10 +172,6 @@ items:
   source:
     id: readable
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 218
   summary: 'Return whether object was opened for reading.
 
@@ -215,10 +195,6 @@ items:
   source:
     id: seek
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 171
   summary: 'Seek within the blob.
 
@@ -246,10 +222,6 @@ items:
   source:
     id: seekable
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 224
   summary: 'Return whether object supports random access.
 
@@ -275,10 +247,6 @@ items:
   source:
     id: writable
     path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/fileio.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 221
   summary: 'Return whether object was opened for writing.
 

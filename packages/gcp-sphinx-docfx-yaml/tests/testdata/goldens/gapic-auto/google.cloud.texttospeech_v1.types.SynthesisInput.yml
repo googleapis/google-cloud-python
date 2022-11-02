@@ -26,10 +26,6 @@ items:
   source:
     id: SynthesisInput
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/types/cloud_tts.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/types/cloud_tts.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 166
   summary: 'Contains text input to be synthesized. Either `text` or `ssml`
 

@@ -30,10 +30,6 @@ items:
   source:
     id: Voice
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1beta1/types/cloud_tts.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 98
   summary: 'Description of a voice supported by the TTS service.
 

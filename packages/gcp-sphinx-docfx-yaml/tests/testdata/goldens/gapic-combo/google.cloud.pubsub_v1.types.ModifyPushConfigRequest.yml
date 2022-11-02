@@ -26,10 +26,6 @@ items:
   source:
     id: ModifyPushConfigRequest
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Request for the ModifyPushConfig method.
 

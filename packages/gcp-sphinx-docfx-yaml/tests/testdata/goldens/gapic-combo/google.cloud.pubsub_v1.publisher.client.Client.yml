@@ -56,10 +56,6 @@ items:
   source:
     id: Client
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 65
   summary: 'A publisher client for Google Cloud Pub/Sub.
 
@@ -93,10 +89,6 @@ items:
   source:
     id: Client
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 65
   summary: 'Instantiates the publisher client.
 
@@ -149,10 +141,6 @@ items:
   source:
     id: __exit__
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1430
   summary: 'Releases underlying transport''s resources.
 
@@ -184,10 +172,6 @@ items:
   source:
     id: api
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: "The underlying gapic API client.\n\n.. versionchanged:: 2.10.0\n    Instead\
     \ of a GAPIC `PublisherClient` client instance, this property is a\n    proxy\
@@ -208,10 +192,6 @@ items:
   source:
     id: common_billing_account_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 236
   summary: 'Returns a fully-qualified billing_account string.
 
@@ -232,10 +212,6 @@ items:
   source:
     id: common_folder_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 251
   summary: 'Returns a fully-qualified folder string.
 
@@ -256,10 +232,6 @@ items:
   source:
     id: common_location_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 296
   summary: 'Returns a fully-qualified location string.
 
@@ -280,10 +252,6 @@ items:
   source:
     id: common_organization_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 266
   summary: 'Returns a fully-qualified organization string.
 
@@ -304,10 +272,6 @@ items:
   source:
     id: common_project_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 281
   summary: 'Returns a fully-qualified project string.
 
@@ -328,10 +292,6 @@ items:
   source:
     id: create_topic
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 488
   summary: "Creates the given topic with the given name. See the [resource\nname rules]\n\
     (https://cloud.google.com/pubsub/docs/admin#resource_names).\n\n```python\n# This\
@@ -391,10 +351,6 @@ items:
   source:
     id: delete_topic
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1243
   summary: "Deletes the topic with the given name. Returns `NOT_FOUND` if\nthe topic\
     \ does not exist. After a topic is deleted, a new topic\nmay be created with the\
@@ -448,10 +404,6 @@ items:
   source:
     id: detach_subscription
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1339
   summary: "Detaches a subscription from this topic. All messages retained\nin the\
     \ subscription are dropped. Subsequent `Pull` and\n`StreamingPull` requests will\
@@ -503,10 +455,6 @@ items:
   source:
     id: ensure_cleanup_and_commit_timer_runs
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 421
   summary: 'Ensure a cleanup/commit timer thread is running.
 
@@ -530,10 +478,6 @@ items:
   source:
     id: from_service_account_file
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 161
   summary: 'Creates an instance of this client using the provided credentials
 
@@ -557,10 +501,6 @@ items:
   source:
     id: from_service_account_info
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 136
   summary: "Creates an instance of this client using the provided credentials\n  \
     \  info.\n"
@@ -585,10 +525,6 @@ items:
   source:
     id: from_service_account_json
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 161
   summary: 'Creates an instance of this client using the provided credentials
 
@@ -612,10 +548,6 @@ items:
   source:
     id: get_iam_policy
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1561
   summary: 'Gets the IAM access control policy for a function.
 
@@ -683,10 +615,6 @@ items:
   source:
     id: get_mtls_endpoint_and_cert_source
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 313
   summary: 'Return the API endpoint and client cert source for mutual TLS.
 
@@ -752,10 +680,6 @@ items:
   source:
     id: get_topic
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 791
   summary: "Gets the configuration of a topic.\n\n```python\n# This snippet has been\
     \ automatically generated and should be regarded as a\n# code template only.\n\
@@ -809,10 +733,6 @@ items:
   source:
     id: list_topic_snapshots
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1122
   summary: "Lists the names of the snapshots on this topic. Snapshots are\nused in\n\
     `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__\noperations, which\
@@ -874,10 +794,6 @@ items:
   source:
     id: list_topic_subscriptions
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1005
   summary: "Lists the names of the attached subscriptions on this\ntopic.\n\n```python\n\
     # This snippet has been automatically generated and should be regarded as a\n\
@@ -935,10 +851,6 @@ items:
   source:
     id: list_topics
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 891
   summary: "Lists matching topics.\n\n```python\n# This snippet has been automatically\
     \ generated and should be regarded as a\n# code template only.\n# It will require\
@@ -995,10 +907,6 @@ items:
   source:
     id: parse_common_billing_account_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 245
   summary: 'Parse a billing_account path into its component segments.
 
@@ -1019,10 +927,6 @@ items:
   source:
     id: parse_common_folder_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 260
   summary: 'Parse a folder path into its component segments.
 
@@ -1043,10 +947,6 @@ items:
   source:
     id: parse_common_location_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 307
   summary: 'Parse a location path into its component segments.
 
@@ -1067,10 +967,6 @@ items:
   source:
     id: parse_common_organization_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 275
   summary: 'Parse a organization path into its component segments.
 
@@ -1091,10 +987,6 @@ items:
   source:
     id: parse_common_project_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 290
   summary: 'Parse a project path into its component segments.
 
@@ -1115,10 +1007,6 @@ items:
   source:
     id: parse_schema_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 194
   summary: 'Parses a schema path into its component segments.
 
@@ -1139,10 +1027,6 @@ items:
   source:
     id: parse_subscription_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 211
   summary: 'Parses a subscription path into its component segments.
 
@@ -1163,10 +1047,6 @@ items:
   source:
     id: parse_topic_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 230
   summary: 'Parses a topic path into its component segments.
 
@@ -1187,10 +1067,6 @@ items:
   source:
     id: publish
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 274
   summary: "Publish a single message.\n\n<aside class=\"note\">\n<b>Note:</b>\nMessages\
     \ in Pub/Sub are blobs of bytes. They are *binary* data,\nnot text. You must send\
@@ -1232,10 +1108,6 @@ items:
   source:
     id: resume_publish
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 234
   summary: 'Resume publish on an ordering key that has had unrecoverable errors.
 
@@ -1262,10 +1134,6 @@ items:
   source:
     id: schema_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 183
   summary: 'Returns a fully-qualified schema string.
 
@@ -1286,10 +1154,6 @@ items:
   source:
     id: set_iam_policy
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1440
   summary: 'Sets the IAM access control policy on the specified function.
 
@@ -1355,10 +1219,6 @@ items:
   source:
     id: stop
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 475
   summary: 'Immediately publish all outstanding messages.
 
@@ -1402,10 +1262,6 @@ items:
   source:
     id: subscription_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 200
   summary: 'Returns a fully-qualified subscription string.
 
@@ -1427,10 +1283,6 @@ items:
   source:
     id: target
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the target (where the API is).
 
@@ -1449,10 +1301,6 @@ items:
   source:
     id: test_iam_permissions
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1683
   summary: "Tests the specified IAM permissions against the IAM access control\n \
     \   policy for a function.\n\nIf the function does not exist, this will return\
@@ -1494,10 +1342,6 @@ items:
   source:
     id: topic_path
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 219
   summary: 'Returns a fully-qualified topic string.
 
@@ -1519,10 +1363,6 @@ items:
   source:
     id: transport
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Returns the transport used by the client instance.
 
@@ -1544,10 +1384,6 @@ items:
   source:
     id: update_topic
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 596
   summary: "Updates an existing topic. Note that certain\nproperties of a topic are\
     \ not modifiable.\n\n```python\n# This snippet has been automatically generated\

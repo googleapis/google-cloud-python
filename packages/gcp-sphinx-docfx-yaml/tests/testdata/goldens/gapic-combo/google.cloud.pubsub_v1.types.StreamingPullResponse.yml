@@ -33,10 +33,6 @@ items:
   source:
     id: StreamingPullResponse
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Response for the `StreamingPull` method. This response is used to
 

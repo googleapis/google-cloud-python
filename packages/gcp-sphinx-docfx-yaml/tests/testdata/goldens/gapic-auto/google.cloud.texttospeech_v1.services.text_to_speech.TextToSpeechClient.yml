@@ -35,10 +35,6 @@ items:
   source:
     id: TextToSpeechClient
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 78
   summary: 'Service that implements Google Cloud Text-to-Speech API.
 
@@ -65,10 +61,6 @@ items:
   source:
     id: TextToSpeechClient
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 78
   summary: 'Instantiates the text to speech client.
 
@@ -122,10 +114,6 @@ items:
   source:
     id: __exit__
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 661
   summary: 'Releases underlying transport''s resources.
 
@@ -156,10 +144,6 @@ items:
   source:
     id: common_billing_account_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 185
   summary: 'Returns a fully-qualified billing_account string.
 
@@ -180,10 +164,6 @@ items:
   source:
     id: common_folder_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 200
   summary: 'Returns a fully-qualified folder string.
 
@@ -204,10 +184,6 @@ items:
   source:
     id: common_location_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 245
   summary: 'Returns a fully-qualified location string.
 
@@ -228,10 +204,6 @@ items:
   source:
     id: common_organization_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 215
   summary: 'Returns a fully-qualified organization string.
 
@@ -252,10 +224,6 @@ items:
   source:
     id: common_project_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 230
   summary: 'Returns a fully-qualified project string.
 
@@ -276,10 +244,6 @@ items:
   source:
     id: from_service_account_file
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 133
   summary: "Creates an instance of this client using the provided credentials\n  \
     \  file.\n"
@@ -304,10 +268,6 @@ items:
   source:
     id: from_service_account_info
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 116
   summary: "Creates an instance of this client using the provided credentials\n  \
     \  info.\n"
@@ -332,10 +292,6 @@ items:
   source:
     id: from_service_account_json
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 133
   summary: "Creates an instance of this client using the provided credentials\n  \
     \  file.\n"
@@ -360,10 +316,6 @@ items:
   source:
     id: get_mtls_endpoint_and_cert_source
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 262
   summary: 'Return the API endpoint and client cert source for mutual TLS.
 
@@ -429,10 +381,6 @@ items:
   source:
     id: list_voices
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 428
   summary: "Returns a list of Voice supported for synthesis.\n\n```python\n# This\
     \ snippet has been automatically generated and should be regarded as a\n# code\
@@ -493,10 +441,6 @@ items:
   source:
     id: model_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 163
   summary: 'Returns a fully-qualified model string.
 
@@ -517,10 +461,6 @@ items:
   source:
     id: parse_common_billing_account_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 194
   summary: 'Parse a billing_account path into its component segments.
 
@@ -541,10 +481,6 @@ items:
   source:
     id: parse_common_folder_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 209
   summary: 'Parse a folder path into its component segments.
 
@@ -565,10 +501,6 @@ items:
   source:
     id: parse_common_location_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 256
   summary: 'Parse a location path into its component segments.
 
@@ -589,10 +521,6 @@ items:
   source:
     id: parse_common_organization_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 224
   summary: 'Parse a organization path into its component segments.
 
@@ -613,10 +541,6 @@ items:
   source:
     id: parse_common_project_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 239
   summary: 'Parse a project path into its component segments.
 
@@ -637,10 +561,6 @@ items:
   source:
     id: parse_model_path
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 176
   summary: 'Parses a model path into its component segments.
 
@@ -661,10 +581,6 @@ items:
   source:
     id: synthesize_speech
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/services/text_to_speech/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 530
   summary: "Synthesizes speech synchronously: receive results\nafter all text input\
     \ has been processed.\n\n```python\n# This snippet has been automatically generated\
@@ -739,10 +655,6 @@ items:
   source:
     id: transport
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Returns the transport used by the client instance.
 

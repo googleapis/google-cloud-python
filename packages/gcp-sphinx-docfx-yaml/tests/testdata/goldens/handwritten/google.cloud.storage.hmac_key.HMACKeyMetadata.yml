@@ -31,10 +31,6 @@ items:
   source:
     id: HMACKeyMetadata
     path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 28
   summary: 'Metadata about an HMAC service account key withn Cloud Storage.
 
@@ -67,10 +63,6 @@ items:
   source:
     id: ACTIVE_STATE
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Key is active, and may be used to sign requests.
 
@@ -89,10 +81,6 @@ items:
   source:
     id: DELETED_STATE
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Key is deleted.  It cannot be re-activated.
 
@@ -111,10 +99,6 @@ items:
   source:
     id: INACTIVE_STATE
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Key is inactive, and may not be used to sign requests.
 
@@ -137,10 +121,6 @@ items:
   source:
     id: access_id
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Access ID of the key.
 
@@ -162,10 +142,6 @@ items:
   source:
     id: delete
     path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 277
   summary: 'Delete the key from Cloud Storage.
 
@@ -196,10 +172,6 @@ items:
   source:
     id: etag
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'ETag identifying the version of the key metadata.
 
@@ -221,10 +193,6 @@ items:
   source:
     id: exists
     path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 190
   summary: 'Determine whether or not the key for this metadata exists.
 
@@ -255,10 +223,6 @@ items:
   source:
     id: id
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'ID of the key, including the Project ID and the Access ID.
 
@@ -281,10 +245,6 @@ items:
   source:
     id: path
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Resource path for the metadata''s key.
 
@@ -305,10 +265,6 @@ items:
   source:
     id: project
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Project ID associated with the key.
 
@@ -330,10 +286,6 @@ items:
   source:
     id: reload
     path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 222
   summary: 'Reload properties from Cloud Storage.
 
@@ -364,10 +316,6 @@ items:
   source:
     id: service_account_email
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Service account e-mail address associated with the key.
 
@@ -390,10 +338,6 @@ items:
   source:
     id: state
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: "Get / set key's state.\n\nOne of:\n    - `ACTIVE`\n    - `INACTIVE`\n\
     \    - `DELETED`\n"
@@ -415,10 +359,6 @@ items:
   source:
     id: time_created
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the timestamp at which the HMAC key was created.
 
@@ -441,10 +381,6 @@ items:
   source:
     id: update
     path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/hmac_key.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 249
   summary: 'Save writable properties to Cloud Storage.
 
@@ -476,10 +412,6 @@ items:
   source:
     id: updated
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the timestamp at which the HMAC key was created.
 
@@ -503,10 +435,6 @@ items:
   source:
     id: user_project
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Project ID to be billed for API requests made via this bucket.
 

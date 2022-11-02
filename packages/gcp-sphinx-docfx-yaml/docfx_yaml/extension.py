@@ -935,11 +935,6 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
         'name': short_name,
         'fullName': name,
         'source': {
-            'remote': {
-                'path': path,
-                'branch': app.env.docfx_branch,
-                'repo': app.env.docfx_remote,
-            },
             'id': short_name,
             'path': path,
             'startLine': start_line,
@@ -1734,11 +1729,6 @@ def build_finished(app, exception):
 
                 except NameError:
                     pass
-
-                if 'source' in obj and (not obj['source']['remote']['repo'] or \
-                    obj['source']['remote']['repo'] == 'https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation'):
-                        del(obj['source'])
-
 
                 # Extract any missing cross references where applicable.
                 # Potential targets are instances of full uid shown, or

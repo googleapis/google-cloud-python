@@ -12,10 +12,6 @@ items:
   source:
     id: blob
     path: tests/testdata/handwritten/google/cloud/storage/blob.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/blob.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Create / interact with Google Cloud Storage blobs.
 

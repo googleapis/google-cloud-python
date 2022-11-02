@@ -16,10 +16,6 @@ items:
   source:
     id: retry
     path: tests/testdata/handwritten/google/cloud/storage/retry.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/retry.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Helpers for configuring retries with exponential back-off.
 
@@ -40,10 +36,6 @@ items:
   source:
     id: is_etag_in_data
     path: tests/testdata/handwritten/google/cloud/storage/retry.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/retry.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 124
   summary: 'Return True if an etag is contained in the request body.
 
@@ -66,10 +58,6 @@ items:
   source:
     id: is_etag_in_json
     path: tests/testdata/handwritten/google/cloud/storage/retry.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/retry.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 133
   summary: '`is_etag_in_json` is supported for backwards-compatibility reasons only;
 
@@ -91,10 +79,6 @@ items:
   source:
     id: is_generation_specified
     path: tests/testdata/handwritten/google/cloud/storage/retry.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/retry.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 111
   summary: 'Return True if generation or if_generation_match is specified.
 
@@ -114,10 +98,6 @@ items:
   source:
     id: is_metageneration_specified
     path: tests/testdata/handwritten/google/cloud/storage/retry.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/retry.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 118
   summary: 'Return True if if_metageneration_match is specified.
 

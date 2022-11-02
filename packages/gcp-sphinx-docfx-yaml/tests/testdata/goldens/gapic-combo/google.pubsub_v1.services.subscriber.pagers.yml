@@ -14,10 +14,6 @@ items:
   source:
     id: pagers
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/subscriber/pagers.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/subscriber/pagers.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: API documentation for `pubsub_v1.services.subscriber.pagers` module.
   syntax: {}

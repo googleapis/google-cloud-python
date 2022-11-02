@@ -20,10 +20,6 @@ items:
   source:
     id: PublishFlowControl
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 95
   summary: 'The client flow control settings for message publishing.
 
@@ -50,10 +46,6 @@ items:
   source:
     id: PublishFlowControl
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 95
   summary: 'Create new instance of PublishFlowControl(message_limit, byte_limit, limit_exceeded_behavior)
 
@@ -76,10 +68,6 @@ items:
   source:
     id: byte_limit
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The maximum total size of messages awaiting to be published.
 
@@ -98,10 +86,6 @@ items:
   source:
     id: limit_exceeded_behavior
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The action to take when publish flow control limits are exceeded.
 
@@ -120,10 +104,6 @@ items:
   source:
     id: message_limit
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The maximum number of messages awaiting to be published.
 

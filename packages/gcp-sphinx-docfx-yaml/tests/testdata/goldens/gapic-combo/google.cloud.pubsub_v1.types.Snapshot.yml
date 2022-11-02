@@ -39,10 +39,6 @@ items:
   source:
     id: Snapshot
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'A snapshot resource. Snapshots are used in
 

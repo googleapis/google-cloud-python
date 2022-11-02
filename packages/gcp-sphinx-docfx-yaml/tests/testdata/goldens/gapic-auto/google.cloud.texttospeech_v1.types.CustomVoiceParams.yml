@@ -24,10 +24,6 @@ items:
   source:
     id: CustomVoiceParams
     path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/types/cloud_tts.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-auto/google/cloud/texttospeech_v1/types/cloud_tts.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 336
   summary: 'Description of the custom voice to be synthesized.
 

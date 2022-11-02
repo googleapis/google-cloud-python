@@ -22,10 +22,6 @@ items:
   source:
     id: SubscriptionProperties
     path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1560
   summary: 'Subscription properties sent as part of the response.
 

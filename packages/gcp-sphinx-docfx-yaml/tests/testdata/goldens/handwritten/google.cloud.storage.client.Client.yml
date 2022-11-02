@@ -39,10 +39,6 @@ items:
   source:
     id: Client
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 66
   summary: 'Client to bundle configuration needed for API requests.
 
@@ -90,10 +86,6 @@ items:
   source:
     id: SCOPE
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The scopes required for authenticating as a Cloud Storage consumer.
 
@@ -112,10 +104,6 @@ items:
   source:
     id: batch
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 298
   summary: 'Factory constructor for batch object.
 
@@ -147,10 +135,6 @@ items:
   source:
     id: bucket
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 279
   summary: 'Factory constructor for bucket object.
 
@@ -189,10 +173,6 @@ items:
   source:
     id: create_anonymous_client
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 174
   summary: 'Factory: return client with anonymous credentials.
 
@@ -224,10 +204,6 @@ items:
   source:
     id: create_bucket
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 817
   summary: 'Create a new bucket via a POST request.
 
@@ -305,10 +281,6 @@ items:
   source:
     id: create_hmac_key
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1360
   summary: 'Create an HMAC key for a service account.
 
@@ -362,10 +334,6 @@ items:
   source:
     id: current_batch
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Currently-active batch.
 
@@ -388,10 +356,6 @@ items:
   source:
     id: download_blob_to_file
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 953
   summary: 'Download the contents of a blob object or blob URI into a file-like object.
 
@@ -480,10 +444,6 @@ items:
   source:
     id: generate_signed_post_policy_v4
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1517
   summary: 'Generate a V4 signed policy object. Generated policy object allows user
     to upload objects with a POST request.
@@ -565,10 +525,6 @@ items:
   source:
     id: get_bucket
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 705
   summary: 'Retrieve a bucket via a GET request.
 
@@ -625,10 +581,6 @@ items:
   source:
     id: get_hmac_key_metadata
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1493
   summary: 'Return a metadata instance for the given HMAC key.
 
@@ -663,10 +615,6 @@ items:
   source:
     id: get_service_account_email
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 251
   summary: 'Get the email address of the project''s GCS service account
 
@@ -701,10 +649,6 @@ items:
   source:
     id: list_blobs
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1094
   summary: 'Return an iterator used to find blobs in the bucket.
 
@@ -813,10 +757,6 @@ items:
   source:
     id: list_buckets
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1255
   summary: 'Get all buckets in the project associated to the client.
 
@@ -892,10 +832,6 @@ items:
   source:
     id: list_hmac_keys
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1424
   summary: 'List HMAC keys for a project.
 
@@ -946,10 +882,6 @@ items:
   source:
     id: lookup_bucket
     path: tests/testdata/handwritten/google/cloud/storage/client.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/client.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 770
   summary: 'Get a bucket by name, returning None if not found.
 

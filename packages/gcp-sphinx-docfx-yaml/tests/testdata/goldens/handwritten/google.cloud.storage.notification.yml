@@ -12,10 +12,6 @@ items:
   source:
     id: notification
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Configure bucket notification resources to interact with Google Cloud
     Pub/Sub.

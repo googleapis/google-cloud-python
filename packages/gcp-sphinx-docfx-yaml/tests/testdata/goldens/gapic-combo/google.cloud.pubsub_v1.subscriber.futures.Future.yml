@@ -32,10 +32,6 @@ items:
   source:
     id: Future
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 86
   summary: 'This future object is for subscribe-side calls.
 
@@ -70,10 +66,6 @@ items:
   source:
     id: Future
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 86
   summary: 'Initializes the future. Should not be called by clients.
 
@@ -94,10 +86,6 @@ items:
   source:
     id: add_done_callback
     path: concurrent/futures/_base.py
-    remote:
-      branch: add_goldens
-      path: concurrent/futures/_base.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 398
   summary: 'Attaches a callable that will be called when the future finishes.
 
@@ -117,10 +105,6 @@ items:
   source:
     id: cancel
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 93
   summary: 'Actions in Pub/Sub generally may not be canceled.
 
@@ -144,10 +128,6 @@ items:
   source:
     id: cancelled
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 100
   summary: 'Actions in Pub/Sub generally may not be canceled.
 
@@ -171,10 +151,6 @@ items:
   source:
     id: done
     path: concurrent/futures/_base.py
-    remote:
-      branch: add_goldens
-      path: concurrent/futures/_base.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 383
   summary: 'Return True if the future was cancelled or finished executing.
 
@@ -195,10 +171,6 @@ items:
   source:
     id: exception
     path: concurrent/futures/_base.py
-    remote:
-      branch: add_goldens
-      path: concurrent/futures/_base.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 453
   summary: 'Return the exception raised by the call that the future represents.
 
@@ -223,10 +195,6 @@ items:
   source:
     id: result
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/subscriber/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 107
   summary: 'Return a success code or raise an exception.
 
@@ -256,10 +224,6 @@ items:
   source:
     id: running
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 33
   summary: 'Return `True` if the associated Pub/Sub action has not yet completed.
 
@@ -280,10 +244,6 @@ items:
   source:
     id: set_exception
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 50
   summary: 'Set the result of the future as being the given exception.
 
@@ -309,10 +269,6 @@ items:
   source:
     id: set_result
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 42
   summary: 'Set the return value of work associated with the future.
 
@@ -338,10 +294,6 @@ items:
   source:
     id: set_running_or_notify_cancel
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 37
   summary: 'Mark the future as running or process any cancel notifications.
 

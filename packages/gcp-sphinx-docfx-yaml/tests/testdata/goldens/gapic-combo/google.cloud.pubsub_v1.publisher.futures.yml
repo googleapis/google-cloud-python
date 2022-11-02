@@ -11,10 +11,6 @@ items:
   source:
     id: futures
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/futures.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/publisher/futures.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: API documentation for `pubsub_v1.publisher.futures` module.
   syntax: {}

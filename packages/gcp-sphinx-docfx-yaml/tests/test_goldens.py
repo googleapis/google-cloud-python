@@ -97,19 +97,6 @@ def test_goldens(update_goldens, test_dir):
 
     if update_goldens:
         shutil.rmtree(golden_dir, ignore_errors=True)
-        files_to_move = out_dir.rglob("*")
-
-        # Overwrite incorrect repo data used compared to GH Action.
-        incorrect_repo = "git@github.com:googleapis/sphinx-docfx-yaml.git"
-        correct_repo = "https://github.com/googleapis/sphinx-docfx-yaml"
-
-        for yaml_file in files_to_move:
-            with open(yaml_file) as file:
-                lines = file.read()
-            lines = lines.replace(incorrect_repo, correct_repo)
-            with open(yaml_file, 'w') as file:
-                file.write(lines)
-
         shutil.copytree(out_dir, golden_dir, dirs_exist_ok=True)
         pytest.skip(
             "Updated goldens! Re-run the test without the --update-goldens flag."

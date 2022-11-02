@@ -81,10 +81,6 @@ items:
   source:
     id: Bucket
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 615
   summary: 'A class representing a Bucket on Cloud Storage.
 
@@ -120,10 +116,6 @@ items:
   source:
     id: Bucket
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 615
   summary: "property `name`\n    Get the bucket's name.\n\n"
   syntax:
@@ -141,10 +133,6 @@ items:
   source:
     id: STORAGE_CLASSES
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Allowed values for `storage_class`.
 
@@ -174,10 +162,6 @@ items:
   source:
     id: acl
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Create our ACL on demand.
 
@@ -197,10 +181,6 @@ items:
   source:
     id: add_lifecycle_abort_incomplete_multipart_upload_rule
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2317
   summary: 'Add a "abort incomplete multipart upload" rule to lifecycle rules.
 
@@ -238,10 +218,6 @@ items:
   source:
     id: add_lifecycle_delete_rule
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2285
   summary: 'Add a "delete" rule to lifecycle rules configured for this bucket.
 
@@ -271,10 +247,6 @@ items:
   source:
     id: add_lifecycle_set_storage_class_rule
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2300
   summary: 'Add a "set storage class" rule to lifecycle rules.
 
@@ -305,10 +277,6 @@ items:
   source:
     id: blob
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 758
   summary: 'Factory constructor for blob object.
 
@@ -357,10 +325,6 @@ items:
   source:
     id: clear_lifecyle_rules
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2277
   summary: "Clear lifecycle rules configured for this bucket.\n\nSee https://cloud.google.com/storage/docs/lifecycle\
     \ and\n     https://cloud.google.com/storage/docs/json_api/v1/buckets\n\n"
@@ -380,10 +344,6 @@ items:
   source:
     id: client
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The client bound to this bucket.
 
@@ -403,10 +363,6 @@ items:
   source:
     id: configure_website
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2663
   summary: 'Configure website-related properties.
 
@@ -452,10 +408,6 @@ items:
   source:
     id: copy_blob
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1771
   summary: 'Copy the given blob to the given bucket, optionally with a new name.
 
@@ -554,10 +506,6 @@ items:
   source:
     id: cors
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: "Retrieve or set CORS policies configured for this bucket.\n\nSee http://www.w3.org/TR/cors/\
     \ and\n     https://cloud.google.com/storage/docs/json_api/v1/buckets\n\n<aside\
@@ -584,10 +532,6 @@ items:
   source:
     id: create
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 915
   summary: 'DEPRECATED. Creates current bucket.
 
@@ -659,10 +603,6 @@ items:
   source:
     id: data_locations
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the list of regional locations for custom dual-region buckets.
 
@@ -695,10 +635,6 @@ items:
   source:
     id: default_event_based_hold
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Scalar property getter.
 
@@ -719,10 +655,6 @@ items:
   source:
     id: default_kms_key_name
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve / set default KMS encryption key for objects in the bucket.
 
@@ -753,10 +685,6 @@ items:
   source:
     id: default_object_acl
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Create our defaultObjectACL on demand.
 
@@ -776,10 +704,6 @@ items:
   source:
     id: delete
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1475
   summary: 'Delete this bucket.
 
@@ -852,10 +776,6 @@ items:
   source:
     id: delete_blob
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1578
   summary: 'Deletes a blob from the current bucket.
 
@@ -914,10 +834,6 @@ items:
   source:
     id: delete_blobs
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1658
   summary: 'Deletes a list of blobs from the current bucket.
 
@@ -998,10 +914,6 @@ items:
   source:
     id: disable_logging
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2427
   summary: 'Disable access logging for this bucket.
 
@@ -1025,10 +937,6 @@ items:
   source:
     id: disable_website
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2686
   summary: 'Disable the website configuration for this bucket.
 
@@ -1054,10 +962,6 @@ items:
   source:
     id: enable_logging
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2413
   summary: 'Enable access logging for this bucket.
 
@@ -1087,10 +991,6 @@ items:
   source:
     id: etag
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: "Retrieve the ETag for the bucket.\n\nSee https://tools.ietf.org/html/rfc2616#section-3.11\
     \ and\n     https://cloud.google.com/storage/docs/json_api/v1/buckets\n"
@@ -1112,10 +1012,6 @@ items:
   source:
     id: exists
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 831
   summary: 'Determines whether or not this bucket exists.
 
@@ -1170,10 +1066,6 @@ items:
   source:
     id: from_string
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 729
   summary: 'Get a constructor for bucket object by URI.
 
@@ -1216,10 +1108,6 @@ items:
   source:
     id: generate_signed_url
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 3156
   summary: 'Generates a signed URL for this bucket.
 
@@ -1320,10 +1208,6 @@ items:
   source:
     id: generate_upload_policy
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 3049
   summary: 'Create a signed upload policy for uploading objects.
 
@@ -1370,10 +1254,6 @@ items:
   source:
     id: get_blob
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1180
   summary: 'Get a blob object by name.
 
@@ -1446,10 +1326,6 @@ items:
   source:
     id: get_iam_policy
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2694
   summary: 'Retrieve the IAM policy for the bucket.
 
@@ -1502,10 +1378,6 @@ items:
   source:
     id: get_logging
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2401
   summary: 'Return info about access logging for this bucket.
 
@@ -1532,10 +1404,6 @@ items:
   source:
     id: get_notification
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1438
   summary: 'Get Pub / Sub notification for this bucket.
 
@@ -1582,10 +1450,6 @@ items:
   source:
     id: iam_configuration
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve IAM configuration for this bucket.
 
@@ -1608,10 +1472,6 @@ items:
   source:
     id: id
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the ID for the bucket.
 
@@ -1638,10 +1498,6 @@ items:
   source:
     id: labels
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve or set labels assigned to this bucket.
 
@@ -1690,10 +1546,6 @@ items:
   source:
     id: lifecycle_rules
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: "Retrieve or set lifecycle rules configured for this bucket.\n\nSee https://cloud.google.com/storage/docs/lifecycle\
     \ and\n     https://cloud.google.com/storage/docs/json_api/v1/buckets\n\n<aside\
@@ -1720,10 +1572,6 @@ items:
   source:
     id: list_blobs
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1287
   summary: 'DEPRECATED. Return an iterator used to find blobs in the bucket.
 
@@ -1819,10 +1667,6 @@ items:
   source:
     id: list_notifications
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1401
   summary: 'List Pub / Sub notifications for this bucket.
 
@@ -1866,10 +1710,6 @@ items:
   source:
     id: location
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve location configured for this bucket.
 
@@ -1900,10 +1740,6 @@ items:
   source:
     id: location_type
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the location type for the bucket.
 
@@ -1934,10 +1770,6 @@ items:
   source:
     id: lock_retention_policy
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 3103
   summary: 'Lock the bucket''s retention policy.
 
@@ -1974,10 +1806,6 @@ items:
   source:
     id: make_private
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2956
   summary: 'Update bucket''s ACL, revoking read access for anonymous users.
 
@@ -2033,10 +1861,6 @@ items:
   source:
     id: make_public
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2859
   summary: 'Update bucket''s ACL, granting read access to anonymous users.
 
@@ -2092,10 +1916,6 @@ items:
   source:
     id: metageneration
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the metageneration for the bucket.
 
@@ -2121,10 +1941,6 @@ items:
   source:
     id: notification
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 804
   summary: 'Factory:  create a notification resource for the bucket.
 
@@ -2150,10 +1966,6 @@ items:
   source:
     id: owner
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve info about the owner of the bucket.
 
@@ -2179,10 +1991,6 @@ items:
   source:
     id: patch
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1097
   summary: 'Sends all changed properties in a PATCH request.
 
@@ -2229,10 +2037,6 @@ items:
   source:
     id: path
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The URL path to this bucket.
 
@@ -2252,10 +2056,6 @@ items:
   source:
     id: path_helper
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1160
   summary: 'Relative URL path for a bucket.
 
@@ -2282,10 +2082,6 @@ items:
   source:
     id: project_number
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the number of the project to which the bucket is assigned.
 
@@ -2311,10 +2107,6 @@ items:
   source:
     id: reload
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1036
   summary: 'Reload properties from Cloud Storage.
 
@@ -2370,10 +2162,6 @@ items:
   source:
     id: rename_blob
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1918
   summary: 'Rename the given blob using copy and delete operations.
 
@@ -2484,10 +2272,6 @@ items:
   source:
     id: requester_pays
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Does the requester pay for API requests for this bucket?
 
@@ -2520,10 +2304,6 @@ items:
   source:
     id: retention_period
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve or set the retention period for items in the bucket.
 
@@ -2547,10 +2327,6 @@ items:
   source:
     id: retention_policy_effective_time
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the effective time of the bucket''s retention policy.
 
@@ -2574,10 +2350,6 @@ items:
   source:
     id: retention_policy_locked
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve whthere the bucket''s retention policy is locked.
 
@@ -2601,10 +2373,6 @@ items:
   source:
     id: rpo
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Get the RPO (Recovery Point Objective) of this bucket
 
@@ -2631,10 +2399,6 @@ items:
   source:
     id: self_link
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the URI for the bucket.
 
@@ -2660,10 +2424,6 @@ items:
   source:
     id: set_iam_policy
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2756
   summary: 'Update the IAM policy for the bucket.
 
@@ -2711,10 +2471,6 @@ items:
   source:
     id: storage_class
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve or set the storage class for the bucket.
 
@@ -2751,10 +2507,6 @@ items:
   source:
     id: test_iam_permissions
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 2812
   summary: 'API call:  test permissions
 
@@ -2802,10 +2554,6 @@ items:
   source:
     id: time_created
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Retrieve the timestamp at which the bucket was created.
 
@@ -2831,10 +2579,6 @@ items:
   source:
     id: update
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 992
   summary: 'Sends all properties in a PUT request.
 
@@ -2881,10 +2625,6 @@ items:
   source:
     id: user_project
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Project ID to be billed for API requests made via this bucket.
 
@@ -2913,10 +2653,6 @@ items:
   source:
     id: versioning_enabled
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Is versioning enabled for this bucket?
 

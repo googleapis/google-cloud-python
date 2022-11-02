@@ -14,10 +14,6 @@ items:
   source:
     id: ConditionalRetryPolicy
     path: tests/testdata/handwritten/google/cloud/storage/retry.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/retry.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 71
   summary: 'A class for use when an API call is only conditionally safe to retry.
 

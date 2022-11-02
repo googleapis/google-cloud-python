@@ -39,10 +39,6 @@ items:
   source:
     id: LifecycleRuleConditions
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 147
   summary: 'Map a single lifecycle rule for a bucket.
 
@@ -125,10 +121,6 @@ items:
   source:
     id: age
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s age value.
 
@@ -147,10 +139,6 @@ items:
   source:
     id: clear
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleConditions.clear` method.
   syntax:
@@ -166,10 +154,6 @@ items:
   source:
     id: copy
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleConditions.copy` method.
   syntax:
@@ -187,10 +171,6 @@ items:
   source:
     id: created_before
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s created_before value.
 
@@ -211,10 +191,6 @@ items:
   source:
     id: custom_time_before
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''custom_time_before'' value.
 
@@ -235,10 +211,6 @@ items:
   source:
     id: days_since_custom_time
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''days_since_custom_time'' value.
 
@@ -259,10 +231,6 @@ items:
   source:
     id: days_since_noncurrent_time
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''days_since_noncurrent_time'' value.
 
@@ -282,10 +250,6 @@ items:
   source:
     id: from_api_repr
     path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/bucket.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 266
   summary: 'Factory:  construct instance from resource.
 
@@ -311,10 +275,6 @@ items:
   source:
     id: fromkeys
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Create a new dictionary with keys from iterable and values set to value.
 
@@ -335,10 +295,6 @@ items:
   source:
     id: get
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Return the value for key if key is in the dictionary, else default.
 
@@ -360,10 +316,6 @@ items:
   source:
     id: is_live
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''is_live'' value.
 
@@ -382,10 +334,6 @@ items:
   source:
     id: items
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleConditions.items` method.
   syntax:
@@ -401,10 +349,6 @@ items:
   source:
     id: keys
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleConditions.keys` method.
   syntax:
@@ -422,10 +366,6 @@ items:
   source:
     id: matches_prefix
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''matches_prefix'' value.
 
@@ -446,10 +386,6 @@ items:
   source:
     id: matches_storage_class
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''matches_storage_class'' value.
 
@@ -470,10 +406,6 @@ items:
   source:
     id: matches_suffix
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''matches_suffix'' value.
 
@@ -494,10 +426,6 @@ items:
   source:
     id: noncurrent_time_before
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''noncurrent_time_before'' value.
 
@@ -518,10 +446,6 @@ items:
   source:
     id: number_of_newer_versions
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Conditon''s ''number_of_newer_versions'' value.
 
@@ -541,10 +465,6 @@ items:
   source:
     id: pop
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'If key is not found, default is returned if given, otherwise KeyError
     is raised
@@ -565,10 +485,6 @@ items:
   source:
     id: popitem
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Remove and return a (key, value) pair as a 2-tuple.
 
@@ -594,10 +510,6 @@ items:
   source:
     id: setdefault
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Insert key with a value of default if key is not in the dictionary.
 
@@ -621,10 +533,6 @@ items:
   source:
     id: update
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'If E is present and has a .keys() method, then does:  for k in E: D[k]
     = E[k]
@@ -649,10 +557,6 @@ items:
   source:
     id: values
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `storage.bucket.LifecycleRuleConditions.values` method.
   syntax:

@@ -11,10 +11,6 @@ items:
   source:
     id: constants
     path: tests/testdata/handwritten/google/cloud/storage/constants.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/constants.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Constants used across google.cloud.storage modules.
 

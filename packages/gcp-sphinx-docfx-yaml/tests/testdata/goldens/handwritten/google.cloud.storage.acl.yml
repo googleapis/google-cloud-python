@@ -15,10 +15,6 @@ items:
   source:
     id: acl
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Manage access to objects and buckets.
 

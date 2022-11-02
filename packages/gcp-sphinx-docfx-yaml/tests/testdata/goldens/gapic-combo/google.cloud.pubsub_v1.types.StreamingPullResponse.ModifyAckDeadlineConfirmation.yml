@@ -23,10 +23,6 @@ items:
   source:
     id: ModifyAckDeadlineConfirmation
     path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/types/pubsub.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 1538
   summary: 'Acknowledgement IDs sent in one or more previous requests to
 

@@ -36,10 +36,6 @@ items:
   source:
     id: DeadLetterPolicy
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Dead lettering is done on a best effort basis. The same
 

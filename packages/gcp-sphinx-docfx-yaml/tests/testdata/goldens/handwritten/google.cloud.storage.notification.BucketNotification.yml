@@ -31,10 +31,6 @@ items:
   source:
     id: BucketNotification
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 48
   summary: 'Represent a single notification resource for a bucket.
 
@@ -86,10 +82,6 @@ items:
   source:
     id: blob_name_prefix
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Prefix of blob names for which notification events are published.
 
@@ -110,10 +102,6 @@ items:
   source:
     id: bucket
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Bucket to which the notification is bound.
 
@@ -134,10 +122,6 @@ items:
   source:
     id: client
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The client bound to this notfication.
 
@@ -157,10 +141,6 @@ items:
   source:
     id: create
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 233
   summary: 'API wrapper: create the notification.
 
@@ -205,10 +185,6 @@ items:
   source:
     id: custom_attributes
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Custom attributes passed with notification events.
 
@@ -228,10 +204,6 @@ items:
   source:
     id: delete
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 374
   summary: 'Delete this notification.
 
@@ -278,10 +250,6 @@ items:
   source:
     id: etag
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Server-set ETag of notification resource.
 
@@ -302,10 +270,6 @@ items:
   source:
     id: event_types
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Event types for which notification events are published.
 
@@ -325,10 +289,6 @@ items:
   source:
     id: exists
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 285
   summary: 'Test whether this notification exists.
 
@@ -375,10 +335,6 @@ items:
   source:
     id: from_api_repr
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 125
   summary: 'Construct an instance from the JSON repr returned by the server.
 
@@ -411,10 +367,6 @@ items:
   source:
     id: notification_id
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Server-set ID of notification resource.
 
@@ -435,10 +387,6 @@ items:
   source:
     id: path
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The URL path for this notification.
 
@@ -459,10 +407,6 @@ items:
   source:
     id: payload_format
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Format of payload of notification events.
 
@@ -482,10 +426,6 @@ items:
   source:
     id: reload
     path: tests/testdata/handwritten/google/cloud/storage/notification.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/notification.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 332
   summary: 'Update this notification from the server configuration.
 
@@ -530,10 +470,6 @@ items:
   source:
     id: self_link
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Server-set ETag of notification resource.
 
@@ -554,10 +490,6 @@ items:
   source:
     id: topic_name
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Topic name to which notifications are published.
 
@@ -578,10 +510,6 @@ items:
   source:
     id: topic_project
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Project ID of topic to which notifications are published.
 

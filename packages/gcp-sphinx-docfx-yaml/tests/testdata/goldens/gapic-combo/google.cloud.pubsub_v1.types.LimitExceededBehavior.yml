@@ -19,10 +19,6 @@ items:
   source:
     id: LimitExceededBehavior
     path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/cloud/pubsub_v1/types.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 87
   summary: 'The possible actions when exceeding the publish flow control limits.
 

@@ -15,10 +15,6 @@ items:
   source:
     id: ListTopicsPager
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 30
   summary: 'A pager for iterating through `list_topics` requests.
 
@@ -69,10 +65,6 @@ items:
   source:
     id: ListTopicsPager
     path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/gapic-combo/google/pubsub_v1/services/publisher/pagers.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 30
   summary: 'Instantiate the pager.
 

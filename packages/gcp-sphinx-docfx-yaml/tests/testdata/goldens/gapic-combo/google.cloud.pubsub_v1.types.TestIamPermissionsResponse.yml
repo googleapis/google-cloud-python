@@ -18,10 +18,6 @@ items:
   source:
     id: TestIamPermissionsResponse
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: API documentation for `pubsub_v1.types.TestIamPermissionsResponse` class.
   syntax: {}

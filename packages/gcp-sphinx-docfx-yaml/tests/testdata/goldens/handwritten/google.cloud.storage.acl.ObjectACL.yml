@@ -20,10 +20,6 @@ items:
   source:
     id: ObjectACL
     path: tests/testdata/handwritten/google/cloud/storage/acl.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/acl.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 721
   summary: 'An ACL specifically for a Cloud Storage object / blob.
 
@@ -47,10 +43,6 @@ items:
   source:
     id: client
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'The client bound to this ACL''s blob.
 
@@ -71,10 +63,6 @@ items:
   source:
     id: reload_path
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Compute the path for GET API requests for this ACL.
 
@@ -95,10 +83,6 @@ items:
   source:
     id: save_path
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Compute the path for PATCH API requests for this ACL.
 
@@ -119,10 +103,6 @@ items:
   source:
     id: user_project
     path: null
-    remote:
-      branch: add_goldens
-      path: null
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: null
   summary: 'Compute the user project charged for API requests for this ACL.
 

@@ -13,10 +13,6 @@ items:
   source:
     id: batch
     path: tests/testdata/handwritten/google/cloud/storage/batch.py
-    remote:
-      branch: add_goldens
-      path: tests/testdata/handwritten/google/cloud/storage/batch.py
-      repo: https://github.com/googleapis/sphinx-docfx-yaml
     startLine: 0
   summary: 'Batch updates / deletes of storage buckets / blobs.
 
