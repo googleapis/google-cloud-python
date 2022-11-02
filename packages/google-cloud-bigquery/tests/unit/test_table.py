@@ -15,6 +15,7 @@
 import datetime
 import logging
 import re
+from sys import version_info
 import time
 import types
 import unittest
@@ -1969,7 +1970,10 @@ class Test_EmptyRowIterator(unittest.TestCase):
         df = row_iterator.to_geodataframe(create_bqstorage_client=False)
         self.assertIsInstance(df, geopandas.GeoDataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
-        self.assertIsNone(df.crs)
+        if version_info.major == 3 and version_info.minor > 7:
+            assert not hasattr(df, "crs")  # used with Python > 3.7
+        else:
+            self.assertIsNone(df.crs)  # used with Python == 3.7
 
 
 class TestRowIterator(unittest.TestCase):
