@@ -174,22 +174,21 @@ a number of methods that were mostly used internally. Some of those have been
 made obsolete by new Python 3 features, while others have been discarded due
 to implementation differences in the new `ndb`.
 
-Possibly the most used utility from this module outside of `ndb` code, is the
+Possibly the most used utility from this module outside of `ndb` code is the
 ``positional`` decorator, which declares that only the first `n` arguments of
 a function or method may be positional. Python 3 can do this using keyword-only
 arguments. What used to be written as::
 
     @utils.positional(2)
-    def function1(arg1, arg2, arg3=None, arg4=None)
+    def function1(arg1, arg2, arg3=None, arg4=None):
         pass
 
-Will be written like this in the new version::
+Should be written like this in Python 3::
 
-    def function1(arg1, arg2, *, arg3=None, arg4=None)
+    def function1(arg1, arg2, *, arg3=None, arg4=None):
         pass
 
-Note that this could change if Python 2.7 support is added at some point, which
-is still a possibility.
+However, ``positional`` remains available and works in both Python 2 and 3.
 
 Exceptions
 ==========
