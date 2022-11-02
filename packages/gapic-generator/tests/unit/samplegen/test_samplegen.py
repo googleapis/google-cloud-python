@@ -203,7 +203,9 @@ def test_preprocess_sample():
     ]
 
 
-def test_preprocess_sample_with_enum_field():
+@pytest.mark.parametrize(
+    'repeated_enum,expected', [(False, "TYPE_2"), (True, ["TYPE_2"])])
+def test_preprocess_sample_with_enum_field(repeated_enum, expected):
     # Verify that the default response is added.
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
@@ -212,6 +214,7 @@ def test_preprocess_sample_with_enum_field():
             "type": DummyField(
                 name="type",
                 required=True,
+                repeated=repeated_enum,
                 type=enum_factory("type", ["TYPE_1", "TYPE_2"]),
                 enum=enum_factory("type", ["TYPE_1", "TYPE_2"])
                 )
@@ -255,7 +258,7 @@ def test_preprocess_sample_with_enum_field():
     assert sample["request"] == [
         {
             "field": "type",
-            "value": "TYPE_2"
+            "value": expected
         }
     ]
 
