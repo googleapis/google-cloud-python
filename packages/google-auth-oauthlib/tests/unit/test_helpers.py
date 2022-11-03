@@ -95,6 +95,7 @@ def test_credentials_from_session(session):
     assert credentials._client_id == CLIENT_SECRETS_INFO["web"]["client_id"]
     assert credentials._client_secret == CLIENT_SECRETS_INFO["web"]["client_secret"]
     assert credentials._token_uri == CLIENT_SECRETS_INFO["web"]["token_uri"]
+    assert credentials.scopes == session.scope
 
 
 def test_credentials_from_session_3pi(session):
@@ -107,6 +108,9 @@ def test_credentials_from_session_3pi(session):
 
     client_secrets_info = CLIENT_SECRETS_INFO["web"].copy()
     client_secrets_info["3pi"] = True
+    client_secrets_info[
+        "token_info_url"
+    ] = "https://accounts.google.com/o/oauth2/introspect"
     credentials = helpers.credentials_from_session(session, client_secrets_info)
 
     assert isinstance(credentials, external_account_authorized_user.Credentials)
@@ -116,6 +120,10 @@ def test_credentials_from_session_3pi(session):
     assert credentials._client_id == CLIENT_SECRETS_INFO["web"]["client_id"]
     assert credentials._client_secret == CLIENT_SECRETS_INFO["web"]["client_secret"]
     assert credentials._token_url == CLIENT_SECRETS_INFO["web"]["token_uri"]
+    assert (
+        credentials._token_info_url == "https://accounts.google.com/o/oauth2/introspect"
+    )
+    assert credentials.scopes == session.scope
 
 
 def test_bad_credentials(session):

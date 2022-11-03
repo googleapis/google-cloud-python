@@ -133,6 +133,8 @@ def credentials_from_session(session, client_config=None):
             token_url=client_config.get("token_uri"),
             client_id=client_config.get("client_id"),
             client_secret=client_config.get("client_secret"),
+            token_info_url=client_config.get("token_info_url"),
+            scopes=session.scope,
         )
     else:
         credentials = google.oauth2.credentials.Credentials(
