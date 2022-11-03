@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [0.7.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.7.0...v0.7.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* Include updates to properties from Google Auth lib ([#249](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/249)) ([58becac](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/58becac1a4030d9bc3daf089645c4412227c4679))
+
 ## [0.7.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.6.0...v0.7.0) (2022-10-25)
 
 
