@@ -5,6 +5,32 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.3.6](https://github.com/googleapis/python-bigquery/compare/v3.3.4...v3.3.6) (2022-11-02)
+
+
+### Features
+
+* Reconfigure tqdm progress bar in %%bigquery magic ([#1355](https://github.com/googleapis/python-bigquery/issues/1355)) ([506f781](https://github.com/googleapis/python-bigquery/commit/506f781c2dd775193336ab9432f32148250ed81d))
+
+
+### Bug Fixes
+
+* Corrects test for non-existent attribute ([#1395](https://github.com/googleapis/python-bigquery/issues/1395)) ([a80f436](https://github.com/googleapis/python-bigquery/commit/a80f436f2e75a8fb680316f17a22eecb31a7101d))
+* **deps:** Allow protobuf 3.19.5 ([#1379](https://github.com/googleapis/python-bigquery/issues/1379)) ([3e4a074](https://github.com/googleapis/python-bigquery/commit/3e4a074a981eb2920c5f9a711c253565d4844858))
+* **deps:** Allow pyarrow &lt; 11 ([#1393](https://github.com/googleapis/python-bigquery/issues/1393)) ([c898546](https://github.com/googleapis/python-bigquery/commit/c898546d3292f9ec1ba6120cd3f9e2805aa087bb))
+* **deps:** Require requests&gt;=2.21.0 ([#1388](https://github.com/googleapis/python-bigquery/issues/1388)) ([e398336](https://github.com/googleapis/python-bigquery/commit/e39833673582e4a7a34103cfc45603932c9c33b3))
+* Refactor to adapt to changes to shapely dependency ([#1376](https://github.com/googleapis/python-bigquery/issues/1376)) ([2afd278](https://github.com/googleapis/python-bigquery/commit/2afd278febe1eb247adc6278ab59903962a5bb6c))
+
+
+### Documentation
+
+* Fix typos ([#1372](https://github.com/googleapis/python-bigquery/issues/1372)) ([21cc525](https://github.com/googleapis/python-bigquery/commit/21cc525a86a06acfe73e5c5a74ec5f0b61e410f2))
+
+
+### Miscellaneous Chores
+
+* release 3.3.6 ([4fce1d9](https://github.com/googleapis/python-bigquery/commit/4fce1d93b1763703b115a0480a2b97021786aff7))
+
 ## [3.3.4](https://github.com/googleapis/python-bigquery/compare/v3.3.3...v3.3.4) (2022-09-29)
 
 
