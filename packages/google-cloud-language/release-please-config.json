@@ -8,12 +8,12 @@
                 "google/cloud/language/gapic_version.py",
                 {
                     "type": "json",
-                    "path": "ssamples/generated_samples/snippet_metadata_google.cloud.language.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1.json",
                     "jsonpath": "$.clientLibrary.version"
                 },
                 {
                     "type": "json",
-                    "path": "ssamples/generated_samples/snippet_metadata_google.cloud.language.v1beta2.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1beta2.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
