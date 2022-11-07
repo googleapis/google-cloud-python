@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.23.0](https://github.com/googleapis/python-spanner/compare/v3.22.1...v3.23.0) (2022-11-07)
+
+
+### Features
+
+* Adding support and samples for jsonb ([#851](https://github.com/googleapis/python-spanner/issues/851)) ([268924d](https://github.com/googleapis/python-spanner/commit/268924d29fa2577103abb9b6cdc91585d7c349ce))
+* Support request priorities ([#834](https://github.com/googleapis/python-spanner/issues/834)) ([ef2159c](https://github.com/googleapis/python-spanner/commit/ef2159c554b866955c9030099b208d4d9d594e83))
+* Support requiest options in !autocommit mode ([#838](https://github.com/googleapis/python-spanner/issues/838)) ([ab768e4](https://github.com/googleapis/python-spanner/commit/ab768e45efe7334823ec6bcdccfac2a6dde73bd7))
+* Update result_set.proto to return undeclared parameters in ExecuteSql API ([#841](https://github.com/googleapis/python-spanner/issues/841)) ([0aa4cad](https://github.com/googleapis/python-spanner/commit/0aa4cadb1ba8590cdfab5573b869e8b16e8050f8))
+* Update transaction.proto to include different lock modes ([#845](https://github.com/googleapis/python-spanner/issues/845)) ([c191296](https://github.com/googleapis/python-spanner/commit/c191296df5a0322e6050786e59159999eff16cdd))
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#839](https://github.com/googleapis/python-spanner/issues/839)) ([06725fc](https://github.com/googleapis/python-spanner/commit/06725fcf7fb216ad0cffb2cb568f8da38243c32e))
+
+
+### Documentation
+
+* Describe DB API and transactions retry mechanism ([#844](https://github.com/googleapis/python-spanner/issues/844)) ([30a0666](https://github.com/googleapis/python-spanner/commit/30a0666decf3ac638568c613facbf999efec6f19)), closes [#791](https://github.com/googleapis/python-spanner/issues/791)
+
 ## [3.22.1](https://github.com/googleapis/python-spanner/compare/v3.22.0...v3.22.1) (2022-10-04)
 
 
