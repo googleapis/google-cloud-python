@@ -2660,6 +2660,50 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property("billing", {"requesterPays": bool(value)})
 
+    @property
+    def autoclass_enabled(self):
+        """Whether Autoclass is enabled for this bucket.
+
+        See https://cloud.google.com/storage/docs/using-autoclass for details.
+
+        :setter: Update whether autoclass is enabled for this bucket.
+        :getter: Query whether autoclass is enabled for this bucket.
+
+        :rtype: bool
+        :returns: True if enabled, else False.
+        """
+        autoclass = self._properties.get("autoclass", {})
+        return autoclass.get("enabled", False)
+
+    @autoclass_enabled.setter
+    def autoclass_enabled(self, value):
+        """Enable or disable Autoclass at the bucket-level.
+
+        See https://cloud.google.com/storage/docs/using-autoclass for details.
+
+        :type value: convertible to boolean
+        :param value: If true, enable Autoclass for this bucket.
+                      If false, disable Autoclass for this bucket.
+
+        .. note::
+          To enable autoclass, you must set it at bucket creation time.
+          Currently, only patch requests that disable autoclass are supported.
+
+        """
+        self._patch_property("autoclass", {"enabled": bool(value)})
+
+    @property
+    def autoclass_toggle_time(self):
+        """Retrieve the toggle time when Autoclaass was last enabled or disabled for the bucket.
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's autoclass is toggled, or ``None`` if the property is not set locally.
+        """
+        autoclass = self._properties.get("autoclass")
+        if autoclass is not None:
+            timestamp = autoclass.get("toggleTime")
+            if timestamp is not None:
+                return _rfc3339_nanos_to_datetime(timestamp)
+
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
 

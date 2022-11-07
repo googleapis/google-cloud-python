@@ -2644,6 +2644,37 @@ class Test_Bucket(unittest.TestCase):
         self.assertIn("rpo", bucket._changes)
         self.assertEqual(bucket.rpo, RPO_DEFAULT)
 
+    def test_autoclass_enabled_getter_and_setter(self):
+        properties = {"autoclass": {"enabled": True}}
+        bucket = self._make_one(properties=properties)
+        self.assertTrue(bucket.autoclass_enabled)
+        bucket.autoclass_enabled = False
+        self.assertIn("autoclass", bucket._changes)
+        self.assertFalse(bucket.autoclass_enabled)
+
+    def test_autoclass_toggle_time_missing(self):
+        bucket = self._make_one()
+        self.assertIsNone(bucket.autoclass_toggle_time)
+
+        properties = {"autoclass": {}}
+        bucket = self._make_one(properties=properties)
+        self.assertIsNone(bucket.autoclass_toggle_time)
+
+    def test_autoclass_toggle_time(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import UTC
+
+        effective_time = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        properties = {
+            "autoclass": {
+                "enabled": True,
+                "toggleTime": _datetime_to_rfc3339(effective_time),
+            }
+        }
+        bucket = self._make_one(properties=properties)
+        self.assertEqual(bucket.autoclass_toggle_time, effective_time)
+
     def test_get_logging_w_prefix(self):
         NAME = "name"
         LOG_BUCKET = "logs"
