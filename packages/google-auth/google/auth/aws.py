@@ -47,6 +47,7 @@ import re
 from six.moves import http_client
 from six.moves import urllib
 from six.moves.urllib.parse import urljoin
+from six.moves.urllib.parse import urlparse
 
 from google.auth import _helpers
 from google.auth import environment_vars
@@ -397,6 +398,8 @@ class Credentials(external_account.Credentials):
         self._request_signer = None
         self._target_resource = audience
 
+        self.validate_metadata_server_urls()
+
         # Get the environment ID. Currently, only one version supported (v1).
         matches = re.match(r"^(aws)([\d]+)$", self._environment_id)
         if matches:
@@ -412,6 +415,22 @@ class Credentials(external_account.Credentials):
                     env_version
                 )
             )
+
+    def validate_metadata_server_urls(self):
+        self.validate_metadata_server_url_if_any(self._region_url, "region_url")
+        self.validate_metadata_server_url_if_any(self._security_credentials_url, "url")
+        self.validate_metadata_server_url_if_any(
+            self._imdsv2_session_token_url, "imdsv2_session_token_url"
+        )
+
+    @staticmethod
+    def validate_metadata_server_url_if_any(url_string, name_of_data):
+        if url_string:
+            url = urlparse(url_string)
+            if url.hostname != "169.254.169.254" and url.hostname != "fd00:ec2::254":
+                raise ValueError(
+                    "Invalid hostname '{}' for '{}'".format(url.hostname, name_of_data)
+                )
 
     def retrieve_subject_token(self, request):
         """Retrieves the subject token using the credential_source object.
