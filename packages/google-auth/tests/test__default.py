@@ -1234,3 +1234,32 @@ def test_quota_project_from_environment(get_adc_path):
     explicit_quota = "explicit_quota"
     credentials, _ = _default.default(quota_project_id=explicit_quota)
     assert credentials.quota_project_id == explicit_quota
+
+
+@mock.patch(
+    "google.auth.compute_engine._metadata.ping", return_value=True, autospec=True
+)
+@mock.patch(
+    "google.auth.compute_engine._metadata.get_project_id",
+    return_value="example-project",
+    autospec=True,
+)
+@mock.patch.dict(os.environ)
+def test_quota_gce_credentials(unused_get, unused_ping):
+    # No quota
+    credentials, project_id = _default._get_gce_credentials()
+    assert project_id == "example-project"
+    assert credentials.quota_project_id is None
+
+    # Quota from environment
+    quota_from_env = "quota_from_env"
+    os.environ[environment_vars.GOOGLE_CLOUD_QUOTA_PROJECT] = quota_from_env
+    credentials, project_id = _default._get_gce_credentials()
+    assert credentials.quota_project_id == quota_from_env
+
+    # Explicit quota
+    explicit_quota = "explicit_quota"
+    credentials, project_id = _default._get_gce_credentials(
+        quota_project_id=explicit_quota
+    )
+    assert credentials.quota_project_id == explicit_quota
