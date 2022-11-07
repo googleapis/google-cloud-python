@@ -22,6 +22,17 @@ For more information on setting up your Python development environment, please r
 
 .. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/setup
 
+Extras
+------
+
+google-auth has few extras that you can install. For example::
+
+    $ pip install google-auth[pyopenssl]
+
+Note that the extras pyopenssl and enterprise_cert should not be used together because they use conflicting versions of `cryptography`_.
+
+.. _`cryptography`: https://cryptography.io/en/latest/
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Python >= 3.6
