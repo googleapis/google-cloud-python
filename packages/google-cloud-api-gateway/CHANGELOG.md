@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-api-gateway/compare/v1.3.3...v1.4.0) (2022-11-07)
+
+
+### Features
+
+* add support for `google.cloud.apigateway.__version__` ([e9e9c31](https://github.com/googleapis/python-api-gateway/commit/e9e9c31115962509813b27ac44bfd53b0f42a836))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([e9e9c31](https://github.com/googleapis/python-api-gateway/commit/e9e9c31115962509813b27ac44bfd53b0f42a836))
+* **deps:** require google-api-core &gt;=1.33.2 ([e9e9c31](https://github.com/googleapis/python-api-gateway/commit/e9e9c31115962509813b27ac44bfd53b0f42a836))
+
 ## [1.3.3](https://github.com/googleapis/python-api-gateway/compare/v1.3.2...v1.3.3) (2022-10-07)
 
 
