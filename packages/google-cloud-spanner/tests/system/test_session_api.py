@@ -89,6 +89,7 @@ POSTGRES_ALL_TYPES_COLUMNS = (
     LIVE_ALL_TYPES_COLUMNS[:1]
     + LIVE_ALL_TYPES_COLUMNS[1:7:2]
     + LIVE_ALL_TYPES_COLUMNS[9:17:2]
+    + ("jsonb_value",)
 )
 
 AllTypesRowData = collections.namedtuple("AllTypesRowData", LIVE_ALL_TYPES_COLUMNS)
@@ -120,7 +121,7 @@ LIVE_ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
     AllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
     AllTypesRowData(pkey=110, json_value=JSON_1),
-    AllTypesRowData(pkey=111, json_value=[JSON_1, JSON_2]),
+    AllTypesRowData(pkey=111, json_value=JsonObject([JSON_1, JSON_2])),
     # empty array values
     AllTypesRowData(pkey=201, int_array=[]),
     AllTypesRowData(pkey=202, bool_array=[]),
@@ -184,12 +185,13 @@ POSTGRES_ALL_TYPES_ROWDATA = (
     PostGresAllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
     PostGresAllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
     PostGresAllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
+    PostGresAllTypesRowData(pkey=110, jsonb_value=JSON_1),
 )
 
 if _helpers.USE_EMULATOR:
     ALL_TYPES_COLUMNS = EMULATOR_ALL_TYPES_COLUMNS
     ALL_TYPES_ROWDATA = EMULATOR_ALL_TYPES_ROWDATA
-elif _helpers.DATABASE_DIALECT:
+elif _helpers.DATABASE_DIALECT == "POSTGRESQL":
     ALL_TYPES_COLUMNS = POSTGRES_ALL_TYPES_COLUMNS
     ALL_TYPES_ROWDATA = POSTGRES_ALL_TYPES_ROWDATA
 else:
@@ -2100,6 +2102,18 @@ def test_execute_sql_w_json_bindings(
         sessions_database,
         database_dialect,
         spanner_v1.param_types.JSON,
+        JSON_1,
+        [JSON_1, JSON_2],
+    )
+
+
+def test_execute_sql_w_jsonb_bindings(
+    not_emulator, not_google_standard_sql, sessions_database, database_dialect
+):
+    _bind_test_helper(
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.PG_JSONB,
         JSON_1,
         [JSON_1, JSON_2],
     )

@@ -28,6 +28,7 @@ import time
 from google.cloud import spanner, spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 from google.cloud.spanner_v1 import param_types
+from google.cloud.spanner_v1.data_types import JsonObject
 
 OPERATION_TIMEOUT_SECONDS = 240
 
@@ -1340,6 +1341,133 @@ def query_data_with_query_options(instance_id, database_id):
         for row in results:
             print("VenueId: {}, VenueName: {}, LastUpdateTime: {}".format(*row))
     # [END spanner_postgresql_query_with_query_options]
+
+
+# [START spanner_postgresql_jsonb_add_column]
+def add_jsonb_column(instance_id, database_id):
+    """
+    Alters Venues tables in the database adding a JSONB column.
+    You can create the table by running the `create_table_with_datatypes`
+    sample or by running this DDL statement against your database:
+    CREATE TABLE Venues (
+      VenueId         BIGINT NOT NULL,
+      VenueName       character varying(100),
+      VenueInfo       BYTEA,
+      Capacity        BIGINT,
+      OutdoorVenue    BOOL,
+      PopularityScore FLOAT8,
+      Revenue         NUMERIC,
+      LastUpdateTime  SPANNER.COMMIT_TIMESTAMP NOT NULL,
+      PRIMARY KEY (VenueId))
+    """
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        ["ALTER TABLE Venues ADD COLUMN VenueDetails JSONB"]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        'Altered table "Venues" on database {} on instance {}.'.format(
+            database_id, instance_id
+        )
+    )
+
+
+# [END spanner_postgresql_jsonb_add_column]
+
+
+# [START spanner_postgresql_jsonb_update_data]
+def update_data_with_jsonb(instance_id, database_id):
+    """Updates Venues tables in the database with the JSONB
+    column.
+    This updates the `VenueDetails` column which must be created before
+    running this sample. You can add the column by running the
+    `add_jsonb_column` sample or by running this DDL statement
+     against your database:
+        ALTER TABLE Venues ADD COLUMN VenueDetails JSONB
+    """
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    """
+    PG JSONB takes the last value in the case of duplicate keys.
+    PG JSONB sorts first by key length and then lexicographically with
+    equivalent key length.
+    """
+
+    with database.batch() as batch:
+        batch.update(
+            table="Venues",
+            columns=("VenueId", "VenueDetails"),
+            values=[
+                (
+                    4,
+                    JsonObject(
+                        [
+                            JsonObject({"name": None, "open": True}),
+                            JsonObject(
+                                {"name": "room 2", "open": False}
+                            ),
+                        ]
+                    ),
+                ),
+                (19, JsonObject(rating=9, open=True)),
+                (
+                    42,
+                    JsonObject(
+                        {
+                            "name": None,
+                            "open": {"Monday": True, "Tuesday": False},
+                            "tags": ["large", "airy"],
+                        }
+                    ),
+                ),
+            ],
+        )
+
+    print("Updated data.")
+
+
+# [END spanner_postgresql_jsonb_update_data]
+
+# [START spanner_postgresql_jsonb_query_parameter]
+def query_data_with_jsonb_parameter(instance_id, database_id):
+    """Queries sample data using SQL with a JSONB parameter."""
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    param = {"p1": 2}
+    param_type = {"p1": param_types.INT64}
+
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql(
+            "SELECT venueid, venuedetails FROM Venues"
+            + " WHERE CAST(venuedetails ->> 'rating' AS INTEGER) > $1",
+            params=param,
+            param_types=param_type,
+        )
+
+        for row in results:
+            print("VenueId: {}, VenueDetails: {}".format(*row))
+
+
+# [END spanner_postgresql_jsonb_query_parameter]
 
 
 if __name__ == "__main__":  # noqa: C901

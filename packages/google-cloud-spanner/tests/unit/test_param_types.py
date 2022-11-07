@@ -54,3 +54,20 @@ class Test_Struct(unittest.TestCase):
         )
 
         self.assertEqual(found, expected)
+
+
+class Test_JsonbParamType(unittest.TestCase):
+    def test_it(self):
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import TypeAnnotationCode
+        from google.cloud.spanner_v1 import param_types
+
+        expected = Type(
+            code=TypeCode.JSON,
+            type_annotation=TypeAnnotationCode(TypeAnnotationCode.PG_JSONB),
+        )
+
+        found = param_types.PG_JSONB
+
+        self.assertEqual(found, expected)

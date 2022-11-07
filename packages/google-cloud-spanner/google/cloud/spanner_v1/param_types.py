@@ -31,6 +31,7 @@ TIMESTAMP = Type(code=TypeCode.TIMESTAMP)
 NUMERIC = Type(code=TypeCode.NUMERIC)
 JSON = Type(code=TypeCode.JSON)
 PG_NUMERIC = Type(code=TypeCode.NUMERIC, type_annotation=TypeAnnotationCode.PG_NUMERIC)
+PG_JSONB = Type(code=TypeCode.JSON, type_annotation=TypeAnnotationCode.PG_JSONB)
 
 
 def Array(element_type):

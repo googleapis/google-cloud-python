@@ -136,6 +136,7 @@ CREATE TABLE all_types (
     string_value VARCHAR(16),
     timestamp_value TIMESTAMPTZ,
     numeric_value NUMERIC,
+    jsonb_value JSONB,
     PRIMARY KEY (pkey) );
 CREATE TABLE counters (
     name VARCHAR(1024),

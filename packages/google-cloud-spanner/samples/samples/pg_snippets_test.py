@@ -449,3 +449,25 @@ def test_create_client_with_query_options(capsys, instance_id, sample_database):
     assert "VenueId: 4, VenueName: Venue 4, LastUpdateTime:" in out
     assert "VenueId: 19, VenueName: Venue 19, LastUpdateTime:" in out
     assert "VenueId: 42, VenueName: Venue 42, LastUpdateTime:" in out
+
+
+@pytest.mark.dependency(name="add_jsonb_column", depends=["insert_datatypes_data"])
+def test_add_jsonb_column(capsys, instance_id, sample_database):
+    snippets.add_jsonb_column(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "Waiting for operation to complete..." in out
+    assert 'Altered table "Venues" on database ' in out
+
+
+@pytest.mark.dependency(name="update_data_with_jsonb", depends=["add_jsonb_column"])
+def test_update_data_with_jsonb(capsys, instance_id, sample_database):
+    snippets.update_data_with_jsonb(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "Updated data." in out
+
+
+@pytest.mark.dependency(depends=["update_data_with_jsonb"])
+def test_query_data_with_jsonb_parameter(capsys, instance_id, sample_database):
+    snippets.query_data_with_jsonb_parameter(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "VenueId: 19, VenueDetails: {'open': True, 'rating': 9}" in out
