@@ -108,7 +108,7 @@ def test_load_csv_from_dataframe_allows_client_to_generate_schema(mock_bigquery_
 
     _ = list(
         load.load_csv_from_dataframe(
-            mock_bigquery_client, df, destination, None, None, None
+            mock_bigquery_client, df, destination, None, None, None, None
         )
     )
 
@@ -151,7 +151,9 @@ def test_load_csv_from_file_generates_schema(mock_bigquery_client):
     )
 
     _ = list(
-        load.load_csv_from_file(mock_bigquery_client, df, destination, None, None, None)
+        load.load_csv_from_file(
+            mock_bigquery_client, df, destination, None, None, None, None
+        )
     )
 
     mock_load = mock_bigquery_client.load_table_from_file
@@ -222,7 +224,7 @@ def test_load_chunks_omits_policy_tags(
 
 def test_load_chunks_with_invalid_api_method():
     with pytest.raises(ValueError, match="Got unexpected api_method:"):
-        load.load_chunks(None, None, None, api_method="not_a_thing")
+        load.load_chunks(None, None, None, None, api_method="not_a_thing")
 
 
 def test_load_parquet_allows_client_to_generate_schema(mock_bigquery_client):
@@ -233,7 +235,14 @@ def test_load_parquet_allows_client_to_generate_schema(mock_bigquery_client):
         "my-project.my_dataset.my_table"
     )
 
-    load.load_parquet(mock_bigquery_client, df, destination, None, None)
+    load.load_parquet(
+        mock_bigquery_client,
+        df,
+        destination,
+        None,
+        None,
+        None,
+    )
 
     mock_load = mock_bigquery_client.load_table_from_dataframe
     assert mock_load.called
@@ -255,7 +264,7 @@ def test_load_parquet_with_bad_conversion(mock_bigquery_client):
     )
 
     with pytest.raises(exceptions.ConversionError):
-        load.load_parquet(mock_bigquery_client, df, destination, None, None)
+        load.load_parquet(mock_bigquery_client, df, destination, None, None, None)
 
 
 @pytest.mark.parametrize(

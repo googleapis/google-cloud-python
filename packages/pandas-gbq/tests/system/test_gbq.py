@@ -673,9 +673,17 @@ class TestToGBQIntegration(object):
         test_id = "2"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
-        self.table.create(TABLE_ID + test_id, gbq._generate_bq_schema(df))
 
-        # Test the default value of if_exists is 'fail'
+        # Initialize table with sample data
+        gbq.to_gbq(
+            df,
+            self.destination_table + test_id,
+            project_id,
+            chunksize=10000,
+            credentials=self.credentials,
+        )
+
+        # Test the default value of if_exists == 'fail'
         with pytest.raises(gbq.TableCreationError):
             gbq.to_gbq(
                 df,

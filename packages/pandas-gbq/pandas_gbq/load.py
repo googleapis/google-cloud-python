@@ -113,13 +113,13 @@ def load_parquet(
     client: bigquery.Client,
     dataframe: pandas.DataFrame,
     destination_table_ref: bigquery.TableReference,
+    write_disposition: str,
     location: Optional[str],
     schema: Optional[Dict[str, Any]],
     billing_project: Optional[str] = None,
 ):
     job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = "WRITE_APPEND"
-    job_config.create_disposition = "CREATE_NEVER"
+    job_config.write_disposition = write_disposition
     job_config.source_format = "PARQUET"
 
     if schema is not None:
@@ -143,13 +143,13 @@ def load_parquet(
 
 def load_csv(
     dataframe: pandas.DataFrame,
+    write_disposition: str,
     chunksize: Optional[int],
     bq_schema: Optional[List[bigquery.SchemaField]],
     load_chunk: Callable,
 ):
     job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = "WRITE_APPEND"
-    job_config.create_disposition = "CREATE_NEVER"
+    job_config.write_disposition = write_disposition
     job_config.source_format = "CSV"
     job_config.allow_quoted_newlines = True
 
@@ -167,6 +167,7 @@ def load_csv_from_dataframe(
     client: bigquery.Client,
     dataframe: pandas.DataFrame,
     destination_table_ref: bigquery.TableReference,
+    write_disposition: str,
     location: Optional[str],
     chunksize: Optional[int],
     schema: Optional[Dict[str, Any]],
@@ -187,13 +188,14 @@ def load_csv_from_dataframe(
             project=billing_project,
         ).result()
 
-    return load_csv(dataframe, chunksize, bq_schema, load_chunk)
+    return load_csv(dataframe, write_disposition, chunksize, bq_schema, load_chunk)
 
 
 def load_csv_from_file(
     client: bigquery.Client,
     dataframe: pandas.DataFrame,
     destination_table_ref: bigquery.TableReference,
+    write_disposition: str,
     location: Optional[str],
     chunksize: Optional[int],
     schema: Optional[Dict[str, Any]],
@@ -223,7 +225,7 @@ def load_csv_from_file(
         finally:
             chunk_buffer.close()
 
-    return load_csv(dataframe, chunksize, bq_schema, load_chunk)
+    return load_csv(dataframe, write_disposition, chunksize, bq_schema, load_chunk)
 
 
 def load_chunks(
@@ -234,6 +236,7 @@ def load_chunks(
     schema=None,
     location=None,
     api_method="load_parquet",
+    write_disposition="WRITE_EMPTY",
     billing_project: Optional[str] = None,
 ):
     if api_method == "load_parquet":
@@ -241,6 +244,7 @@ def load_chunks(
             client,
             dataframe,
             destination_table_ref,
+            write_disposition,
             location,
             schema,
             billing_project=billing_project,
@@ -253,6 +257,7 @@ def load_chunks(
                 client,
                 dataframe,
                 destination_table_ref,
+                write_disposition,
                 location,
                 chunksize,
                 schema,
@@ -263,6 +268,7 @@ def load_chunks(
                 client,
                 dataframe,
                 destination_table_ref,
+                write_disposition,
                 location,
                 chunksize,
                 schema,

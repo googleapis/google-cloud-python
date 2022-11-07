@@ -20,10 +20,7 @@ import numpy as np
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
-from pandas_gbq.exceptions import (
-    AccessDenied,
-    GenericGBQException,
-)
+from pandas_gbq.exceptions import AccessDenied, GenericGBQException
 from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
 import pandas_gbq.timestamp
@@ -116,20 +113,12 @@ class InvalidSchema(ValueError):
     table in BigQuery.
     """
 
-    def __init__(
-        self, message: str, local_schema: Dict[str, Any], remote_schema: Dict[str, Any]
-    ):
-        super().__init__(message)
-        self._local_schema = local_schema
-        self._remote_schema = remote_schema
+    def __init__(self, message: str):
+        self._message = message
 
     @property
-    def local_schema(self) -> Dict[str, Any]:
-        return self._local_schema
-
-    @property
-    def remote_schema(self) -> Dict[str, Any]:
-        return self._remote_schema
+    def message(self) -> str:
+        return self._message
 
 
 class NotFoundException(ValueError):
@@ -155,7 +144,12 @@ class TableCreationError(ValueError):
     Raised when the create table method fails
     """
 
-    pass
+    def __init__(self, message: str):
+        self._message = message
+
+    @property
+    def message(self) -> str:
+        return self._message
 
 
 class Context(object):
@@ -382,8 +376,14 @@ class GbqConnector(object):
 
         if "cancelled" in ex.message:
             raise QueryTimeout("Reason: {0}".format(ex))
-
-        raise GenericGBQException("Reason: {0}".format(ex))
+        elif "Provided Schema does not match" in ex.message:
+            error_message = ex.errors[0]["message"]
+            raise InvalidSchema(f"Reason: {error_message}")
+        elif "Already Exists: Table" in ex.message:
+            error_message = ex.errors[0]["message"]
+            raise TableCreationError(f"Reason: {error_message}")
+        else:
+            raise GenericGBQException("Reason: {0}".format(ex))
 
     def download_table(
         self,
@@ -577,6 +577,7 @@ class GbqConnector(object):
         self,
         dataframe,
         destination_table_ref,
+        write_disposition,
         chunksize=None,
         schema=None,
         progress_bar=True,
@@ -596,6 +597,7 @@ class GbqConnector(object):
                 schema=schema,
                 location=self.location,
                 api_method=api_method,
+                write_disposition=write_disposition,
                 billing_project=billing_project,
             )
             if progress_bar and tqdm:
@@ -608,11 +610,6 @@ class GbqConnector(object):
                 )
         except self.http_error as ex:
             self.process_http_error(ex)
-
-    def delete_and_recreate_table(self, project_id, dataset_id, table_id, table_schema):
-        table = _Table(project_id, dataset_id, credentials=self.credentials)
-        table.delete(table_id)
-        table.create(table_id, table_schema)
 
 
 def _bqschema_to_nullsafe_dtypes(schema_fields):
@@ -975,11 +972,9 @@ def to_gbq(
 ):
     """Write a DataFrame to a Google BigQuery table.
 
-    The main method a user calls to export pandas DataFrame contents to
-    Google BigQuery table.
+    The main method a user calls to export pandas DataFrame contents to Google BigQuery table.
 
-    This method uses the Google Cloud client library to make requests to
-    Google BigQuery, documented `here
+    This method uses the Google Cloud client library to make requests to Google BigQuery, documented `here
     <https://googleapis.dev/python/bigquery/latest/index.html>`__.
 
     See the :ref:`How to authenticate with Google BigQuery <authentication>`
@@ -1114,14 +1109,20 @@ def to_gbq(
                 stacklevel=2,
             )
 
-    if if_exists not in ("fail", "replace", "append"):
-        raise ValueError("'{0}' is not valid for if_exists".format(if_exists))
-
     if "." not in destination_table:
         raise NotFoundException(
             "Invalid Table Name. Should be of the form 'datasetId.tableId' or "
             "'projectId.datasetId.tableId'"
         )
+
+    if if_exists not in ("fail", "replace", "append"):
+        raise ValueError("'{0}' is not valid for if_exists".format(if_exists))
+
+    if_exists_list = ["fail", "replace", "append"]
+    dispositions = ["WRITE_EMPTY", "WRITE_TRUNCATE", "WRITE_APPEND"]
+    dispositions_dict = dict(zip(if_exists_list, dispositions))
+
+    write_disposition = dispositions_dict[if_exists]
 
     connector = GbqConnector(
         project_id,
@@ -1142,17 +1143,20 @@ def to_gbq(
     table_id = destination_table_ref.table_id
 
     default_schema = _generate_bq_schema(dataframe)
+    # If table_schema isn't provided, we'll create one for you
     if not table_schema:
         table_schema = default_schema
+    # It table_schema is provided, we'll update the default_schema to the provided table_schema
     else:
         table_schema = pandas_gbq.schema.update_schema(
             default_schema, dict(fields=table_schema)
         )
 
-    # If table exists, check if_exists parameter
     try:
+        # Try to get the table
         table = bqclient.get_table(destination_table_ref)
     except google_exceptions.NotFound:
+        # If the table doesn't already exist, create it
         table_connector = _Table(
             project_id_table,
             dataset_id,
@@ -1161,34 +1165,12 @@ def to_gbq(
         )
         table_connector.create(table_id, table_schema)
     else:
+        # Convert original schema (the schema that already exists) to pandas-gbq API format
         original_schema = pandas_gbq.schema.to_pandas_gbq(table.schema)
 
-        if if_exists == "fail":
-            raise TableCreationError(
-                "Could not create the table because it "
-                "already exists. "
-                "Change the if_exists parameter to "
-                "'append' or 'replace' data."
-            )
-        elif if_exists == "replace":
-            connector.delete_and_recreate_table(
-                project_id_table, dataset_id, table_id, table_schema
-            )
-        else:
-            if not pandas_gbq.schema.schema_is_subset(original_schema, table_schema):
-                raise InvalidSchema(
-                    "Please verify that the structure and "
-                    "data types in the DataFrame match the "
-                    "schema of the destination table.",
-                    table_schema,
-                    original_schema,
-                )
-
-            # Update the local `table_schema` so mode (NULLABLE/REQUIRED)
-            # matches. See: https://github.com/pydata/pandas-gbq/issues/315
-            table_schema = pandas_gbq.schema.update_schema(
-                table_schema, original_schema
-            )
+        # Update the local `table_schema` so mode (NULLABLE/REQUIRED)
+        # matches. See: https://github.com/pydata/pandas-gbq/issues/315
+        table_schema = pandas_gbq.schema.update_schema(table_schema, original_schema)
 
     if dataframe.empty:
         # Create the table (if needed), but don't try to run a load job with an
@@ -1198,6 +1180,7 @@ def to_gbq(
     connector.load_data(
         dataframe,
         destination_table_ref,
+        write_disposition=write_disposition,
         chunksize=chunksize,
         schema=table_schema,
         progress_bar=progress_bar,

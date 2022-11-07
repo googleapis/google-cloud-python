@@ -94,7 +94,11 @@ def test_to_gbq_with_if_exists_append_mismatch(mock_bigquery_client):
         "myproj.my_dataset.my_table",
         schema=(SchemaField("col_a", "INTEGER"), SchemaField("col_b", "STRING")),
     )
-    with pytest.raises(gbq.InvalidSchema) as exception_block:
+    mock_bigquery_client.side_effect = gbq.InvalidSchema(
+        message=r"Provided Schema does not match Table *"
+    )
+
+    with pytest.raises((gbq.InvalidSchema)) as exception_block:
         gbq.to_gbq(
             DataFrame({"col_a": [0.25, 1.5, -1.0]}),
             "my_dataset.my_table",
@@ -103,16 +107,10 @@ def test_to_gbq_with_if_exists_append_mismatch(mock_bigquery_client):
         )
 
     exc = exception_block.value
-    assert exc.remote_schema == {
-        "fields": [
-            {"name": "col_a", "type": "INTEGER", "mode": "NULLABLE"},
-            {"name": "col_b", "type": "STRING", "mode": "NULLABLE"},
-        ]
-    }
-    assert exc.local_schema == {"fields": [{"name": "col_a", "type": "FLOAT"}]}
+    assert exc.message == r"Provided Schema does not match Table *"
 
 
-def test_to_gbq_with_if_exists_replace(mock_bigquery_client):
+def test_to_gbq_with_if_exists_replace(mock_bigquery_client, expected_load_method):
     mock_bigquery_client.get_table.side_effect = (
         # Initial check
         google.cloud.bigquery.Table("myproj.my_dataset.my_table"),
@@ -125,10 +123,7 @@ def test_to_gbq_with_if_exists_replace(mock_bigquery_client):
         project_id="myproj",
         if_exists="replace",
     )
-    # TODO: We can avoid these API calls by using write disposition in the load
-    # job. See: https://github.com/googleapis/python-bigquery-pandas/issues/118
-    assert mock_bigquery_client.delete_table.called
-    assert mock_bigquery_client.create_table.called
+    expected_load_method.assert_called_once()
 
 
 def test_to_gbq_with_if_exists_replace_cross_project(
@@ -146,20 +141,7 @@ def test_to_gbq_with_if_exists_replace_cross_project(
         project_id="billing-project",
         if_exists="replace",
     )
-    # TODO: We can avoid these API calls by using write disposition in the load
-    # job. See: https://github.com/googleapis/python-bigquery-pandas/issues/118
-    assert mock_bigquery_client.delete_table.called
-    args, _ = mock_bigquery_client.delete_table.call_args
-    table_delete: google.cloud.bigquery.TableReference = args[0]
-    assert table_delete.project == "data-project"
-    assert table_delete.dataset_id == "my_dataset"
-    assert table_delete.table_id == "my_table"
-    assert mock_bigquery_client.create_table.called
-    args, _ = mock_bigquery_client.create_table.call_args
-    table_create: google.cloud.bigquery.TableReference = args[0]
-    assert table_create.project == "data-project"
-    assert table_create.dataset_id == "my_dataset"
-    assert table_create.table_id == "my_table"
+    expected_load_method.assert_called_once()
 
     # Check that billing project and destination table is set correctly.
     expected_load_method.assert_called_once()
