@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Define properties for directly strong ProtoRPC messages."""
+"""Define properties for directly storing ProtoRPC messages.
+
+These classes are not implemented.
+"""
 
 
 __all__ = ["EnumProperty", "MessageProperty"]
