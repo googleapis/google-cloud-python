@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.14.1](https://github.com/googleapis/google-auth-library-python/compare/v2.14.0...v2.14.1) (2022-11-07)
+
+
+### Bug Fixes
+
+* Apply quota project for compute cred in adc ([#1177](https://github.com/googleapis/google-auth-library-python/issues/1177)) ([b9aa92a](https://github.com/googleapis/google-auth-library-python/commit/b9aa92a1f1640f9c8bc4beb7b13051a01cb263a4))
+* Update minimum required version of cryptography in pyopenssl extra ([#1176](https://github.com/googleapis/google-auth-library-python/issues/1176)) ([e9e76d1](https://github.com/googleapis/google-auth-library-python/commit/e9e76d1ee4e4b39edcd6821ced7a5bc3ed60eba0))
+* Validate url domain for aws metadata urls ([#1174](https://github.com/googleapis/google-auth-library-python/issues/1174)) ([f9d7d77](https://github.com/googleapis/google-auth-library-python/commit/f9d7d77739db86870c9b87b003e8ce0c93d53e53))
+
 ## [2.14.0](https://github.com/googleapis/google-auth-library-python/compare/v2.13.0...v2.14.0) (2022-10-31)
 
 
