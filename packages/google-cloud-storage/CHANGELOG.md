@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.6.0](https://github.com/googleapis/python-storage/compare/v2.5.0...v2.6.0) (2022-11-07)
+
+
+### Features
+
+* Add Autoclass support and samples ([#791](https://github.com/googleapis/python-storage/issues/791)) ([9ccdc5f](https://github.com/googleapis/python-storage/commit/9ccdc5f2e8a9e28b2df47260d639b6af2708fe9a)), closes [#797](https://github.com/googleapis/python-storage/issues/797)
+* Add predefined_acl to create_resumable_upload_session ([#878](https://github.com/googleapis/python-storage/issues/878)) ([2b3e8f9](https://github.com/googleapis/python-storage/commit/2b3e8f967df95d45c35e150b201e77b8962c7e9b))
+* Enable delete_blobs() to preserve generation ([#840](https://github.com/googleapis/python-storage/issues/840)) ([8fd4c37](https://github.com/googleapis/python-storage/commit/8fd4c376bd5f031836feb8101c9c0c0d1c2e969d)), closes [#814](https://github.com/googleapis/python-storage/issues/814)
+* Make tests run against environments other than prod ([#883](https://github.com/googleapis/python-storage/issues/883)) ([7dfeb62](https://github.com/googleapis/python-storage/commit/7dfeb622bb966e368786e3c9be67ad77b3150725))
+
+
+### Bug Fixes
+
+* Align bucket bound hostname url builder consistency ([#875](https://github.com/googleapis/python-storage/issues/875)) ([8a24add](https://github.com/googleapis/python-storage/commit/8a24add52f0bc7dbcb3ec427bd3e4551b3afcbf5))
+* BlobWriter.close() will do nothing if already closed ([#887](https://github.com/googleapis/python-storage/issues/887)) ([7707220](https://github.com/googleapis/python-storage/commit/770722034072cfcaafc18340e91746957ef31397))
+* Remove client side validations ([#868](https://github.com/googleapis/python-storage/issues/868)) ([928ebbc](https://github.com/googleapis/python-storage/commit/928ebbccbe183666f3b35adb7226bd259d4e71c0))
+
+
+### Documentation
+
+* Update comments in list_blobs sample ([#866](https://github.com/googleapis/python-storage/issues/866)) ([9469f5d](https://github.com/googleapis/python-storage/commit/9469f5dd5ca6d546a47efbc3d673a401ead9d632))
+* Clarify prefixes entity in list_blobs usage ([#837](https://github.com/googleapis/python-storage/issues/837)) ([7101f47](https://github.com/googleapis/python-storage/commit/7101f47fde663eec4bbaaa246c7fe4e973ca2506))
+* Streamline docs for migration ([#876](https://github.com/googleapis/python-storage/issues/876)) ([7c8a178](https://github.com/googleapis/python-storage/commit/7c8a178978d2022482afd301242ae79b2f9c737a))
+* Update docstring for lifecycle_rules to match generator behavior ([#841](https://github.com/googleapis/python-storage/issues/841)) ([36fb81b](https://github.com/googleapis/python-storage/commit/36fb81b5b0e5b7e65b9db434c997617136bfc3fc))
+
 ## [2.5.0](https://github.com/googleapis/python-storage/compare/v2.4.0...v2.5.0) (2022-07-24)
 
 
