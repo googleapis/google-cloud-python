@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.analytics.admin import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service.async_client import (
     AnalyticsAdminServiceAsyncClient,
