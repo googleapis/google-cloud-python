@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-access-approval/compare/v1.7.5...v1.8.0) (2022-11-04)
+
+
+### Features
+
+* Add support for `google.cloud.accessapproval.__version__` ([#249](https://github.com/googleapis/python-access-approval/issues/249)) ([6fdeb64](https://github.com/googleapis/python-access-approval/commit/6fdeb6401beb710923fb1dde97b2949923398b43))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([6fdeb64](https://github.com/googleapis/python-access-approval/commit/6fdeb6401beb710923fb1dde97b2949923398b43))
+* **deps:** require google-api-core &gt;=1.33.2 ([6fdeb64](https://github.com/googleapis/python-access-approval/commit/6fdeb6401beb710923fb1dde97b2949923398b43))
+
 ## [1.7.5](https://github.com/googleapis/python-access-approval/compare/v1.7.4...v1.7.5) (2022-10-07)
 
 
