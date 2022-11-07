@@ -41,7 +41,7 @@ Here's an example of using :class:`InstalledAppFlow`::
     print(profile_info)
     # {'name': '...',  'email': '...', ...}
 
-.. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/stable/
+.. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/latest/
 .. _OAuth 2.0 Authorization Flow:
     https://tools.ietf.org/html/rfc6749#section-1.2
 .. _Using OAuth 2.0 to Access Google APIs:

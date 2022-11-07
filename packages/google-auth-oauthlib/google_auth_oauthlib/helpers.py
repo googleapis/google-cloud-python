@@ -18,7 +18,7 @@ This module provides helpers for integrating with `requests-oauthlib`_.
 Typically, you'll want to use the higher-level helpers in
 :mod:`google_auth_oauthlib.flow`.
 
-.. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/stable/
+.. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/latest/
 """
 
 import datetime
