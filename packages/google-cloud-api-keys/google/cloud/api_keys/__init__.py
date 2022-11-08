@@ -18,8 +18,9 @@ from google.cloud.api_keys import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.api_keys import ApiKeysAsyncClient, ApiKeysClient
-from .types.apikeys import (
+from google.cloud.api_keys_v2.services.api_keys.async_client import ApiKeysAsyncClient
+from google.cloud.api_keys_v2.services.api_keys.client import ApiKeysClient
+from google.cloud.api_keys_v2.types.apikeys import (
     CreateKeyRequest,
     DeleteKeyRequest,
     GetKeyRequest,
@@ -32,7 +33,7 @@ from .types.apikeys import (
     UndeleteKeyRequest,
     UpdateKeyRequest,
 )
-from .types.resources import (
+from google.cloud.api_keys_v2.types.resources import (
     AndroidApplication,
     AndroidKeyRestrictions,
     ApiTarget,
@@ -44,25 +45,25 @@ from .types.resources import (
 )
 
 __all__ = (
-    "ApiKeysAsyncClient",
-    "AndroidApplication",
-    "AndroidKeyRestrictions",
     "ApiKeysClient",
-    "ApiTarget",
-    "BrowserKeyRestrictions",
+    "ApiKeysAsyncClient",
     "CreateKeyRequest",
     "DeleteKeyRequest",
     "GetKeyRequest",
     "GetKeyStringRequest",
     "GetKeyStringResponse",
-    "IosKeyRestrictions",
-    "Key",
     "ListKeysRequest",
     "ListKeysResponse",
     "LookupKeyRequest",
     "LookupKeyResponse",
-    "Restrictions",
-    "ServerKeyRestrictions",
     "UndeleteKeyRequest",
     "UpdateKeyRequest",
+    "AndroidApplication",
+    "AndroidKeyRestrictions",
+    "ApiTarget",
+    "BrowserKeyRestrictions",
+    "IosKeyRestrictions",
+    "Key",
+    "Restrictions",
+    "ServerKeyRestrictions",
 )
