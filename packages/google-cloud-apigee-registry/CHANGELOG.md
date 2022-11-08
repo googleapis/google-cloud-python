@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-apigee-registry/compare/v0.3.2...v0.4.0) (2022-11-08)
+
+
+### Features
+
+* add support for `google.cloud.apigee_registry.__version__` ([1fd5915](https://github.com/googleapis/python-apigee-registry/commit/1fd59157f3fb26022451aa5d395f1a99c91c63c3))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([1fd5915](https://github.com/googleapis/python-apigee-registry/commit/1fd59157f3fb26022451aa5d395f1a99c91c63c3))
+
 ## [0.3.2](https://github.com/googleapis/python-apigee-registry/compare/v0.3.1...v0.3.2) (2022-10-10)
 
 
