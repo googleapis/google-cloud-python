@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateRow
+# Snippet for DeleteRow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_v1alpha1_generated_TablesService_CreateRow_sync_e819d753]
+# [START area120tables_v1alpha1_generated_TablesService_DeleteRow_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,17 @@
 from google.area120 import tables_v1alpha1
 
 
-def sample_create_row():
+def sample_delete_row():
     # Create a client
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.CreateRowRequest(
-        parent="parent_value",
+    request = tables_v1alpha1.DeleteRowRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.create_row(request=request)
+    client.delete_row(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END area120tables_v1alpha1_generated_TablesService_CreateRow_sync_e819d753]
+# [END area120tables_v1alpha1_generated_TablesService_DeleteRow_sync]

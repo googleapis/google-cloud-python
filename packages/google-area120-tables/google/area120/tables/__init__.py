@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.area120.tables import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.area120.tables_v1alpha1.services.tables_service.async_client import (
     TablesServiceAsyncClient,

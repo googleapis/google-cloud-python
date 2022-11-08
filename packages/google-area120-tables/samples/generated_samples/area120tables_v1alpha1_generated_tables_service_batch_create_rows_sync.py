@@ -23,7 +23,7 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync_f62d407e]
+# [START area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -53,4 +53,4 @@ def sample_batch_create_rows():
     # Handle the response
     print(response)
 
-# [END area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync_f62d407e]
+# [END area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync]

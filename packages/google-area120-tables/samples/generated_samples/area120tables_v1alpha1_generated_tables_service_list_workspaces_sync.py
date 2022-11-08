@@ -23,7 +23,7 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync_a2b1737a]
+# [START area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -49,4 +49,4 @@ def sample_list_workspaces():
     for response in page_result:
         print(response)
 
-# [END area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync_a2b1737a]
+# [END area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteRow
+# Snippet for ListTables
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_v1alpha1_generated_TablesService_DeleteRow_sync_05eb7fec]
+# [START area120tables_v1alpha1_generated_TablesService_ListTables_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,17 +34,19 @@
 from google.area120 import tables_v1alpha1
 
 
-def sample_delete_row():
+def sample_list_tables():
     # Create a client
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.DeleteRowRequest(
-        name="name_value",
+    request = tables_v1alpha1.ListTablesRequest(
     )
 
     # Make the request
-    client.delete_row(request=request)
+    page_result = client.list_tables(request=request)
 
+    # Handle the response
+    for response in page_result:
+        print(response)
 
-# [END area120tables_v1alpha1_generated_TablesService_DeleteRow_sync_05eb7fec]
+# [END area120tables_v1alpha1_generated_TablesService_ListTables_sync]

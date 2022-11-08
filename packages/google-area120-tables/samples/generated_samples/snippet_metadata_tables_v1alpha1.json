@@ -125,7 +125,7 @@
         "shortName": "batch_create_rows"
       },
       "description": "Sample for BatchCreateRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync_39533718.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync",
@@ -161,83 +161,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync_39533718.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.batch_create_rows",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.BatchCreateRows",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "BatchCreateRows"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.BatchCreateRowsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.BatchCreateRowsResponse",
-        "shortName": "batch_create_rows"
-      },
-      "description": "Sample for BatchCreateRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync_f62d407e.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync",
-      "segments": [
-        {
-          "end": 55,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 55,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 49,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 52,
-          "start": 50,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 56,
-          "start": 53,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync_f62d407e.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync.py"
     },
     {
       "canonical": true,
@@ -350,7 +274,7 @@
         "shortName": "batch_delete_rows"
       },
       "description": "Sample for BatchDeleteRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync_7b157843.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync",
@@ -384,80 +308,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync_7b157843.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.batch_delete_rows",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.BatchDeleteRows",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "BatchDeleteRows"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "batch_delete_rows"
-      },
-      "description": "Sample for BatchDeleteRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync_7474ee2a.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 46,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 47,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync_7474ee2a.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync.py"
     },
     {
       "canonical": true,
@@ -574,7 +425,7 @@
         "shortName": "batch_update_rows"
       },
       "description": "Sample for BatchUpdateRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync_cfa5adec.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchUpdateRows_sync",
@@ -610,83 +461,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync_cfa5adec.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.batch_update_rows",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.BatchUpdateRows",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "BatchUpdateRows"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.BatchUpdateRowsResponse",
-        "shortName": "batch_update_rows"
-      },
-      "description": "Sample for BatchUpdateRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync_87153c6b.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchUpdateRows_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync_87153c6b.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync.py"
     },
     {
       "canonical": true,
@@ -819,7 +594,7 @@
         "shortName": "create_row"
       },
       "description": "Sample for CreateRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_create_row_sync_77db3520.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_create_row_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_CreateRow_sync",
@@ -855,91 +630,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_create_row_sync_77db3520.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.create_row",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.CreateRow",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "CreateRow"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.CreateRowRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "row",
-            "type": "google.area120.tables_v1alpha1.types.Row"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.Row",
-        "shortName": "create_row"
-      },
-      "description": "Sample for CreateRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_create_row_sync_e819d753.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_CreateRow_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_create_row_sync_e819d753.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_create_row_sync.py"
     },
     {
       "canonical": true,
@@ -1060,7 +751,7 @@
         "shortName": "delete_row"
       },
       "description": "Sample for DeleteRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_delete_row_sync_97a7d0a3.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_delete_row_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_DeleteRow_sync",
@@ -1094,84 +785,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_delete_row_sync_97a7d0a3.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.delete_row",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.DeleteRow",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "DeleteRow"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.DeleteRowRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "delete_row"
-      },
-      "description": "Sample for DeleteRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_delete_row_sync_05eb7fec.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_DeleteRow_sync",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_delete_row_sync_05eb7fec.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_delete_row_sync.py"
     },
     {
       "canonical": true,
@@ -1296,7 +910,7 @@
         "shortName": "get_row"
       },
       "description": "Sample for GetRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_get_row_sync_a0db702e.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_row_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_GetRow_sync",
@@ -1332,87 +946,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_get_row_sync_a0db702e.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.get_row",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.GetRow",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "GetRow"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.GetRowRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.Row",
-        "shortName": "get_row"
-      },
-      "description": "Sample for GetRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_get_row_sync_eef24c74.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetRow_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_get_row_sync_eef24c74.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_get_row_sync.py"
     },
     {
       "canonical": true,
@@ -1537,7 +1071,7 @@
         "shortName": "get_table"
       },
       "description": "Sample for GetTable",
-      "file": "area120tables_v1alpha1_generated_tables_service_get_table_sync_f911c844.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_table_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_GetTable_sync",
@@ -1573,87 +1107,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_get_table_sync_f911c844.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.get_table",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.GetTable",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "GetTable"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.GetTableRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.Table",
-        "shortName": "get_table"
-      },
-      "description": "Sample for GetTable",
-      "file": "area120tables_v1alpha1_generated_tables_service_get_table_sync_d3ea491d.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetTable_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_get_table_sync_d3ea491d.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_get_table_sync.py"
     },
     {
       "canonical": true,
@@ -1778,7 +1232,7 @@
         "shortName": "get_workspace"
       },
       "description": "Sample for GetWorkspace",
-      "file": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync_5d902f1a.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_GetWorkspace_sync",
@@ -1814,87 +1268,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync_5d902f1a.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.get_workspace",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.GetWorkspace",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "GetWorkspace"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.GetWorkspaceRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.Workspace",
-        "shortName": "get_workspace"
-      },
-      "description": "Sample for GetWorkspace",
-      "file": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync_59e11e2a.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetWorkspace_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync_59e11e2a.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync.py"
     },
     {
       "canonical": true,
@@ -2019,7 +1393,7 @@
         "shortName": "list_rows"
       },
       "description": "Sample for ListRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_list_rows_sync_1ed0c289.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_rows_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_ListRows_sync",
@@ -2055,87 +1429,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_list_rows_sync_1ed0c289.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.list_rows",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.ListRows",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "ListRows"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.ListRowsRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.services.tables_service.pagers.ListRowsPager",
-        "shortName": "list_rows"
-      },
-      "description": "Sample for ListRows",
-      "file": "area120tables_v1alpha1_generated_tables_service_list_rows_sync_77a08e84.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListRows_sync",
-      "segments": [
-        {
-          "end": 52,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 52,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 53,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_list_rows_sync_77a08e84.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_list_rows_sync.py"
     },
     {
       "canonical": true,
@@ -2252,7 +1546,7 @@
         "shortName": "list_tables"
       },
       "description": "Sample for ListTables",
-      "file": "area120tables_v1alpha1_generated_tables_service_list_tables_sync_c5f1b1cf.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_tables_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_ListTables_sync",
@@ -2288,83 +1582,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_list_tables_sync_c5f1b1cf.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.list_tables",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.ListTables",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "ListTables"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.ListTablesRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.services.tables_service.pagers.ListTablesPager",
-        "shortName": "list_tables"
-      },
-      "description": "Sample for ListTables",
-      "file": "area120tables_v1alpha1_generated_tables_service_list_tables_sync_5fad2c45.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListTables_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_list_tables_sync_5fad2c45.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_list_tables_sync.py"
     },
     {
       "canonical": true,
@@ -2481,7 +1699,7 @@
         "shortName": "list_workspaces"
       },
       "description": "Sample for ListWorkspaces",
-      "file": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync_a2b1737a.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync",
@@ -2517,83 +1735,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync_a2b1737a.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.list_workspaces",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.ListWorkspaces",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "ListWorkspaces"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.ListWorkspacesRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.services.tables_service.pagers.ListWorkspacesPager",
-        "shortName": "list_workspaces"
-      },
-      "description": "Sample for ListWorkspaces",
-      "file": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync_7760ff8a.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync_7760ff8a.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync.py"
     },
     {
       "canonical": true,
@@ -2726,7 +1868,7 @@
         "shortName": "update_row"
       },
       "description": "Sample for UpdateRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_update_row_sync_73e76548.py",
+      "file": "area120tables_v1alpha1_generated_tables_service_update_row_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "area120tables_v1alpha1_generated_TablesService_UpdateRow_sync",
@@ -2762,91 +1904,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "area120tables_v1alpha1_generated_tables_service_update_row_sync_73e76548.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.area120.tables_v1alpha1.TablesServiceClient",
-          "shortName": "TablesServiceClient"
-        },
-        "fullName": "google.area120.tables_v1alpha1.TablesServiceClient.update_row",
-        "method": {
-          "fullName": "google.area120.tables.v1alpha1.TablesService.UpdateRow",
-          "service": {
-            "fullName": "google.area120.tables.v1alpha1.TablesService",
-            "shortName": "TablesService"
-          },
-          "shortName": "UpdateRow"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.area120.tables_v1alpha1.types.UpdateRowRequest"
-          },
-          {
-            "name": "row",
-            "type": "google.area120.tables_v1alpha1.types.Row"
-          },
-          {
-            "name": "update_mask",
-            "type": "google.protobuf.field_mask_pb2.FieldMask"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.area120.tables_v1alpha1.types.Row",
-        "shortName": "update_row"
-      },
-      "description": "Sample for UpdateRow",
-      "file": "area120tables_v1alpha1_generated_tables_service_update_row_sync_c2c5d709.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "area120tables_v1alpha1_generated_TablesService_UpdateRow_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "area120tables_v1alpha1_generated_tables_service_update_row_sync_c2c5d709.py"
+      "title": "area120tables_v1alpha1_generated_tables_service_update_row_sync.py"
     }
   ]
 }
