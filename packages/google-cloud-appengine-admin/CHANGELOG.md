@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-appengine-admin/compare/v1.5.3...v1.6.0) (2022-11-08)
+
+
+### Features
+
+* add support for `google.cloud.appengine_admin.__version__` ([2126361](https://github.com/googleapis/python-appengine-admin/commit/2126361cafcaed79633e7f403591a53a507972ba))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([2126361](https://github.com/googleapis/python-appengine-admin/commit/2126361cafcaed79633e7f403591a53a507972ba))
+* **deps:** require google-api-core &gt;=1.33.2 ([2126361](https://github.com/googleapis/python-appengine-admin/commit/2126361cafcaed79633e7f403591a53a507972ba))
+
 ## [1.5.3](https://github.com/googleapis/python-appengine-admin/compare/v1.5.2...v1.5.3) (2022-10-07)
 
 
