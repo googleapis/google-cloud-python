@@ -408,8 +408,9 @@ class InstalledAppFlow(Flow):
         code into the application. The code is then exchanged for a token.
 
         Args:
-            authorization_prompt_message (str): The message to display to tell
-                the user to navigate to the authorization URL.
+            authorization_prompt_message (str | None): The message to display to tell
+                the user to navigate to the authorization URL. If None or empty,
+                don't display anything.
             authorization_code_message (str): The message to display when
                 prompting the user for the authorization code.
             kwargs: Additional keyword arguments passed through to
@@ -432,7 +433,8 @@ class InstalledAppFlow(Flow):
 
         auth_url, _ = self.authorization_url(**kwargs)
 
-        print(authorization_prompt_message.format(url=auth_url))
+        if authorization_prompt_message:
+            print(authorization_prompt_message.format(url=auth_url))
 
         code = input(authorization_code_message)
 
@@ -471,8 +473,9 @@ class InstalledAppFlow(Flow):
                 which means that the redirect server will listen
                 on the ip address specified in the host parameter.
             port (int): The port for the local redirect server.
-            authorization_prompt_message (str): The message to display to tell
-                the user to navigate to the authorization URL.
+            authorization_prompt_message (str | None): The message to display to tell
+                the user to navigate to the authorization URL. If None or empty,
+                don't display anything.
             success_message (str): The message to display in the web browser
                 the authorization flow is complete.
             open_browser (bool): Whether or not to open the authorization URL
@@ -506,7 +509,8 @@ class InstalledAppFlow(Flow):
         if open_browser:
             webbrowser.open(auth_url, new=1, autoraise=True)
 
-        print(authorization_prompt_message.format(url=auth_url))
+        if authorization_prompt_message:
+            print(authorization_prompt_message.format(url=auth_url))
 
         local_server.timeout = timeout_seconds
         local_server.handle_request()
