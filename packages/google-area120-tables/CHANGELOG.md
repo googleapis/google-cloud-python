@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-area120-tables/compare/v0.8.2...v0.9.0) (2022-11-08)
+
+
+### Features
+
+* add support for `google.area120.tables.__version__` ([fc87e8b](https://github.com/googleapis/python-area120-tables/commit/fc87e8bb6bd449ad5fe498b361c53f6e0cf51dc4))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([fc87e8b](https://github.com/googleapis/python-area120-tables/commit/fc87e8bb6bd449ad5fe498b361c53f6e0cf51dc4))
+
 ## [0.8.2](https://github.com/googleapis/python-area120-tables/compare/v0.8.1...v0.8.2) (2022-10-10)
 
 
