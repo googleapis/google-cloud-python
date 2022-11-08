@@ -65,7 +65,7 @@ if [[ "${ENVIRONMENT}" == "kubernetes" ]]; then
 fi
 
 # create a unique id for this run
-UUID=$(python  -c 'import uuid; print(uuid.uuid1())' | head -c 7)
+UUID=$(python -c 'import uuid; print(str(uuid.uuid1())[:7])')
 export ENVCTL_ID=ci-$UUID
 echo $ENVCTL_ID
 
