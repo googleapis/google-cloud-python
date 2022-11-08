@@ -13,26 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
-
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
+import warnings
 
 from google.api import httpbody_pb2  # type: ignore
-from google.cloud.apigee_registry_v1.types import registry_models
-from google.cloud.apigee_registry_v1.types import registry_service
+from google.api_core import gapic_v1, grpc_helpers_async
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
-from .base import RegistryTransport, DEFAULT_CLIENT_INFO
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.apigee_registry_v1.types import registry_models, registry_service
+
+from .base import DEFAULT_CLIENT_INFO, RegistryTransport
 from .grpc import RegistryGrpcTransport
 
 

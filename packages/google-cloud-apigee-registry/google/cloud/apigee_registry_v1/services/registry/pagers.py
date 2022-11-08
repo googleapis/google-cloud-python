@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.apigee_registry_v1.types import registry_models
-from google.cloud.apigee_registry_v1.types import registry_service
+from google.cloud.apigee_registry_v1.types import registry_models, registry_service
 
 
 class ListApisPager:

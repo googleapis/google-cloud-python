@@ -13,64 +13,65 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.apigee_registry import gapic_version as package_version
 
-from .services.provisioning import ProvisioningClient
-from .services.provisioning import ProvisioningAsyncClient
-from .services.registry import RegistryClient
-from .services.registry import RegistryAsyncClient
+__version__ = package_version.__version__
 
-from .types.provisioning_service import CreateInstanceRequest
-from .types.provisioning_service import DeleteInstanceRequest
-from .types.provisioning_service import GetInstanceRequest
-from .types.provisioning_service import Instance
-from .types.provisioning_service import OperationMetadata
-from .types.registry_models import Api
-from .types.registry_models import ApiDeployment
-from .types.registry_models import ApiSpec
-from .types.registry_models import ApiVersion
-from .types.registry_models import Artifact
-from .types.registry_service import CreateApiDeploymentRequest
-from .types.registry_service import CreateApiRequest
-from .types.registry_service import CreateApiSpecRequest
-from .types.registry_service import CreateApiVersionRequest
-from .types.registry_service import CreateArtifactRequest
-from .types.registry_service import DeleteApiDeploymentRequest
-from .types.registry_service import DeleteApiDeploymentRevisionRequest
-from .types.registry_service import DeleteApiRequest
-from .types.registry_service import DeleteApiSpecRequest
-from .types.registry_service import DeleteApiSpecRevisionRequest
-from .types.registry_service import DeleteApiVersionRequest
-from .types.registry_service import DeleteArtifactRequest
-from .types.registry_service import GetApiDeploymentRequest
-from .types.registry_service import GetApiRequest
-from .types.registry_service import GetApiSpecContentsRequest
-from .types.registry_service import GetApiSpecRequest
-from .types.registry_service import GetApiVersionRequest
-from .types.registry_service import GetArtifactContentsRequest
-from .types.registry_service import GetArtifactRequest
-from .types.registry_service import ListApiDeploymentRevisionsRequest
-from .types.registry_service import ListApiDeploymentRevisionsResponse
-from .types.registry_service import ListApiDeploymentsRequest
-from .types.registry_service import ListApiDeploymentsResponse
-from .types.registry_service import ListApiSpecRevisionsRequest
-from .types.registry_service import ListApiSpecRevisionsResponse
-from .types.registry_service import ListApiSpecsRequest
-from .types.registry_service import ListApiSpecsResponse
-from .types.registry_service import ListApisRequest
-from .types.registry_service import ListApisResponse
-from .types.registry_service import ListApiVersionsRequest
-from .types.registry_service import ListApiVersionsResponse
-from .types.registry_service import ListArtifactsRequest
-from .types.registry_service import ListArtifactsResponse
-from .types.registry_service import ReplaceArtifactRequest
-from .types.registry_service import RollbackApiDeploymentRequest
-from .types.registry_service import RollbackApiSpecRequest
-from .types.registry_service import TagApiDeploymentRevisionRequest
-from .types.registry_service import TagApiSpecRevisionRequest
-from .types.registry_service import UpdateApiDeploymentRequest
-from .types.registry_service import UpdateApiRequest
-from .types.registry_service import UpdateApiSpecRequest
-from .types.registry_service import UpdateApiVersionRequest
+
+from .services.provisioning import ProvisioningAsyncClient, ProvisioningClient
+from .services.registry import RegistryAsyncClient, RegistryClient
+from .types.provisioning_service import (
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    OperationMetadata,
+)
+from .types.registry_models import Api, ApiDeployment, ApiSpec, ApiVersion, Artifact
+from .types.registry_service import (
+    CreateApiDeploymentRequest,
+    CreateApiRequest,
+    CreateApiSpecRequest,
+    CreateApiVersionRequest,
+    CreateArtifactRequest,
+    DeleteApiDeploymentRequest,
+    DeleteApiDeploymentRevisionRequest,
+    DeleteApiRequest,
+    DeleteApiSpecRequest,
+    DeleteApiSpecRevisionRequest,
+    DeleteApiVersionRequest,
+    DeleteArtifactRequest,
+    GetApiDeploymentRequest,
+    GetApiRequest,
+    GetApiSpecContentsRequest,
+    GetApiSpecRequest,
+    GetApiVersionRequest,
+    GetArtifactContentsRequest,
+    GetArtifactRequest,
+    ListApiDeploymentRevisionsRequest,
+    ListApiDeploymentRevisionsResponse,
+    ListApiDeploymentsRequest,
+    ListApiDeploymentsResponse,
+    ListApiSpecRevisionsRequest,
+    ListApiSpecRevisionsResponse,
+    ListApiSpecsRequest,
+    ListApiSpecsResponse,
+    ListApisRequest,
+    ListApisResponse,
+    ListApiVersionsRequest,
+    ListApiVersionsResponse,
+    ListArtifactsRequest,
+    ListArtifactsResponse,
+    ReplaceArtifactRequest,
+    RollbackApiDeploymentRequest,
+    RollbackApiSpecRequest,
+    TagApiDeploymentRevisionRequest,
+    TagApiSpecRevisionRequest,
+    UpdateApiDeploymentRequest,
+    UpdateApiRequest,
+    UpdateApiSpecRequest,
+    UpdateApiVersionRequest,
+)
 
 __all__ = (
     "ProvisioningAsyncClient",

@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -32,9 +32,6 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api import httpbody_pb2  # type: ignore
-from google.cloud.apigee_registry_v1.services.registry import pagers
-from google.cloud.apigee_registry_v1.types import registry_models
-from google.cloud.apigee_registry_v1.types import registry_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -42,9 +39,13 @@ from google.longrunning import operations_pb2
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import RegistryTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import RegistryGrpcAsyncIOTransport
+
+from google.cloud.apigee_registry_v1.services.registry import pagers
+from google.cloud.apigee_registry_v1.types import registry_models, registry_service
+
 from .client import RegistryClient
+from .transports.base import DEFAULT_CLIENT_INFO, RegistryTransport
+from .transports.grpc_asyncio import RegistryGrpcAsyncIOTransport
 
 
 class RegistryAsyncClient:
