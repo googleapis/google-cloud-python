@@ -22,11 +22,13 @@ for more information.
 """
 # [START analyticsdata_run_report_with_ordering]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import DateRange
-from google.analytics.data_v1beta.types import Dimension
-from google.analytics.data_v1beta.types import Metric
-from google.analytics.data_v1beta.types import OrderBy
-from google.analytics.data_v1beta.types import RunReportRequest
+from google.analytics.data_v1beta.types import (
+    DateRange,
+    Dimension,
+    Metric,
+    OrderBy,
+    RunReportRequest,
+)
 
 from run_report import print_run_report_response
 

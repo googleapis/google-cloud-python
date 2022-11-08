@@ -22,12 +22,14 @@ for more information.
 """
 # [START analyticsdata_run_pivot_report]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import DateRange
-from google.analytics.data_v1beta.types import Dimension
-from google.analytics.data_v1beta.types import Metric
-from google.analytics.data_v1beta.types import OrderBy
-from google.analytics.data_v1beta.types import Pivot
-from google.analytics.data_v1beta.types import RunPivotReportRequest
+from google.analytics.data_v1beta.types import (
+    DateRange,
+    Dimension,
+    Metric,
+    OrderBy,
+    Pivot,
+    RunPivotReportRequest,
+)
 
 
 def run_sample():

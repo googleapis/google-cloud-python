@@ -29,10 +29,12 @@ Usage:
 """
 # [START analyticsdata_json_credentials_quickstart]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import DateRange
-from google.analytics.data_v1beta.types import Dimension
-from google.analytics.data_v1beta.types import Metric
-from google.analytics.data_v1beta.types import RunReportRequest
+from google.analytics.data_v1beta.types import (
+    DateRange,
+    Dimension,
+    Metric,
+    RunReportRequest,
+)
 
 
 def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID", credentials_json_path=""):

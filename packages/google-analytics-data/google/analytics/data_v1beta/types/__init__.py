@@ -34,6 +34,7 @@ from .data import (
     CohortReportSettings,
     CohortSpec,
     CohortsRange,
+    Compatibility,
     DateRange,
     Dimension,
     DimensionCompatibility,
@@ -45,9 +46,11 @@ from .data import (
     FilterExpression,
     FilterExpressionList,
     Metric,
+    MetricAggregation,
     MetricCompatibility,
     MetricHeader,
     MetricMetadata,
+    MetricType,
     MetricValue,
     MinuteRange,
     NumericValue,
@@ -58,11 +61,8 @@ from .data import (
     PropertyQuota,
     QuotaStatus,
     ResponseMetaData,
-    Row,
-    Compatibility,
-    MetricAggregation,
-    MetricType,
     RestrictedMetricType,
+    Row,
 )
 
 __all__ = (

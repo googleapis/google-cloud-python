@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "extra-files": [
+        "google/analytics/data/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_data_v1alpha.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_data_v1beta.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
+      ]
+    }
+  },
+  "release-type": "python",
+  "plugins": [
+    {
+      "type": "sentence-case"
+    }
+  ],
+  "initial-version": "0.1.0"
+}

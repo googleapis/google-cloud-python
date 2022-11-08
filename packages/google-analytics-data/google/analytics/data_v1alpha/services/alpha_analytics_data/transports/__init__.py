@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import AlphaAnalyticsDataTransport
 from .grpc import AlphaAnalyticsDataGrpcTransport
 from .grpc_asyncio import AlphaAnalyticsDataGrpcAsyncIOTransport
-from .rest import AlphaAnalyticsDataRestTransport
-from .rest import AlphaAnalyticsDataRestInterceptor
-
+from .rest import AlphaAnalyticsDataRestInterceptor, AlphaAnalyticsDataRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import BetaAnalyticsDataClient
 from .async_client import BetaAnalyticsDataAsyncClient
+from .client import BetaAnalyticsDataClient
 
 __all__ = (
     "BetaAnalyticsDataClient",

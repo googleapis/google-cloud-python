@@ -22,9 +22,11 @@ for more information.
 """
 # [START analyticsdata_run_realtime_report_with_multiple_metrics]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import Dimension
-from google.analytics.data_v1beta.types import Metric
-from google.analytics.data_v1beta.types import RunRealtimeReportRequest
+from google.analytics.data_v1beta.types import (
+    Dimension,
+    Metric,
+    RunRealtimeReportRequest,
+)
 
 from run_report import print_run_report_response
 

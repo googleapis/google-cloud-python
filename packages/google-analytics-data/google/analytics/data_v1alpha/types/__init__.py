@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .analytics_data_api import (
-    RunFunnelReportRequest,
-    RunFunnelReportResponse,
-)
+from .analytics_data_api import RunFunnelReportRequest, RunFunnelReportResponse
 from .data import (
     BetweenFilter,
     DateRange,
@@ -24,6 +21,8 @@ from .data import (
     DimensionExpression,
     DimensionHeader,
     DimensionValue,
+    EventCriteriaScoping,
+    EventExclusionDuration,
     EventSegment,
     EventSegmentConditionGroup,
     EventSegmentCriteria,
@@ -46,6 +45,7 @@ from .data import (
     FunnelSubReport,
     InListFilter,
     MetricHeader,
+    MetricType,
     MetricValue,
     NumericFilter,
     NumericValue,
@@ -63,24 +63,21 @@ from .data import (
     SegmentParameterFilterExpression,
     SegmentParameterFilterExpressionList,
     SegmentParameterFilterScoping,
+    SessionCriteriaScoping,
+    SessionExclusionDuration,
     SessionSegment,
     SessionSegmentConditionGroup,
     SessionSegmentCriteria,
     SessionSegmentExclusion,
     StringFilter,
+    UserCriteriaScoping,
+    UserExclusionDuration,
     UserSegment,
     UserSegmentConditionGroup,
     UserSegmentCriteria,
     UserSegmentExclusion,
     UserSegmentSequenceGroup,
     UserSequenceStep,
-    EventCriteriaScoping,
-    EventExclusionDuration,
-    MetricType,
-    SessionCriteriaScoping,
-    SessionExclusionDuration,
-    UserCriteriaScoping,
-    UserExclusionDuration,
 )
 
 __all__ = (

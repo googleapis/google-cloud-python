@@ -26,10 +26,12 @@ Usage:
 """
 # [START analyticsdata_oauth2_quickstart]
 from google.analytics.data import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import DateRange
-from google.analytics.data_v1beta.types import Dimension
-from google.analytics.data_v1beta.types import Metric
-from google.analytics.data_v1beta.types import RunReportRequest
+from google.analytics.data_v1beta.types import (
+    DateRange,
+    Dimension,
+    Metric,
+    RunReportRequest,
+)
 from google_auth_oauthlib import flow
 
 

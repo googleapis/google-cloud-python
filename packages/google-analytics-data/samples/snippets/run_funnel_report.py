@@ -22,17 +22,19 @@ for more information.
 """
 # [START analyticsdata_run_funnel_report]
 from google.analytics.data_v1alpha import AlphaAnalyticsDataClient
-from google.analytics.data_v1alpha.types import DateRange
-from google.analytics.data_v1alpha.types import Dimension
-from google.analytics.data_v1alpha.types import Funnel
-from google.analytics.data_v1alpha.types import FunnelBreakdown
-from google.analytics.data_v1alpha.types import FunnelEventFilter
-from google.analytics.data_v1alpha.types import FunnelFieldFilter
-from google.analytics.data_v1alpha.types import FunnelFilterExpression
-from google.analytics.data_v1alpha.types import FunnelFilterExpressionList
-from google.analytics.data_v1alpha.types import FunnelStep
-from google.analytics.data_v1alpha.types import RunFunnelReportRequest
-from google.analytics.data_v1alpha.types import StringFilter
+from google.analytics.data_v1alpha.types import (
+    DateRange,
+    Dimension,
+    Funnel,
+    FunnelBreakdown,
+    FunnelEventFilter,
+    FunnelFieldFilter,
+    FunnelFilterExpression,
+    FunnelFilterExpressionList,
+    FunnelStep,
+    RunFunnelReportRequest,
+    StringFilter,
+)
 
 
 def run_sample():

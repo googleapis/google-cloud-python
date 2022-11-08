@@ -22,11 +22,13 @@ for more information.
 """
 # [START analyticsdata_run_report]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import DateRange
-from google.analytics.data_v1beta.types import Dimension
-from google.analytics.data_v1beta.types import Metric
-from google.analytics.data_v1beta.types import MetricType
-from google.analytics.data_v1beta.types import RunReportRequest
+from google.analytics.data_v1beta.types import (
+    DateRange,
+    Dimension,
+    Metric,
+    MetricType,
+    RunReportRequest,
+)
 
 
 def run_sample():

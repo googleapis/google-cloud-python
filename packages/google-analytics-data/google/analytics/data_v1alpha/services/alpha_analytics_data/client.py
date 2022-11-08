@@ -16,27 +16,27 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.analytics.data_v1alpha.types import analytics_data_api
-from google.analytics.data_v1alpha.types import data
-from .transports.base import AlphaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
+from google.analytics.data_v1alpha.types import analytics_data_api, data
+
+from .transports.base import DEFAULT_CLIENT_INFO, AlphaAnalyticsDataTransport
 from .transports.grpc import AlphaAnalyticsDataGrpcTransport
 from .transports.grpc_asyncio import AlphaAnalyticsDataGrpcAsyncIOTransport
 from .transports.rest import AlphaAnalyticsDataRestTransport
@@ -313,7 +313,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AlphaAnalyticsDataTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the alpha analytics data client.
@@ -330,7 +330,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -360,6 +360,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options

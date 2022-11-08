@@ -22,8 +22,7 @@ for more information.
 """
 # [START analyticsdata_get_common_metadata]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import GetMetadataRequest
-from google.analytics.data_v1beta.types import MetricType
+from google.analytics.data_v1beta.types import GetMetadataRequest, MetricType
 
 
 def run_sample():

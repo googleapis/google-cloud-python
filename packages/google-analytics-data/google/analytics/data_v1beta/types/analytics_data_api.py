@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.analytics.data_v1beta.types import data
 
-
 __protobuf__ = proto.module(
     package="google.analytics.data.v1beta",
     manifest={

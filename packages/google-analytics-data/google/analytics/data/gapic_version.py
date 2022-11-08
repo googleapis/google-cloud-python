@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import AlphaAnalyticsDataAsyncClient
-from .client import AlphaAnalyticsDataClient
-
-__all__ = (
-    "AlphaAnalyticsDataClient",
-    "AlphaAnalyticsDataAsyncClient",
-)
+__version__ = "0.14.2"  # {x-release-please-version}

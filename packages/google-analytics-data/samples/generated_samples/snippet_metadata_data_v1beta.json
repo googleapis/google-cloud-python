@@ -125,7 +125,7 @@
         "shortName": "batch_run_pivot_reports"
       },
       "description": "Sample for BatchRunPivotReports",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_pivot_reports_sync_7c87d5d4.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_pivot_reports_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunPivotReports_sync",
@@ -161,83 +161,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_pivot_reports_sync_7c87d5d4.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.batch_run_pivot_reports",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.BatchRunPivotReports",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "BatchRunPivotReports"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.BatchRunPivotReportsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.BatchRunPivotReportsResponse",
-        "shortName": "batch_run_pivot_reports"
-      },
-      "description": "Sample for BatchRunPivotReports",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_pivot_reports_sync_1ce5c65c.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunPivotReports_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_pivot_reports_sync_1ce5c65c.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_pivot_reports_sync.py"
     },
     {
       "canonical": true,
@@ -354,7 +278,7 @@
         "shortName": "batch_run_reports"
       },
       "description": "Sample for BatchRunReports",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_reports_sync_3c81d05f.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_reports_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_sync",
@@ -390,83 +314,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_reports_sync_3c81d05f.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.batch_run_reports",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.BatchRunReports",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "BatchRunReports"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.BatchRunReportsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.BatchRunReportsResponse",
-        "shortName": "batch_run_reports"
-      },
-      "description": "Sample for BatchRunReports",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_reports_sync_73ae9a9a.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_reports_sync_73ae9a9a.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_batch_run_reports_sync.py"
     },
     {
       "canonical": true,
@@ -583,7 +431,7 @@
         "shortName": "check_compatibility"
       },
       "description": "Sample for CheckCompatibility",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_check_compatibility_sync_0504eab7.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_check_compatibility_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_CheckCompatibility_sync",
@@ -619,83 +467,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_check_compatibility_sync_0504eab7.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.check_compatibility",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.CheckCompatibility",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "CheckCompatibility"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.CheckCompatibilityRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.CheckCompatibilityResponse",
-        "shortName": "check_compatibility"
-      },
-      "description": "Sample for CheckCompatibility",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_check_compatibility_sync_55006999.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_CheckCompatibility_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_check_compatibility_sync_55006999.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_check_compatibility_sync.py"
     },
     {
       "canonical": true,
@@ -820,7 +592,7 @@
         "shortName": "get_metadata"
       },
       "description": "Sample for GetMetadata",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_get_metadata_sync_6e78ad46.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_get_metadata_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_GetMetadata_sync",
@@ -856,87 +628,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_get_metadata_sync_6e78ad46.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.get_metadata",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.GetMetadata",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "GetMetadata"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.GetMetadataRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.Metadata",
-        "shortName": "get_metadata"
-      },
-      "description": "Sample for GetMetadata",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_get_metadata_sync_c3a8c7d7.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_GetMetadata_sync",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_get_metadata_sync_c3a8c7d7.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_get_metadata_sync.py"
     },
     {
       "canonical": true,
@@ -1053,7 +745,7 @@
         "shortName": "run_pivot_report"
       },
       "description": "Sample for RunPivotReport",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_pivot_report_sync_21614b9b.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_pivot_report_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_RunPivotReport_sync",
@@ -1089,83 +781,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_pivot_report_sync_21614b9b.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.run_pivot_report",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.RunPivotReport",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "RunPivotReport"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.RunPivotReportRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.RunPivotReportResponse",
-        "shortName": "run_pivot_report"
-      },
-      "description": "Sample for RunPivotReport",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_pivot_report_sync_8115ba39.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_RunPivotReport_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_pivot_report_sync_8115ba39.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_pivot_report_sync.py"
     },
     {
       "canonical": true,
@@ -1282,7 +898,7 @@
         "shortName": "run_realtime_report"
       },
       "description": "Sample for RunRealtimeReport",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_realtime_report_sync_f8bc1b6b.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_realtime_report_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_RunRealtimeReport_sync",
@@ -1318,83 +934,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_realtime_report_sync_f8bc1b6b.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.run_realtime_report",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.RunRealtimeReport",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "RunRealtimeReport"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.RunRealtimeReportRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.RunRealtimeReportResponse",
-        "shortName": "run_realtime_report"
-      },
-      "description": "Sample for RunRealtimeReport",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_realtime_report_sync_aa3eafd1.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_RunRealtimeReport_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_realtime_report_sync_aa3eafd1.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_realtime_report_sync.py"
     },
     {
       "canonical": true,
@@ -1511,7 +1051,7 @@
         "shortName": "run_report"
       },
       "description": "Sample for RunReport",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_report_sync_3a50a6eb.py",
+      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_report_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_RunReport_sync",
@@ -1547,83 +1087,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_report_sync_3a50a6eb.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient",
-          "shortName": "BetaAnalyticsDataClient"
-        },
-        "fullName": "google.analytics.data_v1beta.BetaAnalyticsDataClient.run_report",
-        "method": {
-          "fullName": "google.analytics.data.v1beta.BetaAnalyticsData.RunReport",
-          "service": {
-            "fullName": "google.analytics.data.v1beta.BetaAnalyticsData",
-            "shortName": "BetaAnalyticsData"
-          },
-          "shortName": "RunReport"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.analytics.data_v1beta.types.RunReportRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.analytics.data_v1beta.types.RunReportResponse",
-        "shortName": "run_report"
-      },
-      "description": "Sample for RunReport",
-      "file": "analyticsdata_v1beta_generated_beta_analytics_data_run_report_sync_c82f18e9.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "analyticsdata_v1beta_generated_BetaAnalyticsData_RunReport_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_report_sync_c82f18e9.py"
+      "title": "analyticsdata_v1beta_generated_beta_analytics_data_run_report_sync.py"
     }
   ]
 }

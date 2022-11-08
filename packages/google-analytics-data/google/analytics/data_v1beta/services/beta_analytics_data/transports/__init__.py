@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import BetaAnalyticsDataTransport
 from .grpc import BetaAnalyticsDataGrpcTransport
 from .grpc_asyncio import BetaAnalyticsDataGrpcAsyncIOTransport
-from .rest import BetaAnalyticsDataRestTransport
-from .rest import BetaAnalyticsDataRestInterceptor
-
+from .rest import BetaAnalyticsDataRestInterceptor, BetaAnalyticsDataRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BetaAnalyticsDataTransport]]
