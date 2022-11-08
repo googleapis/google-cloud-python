@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.appengine_admin_v1.types import appengine
 
-
 __protobuf__ = proto.module(
     package="google.appengine.v1",
     manifest={

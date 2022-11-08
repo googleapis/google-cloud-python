@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import InstancesClient
 from .async_client import InstancesAsyncClient
+from .client import InstancesClient
 
 __all__ = (
     "InstancesClient",

@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.appengine_admin_v1.types import appengine
-from google.cloud.appengine_admin_v1.types import certificate
+from google.cloud.appengine_admin_v1.types import appengine, certificate
 
 
 class ListAuthorizedCertificatesPager:

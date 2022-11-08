@@ -19,7 +19,6 @@ from google.cloud.appengine_admin_v1.types import (
     network_settings as ga_network_settings,
 )
 
-
 __protobuf__ = proto.module(
     package="google.appengine.v1",
     manifest={

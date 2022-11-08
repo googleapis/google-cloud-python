@@ -16,18 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,16 +36,16 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation as gac_operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.appengine_admin_v1.services.versions import pagers
-from google.cloud.appengine_admin_v1.types import app_yaml
-from google.cloud.appengine_admin_v1.types import appengine
-from google.cloud.appengine_admin_v1.types import deploy
-from google.cloud.appengine_admin_v1.types import operation as ga_operation
-from google.cloud.appengine_admin_v1.types import version
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import VersionsTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.appengine_admin_v1.services.versions import pagers
+from google.cloud.appengine_admin_v1.types import app_yaml, appengine, deploy
+from google.cloud.appengine_admin_v1.types import operation as ga_operation
+from google.cloud.appengine_admin_v1.types import version
+
+from .transports.base import DEFAULT_CLIENT_INFO, VersionsTransport
 from .transports.grpc import VersionsGrpcTransport
 from .transports.grpc_asyncio import VersionsGrpcAsyncIOTransport
 
@@ -318,7 +318,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, VersionsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the versions client.
@@ -332,7 +332,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
             transport (Union[str, VersionsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -362,6 +362,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options

@@ -13,20 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from typing import Dict, Type
-
-from .base import DomainMappingsTransport
-from .grpc import DomainMappingsGrpcTransport
-from .grpc_asyncio import DomainMappingsGrpcAsyncIOTransport
-
-# Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[DomainMappingsTransport]]
-_transport_registry["grpc"] = DomainMappingsGrpcTransport
-_transport_registry["grpc_asyncio"] = DomainMappingsGrpcAsyncIOTransport
-
-__all__ = (
-    "DomainMappingsTransport",
-    "DomainMappingsGrpcTransport",
-    "DomainMappingsGrpcAsyncIOTransport",
-)
+__version__ = "1.5.3"  # {x-release-please-version}

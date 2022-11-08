@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AuthorizedDomainsClient
 from .async_client import AuthorizedDomainsAsyncClient
+from .client import AuthorizedDomainsClient
 
 __all__ = (
     "AuthorizedDomainsClient",

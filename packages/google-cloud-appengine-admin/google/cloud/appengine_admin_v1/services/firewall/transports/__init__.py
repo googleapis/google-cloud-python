@@ -20,7 +20,6 @@ from .base import FirewallTransport
 from .grpc import FirewallGrpcTransport
 from .grpc_asyncio import FirewallGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[FirewallTransport]]
 _transport_registry["grpc"] = FirewallGrpcTransport

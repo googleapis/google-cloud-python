@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import FirewallClient
 from .async_client import FirewallAsyncClient
+from .client import FirewallClient
 
 __all__ = (
     "FirewallClient",

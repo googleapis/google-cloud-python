@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,14 +33,15 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation as gac_operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.appengine_admin_v1.services.domain_mappings import pagers
-from google.cloud.appengine_admin_v1.types import appengine
-from google.cloud.appengine_admin_v1.types import domain_mapping
-from google.cloud.appengine_admin_v1.types import operation as ga_operation
 from google.protobuf import empty_pb2  # type: ignore
-from .transports.base import DomainMappingsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import DomainMappingsGrpcAsyncIOTransport
+
+from google.cloud.appengine_admin_v1.services.domain_mappings import pagers
+from google.cloud.appengine_admin_v1.types import appengine, domain_mapping
+from google.cloud.appengine_admin_v1.types import operation as ga_operation
+
 from .client import DomainMappingsClient
+from .transports.base import DEFAULT_CLIENT_INFO, DomainMappingsTransport
+from .transports.grpc_asyncio import DomainMappingsGrpcAsyncIOTransport
 
 
 class DomainMappingsAsyncClient:

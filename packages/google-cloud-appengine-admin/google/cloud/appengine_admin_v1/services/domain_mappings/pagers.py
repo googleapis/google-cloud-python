@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.appengine_admin_v1.types import appengine
-from google.cloud.appengine_admin_v1.types import domain_mapping
+from google.cloud.appengine_admin_v1.types import appengine, domain_mapping
 
 
 class ListDomainMappingsPager:

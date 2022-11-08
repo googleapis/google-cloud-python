@@ -22,35 +22,30 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.appengine_admin_v1.services.authorized_certificates import (
-    AuthorizedCertificatesAsyncClient,
-)
-from google.cloud.appengine_admin_v1.services.authorized_certificates import (
-    AuthorizedCertificatesClient,
-)
-from google.cloud.appengine_admin_v1.services.authorized_certificates import pagers
-from google.cloud.appengine_admin_v1.services.authorized_certificates import transports
-from google.cloud.appengine_admin_v1.types import appengine
-from google.cloud.appengine_admin_v1.types import certificate
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.appengine_admin_v1.services.authorized_certificates import (
+    AuthorizedCertificatesAsyncClient,
+    AuthorizedCertificatesClient,
+    pagers,
+    transports,
+)
+from google.cloud.appengine_admin_v1.types import appengine, certificate
 
 
 def client_cert_source_callback():

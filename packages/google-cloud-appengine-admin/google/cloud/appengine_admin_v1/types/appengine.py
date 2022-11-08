@@ -13,18 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.appengine_admin_v1.types import domain_mapping as ga_domain_mapping
 from google.cloud.appengine_admin_v1.types import application as ga_application
 from google.cloud.appengine_admin_v1.types import certificate as ga_certificate
 from google.cloud.appengine_admin_v1.types import domain
-from google.cloud.appengine_admin_v1.types import domain_mapping as ga_domain_mapping
-from google.cloud.appengine_admin_v1.types import firewall
-from google.cloud.appengine_admin_v1.types import instance
+from google.cloud.appengine_admin_v1.types import firewall, instance
 from google.cloud.appengine_admin_v1.types import service as ga_service
 from google.cloud.appengine_admin_v1.types import version as ga_version
-from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.appengine.v1",

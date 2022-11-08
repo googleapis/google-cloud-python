@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AuthorizedCertificatesClient
 from .async_client import AuthorizedCertificatesAsyncClient
+from .client import AuthorizedCertificatesClient
 
 __all__ = (
     "AuthorizedCertificatesClient",
