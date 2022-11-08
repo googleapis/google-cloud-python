@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-apigee-connect/compare/v1.4.3...v1.5.0) (2022-11-08)
+
+
+### Features
+
+* add support for `google.cloud.apigeeconnect.__version__` ([ec1f84c](https://github.com/googleapis/python-apigee-connect/commit/ec1f84c1685df65a1805051bc5092f04f4cec87d))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([ec1f84c](https://github.com/googleapis/python-apigee-connect/commit/ec1f84c1685df65a1805051bc5092f04f4cec87d))
+* **deps:** require google-api-core &gt;=1.33.2 ([ec1f84c](https://github.com/googleapis/python-apigee-connect/commit/ec1f84c1685df65a1805051bc5092f04f4cec87d))
+
 ## [1.4.3](https://github.com/googleapis/python-apigee-connect/compare/v1.4.2...v1.4.3) (2022-10-07)
 
 
