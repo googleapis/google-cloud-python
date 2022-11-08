@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-api-keys/compare/v0.2.2...v0.3.0) (2022-11-08)
+
+
+### Features
+
+* add support for `google.cloud.api_keys.__version__` ([cabe55d](https://github.com/googleapis/python-api-keys/commit/cabe55d1fa4b666386bde033a0f4d96035020c91))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([cabe55d](https://github.com/googleapis/python-api-keys/commit/cabe55d1fa4b666386bde033a0f4d96035020c91))
+
 ## [0.2.2](https://github.com/googleapis/python-api-keys/compare/v0.2.1...v0.2.2) (2022-10-10)
 
 
