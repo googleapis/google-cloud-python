@@ -64,12 +64,15 @@ def print_run_report_response(response):
 
     # [START analyticsdata_print_run_report_response_rows]
     print("Report result:")
-    for row in response.rows:
-        for dimension_value in row.dimension_values:
-            print(dimension_value.value)
+    for rowIdx, row in enumerate(response.rows):
+        print(f"\nRow {rowIdx}")
+        for i, dimension_value in enumerate(row.dimension_values):
+            dimension_name = response.dimension_headers[i].name
+            print(f"{dimension_name}: {dimension_value.value}")
 
-        for metric_value in row.metric_values:
-            print(metric_value.value)
+        for i, metric_value in enumerate(row.metric_values):
+            metric_name = response.metric_headers[i].name
+            print(f"{metric_name}: {metric_value.value}")
     # [END analyticsdata_print_run_report_response_rows]
 
 
