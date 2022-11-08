@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.12.0](https://github.com/googleapis/python-analytics-admin/compare/v0.11.2...v0.12.0) (2022-11-07)
+
+
+### Features
+
+* add support for `google.analytics.admin.__version__` ([380b426](https://github.com/googleapis/python-analytics-admin/commit/380b4264003b17b802b7099b98837694cd0b87d1))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([380b426](https://github.com/googleapis/python-analytics-admin/commit/380b4264003b17b802b7099b98837694cd0b87d1))
+
+
+### Documentation
+
+* Add a sample for runAccessReport method ([#289](https://github.com/googleapis/python-analytics-admin/issues/289)) ([6aa8f8c](https://github.com/googleapis/python-analytics-admin/commit/6aa8f8c6fe1a2c208e601cd21521b76645430ec4))
+
 ## [0.11.2](https://github.com/googleapis/python-analytics-admin/compare/v0.11.1...v0.11.2) (2022-10-10)
 
 
