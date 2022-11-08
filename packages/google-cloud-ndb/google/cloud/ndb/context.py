@@ -648,43 +648,43 @@ class Context(_Context):
         return self._retry is not None
 
     def memcache_add(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_cas(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_decr(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_delete(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_get(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_gets(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_incr(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_replace(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def memcache_set(self, *args, **kwargs):
-        """Direct pass-through to memcache client."""
+        """Direct pass-through to memcache client. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
     def urlfetch(self, *args, **kwargs):
-        """Fetch a resource using HTTP."""
+        """Fetch a resource using HTTP. No longer implemented."""
         raise exceptions.NoLongerImplementedError()
 
 
