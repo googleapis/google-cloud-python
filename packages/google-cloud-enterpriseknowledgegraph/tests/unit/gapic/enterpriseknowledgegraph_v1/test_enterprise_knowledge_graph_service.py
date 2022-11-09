@@ -36,7 +36,9 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -2206,6 +2208,950 @@ async def test_delete_entity_reconciliation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.LookupRequest,
+        dict,
+    ],
+)
+def test_lookup(request_type, transport: str = "grpc"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.LookupResponse()
+        response = client.lookup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.LookupResponse)
+
+
+def test_lookup_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        client.lookup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupRequest()
+
+
+@pytest.mark.asyncio
+async def test_lookup_async(
+    transport: str = "grpc_asyncio", request_type=service.LookupRequest
+):
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupResponse()
+        )
+        response = await client.lookup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.LookupResponse)
+
+
+@pytest.mark.asyncio
+async def test_lookup_async_from_dict():
+    await test_lookup_async(request_type=dict)
+
+
+def test_lookup_field_headers():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.LookupRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        call.return_value = service.LookupResponse()
+        client.lookup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_lookup_field_headers_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.LookupRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupResponse()
+        )
+        await client.lookup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_lookup_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.LookupResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.lookup(
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ids
+        mock_val = ["ids_value"]
+        assert arg == mock_val
+
+
+def test_lookup_flattened_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.lookup(
+            service.LookupRequest(),
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_flattened_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.LookupResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.lookup(
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ids
+        mock_val = ["ids_value"]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_lookup_flattened_error_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.lookup(
+            service.LookupRequest(),
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SearchRequest,
+        dict,
+    ],
+)
+def test_search(request_type, transport: str = "grpc"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.SearchResponse()
+        response = client.search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.SearchResponse)
+
+
+def test_search_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        client.search()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchRequest()
+
+
+@pytest.mark.asyncio
+async def test_search_async(
+    transport: str = "grpc_asyncio", request_type=service.SearchRequest
+):
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchResponse()
+        )
+        response = await client.search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.SearchResponse)
+
+
+@pytest.mark.asyncio
+async def test_search_async_from_dict():
+    await test_search_async(request_type=dict)
+
+
+def test_search_field_headers():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.SearchRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        call.return_value = service.SearchResponse()
+        client.search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_search_field_headers_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.SearchRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchResponse()
+        )
+        await client.search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_search_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.SearchResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.search(
+            parent="parent_value",
+            query="query_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
+
+
+def test_search_flattened_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search(
+            service.SearchRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_flattened_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.SearchResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.search(
+            parent="parent_value",
+            query="query_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_search_flattened_error_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.search(
+            service.SearchRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.LookupPublicKgRequest,
+        dict,
+    ],
+)
+def test_lookup_public_kg(request_type, transport: str = "grpc"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.LookupPublicKgResponse()
+        response = client.lookup_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupPublicKgRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.LookupPublicKgResponse)
+
+
+def test_lookup_public_kg_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        client.lookup_public_kg()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupPublicKgRequest()
+
+
+@pytest.mark.asyncio
+async def test_lookup_public_kg_async(
+    transport: str = "grpc_asyncio", request_type=service.LookupPublicKgRequest
+):
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupPublicKgResponse()
+        )
+        response = await client.lookup_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupPublicKgRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.LookupPublicKgResponse)
+
+
+@pytest.mark.asyncio
+async def test_lookup_public_kg_async_from_dict():
+    await test_lookup_public_kg_async(request_type=dict)
+
+
+def test_lookup_public_kg_field_headers():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.LookupPublicKgRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        call.return_value = service.LookupPublicKgResponse()
+        client.lookup_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_lookup_public_kg_field_headers_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.LookupPublicKgRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupPublicKgResponse()
+        )
+        await client.lookup_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_lookup_public_kg_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.LookupPublicKgResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.lookup_public_kg(
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ids
+        mock_val = ["ids_value"]
+        assert arg == mock_val
+
+
+def test_lookup_public_kg_flattened_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.lookup_public_kg(
+            service.LookupPublicKgRequest(),
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_public_kg_flattened_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.LookupPublicKgResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupPublicKgResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.lookup_public_kg(
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ids
+        mock_val = ["ids_value"]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_lookup_public_kg_flattened_error_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.lookup_public_kg(
+            service.LookupPublicKgRequest(),
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SearchPublicKgRequest,
+        dict,
+    ],
+)
+def test_search_public_kg(request_type, transport: str = "grpc"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.SearchPublicKgResponse()
+        response = client.search_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchPublicKgRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.SearchPublicKgResponse)
+
+
+def test_search_public_kg_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        client.search_public_kg()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchPublicKgRequest()
+
+
+@pytest.mark.asyncio
+async def test_search_public_kg_async(
+    transport: str = "grpc_asyncio", request_type=service.SearchPublicKgRequest
+):
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchPublicKgResponse()
+        )
+        response = await client.search_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchPublicKgRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.SearchPublicKgResponse)
+
+
+@pytest.mark.asyncio
+async def test_search_public_kg_async_from_dict():
+    await test_search_public_kg_async(request_type=dict)
+
+
+def test_search_public_kg_field_headers():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.SearchPublicKgRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        call.return_value = service.SearchPublicKgResponse()
+        client.search_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_search_public_kg_field_headers_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.SearchPublicKgRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchPublicKgResponse()
+        )
+        await client.search_public_kg(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_search_public_kg_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.SearchPublicKgResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.search_public_kg(
+            parent="parent_value",
+            query="query_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
+
+
+def test_search_public_kg_flattened_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_public_kg(
+            service.SearchPublicKgRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_public_kg_flattened_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.SearchPublicKgResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchPublicKgResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.search_public_kg(
+            parent="parent_value",
+            query="query_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_search_public_kg_flattened_error_async():
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.search_public_kg(
+            service.SearchPublicKgRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.CreateEntityReconciliationJobRequest,
         dict,
     ],
@@ -3717,6 +4663,1202 @@ def test_delete_entity_reconciliation_job_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.LookupRequest,
+        dict,
+    ],
+)
+def test_lookup_rest(request_type):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.LookupResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.LookupResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.lookup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.LookupResponse)
+
+
+def test_lookup_rest_required_fields(request_type=service.LookupRequest):
+    transport_class = transports.EnterpriseKnowledgeGraphServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["ids"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "ids" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).lookup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "ids" in jsonified_request
+    assert jsonified_request["ids"] == request_init["ids"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["ids"] = "ids_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).lookup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "ids",
+            "languages",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "ids" in jsonified_request
+    assert jsonified_request["ids"] == "ids_value"
+
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.LookupResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.LookupResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.lookup(request)
+
+            expected_params = [
+                (
+                    "ids",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_lookup_rest_unset_required_fields():
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.lookup._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "ids",
+                "languages",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "ids",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_lookup_rest_interceptors(null_interceptor):
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnterpriseKnowledgeGraphServiceRestInterceptor(),
+    )
+    client = EnterpriseKnowledgeGraphServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor, "post_lookup"
+    ) as post, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor, "pre_lookup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.LookupRequest.pb(service.LookupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.LookupResponse.to_json(
+            service.LookupResponse()
+        )
+
+        request = service.LookupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.LookupResponse()
+
+        client.lookup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_lookup_rest_bad_request(
+    transport: str = "rest", request_type=service.LookupRequest
+):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.lookup(request)
+
+
+def test_lookup_rest_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.LookupResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.LookupResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.lookup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/cloudKnowledgeGraphEntities:Lookup"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_lookup_rest_flattened_error(transport: str = "rest"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.lookup(
+            service.LookupRequest(),
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+
+def test_lookup_rest_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SearchRequest,
+        dict,
+    ],
+)
+def test_search_rest(request_type):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.SearchResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.SearchResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.SearchResponse)
+
+
+def test_search_rest_required_fields(request_type=service.SearchRequest):
+    transport_class = transports.EnterpriseKnowledgeGraphServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["query"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "query" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == request_init["query"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["query"] = "query_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "languages",
+            "limit",
+            "query",
+            "types",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == "query_value"
+
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.SearchResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.SearchResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search(request)
+
+            expected_params = [
+                (
+                    "query",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_rest_unset_required_fields():
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "languages",
+                "limit",
+                "query",
+                "types",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "query",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_rest_interceptors(null_interceptor):
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnterpriseKnowledgeGraphServiceRestInterceptor(),
+    )
+    client = EnterpriseKnowledgeGraphServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor, "post_search"
+    ) as post, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor, "pre_search"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.SearchRequest.pb(service.SearchRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.SearchResponse.to_json(
+            service.SearchResponse()
+        )
+
+        request = service.SearchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.SearchResponse()
+
+        client.search(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_rest_bad_request(
+    transport: str = "rest", request_type=service.SearchRequest
+):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search(request)
+
+
+def test_search_rest_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.SearchResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            query="query_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.SearchResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/cloudKnowledgeGraphEntities:Search"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_search_rest_flattened_error(transport: str = "rest"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search(
+            service.SearchRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+def test_search_rest_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.LookupPublicKgRequest,
+        dict,
+    ],
+)
+def test_lookup_public_kg_rest(request_type):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.LookupPublicKgResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.LookupPublicKgResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.lookup_public_kg(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.LookupPublicKgResponse)
+
+
+def test_lookup_public_kg_rest_required_fields(
+    request_type=service.LookupPublicKgRequest,
+):
+    transport_class = transports.EnterpriseKnowledgeGraphServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["ids"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "ids" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).lookup_public_kg._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "ids" in jsonified_request
+    assert jsonified_request["ids"] == request_init["ids"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["ids"] = "ids_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).lookup_public_kg._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "ids",
+            "languages",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "ids" in jsonified_request
+    assert jsonified_request["ids"] == "ids_value"
+
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.LookupPublicKgResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.LookupPublicKgResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.lookup_public_kg(request)
+
+            expected_params = [
+                (
+                    "ids",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_lookup_public_kg_rest_unset_required_fields():
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.lookup_public_kg._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "ids",
+                "languages",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "ids",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_lookup_public_kg_rest_interceptors(null_interceptor):
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnterpriseKnowledgeGraphServiceRestInterceptor(),
+    )
+    client = EnterpriseKnowledgeGraphServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor,
+        "post_lookup_public_kg",
+    ) as post, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor,
+        "pre_lookup_public_kg",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.LookupPublicKgRequest.pb(service.LookupPublicKgRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.LookupPublicKgResponse.to_json(
+            service.LookupPublicKgResponse()
+        )
+
+        request = service.LookupPublicKgRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.LookupPublicKgResponse()
+
+        client.lookup_public_kg(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_lookup_public_kg_rest_bad_request(
+    transport: str = "rest", request_type=service.LookupPublicKgRequest
+):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.lookup_public_kg(request)
+
+
+def test_lookup_public_kg_rest_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.LookupPublicKgResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.LookupPublicKgResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.lookup_public_kg(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/publicKnowledgeGraphEntities:Lookup"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_lookup_public_kg_rest_flattened_error(transport: str = "rest"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.lookup_public_kg(
+            service.LookupPublicKgRequest(),
+            parent="parent_value",
+            ids=["ids_value"],
+        )
+
+
+def test_lookup_public_kg_rest_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SearchPublicKgRequest,
+        dict,
+    ],
+)
+def test_search_public_kg_rest(request_type):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.SearchPublicKgResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.SearchPublicKgResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_public_kg(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.SearchPublicKgResponse)
+
+
+def test_search_public_kg_rest_required_fields(
+    request_type=service.SearchPublicKgRequest,
+):
+    transport_class = transports.EnterpriseKnowledgeGraphServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["query"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "query" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_public_kg._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == request_init["query"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["query"] = "query_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_public_kg._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "languages",
+            "limit",
+            "query",
+            "types",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == "query_value"
+
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.SearchPublicKgResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.SearchPublicKgResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_public_kg(request)
+
+            expected_params = [
+                (
+                    "query",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_public_kg_rest_unset_required_fields():
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_public_kg._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "languages",
+                "limit",
+                "query",
+                "types",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "query",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_public_kg_rest_interceptors(null_interceptor):
+    transport = transports.EnterpriseKnowledgeGraphServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnterpriseKnowledgeGraphServiceRestInterceptor(),
+    )
+    client = EnterpriseKnowledgeGraphServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor,
+        "post_search_public_kg",
+    ) as post, mock.patch.object(
+        transports.EnterpriseKnowledgeGraphServiceRestInterceptor,
+        "pre_search_public_kg",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.SearchPublicKgRequest.pb(service.SearchPublicKgRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.SearchPublicKgResponse.to_json(
+            service.SearchPublicKgResponse()
+        )
+
+        request = service.SearchPublicKgRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.SearchPublicKgResponse()
+
+        client.search_public_kg(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_public_kg_rest_bad_request(
+    transport: str = "rest", request_type=service.SearchPublicKgRequest
+):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_public_kg(request)
+
+
+def test_search_public_kg_rest_flattened():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.SearchPublicKgResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            query="query_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.SearchPublicKgResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.search_public_kg(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/publicKnowledgeGraphEntities:Search"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_search_public_kg_rest_flattened_error(transport: str = "rest"):
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.search_public_kg(
+            service.SearchPublicKgRequest(),
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+def test_search_public_kg_rest_error():
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EnterpriseKnowledgeGraphServiceGrpcTransport(
@@ -3863,6 +6005,10 @@ def test_enterprise_knowledge_graph_service_base_transport():
         "list_entity_reconciliation_jobs",
         "cancel_entity_reconciliation_job",
         "delete_entity_reconciliation_job",
+        "lookup",
+        "search",
+        "lookup_public_kg",
+        "search_public_kg",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -4147,6 +6293,18 @@ def test_enterprise_knowledge_graph_service_client_transport_session_collision(
     session1 = client1.transport.delete_entity_reconciliation_job._session
     session2 = client2.transport.delete_entity_reconciliation_job._session
     assert session1 != session2
+    session1 = client1.transport.lookup._session
+    session2 = client2.transport.lookup._session
+    assert session1 != session2
+    session1 = client1.transport.search._session
+    session2 = client2.transport.search._session
+    assert session1 != session2
+    session1 = client1.transport.lookup_public_kg._session
+    session2 = client2.transport.lookup_public_kg._session
+    assert session1 != session2
+    session1 = client1.transport.search_public_kg._session
+    session2 = client2.transport.search_public_kg._session
+    assert session1 != session2
 
 
 def test_enterprise_knowledge_graph_service_grpc_transport_channel():
@@ -4277,9 +6435,43 @@ def test_enterprise_knowledge_graph_service_transport_channel_mtls_with_adc(
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_dataset_path():
+def test_cloud_knowledge_graph_entity_path():
     project = "squid"
-    dataset = "clam"
+    location = "clam"
+    cloud_knowledge_graph_entity = "whelk"
+    expected = "projects/{project}/locations/{location}/cloudKnowledgeGraphEntities/{cloud_knowledge_graph_entity}".format(
+        project=project,
+        location=location,
+        cloud_knowledge_graph_entity=cloud_knowledge_graph_entity,
+    )
+    actual = EnterpriseKnowledgeGraphServiceClient.cloud_knowledge_graph_entity_path(
+        project, location, cloud_knowledge_graph_entity
+    )
+    assert expected == actual
+
+
+def test_parse_cloud_knowledge_graph_entity_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "cloud_knowledge_graph_entity": "nudibranch",
+    }
+    path = EnterpriseKnowledgeGraphServiceClient.cloud_knowledge_graph_entity_path(
+        **expected
+    )
+
+    # Check that the path construction is reversible.
+    actual = (
+        EnterpriseKnowledgeGraphServiceClient.parse_cloud_knowledge_graph_entity_path(
+            path
+        )
+    )
+    assert expected == actual
+
+
+def test_dataset_path():
+    project = "cuttlefish"
+    dataset = "mussel"
     expected = "projects/{project}/datasets/{dataset}".format(
         project=project,
         dataset=dataset,
@@ -4290,8 +6482,8 @@ def test_dataset_path():
 
 def test_parse_dataset_path():
     expected = {
-        "project": "whelk",
-        "dataset": "octopus",
+        "project": "winkle",
+        "dataset": "nautilus",
     }
     path = EnterpriseKnowledgeGraphServiceClient.dataset_path(**expected)
 
@@ -4301,9 +6493,9 @@ def test_parse_dataset_path():
 
 
 def test_entity_reconciliation_job_path():
-    project = "oyster"
-    location = "nudibranch"
-    entity_reconciliation_job = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    entity_reconciliation_job = "squid"
     expected = "projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}".format(
         project=project,
         location=location,
@@ -4317,9 +6509,9 @@ def test_entity_reconciliation_job_path():
 
 def test_parse_entity_reconciliation_job_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "entity_reconciliation_job": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "entity_reconciliation_job": "octopus",
     }
     path = EnterpriseKnowledgeGraphServiceClient.entity_reconciliation_job_path(
         **expected
@@ -4328,6 +6520,40 @@ def test_parse_entity_reconciliation_job_path():
     # Check that the path construction is reversible.
     actual = EnterpriseKnowledgeGraphServiceClient.parse_entity_reconciliation_job_path(
         path
+    )
+    assert expected == actual
+
+
+def test_public_knowledge_graph_entity_path():
+    project = "oyster"
+    location = "nudibranch"
+    public_knowledge_graph_entity = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/publicKnowledgeGraphEntities/{public_knowledge_graph_entity}".format(
+        project=project,
+        location=location,
+        public_knowledge_graph_entity=public_knowledge_graph_entity,
+    )
+    actual = EnterpriseKnowledgeGraphServiceClient.public_knowledge_graph_entity_path(
+        project, location, public_knowledge_graph_entity
+    )
+    assert expected == actual
+
+
+def test_parse_public_knowledge_graph_entity_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "public_knowledge_graph_entity": "nautilus",
+    }
+    path = EnterpriseKnowledgeGraphServiceClient.public_knowledge_graph_entity_path(
+        **expected
+    )
+
+    # Check that the path construction is reversible.
+    actual = (
+        EnterpriseKnowledgeGraphServiceClient.parse_public_knowledge_graph_entity_path(
+            path
+        )
     )
     assert expected == actual
 

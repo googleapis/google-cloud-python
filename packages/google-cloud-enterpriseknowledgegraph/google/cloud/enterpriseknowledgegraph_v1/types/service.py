@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -36,6 +38,14 @@ __protobuf__ = proto.module(
         "CancelEntityReconciliationJobRequest",
         "DeleteEntityReconciliationJobRequest",
         "EntityReconciliationJob",
+        "LookupRequest",
+        "LookupResponse",
+        "SearchRequest",
+        "SearchResponse",
+        "LookupPublicKgRequest",
+        "LookupPublicKgResponse",
+        "SearchPublicKgRequest",
+        "SearchPublicKgResponse",
     },
 )
 
@@ -469,6 +479,292 @@ class EntityReconciliationJob(proto.Message):
         proto.MESSAGE,
         number=9,
         message="ReconConfig",
+    )
+
+
+class LookupRequest(proto.Message):
+    r"""Request message for
+    [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+
+    Attributes:
+        parent (str):
+            Required. The name of the Entity's parent resource. Format:
+            ``projects/{project}/locations/{location}``
+        ids (Sequence[str]):
+            Required. The list of entity ids to be used
+            for lookup.
+        languages (Sequence[str]):
+            The list of language codes (defined in ISO
+            693) to run the query with, e.g. 'en'.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    languages = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class LookupResponse(proto.Message):
+    r"""Response message for
+    [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+
+    Attributes:
+        context (google.protobuf.struct_pb2.Value):
+            The local context applicable for the
+            response. See more details at
+            http://www.w3.org/TR/json-ld/#context-definitions.
+        type_ (google.protobuf.struct_pb2.Value):
+            The schema type of top-level JSON-LD object,
+            e.g. ItemList.
+        item_list_element (google.protobuf.struct_pb2.ListValue):
+            The item list of search results.
+    """
+
+    context = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Value,
+    )
+    type_ = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
+    )
+    item_list_element = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.ListValue,
+    )
+
+
+class SearchRequest(proto.Message):
+    r"""Request message for
+    [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+    Attributes:
+        parent (str):
+            Required. The name of the Entity's parent resource. Format:
+            ``projects/{project}/locations/{location}``
+        query (str):
+            Required. The literal query string for
+            search.
+        languages (Sequence[str]):
+            The list of language codes (defined in ISO
+            693) to run the query with, e.g. 'en'.
+        types (Sequence[str]):
+            Restricts returned entities with these types,
+            e.g. Person (as defined in
+            http://schema.org/Person). If multiple types are
+            specified, returned entities will contain one or
+            more of these types.
+        limit (google.protobuf.wrappers_pb2.Int32Value):
+            Limits the number of entities to be returned.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    languages = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    types = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    limit = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=wrappers_pb2.Int32Value,
+    )
+
+
+class SearchResponse(proto.Message):
+    r"""Response message for
+    [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+    Attributes:
+        context (google.protobuf.struct_pb2.Value):
+            The local context applicable for the
+            response. See more details at
+            http://www.w3.org/TR/json-ld/#context-definitions.
+        type_ (google.protobuf.struct_pb2.Value):
+            The schema type of top-level JSON-LD object,
+            e.g. ItemList.
+        item_list_element (google.protobuf.struct_pb2.ListValue):
+            The item list of search results.
+    """
+
+    context = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Value,
+    )
+    type_ = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
+    )
+    item_list_element = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.ListValue,
+    )
+
+
+class LookupPublicKgRequest(proto.Message):
+    r"""Request message for
+    [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+
+    Attributes:
+        parent (str):
+            Required. The name of the Entity's parent resource. Format:
+            ``projects/{project}/locations/{location}``
+        ids (Sequence[str]):
+            Required. The list of entity ids to be used
+            for lookup.
+        languages (Sequence[str]):
+            The list of language codes (defined in ISO
+            693) to run the query with, e.g. 'en'.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    languages = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class LookupPublicKgResponse(proto.Message):
+    r"""Response message for
+    [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+
+    Attributes:
+        context (google.protobuf.struct_pb2.Value):
+            The local context applicable for the
+            response. See more details at
+            http://www.w3.org/TR/json-ld/#context-definitions.
+        type_ (google.protobuf.struct_pb2.Value):
+            The schema type of top-level JSON-LD object,
+            e.g. ItemList.
+        item_list_element (google.protobuf.struct_pb2.ListValue):
+            The item list of search results.
+    """
+
+    context = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Value,
+    )
+    type_ = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
+    )
+    item_list_element = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.ListValue,
+    )
+
+
+class SearchPublicKgRequest(proto.Message):
+    r"""Request message for
+    [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+    Attributes:
+        parent (str):
+            Required. The name of the Entity's parent resource. Format:
+            ``projects/{project}/locations/{location}``
+        query (str):
+            Required. The literal query string for
+            search.
+        languages (Sequence[str]):
+            The list of language codes (defined in ISO
+            693) to run the query with, e.g. 'en'.
+        types (Sequence[str]):
+            Restricts returned entities with these types,
+            e.g. Person (as defined in
+            http://schema.org/Person). If multiple types are
+            specified, returned entities will contain one or
+            more of these types.
+        limit (google.protobuf.wrappers_pb2.Int32Value):
+            Limits the number of entities to be returned.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    languages = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    types = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    limit = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=wrappers_pb2.Int32Value,
+    )
+
+
+class SearchPublicKgResponse(proto.Message):
+    r"""Response message for
+    [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+    Attributes:
+        context (google.protobuf.struct_pb2.Value):
+            The local context applicable for the
+            response. See more details at
+            http://www.w3.org/TR/json-ld/#context-definitions.
+        type_ (google.protobuf.struct_pb2.Value):
+            The schema type of top-level JSON-LD object,
+            e.g. ItemList.
+        item_list_element (google.protobuf.struct_pb2.ListValue):
+            The item list of search results.
+    """
+
+    context = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Value,
+    )
+    type_ = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
+    )
+    item_list_element = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.ListValue,
     )
 
 
