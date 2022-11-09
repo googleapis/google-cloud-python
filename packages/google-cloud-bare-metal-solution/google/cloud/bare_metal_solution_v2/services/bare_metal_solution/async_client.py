@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,7 +33,11 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import pagers
+from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
 from google.cloud.bare_metal_solution_v2.types import baremetalsolution
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
@@ -41,14 +45,12 @@ from google.cloud.bare_metal_solution_v2.types import lun
 from google.cloud.bare_metal_solution_v2.types import network
 from google.cloud.bare_metal_solution_v2.types import network as gcb_network
 from google.cloud.bare_metal_solution_v2.types import nfs_share
-from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
 from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BareMetalSolutionTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import BareMetalSolutionGrpcAsyncIOTransport
+
 from .client import BareMetalSolutionClient
+from .transports.base import DEFAULT_CLIENT_INFO, BareMetalSolutionTransport
+from .transports.grpc_asyncio import BareMetalSolutionGrpcAsyncIOTransport
 
 
 class BareMetalSolutionAsyncClient:

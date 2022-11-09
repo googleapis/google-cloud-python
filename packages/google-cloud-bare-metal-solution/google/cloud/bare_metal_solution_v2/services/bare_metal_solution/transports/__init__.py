@@ -20,7 +20,6 @@ from .base import BareMetalSolutionTransport
 from .grpc import BareMetalSolutionGrpcTransport
 from .grpc_asyncio import BareMetalSolutionGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BareMetalSolutionTransport]]
 _transport_registry["grpc"] = BareMetalSolutionGrpcTransport

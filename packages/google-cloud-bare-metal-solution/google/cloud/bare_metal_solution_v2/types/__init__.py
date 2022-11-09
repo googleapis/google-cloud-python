@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .baremetalsolution import (
-    OperationMetadata,
-    ResetInstanceResponse,
-)
+from .baremetalsolution import OperationMetadata, ResetInstanceResponse
 from .instance import (
     DetachLunRequest,
     GetInstanceRequest,
@@ -31,13 +28,9 @@ from .instance import (
     StopInstanceResponse,
     UpdateInstanceRequest,
 )
-from .lun import (
-    GetLunRequest,
-    ListLunsRequest,
-    ListLunsResponse,
-    Lun,
-)
+from .lun import GetLunRequest, ListLunsRequest, ListLunsResponse, Lun
 from .network import (
+    VRF,
     GetNetworkRequest,
     ListNetworksRequest,
     ListNetworksResponse,
@@ -48,7 +41,6 @@ from .network import (
     NetworkAddressReservation,
     NetworkUsage,
     UpdateNetworkRequest,
-    VRF,
 )
 from .nfs_share import (
     GetNfsShareRequest,

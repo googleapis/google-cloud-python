@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import BareMetalSolutionAsyncClient
-from .client import BareMetalSolutionClient
-
-__all__ = (
-    "BareMetalSolutionClient",
-    "BareMetalSolutionAsyncClient",
-)
+__version__ = "1.1.3"  # {x-release-please-version}

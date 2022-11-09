@@ -18,12 +18,17 @@ from google.cloud.bare_metal_solution import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.bare_metal_solution import (
+from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.async_client import (
     BareMetalSolutionAsyncClient,
+)
+from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.client import (
     BareMetalSolutionClient,
 )
-from .types.baremetalsolution import OperationMetadata, ResetInstanceResponse
-from .types.instance import (
+from google.cloud.bare_metal_solution_v2.types.baremetalsolution import (
+    OperationMetadata,
+    ResetInstanceResponse,
+)
+from google.cloud.bare_metal_solution_v2.types.instance import (
     DetachLunRequest,
     GetInstanceRequest,
     Instance,
@@ -37,8 +42,13 @@ from .types.instance import (
     StopInstanceResponse,
     UpdateInstanceRequest,
 )
-from .types.lun import GetLunRequest, ListLunsRequest, ListLunsResponse, Lun
-from .types.network import (
+from google.cloud.bare_metal_solution_v2.types.lun import (
+    GetLunRequest,
+    ListLunsRequest,
+    ListLunsResponse,
+    Lun,
+)
+from google.cloud.bare_metal_solution_v2.types.network import (
     VRF,
     GetNetworkRequest,
     ListNetworksRequest,
@@ -51,14 +61,14 @@ from .types.network import (
     NetworkUsage,
     UpdateNetworkRequest,
 )
-from .types.nfs_share import (
+from google.cloud.bare_metal_solution_v2.types.nfs_share import (
     GetNfsShareRequest,
     ListNfsSharesRequest,
     ListNfsSharesResponse,
     NfsShare,
     UpdateNfsShareRequest,
 )
-from .types.volume import (
+from google.cloud.bare_metal_solution_v2.types.volume import (
     GetVolumeRequest,
     ListVolumesRequest,
     ListVolumesResponse,
@@ -68,46 +78,46 @@ from .types.volume import (
 )
 
 __all__ = (
-    "BareMetalSolutionAsyncClient",
     "BareMetalSolutionClient",
+    "BareMetalSolutionAsyncClient",
+    "OperationMetadata",
+    "ResetInstanceResponse",
     "DetachLunRequest",
     "GetInstanceRequest",
-    "GetLunRequest",
-    "GetNetworkRequest",
-    "GetNfsShareRequest",
-    "GetVolumeRequest",
     "Instance",
     "ListInstancesRequest",
     "ListInstancesResponse",
-    "ListLunsRequest",
-    "ListLunsResponse",
-    "ListNetworkUsageRequest",
-    "ListNetworkUsageResponse",
-    "ListNetworksRequest",
-    "ListNetworksResponse",
-    "ListNfsSharesRequest",
-    "ListNfsSharesResponse",
-    "ListVolumesRequest",
-    "ListVolumesResponse",
-    "LogicalInterface",
-    "Lun",
-    "Network",
-    "NetworkAddressReservation",
-    "NetworkUsage",
-    "NfsShare",
-    "OperationMetadata",
     "ResetInstanceRequest",
-    "ResetInstanceResponse",
-    "ResizeVolumeRequest",
     "ServerNetworkTemplate",
     "StartInstanceRequest",
     "StartInstanceResponse",
     "StopInstanceRequest",
     "StopInstanceResponse",
     "UpdateInstanceRequest",
+    "GetLunRequest",
+    "ListLunsRequest",
+    "ListLunsResponse",
+    "Lun",
+    "GetNetworkRequest",
+    "ListNetworksRequest",
+    "ListNetworksResponse",
+    "ListNetworkUsageRequest",
+    "ListNetworkUsageResponse",
+    "LogicalInterface",
+    "Network",
+    "NetworkAddressReservation",
+    "NetworkUsage",
     "UpdateNetworkRequest",
-    "UpdateNfsShareRequest",
-    "UpdateVolumeRequest",
     "VRF",
+    "GetNfsShareRequest",
+    "ListNfsSharesRequest",
+    "ListNfsSharesResponse",
+    "NfsShare",
+    "UpdateNfsShareRequest",
+    "GetVolumeRequest",
+    "ListVolumesRequest",
+    "ListVolumesResponse",
+    "ResizeVolumeRequest",
+    "UpdateVolumeRequest",
     "Volume",
 )
