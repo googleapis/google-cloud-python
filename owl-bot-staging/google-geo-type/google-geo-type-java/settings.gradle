@@ -1,0 +1,5 @@
+rootDir.listFiles().each {
+  if (it.isDirectory() && new File(it, 'build.gradle').exists()) {
+    include it.name
+  }
+}

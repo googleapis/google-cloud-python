@@ -1,0 +1,25 @@
+subprojects {
+  apply plugin: 'java-library'
+  apply plugin: 'maven-publish'
+
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  test {
+    testLogging {
+      events "passed", "skipped", "failed", "standardOut", "standardError"
+      exceptionFormat = 'full'
+    }
+  }
+
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
+
+  publishing.publications {
+    library(MavenPublication).from components.java
+  }
+
+  task install(dependsOn: publishToMavenLocal) // create install "alias"
+}
