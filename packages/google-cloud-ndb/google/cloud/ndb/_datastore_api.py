@@ -997,7 +997,7 @@ def _datastore_allocate_ids(keys, retries=None, timeout=None):
 
 @tasklets.tasklet
 def begin_transaction(read_only, retries=None, timeout=None):
-    """Start a new transction.
+    """Start a new transaction.
 
     Args:
         read_only (bool): Whether to start a read-only or read-write
