@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.6.0](https://github.com/googleapis/gapic-generator-python/compare/v1.5.0...v1.6.0) (2022-11-09)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([#1474](https://github.com/googleapis/gapic-generator-python/issues/1474)) ([3bd2f87](https://github.com/googleapis/gapic-generator-python/commit/3bd2f8703e4a1a67e6a4c281890c4f99eda13fe7))
+
+
+### Bug Fixes
+
+* Detect changed Python files in Git pre-commit hook ([#1475](https://github.com/googleapis/gapic-generator-python/issues/1475)) ([2a232fc](https://github.com/googleapis/gapic-generator-python/commit/2a232fcc5297d6cd2ee1562c01843a3074a4da1f))
+* Snippetgen handling of repeated enum field ([#1443](https://github.com/googleapis/gapic-generator-python/issues/1443)) ([70d7882](https://github.com/googleapis/gapic-generator-python/commit/70d7882b39c754ebebfd2b57fa5e89f515e3192f))
+
 ## [1.5.0](https://github.com/googleapis/gapic-generator-python/compare/v1.4.4...v1.5.0) (2022-10-17)
 
 
