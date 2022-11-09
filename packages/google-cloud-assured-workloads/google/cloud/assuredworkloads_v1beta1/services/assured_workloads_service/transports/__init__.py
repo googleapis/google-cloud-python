@@ -20,7 +20,6 @@ from .base import AssuredWorkloadsServiceTransport
 from .grpc import AssuredWorkloadsServiceGrpcTransport
 from .grpc_asyncio import AssuredWorkloadsServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

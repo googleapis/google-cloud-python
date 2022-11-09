@@ -13,53 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.assuredworkloads import gapic_version as package_version
 
-from google.cloud.assuredworkloads_v1.services.assured_workloads_service.client import (
-    AssuredWorkloadsServiceClient,
-)
+__version__ = package_version.__version__
+
+
 from google.cloud.assuredworkloads_v1.services.assured_workloads_service.async_client import (
     AssuredWorkloadsServiceAsyncClient,
 )
-
+from google.cloud.assuredworkloads_v1.services.assured_workloads_service.client import (
+    AssuredWorkloadsServiceClient,
+)
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     AcknowledgeViolationRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     AcknowledgeViolationResponse,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     CreateWorkloadOperationMetadata,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     CreateWorkloadRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     DeleteWorkloadRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import GetViolationRequest
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import GetWorkloadRequest
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    GetViolationRequest,
+    GetWorkloadRequest,
     ListViolationsRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     ListViolationsResponse,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import ListWorkloadsRequest
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    ListWorkloadsRequest,
     ListWorkloadsResponse,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     RestrictAllowedResourcesRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     RestrictAllowedResourcesResponse,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import TimeWindow
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    TimeWindow,
     UpdateWorkloadRequest,
+    Violation,
+    Workload,
 )
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import Violation
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import Workload
 
 __all__ = (
     "AssuredWorkloadsServiceClient",

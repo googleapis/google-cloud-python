@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import AssuredWorkloadsServiceAsyncClient
-from .client import AssuredWorkloadsServiceClient
-
-__all__ = (
-    "AssuredWorkloadsServiceClient",
-    "AssuredWorkloadsServiceAsyncClient",
-)
+__version__ = "1.7.0"  # {x-release-please-version}

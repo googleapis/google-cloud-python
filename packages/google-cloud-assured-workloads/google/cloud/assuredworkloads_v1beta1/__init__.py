@@ -13,22 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.assuredworkloads import gapic_version as package_version
 
-from .services.assured_workloads_service import AssuredWorkloadsServiceClient
-from .services.assured_workloads_service import AssuredWorkloadsServiceAsyncClient
+__version__ = package_version.__version__
 
-from .types.assuredworkloads import AnalyzeWorkloadMoveRequest
-from .types.assuredworkloads import AnalyzeWorkloadMoveResponse
-from .types.assuredworkloads import CreateWorkloadOperationMetadata
-from .types.assuredworkloads import CreateWorkloadRequest
-from .types.assuredworkloads import DeleteWorkloadRequest
-from .types.assuredworkloads import GetWorkloadRequest
-from .types.assuredworkloads import ListWorkloadsRequest
-from .types.assuredworkloads import ListWorkloadsResponse
-from .types.assuredworkloads import RestrictAllowedResourcesRequest
-from .types.assuredworkloads import RestrictAllowedResourcesResponse
-from .types.assuredworkloads import UpdateWorkloadRequest
-from .types.assuredworkloads import Workload
+
+from .services.assured_workloads_service import (
+    AssuredWorkloadsServiceAsyncClient,
+    AssuredWorkloadsServiceClient,
+)
+from .types.assuredworkloads import (
+    AnalyzeWorkloadMoveRequest,
+    AnalyzeWorkloadMoveResponse,
+    CreateWorkloadOperationMetadata,
+    CreateWorkloadRequest,
+    DeleteWorkloadRequest,
+    GetWorkloadRequest,
+    ListWorkloadsRequest,
+    ListWorkloadsResponse,
+    RestrictAllowedResourcesRequest,
+    RestrictAllowedResourcesResponse,
+    UpdateWorkloadRequest,
+    Workload,
+)
 
 __all__ = (
     "AssuredWorkloadsServiceAsyncClient",

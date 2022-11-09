@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from pathlib import Path
+import shutil
+
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
@@ -20,18 +24,18 @@ from synthtool.languages import python
 # Copy the generated client from the owl-bot staging directory
 # ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
-    # fix the package name in samples/generated_samples to reflect
-    # the package on pypi. https://pypi.org/project/google-cloud-assured-workloads/
-    s.replace(
-        library / "samples/generated_samples/**/*.py",
-        "pip install google-cloud-assuredworkloads",
-        "pip install google-cloud-assured-workloads",
-    )
-
-    s.move(library, excludes=["setup.py", "README.rst"])
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # Work around gapic generator bug. https://github.com/googleapis/gapic-generator-python/issues/1083
@@ -49,18 +53,14 @@ s.replace(
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(
-    cov_level=99,
+    cov_level=100,
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 
-python.configure_previous_major_version_branches()
-
-# ----------------------------------------------------------------------------
-# Run blacken session
-# ----------------------------------------------------------------------------
-
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)
