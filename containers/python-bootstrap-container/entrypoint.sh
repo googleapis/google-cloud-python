@@ -36,10 +36,18 @@ cd "$WORKSPACE_DIR/$MONO_REPO_NAME/containers/python-bootstrap-container"
 API_VERSION="$(echo $API_ID | sed 's/.*\.//')"
 
 # API_ID has the form google.cloud.*.vX or `google.*.*.vX`
-# Replace `.`` with `-` and remove the trailing version
-# For example, the `FOLDER_NAME` for `google.cloud.workflows.v1`
-# should be `google-cloud-workflows`
-FOLDER_NAME="$(echo $API_ID | sed -E 's/\./-/g' | sed 's/-[^-]*$//')"
+# Replace `.`` with `-`
+FOLDER_NAME="$(echo $API_ID | sed -E 's/\./-/g')"
+
+# if API_VERSION does not contain numbers, set API_VERSION to empty string
+if [[ ! $API_VERSION =~ [0-9] ]]; then
+    API_VERSION=""
+else
+    # Remove the trailing version from the FOLDER_NAME`
+    # for `google.cloud.workflows.v1`
+    # the folder should be `google-cloud-workflows`
+    FOLDER_NAME="$(echo $FOLDER_NAME | sed 's/-[^-]*$//')"
+fi
 
 # Create the folder
 mkdir -p "$WORKSPACE_DIR/$MONO_REPO_NAME/packages/$FOLDER_NAME"
@@ -51,8 +59,14 @@ PATH_TO_YAML="packages/$FOLDER_NAME/.OwlBot.yaml"
 # Write the Path to .OwlBot.yaml in the interContainerVars.json folder
 jq --arg PATH_TO_YAML "$PATH_TO_YAML" '. += {"owlbotYamlPath": $PATH_TO_YAML}' $PATH_TO_CONTAINER_VARS | save_to_temp_then_file $PATH_TO_CONTAINER_VARS
 
-# Copy the templated .OwlBot.yaml
-cp ".OwlBot.yaml" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.OwlBot.yaml"
+# If API_VERSION is empty
+if [[ -z $API_VERSION ]]; then
+    # Copy the templated .OwlBot_Without_Version.yaml
+    cp ".OwlBot_Without_Version.yaml" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.OwlBot.yaml"
+else
+    # Otherwise copy the templated .OwlBot.yaml
+    cp ".OwlBot.yaml" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.OwlBot.yaml"
+fi
 
 API_PATH="$(echo $FOLDER_NAME | sed -E 's/\-/\//g')"
 
@@ -84,8 +98,13 @@ sed -i -e "s|apiPrettyName|$DISPLAY_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/p
 # Get the "docs_root_url" field from apis.json (DRIFT)
 DOCS_ROOT_URL=$(jq --arg API_SHORTNAME "$API_SHORTNAME" -r '.apis | to_entries[] | select(.value.api_shortname==$API_SHORTNAME) | .value.docs_root_url' apis.json)
 
-# Build the docs URL
-DOCS_URL="$(echo https://$DOCS_ROOT_URL)"
+# Build the docs URL if DOCS_ROOT_URL is not empty
+# If API_VERSION is empty
+if [[ -n $DOCS_ROOT_URL ]]; then
+    DOCS_URL="$(echo https://$DOCS_ROOT_URL)"
+else
+    DOCS_URL=""
+fi
 
 # Update apiProductDocumentation in .repo-metadata.json
 sed -i -e "s|apiProductDocumentation|$DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
@@ -93,5 +112,8 @@ sed -i -e "s|apiProductDocumentation|$DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REPO_N
 # Update apiPackage in .repo-metadata.json
 sed -i -e "s|apiPackage|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
-# Update apiVersion in .repo-metadata.json
-sed -i -e "s|apiVersion|$API_VERSION|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
+# If API_VERSION is not empty
+if [[ -n $API_VERSION ]]; then
+    # Update apiVersion in .repo-metadata.json
+    sed -i -e "s|apiVersion|$API_VERSION|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
+fi
