@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# `-e` enables the script to automatically fail when a command fails
-# `-o pipefail` sets the exit code to non-zero if any command fails,
-# or zero if all commands in the pipeline exit successfully.
-set -eo pipefail
-
-pwd
-
-# Move into the package, build the distribution and upload.
-TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-1")
-
-python3 setup.py sdist bdist_wheel
-twine upload --username __token__ --password "${TWINE_PASSWORD}" dist/*
+deep-copy-regex:
+    - source: /apiPath/(.*)
+      dest: /owl-bot-staging/apiDashes/$1

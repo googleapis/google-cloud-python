@@ -20,15 +20,11 @@ set -eo pipefail
 
 pwd
 
-# Install nox
-python3 -m pip install --require-hashes -r .kokoro/requirements.txt
-python3 -m nox --version
-
 # build docs
 nox -s docs
 
 # create metadata
-python3 -m docuploader create-metadata \
+python3.9 -m docuploader create-metadata \
   --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
   --version=$(python3 setup.py --version) \
   --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
@@ -40,14 +36,14 @@ python3 -m docuploader create-metadata \
 cat docs.metadata
 
 # upload docs
-python3 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
+python3.9 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
 
 
 # docfx yaml files
 nox -s docfx
 
 # create metadata.
-python3 -m docuploader create-metadata \
+python3.9 -m docuploader create-metadata \
   --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
   --version=$(python3 setup.py --version) \
   --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
@@ -58,5 +54,14 @@ python3 -m docuploader create-metadata \
 
 cat docs.metadata
 
+if [[ -d "google/cloud" ]]; then
+  # Push google cloud library docs to the Cloud RAD bucket `docs-staging-v2`
+  staging_v2_bucket="docs-staging-v2"
+else
+  # Push non-cloud library docs to `docs-staging-v2-staging` instead of the
+  # Cloud RAD bucket `docs-staging-v2`
+  staging_v2_bucket="docs-staging-v2-staging"
+fi
+
 # upload docs
-python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
+python3.9 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${staging_v2_bucket}"
