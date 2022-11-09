@@ -1,5 +1,5 @@
-Python Client for Discovery Engine API API
-==========================================
+Python Client for Discovery Engine API
+======================================
 
 |preview| |pypi| |versions|
 
