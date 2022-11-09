@@ -25,11 +25,6 @@ python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
-# In order to determine which packages to publish, we need
-# to know the difference in */gapic_version.py from the previous
-# commit (HEAD~1). This assumes we use squash commit when merging PRs.
-git fetch origin main --deepen=1
-
 subdirs=(
     packages
 )
@@ -37,16 +32,26 @@ RETVAL=0
 
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 
+cd "$PROJECT_ROOT"
+
+pwd
+
+git config --global --add safe.directory "$PROJECT_ROOT"
+
+# In order to determine which packages to publish, we need
+# to know the difference in */gapic_version.py from the previous
+# commit (HEAD~1). This assumes we use squash commit when merging PRs.
+git fetch origin main --deepen=1
+
 # A file for publishing packages to PyPI
 publish_script="${PROJECT_ROOT}/.kokoro/release-single.sh"
 
 for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do
         should_publish=false
-        echo "checking changes with 'git diff --quiet HEAD~.. ${d}/**/gapic_version.py'"
+        echo "checking changes with 'git diff HEAD~.. ${d}/**/gapic_version.py'"
         set +e
-        git diff --quiet "HEAD~.." ${d}/**/gapic_version.py
-        changed=$?
+        changed=$(git diff "HEAD~.." ${d}/**/gapic_version.py | wc -l)
         set -e
         if [[ "${changed}" -eq 0 ]]; then
             echo "no change detected in ${d}, skipping"
