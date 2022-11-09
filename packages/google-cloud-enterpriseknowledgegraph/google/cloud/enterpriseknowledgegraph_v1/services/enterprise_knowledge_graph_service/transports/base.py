@@ -172,6 +172,26 @@ class EnterpriseKnowledgeGraphServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.lookup: gapic_v1.method.wrap_method(
+                self.lookup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search: gapic_v1.method.wrap_method(
+                self.search,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.lookup_public_kg: gapic_v1.method.wrap_method(
+                self.lookup_public_kg,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search_public_kg: gapic_v1.method.wrap_method(
+                self.search_public_kg,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -232,6 +252,46 @@ class EnterpriseKnowledgeGraphServiceTransport(abc.ABC):
     ) -> Callable[
         [service.DeleteEntityReconciliationJobRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def lookup(
+        self,
+    ) -> Callable[
+        [service.LookupRequest],
+        Union[service.LookupResponse, Awaitable[service.LookupResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search(
+        self,
+    ) -> Callable[
+        [service.SearchRequest],
+        Union[service.SearchResponse, Awaitable[service.SearchResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def lookup_public_kg(
+        self,
+    ) -> Callable[
+        [service.LookupPublicKgRequest],
+        Union[
+            service.LookupPublicKgResponse, Awaitable[service.LookupPublicKgResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_public_kg(
+        self,
+    ) -> Callable[
+        [service.SearchPublicKgRequest],
+        Union[
+            service.SearchPublicKgResponse, Awaitable[service.SearchPublicKgResponse]
+        ],
     ]:
         raise NotImplementedError()
 
