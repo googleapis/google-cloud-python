@@ -16,7 +16,7 @@
         },
         "packages/google-cloud-contentwarehouse": {
             "component": "google-cloud-contentwarehouse",
-            "release-type": "simple",
+            "release-type": "python",
             "extra-files": [
                 "google/cloud/contentwarehouse/gapic_version.py"
             ]
