@@ -4,7 +4,7 @@ Proto Plus for Python
     Beautiful, Pythonic protocol buffers.
 
 This library provides a clean, readable, straightforward pattern for
-declaraing messages in `protocol buffers`_. It provides a wrapper around
+declaring messages in `protocol buffers`_. It provides a wrapper around
 the official implementation, so that using messages feels natural while
 retaining the power and flexibility of protocol buffers.
 
