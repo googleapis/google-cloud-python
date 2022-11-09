@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.artifactregistry import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.artifactregistry_v1.services.artifact_registry.async_client import (
     ArtifactRegistryAsyncClient,
