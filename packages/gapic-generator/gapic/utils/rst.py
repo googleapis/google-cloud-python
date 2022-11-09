@@ -13,13 +13,14 @@
 # limitations under the License.
 
 import re
+from typing import Optional
 
 import pypandoc  # type: ignore
 
 from gapic.utils.lines import wrap
 
 
-def rst(text: str, width: int = 72, indent: int = 0, nl: bool = None,
+def rst(text: str, width: int = 72, indent: int = 0, nl: Optional[bool] = None,
         source_format: str = 'commonmark'):
     """Convert the given text to ReStructured Text.
 

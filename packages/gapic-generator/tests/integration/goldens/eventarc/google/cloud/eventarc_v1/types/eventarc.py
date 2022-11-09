@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -42,7 +44,7 @@ class GetTriggerRequest(proto.Message):
             Required. The name of the trigger to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -74,19 +76,19 @@ class ListTriggersRequest(proto.Message):
             ``name desc, trigger_id``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -96,14 +98,14 @@ class ListTriggersResponse(proto.Message):
     r"""The response message for the ListTriggers method.
 
     Attributes:
-        triggers (Sequence[google.cloud.eventarc_v1.types.Trigger]):
+        triggers (MutableSequence[google.cloud.eventarc_v1.types.Trigger]):
             The requested triggers, up to the number specified in
             ``page_size``.
         next_page_token (str):
             A page token that can be sent to ListTriggers
             to request the next page. If this is empty, then
             there are no more pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Unreachable resources, if any.
     """
 
@@ -111,16 +113,16 @@ class ListTriggersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    triggers = proto.RepeatedField(
+    triggers: MutableSequence[gce_trigger.Trigger] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gce_trigger.Trigger,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -143,20 +145,20 @@ class CreateTriggerRequest(proto.Message):
             preview the review, but do not actually post it.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    trigger = proto.Field(
+    trigger: gce_trigger.Trigger = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gce_trigger.Trigger,
     )
-    trigger_id = proto.Field(
+    trigger_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -182,21 +184,21 @@ class UpdateTriggerRequest(proto.Message):
             preview the review, but do not actually post it.
     """
 
-    trigger = proto.Field(
+    trigger: gce_trigger.Trigger = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gce_trigger.Trigger,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -222,19 +224,19 @@ class DeleteTriggerRequest(proto.Message):
             preview the review, but do not actually post it.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -270,33 +272,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

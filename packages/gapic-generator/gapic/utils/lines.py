@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import textwrap
-from typing import Iterable
+from typing import Iterable, Optional
 
 
 def sort_lines(text: str, dedupe: bool = True) -> str:
@@ -39,7 +39,7 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     return f'{leading}{answer}{trailing}'
 
 
-def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
+def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
     """Wrap the given string to the given width.
 
     This uses :meth:`textwrap.fill` under the hood, but provides useful

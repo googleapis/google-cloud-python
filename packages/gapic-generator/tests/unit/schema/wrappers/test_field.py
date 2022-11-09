@@ -72,7 +72,7 @@ def test_ident():
 def test_ident_repeated():
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
     field = make_field(type='TYPE_BOOL', label=REP)
-    assert str(field.ident) == 'Sequence[bool]'
+    assert str(field.ident) == 'MutableSequence[bool]'
 
 
 def test_repeated():
@@ -124,7 +124,7 @@ def test_ident_map():
         type='TYPE_MESSAGE',
     )
 
-    assert str(field.ident) == "Mapping[str, str]"
+    assert str(field.ident) == "MutableMapping[str, str]"
 
 
 def test_required():
@@ -148,7 +148,7 @@ def test_ident_sphinx():
 def test_ident_sphinx_repeated():
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
     field = make_field(type='TYPE_BOOL', label=REP)
-    assert field.ident.sphinx == 'Sequence[bool]'
+    assert field.ident.sphinx == 'MutableSequence[bool]'
 
 
 def test_ident_sphinx_map():
@@ -167,7 +167,7 @@ def test_ident_sphinx_map():
         label=3,
         type='TYPE_MESSAGE',
     )
-    assert field.ident.sphinx == 'Mapping[str, str]'
+    assert field.ident.sphinx == 'MutableMapping[str, str]'
 
 
 def test_resource_reference():

@@ -19,7 +19,7 @@ import re
 import os
 import pathlib
 import typing
-from typing import Any, DefaultDict, Dict, Mapping, Tuple
+from typing import Any, DefaultDict, Dict, Mapping, Optional, Tuple
 from hashlib import sha256
 from collections import OrderedDict, defaultdict
 from gapic.samplegen_utils.utils import coerce_response_name, is_valid_sample_cfg, render_format_string
@@ -362,7 +362,7 @@ class Generator:
         return {fn: cgr_file}
 
     def _get_filename(
-        self, template_name: str, *, api_schema: api.API, context: dict = None,
+        self, template_name: str, *, api_schema: api.API, context: Optional[dict] = None,
     ) -> str:
         """Return the appropriate output filename for this template.
 

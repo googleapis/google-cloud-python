@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -49,7 +51,7 @@ class Trigger(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
-        event_filters (Sequence[google.cloud.eventarc_v1.types.EventFilter]):
+        event_filters (MutableSequence[google.cloud.eventarc_v1.types.EventFilter]):
             Required. null The list of filters that
             applies to event attributes. Only events that
             match all the provided filters will be sent to
@@ -81,7 +83,7 @@ class Trigger(proto.Message):
             intermediary. This field contains a reference to
             that transport intermediary. This information
             can be used for debugging purposes.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User labels attached to the
             triggers that can be used to group resources.
         etag (str):
@@ -92,49 +94,49 @@ class Trigger(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    event_filters = proto.RepeatedField(
+    event_filters: MutableSequence['EventFilter'] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message='EventFilter',
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    destination = proto.Field(
+    destination: 'Destination' = proto.Field(
         proto.MESSAGE,
         number=10,
         message='Destination',
     )
-    transport = proto.Field(
+    transport: 'Transport' = proto.Field(
         proto.MESSAGE,
         number=11,
         message='Transport',
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=99,
     )
@@ -155,11 +157,11 @@ class EventFilter(proto.Message):
             Required. The value for the attribute.
     """
 
-    attribute = proto.Field(
+    attribute: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -179,7 +181,7 @@ class Destination(proto.Message):
             This field is a member of `oneof`_ ``descriptor``.
     """
 
-    cloud_run = proto.Field(
+    cloud_run: 'CloudRun' = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='descriptor',
@@ -202,7 +204,7 @@ class Transport(proto.Message):
             This field is a member of `oneof`_ ``intermediary``.
     """
 
-    pubsub = proto.Field(
+    pubsub: 'Pubsub' = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='intermediary',
@@ -232,15 +234,15 @@ class CloudRun(proto.Message):
             deployed in.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -266,11 +268,11 @@ class Pubsub(proto.Message):
             ``projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}``.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subscription = proto.Field(
+    subscription: str = proto.Field(
         proto.STRING,
         number=2,
     )

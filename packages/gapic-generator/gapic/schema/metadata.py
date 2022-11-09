@@ -370,15 +370,15 @@ class FieldIdentifier:
 
     def __str__(self) -> str:
         if self.mapping:
-            return f'Mapping[{self.mapping[0].ident}, {self.mapping[1].ident}]'
+            return f'MutableMapping[{self.mapping[0].ident}, {self.mapping[1].ident}]'
         if self.repeated:
-            return f'Sequence[{self.ident}]'
+            return f'MutableSequence[{self.ident}]'
         return str(self.ident)
 
     @property
     def sphinx(self) -> str:
         if self.mapping:
-            return f'Mapping[{self.mapping[0].ident.sphinx}, {self.mapping[1].ident.sphinx}]'
+            return f'MutableMapping[{self.mapping[0].ident.sphinx}, {self.mapping[1].ident.sphinx}]'
         if self.repeated:
-            return f'Sequence[{self.ident.sphinx}]'
+            return f'MutableSequence[{self.ident.sphinx}]'
         return self.ident.sphinx

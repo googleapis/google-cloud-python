@@ -5,7 +5,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
 {% if service.any_deprecated %}
 import warnings
@@ -144,9 +144,9 @@ class {{ service.async_client_name }}:
     get_transport_class = functools.partial(type({{ service.client_name }}).get_transport_class, type({{ service.client_name }}))
 
     def __init__(self, *,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, {{ service.name }}Transport] = "grpc_asyncio",
-            client_options: ClientOptions = None,
+            client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the {{ (service.client_name|snake_case).replace("_", " ") }}.
@@ -195,17 +195,17 @@ class {{ service.async_client_name }}:
     {%+ if not method.server_streaming %}async {% endif %}def {{ method_name }}(self,
       {% endwith %}
             {% if not method.client_streaming %}
-            request: Union[{{ method.input.ident }}, dict] = None,
+            request: Optional[Union[{{ method.input.ident }}, dict]] = None,
             *,
             {% for field in method.flattened_fields.values() %}
-            {{ field.name }}: {{ field.ident }} = None,
+            {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
             {% else %}
-            requests: AsyncIterator[{{ method.input.ident }}] = None,
+            requests: Optional[AsyncIterator[{{ method.input.ident }}]] = None,
             *,
             {% endif %}
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             {% if not method.server_streaming %}
             ) -> {{ method.client_output_async.ident }}:
@@ -224,7 +224,7 @@ class {{ service.async_client_name }}:
 
         Args:
             {% if not method.client_streaming %}
-            request (Union[{{ method.input.ident.sphinx }}, dict]):
+            request (Optional[Union[{{ method.input.ident.sphinx }}, dict]]):
                 The request object.{{ " " }}
                 {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() %}
@@ -387,10 +387,10 @@ class {{ service.async_client_name }}:
     {% if opts.add_iam_methods %}
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -501,10 +501,10 @@ class {{ service.async_client_name }}:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -617,10 +617,10 @@ class {{ service.async_client_name }}:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control

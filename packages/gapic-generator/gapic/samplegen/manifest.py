@@ -14,7 +14,7 @@
 
 import os
 import time
-from typing import Tuple
+from typing import Optional, Tuple
 
 from gapic.samplegen_utils import (types, yaml)
 from gapic.utils import case
@@ -45,7 +45,7 @@ def generate(
         api_schema,
         *,
         environment: yaml.Map = PYTHON3_ENVIRONMENT,
-        manifest_time: int = None
+        manifest_time: Optional[int] = None
 ) -> Tuple[str, yaml.Doc]:
     """Generate a samplegen manifest for use by sampletest
 

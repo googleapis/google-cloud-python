@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -149,9 +149,9 @@ class IAMCredentialsAsyncClient:
     get_transport_class = functools.partial(type(IAMCredentialsClient).get_transport_class, type(IAMCredentialsClient))
 
     def __init__(self, *,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, IAMCredentialsTransport] = "grpc_asyncio",
-            client_options: ClientOptions = None,
+            client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the iam credentials client.
@@ -195,14 +195,14 @@ class IAMCredentialsAsyncClient:
         )
 
     async def generate_access_token(self,
-            request: Union[common.GenerateAccessTokenRequest, dict] = None,
+            request: Optional[Union[common.GenerateAccessTokenRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            scope: Sequence[str] = None,
-            lifetime: duration_pb2.Duration = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            scope: Optional[MutableSequence[str]] = None,
+            lifetime: Optional[duration_pb2.Duration] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
@@ -236,7 +236,7 @@ class IAMCredentialsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -249,7 +249,7 @@ class IAMCredentialsAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -267,7 +267,7 @@ class IAMCredentialsAsyncClient:
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            scope (:class:`Sequence[str]`):
+            scope (:class:`MutableSequence[str]`):
                 Required. Code to identify the scopes
                 to be included in the OAuth 2.0 access
                 token. See
@@ -355,14 +355,14 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def generate_id_token(self,
-            request: Union[common.GenerateIdTokenRequest, dict] = None,
+            request: Optional[Union[common.GenerateIdTokenRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            audience: str = None,
-            include_email: bool = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            audience: Optional[str] = None,
+            include_email: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
@@ -396,7 +396,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -409,7 +409,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -509,13 +509,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def sign_blob(self,
-            request: Union[common.SignBlobRequest, dict] = None,
+            request: Optional[Union[common.SignBlobRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            payload: bytes = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            payload: Optional[bytes] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
@@ -549,7 +549,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.SignBlobRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.SignBlobRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -562,7 +562,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -649,13 +649,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def sign_jwt(self,
-            request: Union[common.SignJwtRequest, dict] = None,
+            request: Optional[Union[common.SignJwtRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            payload: str = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            payload: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
@@ -689,7 +689,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.SignJwtRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.SignJwtRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -702,7 +702,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its

@@ -573,15 +573,15 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
     def __init__(self, *,
             host: str = 'logging.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[ConfigServiceV2RestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
@@ -660,9 +660,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.CreateBucketRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogBucket:
             r"""Call the create bucket method over HTTP.
 
@@ -765,9 +765,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.CreateExclusionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogExclusion:
             r"""Call the create exclusion method over HTTP.
 
@@ -881,9 +881,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.CreateSinkRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogSink:
             r"""Call the create sink method over HTTP.
 
@@ -995,9 +995,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.CreateViewRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogView:
             r"""Call the create view method over HTTP.
 
@@ -1102,9 +1102,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.DeleteBucketRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ):
             r"""Call the delete bucket method over HTTP.
 
@@ -1182,9 +1182,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.DeleteExclusionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ):
             r"""Call the delete exclusion method over HTTP.
 
@@ -1262,9 +1262,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.DeleteSinkRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ):
             r"""Call the delete sink method over HTTP.
 
@@ -1342,9 +1342,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.DeleteViewRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ):
             r"""Call the delete view method over HTTP.
 
@@ -1422,9 +1422,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.GetBucketRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogBucket:
             r"""Call the get bucket method over HTTP.
 
@@ -1514,9 +1514,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.GetCmekSettingsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.CmekSettings:
             r"""Call the get cmek settings method over HTTP.
 
@@ -1612,9 +1612,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.GetExclusionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogExclusion:
             r"""Call the get exclusion method over HTTP.
 
@@ -1715,9 +1715,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.GetSinkRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogSink:
             r"""Call the get sink method over HTTP.
 
@@ -1816,9 +1816,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.GetViewRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogView:
             r"""Call the get view method over HTTP.
 
@@ -1910,9 +1910,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.ListBucketsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.ListBucketsResponse:
             r"""Call the list buckets method over HTTP.
 
@@ -2002,9 +2002,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.ListExclusionsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.ListExclusionsResponse:
             r"""Call the list exclusions method over HTTP.
 
@@ -2094,9 +2094,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.ListSinksRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.ListSinksResponse:
             r"""Call the list sinks method over HTTP.
 
@@ -2186,9 +2186,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.ListViewsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.ListViewsResponse:
             r"""Call the list views method over HTTP.
 
@@ -2278,9 +2278,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.UndeleteBucketRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ):
             r"""Call the undelete bucket method over HTTP.
 
@@ -2371,9 +2371,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.UpdateBucketRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogBucket:
             r"""Call the update bucket method over HTTP.
 
@@ -2476,9 +2476,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.UpdateCmekSettingsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.CmekSettings:
             r"""Call the update cmek settings method over HTTP.
 
@@ -2584,9 +2584,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.UpdateExclusionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogExclusion:
             r"""Call the update exclusion method over HTTP.
 
@@ -2700,9 +2700,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.UpdateSinkRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogSink:
             r"""Call the update sink method over HTTP.
 
@@ -2834,9 +2834,9 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
         def __call__(self,
                 request: logging_config.UpdateViewRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> logging_config.LogView:
             r"""Call the update view method over HTTP.
 

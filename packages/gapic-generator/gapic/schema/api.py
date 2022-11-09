@@ -81,7 +81,7 @@ class Proto:
             file_to_generate: bool,
             naming: api_naming.Naming,
             opts: Options = Options(),
-            prior_protos: Mapping[str, 'Proto'] = None,
+            prior_protos: Optional[Mapping[str, 'Proto']] = None,
             load_services: bool = True,
             all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ) -> 'Proto':
@@ -243,7 +243,7 @@ class API:
         file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
         package: str = '',
         opts: Options = Options(),
-        prior_protos: Mapping[str, 'Proto'] = None,
+        prior_protos: Optional[Mapping[str, 'Proto']] = None,
     ) -> 'API':
         """Build the internal API schema based on the request.
 
@@ -631,7 +631,7 @@ class _ProtoBuilder:
         file_to_generate: bool,
         naming: api_naming.Naming,
         opts: Options = Options(),
-        prior_protos: Mapping[str, Proto] = None,
+        prior_protos: Optional[Mapping[str, Proto]] = None,
         load_services: bool = True,
         all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ):

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -58,7 +58,7 @@ class MetricsServiceV2ClientMeta(type):
     _transport_registry["rest"] = MetricsServiceV2RestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[MetricsServiceV2Transport]:
         """Returns an appropriate transport class.
 
@@ -291,7 +291,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, MetricsServiceV2Transport, None] = None,
+            transport: Optional[Union[str, MetricsServiceV2Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -381,11 +381,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             )
 
     def list_log_metrics(self,
-            request: Union[logging_metrics.ListLogMetricsRequest, dict] = None,
+            request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
@@ -497,11 +497,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def get_log_metric(self,
-            request: Union[logging_metrics.GetLogMetricRequest, dict] = None,
+            request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
             *,
-            metric_name: str = None,
+            metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
@@ -609,12 +609,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def create_log_metric(self,
-            request: Union[logging_metrics.CreateLogMetricRequest, dict] = None,
+            request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
             *,
-            parent: str = None,
-            metric: logging_metrics.LogMetric = None,
+            parent: Optional[str] = None,
+            metric: Optional[logging_metrics.LogMetric] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
@@ -740,12 +740,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def update_log_metric(self,
-            request: Union[logging_metrics.UpdateLogMetricRequest, dict] = None,
+            request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
             *,
-            metric_name: str = None,
-            metric: logging_metrics.LogMetric = None,
+            metric_name: Optional[str] = None,
+            metric: Optional[logging_metrics.LogMetric] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
@@ -870,11 +870,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def delete_log_metric(self,
-            request: Union[logging_metrics.DeleteLogMetricRequest, dict] = None,
+            request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
             *,
-            metric_name: str = None,
+            metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
         r"""Deletes a logs-based metric.

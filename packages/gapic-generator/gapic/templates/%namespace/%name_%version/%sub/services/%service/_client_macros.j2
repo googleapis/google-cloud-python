@@ -17,17 +17,17 @@
 {% macro client_method(method, name, snippet_index, api, service, full_extended_lro=False) %}
     def {{ name }}(self,
             {% if not method.client_streaming %}
-            request: Union[{{ method.input.ident }}, dict] = None,
+            request: Optional[Union[{{ method.input.ident }}, dict]] = None,
             *,
             {% for field in method.flattened_fields.values() %}
-            {{ field.name }}: {{ field.ident }} = None,
+            {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
             {% else %}
-            requests: Iterator[{{ method.input.ident }}] = None,
+            requests: Optional[Iterator[{{ method.input.ident }}]] = None,
             *,
             {% endif %}
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             {% if method.extended_lro and not full_extended_lro %}{# This is a hack to preserve backwards compatibility with the "unary" surfaces #}
             ) -> {{ method.extended_lro.operation_type.ident }}:

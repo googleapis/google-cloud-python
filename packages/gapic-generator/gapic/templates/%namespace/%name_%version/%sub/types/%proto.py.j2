@@ -4,6 +4,8 @@
 
 {% with p = proto.disambiguate('proto') %}
 {% if proto.messages|length or proto.all_enums|length %}
+from typing import MutableMapping, MutableSequence
+
 import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endif %}
 

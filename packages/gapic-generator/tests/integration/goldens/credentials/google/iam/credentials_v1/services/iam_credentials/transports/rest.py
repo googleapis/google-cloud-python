@@ -199,15 +199,15 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
 
     def __init__(self, *,
             host: str = 'iamcredentials.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[IAMCredentialsRestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
@@ -286,9 +286,9 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
 
         def __call__(self,
                 request: common.GenerateAccessTokenRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> common.GenerateAccessTokenResponse:
             r"""Call the generate access token method over HTTP.
 
@@ -371,9 +371,9 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
 
         def __call__(self,
                 request: common.GenerateIdTokenRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> common.GenerateIdTokenResponse:
             r"""Call the generate id token method over HTTP.
 
@@ -456,9 +456,9 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
 
         def __call__(self,
                 request: common.SignBlobRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> common.SignBlobResponse:
             r"""Call the sign blob method over HTTP.
 
@@ -541,9 +541,9 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
 
         def __call__(self,
                 request: common.SignJwtRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                retry: OptionalRetry = gapic_v1.method.DEFAULT,
+                timeout: Optional[float] = None,
+                metadata: Sequence[Tuple[str, str]] = (),
                 ) -> common.SignJwtResponse:
             r"""Call the sign jwt method over HTTP.
 

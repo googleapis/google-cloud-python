@@ -5,7 +5,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Callable, Dict, Mapping, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
 import pkg_resources
 {% if service.any_deprecated %}
 import warnings
@@ -68,7 +68,7 @@ class {{ service.client_name }}Meta(type):
     {% endif %}
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
             ) -> Type[{{ service.name }}Transport]:
         """Returns an appropriate transport class.
 
@@ -218,7 +218,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, {{ service.name }}Transport, None] = None,
+            transport: Optional[Union[str, {{ service.name }}Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -230,7 +230,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, {{ service.name }}Transport]): The
+            transport (Optional[Union[str, {{ service.name }}Transport]]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
                 {% if 'rest' in opts.transport and not opts.rest_numeric_enums %}
@@ -340,17 +340,17 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     def {{ method.name|snake_case }}(self,
     {% endif %}{# Extended Operations LRO #}
             {% if not method.client_streaming %}
-            request: Union[{{ method.input.ident }}, dict] = None,
+            request: Optional[Union[{{ method.input.ident }}, dict]] = None,
             *,
             {% for field in method.flattened_fields.values() %}
-            {{ field.name }}: {{ field.ident }} = None,
+            {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
             {% else %}
-            requests: Iterator[{{ method.input.ident }}] = None,
+            requests: Optional[Iterator[{{ method.input.ident }}]] = None,
             *,
             {% endif %}
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             {% if not method.server_streaming %}
             ) -> {{ method.client_output.ident }}:
@@ -361,7 +361,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         Args:
             {% if not method.client_streaming %}
-            request (Union[{{ method.input.ident.sphinx }}, dict]):
+            request (Union[{{ method.input.ident.sphinx }}, dict, None]):
                 The request object.{{ " " }}
                 {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() %}
@@ -516,10 +516,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% if opts.add_iam_methods %}
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -633,10 +633,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -750,10 +750,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control

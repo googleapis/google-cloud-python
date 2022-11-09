@@ -1623,7 +1623,7 @@
           },
           {
             "name": "asset_types",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1711,7 +1711,7 @@
           },
           {
             "name": "asset_types",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",

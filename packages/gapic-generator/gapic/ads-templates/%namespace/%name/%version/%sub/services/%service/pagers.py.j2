@@ -78,7 +78,7 @@ class {{ method.name }}Pager:
     def get(self, key: str) -> Optional[{{ method.paged_result_field.type.fields.get('value').ident }}]:
         return self._response.{{ method.paged_result_field.name }}.get(key)
     {% else %}
-    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterator') }}:
+    def __iter__(self) -> {{ method.paged_result_field.ident | replace('MutableSequence', 'Iterator') }}:
         for page in self.pages:
             yield from page.{{ method.paged_result_field.name }}
     {% endif %}
