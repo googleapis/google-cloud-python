@@ -26,6 +26,8 @@ __protobuf__ = proto.module(
 class AddressMetadata(proto.Message):
     r"""The metadata for the address.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         highrise (bool):
             Indicates that this address is a high-rise building. If

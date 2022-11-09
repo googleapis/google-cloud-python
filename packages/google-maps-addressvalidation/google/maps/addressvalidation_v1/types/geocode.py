@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.geo.type import viewport_pb2  # type: ignore
+import google.geo.type.types  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -46,7 +46,7 @@ class Geocode(proto.Message):
             the returned address will match the original.
         plus_code (google.maps.addressvalidation_v1.types.PlusCode):
             The plus code corresponding to the ``location``.
-        bounds (google.geo.type.viewport_pb2.Viewport):
+        bounds (google.geo.type.types.Viewport):
             The bounds of the geocoded place.
         feature_size_meters (float):
             The size of the geocoded place, in meters.
@@ -78,7 +78,7 @@ class Geocode(proto.Message):
     bounds = proto.Field(
         proto.MESSAGE,
         number=4,
-        message=viewport_pb2.Viewport,
+        message=google.geo.type.types.Viewport,
     )
     feature_size_meters = proto.Field(
         proto.FLOAT,
