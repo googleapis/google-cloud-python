@@ -9,4 +9,4 @@
 google-api-core==1.33.2
 proto-plus==1.22.0
 protobuf==3.19.5
-google-cloud-documentai==2.0.3
+google-cloud-documentai==2.1.0
