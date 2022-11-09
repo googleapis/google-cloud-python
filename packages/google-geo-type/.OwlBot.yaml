@@ -13,5 +13,5 @@
 # limitations under the License.
 
 deep-copy-regex:
-    - source: /apiPath/(.*-py)
-      dest: /owl-bot-staging/apiDashes/$1
+    - source: /google/geo/type/(.*-py)
+      dest: /owl-bot-staging/google-geo-type/$1

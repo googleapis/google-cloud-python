@@ -20,6 +20,13 @@
             "extra-files": [
                 "google/cloud/contentwarehouse/gapic_version.py"
             ]
+        },
+        "packages/google-geo-type": {
+            "component": "google-geo-type",
+            "release-type": "python",
+            "extra-files": [
+                "google/geo/type/gapic_version.py"
+            ]
         }
     }
 }
