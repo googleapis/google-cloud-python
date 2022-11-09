@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -156,9 +166,9 @@ class AddressValidationAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AddressValidationTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the address validation client.
@@ -202,10 +212,12 @@ class AddressValidationAsyncClient:
 
     async def validate_address(
         self,
-        request: Union[address_validation_service.ValidateAddressRequest, dict] = None,
+        request: Optional[
+            Union[address_validation_service.ValidateAddressRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> address_validation_service.ValidateAddressResponse:
         r"""Validates an address.
@@ -236,7 +248,7 @@ class AddressValidationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.maps.addressvalidation_v1.types.ValidateAddressRequest, dict]):
+            request (Optional[Union[google.maps.addressvalidation_v1.types.ValidateAddressRequest, dict]]):
                 The request object. The request for validating an
                 address.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -275,12 +287,12 @@ class AddressValidationAsyncClient:
 
     async def provide_validation_feedback(
         self,
-        request: Union[
-            address_validation_service.ProvideValidationFeedbackRequest, dict
+        request: Optional[
+            Union[address_validation_service.ProvideValidationFeedbackRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> address_validation_service.ProvideValidationFeedbackResponse:
         r"""Feedback about the outcome of the sequence of validation
@@ -318,7 +330,7 @@ class AddressValidationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.maps.addressvalidation_v1.types.ProvideValidationFeedbackRequest, dict]):
+            request (Optional[Union[google.maps.addressvalidation_v1.types.ProvideValidationFeedbackRequest, dict]]):
                 The request object. The request for sending validation
                 feedback.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
