@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
-  digest: sha256:0579b207c29ac6dbe10b405fb4088fdbe78b6064edb48f8cb58b7cf1ad5876d5
+
+deep-copy-regex:
+    - source: /google/maps/addressvalidation/(.*)/.*-py
+      dest: /owl-bot-staging/google-maps-addressvalidation/$1
