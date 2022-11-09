@@ -106,8 +106,10 @@ class ProcessRequest(proto.Message):
             Whether Human Review feature should be
             skipped for this request. Default to false.
         field_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Specifies which fields to include in
-            ProcessResponse's document.
+            Specifies which fields to include in ProcessResponse's
+            document. Only supports top level document and pages field
+            so it must be in the form of ``{document_field_name}`` or
+            ``pages.{page_field_name}``.
     """
 
     inline_document = proto.Field(

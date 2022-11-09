@@ -39,7 +39,11 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.documentai_v1.services.document_processor_service import pagers
-from google.cloud.documentai_v1.types import document, document_processor_service
+from google.cloud.documentai_v1.types import (
+    document,
+    document_processor_service,
+    document_schema,
+)
 from google.cloud.documentai_v1.types import processor
 from google.cloud.documentai_v1.types import processor as gcd_processor
 from google.cloud.documentai_v1.types import processor_type

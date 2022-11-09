@@ -16,6 +16,8 @@
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.documentai_v1.types import document_schema as gcd_document_schema
+
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1",
     manifest={
@@ -39,6 +41,9 @@ class ProcessorVersion(proto.Message):
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}``
         display_name (str):
             The display name of the processor version.
+        document_schema (google.cloud.documentai_v1.types.DocumentSchema):
+            The schema of the processor version.
+            Describes the output.
         state (google.cloud.documentai_v1.types.ProcessorVersion.State):
             The state of the processor version.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -98,6 +103,11 @@ class ProcessorVersion(proto.Message):
         proto.STRING,
         number=2,
     )
+    document_schema = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=gcd_document_schema.DocumentSchema,
+    )
     state = proto.Field(
         proto.ENUM,
         number=6,
@@ -137,8 +147,9 @@ class Processor(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/processors/{processor}``
         type_ (str):
-            The processor type, e.g., OCR_PROCESSOR, INVOICE_PROCESSOR,
-            etc. To get a list of processors types, see
+            The processor type, e.g., ``OCR_PROCESSOR``,
+            ``INVOICE_PROCESSOR``, etc. To get a list of processors
+            types, see
             [FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes].
         display_name (str):
             The display name of the processor.

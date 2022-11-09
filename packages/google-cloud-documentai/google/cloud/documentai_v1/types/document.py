@@ -85,9 +85,10 @@ class Document(proto.Message):
             [Document.entities][google.cloud.documentai.v1.Document.entities].
         text_changes (Sequence[google.cloud.documentai_v1.types.Document.TextChange]):
             Placeholder. A list of text corrections made to
-            [Document.text]. This is usually used for annotating
-            corrections to OCR mistakes. Text changes for a given
-            revision may not overlap with each other.
+            [Document.text][google.cloud.documentai.v1.Document.text].
+            This is usually used for annotating corrections to OCR
+            mistakes. Text changes for a given revision may not overlap
+            with each other.
         shard_info (google.cloud.documentai_v1.types.Document.ShardInfo):
             Information about the sharding if this
             document is sharded part of a larger document.
@@ -153,6 +154,9 @@ class Document(proto.Message):
                 https://www.w3schools.com/cssref/pr_text_text-decoration.asp
             font_size (google.cloud.documentai_v1.types.Document.Style.FontSize):
                 Font size.
+            font_family (str):
+                Font family such as ``Arial``, ``Times New Roman``.
+                https://www.w3schools.com/cssref/pr_font_font-family.asp
         """
 
         class FontSize(proto.Message):
@@ -206,6 +210,10 @@ class Document(proto.Message):
             proto.MESSAGE,
             number=7,
             message="Document.Style.FontSize",
+        )
+        font_family = proto.Field(
+            proto.STRING,
+            number=8,
         )
 
     class Page(proto.Message):
@@ -266,6 +274,8 @@ class Document(proto.Message):
                 page.
             detected_barcodes (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedBarcode]):
                 A list of detected barcodes.
+            image_quality_scores (google.cloud.documentai_v1.types.Document.Page.ImageQualityScores):
+                Image Quality Scores.
             provenance (google.cloud.documentai_v1.types.Document.Provenance):
                 The history of this page.
         """
@@ -374,7 +384,7 @@ class Document(proto.Message):
                     [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     within context of the object this layout is for. e.g.
                     confidence can be for a single token, a table, a visual
-                    element, etc. depending on context. Range [0, 1].
+                    element, etc. depending on context. Range ``[0, 1]``.
                 bounding_poly (google.cloud.documentai_v1.types.BoundingPoly):
                     The bounding polygon for the
                     [Layout][google.cloud.documentai.v1.Document.Page.Layout].
@@ -520,7 +530,7 @@ class Document(proto.Message):
                     A list of detected languages together with
                     confidence.
                 provenance (google.cloud.documentai_v1.types.Document.Provenance):
-                    The  history of this annotation.
+                    The history of this annotation.
             """
 
             class DetectedBreak(proto.Message):
@@ -636,6 +646,8 @@ class Document(proto.Message):
                 detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
+                provenance (google.cloud.documentai_v1.types.Document.Provenance):
+                    The history of this table.
             """
 
             class TableRow(proto.Message):
@@ -707,6 +719,11 @@ class Document(proto.Message):
                 proto.MESSAGE,
                 number=4,
                 message="Document.Page.DetectedLanguage",
+            )
+            provenance = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="Document.Provenance",
             )
 
         class FormField(proto.Message):
@@ -818,11 +835,11 @@ class Document(proto.Message):
 
             Attributes:
                 language_code (str):
-                    The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                    more information, see
+                    The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
+                    For more information, see
                     https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
                 confidence (float):
-                    Confidence of detected language. Range [0, 1].
+                    Confidence of detected language. Range ``[0, 1]``.
             """
 
             language_code = proto.Field(
@@ -832,6 +849,56 @@ class Document(proto.Message):
             confidence = proto.Field(
                 proto.FLOAT,
                 number=2,
+            )
+
+        class ImageQualityScores(proto.Message):
+            r"""Image Quality Scores for the page image
+
+            Attributes:
+                quality_score (float):
+                    The overall quality score. Range ``[0, 1]`` where 1 is
+                    perfect quality.
+                detected_defects (Sequence[google.cloud.documentai_v1.types.Document.Page.ImageQualityScores.DetectedDefect]):
+                    A list of detected defects.
+            """
+
+            class DetectedDefect(proto.Message):
+                r"""Image Quality Defects
+
+                Attributes:
+                    type_ (str):
+                        Name of the defect type. Supported values are:
+
+                        -  ``quality/defect_blurry``
+                        -  ``quality/defect_noisy``
+                        -  ``quality/defect_dark``
+                        -  ``quality/defect_faint``
+                        -  ``quality/defect_text_too_small``
+                        -  ``quality/defect_document_cutoff``
+                        -  ``quality/defect_text_cutoff``
+                        -  ``quality/defect_glare``
+                    confidence (float):
+                        Confidence of detected defect. Range ``[0, 1]`` where 1
+                        indicates strong confidence of that the defect exists.
+                """
+
+                type_ = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                confidence = proto.Field(
+                    proto.FLOAT,
+                    number=2,
+                )
+
+            quality_score = proto.Field(
+                proto.FLOAT,
+                number=1,
+            )
+            detected_defects = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Document.Page.ImageQualityScores.DetectedDefect",
             )
 
         page_number = proto.Field(
@@ -908,6 +975,11 @@ class Document(proto.Message):
             number=15,
             message="Document.Page.DetectedBarcode",
         )
+        image_quality_scores = proto.Field(
+            proto.MESSAGE,
+            number=17,
+            message="Document.Page.ImageQualityScores",
+        )
         provenance = proto.Field(
             proto.MESSAGE,
             number=16,
@@ -927,14 +999,13 @@ class Document(proto.Message):
             type_ (str):
                 Required. Entity type from a schema e.g. ``Address``.
             mention_text (str):
-                Optional. Text value in the document e.g.
-                ``1600 Amphitheatre Pkwy``. If the entity is not present in
-                the document, this field will be empty.
+                Optional. Text value of the entity e.g.
+                ``1600 Amphitheatre Pkwy``.
             mention_id (str):
                 Optional. Deprecated. Use ``id`` field instead.
             confidence (float):
-                Optional. Confidence of detected Schema entity. Range [0,
-                1].
+                Optional. Confidence of detected Schema entity. Range
+                ``[0, 1]``.
             page_anchor (google.cloud.documentai_v1.types.Document.PageAnchor):
                 Optional. Represents the provenance of this
                 entity wrt. the location on the page where it
@@ -1230,7 +1301,7 @@ class Document(proto.Message):
                     a layout element on the page.
                 confidence (float):
                     Optional. Confidence of detected page element, if
-                    applicable. Range [0, 1].
+                    applicable. Range ``[0, 1]``.
             """
 
             class LayoutType(proto.Enum):

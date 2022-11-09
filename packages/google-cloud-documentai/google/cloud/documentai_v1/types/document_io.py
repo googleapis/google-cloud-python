@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -36,7 +37,8 @@ class RawDocument(proto.Message):
             Inline document content.
         mime_type (str):
             An IANA MIME type (RFC6838) indicating the nature and format
-            of the [content].
+            of the
+            [content][google.cloud.documentai.v1.RawDocument.content].
     """
 
     content = proto.Field(
@@ -113,7 +115,7 @@ class BatchDocumentsInputConfig(proto.Message):
     Attributes:
         gcs_prefix (google.cloud.documentai_v1.types.GcsPrefix):
             The set of documents that match the specified Cloud Storage
-            [gcs_prefix].
+            ``gcs_prefix``.
 
             This field is a member of `oneof`_ ``source``.
         gcs_documents (google.cloud.documentai_v1.types.GcsDocuments):
@@ -159,11 +161,21 @@ class DocumentOutputConfig(proto.Message):
             gcs_uri (str):
                 The Cloud Storage uri (a directory) of the
                 output.
+            field_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Specifies which fields to include in the output documents.
+                Only supports top level document and pages field so it must
+                be in the form of ``{document_field_name}`` or
+                ``pages.{page_field_name}``.
         """
 
         gcs_uri = proto.Field(
             proto.STRING,
             number=1,
+        )
+        field_mask = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=field_mask_pb2.FieldMask,
         )
 
     gcs_output_config = proto.Field(
