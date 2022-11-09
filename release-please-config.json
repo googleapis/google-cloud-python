@@ -2,9 +2,16 @@
     "packages": {
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
-            "release-type": "simple",
+            "release-type": "python",
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py"
+            ]
+        },
+        "packages/google-cloud-enterpriseknowledgegraph": {
+            "component": "google-cloud-enterpriseknowledgegraph",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/enterpriseknowledgegraph/gapic_version.py"
             ]
         },
         "packages/google-cloud-contentwarehouse": {
