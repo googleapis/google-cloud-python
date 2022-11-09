@@ -1,5 +1,5 @@
-Python Client for Document AI Warehouse
-=======================================
+Python Client for Document AI Warehouse API
+===========================================
 
 |preview| |pypi| |versions|
 
