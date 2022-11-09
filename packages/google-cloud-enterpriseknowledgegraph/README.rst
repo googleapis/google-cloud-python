@@ -1,5 +1,5 @@
-Python Client for Enterprise Knowledge Graph API
-================================================
+Python Client for Enterprise Knowledge Graph
+============================================
 
 |preview| |pypi| |versions|
 
