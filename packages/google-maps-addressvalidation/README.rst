@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Address Validation API
+========================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Address Validation API`_: Address Validation lets you validate and correct address inputs with Places data powered by Google Maps Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-maps-addressvalidation/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-addressvalidation.svg
    :target: https://pypi.org/project/google-maps-addressvalidation/
-.. _: https://
+.. _Address Validation API: https://mapsplatform.google.com/maps-products/address-validation/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/addressvalidation/latest
-.. _Product Documentation:  https://
+.. _Product Documentation:  https://mapsplatform.google.com/maps-products/address-validation/
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Address Validation API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  https://
+.. _Enable the Address Validation API.:  https://mapsplatform.google.com/maps-products/address-validation/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Address Validation API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Address Validation API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  https://
+.. _Address Validation API Product documentation:  https://mapsplatform.google.com/maps-products/address-validation/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
