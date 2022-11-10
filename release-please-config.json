@@ -4,21 +4,36 @@
             "component": "google-cloud-discoveryengine",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/discoveryengine/gapic_version.py"
+                "google/cloud/discoveryengine/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         },
         "packages/google-cloud-enterpriseknowledgegraph": {
             "component": "google-cloud-enterpriseknowledgegraph",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/enterpriseknowledgegraph/gapic_version.py"
+                "google/cloud/enterpriseknowledgegraph/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.enterpriseknowledgegraph.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         },
         "packages/google-cloud-contentwarehouse": {
             "component": "google-cloud-contentwarehouse",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/contentwarehouse/gapic_version.py"
+                "google/cloud/contentwarehouse/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contentwarehouse.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         },
         "packages/google-geo-type": {
@@ -32,14 +47,24 @@
             "component": "google-maps-addressvalidation",
             "release-type": "python",
             "extra-files": [
-                "google/maps/addressvalidation/gapic_version.py"
+                "google/maps/addressvalidation/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.addressvalidation.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         },
         "packages/google-maps-routing": {
             "component": "google-maps-routing",
             "release-type": "python",
             "extra-files": [
-                "google/maps/routing/gapic_version.py"
+                "google/maps/routing/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.routing.v2.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
