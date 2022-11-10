@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-enterpriseknowledgegraph"
+    "name": "google-cloud-enterpriseknowledgegraph",
+    "version": "0.2.0"
   },
   "snippets": [
     {
@@ -839,7 +840,7 @@
           },
           {
             "name": "ids",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -923,7 +924,7 @@
           },
           {
             "name": "ids",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1008,7 +1009,7 @@
           },
           {
             "name": "ids",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -1092,7 +1093,7 @@
           },
           {
             "name": "ids",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",

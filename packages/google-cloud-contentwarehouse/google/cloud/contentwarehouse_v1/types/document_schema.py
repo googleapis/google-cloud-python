@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -45,7 +47,7 @@ class DocumentSchema(proto.Message):
         display_name (str):
             Required. Name of the schema given by the
             user. Must be unique per customer.
-        property_definitions (Sequence[google.cloud.contentwarehouse_v1.types.PropertyDefinition]):
+        property_definitions (MutableSequence[google.cloud.contentwarehouse_v1.types.PropertyDefinition]):
             Document details.
         document_is_folder (bool):
             Document Type, true refers the document is a
@@ -60,34 +62,34 @@ class DocumentSchema(proto.Message):
             Schema description.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    property_definitions = proto.RepeatedField(
+    property_definitions: MutableSequence["PropertyDefinition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="PropertyDefinition",
     )
-    document_is_folder = proto.Field(
+    document_is_folder: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -168,77 +170,77 @@ class PropertyDefinition(proto.Message):
             This field is a member of `oneof`_ ``value_type_options``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    is_repeatable = proto.Field(
+    is_repeatable: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    is_filterable = proto.Field(
+    is_filterable: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    is_searchable = proto.Field(
+    is_searchable: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    is_metadata = proto.Field(
+    is_metadata: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    is_required = proto.Field(
+    is_required: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    integer_type_options = proto.Field(
+    integer_type_options: "IntegerTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="value_type_options",
         message="IntegerTypeOptions",
     )
-    float_type_options = proto.Field(
+    float_type_options: "FloatTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="value_type_options",
         message="FloatTypeOptions",
     )
-    text_type_options = proto.Field(
+    text_type_options: "TextTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="value_type_options",
         message="TextTypeOptions",
     )
-    property_type_options = proto.Field(
+    property_type_options: "PropertyTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="value_type_options",
         message="PropertyTypeOptions",
     )
-    enum_type_options = proto.Field(
+    enum_type_options: "EnumTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="value_type_options",
         message="EnumTypeOptions",
     )
-    date_time_type_options = proto.Field(
+    date_time_type_options: "DateTimeTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="value_type_options",
         message="DateTimeTypeOptions",
     )
-    map_type_options = proto.Field(
+    map_type_options: "MapTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="value_type_options",
         message="MapTypeOptions",
     )
-    timestamp_type_options = proto.Field(
+    timestamp_type_options: "TimestampTypeOptions" = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="value_type_options",
@@ -274,11 +276,11 @@ class PropertyTypeOptions(proto.Message):
     r"""Configurations for a nested structured data property.
 
     Attributes:
-        property_definitions (Sequence[google.cloud.contentwarehouse_v1.types.PropertyDefinition]):
+        property_definitions (MutableSequence[google.cloud.contentwarehouse_v1.types.PropertyDefinition]):
             Required. List of property definitions.
     """
 
-    property_definitions = proto.RepeatedField(
+    property_definitions: MutableSequence["PropertyDefinition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PropertyDefinition",
@@ -289,7 +291,7 @@ class EnumTypeOptions(proto.Message):
     r"""Configurations for an enum/categorical property.
 
     Attributes:
-        possible_values (Sequence[str]):
+        possible_values (MutableSequence[str]):
             Required. List of possible enum values.
         validation_check_disabled (bool):
             Make sure the Enum property value provided in
@@ -298,11 +300,11 @@ class EnumTypeOptions(proto.Message):
             default.
     """
 
-    possible_values = proto.RepeatedField(
+    possible_values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    validation_check_disabled = proto.Field(
+    validation_check_disabled: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

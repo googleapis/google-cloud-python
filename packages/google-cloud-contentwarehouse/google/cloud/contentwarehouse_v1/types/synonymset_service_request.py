@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import synonymset
@@ -42,11 +44,11 @@ class CreateSynonymSetRequest(proto.Message):
             context
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    synonym_set = proto.Field(
+    synonym_set: synonymset.SynonymSet = proto.Field(
         proto.MESSAGE,
         number=2,
         message=synonymset.SynonymSet,
@@ -63,7 +65,7 @@ class GetSynonymSetRequest(proto.Message):
             projects/{project_number}/locations/{location}/synonymSets/{context}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -92,15 +94,15 @@ class ListSynonymSetsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -110,7 +112,7 @@ class ListSynonymSetsResponse(proto.Message):
     r"""Response message for SynonymSetService.ListSynonymSets.
 
     Attributes:
-        synonym_sets (Sequence[google.cloud.contentwarehouse_v1.types.SynonymSet]):
+        synonym_sets (MutableSequence[google.cloud.contentwarehouse_v1.types.SynonymSet]):
             The synonymSets from the specified parent.
         next_page_token (str):
             A page token, received from a previous ``ListSynonymSets``
@@ -121,12 +123,12 @@ class ListSynonymSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    synonym_sets = proto.RepeatedField(
+    synonym_sets: MutableSequence[synonymset.SynonymSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=synonymset.SynonymSet,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -146,11 +148,11 @@ class UpdateSynonymSetRequest(proto.Message):
             the customer
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    synonym_set = proto.Field(
+    synonym_set: synonymset.SynonymSet = proto.Field(
         proto.MESSAGE,
         number=2,
         message=synonymset.SynonymSet,
@@ -166,7 +168,7 @@ class DeleteSynonymSetRequest(proto.Message):
             projects/{project_number}/locations/{location}/synonymSets/{context}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

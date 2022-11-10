@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.iam.v1 import policy_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -51,17 +53,17 @@ class CreateDocumentResponse(proto.Message):
             invocation, such as the request tracking id.
     """
 
-    document = proto.Field(
+    document: gcc_document.Document = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcc_document.Document,
     )
-    rule_engine_output = proto.Field(
+    rule_engine_output: rule_engine.RuleEngineOutput = proto.Field(
         proto.MESSAGE,
         number=2,
         message=rule_engine.RuleEngineOutput,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.ResponseMetadata,
@@ -86,17 +88,17 @@ class UpdateDocumentResponse(proto.Message):
             invocation, such as the request tracking id.
     """
 
-    document = proto.Field(
+    document: gcc_document.Document = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcc_document.Document,
     )
-    rule_engine_output = proto.Field(
+    rule_engine_output: rule_engine.RuleEngineOutput = proto.Field(
         proto.MESSAGE,
         number=2,
         message=rule_engine.RuleEngineOutput,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.ResponseMetadata,
@@ -107,7 +109,7 @@ class QAResult(proto.Message):
     r"""Additional result info for the question-answering feature.
 
     Attributes:
-        highlights (Sequence[google.cloud.contentwarehouse_v1.types.QAResult.Highlight]):
+        highlights (MutableSequence[google.cloud.contentwarehouse_v1.types.QAResult.Highlight]):
             Highlighted sections in the snippet.
         confidence_score (float):
             The calibrated confidence score for this document, in the
@@ -128,21 +130,21 @@ class QAResult(proto.Message):
                 End index of the highlight, exclusive.
         """
 
-        start_index = proto.Field(
+        start_index: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        end_index = proto.Field(
+        end_index: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    highlights = proto.RepeatedField(
+    highlights: MutableSequence[Highlight] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Highlight,
     )
-    confidence_score = proto.Field(
+    confidence_score: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
@@ -152,7 +154,7 @@ class SearchDocumentsResponse(proto.Message):
     r"""Response message for DocumentService.SearchDocuments.
 
     Attributes:
-        matching_documents (Sequence[google.cloud.contentwarehouse_v1.types.SearchDocumentsResponse.MatchingDocument]):
+        matching_documents (MutableSequence[google.cloud.contentwarehouse_v1.types.SearchDocumentsResponse.MatchingDocument]):
             The document entities that match the specified
             [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
         next_page_token (str):
@@ -171,7 +173,7 @@ class SearchDocumentsResponse(proto.Message):
         metadata (google.cloud.contentwarehouse_v1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
-        histogram_query_results (Sequence[google.cloud.contentwarehouse_v1.types.HistogramQueryResult]):
+        histogram_query_results (MutableSequence[google.cloud.contentwarehouse_v1.types.HistogramQueryResult]):
             The histogram results that match with the specified
             [SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries].
     """
@@ -203,16 +205,16 @@ class SearchDocumentsResponse(proto.Message):
                 feature is enabled.
         """
 
-        document = proto.Field(
+        document: gcc_document.Document = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gcc_document.Document,
         )
-        search_text_snippet = proto.Field(
+        search_text_snippet: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        qa_result = proto.Field(
+        qa_result: "QAResult" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="QAResult",
@@ -222,25 +224,27 @@ class SearchDocumentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    matching_documents = proto.RepeatedField(
+    matching_documents: MutableSequence[MatchingDocument] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=MatchingDocument,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.ResponseMetadata,
     )
-    histogram_query_results = proto.RepeatedField(
+    histogram_query_results: MutableSequence[
+        histogram.HistogramQueryResult
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=histogram.HistogramQueryResult,
@@ -258,12 +262,12 @@ class FetchAclResponse(proto.Message):
             invocation, such as the request tracking id.
     """
 
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=1,
         message=policy_pb2.Policy,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.ResponseMetadata,
@@ -282,12 +286,12 @@ class SetAclResponse(proto.Message):
             invocation, such as the request tracking id.
     """
 
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=1,
         message=policy_pb2.Policy,
     )
-    metadata = proto.Field(
+    metadata: common.ResponseMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.ResponseMetadata,

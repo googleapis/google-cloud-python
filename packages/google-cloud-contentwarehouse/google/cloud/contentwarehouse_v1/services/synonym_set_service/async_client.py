@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -168,9 +178,9 @@ class SynonymSetServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SynonymSetServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the synonym set service client.
@@ -214,12 +224,14 @@ class SynonymSetServiceAsyncClient:
 
     async def create_synonym_set(
         self,
-        request: Union[synonymset_service_request.CreateSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.CreateSynonymSetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        synonym_set: synonymset.SynonymSet = None,
+        parent: Optional[str] = None,
+        synonym_set: Optional[synonymset.SynonymSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> synonymset.SynonymSet:
         r"""Creates a SynonymSet for a single context. Throws an
@@ -253,7 +265,7 @@ class SynonymSetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.CreateSynonymSetRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.CreateSynonymSetRequest, dict]]):
                 The request object. Request message for
                 SynonymSetService.CreateSynonymSet.
             parent (:class:`str`):
@@ -334,11 +346,13 @@ class SynonymSetServiceAsyncClient:
 
     async def get_synonym_set(
         self,
-        request: Union[synonymset_service_request.GetSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.GetSynonymSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> synonymset.SynonymSet:
         r"""Gets a SynonymSet for a particular context. Throws a NOT_FOUND
@@ -371,7 +385,7 @@ class SynonymSetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.GetSynonymSetRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.GetSynonymSetRequest, dict]]):
                 The request object. Request message for
                 SynonymSetService.GetSynonymSet. Will return synonymSet
                 for a certain context.
@@ -453,12 +467,14 @@ class SynonymSetServiceAsyncClient:
 
     async def update_synonym_set(
         self,
-        request: Union[synonymset_service_request.UpdateSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.UpdateSynonymSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        synonym_set: synonymset.SynonymSet = None,
+        name: Optional[str] = None,
+        synonym_set: Optional[synonymset.SynonymSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> synonymset.SynonymSet:
         r"""Remove the existing SynonymSet for the context and replaces it
@@ -492,7 +508,7 @@ class SynonymSetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.UpdateSynonymSetRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.UpdateSynonymSetRequest, dict]]):
                 The request object. Request message for
                 SynonymSetService.UpdateSynonymSet. Removes the
                 SynonymSet for the specified context and replaces it
@@ -575,11 +591,13 @@ class SynonymSetServiceAsyncClient:
 
     async def delete_synonym_set(
         self,
-        request: Union[synonymset_service_request.DeleteSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.DeleteSynonymSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a SynonymSet for a given context. Throws a NOT_FOUND
@@ -609,7 +627,7 @@ class SynonymSetServiceAsyncClient:
                 await client.delete_synonym_set(request=request)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.DeleteSynonymSetRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.DeleteSynonymSetRequest, dict]]):
                 The request object. Request message for
                 SynonymSetService.DeleteSynonymSet.
             name (:class:`str`):
@@ -666,11 +684,13 @@ class SynonymSetServiceAsyncClient:
 
     async def list_synonym_sets(
         self,
-        request: Union[synonymset_service_request.ListSynonymSetsRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.ListSynonymSetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSynonymSetsAsyncPager:
         r"""Returns all SynonymSets (for all contexts) for the
@@ -704,7 +724,7 @@ class SynonymSetServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.ListSynonymSetsRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.ListSynonymSetsRequest, dict]]):
                 The request object. Request message for
                 SynonymSetService.ListSynonymSets. Will return all
                 synonymSets belonging to the customer project.

@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +71,7 @@ class RuleSetServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RuleSetServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -374,7 +385,7 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RuleSetServiceTransport, None] = None,
+        transport: Optional[Union[str, RuleSetServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -472,12 +483,14 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
 
     def create_rule_set(
         self,
-        request: Union[ruleset_service_request.CreateRuleSetRequest, dict] = None,
+        request: Optional[
+            Union[ruleset_service_request.CreateRuleSetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        rule_set: rule_engine.RuleSet = None,
+        parent: Optional[str] = None,
+        rule_set: Optional[rule_engine.RuleSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> rule_engine.RuleSet:
         r"""Creates a ruleset.
@@ -582,11 +595,13 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
 
     def get_rule_set(
         self,
-        request: Union[ruleset_service_request.GetRuleSetRequest, dict] = None,
+        request: Optional[
+            Union[ruleset_service_request.GetRuleSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> rule_engine.RuleSet:
         r"""Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
@@ -684,12 +699,14 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
 
     def update_rule_set(
         self,
-        request: Union[ruleset_service_request.UpdateRuleSetRequest, dict] = None,
+        request: Optional[
+            Union[ruleset_service_request.UpdateRuleSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        rule_set: rule_engine.RuleSet = None,
+        name: Optional[str] = None,
+        rule_set: Optional[rule_engine.RuleSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> rule_engine.RuleSet:
         r"""Updates a ruleset. Returns INVALID_ARGUMENT if the name of the
@@ -795,11 +812,13 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
 
     def delete_rule_set(
         self,
-        request: Union[ruleset_service_request.DeleteRuleSetRequest, dict] = None,
+        request: Optional[
+            Union[ruleset_service_request.DeleteRuleSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ruleset. Returns NOT_FOUND if the document does not
@@ -886,11 +905,13 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
 
     def list_rule_sets(
         self,
-        request: Union[ruleset_service_request.ListRuleSetsRequest, dict] = None,
+        request: Optional[
+            Union[ruleset_service_request.ListRuleSetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRuleSetsPager:
         r"""Lists rulesets.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -41,7 +43,7 @@ class SynonymSet(proto.Message):
             can be "sales," "engineering," "real estate,"
             "accounting," etc. The context can be supplied
             during search requests.
-        synonyms (Sequence[google.cloud.contentwarehouse_v1.types.SynonymSet.Synonym]):
+        synonyms (MutableSequence[google.cloud.contentwarehouse_v1.types.SynonymSet.Synonym]):
             List of Synonyms for the context.
     """
 
@@ -50,24 +52,24 @@ class SynonymSet(proto.Message):
         All these words are synonyms of each other.
 
         Attributes:
-            words (Sequence[str]):
+            words (MutableSequence[str]):
                 For example: sale, invoice, bill, order
         """
 
-        words = proto.RepeatedField(
+        words: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    context = proto.Field(
+    context: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    synonyms = proto.RepeatedField(
+    synonyms: MutableSequence[Synonym] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Synonym,

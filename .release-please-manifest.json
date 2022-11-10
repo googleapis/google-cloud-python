@@ -1,8 +1,10 @@
 {
-    "packages/google-cloud-contentwarehouse": "0.1.0",
-    "packages/google-cloud-discoveryengine": "0.1.1",
-    "packages/google-cloud-enterpriseknowledgegraph": "0.1.0",
-    "packages/google-geo-type": "0.1.0",
-    "packages/google-maps-addressvalidation": "0.0.0",
+    "packages/google-cloud-contentwarehouse": "0.2.0",
+    "packages/google-cloud-discoveryengine": "0.2.0",
+    "packages/google-cloud-enterpriseknowledgegraph": "0.2.0",
+    "packages/google-geo-type": "0.2.0",
+    "packages/google-maps-addressvalidation": "0.1.0",
+    "packages/google-maps-routing": "0.1.0",
+    "packages/google-apps-script-type": "0.1.0",
     "packages/google-cloud-gsuiteaddons": "0.0.0"
 }

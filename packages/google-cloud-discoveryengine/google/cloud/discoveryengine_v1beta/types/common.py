@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -29,7 +31,7 @@ class CustomAttribute(proto.Message):
     e.g. [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent].
 
     Attributes:
-        text (Sequence[str]):
+        text (MutableSequence[str]):
             The textual values of this custom attribute. For example,
             ``["yellow", "green"]`` when the key is "color".
 
@@ -42,7 +44,7 @@ class CustomAttribute(proto.Message):
             [numbers][google.cloud.discoveryengine.v1beta.CustomAttribute.numbers]
             should be set. Otherwise, an INVALID_ARGUMENT error is
             returned.
-        numbers (Sequence[float]):
+        numbers (MutableSequence[float]):
             The numerical values of this custom attribute. For example,
             ``[2.3, 15.4]`` when the key is "lengths_cm".
 
@@ -54,11 +56,11 @@ class CustomAttribute(proto.Message):
             returned.
     """
 
-    text = proto.RepeatedField(
+    text: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    numbers = proto.RepeatedField(
+    numbers: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=2,
     )
@@ -96,11 +98,11 @@ class UserInfo(proto.Message):
             or if [direct_user_request][] is set.
     """
 
-    user_id = proto.Field(
+    user_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=2,
     )

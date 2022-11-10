@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.iam.v1 import policy_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -53,23 +55,23 @@ class RuleSet(proto.Message):
             Short description of the rule-set.
         source (str):
             Source of the rules i.e., customer name.
-        rules (Sequence[google.cloud.contentwarehouse_v1.types.Rule]):
+        rules (MutableSequence[google.cloud.contentwarehouse_v1.types.Rule]):
             List of rules given by the customer.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source = proto.Field(
+    source: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence["Rule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Rule",
@@ -94,7 +96,7 @@ class Rule(proto.Message):
             Expression should evaluate to a boolean result. When the
             condition is true actions are executed. Example: user_role =
             "hsbc_role_1" AND doc.salary > 20000
-        actions (Sequence[google.cloud.contentwarehouse_v1.types.Action]):
+        actions (MutableSequence[google.cloud.contentwarehouse_v1.types.Action]):
             List of actions that are executed when the
             rule is satisfied.
     """
@@ -105,24 +107,24 @@ class Rule(proto.Message):
         ON_CREATE = 1
         ON_UPDATE = 4
 
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rule_id = proto.Field(
+    rule_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    trigger_type = proto.Field(
+    trigger_type: TriggerType = proto.Field(
         proto.ENUM,
         number=3,
         enum=TriggerType,
     )
-    condition = proto.Field(
+    condition: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    actions = proto.RepeatedField(
+    actions: MutableSequence["Action"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Action",
@@ -174,47 +176,47 @@ class Action(proto.Message):
             This field is a member of `oneof`_ ``action``.
     """
 
-    action_id = proto.Field(
+    action_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    access_control = proto.Field(
+    access_control: "AccessControlAction" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="action",
         message="AccessControlAction",
     )
-    data_validation = proto.Field(
+    data_validation: "DataValidationAction" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="action",
         message="DataValidationAction",
     )
-    data_update = proto.Field(
+    data_update: "DataUpdateAction" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="action",
         message="DataUpdateAction",
     )
-    add_to_folder = proto.Field(
+    add_to_folder: "AddToFolderAction" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="action",
         message="AddToFolderAction",
     )
-    publish_to_pub_sub = proto.Field(
+    publish_to_pub_sub: "PublishAction" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="action",
         message="PublishAction",
     )
-    remove_from_folder_action = proto.Field(
+    remove_from_folder_action: "RemoveFromFolderAction" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="action",
         message="RemoveFromFolderAction",
     )
-    delete_document_action = proto.Field(
+    delete_document_action: "DeleteDocumentAction" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="action",
@@ -243,12 +245,12 @@ class AccessControlAction(proto.Message):
         REMOVE_POLICY_BINDING = 2
         REPLACE_POLICY_BINDING = 3
 
-    operation_type = proto.Field(
+    operation_type: OperationType = proto.Field(
         proto.ENUM,
         number=1,
         enum=OperationType,
     )
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=2,
         message=policy_pb2.Policy,
@@ -260,7 +262,7 @@ class DataValidationAction(proto.Message):
     operations.
 
     Attributes:
-        conditions (Mapping[str, str]):
+        conditions (MutableMapping[str, str]):
             Map of (K, V) -> (field, string condition to
             be evaluated on the field) E.g., ("age", "age >
             18  && age < 60") entry triggers validation of
@@ -268,7 +270,7 @@ class DataValidationAction(proto.Message):
             will be ANDed during validation.
     """
 
-    conditions = proto.MapField(
+    conditions: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
@@ -280,7 +282,7 @@ class DataUpdateAction(proto.Message):
     operations.
 
     Attributes:
-        entries (Mapping[str, str]):
+        entries (MutableMapping[str, str]):
             Map of (K, V) -> (valid name of the field,
             new value of the field) E.g., ("age", "60")
             entry triggers update of field age with a value
@@ -290,7 +292,7 @@ class DataUpdateAction(proto.Message):
             types.
     """
 
-    entries = proto.MapField(
+    entries: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
@@ -302,13 +304,13 @@ class AddToFolderAction(proto.Message):
     folder.
 
     Attributes:
-        folders (Sequence[str]):
+        folders (MutableSequence[str]):
             Names of the folder under which new document is to be added.
             Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
     """
 
-    folders = proto.RepeatedField(
+    folders: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -327,11 +329,11 @@ class RemoveFromFolderAction(proto.Message):
             projects/{project_number}/locations/{location}/documents/{document_id}.
     """
 
-    condition = proto.Field(
+    condition: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    folder = proto.Field(
+    folder: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -345,15 +347,15 @@ class PublishAction(proto.Message):
         topic_id (str):
             The topic id in the Pub/Sub service for which
             messages will be published to.
-        messages (Sequence[str]):
+        messages (MutableSequence[str]):
             Messages to be published.
     """
 
-    topic_id = proto.Field(
+    topic_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    messages = proto.RepeatedField(
+    messages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -369,7 +371,7 @@ class DeleteDocumentAction(proto.Message):
             'false' for 'soft delete'.
     """
 
-    enable_hard_delete = proto.Field(
+    enable_hard_delete: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -391,16 +393,16 @@ class RuleEngineOutput(proto.Message):
             and corresponding actions execution result.
     """
 
-    document_name = proto.Field(
+    document_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    rule_evaluator_output = proto.Field(
+    rule_evaluator_output: "RuleEvaluatorOutput" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RuleEvaluatorOutput",
     )
-    action_executor_output = proto.Field(
+    action_executor_output: "ActionExecutorOutput" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ActionExecutorOutput",
@@ -411,28 +413,28 @@ class RuleEvaluatorOutput(proto.Message):
     r"""Represents the output of the Rule Evaluator.
 
     Attributes:
-        triggered_rules (Sequence[google.cloud.contentwarehouse_v1.types.Rule]):
+        triggered_rules (MutableSequence[google.cloud.contentwarehouse_v1.types.Rule]):
             List of rules fetched from database for the
             given request trigger type.
-        matched_rules (Sequence[google.cloud.contentwarehouse_v1.types.Rule]):
+        matched_rules (MutableSequence[google.cloud.contentwarehouse_v1.types.Rule]):
             A subset of triggered rules that are
             evaluated true for a given request.
-        invalid_rules (Sequence[google.cloud.contentwarehouse_v1.types.InvalidRule]):
+        invalid_rules (MutableSequence[google.cloud.contentwarehouse_v1.types.InvalidRule]):
             A subset of triggered rules that failed the
             validation check(s) after parsing.
     """
 
-    triggered_rules = proto.RepeatedField(
+    triggered_rules: MutableSequence["Rule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Rule",
     )
-    matched_rules = proto.RepeatedField(
+    matched_rules: MutableSequence["Rule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Rule",
     )
-    invalid_rules = proto.RepeatedField(
+    invalid_rules: MutableSequence["InvalidRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="InvalidRule",
@@ -450,12 +452,12 @@ class InvalidRule(proto.Message):
             Validation error on a parsed expression.
     """
 
-    rule = proto.Field(
+    rule: "Rule" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Rule",
     )
-    error = proto.Field(
+    error: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -465,12 +467,12 @@ class ActionExecutorOutput(proto.Message):
     r"""Represents the output of the Action Executor.
 
     Attributes:
-        rule_actions_pairs (Sequence[google.cloud.contentwarehouse_v1.types.RuleActionsPair]):
+        rule_actions_pairs (MutableSequence[google.cloud.contentwarehouse_v1.types.RuleActionsPair]):
             List of rule and corresponding actions
             result.
     """
 
-    rule_actions_pairs = proto.RepeatedField(
+    rule_actions_pairs: MutableSequence["RuleActionsPair"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RuleActionsPair",
@@ -483,17 +485,17 @@ class RuleActionsPair(proto.Message):
     Attributes:
         rule (google.cloud.contentwarehouse_v1.types.Rule):
             Represents the rule.
-        action_outputs (Sequence[google.cloud.contentwarehouse_v1.types.ActionOutput]):
+        action_outputs (MutableSequence[google.cloud.contentwarehouse_v1.types.ActionOutput]):
             Outputs of executing the actions associated
             with the above rule.
     """
 
-    rule = proto.Field(
+    rule: "Rule" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Rule",
     )
-    action_outputs = proto.RepeatedField(
+    action_outputs: MutableSequence["ActionOutput"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ActionOutput",
@@ -520,16 +522,16 @@ class ActionOutput(proto.Message):
         ACTION_TIMED_OUT = 3
         ACTION_PENDING = 4
 
-    action_id = proto.Field(
+    action_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    action_state = proto.Field(
+    action_state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    output_message = proto.Field(
+    output_message: str = proto.Field(
         proto.STRING,
         number=3,
     )

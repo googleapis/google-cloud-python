@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import (
@@ -43,11 +45,11 @@ class CreateDocumentSchemaRequest(proto.Message):
             Required. The document schema to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document_schema = proto.Field(
+    document_schema: gcc_document_schema.DocumentSchema = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcc_document_schema.DocumentSchema,
@@ -63,7 +65,7 @@ class GetDocumentSchemaRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -81,11 +83,11 @@ class UpdateDocumentSchemaRequest(proto.Message):
             Required. The document schema to update with.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document_schema = proto.Field(
+    document_schema: gcc_document_schema.DocumentSchema = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcc_document_schema.DocumentSchema,
@@ -102,7 +104,7 @@ class DeleteDocumentSchemaRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -133,15 +135,15 @@ class ListDocumentSchemasRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -152,7 +154,7 @@ class ListDocumentSchemasResponse(proto.Message):
     DocumentSchemaService.ListDocumentSchemas.
 
     Attributes:
-        document_schemas (Sequence[google.cloud.contentwarehouse_v1.types.DocumentSchema]):
+        document_schemas (MutableSequence[google.cloud.contentwarehouse_v1.types.DocumentSchema]):
             The document schemas from the specified
             parent.
         next_page_token (str):
@@ -165,12 +167,14 @@ class ListDocumentSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    document_schemas = proto.RepeatedField(
+    document_schemas: MutableSequence[
+        gcc_document_schema.DocumentSchema
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcc_document_schema.DocumentSchema,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

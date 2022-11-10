@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -65,7 +76,7 @@ class DocumentSchemaServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentSchemaServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -357,7 +368,7 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentSchemaServiceTransport, None] = None,
+        transport: Optional[Union[str, DocumentSchemaServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -455,14 +466,14 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
 
     def create_document_schema(
         self,
-        request: Union[
-            document_schema_service.CreateDocumentSchemaRequest, dict
+        request: Optional[
+            Union[document_schema_service.CreateDocumentSchemaRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        document_schema: gcc_document_schema.DocumentSchema = None,
+        parent: Optional[str] = None,
+        document_schema: Optional[gcc_document_schema.DocumentSchema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcc_document_schema.DocumentSchema:
         r"""Creates a document schema.
@@ -571,14 +582,14 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
 
     def update_document_schema(
         self,
-        request: Union[
-            document_schema_service.UpdateDocumentSchemaRequest, dict
+        request: Optional[
+            Union[document_schema_service.UpdateDocumentSchemaRequest, dict]
         ] = None,
         *,
-        name: str = None,
-        document_schema: gcc_document_schema.DocumentSchema = None,
+        name: Optional[str] = None,
+        document_schema: Optional[gcc_document_schema.DocumentSchema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcc_document_schema.DocumentSchema:
         r"""Updates a Document Schema. Returns INVALID_ARGUMENT if the name
@@ -696,11 +707,13 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
 
     def get_document_schema(
         self,
-        request: Union[document_schema_service.GetDocumentSchemaRequest, dict] = None,
+        request: Optional[
+            Union[document_schema_service.GetDocumentSchemaRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_schema.DocumentSchema:
         r"""Gets a document schema. Returns NOT_FOUND if the document schema
@@ -799,13 +812,13 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
 
     def delete_document_schema(
         self,
-        request: Union[
-            document_schema_service.DeleteDocumentSchemaRequest, dict
+        request: Optional[
+            Union[document_schema_service.DeleteDocumentSchemaRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a document schema. Returns NOT_FOUND if the document
@@ -893,11 +906,13 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
 
     def list_document_schemas(
         self,
-        request: Union[document_schema_service.ListDocumentSchemasRequest, dict] = None,
+        request: Optional[
+            Union[document_schema_service.ListDocumentSchemasRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentSchemasPager:
         r"""Lists document schemas.

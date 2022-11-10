@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -57,7 +68,7 @@ class AddressValidationClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AddressValidationTransport]:
         """Returns an appropriate transport class.
 
@@ -310,7 +321,7 @@ class AddressValidationClient(metaclass=AddressValidationClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AddressValidationTransport, None] = None,
+        transport: Optional[Union[str, AddressValidationTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -408,10 +419,12 @@ class AddressValidationClient(metaclass=AddressValidationClientMeta):
 
     def validate_address(
         self,
-        request: Union[address_validation_service.ValidateAddressRequest, dict] = None,
+        request: Optional[
+            Union[address_validation_service.ValidateAddressRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> address_validation_service.ValidateAddressResponse:
         r"""Validates an address.
@@ -482,12 +495,12 @@ class AddressValidationClient(metaclass=AddressValidationClientMeta):
 
     def provide_validation_feedback(
         self,
-        request: Union[
-            address_validation_service.ProvideValidationFeedbackRequest, dict
+        request: Optional[
+            Union[address_validation_service.ProvideValidationFeedbackRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> address_validation_service.ProvideValidationFeedbackResponse:
         r"""Feedback about the outcome of the sequence of validation

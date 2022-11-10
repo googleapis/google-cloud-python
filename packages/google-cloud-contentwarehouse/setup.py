@@ -44,7 +44,7 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
     "google-cloud-documentai >= 1.2.1, < 3.0.0dev",
 ]
-url = "https://github.com/googleapis/python-contentwarehouse"
+url = "https://github.com/googleapis/google-cloud-python"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
