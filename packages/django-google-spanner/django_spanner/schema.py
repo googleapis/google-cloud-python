@@ -3,8 +3,9 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
-
+import os
 import uuid
+
 from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 from django_spanner._opentelemetry_tracing import trace_call
@@ -21,7 +22,13 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         "CREATE TABLE %(table)s (%(definition)s) PRIMARY KEY(%(primary_key)s)"
     )
     sql_delete_table = "DROP TABLE %(table)s"
-    sql_create_fk = None
+    if os.environ.get("RUNNING_SPANNER_BACKEND_TESTS") == "1":
+        sql_create_fk = None
+    else:
+        sql_create_fk = (
+            "ALTER TABLE %(table)s ADD CONSTRAINT %(name)s FOREIGN KEY (%(column)s) "
+            "REFERENCES %(to_table)s (%(to_column)s)"
+        )
     # Spanner doesn't support partial indexes. This string omits the
     # %(condition)s placeholder so that partial indexes are ignored.
     sql_create_index = (

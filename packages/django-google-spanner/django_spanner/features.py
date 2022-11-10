@@ -23,7 +23,10 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     has_case_insensitive_like = False
     # https://cloud.google.com/spanner/quotas#query_limits
     max_query_params = 900
-    supports_foreign_keys = False
+    if os.environ.get("RUNNING_SPANNER_BACKEND_TESTS") == "1":
+        supports_foreign_keys = False
+    else:
+        supports_foreign_keys = True
     can_create_inline_fk = False
     supports_ignore_conflicts = False
     supports_partial_indexes = False
@@ -1343,7 +1346,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             "many_to_one.tests.ManyToOneTests.test_add_after_prefetch",  # noqa
             "many_to_one.tests.ManyToOneTests.test_add_then_remove_after_prefetch",  # noqa
             "many_to_one.tests.ManyToOneTests.test_cached_foreign_key_with_to_field_not_cleared_by_save",  # noqa
-            "many_to_one.tests.ManyToOneTests.test_multiple_foreignkeys",  # noqa
             "many_to_one.tests.ManyToOneTests.test_reverse_foreign_key_instance_to_field_caching",  # noqa
             "many_to_one.tests.ManyToOneTests.test_set_after_prefetch",  # noqa
             "many_to_one_null.tests.ManyToOneNullTests.test_add_efficiency",  # noqa
@@ -1509,7 +1511,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             "ordering.tests.OrderingTests.test_stop_slicing",  # noqa
             "ordering.tests.OrderingTests.test_stop_start_slicing",  # noqa
             "queries.test_bulk_update.BulkUpdateNoteTests.test_batch_size",  # noqa
-            "queries.test_bulk_update.BulkUpdateNoteTests.test_foreign_keys_do_not_lookup",  # noqa
             "queries.test_bulk_update.BulkUpdateNoteTests.test_functions",  # noqa
             "queries.test_bulk_update.BulkUpdateNoteTests.test_set_field_to_null",  # noqa
             "queries.test_bulk_update.BulkUpdateNoteTests.test_set_mixed_fields_to_null",  # noqa
