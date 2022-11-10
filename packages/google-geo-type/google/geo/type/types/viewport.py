@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -63,12 +65,12 @@ class Viewport(proto.Message):
             Required. The high point of the viewport.
     """
 
-    low = proto.Field(
+    low: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=1,
         message=latlng_pb2.LatLng,
     )
-    high = proto.Field(
+    high: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=2,
         message=latlng_pb2.LatLng,
