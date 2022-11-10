@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -61,7 +72,7 @@ class DocumentLinkServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentLinkServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -363,7 +374,7 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentLinkServiceTransport, None] = None,
+        transport: Optional[Union[str, DocumentLinkServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -461,11 +472,13 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
 
     def list_linked_targets(
         self,
-        request: Union[document_link_service.ListLinkedTargetsRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.ListLinkedTargetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_link_service.ListLinkedTargetsResponse:
         r"""Return all target document-links from the document.
@@ -564,11 +577,13 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
 
     def list_linked_sources(
         self,
-        request: Union[document_link_service.ListLinkedSourcesRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.ListLinkedSourcesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLinkedSourcesPager:
         r"""Return all source document-links from the document.
@@ -680,12 +695,14 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
 
     def create_document_link(
         self,
-        request: Union[document_link_service.CreateDocumentLinkRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.CreateDocumentLinkRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        document_link: document_link_service.DocumentLink = None,
+        parent: Optional[str] = None,
+        document_link: Optional[document_link_service.DocumentLink] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_link_service.DocumentLink:
         r"""Create a link between a source document and a target
@@ -794,11 +811,13 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
 
     def delete_document_link(
         self,
-        request: Union[document_link_service.DeleteDocumentLinkRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.DeleteDocumentLinkRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Remove the link between the source and target

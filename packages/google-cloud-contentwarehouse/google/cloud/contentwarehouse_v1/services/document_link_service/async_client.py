@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -170,9 +180,9 @@ class DocumentLinkServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DocumentLinkServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the document link service client.
@@ -216,11 +226,13 @@ class DocumentLinkServiceAsyncClient:
 
     async def list_linked_targets(
         self,
-        request: Union[document_link_service.ListLinkedTargetsRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.ListLinkedTargetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_link_service.ListLinkedTargetsResponse:
         r"""Return all target document-links from the document.
@@ -252,7 +264,7 @@ class DocumentLinkServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.ListLinkedTargetsRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.ListLinkedTargetsRequest, dict]]):
                 The request object. Request message for
                 DocumentLinkService.ListLinkedTargets.
             parent (:class:`str`):
@@ -319,11 +331,13 @@ class DocumentLinkServiceAsyncClient:
 
     async def list_linked_sources(
         self,
-        request: Union[document_link_service.ListLinkedSourcesRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.ListLinkedSourcesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLinkedSourcesAsyncPager:
         r"""Return all source document-links from the document.
@@ -356,7 +370,7 @@ class DocumentLinkServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.ListLinkedSourcesRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.ListLinkedSourcesRequest, dict]]):
                 The request object. Response message for
                 DocumentLinkService.ListLinkedSources.
             parent (:class:`str`):
@@ -435,12 +449,14 @@ class DocumentLinkServiceAsyncClient:
 
     async def create_document_link(
         self,
-        request: Union[document_link_service.CreateDocumentLinkRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.CreateDocumentLinkRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        document_link: document_link_service.DocumentLink = None,
+        parent: Optional[str] = None,
+        document_link: Optional[document_link_service.DocumentLink] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_link_service.DocumentLink:
         r"""Create a link between a source document and a target
@@ -473,7 +489,7 @@ class DocumentLinkServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.CreateDocumentLinkRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.CreateDocumentLinkRequest, dict]]):
                 The request object. Request message for
                 DocumentLinkService.CreateDocumentLink.
             parent (:class:`str`):
@@ -549,11 +565,13 @@ class DocumentLinkServiceAsyncClient:
 
     async def delete_document_link(
         self,
-        request: Union[document_link_service.DeleteDocumentLinkRequest, dict] = None,
+        request: Optional[
+            Union[document_link_service.DeleteDocumentLinkRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Remove the link between the source and target
@@ -583,7 +601,7 @@ class DocumentLinkServiceAsyncClient:
                 await client.delete_document_link(request=request)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.DeleteDocumentLinkRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.DeleteDocumentLinkRequest, dict]]):
                 The request object. Request message for
                 DocumentLinkService.DeleteDocumentLink.
             name (:class:`str`):

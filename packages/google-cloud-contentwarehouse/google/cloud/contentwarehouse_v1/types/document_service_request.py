@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
@@ -44,16 +46,18 @@ class CloudAIDocumentOption(proto.Message):
         enable_entities_conversions (bool):
             Whether to convert all the entities to
             properties.
-        customized_entities_properties_conversions (Mapping[str, str]):
+        customized_entities_properties_conversions (MutableMapping[str, str]):
             If set, only selected entities will be
             converted to properties.
     """
 
-    enable_entities_conversions = proto.Field(
+    enable_entities_conversions: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    customized_entities_properties_conversions = proto.MapField(
+    customized_entities_properties_conversions: MutableMapping[
+        str, str
+    ] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -87,31 +91,31 @@ class CreateDocumentRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document = proto.Field(
+    document: gcc_document.Document = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcc_document.Document,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.RequestMetadata,
     )
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=4,
         message=policy_pb2.Policy,
     )
-    cloud_ai_document_option = proto.Field(
+    cloud_ai_document_option: "CloudAIDocumentOption" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="CloudAIDocumentOption",
     )
-    create_mask = proto.Field(
+    create_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=6,
         message=field_mask_pb2.FieldMask,
@@ -133,11 +137,11 @@ class GetDocumentRequest(proto.Message):
             service.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.RequestMetadata,
@@ -166,26 +170,26 @@ class UpdateDocumentRequest(proto.Message):
             Options for the update operation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document = proto.Field(
+    document: gcc_document.Document = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcc_document.Document,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.RequestMetadata,
     )
-    cloud_ai_document_option = proto.Field(
+    cloud_ai_document_option: "CloudAIDocumentOption" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="CloudAIDocumentOption",
     )
-    update_options = proto.Field(
+    update_options: common.UpdateOptions = proto.Field(
         proto.MESSAGE,
         number=6,
         message=common.UpdateOptions,
@@ -207,11 +211,11 @@ class DeleteDocumentRequest(proto.Message):
             service.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.RequestMetadata,
@@ -274,7 +278,7 @@ class SearchDocumentsRequest(proto.Message):
             -  ``"upload_date"``: By upload date ascending.
             -  ``"update_date desc"``: By last updated date descending.
             -  ``"update_date"``: By last updated date ascending.
-        histogram_queries (Sequence[google.cloud.contentwarehouse_v1.types.HistogramQuery]):
+        histogram_queries (MutableSequence[google.cloud.contentwarehouse_v1.types.HistogramQuery]):
             An expression specifying a histogram request against
             matching documents. Expression syntax is an aggregation
             function call with histogram facets and other options.
@@ -288,8 +292,8 @@ class SearchDocumentsRequest(proto.Message):
 
             -  Histogram facet (aka filterable properties): Facet names
                with format <schema id>.<facet>. Facets will have the
-               format of: `[a-zA-Z][a-zA-Z0-9_:/-.]`. If the facet is a
-               child facet, then the parent hierarchy needs to be
+               format of: ``[a-zA-Z][a-zA-Z0-9_:/-.]``. If the facet is
+               a child facet, then the parent hierarchy needs to be
                specified separated by dots in the prefix after the
                schema id. Thus, the format for a multi- level facet is:
                <schema id>.<parent facet name>. <child facet name>.
@@ -324,46 +328,46 @@ class SearchDocumentsRequest(proto.Message):
             [DocumentQuery].[is_nl_query][] to true.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.RequestMetadata,
     )
-    document_query = proto.Field(
+    document_query: filters.DocumentQuery = proto.Field(
         proto.MESSAGE,
         number=4,
         message=filters.DocumentQuery,
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    histogram_queries = proto.RepeatedField(
+    histogram_queries: MutableSequence[histogram.HistogramQuery] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=histogram.HistogramQuery,
     )
-    require_total_size = proto.Field(
+    require_total_size: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    qa_size_limit = proto.Field(
+    qa_size_limit: int = proto.Field(
         proto.INT32,
         number=11,
     )
@@ -387,16 +391,16 @@ class FetchAclRequest(proto.Message):
             will be ignored when project_owner=true.
     """
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.RequestMetadata,
     )
-    project_owner = proto.Field(
+    project_owner: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -424,21 +428,21 @@ class SetAclRequest(proto.Message):
             will be ignored when project_owner=true.
     """
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=2,
         message=policy_pb2.Policy,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.RequestMetadata,
     )
-    project_owner = proto.Field(
+    project_owner: bool = proto.Field(
         proto.BOOL,
         number=4,
     )

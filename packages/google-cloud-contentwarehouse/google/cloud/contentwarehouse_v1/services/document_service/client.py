@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -34,6 +45,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.cloud.documentai.v1 import document_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -68,7 +80,7 @@ class DocumentServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -382,7 +394,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentServiceTransport, None] = None,
+        transport: Optional[Union[str, DocumentServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -480,12 +492,14 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def create_document(
         self,
-        request: Union[document_service_request.CreateDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_service_request.CreateDocumentRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        document: gcc_document.Document = None,
+        parent: Optional[str] = None,
+        document: Optional[gcc_document.Document] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_service.CreateDocumentResponse:
         r"""Creates a document.
@@ -596,11 +610,13 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def get_document(
         self,
-        request: Union[document_service_request.GetDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_service_request.GetDocumentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcc_document.Document:
         r"""Gets a document. Returns NOT_FOUND if the document does not
@@ -701,12 +717,14 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def update_document(
         self,
-        request: Union[document_service_request.UpdateDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_service_request.UpdateDocumentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        document: gcc_document.Document = None,
+        name: Optional[str] = None,
+        document: Optional[gcc_document.Document] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_service.UpdateDocumentResponse:
         r"""Updates a document. Returns INVALID_ARGUMENT if the name of the
@@ -820,11 +838,13 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def delete_document(
         self,
-        request: Union[document_service_request.DeleteDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_service_request.DeleteDocumentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a document. Returns NOT_FOUND if the document does not
@@ -913,11 +933,13 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def search_documents(
         self,
-        request: Union[document_service_request.SearchDocumentsRequest, dict] = None,
+        request: Optional[
+            Union[document_service_request.SearchDocumentsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchDocumentsPager:
         r"""Searches for documents using provided
@@ -1032,11 +1054,11 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def fetch_acl(
         self,
-        request: Union[document_service_request.FetchAclRequest, dict] = None,
+        request: Optional[Union[document_service_request.FetchAclRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_service.FetchAclResponse:
         r"""Gets the access control policy for a resource. Returns NOT_FOUND
@@ -1138,12 +1160,12 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def set_acl(
         self,
-        request: Union[document_service_request.SetAclRequest, dict] = None,
+        request: Optional[Union[document_service_request.SetAclRequest, dict]] = None,
         *,
-        resource: str = None,
-        policy: policy_pb2.Policy = None,
+        resource: Optional[str] = None,
+        policy: Optional[policy_pb2.Policy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_service.SetAclResponse:
         r"""Sets the access control policy for a resource.

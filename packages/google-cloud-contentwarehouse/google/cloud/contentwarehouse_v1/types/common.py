@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -66,7 +68,7 @@ class RequestMetadata(proto.Message):
             groups information.
     """
 
-    user_info = proto.Field(
+    user_info: "UserInfo" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="UserInfo",
@@ -83,7 +85,7 @@ class ResponseMetadata(proto.Message):
             id is logged for tracking purpose.
     """
 
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -99,17 +101,17 @@ class UserInfo(proto.Message):
             Allowed characters include numbers 0 to 9, uppercase and
             lowercase letters, and restricted special symbols (:, @, +,
             -, \_, ~) The format is "user:xxxx@example.com";
-        group_ids (Sequence[str]):
+        group_ids (MutableSequence[str]):
             The unique group identifications which the
             user is belong to. The format is
             "group:yyyy@example.com";
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    group_ids = proto.RepeatedField(
+    group_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -129,17 +131,17 @@ class UpdateOptions(proto.Message):
             Options for merging.
     """
 
-    update_type = proto.Field(
+    update_type: "UpdateType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="UpdateType",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    merge_fields_options = proto.Field(
+    merge_fields_options: "MergeFieldsOptions" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="MergeFieldsOptions",
@@ -176,12 +178,12 @@ class MergeFieldsOptions(proto.Message):
             This field is a member of `oneof`_ ``_replace_repeated_fields``.
     """
 
-    replace_message_fields = proto.Field(
+    replace_message_fields: bool = proto.Field(
         proto.BOOL,
         number=1,
         optional=True,
     )
-    replace_repeated_fields = proto.Field(
+    replace_repeated_fields: bool = proto.Field(
         proto.BOOL,
         number=2,
         optional=True,

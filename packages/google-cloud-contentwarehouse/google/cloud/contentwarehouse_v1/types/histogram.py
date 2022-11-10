@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -51,15 +53,15 @@ class HistogramQuery(proto.Message):
             performance.
     """
 
-    histogram_query = proto.Field(
+    histogram_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    require_precise_result_size = proto.Field(
+    require_precise_result_size: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    filters = proto.Field(
+    filters: "HistogramQueryPropertyNameFilter" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="HistogramQueryPropertyNameFilter",
@@ -70,7 +72,7 @@ class HistogramQueryPropertyNameFilter(proto.Message):
     r"""
 
     Attributes:
-        document_schemas (Sequence[str]):
+        document_schemas (MutableSequence[str]):
             This filter specifies the exact document schema(s)
             [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name]
             to run histogram query against. It is optional. It will
@@ -79,7 +81,7 @@ class HistogramQueryPropertyNameFilter(proto.Message):
 
             At most 10 document schema names are allowed. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
-        property_names (Sequence[str]):
+        property_names (MutableSequence[str]):
             It is optional. It will perform histogram for all the
             property names if it is not set. The properties need to be
             defined with the is_filterable flag set to true and the name
@@ -101,15 +103,15 @@ class HistogramQueryPropertyNameFilter(proto.Message):
         HISTOGRAM_YAXIS_DOCUMENT = 0
         HISTOGRAM_YAXIS_PROPERTY = 1
 
-    document_schemas = proto.RepeatedField(
+    document_schemas: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    property_names = proto.RepeatedField(
+    property_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    y_axis = proto.Field(
+    y_axis: HistogramYAxis = proto.Field(
         proto.ENUM,
         number=3,
         enum=HistogramYAxis,
@@ -124,7 +126,7 @@ class HistogramQueryResult(proto.Message):
     Attributes:
         histogram_query (str):
             Requested histogram expression.
-        histogram (Mapping[str, int]):
+        histogram (MutableMapping[str, int]):
             A map from the values of the facet associated with distinct
             values to the number of matching entries with corresponding
             value.
@@ -134,11 +136,11 @@ class HistogramQueryResult(proto.Message):
             -  (for string histogram) string values stored in the field.
     """
 
-    histogram_query = proto.Field(
+    histogram_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    histogram = proto.MapField(
+    histogram: MutableMapping[str, int] = proto.MapField(
         proto.STRING,
         proto.INT64,
         number=2,

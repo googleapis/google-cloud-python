@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import google.cloud.documentai_v1  # type: ignore
+from typing import MutableMapping, MutableSequence
+
+from google.cloud.documentai.v1 import document_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
@@ -93,7 +95,7 @@ class Document(proto.Message):
             Other document format, such as PPTX, XLXS
 
             This field is a member of `oneof`_ ``structured_content``.
-        cloud_ai_document (google.cloud.documentai_v1.types.Document):
+        cloud_ai_document (google.cloud.documentai.v1.document_pb2.Document):
             Document AI format to save the structured
             content, including OCR.
 
@@ -108,7 +110,7 @@ class Document(proto.Message):
             Raw document content.
 
             This field is a member of `oneof`_ ``raw_document``.
-        properties (Sequence[google.cloud.contentwarehouse_v1.types.Property]):
+        properties (MutableSequence[google.cloud.contentwarehouse_v1.types.Property]):
             List of values that are user supplied
             metadata.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -135,88 +137,88 @@ class Document(proto.Message):
             The user who lastly updates the document.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reference_id = proto.Field(
+    reference_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    display_uri = proto.Field(
+    display_uri: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    document_schema_name = proto.Field(
+    document_schema_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    plain_text = proto.Field(
+    plain_text: str = proto.Field(
         proto.STRING,
         number=15,
         oneof="structured_content",
     )
-    cloud_ai_document = proto.Field(
+    cloud_ai_document: document_pb2.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="structured_content",
-        message=google.cloud.documentai_v1.types.Document,
+        message=document_pb2.Document,
     )
-    structured_content_uri = proto.Field(
+    structured_content_uri: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    raw_document_path = proto.Field(
+    raw_document_path: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="raw_document",
     )
-    inline_raw_document = proto.Field(
+    inline_raw_document: bytes = proto.Field(
         proto.BYTES,
         number=6,
         oneof="raw_document",
     )
-    properties = proto.RepeatedField(
+    properties: MutableSequence["Property"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="Property",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    raw_document_file_type = proto.Field(
+    raw_document_file_type: "RawDocumentFileType" = proto.Field(
         proto.ENUM,
         number=10,
         enum="RawDocumentFileType",
     )
-    async_enabled = proto.Field(
+    async_enabled: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    text_extraction_disabled = proto.Field(
+    text_extraction_disabled: bool = proto.Field(
         proto.BOOL,
         number=19,
     )
-    creator = proto.Field(
+    creator: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    updater = proto.Field(
+    updater: str = proto.Field(
         proto.STRING,
         number=14,
     )
@@ -250,33 +252,33 @@ class DocumentReference(proto.Message):
             deleted.
     """
 
-    document_name = proto.Field(
+    document_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    snippet = proto.Field(
+    snippet: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    document_is_folder = proto.Field(
+    document_is_folder: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
@@ -335,53 +337,53 @@ class Property(proto.Message):
             This field is a member of `oneof`_ ``values``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    integer_values = proto.Field(
+    integer_values: "IntegerArray" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="values",
         message="IntegerArray",
     )
-    float_values = proto.Field(
+    float_values: "FloatArray" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="values",
         message="FloatArray",
     )
-    text_values = proto.Field(
+    text_values: "TextArray" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="values",
         message="TextArray",
     )
-    enum_values = proto.Field(
+    enum_values: "EnumArray" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="values",
         message="EnumArray",
     )
-    property_values = proto.Field(
+    property_values: "PropertyArray" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="values",
         message="PropertyArray",
     )
-    date_time_values = proto.Field(
+    date_time_values: "DateTimeArray" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="values",
         message="DateTimeArray",
     )
-    map_property = proto.Field(
+    map_property: "MapProperty" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="values",
         message="MapProperty",
     )
-    timestamp_values = proto.Field(
+    timestamp_values: "TimestampArray" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="values",
@@ -393,11 +395,11 @@ class IntegerArray(proto.Message):
     r"""Integer values.
 
     Attributes:
-        values (Sequence[int]):
+        values (MutableSequence[int]):
             List of integer values.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=1,
     )
@@ -407,11 +409,11 @@ class FloatArray(proto.Message):
     r"""Float values.
 
     Attributes:
-        values (Sequence[float]):
+        values (MutableSequence[float]):
             List of float values.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[float] = proto.RepeatedField(
         proto.FLOAT,
         number=1,
     )
@@ -421,11 +423,11 @@ class TextArray(proto.Message):
     r"""String/text values.
 
     Attributes:
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             List of text values.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -435,11 +437,11 @@ class EnumArray(proto.Message):
     r"""Enum values.
 
     Attributes:
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             List of enum values.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -449,13 +451,13 @@ class DateTimeArray(proto.Message):
     r"""DateTime values.
 
     Attributes:
-        values (Sequence[google.type.datetime_pb2.DateTime]):
+        values (MutableSequence[google.type.datetime_pb2.DateTime]):
             List of datetime values.
             Both OffsetDateTime and ZonedDateTime are
             supported.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[datetime_pb2.DateTime] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datetime_pb2.DateTime,
@@ -466,11 +468,11 @@ class TimestampArray(proto.Message):
     r"""Timestamp values.
 
     Attributes:
-        values (Sequence[google.cloud.contentwarehouse_v1.types.TimestampValue]):
+        values (MutableSequence[google.cloud.contentwarehouse_v1.types.TimestampValue]):
             List of timestamp values.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence["TimestampValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TimestampValue",
@@ -500,13 +502,13 @@ class TimestampValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    timestamp_value = proto.Field(
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="value",
         message=timestamp_pb2.Timestamp,
     )
-    text_value = proto.Field(
+    text_value: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="value",
@@ -517,11 +519,11 @@ class PropertyArray(proto.Message):
     r"""Property values.
 
     Attributes:
-        properties (Sequence[google.cloud.contentwarehouse_v1.types.Property]):
+        properties (MutableSequence[google.cloud.contentwarehouse_v1.types.Property]):
             List of property values.
     """
 
-    properties = proto.RepeatedField(
+    properties: MutableSequence["Property"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Property",
@@ -534,11 +536,11 @@ class MapProperty(proto.Message):
     of field names which map to dynamically typed values.
 
     Attributes:
-        fields (Mapping[str, google.cloud.contentwarehouse_v1.types.Value]):
+        fields (MutableMapping[str, google.cloud.contentwarehouse_v1.types.Value]):
             Unordered map of dynamically typed values.
     """
 
-    fields = proto.MapField(
+    fields: MutableMapping[str, "Value"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -590,40 +592,40 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``kind``.
     """
 
-    float_value = proto.Field(
+    float_value: float = proto.Field(
         proto.FLOAT,
         number=1,
         oneof="kind",
     )
-    int_value = proto.Field(
+    int_value: int = proto.Field(
         proto.INT32,
         number=2,
         oneof="kind",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="kind",
     )
-    enum_value = proto.Field(
+    enum_value: "EnumValue" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="kind",
         message="EnumValue",
     )
-    datetime_value = proto.Field(
+    datetime_value: datetime_pb2.DateTime = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="kind",
         message=datetime_pb2.DateTime,
     )
-    timestamp_value = proto.Field(
+    timestamp_value: "TimestampValue" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="kind",
         message="TimestampValue",
     )
-    boolean_value = proto.Field(
+    boolean_value: bool = proto.Field(
         proto.BOOL,
         number=7,
         oneof="kind",
@@ -640,7 +642,7 @@ class EnumValue(proto.Message):
             using EnumTypeOptions.
     """
 
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=1,
     )
