@@ -95,6 +95,34 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
             def post_list_entity_reconciliation_jobs(response):
                 logging.log(f"Received response: {response}")
 
+            def pre_lookup(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_lookup(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_lookup_public_kg(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_lookup_public_kg(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_search(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_search_public_kg(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_public_kg(response):
+                logging.log(f"Received response: {response}")
+
         transport = EnterpriseKnowledgeGraphServiceRestTransport(interceptor=MyCustomEnterpriseKnowledgeGraphServiceInterceptor())
         client = EnterpriseKnowledgeGraphServiceClient(transport=transport)
 
@@ -187,6 +215,90 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         self, response: service.ListEntityReconciliationJobsResponse
     ) -> service.ListEntityReconciliationJobsResponse:
         """Post-rpc interceptor for list_entity_reconciliation_jobs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EnterpriseKnowledgeGraphService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_lookup(
+        self, request: service.LookupRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.LookupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for lookup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EnterpriseKnowledgeGraphService server.
+        """
+        return request, metadata
+
+    def post_lookup(self, response: service.LookupResponse) -> service.LookupResponse:
+        """Post-rpc interceptor for lookup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EnterpriseKnowledgeGraphService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_lookup_public_kg(
+        self,
+        request: service.LookupPublicKgRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.LookupPublicKgRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for lookup_public_kg
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EnterpriseKnowledgeGraphService server.
+        """
+        return request, metadata
+
+    def post_lookup_public_kg(
+        self, response: service.LookupPublicKgResponse
+    ) -> service.LookupPublicKgResponse:
+        """Post-rpc interceptor for lookup_public_kg
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EnterpriseKnowledgeGraphService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_search(
+        self, request: service.SearchRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.SearchRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for search
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EnterpriseKnowledgeGraphService server.
+        """
+        return request, metadata
+
+    def post_search(self, response: service.SearchResponse) -> service.SearchResponse:
+        """Post-rpc interceptor for search
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EnterpriseKnowledgeGraphService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_search_public_kg(
+        self,
+        request: service.SearchPublicKgRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.SearchPublicKgRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for search_public_kg
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EnterpriseKnowledgeGraphService server.
+        """
+        return request, metadata
+
+    def post_search_public_kg(
+        self, response: service.SearchPublicKgResponse
+    ) -> service.SearchPublicKgResponse:
+        """Post-rpc interceptor for search_public_kg
 
         Override in a subclass to manipulate the response
         after it is returned by the EnterpriseKnowledgeGraphService server but before
@@ -743,6 +855,370 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             resp = self._interceptor.post_list_entity_reconciliation_jobs(resp)
             return resp
 
+    class _Lookup(EnterpriseKnowledgeGraphServiceRestStub):
+        def __hash__(self):
+            return hash("Lookup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "ids": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.LookupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.LookupResponse:
+            r"""Call the lookup method over HTTP.
+
+            Args:
+                request (~.service.LookupRequest):
+                    The request object. Request message for
+                [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.LookupResponse:
+                    Response message for
+                [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/cloudKnowledgeGraphEntities:Lookup",
+                },
+            ]
+            request, metadata = self._interceptor.pre_lookup(request, metadata)
+            pb_request = service.LookupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.LookupResponse()
+            pb_resp = service.LookupResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_lookup(resp)
+            return resp
+
+    class _LookupPublicKg(EnterpriseKnowledgeGraphServiceRestStub):
+        def __hash__(self):
+            return hash("LookupPublicKg")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "ids": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.LookupPublicKgRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.LookupPublicKgResponse:
+            r"""Call the lookup public kg method over HTTP.
+
+            Args:
+                request (~.service.LookupPublicKgRequest):
+                    The request object. Request message for
+                [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.LookupPublicKgResponse:
+                    Response message for
+                [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/publicKnowledgeGraphEntities:Lookup",
+                },
+            ]
+            request, metadata = self._interceptor.pre_lookup_public_kg(
+                request, metadata
+            )
+            pb_request = service.LookupPublicKgRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.LookupPublicKgResponse()
+            pb_resp = service.LookupPublicKgResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_lookup_public_kg(resp)
+            return resp
+
+    class _Search(EnterpriseKnowledgeGraphServiceRestStub):
+        def __hash__(self):
+            return hash("Search")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "query": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.SearchRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.SearchResponse:
+            r"""Call the search method over HTTP.
+
+            Args:
+                request (~.service.SearchRequest):
+                    The request object. Request message for
+                [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.SearchResponse:
+                    Response message for
+                [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/cloudKnowledgeGraphEntities:Search",
+                },
+            ]
+            request, metadata = self._interceptor.pre_search(request, metadata)
+            pb_request = service.SearchRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.SearchResponse()
+            pb_resp = service.SearchResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_search(resp)
+            return resp
+
+    class _SearchPublicKg(EnterpriseKnowledgeGraphServiceRestStub):
+        def __hash__(self):
+            return hash("SearchPublicKg")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "query": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.SearchPublicKgRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.SearchPublicKgResponse:
+            r"""Call the search public kg method over HTTP.
+
+            Args:
+                request (~.service.SearchPublicKgRequest):
+                    The request object. Request message for
+                [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.SearchPublicKgResponse:
+                    Response message for
+                [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/publicKnowledgeGraphEntities:Search",
+                },
+            ]
+            request, metadata = self._interceptor.pre_search_public_kg(
+                request, metadata
+            )
+            pb_request = service.SearchPublicKgRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.SearchPublicKgResponse()
+            pb_resp = service.SearchPublicKgResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_search_public_kg(resp)
+            return resp
+
     @property
     def cancel_entity_reconciliation_job(
         self,
@@ -789,6 +1265,34 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntityReconciliationJobs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def lookup(self) -> Callable[[service.LookupRequest], service.LookupResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Lookup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def lookup_public_kg(
+        self,
+    ) -> Callable[[service.LookupPublicKgRequest], service.LookupPublicKgResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._LookupPublicKg(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def search(self) -> Callable[[service.SearchRequest], service.SearchResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Search(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def search_public_kg(
+        self,
+    ) -> Callable[[service.SearchPublicKgRequest], service.SearchPublicKgResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchPublicKg(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

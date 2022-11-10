@@ -44,6 +44,10 @@ class enterpriseknowledgegraphCallTransformer(cst.CSTTransformer):
         'delete_entity_reconciliation_job': ('name', ),
         'get_entity_reconciliation_job': ('name', ),
         'list_entity_reconciliation_jobs': ('parent', 'filter', 'page_size', 'page_token', ),
+        'lookup': ('parent', 'ids', 'languages', ),
+        'lookup_public_kg': ('parent', 'ids', 'languages', ),
+        'search': ('parent', 'query', 'languages', 'types', 'limit', ),
+        'search_public_kg': ('parent', 'query', 'languages', 'types', 'limit', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -397,6 +397,114 @@ class EnterpriseKnowledgeGraphServiceGrpcAsyncIOTransport(
             )
         return self._stubs["delete_entity_reconciliation_job"]
 
+    @property
+    def lookup(
+        self,
+    ) -> Callable[[service.LookupRequest], Awaitable[service.LookupResponse]]:
+        r"""Return a callable for the lookup method over gRPC.
+
+        Finds the Cloud KG entities with CKG ID(s).
+
+        Returns:
+            Callable[[~.LookupRequest],
+                    Awaitable[~.LookupResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lookup" not in self._stubs:
+            self._stubs["lookup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Lookup",
+                request_serializer=service.LookupRequest.serialize,
+                response_deserializer=service.LookupResponse.deserialize,
+            )
+        return self._stubs["lookup"]
+
+    @property
+    def search(
+        self,
+    ) -> Callable[[service.SearchRequest], Awaitable[service.SearchResponse]]:
+        r"""Return a callable for the search method over gRPC.
+
+        Searches the Cloud KG entities with entity name.
+
+        Returns:
+            Callable[[~.SearchRequest],
+                    Awaitable[~.SearchResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search" not in self._stubs:
+            self._stubs["search"] = self.grpc_channel.unary_unary(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Search",
+                request_serializer=service.SearchRequest.serialize,
+                response_deserializer=service.SearchResponse.deserialize,
+            )
+        return self._stubs["search"]
+
+    @property
+    def lookup_public_kg(
+        self,
+    ) -> Callable[
+        [service.LookupPublicKgRequest], Awaitable[service.LookupPublicKgResponse]
+    ]:
+        r"""Return a callable for the lookup public kg method over gRPC.
+
+        Finds the public KG entities with public KG ID(s).
+
+        Returns:
+            Callable[[~.LookupPublicKgRequest],
+                    Awaitable[~.LookupPublicKgResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lookup_public_kg" not in self._stubs:
+            self._stubs["lookup_public_kg"] = self.grpc_channel.unary_unary(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/LookupPublicKg",
+                request_serializer=service.LookupPublicKgRequest.serialize,
+                response_deserializer=service.LookupPublicKgResponse.deserialize,
+            )
+        return self._stubs["lookup_public_kg"]
+
+    @property
+    def search_public_kg(
+        self,
+    ) -> Callable[
+        [service.SearchPublicKgRequest], Awaitable[service.SearchPublicKgResponse]
+    ]:
+        r"""Return a callable for the search public kg method over gRPC.
+
+        Searches the public KG entities with entity name.
+
+        Returns:
+            Callable[[~.SearchPublicKgRequest],
+                    Awaitable[~.SearchPublicKgResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_public_kg" not in self._stubs:
+            self._stubs["search_public_kg"] = self.grpc_channel.unary_unary(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/SearchPublicKg",
+                request_serializer=service.SearchPublicKgRequest.serialize,
+                response_deserializer=service.SearchPublicKgResponse.deserialize,
+            )
+        return self._stubs["search_public_kg"]
+
     def close(self):
         return self.grpc_channel.close()
 
