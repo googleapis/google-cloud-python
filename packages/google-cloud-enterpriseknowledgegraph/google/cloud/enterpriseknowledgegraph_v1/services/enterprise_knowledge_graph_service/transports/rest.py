@@ -336,10 +336,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         self,
         *,
         host: str = "enterpriseknowledgegraph.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -433,7 +433,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.CancelEntityReconciliationJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the cancel entity
@@ -519,7 +519,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.CreateEntityReconciliationJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.EntityReconciliationJob:
             r"""Call the create entity
@@ -617,7 +617,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.DeleteEntityReconciliationJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete entity
@@ -694,7 +694,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.GetEntityReconciliationJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.EntityReconciliationJob:
             r"""Call the get entity reconciliation
@@ -783,7 +783,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.ListEntityReconciliationJobsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.ListEntityReconciliationJobsResponse:
             r"""Call the list entity
@@ -876,7 +876,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.LookupRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.LookupResponse:
             r"""Call the lookup method over HTTP.
@@ -966,7 +966,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.LookupPublicKgRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.LookupPublicKgResponse:
             r"""Call the lookup public kg method over HTTP.
@@ -1058,7 +1058,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.SearchRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.SearchResponse:
             r"""Call the search method over HTTP.
@@ -1148,7 +1148,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             request: service.SearchPublicKgRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> service.SearchPublicKgResponse:
             r"""Call the search public kg method over HTTP.

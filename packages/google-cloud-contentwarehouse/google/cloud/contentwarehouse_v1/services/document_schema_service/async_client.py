@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -175,9 +185,9 @@ class DocumentSchemaServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DocumentSchemaServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the document schema service client.
@@ -221,14 +231,14 @@ class DocumentSchemaServiceAsyncClient:
 
     async def create_document_schema(
         self,
-        request: Union[
-            document_schema_service.CreateDocumentSchemaRequest, dict
+        request: Optional[
+            Union[document_schema_service.CreateDocumentSchemaRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        document_schema: gcc_document_schema.DocumentSchema = None,
+        parent: Optional[str] = None,
+        document_schema: Optional[gcc_document_schema.DocumentSchema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcc_document_schema.DocumentSchema:
         r"""Creates a document schema.
@@ -264,7 +274,7 @@ class DocumentSchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.CreateDocumentSchemaRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.CreateDocumentSchemaRequest, dict]]):
                 The request object. Request message for
                 DocumentSchemaService.CreateDocumentSchema.
             parent (:class:`str`):
@@ -337,14 +347,14 @@ class DocumentSchemaServiceAsyncClient:
 
     async def update_document_schema(
         self,
-        request: Union[
-            document_schema_service.UpdateDocumentSchemaRequest, dict
+        request: Optional[
+            Union[document_schema_service.UpdateDocumentSchemaRequest, dict]
         ] = None,
         *,
-        name: str = None,
-        document_schema: gcc_document_schema.DocumentSchema = None,
+        name: Optional[str] = None,
+        document_schema: Optional[gcc_document_schema.DocumentSchema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcc_document_schema.DocumentSchema:
         r"""Updates a Document Schema. Returns INVALID_ARGUMENT if the name
@@ -386,7 +396,7 @@ class DocumentSchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.UpdateDocumentSchemaRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.UpdateDocumentSchemaRequest, dict]]):
                 The request object. Request message for
                 DocumentSchemaService.UpdateDocumentSchema.
             name (:class:`str`):
@@ -462,11 +472,13 @@ class DocumentSchemaServiceAsyncClient:
 
     async def get_document_schema(
         self,
-        request: Union[document_schema_service.GetDocumentSchemaRequest, dict] = None,
+        request: Optional[
+            Union[document_schema_service.GetDocumentSchemaRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_schema.DocumentSchema:
         r"""Gets a document schema. Returns NOT_FOUND if the document schema
@@ -499,7 +511,7 @@ class DocumentSchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.GetDocumentSchemaRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.GetDocumentSchemaRequest, dict]]):
                 The request object. Request message for
                 DocumentSchemaService.GetDocumentSchema.
             name (:class:`str`):
@@ -574,13 +586,13 @@ class DocumentSchemaServiceAsyncClient:
 
     async def delete_document_schema(
         self,
-        request: Union[
-            document_schema_service.DeleteDocumentSchemaRequest, dict
+        request: Optional[
+            Union[document_schema_service.DeleteDocumentSchemaRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a document schema. Returns NOT_FOUND if the document
@@ -611,7 +623,7 @@ class DocumentSchemaServiceAsyncClient:
                 await client.delete_document_schema(request=request)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.DeleteDocumentSchemaRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.DeleteDocumentSchemaRequest, dict]]):
                 The request object. Request message for
                 DocumentSchemaService.DeleteDocumentSchema.
             name (:class:`str`):
@@ -668,11 +680,13 @@ class DocumentSchemaServiceAsyncClient:
 
     async def list_document_schemas(
         self,
-        request: Union[document_schema_service.ListDocumentSchemasRequest, dict] = None,
+        request: Optional[
+            Union[document_schema_service.ListDocumentSchemasRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentSchemasAsyncPager:
         r"""Lists document schemas.
@@ -705,7 +719,7 @@ class DocumentSchemaServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contentwarehouse_v1.types.ListDocumentSchemasRequest, dict]):
+            request (Optional[Union[google.cloud.contentwarehouse_v1.types.ListDocumentSchemasRequest, dict]]):
                 The request object. Request message for
                 DocumentSchemaService.ListDocumentSchemas.
             parent (:class:`str`):

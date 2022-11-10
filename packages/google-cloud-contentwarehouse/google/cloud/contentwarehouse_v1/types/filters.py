@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -67,10 +69,10 @@ class DocumentQuery(proto.Message):
 
             Sample Query:
             ``(LOWER(driving_license)="class \"a\"" OR EMPTY(driving_license)) AND driving_years > 10``
-        time_filters (Sequence[google.cloud.contentwarehouse_v1.types.TimeFilter]):
+        time_filters (MutableSequence[google.cloud.contentwarehouse_v1.types.TimeFilter]):
             Documents created/updated within a range
             specified by this filter are searched against.
-        document_schema_names (Sequence[str]):
+        document_schema_names (MutableSequence[str]):
             This filter specifies the exact document schema
             [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name]
             of the documents to search against.
@@ -81,7 +83,7 @@ class DocumentQuery(proto.Message):
             associated with any of the specified schemas.
 
             At most 20 document schema names are allowed.
-        property_filter (Sequence[google.cloud.contentwarehouse_v1.types.PropertyFilter]):
+        property_filter (MutableSequence[google.cloud.contentwarehouse_v1.types.PropertyFilter]):
             This filter specifies a structured syntax to match against
             the
             [PropertyDefinition.is_filterable][google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable]
@@ -101,7 +103,7 @@ class DocumentQuery(proto.Message):
             Search all the documents under this specified folder.
             Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
-        query_context (Sequence[str]):
+        query_context (MutableSequence[str]):
             For custom synonyms.
             Customers provide the synonyms based on context.
             One customer can provide multiple set of
@@ -112,7 +114,7 @@ class DocumentQuery(proto.Message):
             context is provided.
             It is not supported for CMEK compliant
             deployment.
-        document_creator_filter (Sequence[str]):
+        document_creator_filter (MutableSequence[str]):
             The exact creator(s) of the documents to
             search against.
             If a value isn't specified, documents within the
@@ -122,46 +124,46 @@ class DocumentQuery(proto.Message):
             any of the specified creators.
     """
 
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    is_nl_query = proto.Field(
+    is_nl_query: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    custom_property_filter = proto.Field(
+    custom_property_filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    time_filters = proto.RepeatedField(
+    time_filters: MutableSequence["TimeFilter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="TimeFilter",
     )
-    document_schema_names = proto.RepeatedField(
+    document_schema_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    property_filter = proto.RepeatedField(
+    property_filter: MutableSequence["PropertyFilter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="PropertyFilter",
     )
-    file_type_filter = proto.Field(
+    file_type_filter: "FileTypeFilter" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="FileTypeFilter",
     )
-    folder_name_filter = proto.Field(
+    folder_name_filter: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    query_context = proto.RepeatedField(
+    query_context: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
-    document_creator_filter = proto.RepeatedField(
+    document_creator_filter: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
@@ -185,12 +187,12 @@ class TimeFilter(proto.Message):
         CREATE_TIME = 1
         UPDATE_TIME = 2
 
-    time_range = proto.Field(
+    time_range: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,
         number=1,
         message=interval_pb2.Interval,
     )
-    time_field = proto.Field(
+    time_field: TimeField = proto.Field(
         proto.ENUM,
         number=2,
         enum=TimeField,
@@ -254,11 +256,11 @@ class PropertyFilter(proto.Message):
             -  Boolean expressions: AND and OR.
     """
 
-    document_schema_name = proto.Field(
+    document_schema_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    condition = proto.Field(
+    condition: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -279,7 +281,7 @@ class FileTypeFilter(proto.Message):
         FOLDER = 2
         DOCUMENT = 3
 
-    file_type = proto.Field(
+    file_type: FileType = proto.Field(
         proto.ENUM,
         number=1,
         enum=FileType,

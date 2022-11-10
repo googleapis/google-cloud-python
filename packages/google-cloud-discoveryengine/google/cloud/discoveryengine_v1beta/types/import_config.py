@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
@@ -41,7 +43,7 @@ class GcsSource(proto.Message):
     format.
 
     Attributes:
-        input_uris (Sequence[str]):
+        input_uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs to input files. URI can
             be up to 2000 characters long. URIs can match the full
             object path (for example,
@@ -64,11 +66,11 @@ class GcsSource(proto.Message):
                [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
     """
 
-    input_uris = proto.RepeatedField(
+    input_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    data_schema = proto.Field(
+    data_schema: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -118,29 +120,29 @@ class BigQuerySource(proto.Message):
                [document.id][].
     """
 
-    partition_date = proto.Field(
+    partition_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="partition",
         message=date_pb2.Date,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    gcs_staging_dir = proto.Field(
+    gcs_staging_dir: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    data_schema = proto.Field(
+    data_schema: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -161,7 +163,7 @@ class ImportErrorConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_prefix = proto.Field(
+    gcs_prefix: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="destination",
@@ -207,40 +209,40 @@ class ImportUserEventsRequest(proto.Message):
         method.
 
         Attributes:
-            user_events (Sequence[google.cloud.discoveryengine_v1beta.types.UserEvent]):
+            user_events (MutableSequence[google.cloud.discoveryengine_v1beta.types.UserEvent]):
                 Required. A list of user events to import.
                 Recommended max of 10k items.
         """
 
-        user_events = proto.RepeatedField(
+        user_events: MutableSequence[user_event.UserEvent] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=user_event.UserEvent,
         )
 
-    inline_source = proto.Field(
+    inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message=InlineSource,
     )
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
         message="GcsSource",
     )
-    bigquery_source = proto.Field(
+    bigquery_source: "BigQuerySource" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="source",
         message="BigQuerySource",
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_config = proto.Field(
+    error_config: "ImportErrorConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ImportErrorConfig",
@@ -254,7 +256,7 @@ class ImportUserEventsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
@@ -269,21 +271,21 @@ class ImportUserEventsResponse(proto.Message):
             Branch.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    error_config = proto.Field(
+    error_config: "ImportErrorConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportErrorConfig",
     )
-    joined_events_count = proto.Field(
+    joined_events_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    unjoined_events_count = proto.Field(
+    unjoined_events_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -308,21 +310,21 @@ class ImportUserEventsMetadata(proto.Message):
             while processing.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    success_count = proto.Field(
+    success_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    failure_count = proto.Field(
+    failure_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -347,21 +349,21 @@ class ImportDocumentsMetadata(proto.Message):
             while processing.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    success_count = proto.Field(
+    success_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    failure_count = proto.Field(
+    failure_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -418,47 +420,47 @@ class ImportDocumentsRequest(proto.Message):
         method.
 
         Attributes:
-            documents (Sequence[google.cloud.discoveryengine_v1beta.types.Document]):
+            documents (MutableSequence[google.cloud.discoveryengine_v1beta.types.Document]):
                 Required. A list of documents to update/create. Each
                 document must have a valid
                 [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
                 Recommended max of 100 items.
         """
 
-        documents = proto.RepeatedField(
+        documents: MutableSequence[document.Document] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=document.Document,
         )
 
-    inline_source = proto.Field(
+    inline_source: InlineSource = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message=InlineSource,
     )
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
         message="GcsSource",
     )
-    bigquery_source = proto.Field(
+    bigquery_source: "BigQuerySource" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="source",
         message="BigQuerySource",
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_config = proto.Field(
+    error_config: "ImportErrorConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ImportErrorConfig",
     )
-    reconciliation_mode = proto.Field(
+    reconciliation_mode: ReconciliationMode = proto.Field(
         proto.ENUM,
         number=6,
         enum=ReconciliationMode,
@@ -473,7 +475,7 @@ class ImportDocumentsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
@@ -481,12 +483,12 @@ class ImportDocumentsResponse(proto.Message):
             errors in the request if set.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    error_config = proto.Field(
+    error_config: "ImportErrorConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportErrorConfig",

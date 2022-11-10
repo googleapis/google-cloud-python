@@ -319,10 +319,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
         self,
         *,
         host: str = "discoveryengine.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -488,7 +488,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: document_service.CreateDocumentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> gcd_document.Document:
             r"""Call the create document method over HTTP.
@@ -587,7 +587,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: document_service.DeleteDocumentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete document method over HTTP.
@@ -662,7 +662,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: document_service.GetDocumentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> document.Document:
             r"""Call the get document method over HTTP.
@@ -752,7 +752,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: import_config.ImportDocumentsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import documents method over HTTP.
@@ -848,7 +848,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: document_service.ListDocumentsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> document_service.ListDocumentsResponse:
             r"""Call the list documents method over HTTP.
@@ -938,7 +938,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: document_service.UpdateDocumentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> document.Document:
             r"""Call the update document method over HTTP.
@@ -1078,7 +1078,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: operations_pb2.GetOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
 
@@ -1161,7 +1161,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             request: operations_pb2.ListOperationsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
 

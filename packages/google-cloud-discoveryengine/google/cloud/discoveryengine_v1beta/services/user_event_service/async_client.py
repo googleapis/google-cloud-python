@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -174,9 +184,9 @@ class UserEventServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, UserEventServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the user event service client.
@@ -220,10 +230,10 @@ class UserEventServiceAsyncClient:
 
     async def write_user_event(
         self,
-        request: Union[user_event_service.WriteUserEventRequest, dict] = None,
+        request: Optional[Union[user_event_service.WriteUserEventRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> user_event.UserEvent:
         r"""Writes a single user event.
@@ -255,7 +265,7 @@ class UserEventServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.WriteUserEventRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.WriteUserEventRequest, dict]]):
                 The request object. Request message for WriteUserEvent
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -302,10 +312,12 @@ class UserEventServiceAsyncClient:
 
     async def collect_user_event(
         self,
-        request: Union[user_event_service.CollectUserEventRequest, dict] = None,
+        request: Optional[
+            Union[user_event_service.CollectUserEventRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""Writes a single user event from the browser. This
@@ -343,7 +355,7 @@ class UserEventServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.CollectUserEventRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.CollectUserEventRequest, dict]]):
                 The request object. Request message for CollectUserEvent
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -432,10 +444,10 @@ class UserEventServiceAsyncClient:
 
     async def import_user_events(
         self,
-        request: Union[import_config.ImportUserEventsRequest, dict] = None,
+        request: Optional[Union[import_config.ImportUserEventsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Bulk import of User events. Request processing might
@@ -482,7 +494,7 @@ class UserEventServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.ImportUserEventsRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ImportUserEventsRequest, dict]]):
                 The request object. Request message for the
                 ImportUserEvents request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -549,10 +561,10 @@ class UserEventServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -603,10 +615,10 @@ class UserEventServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

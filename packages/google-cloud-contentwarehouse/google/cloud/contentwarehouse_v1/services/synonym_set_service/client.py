@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class SynonymSetServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SynonymSetServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -355,7 +366,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SynonymSetServiceTransport, None] = None,
+        transport: Optional[Union[str, SynonymSetServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -453,12 +464,14 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
 
     def create_synonym_set(
         self,
-        request: Union[synonymset_service_request.CreateSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.CreateSynonymSetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        synonym_set: synonymset.SynonymSet = None,
+        parent: Optional[str] = None,
+        synonym_set: Optional[synonymset.SynonymSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> synonymset.SynonymSet:
         r"""Creates a SynonymSet for a single context. Throws an
@@ -573,11 +586,13 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
 
     def get_synonym_set(
         self,
-        request: Union[synonymset_service_request.GetSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.GetSynonymSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> synonymset.SynonymSet:
         r"""Gets a SynonymSet for a particular context. Throws a NOT_FOUND
@@ -683,12 +698,14 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
 
     def update_synonym_set(
         self,
-        request: Union[synonymset_service_request.UpdateSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.UpdateSynonymSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        synonym_set: synonymset.SynonymSet = None,
+        name: Optional[str] = None,
+        synonym_set: Optional[synonymset.SynonymSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> synonymset.SynonymSet:
         r"""Remove the existing SynonymSet for the context and replaces it
@@ -805,11 +822,13 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
 
     def delete_synonym_set(
         self,
-        request: Union[synonymset_service_request.DeleteSynonymSetRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.DeleteSynonymSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a SynonymSet for a given context. Throws a NOT_FOUND
@@ -896,11 +915,13 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
 
     def list_synonym_sets(
         self,
-        request: Union[synonymset_service_request.ListSynonymSetsRequest, dict] = None,
+        request: Optional[
+            Union[synonymset_service_request.ListSynonymSetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSynonymSetsPager:
         r"""Returns all SynonymSets (for all contexts) for the

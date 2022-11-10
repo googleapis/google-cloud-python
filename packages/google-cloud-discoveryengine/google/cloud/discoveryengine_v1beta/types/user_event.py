@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -166,7 +168,7 @@ class UserEvent(proto.Message):
             The value must be a UTF-8 encoded string with a length limit
             of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
-        documents (Sequence[google.cloud.discoveryengine_v1beta.types.DocumentInfo]):
+        documents (MutableSequence[google.cloud.discoveryengine_v1beta.types.DocumentInfo]):
             List of Documents associated with this user event.
 
             This field is optional except for the following event types:
@@ -201,17 +203,17 @@ class UserEvent(proto.Message):
         transaction_info (google.cloud.discoveryengine_v1beta.types.TransactionInfo):
             The transaction metadata (if any) associated
             with this user event.
-        tag_ids (Sequence[str]):
+        tag_ids (MutableSequence[str]):
             A list of identifiers for the independent
             experiment groups this user event belongs to.
             This is used to distinguish between user events
             associated with different experiment setups on
             the customer end.
-        promotion_ids (Sequence[str]):
+        promotion_ids (MutableSequence[str]):
             The promotion IDs if this is an event
             associated with promotions. Currently, this
             field is restricted to at most one ID.
-        attributes (Mapping[str, google.cloud.discoveryengine_v1beta.types.CustomAttribute]):
+        attributes (MutableMapping[str, google.cloud.discoveryengine_v1beta.types.CustomAttribute]):
             Extra user event features to include in the recommendation
             model. These attributes must NOT contain data that needs to
             be parsed or processed further, e.g. JSON or other
@@ -244,85 +246,85 @@ class UserEvent(proto.Message):
             Media-specific info.
     """
 
-    event_type = proto.Field(
+    event_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_pseudo_id = proto.Field(
+    user_pseudo_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    user_info = proto.Field(
+    user_info: common.UserInfo = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.UserInfo,
     )
-    direct_user_request = proto.Field(
+    direct_user_request: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    session_id = proto.Field(
+    session_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    page_info = proto.Field(
+    page_info: "PageInfo" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="PageInfo",
     )
-    attribution_token = proto.Field(
+    attribution_token: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    documents = proto.RepeatedField(
+    documents: MutableSequence["DocumentInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="DocumentInfo",
     )
-    panel = proto.Field(
+    panel: "PanelInfo" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="PanelInfo",
     )
-    search_info = proto.Field(
+    search_info: "SearchInfo" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="SearchInfo",
     )
-    completion_info = proto.Field(
+    completion_info: "CompletionInfo" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="CompletionInfo",
     )
-    transaction_info = proto.Field(
+    transaction_info: "TransactionInfo" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="TransactionInfo",
     )
-    tag_ids = proto.RepeatedField(
+    tag_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=15,
     )
-    promotion_ids = proto.RepeatedField(
+    promotion_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=16,
     )
-    attributes = proto.MapField(
+    attributes: MutableMapping[str, common.CustomAttribute] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=17,
         message=common.CustomAttribute,
     )
-    media_info = proto.Field(
+    media_info: "MediaInfo" = proto.Field(
         proto.MESSAGE,
         number=18,
         message="MediaInfo",
@@ -377,19 +379,19 @@ class PageInfo(proto.Message):
             field to be empty.
     """
 
-    pageview_id = proto.Field(
+    pageview_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_category = proto.Field(
+    page_category: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    referrer_uri = proto.Field(
+    referrer_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -447,15 +449,15 @@ class SearchInfo(proto.Message):
             This field is a member of `oneof`_ ``_offset``.
     """
 
-    search_query = proto.Field(
+    search_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=3,
         optional=True,
@@ -476,11 +478,11 @@ class CompletionInfo(proto.Message):
             position, starting from 0.
     """
 
-    selected_suggestion = proto.Field(
+    selected_suggestion: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    selected_position = proto.Field(
+    selected_position: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -550,30 +552,30 @@ class TransactionInfo(proto.Message):
             This field is a member of `oneof`_ ``_discount_value``.
     """
 
-    value = proto.Field(
+    value: float = proto.Field(
         proto.FLOAT,
         number=1,
         optional=True,
     )
-    currency = proto.Field(
+    currency: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    transaction_id = proto.Field(
+    transaction_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    tax = proto.Field(
+    tax: float = proto.Field(
         proto.FLOAT,
         number=4,
         optional=True,
     )
-    cost = proto.Field(
+    cost: float = proto.Field(
         proto.FLOAT,
         number=5,
         optional=True,
     )
-    discount_value = proto.Field(
+    discount_value: float = proto.Field(
         proto.FLOAT,
         number=6,
         optional=True,
@@ -613,28 +615,28 @@ class DocumentInfo(proto.Message):
             -  ``purchase``
 
             This field is a member of `oneof`_ ``_quantity``.
-        promotion_ids (Sequence[str]):
+        promotion_ids (MutableSequence[str]):
             The promotion IDs associated with this
             Document. Currently, this field is restricted to
             at most one ID.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="document_descriptor",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="document_descriptor",
     )
-    quantity = proto.Field(
+    quantity: int = proto.Field(
         proto.INT32,
         number=3,
         optional=True,
     )
-    promotion_ids = proto.RepeatedField(
+    promotion_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -664,20 +666,20 @@ class PanelInfo(proto.Message):
             This field is a member of `oneof`_ ``_total_panels``.
     """
 
-    panel_id = proto.Field(
+    panel_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    panel_position = proto.Field(
+    panel_position: int = proto.Field(
         proto.INT32,
         number=4,
         optional=True,
     )
-    total_panels = proto.Field(
+    total_panels: int = proto.Field(
         proto.INT32,
         number=5,
         optional=True,
@@ -706,12 +708,12 @@ class MediaInfo(proto.Message):
             This field is a member of `oneof`_ ``_media_progress_percentage``.
     """
 
-    media_progress_duration = proto.Field(
+    media_progress_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    media_progress_percentage = proto.Field(
+    media_progress_percentage: float = proto.Field(
         proto.FLOAT,
         number=2,
         optional=True,

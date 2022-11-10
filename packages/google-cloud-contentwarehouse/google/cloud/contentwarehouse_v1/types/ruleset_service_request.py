@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import rule_engine
@@ -41,11 +43,11 @@ class CreateRuleSetRequest(proto.Message):
             Required. The rule set to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rule_set = proto.Field(
+    rule_set: rule_engine.RuleSet = proto.Field(
         proto.MESSAGE,
         number=2,
         message=rule_engine.RuleSet,
@@ -61,7 +63,7 @@ class GetRuleSetRequest(proto.Message):
             projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -78,11 +80,11 @@ class UpdateRuleSetRequest(proto.Message):
             Required. The rule set to update.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rule_set = proto.Field(
+    rule_set: rule_engine.RuleSet = proto.Field(
         proto.MESSAGE,
         number=2,
         message=rule_engine.RuleSet,
@@ -98,7 +100,7 @@ class DeleteRuleSetRequest(proto.Message):
             projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -127,15 +129,15 @@ class ListRuleSetsRequest(proto.Message):
             token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -145,7 +147,7 @@ class ListRuleSetsResponse(proto.Message):
     r"""Response message for RuleSetService.ListRuleSets.
 
     Attributes:
-        rule_sets (Sequence[google.cloud.contentwarehouse_v1.types.RuleSet]):
+        rule_sets (MutableSequence[google.cloud.contentwarehouse_v1.types.RuleSet]):
             The rule sets from the specified parent.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -157,12 +159,12 @@ class ListRuleSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rule_sets = proto.RepeatedField(
+    rule_sets: MutableSequence[rule_engine.RuleSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=rule_engine.RuleSet,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
