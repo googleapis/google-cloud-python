@@ -9,5 +9,5 @@
 google-api-core==1.33.2
 proto-plus==1.22.0
 protobuf==3.19.5
-grpc-google-iam-v1=0.12.4
-google-cloud-documentai=1.2.1
+grpc-google-iam-v1==0.12.4
+google-cloud-documentai==1.2.1

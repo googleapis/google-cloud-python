@@ -95,7 +95,7 @@ class Document(proto.Message):
             Other document format, such as PPTX, XLXS
 
             This field is a member of `oneof`_ ``structured_content``.
-        cloud_ai_document (google.cloud.documentai.v1.document_pb2.Document):
+        cloud_ai_document (google.cloud.documentai_v1.types.Document):
             Document AI format to save the structured
             content, including OCR.
 
@@ -166,11 +166,11 @@ class Document(proto.Message):
         number=15,
         oneof="structured_content",
     )
-    cloud_ai_document: document_pb2.Document = proto.Field(
+    cloud_ai_document: google.cloud.documentai_v1.types.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="structured_content",
-        message=document_pb2.Document,
+        message=google.cloud.documentai_v1.types.Document,
     )
     structured_content_uri: str = proto.Field(
         proto.STRING,
