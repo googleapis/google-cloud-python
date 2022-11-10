@@ -34,6 +34,13 @@
             "extra-files": [
                 "google/maps/addressvalidation/gapic_version.py"
             ]
+        },
+        "packages/google-cloud-gsuiteaddons": {
+            "component": "google-cloud-gsuiteaddons",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/gsuiteaddons/gapic_version.py"
+            ]
         }
     }
 }
