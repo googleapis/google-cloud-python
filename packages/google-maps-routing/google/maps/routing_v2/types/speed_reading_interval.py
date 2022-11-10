@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -51,17 +53,17 @@ class SpeedReadingInterval(proto.Message):
         SLOW = 2
         TRAFFIC_JAM = 3
 
-    start_polyline_point_index = proto.Field(
+    start_polyline_point_index: int = proto.Field(
         proto.INT32,
         number=1,
         optional=True,
     )
-    end_polyline_point_index = proto.Field(
+    end_polyline_point_index: int = proto.Field(
         proto.INT32,
         number=2,
         optional=True,
     )
-    speed = proto.Field(
+    speed: Speed = proto.Field(
         proto.ENUM,
         number=3,
         enum=Speed,

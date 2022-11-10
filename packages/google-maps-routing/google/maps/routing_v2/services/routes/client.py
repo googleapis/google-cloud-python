@@ -16,7 +16,19 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Iterable, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +70,7 @@ class RoutesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RoutesTransport]:
         """Returns an appropriate transport class.
 
@@ -311,7 +323,7 @@ class RoutesClient(metaclass=RoutesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RoutesTransport, None] = None,
+        transport: Optional[Union[str, RoutesTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -409,10 +421,10 @@ class RoutesClient(metaclass=RoutesClientMeta):
 
     def compute_routes(
         self,
-        request: Union[routes_service.ComputeRoutesRequest, dict] = None,
+        request: Optional[Union[routes_service.ComputeRoutesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> routes_service.ComputeRoutesResponse:
         r"""Returns the primary route along with optional alternate routes,
@@ -516,10 +528,10 @@ class RoutesClient(metaclass=RoutesClientMeta):
 
     def compute_route_matrix(
         self,
-        request: Union[routes_service.ComputeRouteMatrixRequest, dict] = None,
+        request: Optional[Union[routes_service.ComputeRouteMatrixRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[routes_service.RouteMatrixElement]:
         r"""Takes in a list of origins and destinations and returns a stream

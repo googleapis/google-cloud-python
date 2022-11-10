@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import toll_passes as gmr_toll_passes
@@ -53,7 +55,7 @@ class RouteModifiers(proto.Message):
             travel mode.
         vehicle_info (google.maps.routing_v2.types.VehicleInfo):
             Specifies the vehicle information.
-        toll_passes (Sequence[google.maps.routing_v2.types.TollPass]):
+        toll_passes (MutableSequence[google.maps.routing_v2.types.TollPass]):
             Encapsulates information about toll passes. If toll passes
             are provided, the API tries to return the pass price. If
             toll passes are not provided, the API treats the toll pass
@@ -61,28 +63,28 @@ class RouteModifiers(proto.Message):
             to the DRIVE and TWO_WHEELER travel modes.
     """
 
-    avoid_tolls = proto.Field(
+    avoid_tolls: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    avoid_highways = proto.Field(
+    avoid_highways: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    avoid_ferries = proto.Field(
+    avoid_ferries: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    avoid_indoor = proto.Field(
+    avoid_indoor: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    vehicle_info = proto.Field(
+    vehicle_info: gmr_vehicle_info.VehicleInfo = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gmr_vehicle_info.VehicleInfo,
     )
-    toll_passes = proto.RepeatedField(
+    toll_passes: MutableSequence[gmr_toll_passes.TollPass] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=gmr_toll_passes.TollPass,

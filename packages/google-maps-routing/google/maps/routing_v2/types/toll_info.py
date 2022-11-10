@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import money_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -28,7 +30,7 @@ class TollInfo(proto.Message):
     r"""Encapsulates toll information on a ``Route`` or on a ``RouteLeg``.
 
     Attributes:
-        estimated_price (Sequence[google.type.money_pb2.Money]):
+        estimated_price (MutableSequence[google.type.money_pb2.Money]):
             The monetary amount of tolls for the
             corresponding Route or RouteLeg. This list
             contains a money amount for each currency that
@@ -40,7 +42,7 @@ class TollInfo(proto.Message):
             currencies.
     """
 
-    estimated_price = proto.RepeatedField(
+    estimated_price: MutableSequence[money_pb2.Money] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=money_pb2.Money,

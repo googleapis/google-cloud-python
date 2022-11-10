@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import google.geo.type.types  # type: ignore
+from typing import MutableMapping, MutableSequence
+
+from google.geo.type import viewport_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,10 +46,10 @@ class Route(proto.Message):
     waypoints.
 
     Attributes:
-        route_labels (Sequence[google.maps.routing_v2.types.RouteLabel]):
+        route_labels (MutableSequence[google.maps.routing_v2.types.RouteLabel]):
             Labels for the ``Route`` that are useful to identify
             specific properties of the route to compare against others.
-        legs (Sequence[google.maps.routing_v2.types.RouteLeg]):
+        legs (MutableSequence[google.maps.routing_v2.types.RouteLeg]):
             A collection of legs (path segments between waypoints) that
             make-up the route. Each leg corresponds to the trip between
             two non-\ ``via`` Waypoints. For example, a route with no
@@ -75,10 +77,10 @@ class Route(proto.Message):
             combined polyline of all ``legs``.
         description (str):
             A description of the route.
-        warnings (Sequence[str]):
+        warnings (MutableSequence[str]):
             An array of warnings to show when displaying
             the route.
-        viewport (google.geo.type.types.Viewport):
+        viewport (google.geo.type.viewport_pb2.Viewport):
             The viewport bounding box of the polyline.
         travel_advisory (google.maps.routing_v2.types.RouteTravelAdvisory):
             Additional information about the route.
@@ -92,54 +94,54 @@ class Route(proto.Message):
             an opaque blob.
     """
 
-    route_labels = proto.RepeatedField(
+    route_labels: MutableSequence[route_label.RouteLabel] = proto.RepeatedField(
         proto.ENUM,
         number=13,
         enum=route_label.RouteLabel,
     )
-    legs = proto.RepeatedField(
+    legs: MutableSequence["RouteLeg"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RouteLeg",
     )
-    distance_meters = proto.Field(
+    distance_meters: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    static_duration = proto.Field(
+    static_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    polyline = proto.Field(
+    polyline: gmr_polyline.Polyline = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gmr_polyline.Polyline,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    warnings = proto.RepeatedField(
+    warnings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    viewport = proto.Field(
+    viewport: viewport_pb2.Viewport = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=google.geo.type.types.Viewport,
+        message=viewport_pb2.Viewport,
     )
-    travel_advisory = proto.Field(
+    travel_advisory: "RouteTravelAdvisory" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="RouteTravelAdvisory",
     )
-    route_token = proto.Field(
+    route_token: str = proto.Field(
         proto.STRING,
         number=12,
     )
@@ -158,7 +160,7 @@ class RouteTravelAdvisory(proto.Message):
             is not populated, we expect that road contains tolls but we
             do not know an estimated price. If this field is not set,
             then we expect there is no toll on the Route.
-        speed_reading_intervals (Sequence[google.maps.routing_v2.types.SpeedReadingInterval]):
+        speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
             Speed reading intervals detailing traffic density.
             Applicable in case of ``TRAFFIC_AWARE`` and
             ``TRAFFIC_AWARE_OPTIMAL`` routing preferences. The intervals
@@ -177,17 +179,19 @@ class RouteTravelAdvisory(proto.Message):
             microliters.
     """
 
-    toll_info = proto.Field(
+    toll_info: gmr_toll_info.TollInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gmr_toll_info.TollInfo,
     )
-    speed_reading_intervals = proto.RepeatedField(
+    speed_reading_intervals: MutableSequence[
+        speed_reading_interval.SpeedReadingInterval
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=speed_reading_interval.SpeedReadingInterval,
     )
-    fuel_consumption_microliters = proto.Field(
+    fuel_consumption_microliters: int = proto.Field(
         proto.INT64,
         number=5,
     )
@@ -207,7 +211,7 @@ class RouteLegTravelAdvisory(proto.Message):
             road contains tolls but we do not know an estimated price.
             If this field does not exist, then there is no toll on the
             RouteLeg.
-        speed_reading_intervals (Sequence[google.maps.routing_v2.types.SpeedReadingInterval]):
+        speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
             Speed reading intervals detailing traffic density.
             Applicable in case of ``TRAFFIC_AWARE`` and
             ``TRAFFIC_AWARE_OPTIMAL`` routing preferences. The intervals
@@ -223,12 +227,14 @@ class RouteLegTravelAdvisory(proto.Message):
                 speed_reading_intervals: [A,C), [C,D), [D,G).
     """
 
-    toll_info = proto.Field(
+    toll_info: gmr_toll_info.TollInfo = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gmr_toll_info.TollInfo,
     )
-    speed_reading_intervals = proto.RepeatedField(
+    speed_reading_intervals: MutableSequence[
+        speed_reading_interval.SpeedReadingInterval
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=speed_reading_interval.SpeedReadingInterval,
@@ -241,7 +247,7 @@ class RouteLegStepTravelAdvisory(proto.Message):
     a leg step.
 
     Attributes:
-        speed_reading_intervals (Sequence[google.maps.routing_v2.types.SpeedReadingInterval]):
+        speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
             Speed reading intervals detailing traffic density.
             Applicable in case of ``TRAFFIC_AWARE`` and
             ``TRAFFIC_AWARE_OPTIMAL`` routing preferences. The intervals
@@ -257,7 +263,9 @@ class RouteLegStepTravelAdvisory(proto.Message):
                 speed_reading_intervals: [A,C), [C,D), [D,G).
     """
 
-    speed_reading_intervals = proto.RepeatedField(
+    speed_reading_intervals: MutableSequence[
+        speed_reading_interval.SpeedReadingInterval
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=speed_reading_interval.SpeedReadingInterval,
@@ -294,7 +302,7 @@ class RouteLeg(proto.Message):
             the provided ``destination``. For example, when the provided
             ``destination`` is not near a road, this is a point on the
             road.
-        steps (Sequence[google.maps.routing_v2.types.RouteLegStep]):
+        steps (MutableSequence[google.maps.routing_v2.types.RouteLegStep]):
             An array of steps denoting segments within
             this leg. Each step represents one navigation
             instruction.
@@ -305,41 +313,41 @@ class RouteLeg(proto.Message):
             route leg.
     """
 
-    distance_meters = proto.Field(
+    distance_meters: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    static_duration = proto.Field(
+    static_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    polyline = proto.Field(
+    polyline: gmr_polyline.Polyline = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gmr_polyline.Polyline,
     )
-    start_location = proto.Field(
+    start_location: location.Location = proto.Field(
         proto.MESSAGE,
         number=5,
         message=location.Location,
     )
-    end_location = proto.Field(
+    end_location: location.Location = proto.Field(
         proto.MESSAGE,
         number=6,
         message=location.Location,
     )
-    steps = proto.RepeatedField(
+    steps: MutableSequence["RouteLegStep"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="RouteLegStep",
     )
-    travel_advisory = proto.Field(
+    travel_advisory: "RouteLegTravelAdvisory" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="RouteLegTravelAdvisory",
@@ -374,36 +382,38 @@ class RouteLegStep(proto.Message):
             possible traffic zone restriction on a leg step.
     """
 
-    distance_meters = proto.Field(
+    distance_meters: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    static_duration = proto.Field(
+    static_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    polyline = proto.Field(
+    polyline: gmr_polyline.Polyline = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gmr_polyline.Polyline,
     )
-    start_location = proto.Field(
+    start_location: location.Location = proto.Field(
         proto.MESSAGE,
         number=4,
         message=location.Location,
     )
-    end_location = proto.Field(
+    end_location: location.Location = proto.Field(
         proto.MESSAGE,
         number=5,
         message=location.Location,
     )
-    navigation_instruction = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=gmr_navigation_instruction.NavigationInstruction,
+    navigation_instruction: gmr_navigation_instruction.NavigationInstruction = (
+        proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=gmr_navigation_instruction.NavigationInstruction,
+        )
     )
-    travel_advisory = proto.Field(
+    travel_advisory: "RouteLegStepTravelAdvisory" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="RouteLegStepTravelAdvisory",
