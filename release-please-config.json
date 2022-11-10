@@ -34,6 +34,13 @@
             "extra-files": [
                 "google/maps/addressvalidation/gapic_version.py"
             ]
+        },
+        "packages/google-maps-routing": {
+            "component": "google-maps-routing",
+            "release-type": "python",
+            "extra-files": [
+                "google/maps/routing/gapic_version.py"
+            ]
         }
     }
 }

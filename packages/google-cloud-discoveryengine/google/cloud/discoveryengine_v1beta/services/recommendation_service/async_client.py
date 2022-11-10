@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -167,9 +177,9 @@ class RecommendationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, RecommendationServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the recommendation service client.
@@ -213,10 +223,10 @@ class RecommendationServiceAsyncClient:
 
     async def recommend(
         self,
-        request: Union[recommendation_service.RecommendRequest, dict] = None,
+        request: Optional[Union[recommendation_service.RecommendRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation_service.RecommendResponse:
         r"""Makes a recommendation, which requires a contextual
@@ -254,7 +264,7 @@ class RecommendationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.RecommendRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.RecommendRequest, dict]]):
                 The request object. Request message for Recommend
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -301,10 +311,10 @@ class RecommendationServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -355,10 +365,10 @@ class RecommendationServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,39 +50,39 @@ class UspsAddress(proto.Message):
             4-digit postal code extension e.g. 5023.
     """
 
-    first_address_line = proto.Field(
+    first_address_line: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    firm = proto.Field(
+    firm: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    second_address_line = proto.Field(
+    second_address_line: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    urbanization = proto.Field(
+    urbanization: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    city_state_zip_address_line = proto.Field(
+    city_state_zip_address_line: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    city = proto.Field(
+    city: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    zip_code = proto.Field(
+    zip_code: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    zip_code_extension = proto.Field(
+    zip_code_extension: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -156,8 +158,8 @@ class UspsData(proto.Message):
             -  ``Y``: The address is not active
             -  ``N``: The address is active
         carrier_route (str):
-            The carrier route code. A four character code--a one letter
-            prefix and a three digit route designator.
+            The carrier route code. A four character code consisting of
+            a one letter prefix and a three digit route designator.
 
             Prefixes:
 
@@ -228,123 +230,123 @@ class UspsData(proto.Message):
             because of the detection of artificially created
             addresses.
 
-            The USPS data fields may not be populated when
+            The USPS data fields might not be populated when
             this error is present.
         cass_processed (bool):
             Indicator that the request has been CASS
             processed.
     """
 
-    standardized_address = proto.Field(
+    standardized_address: "UspsAddress" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="UspsAddress",
     )
-    delivery_point_code = proto.Field(
+    delivery_point_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    delivery_point_check_digit = proto.Field(
+    delivery_point_check_digit: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    dpv_confirmation = proto.Field(
+    dpv_confirmation: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    dpv_footnote = proto.Field(
+    dpv_footnote: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    dpv_cmra = proto.Field(
+    dpv_cmra: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    dpv_vacant = proto.Field(
+    dpv_vacant: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    dpv_no_stat = proto.Field(
+    dpv_no_stat: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    carrier_route = proto.Field(
+    carrier_route: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    carrier_route_indicator = proto.Field(
+    carrier_route_indicator: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    ews_no_match = proto.Field(
+    ews_no_match: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    post_office_city = proto.Field(
+    post_office_city: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    post_office_state = proto.Field(
+    post_office_state: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    abbreviated_city = proto.Field(
+    abbreviated_city: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    fips_county_code = proto.Field(
+    fips_county_code: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    county = proto.Field(
+    county: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    elot_number = proto.Field(
+    elot_number: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    elot_flag = proto.Field(
+    elot_flag: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    lacs_link_return_code = proto.Field(
+    lacs_link_return_code: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    lacs_link_indicator = proto.Field(
+    lacs_link_indicator: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    po_box_only_postal_code = proto.Field(
+    po_box_only_postal_code: bool = proto.Field(
         proto.BOOL,
         number=21,
     )
-    suitelink_footnote = proto.Field(
+    suitelink_footnote: str = proto.Field(
         proto.STRING,
         number=22,
     )
-    pmb_designator = proto.Field(
+    pmb_designator: str = proto.Field(
         proto.STRING,
         number=23,
     )
-    pmb_number = proto.Field(
+    pmb_number: str = proto.Field(
         proto.STRING,
         number=24,
     )
-    address_record_type = proto.Field(
+    address_record_type: str = proto.Field(
         proto.STRING,
         number=25,
     )
-    default_address = proto.Field(
+    default_address: bool = proto.Field(
         proto.BOOL,
         number=26,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=27,
     )
-    cass_processed = proto.Field(
+    cass_processed: bool = proto.Field(
         proto.BOOL,
         number=28,
     )

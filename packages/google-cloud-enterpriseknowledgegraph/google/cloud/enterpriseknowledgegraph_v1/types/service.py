@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -54,7 +56,7 @@ class InputConfig(proto.Message):
     r"""The desired input location and metadata.
 
     Attributes:
-        bigquery_input_configs (Sequence[google.cloud.enterpriseknowledgegraph_v1.types.BigQueryInputConfig]):
+        bigquery_input_configs (MutableSequence[google.cloud.enterpriseknowledgegraph_v1.types.BigQueryInputConfig]):
             Set of input BigQuery tables.
         entity_type (google.cloud.enterpriseknowledgegraph_v1.types.InputConfig.EntityType):
             Entity type
@@ -78,17 +80,19 @@ class InputConfig(proto.Message):
         LOCAL_BUSINESS = 6
         PERSON = 7
 
-    bigquery_input_configs = proto.RepeatedField(
+    bigquery_input_configs: MutableSequence[
+        "BigQueryInputConfig"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BigQueryInputConfig",
     )
-    entity_type = proto.Field(
+    entity_type: EntityType = proto.Field(
         proto.ENUM,
         number=2,
         enum=EntityType,
     )
-    previous_result_bigquery_table = proto.Field(
+    previous_result_bigquery_table: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -104,11 +108,11 @@ class BigQueryInputConfig(proto.Message):
             Required. Schema mapping file
     """
 
-    bigquery_table = proto.Field(
+    bigquery_table: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_uri = proto.Field(
+    gcs_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -122,7 +126,7 @@ class OutputConfig(proto.Message):
             Format is “projects/\ */datasets/*\ ”.
     """
 
-    bigquery_dataset = proto.Field(
+    bigquery_dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -170,7 +174,7 @@ class ReconConfig(proto.Message):
                 regionalized!
         """
 
-        enable_geocoding_separation = proto.Field(
+        enable_geocoding_separation: bool = proto.Field(
             proto.BOOL,
             number=100,
         )
@@ -190,33 +194,33 @@ class ReconConfig(proto.Message):
                 documentation.
         """
 
-        model_name = proto.Field(
+        model_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        version_tag = proto.Field(
+        version_tag: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    connected_components_config = proto.Field(
+    connected_components_config: "ConnectedComponentsConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="clustering_config",
         message="ConnectedComponentsConfig",
     )
-    affinity_clustering_config = proto.Field(
+    affinity_clustering_config: "AffinityClusteringConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="clustering_config",
         message="AffinityClusteringConfig",
     )
-    options = proto.Field(
+    options: Options = proto.Field(
         proto.MESSAGE,
         number=3,
         message=Options,
     )
-    model_config = proto.Field(
+    model_config: ModelConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=ModelConfig,
@@ -232,7 +236,7 @@ class ConnectedComponentsConfig(proto.Message):
             Default value is 0.85.
     """
 
-    weight_threshold = proto.Field(
+    weight_threshold: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
@@ -247,7 +251,7 @@ class AffinityClusteringConfig(proto.Message):
             value is 1.
     """
 
-    compression_round_count = proto.Field(
+    compression_round_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -261,7 +265,7 @@ class DeleteOperationMetadata(proto.Message):
             The common part of the operation metadata.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=1,
         message=operation_metadata.CommonOperationMetadata,
@@ -281,11 +285,11 @@ class CreateEntityReconciliationJobRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entity_reconciliation_job = proto.Field(
+    entity_reconciliation_job: "EntityReconciliationJob" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EntityReconciliationJob",
@@ -302,7 +306,7 @@ class GetEntityReconciliationJobRequest(proto.Message):
             ``projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -326,19 +330,19 @@ class ListEntityReconciliationJobsRequest(proto.Message):
             The standard list page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -349,7 +353,7 @@ class ListEntityReconciliationJobsResponse(proto.Message):
     [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
 
     Attributes:
-        entity_reconciliation_jobs (Sequence[google.cloud.enterpriseknowledgegraph_v1.types.EntityReconciliationJob]):
+        entity_reconciliation_jobs (MutableSequence[google.cloud.enterpriseknowledgegraph_v1.types.EntityReconciliationJob]):
             A list of EntityReconciliationJobs that
             matches the specified filter in the request.
         next_page_token (str):
@@ -360,12 +364,14 @@ class ListEntityReconciliationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_reconciliation_jobs = proto.RepeatedField(
+    entity_reconciliation_jobs: MutableSequence[
+        "EntityReconciliationJob"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EntityReconciliationJob",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -381,7 +387,7 @@ class CancelEntityReconciliationJobRequest(proto.Message):
             ``projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -397,7 +403,7 @@ class DeleteEntityReconciliationJobRequest(proto.Message):
             ``projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -436,46 +442,46 @@ class EntityReconciliationJob(proto.Message):
             clustering behavior.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="InputConfig",
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OutputConfig",
     )
-    state = proto.Field(
+    state: job_state.JobState = proto.Field(
         proto.ENUM,
         number=4,
         enum=job_state.JobState,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=5,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    recon_config = proto.Field(
+    recon_config: "ReconConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="ReconConfig",
@@ -490,23 +496,23 @@ class LookupRequest(proto.Message):
         parent (str):
             Required. The name of the Entity's parent resource. Format:
             ``projects/{project}/locations/{location}``
-        ids (Sequence[str]):
+        ids (MutableSequence[str]):
             Required. The list of entity ids to be used
             for lookup.
-        languages (Sequence[str]):
+        languages (MutableSequence[str]):
             The list of language codes (defined in ISO
             693) to run the query with, e.g. 'en'.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ids = proto.RepeatedField(
+    ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    languages = proto.RepeatedField(
+    languages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -528,17 +534,17 @@ class LookupResponse(proto.Message):
             The item list of search results.
     """
 
-    context = proto.Field(
+    context: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Value,
     )
-    type_ = proto.Field(
+    type_: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
     )
-    item_list_element = proto.Field(
+    item_list_element: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.ListValue,
@@ -556,10 +562,10 @@ class SearchRequest(proto.Message):
         query (str):
             Required. The literal query string for
             search.
-        languages (Sequence[str]):
+        languages (MutableSequence[str]):
             The list of language codes (defined in ISO
             693) to run the query with, e.g. 'en'.
-        types (Sequence[str]):
+        types (MutableSequence[str]):
             Restricts returned entities with these types,
             e.g. Person (as defined in
             http://schema.org/Person). If multiple types are
@@ -569,23 +575,23 @@ class SearchRequest(proto.Message):
             Limits the number of entities to be returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    languages = proto.RepeatedField(
+    languages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    types = proto.RepeatedField(
+    types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    limit = proto.Field(
+    limit: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=6,
         message=wrappers_pb2.Int32Value,
@@ -608,17 +614,17 @@ class SearchResponse(proto.Message):
             The item list of search results.
     """
 
-    context = proto.Field(
+    context: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Value,
     )
-    type_ = proto.Field(
+    type_: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
     )
-    item_list_element = proto.Field(
+    item_list_element: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.ListValue,
@@ -633,23 +639,23 @@ class LookupPublicKgRequest(proto.Message):
         parent (str):
             Required. The name of the Entity's parent resource. Format:
             ``projects/{project}/locations/{location}``
-        ids (Sequence[str]):
+        ids (MutableSequence[str]):
             Required. The list of entity ids to be used
             for lookup.
-        languages (Sequence[str]):
+        languages (MutableSequence[str]):
             The list of language codes (defined in ISO
             693) to run the query with, e.g. 'en'.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ids = proto.RepeatedField(
+    ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    languages = proto.RepeatedField(
+    languages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -671,17 +677,17 @@ class LookupPublicKgResponse(proto.Message):
             The item list of search results.
     """
 
-    context = proto.Field(
+    context: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Value,
     )
-    type_ = proto.Field(
+    type_: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
     )
-    item_list_element = proto.Field(
+    item_list_element: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.ListValue,
@@ -699,10 +705,10 @@ class SearchPublicKgRequest(proto.Message):
         query (str):
             Required. The literal query string for
             search.
-        languages (Sequence[str]):
+        languages (MutableSequence[str]):
             The list of language codes (defined in ISO
             693) to run the query with, e.g. 'en'.
-        types (Sequence[str]):
+        types (MutableSequence[str]):
             Restricts returned entities with these types,
             e.g. Person (as defined in
             http://schema.org/Person). If multiple types are
@@ -712,23 +718,23 @@ class SearchPublicKgRequest(proto.Message):
             Limits the number of entities to be returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    languages = proto.RepeatedField(
+    languages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    types = proto.RepeatedField(
+    types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    limit = proto.Field(
+    limit: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=6,
         message=wrappers_pb2.Int32Value,
@@ -751,17 +757,17 @@ class SearchPublicKgResponse(proto.Message):
             The item list of search results.
     """
 
-    context = proto.Field(
+    context: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Value,
     )
-    type_ = proto.Field(
+    type_: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
     )
-    item_list_element = proto.Field(
+    item_list_element: struct_pb2.ListValue = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.ListValue,

@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -72,7 +83,7 @@ class EnterpriseKnowledgeGraphServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[EnterpriseKnowledgeGraphServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -432,7 +443,9 @@ class EnterpriseKnowledgeGraphServiceClient(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, EnterpriseKnowledgeGraphServiceTransport, None] = None,
+        transport: Optional[
+            Union[str, EnterpriseKnowledgeGraphServiceTransport]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -533,12 +546,14 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def create_entity_reconciliation_job(
         self,
-        request: Union[service.CreateEntityReconciliationJobRequest, dict] = None,
+        request: Optional[
+            Union[service.CreateEntityReconciliationJobRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        entity_reconciliation_job: service.EntityReconciliationJob = None,
+        parent: Optional[str] = None,
+        entity_reconciliation_job: Optional[service.EntityReconciliationJob] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.EntityReconciliationJob:
         r"""Creates a EntityReconciliationJob. A
@@ -648,11 +663,13 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def get_entity_reconciliation_job(
         self,
-        request: Union[service.GetEntityReconciliationJobRequest, dict] = None,
+        request: Optional[
+            Union[service.GetEntityReconciliationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.EntityReconciliationJob:
         r"""Gets a EntityReconciliationJob.
@@ -751,11 +768,13 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def list_entity_reconciliation_jobs(
         self,
-        request: Union[service.ListEntityReconciliationJobsRequest, dict] = None,
+        request: Optional[
+            Union[service.ListEntityReconciliationJobsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntityReconciliationJobsPager:
         r"""Lists Entity Reconciliation Jobs.
@@ -869,11 +888,13 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def cancel_entity_reconciliation_job(
         self,
-        request: Union[service.CancelEntityReconciliationJobRequest, dict] = None,
+        request: Optional[
+            Union[service.CancelEntityReconciliationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Cancels a EntityReconciliationJob. Success of
@@ -963,11 +984,13 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def delete_entity_reconciliation_job(
         self,
-        request: Union[service.DeleteEntityReconciliationJobRequest, dict] = None,
+        request: Optional[
+            Union[service.DeleteEntityReconciliationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a EntityReconciliationJob.
@@ -1058,12 +1081,12 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def lookup(
         self,
-        request: Union[service.LookupRequest, dict] = None,
+        request: Optional[Union[service.LookupRequest, dict]] = None,
         *,
-        parent: str = None,
-        ids: Sequence[str] = None,
+        parent: Optional[str] = None,
+        ids: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.LookupResponse:
         r"""Finds the Cloud KG entities with CKG ID(s).
@@ -1106,7 +1129,7 @@ class EnterpriseKnowledgeGraphServiceClient(
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ids (Sequence[str]):
+            ids (MutableSequence[str]):
                 Required. The list of entity ids to
                 be used for lookup.
 
@@ -1171,12 +1194,12 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def search(
         self,
-        request: Union[service.SearchRequest, dict] = None,
+        request: Optional[Union[service.SearchRequest, dict]] = None,
         *,
-        parent: str = None,
-        query: str = None,
+        parent: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.SearchResponse:
         r"""Searches the Cloud KG entities with entity name.
@@ -1284,12 +1307,12 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def lookup_public_kg(
         self,
-        request: Union[service.LookupPublicKgRequest, dict] = None,
+        request: Optional[Union[service.LookupPublicKgRequest, dict]] = None,
         *,
-        parent: str = None,
-        ids: Sequence[str] = None,
+        parent: Optional[str] = None,
+        ids: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.LookupPublicKgResponse:
         r"""Finds the public KG entities with public KG ID(s).
@@ -1332,7 +1355,7 @@ class EnterpriseKnowledgeGraphServiceClient(
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ids (Sequence[str]):
+            ids (MutableSequence[str]):
                 Required. The list of entity ids to
                 be used for lookup.
 
@@ -1397,12 +1420,12 @@ class EnterpriseKnowledgeGraphServiceClient(
 
     def search_public_kg(
         self,
-        request: Union[service.SearchPublicKgRequest, dict] = None,
+        request: Optional[Union[service.SearchPublicKgRequest, dict]] = None,
         *,
-        parent: str = None,
-        query: str = None,
+        parent: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.SearchPublicKgResponse:
         r"""Searches the public KG entities with entity name.
