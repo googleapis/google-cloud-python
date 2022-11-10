@@ -78,7 +78,12 @@
             "component": "google-cloud-gsuiteaddons",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/gsuiteaddons/gapic_version.py"
+                "google/cloud/gsuiteaddons/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_gsuiteaddons_v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
