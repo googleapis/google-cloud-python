@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -36,7 +38,7 @@ class ListLinkedTargetsResponse(proto.Message):
     r"""Response message for DocumentLinkService.ListLinkedTargets.
 
     Attributes:
-        document_links (Sequence[google.cloud.contentwarehouse_v1.types.DocumentLink]):
+        document_links (MutableSequence[google.cloud.contentwarehouse_v1.types.DocumentLink]):
             Target document-links.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -48,12 +50,12 @@ class ListLinkedTargetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    document_links = proto.RepeatedField(
+    document_links: MutableSequence["DocumentLink"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DocumentLink",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -73,11 +75,11 @@ class ListLinkedTargetsRequest(proto.Message):
             for the service.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.RequestMetadata,
@@ -88,7 +90,7 @@ class ListLinkedSourcesResponse(proto.Message):
     r"""Response message for DocumentLinkService.ListLinkedSources.
 
     Attributes:
-        document_links (Sequence[google.cloud.contentwarehouse_v1.types.DocumentLink]):
+        document_links (MutableSequence[google.cloud.contentwarehouse_v1.types.DocumentLink]):
             Source document-links.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -100,12 +102,12 @@ class ListLinkedSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    document_links = proto.RepeatedField(
+    document_links: MutableSequence["DocumentLink"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DocumentLink",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -139,19 +141,19 @@ class ListLinkedSourcesRequest(proto.Message):
             for the service.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.RequestMetadata,
@@ -193,35 +195,35 @@ class DocumentLink(proto.Message):
         ACTIVE = 1
         SOFT_DELETED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_document_reference = proto.Field(
+    source_document_reference: document.DocumentReference = proto.Field(
         proto.MESSAGE,
         number=2,
         message=document.DocumentReference,
     )
-    target_document_reference = proto.Field(
+    target_document_reference: document.DocumentReference = proto.Field(
         proto.MESSAGE,
         number=3,
         message=document.DocumentReference,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
@@ -245,16 +247,16 @@ class CreateDocumentLinkRequest(proto.Message):
             for the service.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document_link = proto.Field(
+    document_link: "DocumentLink" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DocumentLink",
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.RequestMetadata,
@@ -275,11 +277,11 @@ class DeleteDocumentLinkRequest(proto.Message):
             for the service.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_metadata = proto.Field(
+    request_metadata: common.RequestMetadata = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.RequestMetadata,
