@@ -26,6 +26,7 @@ import sqlalchemy
 from sqlalchemy import and_
 
 import sqlalchemy.testing.suite.test_types
+import sqlalchemy.sql.sqltypes
 from sqlalchemy.testing import util
 from sqlalchemy.testing.assertions import eq_
 from sqlalchemy.testing.suite import config, select, exists
@@ -62,12 +63,25 @@ if packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.
 
             def literal(value):
                 assert value == self.data
-                import sqlalchemy.sql.sqltypes
-
                 return sqlalchemy.sql.elements.literal(value, self.datatype)
 
             with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
                 super(TimestampMicrosecondsTest, self).test_literal()
+
+        def test_select_direct(self, connection):
+            # This func added because this test was failing when passed the
+            # UTC timezone.
+
+            def literal(value, type_=None):
+                assert value == self.data
+
+                if type_ is not None:
+                    assert type_ is self.datatype
+
+                return sqlalchemy.sql.elements.literal(value, self.datatype)
+
+            with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
+                super(TimestampMicrosecondsTest, self).test_select_direct(connection)
 
 else:
     from sqlalchemy.testing.suite import (
@@ -109,7 +123,6 @@ else:
     del PostCompileParamsTest
 
     class TimestampMicrosecondsTest(_TimestampMicrosecondsTest):
-
         data = datetime.datetime(2012, 10, 15, 12, 57, 18, 396, tzinfo=pytz.UTC)
 
         def test_literal(self, literal_round_trip):
@@ -121,12 +134,27 @@ else:
                 if type_ is not None:
                     assert type_ is self.datatype
 
+                return sqlalchemy.sql.elements.literal(value, self.datatype)
+
+            with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
+                super(TimestampMicrosecondsTest, self).test_literal(literal_round_trip)
+
+        def test_select_direct(self, connection):
+            # This func added because this test was failing when passed the
+            # UTC timezone.
+
+            def literal(value, type_=None):
+                assert value == self.data
+
+                if type_ is not None:
+                    assert type_ is self.datatype
+
                 import sqlalchemy.sql.sqltypes
 
                 return sqlalchemy.sql.elements.literal(value, self.datatype)
 
             with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
-                super(TimestampMicrosecondsTest, self).test_literal(literal_round_trip)
+                super(TimestampMicrosecondsTest, self).test_select_direct(connection)
 
     def test_round_trip_executemany(self, connection):
         unicode_table = self.tables.unicode_table
