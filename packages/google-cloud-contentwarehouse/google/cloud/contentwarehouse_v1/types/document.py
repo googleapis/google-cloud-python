@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import google.cloud.documentai_v1  # type: ignore
+import google.cloud.documentai_v1.types  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
