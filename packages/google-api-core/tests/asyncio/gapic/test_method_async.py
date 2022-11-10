@@ -198,41 +198,6 @@ async def test_wrap_method_with_overriding_retry_and_timeout(unused_sleep):
     method.assert_called_with(timeout=22, metadata=mock.ANY)
 
 
-@mock.patch("asyncio.sleep")
-@mock.patch(
-    "google.api_core.datetime_helpers.utcnow",
-    side_effect=_utcnow_monotonic(),
-    autospec=True,
-)
-@pytest.mark.asyncio
-async def test_wrap_method_with_overriding_retry_deadline(utcnow, unused_sleep):
-    fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
-    method = mock.Mock(
-        spec=aio.UnaryUnaryMultiCallable,
-        side_effect=([exceptions.InternalServerError(None)] * 4) + [fake_call],
-    )
-
-    default_retry = retry_async.AsyncRetry()
-    default_timeout = timeout.ExponentialTimeout(deadline=60)
-    wrapped_method = gapic_v1.method_async.wrap_method(
-        method, default_retry, default_timeout
-    )
-
-    # Overriding only the retry's deadline should also override the timeout's
-    # deadline.
-    result = await wrapped_method(retry=default_retry.with_deadline(30))
-
-    assert result == 42
-    timeout_args = [call[1]["timeout"] for call in method.call_args_list]
-    assert timeout_args == [5.0, 10.0, 20.0, 26.0, 25.0]
-    assert utcnow.call_count == (
-        1
-        + 1  # Compute wait_for timeout in retry_async
-        + 5  # First to set the deadline.
-        + 5  # One for each min(timeout, maximum, (DEADLINE - NOW).seconds)
-    )
-
-
 @pytest.mark.asyncio
 async def test_wrap_method_with_overriding_timeout_as_a_number():
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)

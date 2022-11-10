@@ -68,9 +68,12 @@ _DEFAULT_INITIAL_DELAY = 1.0  # seconds
 _DEFAULT_MAXIMUM_DELAY = 60.0  # seconds
 _DEFAULT_DELAY_MULTIPLIER = 2.0
 _DEFAULT_DEADLINE = 60.0 * 2.0  # seconds
+_DEFAULT_TIMEOUT = 60.0 * 2.0  # seconds
 
 
-async def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
+async def retry_target(
+    target, predicate, sleep_generator, timeout=None, on_error=None, **kwargs
+):
     """Call a function and retry if it fails.
 
     This is the lowest-level retry helper. Generally, you'll use the
@@ -84,12 +87,12 @@ async def retry_target(target, predicate, sleep_generator, deadline, on_error=No
             It should return True to retry or False otherwise.
         sleep_generator (Iterable[float]): An infinite iterator that determines
             how long to sleep between retries.
-        deadline (float): How long to keep retrying the target. The last sleep
-            period is shortened as necessary, so that the last retry runs at
-            ``deadline`` (and not considerably beyond it).
+        timeout (float): How long to keep retrying the target, in seconds.
         on_error (Callable[Exception]): A function to call while processing a
             retryable exception.  Any error raised by this function will *not*
             be caught.
+        deadline (float): DEPRECATED use ``timeout`` instead. For backward
+        compatibility, if set it will override the ``timeout`` parameter.
 
     Returns:
         Any: the return value of the target function.
@@ -99,9 +102,12 @@ async def retry_target(target, predicate, sleep_generator, deadline, on_error=No
         ValueError: If the sleep generator stops yielding values.
         Exception: If the target raises a method that isn't retryable.
     """
+
+    timeout = kwargs.get("deadline", timeout)
+
     deadline_dt = (
-        (datetime_helpers.utcnow() + datetime.timedelta(seconds=deadline))
-        if deadline
+        (datetime_helpers.utcnow() + datetime.timedelta(seconds=timeout))
+        if timeout
         else None
     )
 
@@ -132,8 +138,8 @@ async def retry_target(target, predicate, sleep_generator, deadline, on_error=No
                 # Chains the raising RetryError with the root cause error,
                 # which helps observability and debugability.
                 raise exceptions.RetryError(
-                    "Deadline of {:.1f}s exceeded while calling target function".format(
-                        deadline
+                    "Timeout of {:.1f}s exceeded while calling target function".format(
+                        timeout
                     ),
                     last_exc,
                 ) from last_exc
@@ -165,12 +171,12 @@ class AsyncRetry:
             must be greater than 0.
         maximum (float): The maximum amout of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
-        deadline (float): How long to keep retrying in seconds. The last sleep
-            period is shortened as necessary, so that the last retry runs at
-            ``deadline`` (and not considerably beyond it).
+        timeout (float): How long to keep retrying in seconds.
         on_error (Callable[Exception]): A function to call while processing
             a retryable exception. Any error raised by this function will
             *not* be caught.
+        deadline (float): DEPRECATED use ``timeout`` instead. If set it will
+        override ``timeout`` parameter.
     """
 
     def __init__(
@@ -179,14 +185,16 @@ class AsyncRetry:
         initial=_DEFAULT_INITIAL_DELAY,
         maximum=_DEFAULT_MAXIMUM_DELAY,
         multiplier=_DEFAULT_DELAY_MULTIPLIER,
-        deadline=_DEFAULT_DEADLINE,
+        timeout=_DEFAULT_TIMEOUT,
         on_error=None,
+        **kwargs
     ):
         self._predicate = predicate
         self._initial = initial
         self._multiplier = multiplier
         self._maximum = maximum
-        self._deadline = deadline
+        self._timeout = kwargs.get("deadline", timeout)
+        self._deadline = self._timeout
         self._on_error = on_error
 
     def __call__(self, func, on_error=None):
@@ -216,7 +224,7 @@ class AsyncRetry:
                 target,
                 self._predicate,
                 sleep_generator,
-                self._deadline,
+                self._timeout,
                 on_error=on_error,
             )
 
@@ -228,7 +236,7 @@ class AsyncRetry:
         initial=None,
         maximum=None,
         multiplier=None,
-        deadline=None,
+        timeout=None,
         on_error=None,
     ):
         return AsyncRetry(
@@ -236,12 +244,13 @@ class AsyncRetry:
             initial=initial or self._initial,
             maximum=maximum or self._maximum,
             multiplier=multiplier or self._multiplier,
-            deadline=deadline or self._deadline,
+            timeout=timeout or self._timeout,
             on_error=on_error or self._on_error,
         )
 
     def with_deadline(self, deadline):
         """Return a copy of this retry with the given deadline.
+        DEPRECATED: use :meth:`with_timeout` instead.
 
         Args:
             deadline (float): How long to keep retrying.
@@ -249,7 +258,18 @@ class AsyncRetry:
         Returns:
             AsyncRetry: A new retry instance with the given deadline.
         """
-        return self._replace(deadline=deadline)
+        return self._replace(timeout=deadline)
+
+    def with_timeout(self, timeout):
+        """Return a copy of this retry with the given timeout.
+
+        Args:
+            timeout (float): How long to keep retrying, in seconds.
+
+        Returns:
+            AsyncRetry: A new retry instance with the given timeout.
+        """
+        return self._replace(timeout=timeout)
 
     def with_predicate(self, predicate):
         """Return a copy of this retry with the given predicate.
@@ -280,12 +300,12 @@ class AsyncRetry:
     def __str__(self):
         return (
             "<AsyncRetry predicate={}, initial={:.1f}, maximum={:.1f}, "
-            "multiplier={:.1f}, deadline={:.1f}, on_error={}>".format(
+            "multiplier={:.1f}, timeout={:.1f}, on_error={}>".format(
                 self._predicate,
                 self._initial,
                 self._maximum,
                 self._multiplier,
-                self._deadline,
+                self._timeout,
                 self._on_error,
             )
         )

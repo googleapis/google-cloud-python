@@ -20,7 +20,7 @@ import pytest
 
 try:
     import grpc  # noqa: F401
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 from requests import Response  # noqa I201
 from requests.sessions import Session
@@ -121,7 +121,7 @@ def test_operations_client_from_service_account_info(client_class):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "longrunning.googleapis.com:443"
+        assert client.transport._host == "https://longrunning.googleapis.com"
 
 
 @pytest.mark.parametrize(
@@ -160,7 +160,7 @@ def test_operations_client_from_service_account_file(client_class):
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "longrunning.googleapis.com:443"
+        assert client.transport._host == "https://longrunning.googleapis.com"
 
 
 def test_operations_client_get_transport_class():
@@ -465,10 +465,7 @@ def test_list_operations_rest(
 
         actual_args = req.call_args
         assert actual_args.args[0] == "GET"
-        assert (
-            actual_args.args[1]
-            == "https://longrunning.googleapis.com:443/v3/operations"
-        )
+        assert actual_args.args[1] == "https://longrunning.googleapis.com/v3/operations"
         assert actual_args.kwargs["params"] == [
             ("filter", "my_filter"),
             ("pageSize", 10),
@@ -574,7 +571,7 @@ def test_get_operation_rest(
     assert actual_args.args[0] == "GET"
     assert (
         actual_args.args[1]
-        == "https://longrunning.googleapis.com:443/v3/operations/sample1"
+        == "https://longrunning.googleapis.com/v3/operations/sample1"
     )
 
     # Establish that the response is the type that we expect.
@@ -591,13 +588,11 @@ def test_get_operation_rest_failure():
         response_value.status_code = 400
         mock_request = mock.MagicMock()
         mock_request.method = "GET"
-        mock_request.url = (
-            "https://longrunning.googleapis.com:443/v1/operations/sample1"
-        )
+        mock_request.url = "https://longrunning.googleapis.com/v1/operations/sample1"
         response_value.request = mock_request
         req.return_value = response_value
         with pytest.raises(core_exceptions.GoogleAPIError):
-            client.get_operation("operations/sample1")
+            client.get_operation("sammple0/operations/sample1")
 
 
 def test_delete_operation_rest(
@@ -619,7 +614,7 @@ def test_delete_operation_rest(
         assert actual_args.args[0] == "DELETE"
         assert (
             actual_args.args[1]
-            == "https://longrunning.googleapis.com:443/v3/operations/sample1"
+            == "https://longrunning.googleapis.com/v3/operations/sample1"
         )
 
 
@@ -631,13 +626,11 @@ def test_delete_operation_rest_failure():
         response_value.status_code = 400
         mock_request = mock.MagicMock()
         mock_request.method = "DELETE"
-        mock_request.url = (
-            "https://longrunning.googleapis.com:443/v1/operations/sample1"
-        )
+        mock_request.url = "https://longrunning.googleapis.com/v1/operations/sample1"
         response_value.request = mock_request
         req.return_value = response_value
         with pytest.raises(core_exceptions.GoogleAPIError):
-            client.delete_operation(name="operations/sample1")
+            client.delete_operation(name="sample0/operations/sample1")
 
 
 def test_cancel_operation_rest(transport: str = "rest"):
@@ -657,7 +650,7 @@ def test_cancel_operation_rest(transport: str = "rest"):
         assert actual_args.args[0] == "POST"
         assert (
             actual_args.args[1]
-            == "https://longrunning.googleapis.com:443/v3/operations/sample1:cancel"
+            == "https://longrunning.googleapis.com/v3/operations/sample1:cancel"
         )
 
 
@@ -670,12 +663,12 @@ def test_cancel_operation_rest_failure():
         mock_request = mock.MagicMock()
         mock_request.method = "POST"
         mock_request.url = (
-            "https://longrunning.googleapis.com:443/v1/operations/sample1:cancel"
+            "https://longrunning.googleapis.com/v1/operations/sample1:cancel"
         )
         response_value.request = mock_request
         req.return_value = response_value
         with pytest.raises(core_exceptions.GoogleAPIError):
-            client.cancel_operation(name="operations/sample1")
+            client.cancel_operation(name="sample0/operations/sample1")
 
 
 def test_credentials_transport_error():
@@ -825,7 +818,7 @@ def test_operations_host_no_port():
             api_endpoint="longrunning.googleapis.com"
         ),
     )
-    assert client.transport._host == "longrunning.googleapis.com:443"
+    assert client.transport._host == "https://longrunning.googleapis.com"
 
 
 def test_operations_host_with_port():
@@ -835,7 +828,7 @@ def test_operations_host_with_port():
             api_endpoint="longrunning.googleapis.com:8000"
         ),
     )
-    assert client.transport._host == "longrunning.googleapis.com:8000"
+    assert client.transport._host == "https://longrunning.googleapis.com:8000"
 
 
 def test_common_billing_account_path():

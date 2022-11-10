@@ -17,7 +17,7 @@ import pytest
 
 try:
     from grpc import aio
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import grpc_helpers_async

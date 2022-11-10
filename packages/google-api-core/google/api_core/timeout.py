@@ -14,8 +14,9 @@
 
 """Decorators for applying timeout arguments to functions.
 
-These decorators are used to wrap API methods to apply either a constant
-or exponential timeout argument.
+These decorators are used to wrap API methods to apply either a
+Deadline-dependent (recommended), constant (DEPRECATED) or exponential
+(DEPRECATED) timeout argument.
 
 For example, imagine an API method that can take a while to return results,
 such as one that might block until a resource is ready:
@@ -66,8 +67,68 @@ _DEFAULT_TIMEOUT_MULTIPLIER = 2.0
 _DEFAULT_DEADLINE = None
 
 
+class TimeToDeadlineTimeout(object):
+    """A decorator that decreases timeout set for an RPC based on how much time
+    has left till its deadline. The deadline is calculated as
+    ``now + initial_timeout`` when this decorator is first called for an rpc.
+
+    In other words this decorator implements deadline semantics in terms of a
+    sequence of decreasing timeouts t0 > t1 > t2 ... tn >= 0.
+
+    Args:
+        timeout (Optional[float]): the timeout (in seconds) to applied to the
+            wrapped function. If `None`, the target function is expected to
+            never timeout.
+    """
+
+    def __init__(self, timeout=None, clock=datetime_helpers.utcnow):
+        self._timeout = timeout
+        self._clock = clock
+
+    def __call__(self, func):
+        """Apply the timeout decorator.
+
+        Args:
+            func (Callable): The function to apply the timeout argument to.
+                This function must accept a timeout keyword argument.
+
+        Returns:
+            Callable: The wrapped function.
+        """
+
+        first_attempt_timestamp = self._clock().timestamp()
+
+        @functools.wraps(func)
+        def func_with_timeout(*args, **kwargs):
+            """Wrapped function that adds timeout."""
+
+            remaining_timeout = self._timeout
+            if remaining_timeout is not None:
+                # All calculations are in seconds
+                now_timestamp = self._clock().timestamp()
+
+                # To avoid usage of nonlocal but still have round timeout
+                # numbers for first attempt (in most cases the only attempt made
+                # for an RPC.
+                if now_timestamp - first_attempt_timestamp < 0.001:
+                    now_timestamp = first_attempt_timestamp
+
+                time_since_first_attempt = now_timestamp - first_attempt_timestamp
+                # Avoid setting negative timeout
+                kwargs["timeout"] = max(0, self._timeout - time_since_first_attempt)
+
+            return func(*args, **kwargs)
+
+        return func_with_timeout
+
+    def __str__(self):
+        return "<TimeToDeadlineTimeout timeout={:.1f}>".format(self._timeout)
+
+
 class ConstantTimeout(object):
     """A decorator that adds a constant timeout argument.
+
+    DEPRECATED: use ``TimeToDeadlineTimeout`` instead.
 
     This is effectively equivalent to
     ``functools.partial(func, timeout=timeout)``.
@@ -139,6 +200,9 @@ def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
 
 class ExponentialTimeout(object):
     """A decorator that adds an exponentially increasing timeout argument.
+
+    DEPRECATED: the concept of incrementing timeout exponentially has been
+    deprecated. Use ``TimeToDeadlineTimeout`` instead.
 
     This is useful if a function is called multiple times. Each time the
     function is called this decorator will calculate a new timeout parameter

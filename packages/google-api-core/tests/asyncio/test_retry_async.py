@@ -116,7 +116,7 @@ async def test_retry_target_deadline_exceeded(utcnow, sleep):
         await retry_async.retry_target(target, predicate, range(10), deadline=10)
 
     assert exc_info.value.cause == exception
-    assert exc_info.match("Deadline of 10.0s exceeded")
+    assert exc_info.match("Timeout of 10.0s exceeded")
     assert exc_info.match("last exception: meep")
     assert target.call_count == 2
 
@@ -253,7 +253,7 @@ class TestAsyncRetry:
         assert re.match(
             (
                 r"<AsyncRetry predicate=<function.*?if_exception_type.*?>, "
-                r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0, "
+                r"initial=1.0, maximum=60.0, multiplier=2.0, timeout=120.0, "
                 r"on_error=None>"
             ),
             str(retry_),
@@ -276,8 +276,7 @@ class TestAsyncRetry:
         target.assert_called_once_with("meep")
         sleep.assert_not_called()
 
-    # Make uniform return half of its maximum, which is the calculated sleep time.
-    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
     async def test___call___and_execute_retry(self, sleep, uniform):
@@ -302,8 +301,7 @@ class TestAsyncRetry:
         sleep.assert_called_once_with(retry_._initial)
         assert on_error.call_count == 1
 
-    # Make uniform return half of its maximum, which is the calculated sleep time.
-    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
     async def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
@@ -376,8 +374,7 @@ class TestAsyncRetry:
         sleep.assert_not_called()
         _some_function.assert_not_called()
 
-    # Make uniform return half of its maximum, which is the calculated sleep time.
-    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
     async def test___init___when_retry_is_executed(self, sleep, uniform):

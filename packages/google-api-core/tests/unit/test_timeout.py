@@ -17,11 +17,11 @@ import itertools
 
 import mock
 
-from google.api_core import timeout
+from google.api_core import timeout as timeouts
 
 
 def test__exponential_timeout_generator_base_2():
-    gen = timeout._exponential_timeout_generator(1.0, 60.0, 2.0, deadline=None)
+    gen = timeouts._exponential_timeout_generator(1.0, 60.0, 2.0, deadline=None)
 
     result = list(itertools.islice(gen, 8))
     assert result == [1, 2, 4, 8, 16, 32, 60, 60]
@@ -34,7 +34,7 @@ def test__exponential_timeout_generator_base_deadline(utcnow):
         datetime.datetime.min + datetime.timedelta(seconds=n) for n in range(15)
     ]
 
-    gen = timeout._exponential_timeout_generator(1.0, 60.0, 2.0, deadline=30.0)
+    gen = timeouts._exponential_timeout_generator(1.0, 60.0, 2.0, deadline=30.0)
 
     result = list(itertools.islice(gen, 14))
     # Should grow until the cumulative time is > 30s, then start decreasing as
@@ -42,22 +42,105 @@ def test__exponential_timeout_generator_base_deadline(utcnow):
     assert result == [1, 2, 4, 8, 16, 24, 23, 22, 21, 20, 19, 18, 17, 16]
 
 
-class TestConstantTimeout(object):
+class TestTimeToDeadlineTimeout(object):
     def test_constructor(self):
-        timeout_ = timeout.ConstantTimeout()
+        timeout_ = timeouts.TimeToDeadlineTimeout()
         assert timeout_._timeout is None
 
     def test_constructor_args(self):
-        timeout_ = timeout.ConstantTimeout(42.0)
+        timeout_ = timeouts.TimeToDeadlineTimeout(42.0)
         assert timeout_._timeout == 42.0
 
     def test___str__(self):
-        timeout_ = timeout.ConstantTimeout(1)
+        timeout_ = timeouts.TimeToDeadlineTimeout(1)
+        assert str(timeout_) == "<TimeToDeadlineTimeout timeout=1.0>"
+
+    def test_apply(self):
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
+
+        datetime.datetime.utcnow()
+        datetime.timedelta(seconds=1)
+
+        now = datetime.datetime.utcnow()
+
+        times = [
+            now,
+            now + datetime.timedelta(seconds=0.0009),
+            now + datetime.timedelta(seconds=1),
+            now + datetime.timedelta(seconds=39),
+            now + datetime.timedelta(seconds=42),
+            now + datetime.timedelta(seconds=43),
+        ]
+
+        def _clock():
+            return times.pop(0)
+
+        timeout_ = timeouts.TimeToDeadlineTimeout(42.0, _clock)
+        wrapped = timeout_(target)
+
+        wrapped()
+        target.assert_called_with(timeout=42.0)
+        wrapped()
+        target.assert_called_with(timeout=41.0)
+        wrapped()
+        target.assert_called_with(timeout=3.0)
+        wrapped()
+        target.assert_called_with(timeout=0.0)
+        wrapped()
+        target.assert_called_with(timeout=0.0)
+
+    def test_apply_no_timeout(self):
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
+
+        datetime.datetime.utcnow()
+        datetime.timedelta(seconds=1)
+
+        now = datetime.datetime.utcnow()
+
+        times = [
+            now,
+            now + datetime.timedelta(seconds=0.0009),
+            now + datetime.timedelta(seconds=1),
+            now + datetime.timedelta(seconds=2),
+        ]
+
+        def _clock():
+            return times.pop(0)
+
+        timeout_ = timeouts.TimeToDeadlineTimeout(clock=_clock)
+        wrapped = timeout_(target)
+
+        wrapped()
+        target.assert_called_with()
+        wrapped()
+        target.assert_called_with()
+
+    def test_apply_passthrough(self):
+        target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
+        timeout_ = timeouts.TimeToDeadlineTimeout(42.0)
+        wrapped = timeout_(target)
+
+        wrapped(1, 2, meep="moop")
+
+        target.assert_called_once_with(1, 2, meep="moop", timeout=42.0)
+
+
+class TestConstantTimeout(object):
+    def test_constructor(self):
+        timeout_ = timeouts.ConstantTimeout()
+        assert timeout_._timeout is None
+
+    def test_constructor_args(self):
+        timeout_ = timeouts.ConstantTimeout(42.0)
+        assert timeout_._timeout == 42.0
+
+    def test___str__(self):
+        timeout_ = timeouts.ConstantTimeout(1)
         assert str(timeout_) == "<ConstantTimeout timeout=1.0>"
 
     def test_apply(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
-        timeout_ = timeout.ConstantTimeout(42.0)
+        timeout_ = timeouts.ConstantTimeout(42.0)
         wrapped = timeout_(target)
 
         wrapped()
@@ -66,7 +149,7 @@ class TestConstantTimeout(object):
 
     def test_apply_passthrough(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
-        timeout_ = timeout.ConstantTimeout(42.0)
+        timeout_ = timeouts.ConstantTimeout(42.0)
         wrapped = timeout_(target)
 
         wrapped(1, 2, meep="moop")
@@ -76,30 +159,30 @@ class TestConstantTimeout(object):
 
 class TestExponentialTimeout(object):
     def test_constructor(self):
-        timeout_ = timeout.ExponentialTimeout()
-        assert timeout_._initial == timeout._DEFAULT_INITIAL_TIMEOUT
-        assert timeout_._maximum == timeout._DEFAULT_MAXIMUM_TIMEOUT
-        assert timeout_._multiplier == timeout._DEFAULT_TIMEOUT_MULTIPLIER
-        assert timeout_._deadline == timeout._DEFAULT_DEADLINE
+        timeout_ = timeouts.ExponentialTimeout()
+        assert timeout_._initial == timeouts._DEFAULT_INITIAL_TIMEOUT
+        assert timeout_._maximum == timeouts._DEFAULT_MAXIMUM_TIMEOUT
+        assert timeout_._multiplier == timeouts._DEFAULT_TIMEOUT_MULTIPLIER
+        assert timeout_._deadline == timeouts._DEFAULT_DEADLINE
 
     def test_constructor_args(self):
-        timeout_ = timeout.ExponentialTimeout(1, 2, 3, 4)
+        timeout_ = timeouts.ExponentialTimeout(1, 2, 3, 4)
         assert timeout_._initial == 1
         assert timeout_._maximum == 2
         assert timeout_._multiplier == 3
         assert timeout_._deadline == 4
 
     def test_with_timeout(self):
-        original_timeout = timeout.ExponentialTimeout()
+        original_timeout = timeouts.ExponentialTimeout()
         timeout_ = original_timeout.with_deadline(42)
         assert original_timeout is not timeout_
-        assert timeout_._initial == timeout._DEFAULT_INITIAL_TIMEOUT
-        assert timeout_._maximum == timeout._DEFAULT_MAXIMUM_TIMEOUT
-        assert timeout_._multiplier == timeout._DEFAULT_TIMEOUT_MULTIPLIER
+        assert timeout_._initial == timeouts._DEFAULT_INITIAL_TIMEOUT
+        assert timeout_._maximum == timeouts._DEFAULT_MAXIMUM_TIMEOUT
+        assert timeout_._multiplier == timeouts._DEFAULT_TIMEOUT_MULTIPLIER
         assert timeout_._deadline == 42
 
     def test___str__(self):
-        timeout_ = timeout.ExponentialTimeout(1, 2, 3, 4)
+        timeout_ = timeouts.ExponentialTimeout(1, 2, 3, 4)
         assert str(timeout_) == (
             "<ExponentialTimeout initial=1.0, maximum=2.0, multiplier=3.0, "
             "deadline=4.0>"
@@ -107,7 +190,7 @@ class TestExponentialTimeout(object):
 
     def test_apply(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
-        timeout_ = timeout.ExponentialTimeout(1, 10, 2)
+        timeout_ = timeouts.ExponentialTimeout(1, 10, 2)
         wrapped = timeout_(target)
 
         wrapped()
@@ -121,7 +204,7 @@ class TestExponentialTimeout(object):
 
     def test_apply_passthrough(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
-        timeout_ = timeout.ExponentialTimeout(42.0, 100, 2)
+        timeout_ = timeouts.ExponentialTimeout(42.0, 100, 2)
         wrapped = timeout_(target)
 
         wrapped(1, 2, meep="moop")

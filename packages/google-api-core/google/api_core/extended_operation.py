@@ -50,10 +50,13 @@ class ExtendedOperation(polling.PollingFuture):
         refresh (Callable[[], type(extended_operation)]): A callable that returns
             the latest state of the operation.
         cancel (Callable[[], None]): A callable that tries to cancel the operation.
-        retry: Optional(google.api_core.retry.Retry): The retry configuration used
-            when polling. This can be used to control how often :meth:`done`
-            is polled. Regardless of the retry's ``deadline``, it will be
-            overridden by the ``timeout`` argument to :meth:`result`.
+        polling Optional(google.api_core.retry.Retry): The configuration used
+            for polling. This can be used to control how often :meth:`done`
+            is polled. If the ``timeout`` argument to :meth:`result` is
+            specified it will override the ``polling.timeout`` property.
+        retry Optional(google.api_core.retry.Retry): DEPRECATED use ``polling``
+            instead. If specified it will override ``polling`` parameter to
+            maintain backward compatibility.
 
     Note: Most long-running API methods use google.api_core.operation.Operation
     This class is a wrapper for a subset of methods that use alternative
@@ -68,9 +71,14 @@ class ExtendedOperation(polling.PollingFuture):
     """
 
     def __init__(
-        self, extended_operation, refresh, cancel, retry=polling.DEFAULT_RETRY
+        self,
+        extended_operation,
+        refresh,
+        cancel,
+        polling=polling.DEFAULT_POLLING,
+        **kwargs,
     ):
-        super().__init__(retry=retry)
+        super().__init__(polling=polling, **kwargs)
         self._extended_operation = extended_operation
         self._refresh = refresh
         self._cancel = cancel
@@ -114,7 +122,7 @@ class ExtendedOperation(polling.PollingFuture):
     def __getattr__(self, name):
         return getattr(self._extended_operation, name)
 
-    def done(self, retry=polling.DEFAULT_RETRY):
+    def done(self, retry=None):
         self._refresh_and_update(retry)
         return self._extended_operation.done
 
@@ -137,9 +145,11 @@ class ExtendedOperation(polling.PollingFuture):
         self._refresh_and_update()
         return self._extended_operation.done
 
-    def _refresh_and_update(self, retry=polling.DEFAULT_RETRY):
+    def _refresh_and_update(self, retry=None):
         if not self._extended_operation.done:
-            self._extended_operation = self._refresh(retry=retry)
+            self._extended_operation = (
+                self._refresh(retry=retry) if retry else self._refresh()
+            )
             self._handle_refreshed_operation()
 
     def _handle_refreshed_operation(self):

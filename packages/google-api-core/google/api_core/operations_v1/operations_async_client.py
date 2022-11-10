@@ -24,8 +24,10 @@
 
 import functools
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, page_iterator_async
-from google.api_core.operations_v1 import operations_client_config
+from google.api_core import retry as retries
+from google.api_core import timeout as timeouts
 from google.longrunning import operations_pb2
 
 
@@ -41,39 +43,44 @@ class OperationsAsyncClient:
             the default configuration is used.
     """
 
-    def __init__(self, channel, client_config=operations_client_config.config):
+    def __init__(self, channel, client_config=None):
         # Create the gRPC client stub with gRPC AsyncIO channel.
         self.operations_stub = operations_pb2.OperationsStub(channel)
 
-        # Create all wrapped methods using the interface configuration.
-        # The interface config contains all of the default settings for retry
-        # and timeout for each RPC method.
-        interfaces = client_config["interfaces"]
-        interface_config = interfaces["google.longrunning.Operations"]
-        method_configs = gapic_v1.config_async.parse_method_configs(interface_config)
+        default_retry = retries.Retry(
+            initial=0.1,  # seconds
+            maximum=60.0,  # seconds
+            multiplier=1.3,
+            predicate=retries.if_exception_type(
+                core_exceptions.DeadlineExceeded,
+                core_exceptions.ServiceUnavailable,
+            ),
+            timeout=600.0,  # seconds
+        )
+        default_timeout = timeouts.TimeToDeadlineTimeout(timeout=600.0)
 
         self._get_operation = gapic_v1.method_async.wrap_method(
             self.operations_stub.GetOperation,
-            default_retry=method_configs["GetOperation"].retry,
-            default_timeout=method_configs["GetOperation"].timeout,
+            default_retry=default_retry,
+            default_timeout=default_timeout,
         )
 
         self._list_operations = gapic_v1.method_async.wrap_method(
             self.operations_stub.ListOperations,
-            default_retry=method_configs["ListOperations"].retry,
-            default_timeout=method_configs["ListOperations"].timeout,
+            default_retry=default_retry,
+            default_timeout=default_timeout,
         )
 
         self._cancel_operation = gapic_v1.method_async.wrap_method(
             self.operations_stub.CancelOperation,
-            default_retry=method_configs["CancelOperation"].retry,
-            default_timeout=method_configs["CancelOperation"].timeout,
+            default_retry=default_retry,
+            default_timeout=default_timeout,
         )
 
         self._delete_operation = gapic_v1.method_async.wrap_method(
             self.operations_stub.DeleteOperation,
-            default_retry=method_configs["DeleteOperation"].retry,
-            default_timeout=method_configs["DeleteOperation"].timeout,
+            default_retry=default_retry,
+            default_timeout=default_timeout,
         )
 
     async def get_operation(

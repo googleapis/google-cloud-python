@@ -15,7 +15,7 @@
 
 try:
     import grpc
-except ImportError:
+except ImportError:  # pragma: NO COVER
     grpc = None
 
 from google.api_core import client_info
@@ -26,9 +26,9 @@ def test_constructor_defaults():
 
     assert info.python_version is not None
 
-    if grpc is not None:
+    if grpc is not None:  # pragma: NO COVER
         assert info.grpc_version is not None
-    else:
+    else:  # pragma: NO COVER
         assert info.grpc_version is None
 
     assert info.api_core_version is not None

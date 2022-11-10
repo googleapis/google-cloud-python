@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
+import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from requests import __version__ as requests_version
@@ -73,6 +74,7 @@ class OperationsRestTransport(OperationsTransport):
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
         http_options: Optional[Dict] = None,
+        path_prefix: str = "v1",
     ) -> None:
         """Instantiate the transport.
 
@@ -108,12 +110,24 @@ class OperationsRestTransport(OperationsTransport):
             http_options: a dictionary of http_options for transcoding, to override
                 the defaults from operatons.proto.  Each method has an entry
                 with the corresponding http rules as value.
+            path_prefix: path prefix (usually represents API version). Set to
+                "v1" by default.
 
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -127,6 +141,7 @@ class OperationsRestTransport(OperationsTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
         self._http_options = http_options or {}
+        self._path_prefix = path_prefix
 
     def _list_operations(
         self,
@@ -157,7 +172,10 @@ class OperationsRestTransport(OperationsTransport):
         """
 
         http_options = [
-            {"method": "get", "uri": "/v1/{name=operations}"},
+            {
+                "method": "get",
+                "uri": "/{}/{{name=**}}/operations".format(self._path_prefix),
+            },
         ]
         if "google.longrunning.Operations.ListOperations" in self._http_options:
             http_options = self._http_options[
@@ -188,7 +206,7 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         response = getattr(self._session, method)(
-            "https://{host}{uri}".format(host=self._host, uri=uri),
+            "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),
@@ -234,7 +252,10 @@ class OperationsRestTransport(OperationsTransport):
         """
 
         http_options = [
-            {"method": "get", "uri": "/v1/{name=operations/**}"},
+            {
+                "method": "get",
+                "uri": "/{}/{{name=**/operations/*}}".format(self._path_prefix),
+            },
         ]
         if "google.longrunning.Operations.GetOperation" in self._http_options:
             http_options = self._http_options[
@@ -265,7 +286,7 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         response = getattr(self._session, method)(
-            "https://{host}{uri}".format(host=self._host, uri=uri),
+            "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),
@@ -304,7 +325,10 @@ class OperationsRestTransport(OperationsTransport):
         """
 
         http_options = [
-            {"method": "delete", "uri": "/v1/{name=operations/**}"},
+            {
+                "method": "delete",
+                "uri": "/{}/{{name=**/operations/*}}".format(self._path_prefix),
+            },
         ]
         if "google.longrunning.Operations.DeleteOperation" in self._http_options:
             http_options = self._http_options[
@@ -335,7 +359,7 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         response = getattr(self._session, method)(
-            "https://{host}{uri}".format(host=self._host, uri=uri),
+            "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),
@@ -371,7 +395,11 @@ class OperationsRestTransport(OperationsTransport):
         """
 
         http_options = [
-            {"method": "post", "uri": "/v1/{name=operations/**}:cancel", "body": "*"},
+            {
+                "method": "post",
+                "uri": "/{}/{{name=**/operations/*}}:cancel".format(self._path_prefix),
+                "body": "*",
+            },
         ]
         if "google.longrunning.Operations.CancelOperation" in self._http_options:
             http_options = self._http_options[
@@ -411,7 +439,7 @@ class OperationsRestTransport(OperationsTransport):
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
         response = getattr(self._session, method)(
-            "https://{host}{uri}".format(host=self._host, uri=uri),
+            "{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),

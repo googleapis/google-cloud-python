@@ -61,10 +61,13 @@ class Operation(polling.PollingFuture):
             result.
         metadata_type (func:`type`): The protobuf type for the operation's
             metadata.
-        retry (google.api_core.retry.Retry): The retry configuration used
-            when polling. This can be used to control how often :meth:`done`
-            is polled. Regardless of the retry's ``deadline``, it will be
-            overridden by the ``timeout`` argument to :meth:`result`.
+        polling (google.api_core.retry.Retry): The configuration used for polling.
+            This parameter controls how often :meth:`done` is polled. If the
+            ``timeout`` argument is specified in the :meth:`result` method, it will
+            override the ``polling.timeout`` property.
+        retry (google.api_core.retry.Retry): DEPRECATED: use ``polling`` instead.
+            If specified it will override ``polling`` parameter to maintain
+            backward compatibility.
     """
 
     def __init__(
@@ -74,9 +77,10 @@ class Operation(polling.PollingFuture):
         cancel,
         result_type,
         metadata_type=None,
-        retry=polling.DEFAULT_RETRY,
+        polling=polling.DEFAULT_POLLING,
+        **kwargs
     ):
-        super(Operation, self).__init__(retry=retry)
+        super(Operation, self).__init__(polling=polling, **kwargs)
         self._operation = operation
         self._refresh = refresh
         self._cancel = cancel
@@ -146,7 +150,7 @@ class Operation(polling.PollingFuture):
                 )
                 self.set_exception(exception)
 
-    def _refresh_and_update(self, retry=polling.DEFAULT_RETRY):
+    def _refresh_and_update(self, retry=None):
         """Refresh the operation and update the result if needed.
 
         Args:
@@ -155,10 +159,10 @@ class Operation(polling.PollingFuture):
         # If the currently cached operation is done, no need to make another
         # RPC as it will not change once done.
         if not self._operation.done:
-            self._operation = self._refresh(retry=retry)
+            self._operation = self._refresh(retry=retry) if retry else self._refresh()
             self._set_result_from_operation()
 
-    def done(self, retry=polling.DEFAULT_RETRY):
+    def done(self, retry=None):
         """Checks to see if the operation is complete.
 
         Args:

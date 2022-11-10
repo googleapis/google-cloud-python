@@ -18,11 +18,11 @@ import pytest  # noqa: I202
 try:
     import grpc
     from grpc import aio
-except ImportError:
+except ImportError:  # pragma: NO COVER
     grpc = aio = None
 
 
-if grpc is None:
+if grpc is None:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 

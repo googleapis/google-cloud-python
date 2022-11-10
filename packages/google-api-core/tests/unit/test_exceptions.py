@@ -22,7 +22,7 @@ import requests
 try:
     import grpc
     from grpc_status import rpc_status
-except ImportError:
+except ImportError:  # pragma: NO COVER
     grpc = rpc_status = None
 
 from google.api_core import exceptions

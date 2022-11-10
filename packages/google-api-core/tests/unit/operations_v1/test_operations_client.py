@@ -16,12 +16,13 @@ import pytest
 
 try:
     import grpc  # noqa: F401
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import grpc_helpers
 from google.api_core import operations_v1
 from google.api_core import page_iterator
+from google.api_core.operations_v1 import operations_client_config
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
@@ -96,3 +97,7 @@ def test_cancel_operation():
     ].metadata
     assert len(channel.CancelOperation.requests) == 1
     assert channel.CancelOperation.requests[0].name == "name"
+
+
+def test_operations_client_config():
+    assert operations_client_config.config["interfaces"]

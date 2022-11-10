@@ -39,27 +39,6 @@ def _utcnow_monotonic():
         curr_value += delta
 
 
-def test__determine_timeout():
-    # Check _determine_timeout always returns a Timeout object.
-    timeout_type_timeout = timeout.ConstantTimeout(600.0)
-    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
-        600.0, 600.0, None
-    )
-    assert isinstance(returned_timeout, timeout.ConstantTimeout)
-    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
-        600.0, timeout_type_timeout, None
-    )
-    assert isinstance(returned_timeout, timeout.ConstantTimeout)
-    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
-        timeout_type_timeout, 600.0, None
-    )
-    assert isinstance(returned_timeout, timeout.ConstantTimeout)
-    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
-        timeout_type_timeout, timeout_type_timeout, None
-    )
-    assert isinstance(returned_timeout, timeout.ConstantTimeout)
-
-
 def test_wrap_method_basic():
     method = mock.Mock(spec=["__call__"], return_value=42)
 
@@ -197,37 +176,6 @@ def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
     assert result == 42
     assert method.call_count == 2
     method.assert_called_with(timeout=22, metadata=mock.ANY)
-
-
-@mock.patch("time.sleep")
-@mock.patch(
-    "google.api_core.datetime_helpers.utcnow",
-    side_effect=_utcnow_monotonic(),
-    autospec=True,
-)
-def test_wrap_method_with_overriding_retry_deadline(utcnow, unused_sleep):
-    method = mock.Mock(
-        spec=["__call__"],
-        side_effect=([exceptions.InternalServerError(None)] * 4) + [42],
-    )
-    default_retry = retry.Retry()
-    default_timeout = timeout.ExponentialTimeout(deadline=60)
-    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, default_retry, default_timeout
-    )
-
-    # Overriding only the retry's deadline should also override the timeout's
-    # deadline.
-    result = wrapped_method(retry=default_retry.with_deadline(30))
-
-    assert result == 42
-    timeout_args = [call[1]["timeout"] for call in method.call_args_list]
-    assert timeout_args == [5.0, 10.0, 20.0, 26.0, 25.0]
-    assert utcnow.call_count == (
-        1
-        + 5  # First to set the deadline.
-        + 5  # One for each min(timeout, maximum, (DEADLINE - NOW).seconds)
-    )
 
 
 def test_wrap_method_with_overriding_timeout_as_a_number():

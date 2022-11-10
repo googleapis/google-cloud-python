@@ -24,7 +24,7 @@ from google.api_core.future import polling
 
 
 class PollingFutureImpl(polling.PollingFuture):
-    def done(self):
+    def done(self, retry=None):
         return False
 
     def cancel(self):
@@ -32,9 +32,6 @@ class PollingFutureImpl(polling.PollingFuture):
 
     def cancelled(self):
         return False
-
-    def running(self):
-        return True
 
 
 def test_polling_future_constructor():
@@ -84,20 +81,23 @@ def test_invoke_callback_exception():
 
 
 class PollingFutureImplWithPoll(PollingFutureImpl):
-    def __init__(self):
+    def __init__(self, max_poll_count=1):
         super(PollingFutureImplWithPoll, self).__init__()
         self.poll_count = 0
         self.event = threading.Event()
+        self.max_poll_count = max_poll_count
 
-    def done(self, retry=polling.DEFAULT_RETRY):
+    def done(self, retry=None):
         self.poll_count += 1
+        if self.max_poll_count > self.poll_count:
+            return False
         self.event.wait()
         self.set_result(42)
         return True
 
 
-def test_result_with_polling():
-    future = PollingFutureImplWithPoll()
+def test_result_with_one_polling():
+    future = PollingFutureImplWithPoll(max_poll_count=1)
 
     future.event.set()
     result = future.result()
@@ -109,8 +109,34 @@ def test_result_with_polling():
     assert future.poll_count == 1
 
 
+def test_result_with_two_pollings():
+    future = PollingFutureImplWithPoll(max_poll_count=2)
+
+    future.event.set()
+    result = future.result()
+
+    assert result == 42
+    assert future.poll_count == 2
+    # Repeated calls should not cause additional polling
+    assert future.result() == result
+    assert future.poll_count == 2
+
+
+def test_result_with_two_pollings_custom_retry():
+    future = PollingFutureImplWithPoll(max_poll_count=2)
+
+    future.event.set()
+    result = future.result()
+
+    assert result == 42
+    assert future.poll_count == 2
+    # Repeated calls should not cause additional polling
+    assert future.result() == result
+    assert future.poll_count == 2
+
+
 class PollingFutureImplTimeout(PollingFutureImplWithPoll):
-    def done(self, retry=polling.DEFAULT_RETRY):
+    def done(self, retry=None):
         time.sleep(1)
         return False
 
@@ -132,11 +158,11 @@ class PollingFutureImplTransient(PollingFutureImplWithPoll):
         super(PollingFutureImplTransient, self).__init__()
         self._errors = errors
 
-    def done(self, retry=polling.DEFAULT_RETRY):
+    def done(self, retry=None):
+        self.poll_count += 1
         if self._errors:
             error, self._errors = self._errors[0], self._errors[1:]
             raise error("testing")
-        self.poll_count += 1
         self.set_result(42)
         return True
 
@@ -144,17 +170,17 @@ class PollingFutureImplTransient(PollingFutureImplWithPoll):
 def test_result_transient_error():
     future = PollingFutureImplTransient(
         (
-            exceptions.TooManyRequests,
-            exceptions.InternalServerError,
-            exceptions.BadGateway,
+            polling._OperationNotComplete,
+            polling._OperationNotComplete,
+            polling._OperationNotComplete,
         )
     )
     result = future.result()
     assert result == 42
-    assert future.poll_count == 1
+    assert future.poll_count == 4
     # Repeated calls should not cause additional polling
     assert future.result() == result
-    assert future.poll_count == 1
+    assert future.poll_count == 4
 
 
 def test_callback_background_thread():
@@ -197,23 +223,23 @@ def test_double_callback_background_thread():
 
 
 class PollingFutureImplWithoutRetry(PollingFutureImpl):
-    def done(self):
+    def done(self, retry=None):
         return True
 
-    def result(self):
+    def result(self, timeout=None, retry=None, polling=None):
         return super(PollingFutureImplWithoutRetry, self).result()
 
-    def _blocking_poll(self, timeout):
+    def _blocking_poll(self, timeout=None, retry=None, polling=None):
         return super(PollingFutureImplWithoutRetry, self)._blocking_poll(
             timeout=timeout
         )
 
 
 class PollingFutureImplWith_done_or_raise(PollingFutureImpl):
-    def done(self):
+    def done(self, retry=None):
         return True
 
-    def _done_or_raise(self):
+    def _done_or_raise(self, retry=None):
         return super(PollingFutureImplWith_done_or_raise, self)._done_or_raise()
 
 
@@ -223,12 +249,12 @@ def test_polling_future_without_retry():
     )
     future = PollingFutureImplWithoutRetry()
     assert future.done()
-    assert future.running()
+    assert not future.running()
     assert future.result() is None
 
     with mock.patch.object(future, "done") as done_mock:
         future._done_or_raise()
-        done_mock.assert_called_once_with()
+        done_mock.assert_called_once_with(retry=None)
 
     with mock.patch.object(future, "done") as done_mock:
         future._done_or_raise(retry=custom_retry)
@@ -238,5 +264,5 @@ def test_polling_future_without_retry():
 def test_polling_future_with__done_or_raise():
     future = PollingFutureImplWith_done_or_raise()
     assert future.done()
-    assert future.running()
+    assert not future.running()
     assert future.result() is None

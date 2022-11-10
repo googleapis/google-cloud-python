@@ -33,6 +33,9 @@ _MILLIS_PER_SECOND = 1000.0
 def _exception_class_for_grpc_status_name(name):
     """Returns the Google API exception class for a gRPC error code name.
 
+    DEPRECATED: use ``exceptions.exception_class_for_grpc_status`` method
+    directly instead.
+
     Args:
         name (str): The name of the gRPC status code, for example,
             ``UNAVAILABLE``.
@@ -46,6 +49,8 @@ def _exception_class_for_grpc_status_name(name):
 
 def _retry_from_retry_config(retry_params, retry_codes, retry_impl=retry.Retry):
     """Creates a Retry object given a gapic retry configuration.
+
+    DEPRECATED: instantiate retry and timeout classes directly instead.
 
     Args:
         retry_params (dict): The retry parameter values, for example::
@@ -81,6 +86,8 @@ def _retry_from_retry_config(retry_params, retry_codes, retry_impl=retry.Retry):
 def _timeout_from_retry_config(retry_params):
     """Creates a ExponentialTimeout object given a gapic retry configuration.
 
+    DEPRECATED: instantiate retry and timeout classes directly instead.
+
     Args:
         retry_params (dict): The retry parameter values, for example::
 
@@ -112,6 +119,8 @@ MethodConfig = collections.namedtuple("MethodConfig", ["retry", "timeout"])
 def parse_method_configs(interface_config, retry_impl=retry.Retry):
     """Creates default retry and timeout objects for each method in a gapic
     interface config.
+
+    DEPRECATED: instantiate retry and timeout classes directly instead.
 
     Args:
         interface_config (Mapping): The interface config section of the full

@@ -22,8 +22,8 @@ import enum
 import functools
 
 from google.api_core import grpc_helpers
-from google.api_core import timeout
 from google.api_core.gapic_v1 import client_info
+from google.api_core.timeout import TimeToDeadlineTimeout
 
 USE_DEFAULT_METADATA = object()
 
@@ -52,53 +52,12 @@ def _apply_decorators(func, decorators):
     ``decorators`` may contain items that are ``None`` or ``False`` which will
     be ignored.
     """
-    decorators = filter(_is_not_none_or_false, reversed(decorators))
+    filtered_decorators = filter(_is_not_none_or_false, reversed(decorators))
 
-    for decorator in decorators:
+    for decorator in filtered_decorators:
         func = decorator(func)
 
     return func
-
-
-def _determine_timeout(default_timeout, specified_timeout, retry):
-    """Determines how timeout should be applied to a wrapped method.
-
-    Args:
-        default_timeout (Optional[Timeout]): The default timeout specified
-            at method creation time.
-        specified_timeout (Optional[Timeout]): The timeout specified at
-            invocation time. If :attr:`DEFAULT`, this will be set to
-            the ``default_timeout``.
-        retry (Optional[Retry]): The retry specified at invocation time.
-
-    Returns:
-        Optional[Timeout]: The timeout to apply to the method or ``None``.
-    """
-    # If timeout is specified as a number instead of a Timeout instance,
-    # convert it to a ConstantTimeout.
-    if isinstance(specified_timeout, (int, float)):
-        specified_timeout = timeout.ConstantTimeout(specified_timeout)
-    if isinstance(default_timeout, (int, float)):
-        default_timeout = timeout.ConstantTimeout(default_timeout)
-
-    if specified_timeout is DEFAULT:
-        specified_timeout = default_timeout
-
-    if specified_timeout is default_timeout:
-        # If timeout is the default and the default timeout is exponential and
-        # a non-default retry is specified, make sure the timeout's deadline
-        # matches the retry's. This handles the case where the user leaves
-        # the timeout default but specifies a lower deadline via the retry.
-        if (
-            retry
-            and retry is not DEFAULT
-            and isinstance(default_timeout, timeout.ExponentialTimeout)
-        ):
-            return default_timeout.with_deadline(retry._deadline)
-        else:
-            return default_timeout
-
-    return specified_timeout
 
 
 class _GapicCallable(object):
@@ -108,9 +67,11 @@ class _GapicCallable(object):
         target (Callable): The low-level RPC method.
         retry (google.api_core.retry.Retry): The default retry for the
             callable. If ``None``, this callable will not retry by default
-        timeout (google.api_core.timeout.Timeout): The default timeout
-            for the callable. If ``None``, this callable will not specify
-            a timeout argument to the low-level RPC method by default.
+        timeout (google.api_core.timeout.Timeout): The default timeout for the
+            callable (i.e. duration of time within which an RPC must terminate
+            after its start, not to be confused with deadline). If ``None``,
+            this callable will not specify a timeout argument to the low-level
+            RPC method.
         metadata (Sequence[Tuple[str, str]]): Additional metadata that is
             provided to the RPC method on every invocation. This is merged with
             any metadata specified during invocation. If ``None``, no
@@ -125,17 +86,15 @@ class _GapicCallable(object):
 
     def __call__(self, *args, timeout=DEFAULT, retry=DEFAULT, **kwargs):
         """Invoke the low-level RPC with retry, timeout, and metadata."""
-        timeout = _determine_timeout(
-            self._timeout,
-            timeout,
-            # Use only the invocation-specified retry only for this, as we only
-            # want to adjust the timeout deadline if the *user* specified
-            # a different retry.
-            retry,
-        )
 
         if retry is DEFAULT:
             retry = self._retry
+
+        if timeout is DEFAULT:
+            timeout = self._timeout
+
+        if isinstance(timeout, (int, float)):
+            timeout = TimeToDeadlineTimeout(timeout=timeout)
 
         # Apply all applicable decorators.
         wrapped_func = _apply_decorators(self._target, [retry, timeout])

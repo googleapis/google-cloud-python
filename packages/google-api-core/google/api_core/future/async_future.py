@@ -95,7 +95,7 @@ class AsyncFuture(base.Future):
         if self._future.done():
             return
 
-        retry_ = self._retry.with_deadline(timeout)
+        retry_ = self._retry.with_timeout(timeout)
 
         try:
             await retry_(self._done_or_raise)()

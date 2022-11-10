@@ -52,7 +52,7 @@ def test_if_transient_error():
 
 # Make uniform return half of its maximum, which will be the calculated
 # sleep time.
-@mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+@mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
 def test_exponential_sleep_generator_base_2(uniform):
     gen = retry.exponential_sleep_generator(1, 60, multiplier=2)
 
@@ -172,6 +172,7 @@ class TestRetry(object):
         assert retry_._deadline == 120
         assert retry_._on_error is None
         assert retry_.deadline == 120
+        assert retry_.timeout == 120
 
     def test_constructor_options(self):
         _some_function = mock.Mock()
@@ -315,7 +316,7 @@ class TestRetry(object):
         assert re.match(
             (
                 r"<Retry predicate=<function.*?if_exception_type.*?>, "
-                r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0, "
+                r"initial=1.0, maximum=60.0, multiplier=2.0, timeout=120.0, "
                 r"on_error=None>"
             ),
             str(retry_),
@@ -337,8 +338,7 @@ class TestRetry(object):
         target.assert_called_once_with("meep")
         sleep.assert_not_called()
 
-    # Make uniform return half of its maximum, which is the calculated sleep time.
-    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("time.sleep", autospec=True)
     def test___call___and_execute_retry(self, sleep, uniform):
 
@@ -360,8 +360,7 @@ class TestRetry(object):
         sleep.assert_called_once_with(retry_._initial)
         assert on_error.call_count == 1
 
-    # Make uniform return half of its maximum, which is the calculated sleep time.
-    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("time.sleep", autospec=True)
     def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
 
@@ -371,7 +370,7 @@ class TestRetry(object):
             initial=1.0,
             maximum=1024.0,
             multiplier=2.0,
-            deadline=9.9,
+            deadline=30.9,
         )
 
         utcnow = datetime.datetime.utcnow()
@@ -406,8 +405,17 @@ class TestRetry(object):
         last_wait = sleep.call_args.args[0]
         total_wait = sum(call_args.args[0] for call_args in sleep.call_args_list)
 
-        assert last_wait == 2.9  # and not 8.0, because the last delay was shortened
-        assert total_wait == 9.9  # the same as the deadline
+        assert last_wait == 8.0
+        # Next attempt would be scheduled in 16 secs, 15 + 16 = 31 > 30.9, thus
+        # we do not even wait for it to be scheduled (30.9 is configured timeout).
+        # This changes the previous logic of shortening the last attempt to fit
+        # in the deadline. The previous logic was removed to make Python retry
+        # logic consistent with the other languages and to not disrupt the
+        # randomized retry delays distribution by artificially increasing a
+        # probability of scheduling two (instead of one) last attempts with very
+        # short delay between them, while the second retry having very low chance
+        # of succeeding anyways.
+        assert total_wait == 15.0
 
     @mock.patch("time.sleep", autospec=True)
     def test___init___without_retry_executed(self, sleep):
@@ -432,8 +440,7 @@ class TestRetry(object):
         sleep.assert_not_called()
         _some_function.assert_not_called()
 
-    # Make uniform return half of its maximum, which is the calculated sleep time.
-    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("time.sleep", autospec=True)
     def test___init___when_retry_is_executed(self, sleep, uniform):
         _some_function = mock.Mock()

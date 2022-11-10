@@ -22,7 +22,7 @@ import pytest
 
 try:
     import grpc
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import bidi
