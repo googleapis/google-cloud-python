@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.geo.type import viewport_pb2  # type: ignore
+import google.geo.type.types  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -78,7 +78,7 @@ class Route(proto.Message):
         warnings (Sequence[str]):
             An array of warnings to show when displaying
             the route.
-        viewport (google.geo.type.viewport_pb2.Viewport):
+        viewport (google.geo.type.types.Viewport):
             The viewport bounding box of the polyline.
         travel_advisory (google.maps.routing_v2.types.RouteTravelAdvisory):
             Additional information about the route.
@@ -132,7 +132,7 @@ class Route(proto.Message):
     viewport = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=viewport_pb2.Viewport,
+        message=google.geo.type.types.Viewport,
     )
     travel_advisory = proto.Field(
         proto.MESSAGE,
