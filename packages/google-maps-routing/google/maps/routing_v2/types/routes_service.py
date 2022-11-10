@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -55,7 +57,7 @@ class ComputeRoutesRequest(proto.Message):
             Required. Origin waypoint.
         destination (google.maps.routing_v2.types.Waypoint):
             Required. Destination waypoint.
-        intermediates (Sequence[google.maps.routing_v2.types.Waypoint]):
+        intermediates (MutableSequence[google.maps.routing_v2.types.Waypoint]):
             Optional. A set of waypoints along the route
             (excluding terminal points), for either stopping
             at or passing by. Up to 25 intermediate
@@ -107,7 +109,7 @@ class ComputeRoutesRequest(proto.Message):
             route, leg, step distance, and duration are not affected by
             this value. If you don't provide this value, then the
             display units are inferred from the location of the request.
-        requested_reference_routes (Sequence[google.maps.routing_v2.types.ComputeRoutesRequest.ReferenceRoute]):
+        requested_reference_routes (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ReferenceRoute]):
             Optional. Specifies what reference routes to calculate as
             part of the request in addition to the default route. A
             reference route is a route with a different route
@@ -122,65 +124,65 @@ class ComputeRoutesRequest(proto.Message):
         REFERENCE_ROUTE_UNSPECIFIED = 0
         FUEL_EFFICIENT = 1
 
-    origin = proto.Field(
+    origin: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gmr_waypoint.Waypoint,
     )
-    destination = proto.Field(
+    destination: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gmr_waypoint.Waypoint,
     )
-    intermediates = proto.RepeatedField(
+    intermediates: MutableSequence[gmr_waypoint.Waypoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=gmr_waypoint.Waypoint,
     )
-    travel_mode = proto.Field(
+    travel_mode: route_travel_mode.RouteTravelMode = proto.Field(
         proto.ENUM,
         number=4,
         enum=route_travel_mode.RouteTravelMode,
     )
-    routing_preference = proto.Field(
+    routing_preference: gmr_routing_preference.RoutingPreference = proto.Field(
         proto.ENUM,
         number=5,
         enum=gmr_routing_preference.RoutingPreference,
     )
-    polyline_quality = proto.Field(
+    polyline_quality: polyline.PolylineQuality = proto.Field(
         proto.ENUM,
         number=6,
         enum=polyline.PolylineQuality,
     )
-    polyline_encoding = proto.Field(
+    polyline_encoding: polyline.PolylineEncoding = proto.Field(
         proto.ENUM,
         number=12,
         enum=polyline.PolylineEncoding,
     )
-    departure_time = proto.Field(
+    departure_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    compute_alternative_routes = proto.Field(
+    compute_alternative_routes: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    route_modifiers = proto.Field(
+    route_modifiers: gmr_route_modifiers.RouteModifiers = proto.Field(
         proto.MESSAGE,
         number=9,
         message=gmr_route_modifiers.RouteModifiers,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    units = proto.Field(
+    units: gmr_units.Units = proto.Field(
         proto.ENUM,
         number=11,
         enum=gmr_units.Units,
     )
-    requested_reference_routes = proto.RepeatedField(
+    requested_reference_routes: MutableSequence[ReferenceRoute] = proto.RepeatedField(
         proto.ENUM,
         number=14,
         enum=ReferenceRoute,
@@ -191,7 +193,7 @@ class ComputeRoutesResponse(proto.Message):
     r"""ComputeRoutes the response message.
 
     Attributes:
-        routes (Sequence[google.maps.routing_v2.types.Route]):
+        routes (MutableSequence[google.maps.routing_v2.types.Route]):
             Contains an array of computed routes (up to three) when you
             specify compute_alternatives_routes, and contains just one
             route when you don't. When this array contains multiple
@@ -207,12 +209,12 @@ class ComputeRoutesResponse(proto.Message):
             unset.
     """
 
-    routes = proto.RepeatedField(
+    routes: MutableSequence[route.Route] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=route.Route,
     )
-    fallback_info = proto.Field(
+    fallback_info: gmr_fallback_info.FallbackInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gmr_fallback_info.FallbackInfo,
@@ -223,7 +225,7 @@ class ComputeRouteMatrixRequest(proto.Message):
     r"""ComputeRouteMatrix request message
 
     Attributes:
-        origins (Sequence[google.maps.routing_v2.types.RouteMatrixOrigin]):
+        origins (MutableSequence[google.maps.routing_v2.types.RouteMatrixOrigin]):
             Required. Array of origins, which determines the rows of the
             response matrix. Several size restrictions apply to the
             cardinality of origins and destinations:
@@ -235,7 +237,7 @@ class ComputeRouteMatrixRequest(proto.Message):
                ``TRAFFIC_AWARE_OPTIMAL``.
             -  The number of waypoints (origins + destinations)
                specified as ``place_id`` must be no greater than 50.
-        destinations (Sequence[google.maps.routing_v2.types.RouteMatrixDestination]):
+        destinations (MutableSequence[google.maps.routing_v2.types.RouteMatrixDestination]):
             Required. Array of destinations, which
             determines the columns of the response matrix.
         travel_mode (google.maps.routing_v2.types.RouteTravelMode):
@@ -259,27 +261,27 @@ class ComputeRouteMatrixRequest(proto.Message):
             fails.
     """
 
-    origins = proto.RepeatedField(
+    origins: MutableSequence["RouteMatrixOrigin"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RouteMatrixOrigin",
     )
-    destinations = proto.RepeatedField(
+    destinations: MutableSequence["RouteMatrixDestination"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="RouteMatrixDestination",
     )
-    travel_mode = proto.Field(
+    travel_mode: route_travel_mode.RouteTravelMode = proto.Field(
         proto.ENUM,
         number=3,
         enum=route_travel_mode.RouteTravelMode,
     )
-    routing_preference = proto.Field(
+    routing_preference: gmr_routing_preference.RoutingPreference = proto.Field(
         proto.ENUM,
         number=4,
         enum=gmr_routing_preference.RoutingPreference,
     )
-    departure_time = proto.Field(
+    departure_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -297,12 +299,12 @@ class RouteMatrixOrigin(proto.Message):
             takes this as the origin
     """
 
-    waypoint = proto.Field(
+    waypoint: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gmr_waypoint.Waypoint,
     )
-    route_modifiers = proto.Field(
+    route_modifiers: gmr_route_modifiers.RouteModifiers = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gmr_route_modifiers.RouteModifiers,
@@ -317,7 +319,7 @@ class RouteMatrixDestination(proto.Message):
             Required. Destination waypoint
     """
 
-    waypoint = proto.Field(
+    waypoint: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gmr_waypoint.Waypoint,
@@ -373,46 +375,46 @@ class RouteMatrixElement(proto.Message):
             unset.
     """
 
-    origin_index = proto.Field(
+    origin_index: int = proto.Field(
         proto.INT32,
         number=1,
         optional=True,
     )
-    destination_index = proto.Field(
+    destination_index: int = proto.Field(
         proto.INT32,
         number=2,
         optional=True,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    condition = proto.Field(
+    condition: "RouteMatrixElementCondition" = proto.Field(
         proto.ENUM,
         number=9,
         enum="RouteMatrixElementCondition",
     )
-    distance_meters = proto.Field(
+    distance_meters: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    static_duration = proto.Field(
+    static_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    travel_advisory = proto.Field(
+    travel_advisory: route.RouteTravelAdvisory = proto.Field(
         proto.MESSAGE,
         number=7,
         message=route.RouteTravelAdvisory,
     )
-    fallback_info = proto.Field(
+    fallback_info: gmr_fallback_info.FallbackInfo = proto.Field(
         proto.MESSAGE,
         number=8,
         message=gmr_fallback_info.FallbackInfo,

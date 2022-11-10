@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import maneuver as gmr_maneuver
@@ -39,12 +41,12 @@ class NavigationInstruction(proto.Message):
             Instructions for navigating this step.
     """
 
-    maneuver = proto.Field(
+    maneuver: gmr_maneuver.Maneuver = proto.Field(
         proto.ENUM,
         number=1,
         enum=gmr_maneuver.Maneuver,
     )
-    instructions = proto.Field(
+    instructions: str = proto.Field(
         proto.STRING,
         number=2,
     )

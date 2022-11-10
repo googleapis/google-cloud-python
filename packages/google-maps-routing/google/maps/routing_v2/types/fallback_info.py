@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -57,12 +59,12 @@ class FallbackInfo(proto.Message):
             triggered and the fallback response is returned.
     """
 
-    routing_mode = proto.Field(
+    routing_mode: "FallbackRoutingMode" = proto.Field(
         proto.ENUM,
         number=1,
         enum="FallbackRoutingMode",
     )
-    reason = proto.Field(
+    reason: "FallbackReason" = proto.Field(
         proto.ENUM,
         number=2,
         enum="FallbackReason",

@@ -21,6 +21,8 @@ from typing import (
     Awaitable,
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Sequence,
     Tuple,
@@ -159,9 +161,9 @@ class RoutesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, RoutesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the routes client.
@@ -205,10 +207,10 @@ class RoutesAsyncClient:
 
     async def compute_routes(
         self,
-        request: Union[routes_service.ComputeRoutesRequest, dict] = None,
+        request: Optional[Union[routes_service.ComputeRoutesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> routes_service.ComputeRoutesResponse:
         r"""Returns the primary route along with optional alternate routes,
@@ -275,7 +277,7 @@ class RoutesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.maps.routing_v2.types.ComputeRoutesRequest, dict]):
+            request (Optional[Union[google.maps.routing_v2.types.ComputeRoutesRequest, dict]]):
                 The request object. ComputeRoutes request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -311,10 +313,10 @@ class RoutesAsyncClient:
 
     def compute_route_matrix(
         self,
-        request: Union[routes_service.ComputeRouteMatrixRequest, dict] = None,
+        request: Optional[Union[routes_service.ComputeRouteMatrixRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[routes_service.RouteMatrixElement]]:
         r"""Takes in a list of origins and destinations and returns a stream
@@ -383,7 +385,7 @@ class RoutesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.maps.routing_v2.types.ComputeRouteMatrixRequest, dict]):
+            request (Optional[Union[google.maps.routing_v2.types.ComputeRouteMatrixRequest, dict]]):
                 The request object. ComputeRouteMatrix request message
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

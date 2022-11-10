@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import location as gmr_location
@@ -80,26 +82,26 @@ class Waypoint(proto.Message):
             'TWO_WHEELER' travel modes.
     """
 
-    location = proto.Field(
+    location: gmr_location.Location = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="location_type",
         message=gmr_location.Location,
     )
-    place_id = proto.Field(
+    place_id: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="location_type",
     )
-    via = proto.Field(
+    via: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    vehicle_stopover = proto.Field(
+    vehicle_stopover: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    side_of_road = proto.Field(
+    side_of_road: bool = proto.Field(
         proto.BOOL,
         number=5,
     )

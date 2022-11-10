@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -64,12 +66,12 @@ class Polyline(proto.Message):
             This field is a member of `oneof`_ ``polyline_type``.
     """
 
-    encoded_polyline = proto.Field(
+    encoded_polyline: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="polyline_type",
     )
-    geo_json_linestring = proto.Field(
+    geo_json_linestring: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="polyline_type",

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
@@ -41,12 +43,12 @@ class Location(proto.Message):
             field only for ``DRIVE`` and ``TWO_WHEELER`` travel modes.
     """
 
-    lat_lng = proto.Field(
+    lat_lng: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=1,
         message=latlng_pb2.LatLng,
     )
-    heading = proto.Field(
+    heading: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int32Value,
