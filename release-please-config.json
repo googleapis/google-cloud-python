@@ -66,6 +66,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-apps-script-type": {
+            "component": "google-apps-script-type",
+            "release-type": "python",
+            "extra-files": [
+                "google/apps/script/type/gapic_version.py"
+            ]
         }
     }
 }
