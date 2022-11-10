@@ -113,7 +113,7 @@ def default(session, install_grpc=True):
     pytest_args = [
         "python",
         "-m",
-        "py.test",
+        "pytest",
         *(
             # Helpful for running a single test or testfile.
             session.posargs
@@ -146,13 +146,13 @@ def default(session, install_grpc=True):
     session.run(*pytest_args)
 
 
-@nox.session(python=["3.7", "3.8", "3.9", "3.10"])
+@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
+@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 def unit_grpc_gcp(session):
     """Run the unit test suite with grpcio-gcp installed."""
     constraints_path = str(
@@ -166,7 +166,7 @@ def unit_grpc_gcp(session):
     default(session)
 
 
-@nox.session(python=["3.8", "3.10"])
+@nox.session(python=["3.8", "3.10", "3.11"])
 def unit_wo_grpc(session):
     """Run the unit test suite w/o grpcio installed"""
     default(session, install_grpc=False)
