@@ -30,6 +30,7 @@ excludes = [
     ".coveragerc",  # layout
     "CONTRIBUTING.rst",  # no systests
     ".github/workflows/unittest.yml", # exclude unittest gh action
+    ".github/workflows/lint.yml", # exclude lint gh action
     "README.rst",
 ]
 templated_files = common.py_library(microgenerator=True, cov_level=100)
