@@ -94,7 +94,6 @@ def default(session, install_grpc=True):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
-    # Install all test dependencies, then install this package in-place.
     session.install(
         "dataclasses",
         "mock",
