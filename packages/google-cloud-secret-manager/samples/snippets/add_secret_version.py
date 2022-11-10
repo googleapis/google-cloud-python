@@ -19,10 +19,10 @@ specified payload to an existing secret.
 
 import argparse
 
+# [START secretmanager_add_secret_version]
 import google_crc32c
 
 
-# [START secretmanager_add_secret_version]
 def add_secret_version(project_id, secret_id, payload):
     """
     Add a new secret version to the given secret with the provided payload.
