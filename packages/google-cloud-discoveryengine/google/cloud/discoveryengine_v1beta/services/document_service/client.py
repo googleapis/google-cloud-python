@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -67,7 +78,7 @@ class DocumentServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -373,7 +384,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentServiceTransport, None] = None,
+        transport: Optional[Union[str, DocumentServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -474,11 +485,11 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def get_document(
         self,
-        request: Union[document_service.GetDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.GetDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Gets a [Document][google.cloud.discoveryengine.v1beta.Document].
@@ -589,11 +600,11 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def list_documents(
         self,
-        request: Union[document_service.ListDocumentsRequest, dict] = None,
+        request: Optional[Union[document_service.ListDocumentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsPager:
         r"""Gets a list of
@@ -714,13 +725,13 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def create_document(
         self,
-        request: Union[document_service.CreateDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.CreateDocumentRequest, dict]] = None,
         *,
-        parent: str = None,
-        document: gcd_document.Document = None,
-        document_id: str = None,
+        parent: Optional[str] = None,
+        document: Optional[gcd_document.Document] = None,
+        document_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_document.Document:
         r"""Creates a
@@ -863,10 +874,10 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def update_document(
         self,
-        request: Union[document_service.UpdateDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.UpdateDocumentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Updates a
@@ -952,11 +963,11 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def delete_document(
         self,
-        request: Union[document_service.DeleteDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.DeleteDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a
@@ -1055,10 +1066,10 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def import_documents(
         self,
-        request: Union[import_config.ImportDocumentsRequest, dict] = None,
+        request: Optional[Union[import_config.ImportDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Bulk import of multiple
@@ -1177,10 +1188,10 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1231,10 +1242,10 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
