@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import google.geo.type.types  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
@@ -58,37 +60,37 @@ class Geocode(proto.Message):
 
             For more information about Place IDs see
             `here <https://developers.google.com/maps/documentation/places/web-service/place-id>`__.
-        place_types (Sequence[str]):
+        place_types (MutableSequence[str]):
             The type(s) of place that the input geocoded to. For
             example, ``['locality', 'political']``. The full list of
             types can be found
-            `here <https://developers.google.com/maps/documentation/geocoding/overview#Types>`__.
+            `here <https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types>`__.
     """
 
-    location = proto.Field(
+    location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=1,
         message=latlng_pb2.LatLng,
     )
-    plus_code = proto.Field(
+    plus_code: "PlusCode" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PlusCode",
     )
-    bounds = proto.Field(
+    bounds: google.geo.type.types.Viewport = proto.Field(
         proto.MESSAGE,
         number=4,
         message=google.geo.type.types.Viewport,
     )
-    feature_size_meters = proto.Field(
+    feature_size_meters: float = proto.Field(
         proto.FLOAT,
         number=5,
     )
-    place_id = proto.Field(
+    place_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    place_types = proto.RepeatedField(
+    place_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -112,11 +114,11 @@ class PlusCode(proto.Message):
             formatted name of a reference entity.
     """
 
-    global_code = proto.Field(
+    global_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    compound_code = proto.Field(
+    compound_code: str = proto.Field(
         proto.STRING,
         number=2,
     )

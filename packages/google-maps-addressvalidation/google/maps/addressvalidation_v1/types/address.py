@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -38,27 +40,27 @@ class Address(proto.Message):
         postal_address (google.type.postal_address_pb2.PostalAddress):
             The validated address represented as a postal
             address.
-        address_components (Sequence[google.maps.addressvalidation_v1.types.AddressComponent]):
-            The individual address components of the
-            formatted and corrected address, along with
-            validation information. This provides
-            information on the validation status of the
-            individual components.
+        address_components (MutableSequence[google.maps.addressvalidation_v1.types.AddressComponent]):
+            Unordered list. The individual address
+            components of the formatted and corrected
+            address, along with validation information. This
+            provides information on the validation status of
+            the individual components.
             Address components are not ordered in a
-            particular way. DO NOT make any assumptions on
+            particular way. Do not make any assumptions on
             the ordering of the address components in the
             list.
-        missing_component_types (Sequence[str]):
+        missing_component_types (MutableSequence[str]):
             The types of components that were expected to be present in
             a correctly formatted mailing address but were not found in
             the input AND could not be inferred. Components of this type
             are not present in ``formatted_address``,
             ``postal_address``, or ``address_components``. An example
             might be ``['street_number', 'route']`` for an input like
-            "Boulder, Colorado, 80301, USA." The list of possible types
+            "Boulder, Colorado, 80301, USA". The list of possible types
             can be found
-            `here <https://developers.google.com/maps/documentation/geocoding/overview#Types>`__.
-        unconfirmed_component_types (Sequence[str]):
+            `here <https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types>`__.
+        unconfirmed_component_types (MutableSequence[str]):
             The types of the components that are present in the
             ``address_components`` but could not be confirmed to be
             correct. This field is provided for the sake of convenience:
@@ -70,10 +72,10 @@ class Address(proto.Message):
             [CONFIRMED][google.maps.addressvalidation.v1.AddressComponent.ConfirmationLevel.CONFIRMED]
             or the
             [inferred][google.maps.addressvalidation.v1.AddressComponent.inferred]
-            flag is not set to ``true``.The list of possible types can
+            flag is not set to ``true``. The list of possible types can
             be found
-            `here <https://developers.google.com/maps/documentation/geocoding/overview#Types>`__.
-        unresolved_tokens (Sequence[str]):
+            `here <https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types>`__.
+        unresolved_tokens (MutableSequence[str]):
             Any tokens in the input that could not be resolved. This
             might be an input that was not recognized as a valid part of
             an address (for example in an input like "123235253253 Main
@@ -82,29 +84,29 @@ class Address(proto.Message):
             a valid street number.
     """
 
-    formatted_address = proto.Field(
+    formatted_address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    postal_address = proto.Field(
+    postal_address: postal_address_pb2.PostalAddress = proto.Field(
         proto.MESSAGE,
         number=3,
         message=postal_address_pb2.PostalAddress,
     )
-    address_components = proto.RepeatedField(
+    address_components: MutableSequence["AddressComponent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="AddressComponent",
     )
-    missing_component_types = proto.RepeatedField(
+    missing_component_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    unconfirmed_component_types = proto.RepeatedField(
+    unconfirmed_component_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    unresolved_tokens = proto.RepeatedField(
+    unresolved_tokens: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -156,33 +158,33 @@ class AddressComponent(proto.Message):
         UNCONFIRMED_BUT_PLAUSIBLE = 2
         UNCONFIRMED_AND_SUSPICIOUS = 3
 
-    component_name = proto.Field(
+    component_name: "ComponentName" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ComponentName",
     )
-    component_type = proto.Field(
+    component_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    confirmation_level = proto.Field(
+    confirmation_level: ConfirmationLevel = proto.Field(
         proto.ENUM,
         number=3,
         enum=ConfirmationLevel,
     )
-    inferred = proto.Field(
+    inferred: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    spell_corrected = proto.Field(
+    spell_corrected: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    replaced = proto.Field(
+    replaced: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    unexpected = proto.Field(
+    unexpected: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
@@ -201,11 +203,11 @@ class ComponentName(proto.Message):
             with a language, such as a street number.
     """
 
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )

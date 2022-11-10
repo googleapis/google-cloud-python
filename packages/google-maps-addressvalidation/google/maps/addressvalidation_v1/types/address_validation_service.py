@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,7 +46,7 @@ class ValidateAddressRequest(proto.Message):
             [``address_lines``][google.type.PostalAddress.address_lines].
 
             The total length of the fields in this input must not exceed
-            300 characters.
+            280 characters.
 
             Supported regions can be found in the
             `FAQ <https://developers.google.com/maps/documentation/address-validation/faq#which_regions_are_currently_supported>`__.
@@ -87,16 +89,16 @@ class ValidateAddressRequest(proto.Message):
             contains the city, state, and zip code.
     """
 
-    address = proto.Field(
+    address: postal_address_pb2.PostalAddress = proto.Field(
         proto.MESSAGE,
         number=1,
         message=postal_address_pb2.PostalAddress,
     )
-    previous_response_id = proto.Field(
+    previous_response_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    enable_usps_cass = proto.Field(
+    enable_usps_cass: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -114,12 +116,12 @@ class ValidateAddressResponse(proto.Message):
             request.
     """
 
-    result = proto.Field(
+    result: "ValidationResult" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ValidationResult",
     )
-    response_id = proto.Field(
+    response_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -154,12 +156,12 @@ class ProvideValidationFeedbackRequest(proto.Message):
         UNVALIDATED_VERSION_USED = 3
         UNUSED = 4
 
-    conclusion = proto.Field(
+    conclusion: ValidationConclusion = proto.Field(
         proto.ENUM,
         number=1,
         enum=ValidationConclusion,
     )
-    response_id = proto.Field(
+    response_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -191,27 +193,27 @@ class ValidationResult(proto.Message):
             in region ``US`` and ``PR``.
     """
 
-    verdict = proto.Field(
+    verdict: "Verdict" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Verdict",
     )
-    address = proto.Field(
+    address: gma_address.Address = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gma_address.Address,
     )
-    geocode = proto.Field(
+    geocode: gma_geocode.Geocode = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gma_geocode.Geocode,
     )
-    metadata = proto.Field(
+    metadata: metadata_.AddressMetadata = proto.Field(
         proto.MESSAGE,
         number=4,
         message=metadata_.AddressMetadata,
     )
-    usps_data = proto.Field(
+    usps_data: gma_usps_data.UspsData = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gma_usps_data.UspsData,
@@ -300,34 +302,34 @@ class Verdict(proto.Message):
         ROUTE = 5
         OTHER = 6
 
-    input_granularity = proto.Field(
+    input_granularity: Granularity = proto.Field(
         proto.ENUM,
         number=1,
         enum=Granularity,
     )
-    validation_granularity = proto.Field(
+    validation_granularity: Granularity = proto.Field(
         proto.ENUM,
         number=2,
         enum=Granularity,
     )
-    geocode_granularity = proto.Field(
+    geocode_granularity: Granularity = proto.Field(
         proto.ENUM,
         number=3,
         enum=Granularity,
     )
-    address_complete = proto.Field(
+    address_complete: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    has_unconfirmed_components = proto.Field(
+    has_unconfirmed_components: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    has_inferred_components = proto.Field(
+    has_inferred_components: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    has_replaced_components = proto.Field(
+    has_replaced_components: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
