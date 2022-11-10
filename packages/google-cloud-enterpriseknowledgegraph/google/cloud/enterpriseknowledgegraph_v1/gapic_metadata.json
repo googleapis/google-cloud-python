@@ -34,6 +34,26 @@
               "methods": [
                 "list_entity_reconciliation_jobs"
               ]
+            },
+            "Lookup": {
+              "methods": [
+                "lookup"
+              ]
+            },
+            "LookupPublicKg": {
+              "methods": [
+                "lookup_public_kg"
+              ]
+            },
+            "Search": {
+              "methods": [
+                "search"
+              ]
+            },
+            "SearchPublicKg": {
+              "methods": [
+                "search_public_kg"
+              ]
             }
           }
         },
@@ -64,6 +84,26 @@
               "methods": [
                 "list_entity_reconciliation_jobs"
               ]
+            },
+            "Lookup": {
+              "methods": [
+                "lookup"
+              ]
+            },
+            "LookupPublicKg": {
+              "methods": [
+                "lookup_public_kg"
+              ]
+            },
+            "Search": {
+              "methods": [
+                "search"
+              ]
+            },
+            "SearchPublicKg": {
+              "methods": [
+                "search_public_kg"
+              ]
             }
           }
         },
@@ -93,6 +133,26 @@
             "ListEntityReconciliationJobs": {
               "methods": [
                 "list_entity_reconciliation_jobs"
+              ]
+            },
+            "Lookup": {
+              "methods": [
+                "lookup"
+              ]
+            },
+            "LookupPublicKg": {
+              "methods": [
+                "lookup_public_kg"
+              ]
+            },
+            "Search": {
+              "methods": [
+                "search"
+              ]
+            },
+            "SearchPublicKg": {
+              "methods": [
+                "search_public_kg"
               ]
             }
           }

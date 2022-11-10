@@ -27,8 +27,16 @@ from .service import (
     InputConfig,
     ListEntityReconciliationJobsRequest,
     ListEntityReconciliationJobsResponse,
+    LookupPublicKgRequest,
+    LookupPublicKgResponse,
+    LookupRequest,
+    LookupResponse,
     OutputConfig,
     ReconConfig,
+    SearchPublicKgRequest,
+    SearchPublicKgResponse,
+    SearchRequest,
+    SearchResponse,
 )
 
 __all__ = (
@@ -46,6 +54,14 @@ __all__ = (
     "InputConfig",
     "ListEntityReconciliationJobsRequest",
     "ListEntityReconciliationJobsResponse",
+    "LookupPublicKgRequest",
+    "LookupPublicKgResponse",
+    "LookupRequest",
+    "LookupResponse",
     "OutputConfig",
     "ReconConfig",
+    "SearchPublicKgRequest",
+    "SearchPublicKgResponse",
+    "SearchRequest",
+    "SearchResponse",
 )

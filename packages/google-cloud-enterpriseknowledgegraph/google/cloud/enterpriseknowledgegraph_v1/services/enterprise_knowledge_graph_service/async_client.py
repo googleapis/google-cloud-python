@@ -32,6 +32,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.longrunning import operations_pb2
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
@@ -56,6 +57,12 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
     DEFAULT_ENDPOINT = EnterpriseKnowledgeGraphServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = EnterpriseKnowledgeGraphServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    cloud_knowledge_graph_entity_path = staticmethod(
+        EnterpriseKnowledgeGraphServiceClient.cloud_knowledge_graph_entity_path
+    )
+    parse_cloud_knowledge_graph_entity_path = staticmethod(
+        EnterpriseKnowledgeGraphServiceClient.parse_cloud_knowledge_graph_entity_path
+    )
     dataset_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.dataset_path)
     parse_dataset_path = staticmethod(
         EnterpriseKnowledgeGraphServiceClient.parse_dataset_path
@@ -65,6 +72,12 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
     )
     parse_entity_reconciliation_job_path = staticmethod(
         EnterpriseKnowledgeGraphServiceClient.parse_entity_reconciliation_job_path
+    )
+    public_knowledge_graph_entity_path = staticmethod(
+        EnterpriseKnowledgeGraphServiceClient.public_knowledge_graph_entity_path
+    )
+    parse_public_knowledge_graph_entity_path = staticmethod(
+        EnterpriseKnowledgeGraphServiceClient.parse_public_knowledge_graph_entity_path
     )
     table_path = staticmethod(EnterpriseKnowledgeGraphServiceClient.table_path)
     parse_table_path = staticmethod(
@@ -765,6 +778,458 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def lookup(
+        self,
+        request: Union[service.LookupRequest, dict] = None,
+        *,
+        parent: str = None,
+        ids: Sequence[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.LookupResponse:
+        r"""Finds the Cloud KG entities with CKG ID(s).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import enterpriseknowledgegraph_v1
+
+            async def sample_lookup():
+                # Create a client
+                client = enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = enterpriseknowledgegraph_v1.LookupRequest(
+                    parent="parent_value",
+                    ids=['ids_value1', 'ids_value2'],
+                )
+
+                # Make the request
+                response = await client.lookup(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.enterpriseknowledgegraph_v1.types.LookupRequest, dict]):
+                The request object. Request message for
+                [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+            parent (:class:`str`):
+                Required. The name of the Entity's parent resource.
+                Format: ``projects/{project}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ids (:class:`Sequence[str]`):
+                Required. The list of entity ids to
+                be used for lookup.
+
+                This corresponds to the ``ids`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.enterpriseknowledgegraph_v1.types.LookupResponse:
+                Response message for
+                   [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, ids])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.LookupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if ids:
+            request.ids.extend(ids)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.lookup,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def search(
+        self,
+        request: Union[service.SearchRequest, dict] = None,
+        *,
+        parent: str = None,
+        query: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.SearchResponse:
+        r"""Searches the Cloud KG entities with entity name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import enterpriseknowledgegraph_v1
+
+            async def sample_search():
+                # Create a client
+                client = enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = enterpriseknowledgegraph_v1.SearchRequest(
+                    parent="parent_value",
+                    query="query_value",
+                )
+
+                # Make the request
+                response = await client.search(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.enterpriseknowledgegraph_v1.types.SearchRequest, dict]):
+                The request object. Request message for
+                [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+            parent (:class:`str`):
+                Required. The name of the Entity's parent resource.
+                Format: ``projects/{project}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            query (:class:`str`):
+                Required. The literal query string
+                for search.
+
+                This corresponds to the ``query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.enterpriseknowledgegraph_v1.types.SearchResponse:
+                Response message for
+                   [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, query])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.SearchRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if query is not None:
+            request.query = query
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.search,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def lookup_public_kg(
+        self,
+        request: Union[service.LookupPublicKgRequest, dict] = None,
+        *,
+        parent: str = None,
+        ids: Sequence[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.LookupPublicKgResponse:
+        r"""Finds the public KG entities with public KG ID(s).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import enterpriseknowledgegraph_v1
+
+            async def sample_lookup_public_kg():
+                # Create a client
+                client = enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = enterpriseknowledgegraph_v1.LookupPublicKgRequest(
+                    parent="parent_value",
+                    ids=['ids_value1', 'ids_value2'],
+                )
+
+                # Make the request
+                response = await client.lookup_public_kg(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.enterpriseknowledgegraph_v1.types.LookupPublicKgRequest, dict]):
+                The request object. Request message for
+                [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+            parent (:class:`str`):
+                Required. The name of the Entity's parent resource.
+                Format: ``projects/{project}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ids (:class:`Sequence[str]`):
+                Required. The list of entity ids to
+                be used for lookup.
+
+                This corresponds to the ``ids`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.enterpriseknowledgegraph_v1.types.LookupPublicKgResponse:
+                Response message for
+                   [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, ids])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.LookupPublicKgRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if ids:
+            request.ids.extend(ids)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.lookup_public_kg,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def search_public_kg(
+        self,
+        request: Union[service.SearchPublicKgRequest, dict] = None,
+        *,
+        parent: str = None,
+        query: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.SearchPublicKgResponse:
+        r"""Searches the public KG entities with entity name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import enterpriseknowledgegraph_v1
+
+            async def sample_search_public_kg():
+                # Create a client
+                client = enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = enterpriseknowledgegraph_v1.SearchPublicKgRequest(
+                    parent="parent_value",
+                    query="query_value",
+                )
+
+                # Make the request
+                response = await client.search_public_kg(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.enterpriseknowledgegraph_v1.types.SearchPublicKgRequest, dict]):
+                The request object. Request message for
+                [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+            parent (:class:`str`):
+                Required. The name of the Entity's parent resource.
+                Format: ``projects/{project}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            query (:class:`str`):
+                Required. The literal query string
+                for search.
+
+                This corresponds to the ``query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.enterpriseknowledgegraph_v1.types.SearchPublicKgResponse:
+                Response message for
+                   [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, query])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.SearchPublicKgRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if query is not None:
+            request.query = query
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.search_public_kg,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def __aenter__(self):
         return self
