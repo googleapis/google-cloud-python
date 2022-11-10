@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import user_event as gcd_user_event
@@ -39,11 +41,11 @@ class WriteUserEventRequest(proto.Message):
             This field is a member of `oneof`_ ``_user_event``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event = proto.Field(
+    user_event: gcd_user_event.UserEvent = proto.Field(
         proto.MESSAGE,
         number=2,
         optional=True,
@@ -78,20 +80,20 @@ class CollectUserEventRequest(proto.Message):
             This field is a member of `oneof`_ ``_ets``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event = proto.Field(
+    user_event: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=3,
         optional=True,
     )
-    ets = proto.Field(
+    ets: int = proto.Field(
         proto.INT64,
         number=4,
         optional=True,

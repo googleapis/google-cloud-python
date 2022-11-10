@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -171,9 +181,9 @@ class DocumentServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DocumentServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the document service client.
@@ -217,11 +227,11 @@ class DocumentServiceAsyncClient:
 
     async def get_document(
         self,
-        request: Union[document_service.GetDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.GetDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Gets a [Document][google.cloud.discoveryengine.v1beta.Document].
@@ -253,7 +263,7 @@ class DocumentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.GetDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.GetDocumentRequest, dict]]):
                 The request object. Request message for
                 [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
                 method.
@@ -332,11 +342,11 @@ class DocumentServiceAsyncClient:
 
     async def list_documents(
         self,
-        request: Union[document_service.ListDocumentsRequest, dict] = None,
+        request: Optional[Union[document_service.ListDocumentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsAsyncPager:
         r"""Gets a list of
@@ -370,7 +380,7 @@ class DocumentServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.ListDocumentsRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ListDocumentsRequest, dict]]):
                 The request object. Request message for
                 [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
                 method.
@@ -457,13 +467,13 @@ class DocumentServiceAsyncClient:
 
     async def create_document(
         self,
-        request: Union[document_service.CreateDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.CreateDocumentRequest, dict]] = None,
         *,
-        parent: str = None,
-        document: gcd_document.Document = None,
-        document_id: str = None,
+        parent: Optional[str] = None,
+        document: Optional[gcd_document.Document] = None,
+        document_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_document.Document:
         r"""Creates a
@@ -501,7 +511,7 @@ class DocumentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.CreateDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.CreateDocumentRequest, dict]]):
                 The request object. Request message for
                 [DocumentService.CreateDocument][google.cloud.discoveryengine.v1beta.DocumentService.CreateDocument]
                 method.
@@ -606,10 +616,10 @@ class DocumentServiceAsyncClient:
 
     async def update_document(
         self,
-        request: Union[document_service.UpdateDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.UpdateDocumentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Updates a
@@ -645,7 +655,7 @@ class DocumentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.UpdateDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.UpdateDocumentRequest, dict]]):
                 The request object. Request message for
                 [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1beta.DocumentService.UpdateDocument]
                 method.
@@ -694,11 +704,11 @@ class DocumentServiceAsyncClient:
 
     async def delete_document(
         self,
-        request: Union[document_service.DeleteDocumentRequest, dict] = None,
+        request: Optional[Union[document_service.DeleteDocumentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a
@@ -728,7 +738,7 @@ class DocumentServiceAsyncClient:
                 await client.delete_document(request=request)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.DeleteDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.DeleteDocumentRequest, dict]]):
                 The request object. Request message for
                 [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1beta.DocumentService.DeleteDocument]
                 method.
@@ -797,10 +807,10 @@ class DocumentServiceAsyncClient:
 
     async def import_documents(
         self,
-        request: Union[import_config.ImportDocumentsRequest, dict] = None,
+        request: Optional[Union[import_config.ImportDocumentsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Bulk import of multiple
@@ -847,7 +857,7 @@ class DocumentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1beta.types.ImportDocumentsRequest, dict]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ImportDocumentsRequest, dict]]):
                 The request object. Request message for Import methods.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -914,10 +924,10 @@ class DocumentServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -968,10 +978,10 @@ class DocumentServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
@@ -52,7 +54,7 @@ class GetDocumentRequest(proto.Message):
             does not exist, a NOT_FOUND error is returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -95,15 +97,15 @@ class ListDocumentsRequest(proto.Message):
             an INVALID_ARGUMENT error is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -115,7 +117,7 @@ class ListDocumentsResponse(proto.Message):
     method.
 
     Attributes:
-        documents (Sequence[google.cloud.discoveryengine_v1beta.types.Document]):
+        documents (MutableSequence[google.cloud.discoveryengine_v1beta.types.Document]):
             The
             [Document][google.cloud.discoveryengine.v1beta.Document]s.
         next_page_token (str):
@@ -129,12 +131,12 @@ class ListDocumentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    documents = proto.RepeatedField(
+    documents: MutableSequence[gcd_document.Document] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_document.Document,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -176,16 +178,16 @@ class CreateDocumentRequest(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document = proto.Field(
+    document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_document.Document,
     )
-    document_id = proto.Field(
+    document_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -218,12 +220,12 @@ class UpdateDocumentRequest(proto.Message):
             will be created.
     """
 
-    document = proto.Field(
+    document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_document.Document,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -251,7 +253,7 @@ class DeleteDocumentRequest(proto.Message):
             delete does not exist, a NOT_FOUND error is returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

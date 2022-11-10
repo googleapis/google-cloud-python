@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -72,30 +74,30 @@ class Document(proto.Message):
             with a length limit of 63 characters.
     """
 
-    struct_data = proto.Field(
+    struct_data: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="data",
         message=struct_pb2.Struct,
     )
-    json_data = proto.Field(
+    json_data: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="data",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    schema_id = proto.Field(
+    schema_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parent_document_id = proto.Field(
+    parent_document_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
