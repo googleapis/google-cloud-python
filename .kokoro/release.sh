@@ -51,7 +51,7 @@ for subdir in ${subdirs[@]}; do
         should_publish=false
         echo "checking changes with 'git diff HEAD~.. ${d}/**/gapic_version.py'"
         set +e
-        changed=$(git diff "HEAD~.." ${d}/**/gapic_version.py | wc -l)
+        changed=$(git diff "HEAD~3" ${d}/**/gapic_version.py | wc -l)
         set -e
         if [[ "${changed}" -eq 0 ]]; then
             echo "no change detected in ${d}, skipping"

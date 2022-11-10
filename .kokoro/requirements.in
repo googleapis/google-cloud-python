@@ -6,3 +6,4 @@ twine
 wheel
 setuptools
 nox
+charset-normalizer<3
