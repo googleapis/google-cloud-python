@@ -52,8 +52,7 @@ EXECUTABLE_TIMEOUT_MILLIS_DEFAULT = 30 * 1000  # 30 seconds
 EXECUTABLE_TIMEOUT_MILLIS_LOWER_BOUND = 5 * 1000  # 5 seconds
 EXECUTABLE_TIMEOUT_MILLIS_UPPER_BOUND = 120 * 1000  # 2 minutes
 
-EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_DEFAULT = 5 * 60 * 1000  # 5 minutes
-EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_LOWER_BOUND = 5 * 60 * 1000  # 5 minutes
+EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_LOWER_BOUND = 30 * 1000  # 30 seconds
 EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_UPPER_BOUND = 30 * 60 * 1000  # 30 minutes
 
 
@@ -132,7 +131,9 @@ class Credentials(external_account.Credentials):
         self._credential_source_executable_output_file = self._credential_source_executable.get(
             "output_file"
         )
-        self._tokeninfo_username = kwargs.get("tokeninfo_username", "")  # dummy value
+
+        # Dummy value. This variable is only used via injection, not exposed to ctor
+        self._tokeninfo_username = ""
 
         if not self._credential_source_executable_command:
             raise ValueError(
@@ -150,17 +151,16 @@ class Credentials(external_account.Credentials):
         ):
             raise ValueError("Timeout must be between 5 and 120 seconds.")
 
-        if not self._credential_source_executable_interactive_timeout_millis:
-            self._credential_source_executable_interactive_timeout_millis = (
-                EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_DEFAULT
-            )
-        elif (
-            self._credential_source_executable_interactive_timeout_millis
-            < EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_LOWER_BOUND
-            or self._credential_source_executable_interactive_timeout_millis
-            > EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_UPPER_BOUND
-        ):
-            raise ValueError("Interactive timeout must be between 5 and 30 minutes.")
+        if self._credential_source_executable_interactive_timeout_millis:
+            if (
+                self._credential_source_executable_interactive_timeout_millis
+                < EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_LOWER_BOUND
+                or self._credential_source_executable_interactive_timeout_millis
+                > EXECUTABLE_INTERACTIVE_TIMEOUT_MILLIS_UPPER_BOUND
+            ):
+                raise ValueError(
+                    "Interactive timeout must be between 30 seconds and 30 minutes."
+                )
 
     @_helpers.copy_docstring(external_account.Credentials)
     def retrieve_subject_token(self, request):
@@ -398,6 +398,14 @@ class Credentials(external_account.Credentials):
         if self.interactive and not self._credential_source_executable_output_file:
             raise ValueError(
                 "An output_file must be specified in the credential configuration for interactive mode."
+            )
+
+        if (
+            self.interactive
+            and not self._credential_source_executable_interactive_timeout_millis
+        ):
+            raise ValueError(
+                "Interactive mode cannot run without an interactive timeout."
             )
 
         if self.interactive and not self.is_workforce_pool:
