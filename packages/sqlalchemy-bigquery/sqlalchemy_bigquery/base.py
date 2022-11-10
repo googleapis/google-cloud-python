@@ -733,6 +733,7 @@ class BigQueryDialect(DefaultDialect):
     supports_default_values = False
     supports_empty_insert = False
     supports_multivalues_insert = True
+    supports_statement_cache = False
     supports_unicode_statements = True
     supports_unicode_binds = True
     supports_native_decimal = True
