@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.11](https://github.com/googleapis/python-pubsub/compare/v2.13.10...v2.13.11) (2022-11-11)
+
+
+### Bug Fixes
+
+* Remove suboptimal logic in leasing behavior ([#816](https://github.com/googleapis/python-pubsub/issues/816)) ([f067af3](https://github.com/googleapis/python-pubsub/commit/f067af348b8d3deb72981c58d942e887c0efb5ff))
+
 ## [2.13.10](https://github.com/googleapis/python-pubsub/compare/v2.13.8...v2.13.10) (2022-10-14)
 
 
