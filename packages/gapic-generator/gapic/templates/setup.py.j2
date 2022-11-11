@@ -38,7 +38,7 @@ dependencies = [
         'google-cloud-documentai >= 1.2.1, < 3.0.0dev',
     {% endif %}
 ]
-url = "https://github.com/googleapis/python-{{ api.naming.warehouse_package_name|replace("google-cloud-", "") }}"
+url = "https://github.com/googleapis/python-{{ api.naming.warehouse_package_name|replace("google-cloud-", "")|replace("google-", "") }}"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
