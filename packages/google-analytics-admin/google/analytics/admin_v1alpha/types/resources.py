@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
@@ -210,29 +212,29 @@ class Account(proto.Message):
             requested.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    region_code = proto.Field(
+    region_code: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    deleted = proto.Field(
+    deleted: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -306,62 +308,62 @@ class Property(proto.Message):
             accounts/{account_id} Example: "accounts/123".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    property_type = proto.Field(
+    property_type: "PropertyType" = proto.Field(
         proto.ENUM,
         number=14,
         enum="PropertyType",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    industry_category = proto.Field(
+    industry_category: "IndustryCategory" = proto.Field(
         proto.ENUM,
         number=6,
         enum="IndustryCategory",
     )
-    time_zone = proto.Field(
+    time_zone: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    service_level = proto.Field(
+    service_level: "ServiceLevel" = proto.Field(
         proto.ENUM,
         number=10,
         enum="ServiceLevel",
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    account = proto.Field(
+    account: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -441,15 +443,15 @@ class DataStream(proto.Message):
                 "https://www.google.com".
         """
 
-        measurement_id = proto.Field(
+        measurement_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        firebase_app_id = proto.Field(
+        firebase_app_id: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        default_uri = proto.Field(
+        default_uri: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -467,11 +469,11 @@ class DataStream(proto.Message):
                 measured. Example: "com.example.myandroidapp".
         """
 
-        firebase_app_id = proto.Field(
+        firebase_app_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        package_name = proto.Field(
+        package_name: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -490,52 +492,52 @@ class DataStream(proto.Message):
                 "com.example.myiosapp".
         """
 
-        firebase_app_id = proto.Field(
+        firebase_app_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        bundle_id = proto.Field(
+        bundle_id: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    web_stream_data = proto.Field(
+    web_stream_data: WebStreamData = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="stream_data",
         message=WebStreamData,
     )
-    android_app_stream_data = proto.Field(
+    android_app_stream_data: AndroidAppStreamData = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="stream_data",
         message=AndroidAppStreamData,
     )
-    ios_app_stream_data = proto.Field(
+    ios_app_stream_data: IosAppStreamData = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="stream_data",
         message=IosAppStreamData,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: DataStreamType = proto.Field(
         proto.ENUM,
         number=2,
         enum=DataStreamType,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -552,7 +554,7 @@ class UserLink(proto.Message):
             properties/1234/userLinks/5678
         email_address (str):
             Immutable. Email address of the user to link
-        direct_roles (Sequence[str]):
+        direct_roles (MutableSequence[str]):
             Roles directly assigned to this user for this account or
             property.
 
@@ -567,15 +569,15 @@ class UserLink(proto.Message):
             direct_roles will be deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    email_address = proto.Field(
+    email_address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    direct_roles = proto.RepeatedField(
+    direct_roles: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -591,7 +593,7 @@ class AuditUserLink(proto.Message):
             properties/1234/userLinks/5678
         email_address (str):
             Email address of the linked user
-        direct_roles (Sequence[str]):
+        direct_roles (MutableSequence[str]):
             Roles directly assigned to this user for this
             entity.
             Format: predefinedRoles/viewer
@@ -599,26 +601,26 @@ class AuditUserLink(proto.Message):
             Excludes roles that are inherited from an
             account (if this is for a property), group, or
             organization admin role.
-        effective_roles (Sequence[str]):
+        effective_roles (MutableSequence[str]):
             Union of all permissions a user has at this
             account or property (includes direct
             permissions, group-inherited permissions, etc.).
             Format: predefinedRoles/viewer
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    email_address = proto.Field(
+    email_address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    direct_roles = proto.RepeatedField(
+    direct_roles: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    effective_roles = proto.RepeatedField(
+    effective_roles: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -644,15 +646,15 @@ class FirebaseLink(proto.Message):
             originally created.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -676,11 +678,11 @@ class GlobalSiteTag(proto.Message):
             every webpage to measure.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    snippet = proto.Field(
+    snippet: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -721,34 +723,34 @@ class GoogleAdsLink(proto.Message):
             retrieved.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    customer_id = proto.Field(
+    customer_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    can_manage_clients = proto.Field(
+    can_manage_clients: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    ads_personalization_enabled = proto.Field(
+    ads_personalization_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.BoolValue,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    creator_email_address = proto.Field(
+    creator_email_address: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -784,27 +786,27 @@ class DataSharingSettings(proto.Message):
             in aggregate form with others.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    sharing_with_google_support_enabled = proto.Field(
+    sharing_with_google_support_enabled: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    sharing_with_google_assigned_sales_enabled = proto.Field(
+    sharing_with_google_assigned_sales_enabled: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    sharing_with_google_any_sales_enabled = proto.Field(
+    sharing_with_google_any_sales_enabled: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    sharing_with_google_products_enabled = proto.Field(
+    sharing_with_google_products_enabled: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    sharing_with_others_enabled = proto.Field(
+    sharing_with_others_enabled: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -825,24 +827,24 @@ class AccountSummary(proto.Message):
         display_name (str):
             Display name for the account referred to in
             this account summary.
-        property_summaries (Sequence[google.analytics.admin_v1alpha.types.PropertySummary]):
+        property_summaries (MutableSequence[google.analytics.admin_v1alpha.types.PropertySummary]):
             List of summaries for child accounts of this
             account.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    account = proto.Field(
+    account: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    property_summaries = proto.RepeatedField(
+    property_summaries: MutableSequence["PropertySummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="PropertySummary",
@@ -871,20 +873,20 @@ class PropertySummary(proto.Message):
             "properties/200".
     """
 
-    property = proto.Field(
+    property: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    property_type = proto.Field(
+    property_type: "PropertyType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="PropertyType",
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -909,15 +911,15 @@ class MeasurementProtocolSecret(proto.Message):
             property.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    secret_value = proto.Field(
+    secret_value: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -948,35 +950,35 @@ class ChangeHistoryEvent(proto.Message):
             If true, then the list of changes returned
             was filtered, and does not represent all changes
             that occurred in this event.
-        changes (Sequence[google.analytics.admin_v1alpha.types.ChangeHistoryChange]):
+        changes (MutableSequence[google.analytics.admin_v1alpha.types.ChangeHistoryChange]):
             A list of changes made in this change history
             event that fit the filters specified in
             SearchChangeHistoryEventsRequest.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    change_time = proto.Field(
+    change_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    actor_type = proto.Field(
+    actor_type: "ActorType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="ActorType",
     )
-    user_actor_email = proto.Field(
+    user_actor_email: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    changes_filtered = proto.Field(
+    changes_filtered: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    changes = proto.RepeatedField(
+    changes: MutableSequence["ChangeHistoryChange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="ChangeHistoryChange",
@@ -1089,106 +1091,108 @@ class ChangeHistoryChange(proto.Message):
                 This field is a member of `oneof`_ ``resource``.
         """
 
-        account = proto.Field(
+        account: "Account" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="resource",
             message="Account",
         )
-        property = proto.Field(
+        property: "Property" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="resource",
             message="Property",
         )
-        firebase_link = proto.Field(
+        firebase_link: "FirebaseLink" = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="resource",
             message="FirebaseLink",
         )
-        google_ads_link = proto.Field(
+        google_ads_link: "GoogleAdsLink" = proto.Field(
             proto.MESSAGE,
             number=7,
             oneof="resource",
             message="GoogleAdsLink",
         )
-        google_signals_settings = proto.Field(
+        google_signals_settings: "GoogleSignalsSettings" = proto.Field(
             proto.MESSAGE,
             number=8,
             oneof="resource",
             message="GoogleSignalsSettings",
         )
-        display_video_360_advertiser_link = proto.Field(
-            proto.MESSAGE,
-            number=9,
-            oneof="resource",
-            message="DisplayVideo360AdvertiserLink",
+        display_video_360_advertiser_link: "DisplayVideo360AdvertiserLink" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=9,
+                oneof="resource",
+                message="DisplayVideo360AdvertiserLink",
+            )
         )
-        display_video_360_advertiser_link_proposal = proto.Field(
+        display_video_360_advertiser_link_proposal: "DisplayVideo360AdvertiserLinkProposal" = proto.Field(
             proto.MESSAGE,
             number=10,
             oneof="resource",
             message="DisplayVideo360AdvertiserLinkProposal",
         )
-        conversion_event = proto.Field(
+        conversion_event: "ConversionEvent" = proto.Field(
             proto.MESSAGE,
             number=11,
             oneof="resource",
             message="ConversionEvent",
         )
-        measurement_protocol_secret = proto.Field(
+        measurement_protocol_secret: "MeasurementProtocolSecret" = proto.Field(
             proto.MESSAGE,
             number=12,
             oneof="resource",
             message="MeasurementProtocolSecret",
         )
-        custom_dimension = proto.Field(
+        custom_dimension: "CustomDimension" = proto.Field(
             proto.MESSAGE,
             number=13,
             oneof="resource",
             message="CustomDimension",
         )
-        custom_metric = proto.Field(
+        custom_metric: "CustomMetric" = proto.Field(
             proto.MESSAGE,
             number=14,
             oneof="resource",
             message="CustomMetric",
         )
-        data_retention_settings = proto.Field(
+        data_retention_settings: "DataRetentionSettings" = proto.Field(
             proto.MESSAGE,
             number=15,
             oneof="resource",
             message="DataRetentionSettings",
         )
-        data_stream = proto.Field(
+        data_stream: "DataStream" = proto.Field(
             proto.MESSAGE,
             number=18,
             oneof="resource",
             message="DataStream",
         )
-        attribution_settings = proto.Field(
+        attribution_settings: "AttributionSettings" = proto.Field(
             proto.MESSAGE,
             number=20,
             oneof="resource",
             message="AttributionSettings",
         )
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    action = proto.Field(
+    action: "ActionType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="ActionType",
     )
-    resource_before_change = proto.Field(
+    resource_before_change: ChangeHistoryResource = proto.Field(
         proto.MESSAGE,
         number=3,
         message=ChangeHistoryResource,
     )
-    resource_after_change = proto.Field(
+    resource_after_change: ChangeHistoryResource = proto.Field(
         proto.MESSAGE,
         number=4,
         message=ChangeHistoryResource,
@@ -1232,29 +1236,29 @@ class DisplayVideo360AdvertiserLink(proto.Message):
             defaulted to true.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    advertiser_id = proto.Field(
+    advertiser_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    advertiser_display_name = proto.Field(
+    advertiser_display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ads_personalization_enabled = proto.Field(
+    ads_personalization_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=4,
         message=wrappers_pb2.BoolValue,
     )
-    campaign_data_sharing_enabled = proto.Field(
+    campaign_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.BoolValue,
     )
-    cost_data_sharing_enabled = proto.Field(
+    cost_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=6,
         message=wrappers_pb2.BoolValue,
@@ -1312,38 +1316,38 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
             not set on create, it will be defaulted to true.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    advertiser_id = proto.Field(
+    advertiser_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    link_proposal_status_details = proto.Field(
+    link_proposal_status_details: "LinkProposalStatusDetails" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="LinkProposalStatusDetails",
     )
-    advertiser_display_name = proto.Field(
+    advertiser_display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validation_email = proto.Field(
+    validation_email: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    ads_personalization_enabled = proto.Field(
+    ads_personalization_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=6,
         message=wrappers_pb2.BoolValue,
     )
-    campaign_data_sharing_enabled = proto.Field(
+    campaign_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=7,
         message=wrappers_pb2.BoolValue,
     )
-    cost_data_sharing_enabled = proto.Field(
+    cost_data_sharing_enabled: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=8,
         message=wrappers_pb2.BoolValue,
@@ -1363,16 +1367,16 @@ class LinkProposalStatusDetails(proto.Message):
             Output only. The state of this proposal.
     """
 
-    link_proposal_initiating_product = proto.Field(
+    link_proposal_initiating_product: "LinkProposalInitiatingProduct" = proto.Field(
         proto.ENUM,
         number=1,
         enum="LinkProposalInitiatingProduct",
     )
-    requestor_email = proto.Field(
+    requestor_email: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    link_proposal_state = proto.Field(
+    link_proposal_state: "LinkProposalState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="LinkProposalState",
@@ -1408,24 +1412,24 @@ class ConversionEvent(proto.Message):
             per property.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_name = proto.Field(
+    event_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    deletable = proto.Field(
+    deletable: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    custom = proto.Field(
+    custom: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -1446,16 +1450,16 @@ class GoogleSignalsSettings(proto.Message):
             Output only. Terms of Service acceptance.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: "GoogleSignalsState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="GoogleSignalsState",
     )
-    consent = proto.Field(
+    consent: "GoogleSignalsConsent" = proto.Field(
         proto.ENUM,
         number=4,
         enum="GoogleSignalsConsent",
@@ -1509,28 +1513,28 @@ class CustomDimension(proto.Message):
         EVENT = 1
         USER = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parameter_name = proto.Field(
+    parameter_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    scope = proto.Field(
+    scope: DimensionScope = proto.Field(
         proto.ENUM,
         number=5,
         enum=DimensionScope,
     )
-    disallow_ads_personalization = proto.Field(
+    disallow_ads_personalization: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -1570,7 +1574,7 @@ class CustomMetric(proto.Message):
         scope (google.analytics.admin_v1alpha.types.CustomMetric.MetricScope):
             Required. Immutable. The scope of this custom
             metric.
-        restricted_metric_type (Sequence[google.analytics.admin_v1alpha.types.CustomMetric.RestrictedMetricType]):
+        restricted_metric_type (MutableSequence[google.analytics.admin_v1alpha.types.CustomMetric.RestrictedMetricType]):
             Optional. Types of restricted data that this
             metric may contain. Required for metrics with
             CURRENCY measurement unit. Must be empty for
@@ -1607,33 +1611,33 @@ class CustomMetric(proto.Message):
         COST_DATA = 1
         REVENUE_DATA = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parameter_name = proto.Field(
+    parameter_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    measurement_unit = proto.Field(
+    measurement_unit: MeasurementUnit = proto.Field(
         proto.ENUM,
         number=5,
         enum=MeasurementUnit,
     )
-    scope = proto.Field(
+    scope: MetricScope = proto.Field(
         proto.ENUM,
         number=6,
         enum=MetricScope,
     )
-    restricted_metric_type = proto.RepeatedField(
+    restricted_metric_type: MutableSequence[RestrictedMetricType] = proto.RepeatedField(
         proto.ENUM,
         number=8,
         enum=RestrictedMetricType,
@@ -1666,16 +1670,16 @@ class DataRetentionSettings(proto.Message):
         THIRTY_EIGHT_MONTHS = 5
         FIFTY_MONTHS = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_data_retention = proto.Field(
+    event_data_retention: RetentionDuration = proto.Field(
         proto.ENUM,
         number=2,
         enum=RetentionDuration,
     )
-    reset_user_data_on_new_activity = proto.Field(
+    reset_user_data_on_new_activity: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -1742,21 +1746,23 @@ class AttributionSettings(proto.Message):
         CROSS_CHANNEL_TIME_DECAY = 6
         ADS_PREFERRED_LAST_CLICK = 7
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    acquisition_conversion_event_lookback_window = proto.Field(
+    acquisition_conversion_event_lookback_window: AcquisitionConversionEventLookbackWindow = proto.Field(
         proto.ENUM,
         number=2,
         enum=AcquisitionConversionEventLookbackWindow,
     )
-    other_conversion_event_lookback_window = proto.Field(
-        proto.ENUM,
-        number=3,
-        enum=OtherConversionEventLookbackWindow,
+    other_conversion_event_lookback_window: OtherConversionEventLookbackWindow = (
+        proto.Field(
+            proto.ENUM,
+            number=3,
+            enum=OtherConversionEventLookbackWindow,
+        )
     )
-    reporting_attribution_model = proto.Field(
+    reporting_attribution_model: ReportingAttributionModel = proto.Field(
         proto.ENUM,
         number=4,
         enum=ReportingAttributionModel,

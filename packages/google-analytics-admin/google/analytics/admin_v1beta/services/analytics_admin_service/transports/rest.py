@@ -1412,10 +1412,10 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         self,
         *,
         host: str = "analyticsadmin.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -1507,7 +1507,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.AcknowledgeUserDataCollectionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.AcknowledgeUserDataCollectionResponse:
             r"""Call the acknowledge user data
@@ -1609,7 +1609,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ArchiveCustomDimensionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the archive custom dimension method over HTTP.
@@ -1694,7 +1694,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ArchiveCustomMetricRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the archive custom metric method over HTTP.
@@ -1779,7 +1779,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateConversionEventRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.ConversionEvent:
             r"""Call the create conversion event method over HTTP.
@@ -1878,7 +1878,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateCustomDimensionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.CustomDimension:
             r"""Call the create custom dimension method over HTTP.
@@ -1975,7 +1975,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateCustomMetricRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.CustomMetric:
             r"""Call the create custom metric method over HTTP.
@@ -2072,7 +2072,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateDataStreamRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.DataStream:
             r"""Call the create data stream method over HTTP.
@@ -2171,7 +2171,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateFirebaseLinkRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.FirebaseLink:
             r"""Call the create firebase link method over HTTP.
@@ -2270,7 +2270,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateGoogleAdsLinkRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.GoogleAdsLink:
             r"""Call the create google ads link method over HTTP.
@@ -2369,7 +2369,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreateMeasurementProtocolSecretRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.MeasurementProtocolSecret:
             r"""Call the create measurement
@@ -2474,7 +2474,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.CreatePropertyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.Property:
             r"""Call the create property method over HTTP.
@@ -2571,7 +2571,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeleteAccountRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete account method over HTTP.
@@ -2645,7 +2645,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeleteConversionEventRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete conversion event method over HTTP.
@@ -2721,7 +2721,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeleteDataStreamRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete data stream method over HTTP.
@@ -2797,7 +2797,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeleteFirebaseLinkRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete firebase link method over HTTP.
@@ -2873,7 +2873,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeleteGoogleAdsLinkRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete google ads link method over HTTP.
@@ -2949,7 +2949,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeleteMeasurementProtocolSecretRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete measurement
@@ -3031,7 +3031,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.DeletePropertyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.Property:
             r"""Call the delete property method over HTTP.
@@ -3119,7 +3119,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetAccountRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.Account:
             r"""Call the get account method over HTTP.
@@ -3205,7 +3205,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetConversionEventRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.ConversionEvent:
             r"""Call the get conversion event method over HTTP.
@@ -3295,7 +3295,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetCustomDimensionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.CustomDimension:
             r"""Call the get custom dimension method over HTTP.
@@ -3383,7 +3383,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetCustomMetricRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.CustomMetric:
             r"""Call the get custom metric method over HTTP.
@@ -3471,7 +3471,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetDataRetentionSettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.DataRetentionSettings:
             r"""Call the get data retention
@@ -3562,7 +3562,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetDataSharingSettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.DataSharingSettings:
             r"""Call the get data sharing settings method over HTTP.
@@ -3653,7 +3653,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetDataStreamRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.DataStream:
             r"""Call the get data stream method over HTTP.
@@ -3741,7 +3741,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetMeasurementProtocolSecretRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.MeasurementProtocolSecret:
             r"""Call the get measurement protocol
@@ -3832,7 +3832,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.GetPropertyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.Property:
             r"""Call the get property method over HTTP.
@@ -3908,7 +3908,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListAccountsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListAccountsResponse:
             r"""Call the list accounts method over HTTP.
@@ -3981,7 +3981,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListAccountSummariesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListAccountSummariesResponse:
             r"""Call the list account summaries method over HTTP.
@@ -4070,7 +4070,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListConversionEventsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListConversionEventsResponse:
             r"""Call the list conversion events method over HTTP.
@@ -4160,7 +4160,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListCustomDimensionsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListCustomDimensionsResponse:
             r"""Call the list custom dimensions method over HTTP.
@@ -4250,7 +4250,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListCustomMetricsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListCustomMetricsResponse:
             r"""Call the list custom metrics method over HTTP.
@@ -4340,7 +4340,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListDataStreamsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListDataStreamsResponse:
             r"""Call the list data streams method over HTTP.
@@ -4430,7 +4430,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListFirebaseLinksRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListFirebaseLinksResponse:
             r"""Call the list firebase links method over HTTP.
@@ -4520,7 +4520,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListGoogleAdsLinksRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListGoogleAdsLinksResponse:
             r"""Call the list google ads links method over HTTP.
@@ -4610,7 +4610,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListMeasurementProtocolSecretsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListMeasurementProtocolSecretsResponse:
             r"""Call the list measurement protocol
@@ -4705,7 +4705,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ListPropertiesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ListPropertiesResponse:
             r"""Call the list properties method over HTTP.
@@ -4783,7 +4783,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.ProvisionAccountTicketRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.ProvisionAccountTicketResponse:
             r"""Call the provision account ticket method over HTTP.
@@ -4881,7 +4881,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.SearchChangeHistoryEventsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> analytics_admin.SearchChangeHistoryEventsResponse:
             r"""Call the search change history
@@ -4983,7 +4983,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateAccountRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.Account:
             r"""Call the update account method over HTTP.
@@ -5082,7 +5082,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateCustomDimensionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.CustomDimension:
             r"""Call the update custom dimension method over HTTP.
@@ -5181,7 +5181,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateCustomMetricRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.CustomMetric:
             r"""Call the update custom metric method over HTTP.
@@ -5280,7 +5280,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateDataRetentionSettingsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.DataRetentionSettings:
             r"""Call the update data retention
@@ -5382,7 +5382,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateDataStreamRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.DataStream:
             r"""Call the update data stream method over HTTP.
@@ -5483,7 +5483,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateGoogleAdsLinkRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.GoogleAdsLink:
             r"""Call the update google ads link method over HTTP.
@@ -5582,7 +5582,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdateMeasurementProtocolSecretRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.MeasurementProtocolSecret:
             r"""Call the update measurement
@@ -5689,7 +5689,7 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             request: analytics_admin.UpdatePropertyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> resources.Property:
             r"""Call the update property method over HTTP.
