@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -61,7 +72,7 @@ class AccessApprovalClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AccessApprovalTransport]:
         """Returns an appropriate transport class.
 
@@ -399,7 +410,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AccessApprovalTransport, None] = None,
+        transport: Optional[Union[str, AccessApprovalTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -497,11 +508,13 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def list_approval_requests(
         self,
-        request: Union[accessapproval.ListApprovalRequestsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.ListApprovalRequestsMessage, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApprovalRequestsPager:
         r"""Lists approval requests associated with a project,
@@ -615,11 +628,11 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def get_approval_request(
         self,
-        request: Union[accessapproval.GetApprovalRequestMessage, dict] = None,
+        request: Optional[Union[accessapproval.GetApprovalRequestMessage, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Gets an approval request. Returns NOT_FOUND if the request does
@@ -716,10 +729,12 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def approve_approval_request(
         self,
-        request: Union[accessapproval.ApproveApprovalRequestMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.ApproveApprovalRequestMessage, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Approves a request and returns the updated ApprovalRequest.
@@ -800,10 +815,12 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def dismiss_approval_request(
         self,
-        request: Union[accessapproval.DismissApprovalRequestMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.DismissApprovalRequestMessage, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Dismisses a request. Returns the updated ApprovalRequest.
@@ -889,10 +906,12 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def invalidate_approval_request(
         self,
-        request: Union[accessapproval.InvalidateApprovalRequestMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.InvalidateApprovalRequestMessage, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Invalidates an existing ApprovalRequest. Returns the updated
@@ -979,11 +998,13 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def get_access_approval_settings(
         self,
-        request: Union[accessapproval.GetAccessApprovalSettingsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.GetAccessApprovalSettingsMessage, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
         r"""Gets the settings associated with a project, folder,
@@ -1085,12 +1106,14 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def update_access_approval_settings(
         self,
-        request: Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict]
+        ] = None,
         *,
-        settings: accessapproval.AccessApprovalSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        settings: Optional[accessapproval.AccessApprovalSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
         r"""Updates the settings associated with a project, folder, or
@@ -1210,11 +1233,13 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def delete_access_approval_settings(
         self,
-        request: Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the settings associated with a project,
@@ -1308,13 +1333,13 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     def get_access_approval_service_account(
         self,
-        request: Union[
-            accessapproval.GetAccessApprovalServiceAccountMessage, dict
+        request: Optional[
+            Union[accessapproval.GetAccessApprovalServiceAccountMessage, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalServiceAccount:
         r"""Retrieves the service account that is used by Access

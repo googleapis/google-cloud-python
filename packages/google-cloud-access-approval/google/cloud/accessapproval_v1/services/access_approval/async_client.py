@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -211,9 +221,9 @@ class AccessApprovalAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AccessApprovalTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the access approval client.
@@ -257,11 +267,13 @@ class AccessApprovalAsyncClient:
 
     async def list_approval_requests(
         self,
-        request: Union[accessapproval.ListApprovalRequestsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.ListApprovalRequestsMessage, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApprovalRequestsAsyncPager:
         r"""Lists approval requests associated with a project,
@@ -296,7 +308,7 @@ class AccessApprovalAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.ListApprovalRequestsMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.ListApprovalRequestsMessage, dict]]):
                 The request object. Request to list approval requests.
             parent (:class:`str`):
                 The parent resource. This may be
@@ -384,11 +396,11 @@ class AccessApprovalAsyncClient:
 
     async def get_approval_request(
         self,
-        request: Union[accessapproval.GetApprovalRequestMessage, dict] = None,
+        request: Optional[Union[accessapproval.GetApprovalRequestMessage, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Gets an approval request. Returns NOT_FOUND if the request does
@@ -420,7 +432,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]]):
                 The request object. Request to get an approval request.
             name (:class:`str`):
                 The name of the approval request to retrieve. Format:
@@ -494,10 +506,12 @@ class AccessApprovalAsyncClient:
 
     async def approve_approval_request(
         self,
-        request: Union[accessapproval.ApproveApprovalRequestMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.ApproveApprovalRequestMessage, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Approves a request and returns the updated ApprovalRequest.
@@ -532,7 +546,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.ApproveApprovalRequestMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.ApproveApprovalRequestMessage, dict]]):
                 The request object. Request to approve an
                 ApprovalRequest.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -577,10 +591,12 @@ class AccessApprovalAsyncClient:
 
     async def dismiss_approval_request(
         self,
-        request: Union[accessapproval.DismissApprovalRequestMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.DismissApprovalRequestMessage, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Dismisses a request. Returns the updated ApprovalRequest.
@@ -620,7 +636,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.DismissApprovalRequestMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.DismissApprovalRequestMessage, dict]]):
                 The request object. Request to dismiss an approval
                 request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -665,10 +681,12 @@ class AccessApprovalAsyncClient:
 
     async def invalidate_approval_request(
         self,
-        request: Union[accessapproval.InvalidateApprovalRequestMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.InvalidateApprovalRequestMessage, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
         r"""Invalidates an existing ApprovalRequest. Returns the updated
@@ -707,7 +725,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.InvalidateApprovalRequestMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.InvalidateApprovalRequestMessage, dict]]):
                 The request object. Request to invalidate an existing
                 approval.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -752,11 +770,13 @@ class AccessApprovalAsyncClient:
 
     async def get_access_approval_settings(
         self,
-        request: Union[accessapproval.GetAccessApprovalSettingsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.GetAccessApprovalSettingsMessage, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
         r"""Gets the settings associated with a project, folder,
@@ -788,7 +808,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.GetAccessApprovalSettingsMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.GetAccessApprovalSettingsMessage, dict]]):
                 The request object. Request to get access approval
                 settings.
             name (:class:`str`):
@@ -865,12 +885,14 @@ class AccessApprovalAsyncClient:
 
     async def update_access_approval_settings(
         self,
-        request: Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict]
+        ] = None,
         *,
-        settings: accessapproval.AccessApprovalSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        settings: Optional[accessapproval.AccessApprovalSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
         r"""Updates the settings associated with a project, folder, or
@@ -903,7 +925,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.UpdateAccessApprovalSettingsMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.UpdateAccessApprovalSettingsMessage, dict]]):
                 The request object. Request to update access approval
                 settings.
             settings (:class:`google.cloud.accessapproval_v1.types.AccessApprovalSettings`):
@@ -988,11 +1010,13 @@ class AccessApprovalAsyncClient:
 
     async def delete_access_approval_settings(
         self,
-        request: Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict] = None,
+        request: Optional[
+            Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the settings associated with a project,
@@ -1027,7 +1051,7 @@ class AccessApprovalAsyncClient:
                 await client.delete_access_approval_settings(request=request)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]]):
                 The request object. Request to delete access approval
                 settings.
             name (:class:`str`):
@@ -1084,13 +1108,13 @@ class AccessApprovalAsyncClient:
 
     async def get_access_approval_service_account(
         self,
-        request: Union[
-            accessapproval.GetAccessApprovalServiceAccountMessage, dict
+        request: Optional[
+            Union[accessapproval.GetAccessApprovalServiceAccountMessage, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalServiceAccount:
         r"""Retrieves the service account that is used by Access
@@ -1123,7 +1147,7 @@ class AccessApprovalAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.accessapproval_v1.types.GetAccessApprovalServiceAccountMessage, dict]):
+            request (Optional[Union[google.cloud.accessapproval_v1.types.GetAccessApprovalServiceAccountMessage, dict]]):
                 The request object. Request to get an Access Approval
                 service account.
             name (:class:`str`):
