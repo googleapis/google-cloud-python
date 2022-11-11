@@ -20,7 +20,7 @@ import itertools
 import logging
 import threading
 import typing
-from typing import Any, Dict, Callable, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Callable, Iterable, List, Optional, Set, Tuple
 import uuid
 
 import grpc  # type: ignore
@@ -686,7 +686,11 @@ class StreamingPullManager(object):
         return requests_completed, requests_to_retry
 
     def send_unary_modack(
-        self, modify_deadline_ack_ids, modify_deadline_seconds, ack_reqs_dict
+        self,
+        modify_deadline_ack_ids,
+        modify_deadline_seconds,
+        ack_reqs_dict,
+        default_deadline=None,
     ) -> Tuple[List[requests.ModAckRequest], List[requests.ModAckRequest]]:
         """Send a request using a separate unary request instead of over the stream.
 
@@ -694,22 +698,32 @@ class StreamingPullManager(object):
         error is re-raised.
         """
         assert modify_deadline_ack_ids
+        # Either we have a generator or a single deadline.
+        assert modify_deadline_seconds is None or default_deadline is None
 
         error_status = None
         modack_errors_dict = None
         try:
-            # Send ack_ids with the same deadline seconds together.
-            deadline_to_ack_ids = collections.defaultdict(list)
+            if default_deadline is None:
+                # Send ack_ids with the same deadline seconds together.
+                deadline_to_ack_ids = collections.defaultdict(list)
 
-            for n, ack_id in enumerate(modify_deadline_ack_ids):
-                deadline = modify_deadline_seconds[n]
-                deadline_to_ack_ids[deadline].append(ack_id)
+                for n, ack_id in enumerate(modify_deadline_ack_ids):
+                    deadline = modify_deadline_seconds[n]
+                    deadline_to_ack_ids[deadline].append(ack_id)
 
-            for deadline, ack_ids in deadline_to_ack_ids.items():
+                for deadline, ack_ids in deadline_to_ack_ids.items():
+                    self._client.modify_ack_deadline(
+                        subscription=self._subscription,
+                        ack_ids=ack_ids,
+                        ack_deadline_seconds=deadline,
+                    )
+            else:
+                # We can send all requests with the default deadline.
                 self._client.modify_ack_deadline(
                     subscription=self._subscription,
-                    ack_ids=ack_ids,
-                    ack_deadline_seconds=deadline,
+                    ack_ids=modify_deadline_ack_ids,
+                    ack_deadline_seconds=default_deadline,
                 )
         except exceptions.GoogleAPICallError as exc:
             _LOGGER.debug(
@@ -990,21 +1004,20 @@ class StreamingPullManager(object):
 
     def _send_lease_modacks(
         self, ack_ids: Iterable[str], ack_deadline: float, warn_on_invalid=True
-    ) -> List[str]:
+    ) -> Set[str]:
         exactly_once_enabled = False
         with self._exactly_once_enabled_lock:
             exactly_once_enabled = self._exactly_once_enabled
         if exactly_once_enabled:
-            items = []
-            for ack_id in ack_ids:
-                future = futures.Future()
-                request = requests.ModAckRequest(ack_id, ack_deadline, future)
-                items.append(request)
+            items = [
+                requests.ModAckRequest(ack_id, ack_deadline, futures.Future())
+                for ack_id in ack_ids
+            ]
 
             assert self._dispatcher is not None
-            self._dispatcher.modify_ack_deadline(items)
+            self._dispatcher.modify_ack_deadline(items, ack_deadline)
 
-            expired_ack_ids = []
+            expired_ack_ids = set()
             for req in items:
                 try:
                     assert req.future is not None
@@ -1019,7 +1032,7 @@ class StreamingPullManager(object):
                             exc_info=True,
                         )
                     if ack_error.error_code == AcknowledgeStatus.INVALID_ACK_ID:
-                        expired_ack_ids.append(req.ack_id)
+                        expired_ack_ids.add(req.ack_id)
             return expired_ack_ids
         else:
             items = [
@@ -1027,8 +1040,8 @@ class StreamingPullManager(object):
                 for ack_id in ack_ids
             ]
             assert self._dispatcher is not None
-            self._dispatcher.modify_ack_deadline(items)
-            return []
+            self._dispatcher.modify_ack_deadline(items, ack_deadline)
+            return set()
 
     def _exactly_once_delivery_enabled(self) -> bool:
         """Whether exactly-once delivery is enabled for the subscription."""
@@ -1082,10 +1095,8 @@ class StreamingPullManager(object):
         # modack the messages we received, as this tells the server that we've
         # received them.
         ack_id_gen = (message.ack_id for message in received_messages)
-        expired_ack_ids = set(
-            self._send_lease_modacks(
-                ack_id_gen, self.ack_deadline, warn_on_invalid=False
-            )
+        expired_ack_ids = self._send_lease_modacks(
+            ack_id_gen, self.ack_deadline, warn_on_invalid=False
         )
 
         with self._pause_resume_lock:

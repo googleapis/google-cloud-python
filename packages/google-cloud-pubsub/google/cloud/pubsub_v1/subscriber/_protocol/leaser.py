@@ -187,6 +187,7 @@ class Leaser(object):
             # We do not actually call `modify_ack_deadline` over and over
             # because it is more efficient to make a single request.
             ack_ids = leased_messages.keys()
+            expired_ack_ids = set()
             if ack_ids:
                 _LOGGER.debug("Renewing lease for %d ack IDs.", len(ack_ids))
 
@@ -197,8 +198,25 @@ class Leaser(object):
                 #       is inactive.
                 assert self._manager.dispatcher is not None
                 ack_id_gen = (ack_id for ack_id in ack_ids)
-                self._manager._send_lease_modacks(ack_id_gen, deadline)
+                expired_ack_ids = self._manager._send_lease_modacks(
+                    ack_id_gen, deadline
+                )
 
+            start_time = time.time()
+            # If exactly once delivery is enabled, we should drop all expired ack_ids from lease management.
+            if self._manager._exactly_once_delivery_enabled() and len(expired_ack_ids):
+                assert self._manager.dispatcher is not None
+                self._manager.dispatcher.drop(
+                    [
+                        requests.DropRequest(
+                            ack_id,
+                            leased_messages.get(ack_id).size,  # type: ignore
+                            leased_messages.get(ack_id).ordering_key,  # type: ignore
+                        )
+                        for ack_id in expired_ack_ids
+                        if ack_id in leased_messages
+                    ]
+                )
             # Now wait an appropriate period of time and do this again.
             #
             # We determine the appropriate period of time based on a random
@@ -208,7 +226,10 @@ class Leaser(object):
             # This maximum time attempts to prevent ack expiration before new lease modacks arrive at the server.
             # This use of jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
             # where there are many clients.
-            snooze = random.uniform(_MAX_BATCH_LATENCY, deadline * 0.9)
+            # If we spent any time iterating over expired acks, we should subtract this from the deadline.
+            snooze = random.uniform(
+                _MAX_BATCH_LATENCY, (deadline * 0.9 - (time.time() - start_time))
+            )
             _LOGGER.debug("Snoozing lease management for %f seconds.", snooze)
             self._stop_event.wait(timeout=snooze)
 

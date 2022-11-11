@@ -319,7 +319,11 @@ class Dispatcher(object):
         self._manager.leaser.add(items)
         self._manager.maybe_pause_consumer()
 
-    def modify_ack_deadline(self, items: Sequence[requests.ModAckRequest]) -> None:
+    def modify_ack_deadline(
+        self,
+        items: Sequence[requests.ModAckRequest],
+        default_deadline: Optional[float] = None,
+    ) -> None:
         """Modify the ack deadline for the given messages.
 
         Args:
@@ -337,16 +341,28 @@ class Dispatcher(object):
                 req.ack_id: req
                 for req in itertools.islice(items_gen, _ACK_IDS_BATCH_SIZE)
             }
-            # no further work needs to be done for `requests_to_retry`
-            requests_completed, requests_to_retry = self._manager.send_unary_modack(
-                modify_deadline_ack_ids=list(
-                    itertools.islice(ack_ids_gen, _ACK_IDS_BATCH_SIZE)
-                ),
-                modify_deadline_seconds=list(
-                    itertools.islice(deadline_seconds_gen, _ACK_IDS_BATCH_SIZE)
-                ),
-                ack_reqs_dict=ack_reqs_dict,
-            )
+            requests_to_retry: List[requests.ModAckRequest]
+            if default_deadline is None:
+                # no further work needs to be done for `requests_to_retry`
+                _, requests_to_retry = self._manager.send_unary_modack(
+                    modify_deadline_ack_ids=list(
+                        itertools.islice(ack_ids_gen, _ACK_IDS_BATCH_SIZE)
+                    ),
+                    modify_deadline_seconds=list(
+                        itertools.islice(deadline_seconds_gen, _ACK_IDS_BATCH_SIZE)
+                    ),
+                    ack_reqs_dict=ack_reqs_dict,
+                    default_deadline=None,
+                )
+            else:
+                _, requests_to_retry = self._manager.send_unary_modack(
+                    modify_deadline_ack_ids=itertools.islice(
+                        ack_ids_gen, _ACK_IDS_BATCH_SIZE
+                    ),
+                    modify_deadline_seconds=None,
+                    ack_reqs_dict=ack_reqs_dict,
+                    default_deadline=default_deadline,
+                )
             assert (
                 len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
             ), "Too many requests to be retried."

@@ -674,6 +674,33 @@ def test_send_unary_modack():
     )
 
 
+def test_send_unary_modack_default_deadline():
+    manager = make_manager()
+
+    ack_reqs_dict = {
+        "ack_id3": requests.ModAckRequest(ack_id="ack_id3", seconds=60, future=None),
+        "ack_id4": requests.ModAckRequest(ack_id="ack_id4", seconds=60, future=None),
+        "ack_id5": requests.ModAckRequest(ack_id="ack_id5", seconds=60, future=None),
+    }
+    manager.send_unary_modack(
+        modify_deadline_ack_ids=["ack_id3", "ack_id4", "ack_id5"],
+        modify_deadline_seconds=None,
+        ack_reqs_dict=ack_reqs_dict,
+        default_deadline=10,
+    )
+
+    manager._client.modify_ack_deadline.assert_has_calls(
+        [
+            mock.call(
+                subscription=manager._subscription,
+                ack_ids=["ack_id3", "ack_id4", "ack_id5"],
+                ack_deadline_seconds=10,
+            ),
+        ],
+        any_order=True,
+    )
+
+
 def test_send_unary_modack_exactly_once_enabled_with_futures():
     manager = make_manager()
     manager._exactly_once_enabled = True
@@ -1460,7 +1487,8 @@ def test__on_response_modifies_ack_deadline():
         [
             requests.ModAckRequest("ack_1", 18, None),
             requests.ModAckRequest("ack_2", 18, None),
-        ]
+        ],
+        18,
     )
 
 
@@ -1521,6 +1549,7 @@ def test__on_response_modifies_ack_deadline_with_exactly_once_min_lease():
         requests.ModAckRequest("ack_1", 10, None),
         requests.ModAckRequest("ack_2", 10, None),
     ]
+    assert call.args[1] == 10
 
     # exactly_once should be enabled after this request b/c subscription_properties says so
     manager._on_response(response2)
@@ -1534,6 +1563,8 @@ def test__on_response_modifies_ack_deadline_with_exactly_once_min_lease():
     assert modack_reqs[0].seconds == 60
     assert modack_reqs[1].ack_id == "ack_4"
     assert modack_reqs[1].seconds == 60
+    modack_deadline = call.args[1]
+    assert modack_deadline == 60
 
 
 def test__on_response_send_ack_deadline_after_enabling_exactly_once():
@@ -1610,7 +1641,8 @@ def test__on_response_no_leaser_overload():
         [
             requests.ModAckRequest("fack", 10, None),
             requests.ModAckRequest("back", 10, None),
-        ]
+        ],
+        10,
     )
 
     schedule_calls = scheduler.schedule.mock_calls
@@ -1660,7 +1692,8 @@ def test__on_response_with_leaser_overload():
             requests.ModAckRequest("fack", 10, None),
             requests.ModAckRequest("back", 10, None),
             requests.ModAckRequest("zack", 10, None),
-        ]
+        ],
+        10,
     )
 
     # one message should be scheduled, the flow control limits allow for it
@@ -1740,7 +1773,8 @@ def test__on_response_with_ordering_keys():
             requests.ModAckRequest("fack", 10, None),
             requests.ModAckRequest("back", 10, None),
             requests.ModAckRequest("zack", 10, None),
-        ]
+        ],
+        10,
     )
 
     # The first two messages should be scheduled, The third should be put on
