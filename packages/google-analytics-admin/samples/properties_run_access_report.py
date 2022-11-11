@@ -16,7 +16,6 @@
 
 """Google Analytics Admin API sample application which runs an access report
 on a property.
-
 See https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties/runAccessReport
 for more information.
 """
@@ -42,7 +41,13 @@ def run_sample():
 
 def run_access_report(property_id: str, transport: str = None):
     """
-    Runs an access report for a Google Analytics property.
+    Runs an access report for a Google Analytics property. The report will
+    aggregate over dimensions `userEmail`, `accessedPropertyId`,
+    `propertyUserLink`, `reportType`, `revenueDataReturned`, `costDataReturned`,
+    `userIP`, and return the access count, as well as the most recent access
+    time for each combination.
+    See https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema
+    for the description of each field used in a data access report query.
     Args:
         property_id(str): The Google Analytics Property ID.
         transport(str): The transport to use. For example, "grpc"
@@ -59,7 +64,6 @@ def run_access_report(property_id: str, transport: str = None):
             AccessDimension(dimension_name="revenueDataReturned"),
             AccessDimension(dimension_name="costDataReturned"),
             AccessDimension(dimension_name="userIP"),
-            AccessDimension(dimension_name="epochTimeMicros"),
             AccessDimension(dimension_name="mostRecentAccessEpochTimeMicros"),
         ],
         metrics=[AccessMetric(metric_name="accessCount")],
