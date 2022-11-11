@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.6', '3.7', '3.8', '3.9', '3.10']
+        python: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11']
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -41,7 +41,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
+        python-version: "3.11"
     - name: Install coverage
       run: |
         python -m pip install --upgrade setuptools pip wheel
