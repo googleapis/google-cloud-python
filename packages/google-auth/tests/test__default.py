@@ -19,6 +19,7 @@ import mock
 import pytest  # type: ignore
 
 from google.auth import _default
+from google.auth import api_key
 from google.auth import app_engine
 from google.auth import aws
 from google.auth import compute_engine
@@ -681,6 +682,12 @@ def test__get_gdch_service_account_credentials_invalid_format_version():
             "file_name", {"format_version": "2"}
         )
     assert excinfo.match("Failed to load GDCH service account credentials")
+
+
+def test_get_api_key_credentials():
+    creds = _default.get_api_key_credentials("api_key")
+    assert isinstance(creds, api_key.Credentials)
+    assert creds.token == "api_key"
 
 
 class _AppIdentityModule(object):

@@ -479,6 +479,13 @@ def _get_gdch_service_account_credentials(filename, info):
     return credentials, info.get("project")
 
 
+def get_api_key_credentials(key):
+    """Return credentials with the given API key."""
+    from google.auth import api_key
+
+    return api_key.Credentials(key)
+
+
 def _apply_quota_project_id(credentials, quota_project_id):
     if quota_project_id:
         credentials = credentials.with_quota_project(quota_project_id)
