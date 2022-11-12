@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -72,16 +74,16 @@ class Schema(proto.Message):
         PROTOCOL_BUFFER = 1
         AVRO = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
     )
-    definition = proto.Field(
+    definition: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -109,16 +111,16 @@ class CreateSchemaRequest(proto.Message):
             for resource name constraints.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schema = proto.Field(
+    schema: "Schema" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Schema",
     )
-    schema_id = proto.Field(
+    schema_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -137,11 +139,11 @@ class GetSchemaRequest(proto.Message):
             ``definition``. Set to ``FULL`` to retrieve all fields.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "SchemaView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="SchemaView",
@@ -168,20 +170,20 @@ class ListSchemasRequest(proto.Message):
             next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "SchemaView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="SchemaView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -191,7 +193,7 @@ class ListSchemasResponse(proto.Message):
     r"""Response for the ``ListSchemas`` method.
 
     Attributes:
-        schemas (Sequence[google.pubsub_v1.types.Schema]):
+        schemas (MutableSequence[google.pubsub_v1.types.Schema]):
             The resulting schemas.
         next_page_token (str):
             If not empty, indicates that there may be more schemas that
@@ -203,12 +205,12 @@ class ListSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    schemas = proto.RepeatedField(
+    schemas: MutableSequence["Schema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Schema",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -223,7 +225,7 @@ class DeleteSchemaRequest(proto.Message):
             ``projects/{project}/schemas/{schema}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -240,11 +242,11 @@ class ValidateSchemaRequest(proto.Message):
             Required. The schema object to validate.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schema = proto.Field(
+    schema: "Schema" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Schema",
@@ -285,26 +287,26 @@ class ValidateMessageRequest(proto.Message):
             The encoding expected for messages
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="schema_spec",
     )
-    schema = proto.Field(
+    schema: "Schema" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="schema_spec",
         message="Schema",
     )
-    message = proto.Field(
+    message: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    encoding = proto.Field(
+    encoding: "Encoding" = proto.Field(
         proto.ENUM,
         number=5,
         enum="Encoding",

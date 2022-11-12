@@ -17,7 +17,18 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -61,7 +72,7 @@ class SchemaServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SchemaServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -331,8 +342,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SchemaServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, SchemaServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the schema service client.
@@ -346,7 +357,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
             transport (Union[str, SchemaServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -376,6 +387,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -437,13 +449,13 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def create_schema(
         self,
-        request: Union[gp_schema.CreateSchemaRequest, dict] = None,
+        request: Optional[Union[gp_schema.CreateSchemaRequest, dict]] = None,
         *,
-        parent: str = None,
-        schema: gp_schema.Schema = None,
-        schema_id: str = None,
+        parent: Optional[str] = None,
+        schema: Optional[gp_schema.Schema] = None,
+        schema_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gp_schema.Schema:
         r"""Creates a schema.
@@ -567,11 +579,11 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def get_schema(
         self,
-        request: Union[schema.GetSchemaRequest, dict] = None,
+        request: Optional[Union[schema.GetSchemaRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> schema.Schema:
         r"""Gets a schema.
@@ -666,11 +678,11 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def list_schemas(
         self,
-        request: Union[schema.ListSchemasRequest, dict] = None,
+        request: Optional[Union[schema.ListSchemasRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSchemasPager:
         r"""Lists schemas in a project.
@@ -780,11 +792,11 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def delete_schema(
         self,
-        request: Union[schema.DeleteSchemaRequest, dict] = None,
+        request: Optional[Union[schema.DeleteSchemaRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a schema.
@@ -870,12 +882,12 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def validate_schema(
         self,
-        request: Union[gp_schema.ValidateSchemaRequest, dict] = None,
+        request: Optional[Union[gp_schema.ValidateSchemaRequest, dict]] = None,
         *,
-        parent: str = None,
-        schema: gp_schema.Schema = None,
+        parent: Optional[str] = None,
+        schema: Optional[gp_schema.Schema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gp_schema.ValidateSchemaResponse:
         r"""Validates a schema.
@@ -986,10 +998,10 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def validate_message(
         self,
-        request: Union[schema.ValidateMessageRequest, dict] = None,
+        request: Optional[Union[schema.ValidateMessageRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> schema.ValidateMessageResponse:
         r"""Validates a message against a schema.
@@ -1081,10 +1093,10 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1201,10 +1213,10 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1322,10 +1334,10 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control

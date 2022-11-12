@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -161,9 +171,9 @@ class SchemaServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SchemaServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the schema service client.
@@ -207,13 +217,13 @@ class SchemaServiceAsyncClient:
 
     async def create_schema(
         self,
-        request: Union[gp_schema.CreateSchemaRequest, dict] = None,
+        request: Optional[Union[gp_schema.CreateSchemaRequest, dict]] = None,
         *,
-        parent: str = None,
-        schema: gp_schema.Schema = None,
-        schema_id: str = None,
+        parent: Optional[str] = None,
+        schema: Optional[gp_schema.Schema] = None,
+        schema_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gp_schema.Schema:
         r"""Creates a schema.
@@ -249,7 +259,7 @@ class SchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.CreateSchemaRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.CreateSchemaRequest, dict]]):
                 The request object. Request for the CreateSchema method.
             parent (:class:`str`):
                 Required. The name of the project in which to create the
@@ -337,11 +347,11 @@ class SchemaServiceAsyncClient:
 
     async def get_schema(
         self,
-        request: Union[schema.GetSchemaRequest, dict] = None,
+        request: Optional[Union[schema.GetSchemaRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> schema.Schema:
         r"""Gets a schema.
@@ -373,7 +383,7 @@ class SchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.GetSchemaRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.GetSchemaRequest, dict]]):
                 The request object. Request for the GetSchema method.
             name (:class:`str`):
                 Required. The name of the schema to get. Format is
@@ -436,11 +446,11 @@ class SchemaServiceAsyncClient:
 
     async def list_schemas(
         self,
-        request: Union[schema.ListSchemasRequest, dict] = None,
+        request: Optional[Union[schema.ListSchemasRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSchemasAsyncPager:
         r"""Lists schemas in a project.
@@ -473,7 +483,7 @@ class SchemaServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.ListSchemasRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.ListSchemasRequest, dict]]):
                 The request object. Request for the `ListSchemas`
                 method.
             parent (:class:`str`):
@@ -550,11 +560,11 @@ class SchemaServiceAsyncClient:
 
     async def delete_schema(
         self,
-        request: Union[schema.DeleteSchemaRequest, dict] = None,
+        request: Optional[Union[schema.DeleteSchemaRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a schema.
@@ -583,7 +593,7 @@ class SchemaServiceAsyncClient:
                 await client.delete_schema(request=request)
 
         Args:
-            request (Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]]):
                 The request object. Request for the `DeleteSchema`
                 method.
             name (:class:`str`):
@@ -640,12 +650,12 @@ class SchemaServiceAsyncClient:
 
     async def validate_schema(
         self,
-        request: Union[gp_schema.ValidateSchemaRequest, dict] = None,
+        request: Optional[Union[gp_schema.ValidateSchemaRequest, dict]] = None,
         *,
-        parent: str = None,
-        schema: gp_schema.Schema = None,
+        parent: Optional[str] = None,
+        schema: Optional[gp_schema.Schema] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gp_schema.ValidateSchemaResponse:
         r"""Validates a schema.
@@ -681,7 +691,7 @@ class SchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.ValidateSchemaRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.ValidateSchemaRequest, dict]]):
                 The request object. Request for the `ValidateSchema`
                 method.
             parent (:class:`str`):
@@ -756,10 +766,10 @@ class SchemaServiceAsyncClient:
 
     async def validate_message(
         self,
-        request: Union[schema.ValidateMessageRequest, dict] = None,
+        request: Optional[Union[schema.ValidateMessageRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> schema.ValidateMessageResponse:
         r"""Validates a message against a schema.
@@ -792,7 +802,7 @@ class SchemaServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.ValidateMessageRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.ValidateMessageRequest, dict]]):
                 The request object. Request for the `ValidateMessage`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -837,10 +847,10 @@ class SchemaServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -956,10 +966,10 @@ class SchemaServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1077,10 +1087,10 @@ class SchemaServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control

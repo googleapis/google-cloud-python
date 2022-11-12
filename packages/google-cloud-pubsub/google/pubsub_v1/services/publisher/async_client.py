@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -163,9 +173,9 @@ class PublisherAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PublisherTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the publisher client.
@@ -209,11 +219,11 @@ class PublisherAsyncClient:
 
     async def create_topic(
         self,
-        request: Union[pubsub.Topic, dict] = None,
+        request: Optional[Union[pubsub.Topic, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Topic:
         r"""Creates the given topic with the given name. See the [resource
@@ -247,7 +257,7 @@ class PublisherAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.Topic, dict]):
+            request (Optional[Union[google.pubsub_v1.types.Topic, dict]]):
                 The request object. A topic resource.
             name (:class:`str`):
                 Required. The name of the topic. It must have the format
@@ -326,10 +336,10 @@ class PublisherAsyncClient:
 
     async def update_topic(
         self,
-        request: Union[pubsub.UpdateTopicRequest, dict] = None,
+        request: Optional[Union[pubsub.UpdateTopicRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Topic:
         r"""Updates an existing topic. Note that certain
@@ -365,7 +375,7 @@ class PublisherAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.UpdateTopicRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.UpdateTopicRequest, dict]]):
                 The request object. Request for the UpdateTopic method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -419,12 +429,12 @@ class PublisherAsyncClient:
 
     async def publish(
         self,
-        request: Union[pubsub.PublishRequest, dict] = None,
+        request: Optional[Union[pubsub.PublishRequest, dict]] = None,
         *,
-        topic: str = None,
-        messages: Sequence[pubsub.PubsubMessage] = None,
+        topic: Optional[str] = None,
+        messages: Optional[MutableSequence[pubsub.PubsubMessage]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.PublishResponse:
         r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
@@ -457,7 +467,7 @@ class PublisherAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.PublishRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.PublishRequest, dict]]):
                 The request object. Request for the Publish method.
             topic (:class:`str`):
                 Required. The messages in the request will be published
@@ -467,7 +477,7 @@ class PublisherAsyncClient:
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            messages (:class:`Sequence[google.pubsub_v1.types.PubsubMessage]`):
+            messages (:class:`MutableSequence[google.pubsub_v1.types.PubsubMessage]`):
                 Required. The messages to publish.
                 This corresponds to the ``messages`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -544,11 +554,11 @@ class PublisherAsyncClient:
 
     async def get_topic(
         self,
-        request: Union[pubsub.GetTopicRequest, dict] = None,
+        request: Optional[Union[pubsub.GetTopicRequest, dict]] = None,
         *,
-        topic: str = None,
+        topic: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Topic:
         r"""Gets the configuration of a topic.
@@ -580,7 +590,7 @@ class PublisherAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.GetTopicRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.GetTopicRequest, dict]]):
                 The request object. Request for the GetTopic method.
             topic (:class:`str`):
                 Required. The name of the topic to get. Format is
@@ -655,11 +665,11 @@ class PublisherAsyncClient:
 
     async def list_topics(
         self,
-        request: Union[pubsub.ListTopicsRequest, dict] = None,
+        request: Optional[Union[pubsub.ListTopicsRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsAsyncPager:
         r"""Lists matching topics.
@@ -692,7 +702,7 @@ class PublisherAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.ListTopicsRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.ListTopicsRequest, dict]]):
                 The request object. Request for the `ListTopics` method.
             project (:class:`str`):
                 Required. The name of the project in which to list
@@ -780,11 +790,11 @@ class PublisherAsyncClient:
 
     async def list_topic_subscriptions(
         self,
-        request: Union[pubsub.ListTopicSubscriptionsRequest, dict] = None,
+        request: Optional[Union[pubsub.ListTopicSubscriptionsRequest, dict]] = None,
         *,
-        topic: str = None,
+        topic: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSubscriptionsAsyncPager:
         r"""Lists the names of the attached subscriptions on this
@@ -818,7 +828,7 @@ class PublisherAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.ListTopicSubscriptionsRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.ListTopicSubscriptionsRequest, dict]]):
                 The request object. Request for the
                 `ListTopicSubscriptions` method.
             topic (:class:`str`):
@@ -908,11 +918,11 @@ class PublisherAsyncClient:
 
     async def list_topic_snapshots(
         self,
-        request: Union[pubsub.ListTopicSnapshotsRequest, dict] = None,
+        request: Optional[Union[pubsub.ListTopicSnapshotsRequest, dict]] = None,
         *,
-        topic: str = None,
+        topic: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSnapshotsAsyncPager:
         r"""Lists the names of the snapshots on this topic. Snapshots are
@@ -950,7 +960,7 @@ class PublisherAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.ListTopicSnapshotsRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.ListTopicSnapshotsRequest, dict]]):
                 The request object. Request for the `ListTopicSnapshots`
                 method.
             topic (:class:`str`):
@@ -1040,11 +1050,11 @@ class PublisherAsyncClient:
 
     async def delete_topic(
         self,
-        request: Union[pubsub.DeleteTopicRequest, dict] = None,
+        request: Optional[Union[pubsub.DeleteTopicRequest, dict]] = None,
         *,
-        topic: str = None,
+        topic: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the topic with the given name. Returns ``NOT_FOUND`` if
@@ -1078,7 +1088,7 @@ class PublisherAsyncClient:
                 await client.delete_topic(request=request)
 
         Args:
-            request (Union[google.pubsub_v1.types.DeleteTopicRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.DeleteTopicRequest, dict]]):
                 The request object. Request for the `DeleteTopic`
                 method.
             topic (:class:`str`):
@@ -1145,10 +1155,10 @@ class PublisherAsyncClient:
 
     async def detach_subscription(
         self,
-        request: Union[pubsub.DetachSubscriptionRequest, dict] = None,
+        request: Optional[Union[pubsub.DetachSubscriptionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.DetachSubscriptionResponse:
         r"""Detaches a subscription from this topic. All messages retained
@@ -1184,7 +1194,7 @@ class PublisherAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.pubsub_v1.types.DetachSubscriptionRequest, dict]):
+            request (Optional[Union[google.pubsub_v1.types.DetachSubscriptionRequest, dict]]):
                 The request object. Request for the DetachSubscription
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1241,10 +1251,10 @@ class PublisherAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1361,10 +1371,10 @@ class PublisherAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1483,10 +1493,10 @@ class PublisherAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: TimeoutType = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
