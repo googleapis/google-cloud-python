@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -64,7 +75,7 @@ class ApiGatewayServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ApiGatewayServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -434,7 +445,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ApiGatewayServiceTransport, None] = None,
+        transport: Optional[Union[str, ApiGatewayServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -532,11 +543,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def list_gateways(
         self,
-        request: Union[apigateway.ListGatewaysRequest, dict] = None,
+        request: Optional[Union[apigateway.ListGatewaysRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGatewaysPager:
         r"""Lists Gateways in a given project and location.
@@ -647,11 +658,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def get_gateway(
         self,
-        request: Union[apigateway.GetGatewayRequest, dict] = None,
+        request: Optional[Union[apigateway.GetGatewayRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apigateway.Gateway:
         r"""Gets details of a single Gateway.
@@ -753,13 +764,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def create_gateway(
         self,
-        request: Union[apigateway.CreateGatewayRequest, dict] = None,
+        request: Optional[Union[apigateway.CreateGatewayRequest, dict]] = None,
         *,
-        parent: str = None,
-        gateway: apigateway.Gateway = None,
-        gateway_id: str = None,
+        parent: Optional[str] = None,
+        gateway: Optional[apigateway.Gateway] = None,
+        gateway_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Gateway in a given project and
@@ -896,12 +907,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def update_gateway(
         self,
-        request: Union[apigateway.UpdateGatewayRequest, dict] = None,
+        request: Optional[Union[apigateway.UpdateGatewayRequest, dict]] = None,
         *,
-        gateway: apigateway.Gateway = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        gateway: Optional[apigateway.Gateway] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Gateway.
@@ -1031,11 +1042,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def delete_gateway(
         self,
-        request: Union[apigateway.DeleteGatewayRequest, dict] = None,
+        request: Optional[Union[apigateway.DeleteGatewayRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Gateway.
@@ -1155,11 +1166,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def list_apis(
         self,
-        request: Union[apigateway.ListApisRequest, dict] = None,
+        request: Optional[Union[apigateway.ListApisRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApisPager:
         r"""Lists Apis in a given project and location.
@@ -1270,11 +1281,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def get_api(
         self,
-        request: Union[apigateway.GetApiRequest, dict] = None,
+        request: Optional[Union[apigateway.GetApiRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apigateway.Api:
         r"""Gets details of a single Api.
@@ -1372,13 +1383,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def create_api(
         self,
-        request: Union[apigateway.CreateApiRequest, dict] = None,
+        request: Optional[Union[apigateway.CreateApiRequest, dict]] = None,
         *,
-        parent: str = None,
-        api: apigateway.Api = None,
-        api_id: str = None,
+        parent: Optional[str] = None,
+        api: Optional[apigateway.Api] = None,
+        api_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Api in a given project and location.
@@ -1509,12 +1520,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def update_api(
         self,
-        request: Union[apigateway.UpdateApiRequest, dict] = None,
+        request: Optional[Union[apigateway.UpdateApiRequest, dict]] = None,
         *,
-        api: apigateway.Api = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        api: Optional[apigateway.Api] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Api.
@@ -1637,11 +1648,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def delete_api(
         self,
-        request: Union[apigateway.DeleteApiRequest, dict] = None,
+        request: Optional[Union[apigateway.DeleteApiRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Api.
@@ -1761,11 +1772,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def list_api_configs(
         self,
-        request: Union[apigateway.ListApiConfigsRequest, dict] = None,
+        request: Optional[Union[apigateway.ListApiConfigsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiConfigsPager:
         r"""Lists ApiConfigs in a given project and location.
@@ -1876,11 +1887,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def get_api_config(
         self,
-        request: Union[apigateway.GetApiConfigRequest, dict] = None,
+        request: Optional[Union[apigateway.GetApiConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apigateway.ApiConfig:
         r"""Gets details of a single ApiConfig.
@@ -1979,13 +1990,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def create_api_config(
         self,
-        request: Union[apigateway.CreateApiConfigRequest, dict] = None,
+        request: Optional[Union[apigateway.CreateApiConfigRequest, dict]] = None,
         *,
-        parent: str = None,
-        api_config: apigateway.ApiConfig = None,
-        api_config_id: str = None,
+        parent: Optional[str] = None,
+        api_config: Optional[apigateway.ApiConfig] = None,
+        api_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new ApiConfig in a given project and
@@ -2116,12 +2127,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def update_api_config(
         self,
-        request: Union[apigateway.UpdateApiConfigRequest, dict] = None,
+        request: Optional[Union[apigateway.UpdateApiConfigRequest, dict]] = None,
         *,
-        api_config: apigateway.ApiConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        api_config: Optional[apigateway.ApiConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single ApiConfig.
@@ -2245,11 +2256,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     def delete_api_config(
         self,
-        request: Union[apigateway.DeleteApiConfigRequest, dict] = None,
+        request: Optional[Union[apigateway.DeleteApiConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ApiConfig.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -58,7 +60,7 @@ class Api(proto.Message):
             Output only. Created time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels to represent
             user-provided metadata. Refer to cloud
             documentation on labels for more details.
@@ -85,34 +87,34 @@ class Api(proto.Message):
         DELETING = 4
         UPDATING = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    managed_service = proto.Field(
+    managed_service: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=12,
         enum=State,
@@ -131,7 +133,7 @@ class ApiConfig(proto.Message):
             Output only. Created time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels to represent
             user-provided metadata. Refer to cloud
             documentation on labels for more details.
@@ -153,14 +155,14 @@ class ApiConfig(proto.Message):
             https://cloud.google.com/service-infrastructure/docs/glossary#config).
         state (google.cloud.apigateway_v1.types.ApiConfig.State):
             Output only. State of the API Config.
-        openapi_documents (Sequence[google.cloud.apigateway_v1.types.ApiConfig.OpenApiDocument]):
+        openapi_documents (MutableSequence[google.cloud.apigateway_v1.types.ApiConfig.OpenApiDocument]):
             Optional. OpenAPI specification documents. If specified,
             grpc_services and managed_service_configs must not be
             included.
-        grpc_services (Sequence[google.cloud.apigateway_v1.types.ApiConfig.GrpcServiceDefinition]):
+        grpc_services (MutableSequence[google.cloud.apigateway_v1.types.ApiConfig.GrpcServiceDefinition]):
             Optional. gRPC service definition files. If specified,
             openapi_documents must not be included.
-        managed_service_configs (Sequence[google.cloud.apigateway_v1.types.ApiConfig.File]):
+        managed_service_configs (MutableSequence[google.cloud.apigateway_v1.types.ApiConfig.File]):
             Optional. Service Configuration files. At least one must be
             included when using gRPC service definitions. See
             https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview
@@ -198,11 +200,11 @@ class ApiConfig(proto.Message):
                 The bytes that constitute the file.
         """
 
-        path = proto.Field(
+        path: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        contents = proto.Field(
+        contents: bytes = proto.Field(
             proto.BYTES,
             number=2,
         )
@@ -215,7 +217,7 @@ class ApiConfig(proto.Message):
                 The OpenAPI Specification document file.
         """
 
-        document = proto.Field(
+        document: "ApiConfig.File" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="ApiConfig.File",
@@ -234,71 +236,71 @@ class ApiConfig(proto.Message):
 
                 $ protoc --include_imports --include_source_info test.proto
                 -o out.pb
-            source (Sequence[google.cloud.apigateway_v1.types.ApiConfig.File]):
+            source (MutableSequence[google.cloud.apigateway_v1.types.ApiConfig.File]):
                 Optional. Uncompiled proto files associated with the
                 descriptor set, used for display purposes (server-side
                 compilation is not supported). These should match the inputs
                 to 'protoc' command used to generate file_descriptor_set.
         """
 
-        file_descriptor_set = proto.Field(
+        file_descriptor_set: "ApiConfig.File" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="ApiConfig.File",
         )
-        source = proto.RepeatedField(
+        source: MutableSequence["ApiConfig.File"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ApiConfig.File",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    gateway_service_account = proto.Field(
+    gateway_service_account: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=8,
         enum=State,
     )
-    openapi_documents = proto.RepeatedField(
+    openapi_documents: MutableSequence[OpenApiDocument] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=OpenApiDocument,
     )
-    grpc_services = proto.RepeatedField(
+    grpc_services: MutableSequence[GrpcServiceDefinition] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=GrpcServiceDefinition,
     )
-    managed_service_configs = proto.RepeatedField(
+    managed_service_configs: MutableSequence[File] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=File,
@@ -319,7 +321,7 @@ class Gateway(proto.Message):
             Output only. Created time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels to represent
             user-provided metadata. Refer to cloud
             documentation on labels for more details.
@@ -347,39 +349,39 @@ class Gateway(proto.Message):
         DELETING = 4
         UPDATING = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    api_config = proto.Field(
+    api_config: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    default_hostname = proto.Field(
+    default_hostname: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -402,23 +404,23 @@ class ListGatewaysRequest(proto.Message):
             Order by parameters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -428,11 +430,11 @@ class ListGatewaysResponse(proto.Message):
     r"""Response message for ApiGatewayService.ListGateways
 
     Attributes:
-        gateways (Sequence[google.cloud.apigateway_v1.types.Gateway]):
+        gateways (MutableSequence[google.cloud.apigateway_v1.types.Gateway]):
             Gateways.
         next_page_token (str):
             Next page token.
-        unreachable_locations (Sequence[str]):
+        unreachable_locations (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -440,16 +442,16 @@ class ListGatewaysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateways = proto.RepeatedField(
+    gateways: MutableSequence["Gateway"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Gateway",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable_locations = proto.RepeatedField(
+    unreachable_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -464,7 +466,7 @@ class GetGatewayRequest(proto.Message):
             ``projects/*/locations/*/gateways/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -485,15 +487,15 @@ class CreateGatewayRequest(proto.Message):
             Required. Gateway resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gateway_id = proto.Field(
+    gateway_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    gateway = proto.Field(
+    gateway: "Gateway" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Gateway",
@@ -515,12 +517,12 @@ class UpdateGatewayRequest(proto.Message):
             Required. Gateway resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    gateway = proto.Field(
+    gateway: "Gateway" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Gateway",
@@ -536,7 +538,7 @@ class DeleteGatewayRequest(proto.Message):
             ``projects/*/locations/*/gateways/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -559,23 +561,23 @@ class ListApisRequest(proto.Message):
             Order by parameters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -585,11 +587,11 @@ class ListApisResponse(proto.Message):
     r"""Response message for ApiGatewayService.ListApis
 
     Attributes:
-        apis (Sequence[google.cloud.apigateway_v1.types.Api]):
+        apis (MutableSequence[google.cloud.apigateway_v1.types.Api]):
             APIs.
         next_page_token (str):
             Next page token.
-        unreachable_locations (Sequence[str]):
+        unreachable_locations (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -597,16 +599,16 @@ class ListApisResponse(proto.Message):
     def raw_page(self):
         return self
 
-    apis = proto.RepeatedField(
+    apis: MutableSequence["Api"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Api",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable_locations = proto.RepeatedField(
+    unreachable_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -621,7 +623,7 @@ class GetApiRequest(proto.Message):
             ``projects/*/locations/global/apis/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -642,15 +644,15 @@ class CreateApiRequest(proto.Message):
             Required. API resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_id = proto.Field(
+    api_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    api = proto.Field(
+    api: "Api" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Api",
@@ -672,12 +674,12 @@ class UpdateApiRequest(proto.Message):
             Required. API resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    api = proto.Field(
+    api: "Api" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Api",
@@ -693,7 +695,7 @@ class DeleteApiRequest(proto.Message):
             ``projects/*/locations/global/apis/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -716,23 +718,23 @@ class ListApiConfigsRequest(proto.Message):
             Order by parameters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -742,11 +744,11 @@ class ListApiConfigsResponse(proto.Message):
     r"""Response message for ApiGatewayService.ListApiConfigs
 
     Attributes:
-        api_configs (Sequence[google.cloud.apigateway_v1.types.ApiConfig]):
+        api_configs (MutableSequence[google.cloud.apigateway_v1.types.ApiConfig]):
             API Configs.
         next_page_token (str):
             Next page token.
-        unreachable_locations (Sequence[str]):
+        unreachable_locations (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -754,16 +756,16 @@ class ListApiConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_configs = proto.RepeatedField(
+    api_configs: MutableSequence["ApiConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ApiConfig",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable_locations = proto.RepeatedField(
+    unreachable_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -789,11 +791,11 @@ class GetApiConfigRequest(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: ConfigView = proto.Field(
         proto.ENUM,
         number=3,
         enum=ConfigView,
@@ -815,15 +817,15 @@ class CreateApiConfigRequest(proto.Message):
             Required. API resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_config_id = proto.Field(
+    api_config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    api_config = proto.Field(
+    api_config: "ApiConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ApiConfig",
@@ -845,12 +847,12 @@ class UpdateApiConfigRequest(proto.Message):
             Required. API Config resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    api_config = proto.Field(
+    api_config: "ApiConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ApiConfig",
@@ -866,7 +868,7 @@ class DeleteApiConfigRequest(proto.Message):
             ``projects/*/locations/global/apis/*/configs/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -900,7 +902,7 @@ class OperationMetadata(proto.Message):
         api_version (str):
             Output only. API version used to start the
             operation.
-        diagnostics (Sequence[google.cloud.apigateway_v1.types.OperationMetadata.Diagnostic]):
+        diagnostics (MutableSequence[google.cloud.apigateway_v1.types.OperationMetadata.Diagnostic]):
             Output only. Diagnostics generated during
             processing of configuration source files.
     """
@@ -915,46 +917,46 @@ class OperationMetadata(proto.Message):
                 The diagnostic message.
         """
 
-        location = proto.Field(
+        location: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    diagnostics = proto.RepeatedField(
+    diagnostics: MutableSequence[Diagnostic] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=Diagnostic,
