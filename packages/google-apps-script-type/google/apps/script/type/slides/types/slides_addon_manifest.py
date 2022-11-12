@@ -41,10 +41,12 @@ class SlidesAddOnManifest(proto.Message):
             pair.
     """
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=google.apps.script.type.types.HomepageExtensionPoint,
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     on_file_scope_granted_trigger: "SlidesExtensionPoint" = proto.Field(
         proto.MESSAGE,
