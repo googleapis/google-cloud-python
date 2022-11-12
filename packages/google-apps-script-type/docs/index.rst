@@ -7,6 +7,18 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    calendar/services
+    calendar/types
+    docs/services
+    docs/types
+    drive/services
+    drive/types
+    gmail/services
+    gmail/types
+    sheets/services
+    sheets/types
+    slides/services
+    slides/types
     type/services
     type/types
 

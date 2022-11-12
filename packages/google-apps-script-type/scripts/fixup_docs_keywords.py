@@ -35,7 +35,7 @@ def partition(
     return results[1], results[0]
 
 
-class typeCallTransformer(cst.CSTTransformer):
+class docsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ("retry", "timeout", "metadata")
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {}
 
@@ -87,7 +87,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=typeCallTransformer(),
+    transformer=docsCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -121,7 +121,7 @@ def fix_files(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the type client library.
+        description="""Fix up source that uses the docs client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 
