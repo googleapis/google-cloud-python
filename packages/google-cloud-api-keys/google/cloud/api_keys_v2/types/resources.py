@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -64,7 +66,7 @@ class Key(proto.Message):
             Output only. A timestamp when this key was
             deleted. If the resource is not deleted, this
             must be empty.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Annotations is an unstructured key-value map
             stored with a policy that may be set by external
             tools to store and retrieve arbitrary metadata.
@@ -81,48 +83,48 @@ class Key(proto.Message):
             https://google.aip.dev/154.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    key_string = proto.Field(
+    key_string: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    restrictions = proto.Field(
+    restrictions: "Restrictions" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="Restrictions",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=11,
     )
@@ -158,7 +160,7 @@ class Restrictions(proto.Message):
             The iOS apps that are allowed to use the key.
 
             This field is a member of `oneof`_ ``client_restrictions``.
-        api_targets (Sequence[google.cloud.api_keys_v2.types.ApiTarget]):
+        api_targets (MutableSequence[google.cloud.api_keys_v2.types.ApiTarget]):
             A restriction for a specific service and
             optionally one or more specific methods.
             Requests are allowed if they match any of these
@@ -166,31 +168,31 @@ class Restrictions(proto.Message):
             all targets are allowed.
     """
 
-    browser_key_restrictions = proto.Field(
+    browser_key_restrictions: "BrowserKeyRestrictions" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="client_restrictions",
         message="BrowserKeyRestrictions",
     )
-    server_key_restrictions = proto.Field(
+    server_key_restrictions: "ServerKeyRestrictions" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="client_restrictions",
         message="ServerKeyRestrictions",
     )
-    android_key_restrictions = proto.Field(
+    android_key_restrictions: "AndroidKeyRestrictions" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="client_restrictions",
         message="AndroidKeyRestrictions",
     )
-    ios_key_restrictions = proto.Field(
+    ios_key_restrictions: "IosKeyRestrictions" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="client_restrictions",
         message="IosKeyRestrictions",
     )
-    api_targets = proto.RepeatedField(
+    api_targets: MutableSequence["ApiTarget"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="ApiTarget",
@@ -202,13 +204,13 @@ class BrowserKeyRestrictions(proto.Message):
     key.
 
     Attributes:
-        allowed_referrers (Sequence[str]):
+        allowed_referrers (MutableSequence[str]):
             A list of regular expressions for the
             referrer URLs that are allowed to make API calls
             with this key.
     """
 
-    allowed_referrers = proto.RepeatedField(
+    allowed_referrers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -218,12 +220,12 @@ class ServerKeyRestrictions(proto.Message):
     r"""The IP addresses of callers that are allowed to use the key.
 
     Attributes:
-        allowed_ips (Sequence[str]):
+        allowed_ips (MutableSequence[str]):
             A list of the caller IP addresses that are
             allowed to make API calls with this key.
     """
 
-    allowed_ips = proto.RepeatedField(
+    allowed_ips: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -233,12 +235,12 @@ class AndroidKeyRestrictions(proto.Message):
     r"""The Android apps that are allowed to use the key.
 
     Attributes:
-        allowed_applications (Sequence[google.cloud.api_keys_v2.types.AndroidApplication]):
+        allowed_applications (MutableSequence[google.cloud.api_keys_v2.types.AndroidApplication]):
             A list of Android applications that are
             allowed to make API calls with this key.
     """
 
-    allowed_applications = proto.RepeatedField(
+    allowed_applications: MutableSequence["AndroidApplication"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AndroidApplication",
@@ -259,11 +261,11 @@ class AndroidApplication(proto.Message):
             The package name of the application.
     """
 
-    sha1_fingerprint = proto.Field(
+    sha1_fingerprint: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    package_name = proto.Field(
+    package_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -273,12 +275,12 @@ class IosKeyRestrictions(proto.Message):
     r"""The iOS apps that are allowed to use the key.
 
     Attributes:
-        allowed_bundle_ids (Sequence[str]):
+        allowed_bundle_ids (MutableSequence[str]):
             A list of bundle IDs that are allowed when
             making API calls with this key.
     """
 
-    allowed_bundle_ids = proto.RepeatedField(
+    allowed_bundle_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -295,7 +297,7 @@ class ApiTarget(proto.Message):
             can use
             ```gcloud services list`` </sdk/gcloud/reference/services/list>`__
             to get a list of services that are enabled in the project.
-        methods (Sequence[str]):
+        methods (MutableSequence[str]):
             Optional. List of one or more methods that can be called. If
             empty, all methods for the service are allowed. A wildcard
             (*) can be used as the last symbol. Valid examples:
@@ -303,11 +305,11 @@ class ApiTarget(proto.Message):
             ``TranslateText`` ``Get*`` ``translate.googleapis.com.Get*``
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    methods = proto.RepeatedField(
+    methods: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

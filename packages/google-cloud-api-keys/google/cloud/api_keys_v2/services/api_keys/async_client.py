@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -158,9 +168,9 @@ class ApiKeysAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ApiKeysTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the api keys client.
@@ -204,13 +214,13 @@ class ApiKeysAsyncClient:
 
     async def create_key(
         self,
-        request: Union[apikeys.CreateKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.CreateKeyRequest, dict]] = None,
         *,
-        parent: str = None,
-        key: resources.Key = None,
-        key_id: str = None,
+        parent: Optional[str] = None,
+        key: Optional[resources.Key] = None,
+        key_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new API key.
@@ -249,7 +259,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.CreateKeyRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.CreateKeyRequest, dict]]):
                 The request object. Request message for `CreateKey`
                 method.
             parent (:class:`str`):
@@ -353,11 +363,11 @@ class ApiKeysAsyncClient:
 
     async def list_keys(
         self,
-        request: Union[apikeys.ListKeysRequest, dict] = None,
+        request: Optional[Union[apikeys.ListKeysRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListKeysAsyncPager:
         r"""Lists the API keys owned by a project. The key string of the API
@@ -394,7 +404,7 @@ class ApiKeysAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.ListKeysRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.ListKeysRequest, dict]]):
                 The request object. Request message for `ListKeys`
                 method.
             parent (:class:`str`):
@@ -471,11 +481,11 @@ class ApiKeysAsyncClient:
 
     async def get_key(
         self,
-        request: Union[apikeys.GetKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.GetKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Key:
         r"""Gets the metadata for an API key. The key string of the API key
@@ -511,7 +521,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.GetKeyRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.GetKeyRequest, dict]]):
                 The request object. Request message for `GetKey` method.
             name (:class:`str`):
                 Required. The resource name of the
@@ -576,11 +586,11 @@ class ApiKeysAsyncClient:
 
     async def get_key_string(
         self,
-        request: Union[apikeys.GetKeyStringRequest, dict] = None,
+        request: Optional[Union[apikeys.GetKeyStringRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apikeys.GetKeyStringResponse:
         r"""Get the key string for an API key.
@@ -615,7 +625,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.GetKeyStringRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.GetKeyStringRequest, dict]]):
                 The request object. Request message for `GetKeyString`
                 method.
             name (:class:`str`):
@@ -679,12 +689,12 @@ class ApiKeysAsyncClient:
 
     async def update_key(
         self,
-        request: Union[apikeys.UpdateKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.UpdateKeyRequest, dict]] = None,
         *,
-        key: resources.Key = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        key: Optional[resources.Key] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Patches the modifiable fields of an API key. The key string of
@@ -723,7 +733,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.UpdateKeyRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.UpdateKeyRequest, dict]]):
                 The request object. Request message for `UpdateKey`
                 method.
             key (:class:`google.cloud.api_keys_v2.types.Key`):
@@ -817,11 +827,11 @@ class ApiKeysAsyncClient:
 
     async def delete_key(
         self,
-        request: Union[apikeys.DeleteKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.DeleteKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an API key. Deleted key can be retrieved within 30 days
@@ -861,7 +871,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.DeleteKeyRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.DeleteKeyRequest, dict]]):
                 The request object. Request message for `DeleteKey`
                 method.
             name (:class:`str`):
@@ -938,10 +948,10 @@ class ApiKeysAsyncClient:
 
     async def undelete_key(
         self,
-        request: Union[apikeys.UndeleteKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.UndeleteKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Undeletes an API key which was deleted within 30 days.
@@ -980,7 +990,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.UndeleteKeyRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.UndeleteKeyRequest, dict]]):
                 The request object. Request message for `UndeleteKey`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1036,10 +1046,10 @@ class ApiKeysAsyncClient:
 
     async def lookup_key(
         self,
-        request: Union[apikeys.LookupKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.LookupKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apikeys.LookupKeyResponse:
         r"""Find the parent project and resource name of the API key that
@@ -1075,7 +1085,7 @@ class ApiKeysAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.api_keys_v2.types.LookupKeyRequest, dict]):
+            request (Optional[Union[google.cloud.api_keys_v2.types.LookupKeyRequest, dict]]):
                 The request object. Request message for `LookupKey`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1112,10 +1122,10 @@ class ApiKeysAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

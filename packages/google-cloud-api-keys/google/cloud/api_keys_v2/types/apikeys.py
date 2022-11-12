@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -60,16 +62,16 @@ class CreateKeyRequest(proto.Message):
             The id must NOT be a UUID-like string.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key = proto.Field(
+    key: resources.Key = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Key,
     )
-    key_id = proto.Field(
+    key_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -93,19 +95,19 @@ class ListKeysRequest(proto.Message):
             past 30 days should also be returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -115,7 +117,7 @@ class ListKeysResponse(proto.Message):
     r"""Response message for ``ListKeys`` method.
 
     Attributes:
-        keys (Sequence[google.cloud.api_keys_v2.types.Key]):
+        keys (MutableSequence[google.cloud.api_keys_v2.types.Key]):
             A list of API keys.
         next_page_token (str):
             The pagination token for the next page of
@@ -126,12 +128,12 @@ class ListKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    keys = proto.RepeatedField(
+    keys: MutableSequence[resources.Key] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Key,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -146,7 +148,7 @@ class GetKeyRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -161,7 +163,7 @@ class GetKeyStringRequest(proto.Message):
             be retrieved.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -175,7 +177,7 @@ class GetKeyStringResponse(proto.Message):
             An encrypted and signed value of the key.
     """
 
-    key_string = proto.Field(
+    key_string: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -201,12 +203,12 @@ class UpdateKeyRequest(proto.Message):
             replace all allowed mutable fields.
     """
 
-    key = proto.Field(
+    key: resources.Key = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Key,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -226,11 +228,11 @@ class DeleteKeyRequest(proto.Message):
             used for optimistic concurrency.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -245,7 +247,7 @@ class UndeleteKeyRequest(proto.Message):
             be undeleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -260,7 +262,7 @@ class LookupKeyRequest(proto.Message):
             string value.
     """
 
-    key_string = proto.Field(
+    key_string: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -278,11 +280,11 @@ class LookupKeyResponse(proto.Message):
             key has been purged, resource name is empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )

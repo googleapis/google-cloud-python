@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-api-keys"
+    "name": "google-cloud-api-keys",
+    "version": "0.1.0"
   },
   "snippets": [
     {

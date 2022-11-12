@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -65,7 +76,7 @@ class ApiKeysClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ApiKeysTransport]:
         """Returns an appropriate transport class.
 
@@ -340,7 +351,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ApiKeysTransport, None] = None,
+        transport: Optional[Union[str, ApiKeysTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -441,13 +452,13 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def create_key(
         self,
-        request: Union[apikeys.CreateKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.CreateKeyRequest, dict]] = None,
         *,
-        parent: str = None,
-        key: resources.Key = None,
-        key_id: str = None,
+        parent: Optional[str] = None,
+        key: Optional[resources.Key] = None,
+        key_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new API key.
@@ -590,11 +601,11 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def list_keys(
         self,
-        request: Union[apikeys.ListKeysRequest, dict] = None,
+        request: Optional[Union[apikeys.ListKeysRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListKeysPager:
         r"""Lists the API keys owned by a project. The key string of the API
@@ -708,11 +719,11 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def get_key(
         self,
-        request: Union[apikeys.GetKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.GetKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Key:
         r"""Gets the metadata for an API key. The key string of the API key
@@ -813,11 +824,11 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def get_key_string(
         self,
-        request: Union[apikeys.GetKeyStringRequest, dict] = None,
+        request: Optional[Union[apikeys.GetKeyStringRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apikeys.GetKeyStringResponse:
         r"""Get the key string for an API key.
@@ -916,12 +927,12 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def update_key(
         self,
-        request: Union[apikeys.UpdateKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.UpdateKeyRequest, dict]] = None,
         *,
-        key: resources.Key = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        key: Optional[resources.Key] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Patches the modifiable fields of an API key. The key string of
@@ -1054,11 +1065,11 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def delete_key(
         self,
-        request: Union[apikeys.DeleteKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.DeleteKeyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an API key. Deleted key can be retrieved within 30 days
@@ -1175,10 +1186,10 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def undelete_key(
         self,
-        request: Union[apikeys.UndeleteKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.UndeleteKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Undeletes an API key which was deleted within 30 days.
@@ -1274,10 +1285,10 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def lookup_key(
         self,
-        request: Union[apikeys.LookupKeyRequest, dict] = None,
+        request: Optional[Union[apikeys.LookupKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> apikeys.LookupKeyResponse:
         r"""Find the parent project and resource name of the API key that
@@ -1364,10 +1375,10 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
