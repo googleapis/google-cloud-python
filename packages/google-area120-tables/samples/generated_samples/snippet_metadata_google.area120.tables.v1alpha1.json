@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-area120-tables"
+    "name": "google-area120-tables",
+    "version": "0.1.0"
   },
   "snippets": [
     {

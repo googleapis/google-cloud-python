@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +71,7 @@ class TablesServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TablesServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -374,7 +385,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TablesServiceTransport, None] = None,
+        transport: Optional[Union[str, TablesServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -475,11 +486,11 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def get_table(
         self,
-        request: Union[tables.GetTableRequest, dict] = None,
+        request: Optional[Union[tables.GetTableRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Table:
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
@@ -575,10 +586,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def list_tables(
         self,
-        request: Union[tables.ListTablesRequest, dict] = None,
+        request: Optional[Union[tables.ListTablesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTablesPager:
         r"""Lists tables for the user.
@@ -662,11 +673,11 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def get_workspace(
         self,
-        request: Union[tables.GetWorkspaceRequest, dict] = None,
+        request: Optional[Union[tables.GetWorkspaceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Workspace:
         r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
@@ -764,10 +775,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def list_workspaces(
         self,
-        request: Union[tables.ListWorkspacesRequest, dict] = None,
+        request: Optional[Union[tables.ListWorkspacesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkspacesPager:
         r"""Lists workspaces for the user.
@@ -851,11 +862,11 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def get_row(
         self,
-        request: Union[tables.GetRowRequest, dict] = None,
+        request: Optional[Union[tables.GetRowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Gets a row. Returns NOT_FOUND if the row does not exist in the
@@ -953,11 +964,11 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def list_rows(
         self,
-        request: Union[tables.ListRowsRequest, dict] = None,
+        request: Optional[Union[tables.ListRowsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRowsPager:
         r"""Lists rows in a table. Returns NOT_FOUND if the table does not
@@ -1069,12 +1080,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def create_row(
         self,
-        request: Union[tables.CreateRowRequest, dict] = None,
+        request: Optional[Union[tables.CreateRowRequest, dict]] = None,
         *,
-        parent: str = None,
-        row: tables.Row = None,
+        parent: Optional[str] = None,
+        row: Optional[tables.Row] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Creates a row.
@@ -1178,10 +1189,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def batch_create_rows(
         self,
-        request: Union[tables.BatchCreateRowsRequest, dict] = None,
+        request: Optional[Union[tables.BatchCreateRowsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.BatchCreateRowsResponse:
         r"""Creates multiple rows.
@@ -1263,12 +1274,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def update_row(
         self,
-        request: Union[tables.UpdateRowRequest, dict] = None,
+        request: Optional[Union[tables.UpdateRowRequest, dict]] = None,
         *,
-        row: tables.Row = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        row: Optional[tables.Row] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Updates a row.
@@ -1368,10 +1379,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def batch_update_rows(
         self,
-        request: Union[tables.BatchUpdateRowsRequest, dict] = None,
+        request: Optional[Union[tables.BatchUpdateRowsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.BatchUpdateRowsResponse:
         r"""Updates multiple rows.
@@ -1449,11 +1460,11 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def delete_row(
         self,
-        request: Union[tables.DeleteRowRequest, dict] = None,
+        request: Optional[Union[tables.DeleteRowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a row.
@@ -1540,10 +1551,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
     def batch_delete_rows(
         self,
-        request: Union[tables.BatchDeleteRowsRequest, dict] = None,
+        request: Optional[Union[tables.BatchDeleteRowsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes multiple rows.

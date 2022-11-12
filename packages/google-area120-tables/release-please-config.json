@@ -7,7 +7,7 @@
         "google/area120/tables/gapic_version.py",
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_tables_v1alpha1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.area120.tables.v1alpha1.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]

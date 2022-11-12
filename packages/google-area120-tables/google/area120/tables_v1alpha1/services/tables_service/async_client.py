@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -179,9 +189,9 @@ class TablesServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TablesServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the tables service client.
@@ -225,11 +235,11 @@ class TablesServiceAsyncClient:
 
     async def get_table(
         self,
-        request: Union[tables.GetTableRequest, dict] = None,
+        request: Optional[Union[tables.GetTableRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Table:
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
@@ -261,7 +271,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.GetTableRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.GetTableRequest, dict]]):
                 The request object. Request message for
                 TablesService.GetTable.
             name (:class:`str`):
@@ -325,10 +335,10 @@ class TablesServiceAsyncClient:
 
     async def list_tables(
         self,
-        request: Union[tables.ListTablesRequest, dict] = None,
+        request: Optional[Union[tables.ListTablesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTablesAsyncPager:
         r"""Lists tables for the user.
@@ -360,7 +370,7 @@ class TablesServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.ListTablesRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.ListTablesRequest, dict]]):
                 The request object. Request message for
                 TablesService.ListTables.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -411,11 +421,11 @@ class TablesServiceAsyncClient:
 
     async def get_workspace(
         self,
-        request: Union[tables.GetWorkspaceRequest, dict] = None,
+        request: Optional[Union[tables.GetWorkspaceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Workspace:
         r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
@@ -448,7 +458,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.GetWorkspaceRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.GetWorkspaceRequest, dict]]):
                 The request object. Request message for
                 TablesService.GetWorkspace.
             name (:class:`str`):
@@ -513,10 +523,10 @@ class TablesServiceAsyncClient:
 
     async def list_workspaces(
         self,
-        request: Union[tables.ListWorkspacesRequest, dict] = None,
+        request: Optional[Union[tables.ListWorkspacesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkspacesAsyncPager:
         r"""Lists workspaces for the user.
@@ -548,7 +558,7 @@ class TablesServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.ListWorkspacesRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.ListWorkspacesRequest, dict]]):
                 The request object. Request message for
                 TablesService.ListWorkspaces.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -599,11 +609,11 @@ class TablesServiceAsyncClient:
 
     async def get_row(
         self,
-        request: Union[tables.GetRowRequest, dict] = None,
+        request: Optional[Union[tables.GetRowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Gets a row. Returns NOT_FOUND if the row does not exist in the
@@ -636,7 +646,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.GetRowRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.GetRowRequest, dict]]):
                 The request object. Request message for
                 TablesService.GetRow.
             name (:class:`str`):
@@ -701,11 +711,11 @@ class TablesServiceAsyncClient:
 
     async def list_rows(
         self,
-        request: Union[tables.ListRowsRequest, dict] = None,
+        request: Optional[Union[tables.ListRowsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRowsAsyncPager:
         r"""Lists rows in a table. Returns NOT_FOUND if the table does not
@@ -739,7 +749,7 @@ class TablesServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.ListRowsRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.ListRowsRequest, dict]]):
                 The request object. Request message for
                 TablesService.ListRows.
             parent (:class:`str`):
@@ -817,12 +827,12 @@ class TablesServiceAsyncClient:
 
     async def create_row(
         self,
-        request: Union[tables.CreateRowRequest, dict] = None,
+        request: Optional[Union[tables.CreateRowRequest, dict]] = None,
         *,
-        parent: str = None,
-        row: tables.Row = None,
+        parent: Optional[str] = None,
+        row: Optional[tables.Row] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Creates a row.
@@ -854,7 +864,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.CreateRowRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.CreateRowRequest, dict]]):
                 The request object. Request message for
                 TablesService.CreateRow.
             parent (:class:`str`):
@@ -926,10 +936,10 @@ class TablesServiceAsyncClient:
 
     async def batch_create_rows(
         self,
-        request: Union[tables.BatchCreateRowsRequest, dict] = None,
+        request: Optional[Union[tables.BatchCreateRowsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.BatchCreateRowsResponse:
         r"""Creates multiple rows.
@@ -965,7 +975,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.BatchCreateRowsRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.BatchCreateRowsRequest, dict]]):
                 The request object. Request message for
                 TablesService.BatchCreateRows.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1010,12 +1020,12 @@ class TablesServiceAsyncClient:
 
     async def update_row(
         self,
-        request: Union[tables.UpdateRowRequest, dict] = None,
+        request: Optional[Union[tables.UpdateRowRequest, dict]] = None,
         *,
-        row: tables.Row = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        row: Optional[tables.Row] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Updates a row.
@@ -1046,7 +1056,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.UpdateRowRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.UpdateRowRequest, dict]]):
                 The request object. Request message for
                 TablesService.UpdateRow.
             row (:class:`google.area120.tables_v1alpha1.types.Row`):
@@ -1115,10 +1125,10 @@ class TablesServiceAsyncClient:
 
     async def batch_update_rows(
         self,
-        request: Union[tables.BatchUpdateRowsRequest, dict] = None,
+        request: Optional[Union[tables.BatchUpdateRowsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.BatchUpdateRowsResponse:
         r"""Updates multiple rows.
@@ -1150,7 +1160,7 @@ class TablesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest, dict]]):
                 The request object. Request message for
                 TablesService.BatchUpdateRows.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1195,11 +1205,11 @@ class TablesServiceAsyncClient:
 
     async def delete_row(
         self,
-        request: Union[tables.DeleteRowRequest, dict] = None,
+        request: Optional[Union[tables.DeleteRowRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a row.
@@ -1228,7 +1238,7 @@ class TablesServiceAsyncClient:
                 await client.delete_row(request=request)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.DeleteRowRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.DeleteRowRequest, dict]]):
                 The request object. Request message for
                 TablesService.DeleteRow
             name (:class:`str`):
@@ -1286,10 +1296,10 @@ class TablesServiceAsyncClient:
 
     async def batch_delete_rows(
         self,
-        request: Union[tables.BatchDeleteRowsRequest, dict] = None,
+        request: Optional[Union[tables.BatchDeleteRowsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes multiple rows.
@@ -1319,7 +1329,7 @@ class TablesServiceAsyncClient:
                 await client.batch_delete_rows(request=request)
 
         Args:
-            request (Union[google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest, dict]):
+            request (Optional[Union[google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest, dict]]):
                 The request object. Request message for
                 TablesService.BatchDeleteRows
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

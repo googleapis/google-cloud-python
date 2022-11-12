@@ -416,10 +416,10 @@ class TablesServiceRestTransport(TablesServiceTransport):
         self,
         *,
         host: str = "area120tables.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -511,7 +511,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.BatchCreateRowsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.BatchCreateRowsResponse:
             r"""Call the batch create rows method over HTTP.
@@ -610,7 +610,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.BatchDeleteRowsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the batch delete rows method over HTTP.
@@ -695,7 +695,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.BatchUpdateRowsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.BatchUpdateRowsResponse:
             r"""Call the batch update rows method over HTTP.
@@ -794,7 +794,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.CreateRowRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.Row:
             r"""Call the create row method over HTTP.
@@ -889,7 +889,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.DeleteRowRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete row method over HTTP.
@@ -963,7 +963,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.GetRowRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.Row:
             r"""Call the get row method over HTTP.
@@ -1049,7 +1049,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.GetTableRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.Table:
             r"""Call the get table method over HTTP.
@@ -1135,7 +1135,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.GetWorkspaceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.Workspace:
             r"""Call the get workspace method over HTTP.
@@ -1221,7 +1221,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.ListRowsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.ListRowsResponse:
             r"""Call the list rows method over HTTP.
@@ -1299,7 +1299,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.ListTablesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.ListTablesResponse:
             r"""Call the list tables method over HTTP.
@@ -1376,7 +1376,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.ListWorkspacesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.ListWorkspacesResponse:
             r"""Call the list workspaces method over HTTP.
@@ -1463,7 +1463,7 @@ class TablesServiceRestTransport(TablesServiceTransport):
             request: tables.UpdateRowRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> tables.Row:
             r"""Call the update row method over HTTP.

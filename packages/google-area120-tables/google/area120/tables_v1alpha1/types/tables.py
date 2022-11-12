@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
@@ -64,7 +66,7 @@ class GetTableRequest(proto.Message):
             Format: tables/{table}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -90,11 +92,11 @@ class ListTablesRequest(proto.Message):
             token.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -104,7 +106,7 @@ class ListTablesResponse(proto.Message):
     r"""Response message for TablesService.ListTables.
 
     Attributes:
-        tables (Sequence[google.area120.tables_v1alpha1.types.Table]):
+        tables (MutableSequence[google.area120.tables_v1alpha1.types.Table]):
             The list of tables.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -116,12 +118,12 @@ class ListTablesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tables = proto.RepeatedField(
+    tables: MutableSequence["Table"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Table",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -136,7 +138,7 @@ class GetWorkspaceRequest(proto.Message):
             retrieve. Format: workspaces/{workspace}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -161,11 +163,11 @@ class ListWorkspacesRequest(proto.Message):
             page token.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -175,7 +177,7 @@ class ListWorkspacesResponse(proto.Message):
     r"""Response message for TablesService.ListWorkspaces.
 
     Attributes:
-        workspaces (Sequence[google.area120.tables_v1alpha1.types.Workspace]):
+        workspaces (MutableSequence[google.area120.tables_v1alpha1.types.Workspace]):
             The list of workspaces.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -187,12 +189,12 @@ class ListWorkspacesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workspaces = proto.RepeatedField(
+    workspaces: MutableSequence["Workspace"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Workspace",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -210,11 +212,11 @@ class GetRowRequest(proto.Message):
             row. Defaults to user entered name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "View" = proto.Field(
         proto.ENUM,
         number=2,
         enum="View",
@@ -252,24 +254,24 @@ class ListRowsRequest(proto.Message):
             filtering not supported.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    view = proto.Field(
+    view: "View" = proto.Field(
         proto.ENUM,
         number=4,
         enum="View",
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -279,7 +281,7 @@ class ListRowsResponse(proto.Message):
     r"""Response message for TablesService.ListRows.
 
     Attributes:
-        rows (Sequence[google.area120.tables_v1alpha1.types.Row]):
+        rows (MutableSequence[google.area120.tables_v1alpha1.types.Row]):
             The rows from the specified table.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -291,12 +293,12 @@ class ListRowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rows = proto.RepeatedField(
+    rows: MutableSequence["Row"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Row",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -316,16 +318,16 @@ class CreateRowRequest(proto.Message):
             row. Defaults to user entered name.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    row = proto.Field(
+    row: "Row" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Row",
     )
-    view = proto.Field(
+    view: "View" = proto.Field(
         proto.ENUM,
         number=3,
         enum="View",
@@ -339,18 +341,18 @@ class BatchCreateRowsRequest(proto.Message):
         parent (str):
             Required. The parent table where the rows
             will be created. Format: tables/{table}
-        requests (Sequence[google.area120.tables_v1alpha1.types.CreateRowRequest]):
+        requests (MutableSequence[google.area120.tables_v1alpha1.types.CreateRowRequest]):
             Required. The request message specifying the
             rows to create.
             A maximum of 500 rows can be created in a single
             batch.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    requests = proto.RepeatedField(
+    requests: MutableSequence["CreateRowRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="CreateRowRequest",
@@ -361,11 +363,11 @@ class BatchCreateRowsResponse(proto.Message):
     r"""Response message for TablesService.BatchCreateRows.
 
     Attributes:
-        rows (Sequence[google.area120.tables_v1alpha1.types.Row]):
+        rows (MutableSequence[google.area120.tables_v1alpha1.types.Row]):
             The created rows.
     """
 
-    rows = proto.RepeatedField(
+    rows: MutableSequence["Row"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Row",
@@ -385,17 +387,17 @@ class UpdateRowRequest(proto.Message):
             row. Defaults to user entered name.
     """
 
-    row = proto.Field(
+    row: "Row" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Row",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    view = proto.Field(
+    view: "View" = proto.Field(
         proto.ENUM,
         number=3,
         enum="View",
@@ -409,18 +411,18 @@ class BatchUpdateRowsRequest(proto.Message):
         parent (str):
             Required. The parent table shared by all rows
             being updated. Format: tables/{table}
-        requests (Sequence[google.area120.tables_v1alpha1.types.UpdateRowRequest]):
+        requests (MutableSequence[google.area120.tables_v1alpha1.types.UpdateRowRequest]):
             Required. The request messages specifying the
             rows to update.
             A maximum of 500 rows can be modified in a
             single batch.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    requests = proto.RepeatedField(
+    requests: MutableSequence["UpdateRowRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="UpdateRowRequest",
@@ -431,11 +433,11 @@ class BatchUpdateRowsResponse(proto.Message):
     r"""Response message for TablesService.BatchUpdateRows.
 
     Attributes:
-        rows (Sequence[google.area120.tables_v1alpha1.types.Row]):
+        rows (MutableSequence[google.area120.tables_v1alpha1.types.Row]):
             The updated rows.
     """
 
-    rows = proto.RepeatedField(
+    rows: MutableSequence["Row"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Row",
@@ -451,7 +453,7 @@ class DeleteRowRequest(proto.Message):
             Format: tables/{table}/rows/{row}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -464,7 +466,7 @@ class BatchDeleteRowsRequest(proto.Message):
         parent (str):
             Required. The parent table shared by all rows
             being deleted. Format: tables/{table}
-        names (Sequence[str]):
+        names (MutableSequence[str]):
             Required. The names of the rows to delete.
             All rows must belong to the parent table or else
             the entire batch will fail. A maximum of 500
@@ -472,11 +474,11 @@ class BatchDeleteRowsRequest(proto.Message):
             Format: tables/{table}/rows/{row}
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    names = proto.RepeatedField(
+    names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -491,20 +493,20 @@ class Table(proto.Message):
             ``tables/{table}``.
         display_name (str):
             The human readable title of the table.
-        columns (Sequence[google.area120.tables_v1alpha1.types.ColumnDescription]):
+        columns (MutableSequence[google.area120.tables_v1alpha1.types.ColumnDescription]):
             List of columns in this table.
             Order of columns matches the display order.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    columns = proto.RepeatedField(
+    columns: MutableSequence["ColumnDescription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ColumnDescription",
@@ -527,7 +529,7 @@ class ColumnDescription(proto.Message):
             types supported on Tables website.
         id (str):
             Internal id for a column.
-        labels (Sequence[google.area120.tables_v1alpha1.types.LabeledItem]):
+        labels (MutableSequence[google.area120.tables_v1alpha1.types.LabeledItem]):
             Optional. Range of labeled values for the
             column. Some columns like tags and drop-downs
             limit the values to a set of possible values. We
@@ -545,29 +547,29 @@ class ColumnDescription(proto.Message):
             relationship column.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_type = proto.Field(
+    data_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    labels = proto.RepeatedField(
+    labels: MutableSequence["LabeledItem"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="LabeledItem",
     )
-    relationship_details = proto.Field(
+    relationship_details: "RelationshipDetails" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="RelationshipDetails",
     )
-    lookup_details = proto.Field(
+    lookup_details: "LookupDetails" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="LookupDetails",
@@ -584,11 +586,11 @@ class LabeledItem(proto.Message):
             Internal id associated with the item.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -603,7 +605,7 @@ class RelationshipDetails(proto.Message):
             linked to.
     """
 
-    linked_table = proto.Field(
+    linked_table: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -621,11 +623,11 @@ class LookupDetails(proto.Message):
             The id of the relationship column.
     """
 
-    relationship_column = proto.Field(
+    relationship_column: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    relationship_column_id = proto.Field(
+    relationship_column_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -639,18 +641,18 @@ class Row(proto.Message):
             The resource name of the row. Row names have the form
             ``tables/{table}/rows/{row}``. The name is ignored when
             creating a row.
-        values (Mapping[str, google.protobuf.struct_pb2.Value]):
+        values (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             The values of the row. This is a map of
             column key to value. Key is user entered
             name(default) or the internal column id based on
             the view in the request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    values = proto.MapField(
+    values: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
@@ -667,19 +669,19 @@ class Workspace(proto.Message):
             form ``workspaces/{workspace}``.
         display_name (str):
             The human readable title of the workspace.
-        tables (Sequence[google.area120.tables_v1alpha1.types.Table]):
+        tables (MutableSequence[google.area120.tables_v1alpha1.types.Table]):
             The list of tables in the workspace.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tables = proto.RepeatedField(
+    tables: MutableSequence["Table"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Table",
