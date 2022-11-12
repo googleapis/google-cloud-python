@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,15 +50,15 @@ class ListConnectionsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -66,7 +68,7 @@ class ListConnectionsResponse(proto.Message):
     r"""The response for [ListConnections][Management.ListConnections].
 
     Attributes:
-        connections (Sequence[google.cloud.apigeeconnect_v1.types.Connection]):
+        connections (MutableSequence[google.cloud.apigeeconnect_v1.types.Connection]):
             A list of clients.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
@@ -78,12 +80,12 @@ class ListConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connections = proto.RepeatedField(
+    connections: MutableSequence["Connection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Connection",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -102,16 +104,16 @@ class Connection(proto.Message):
             The count of streams.
     """
 
-    endpoint = proto.Field(
+    endpoint: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster = proto.Field(
+    cluster: "Cluster" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Cluster",
     )
-    stream_count = proto.Field(
+    stream_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -127,11 +129,11 @@ class Cluster(proto.Message):
             The region of the cluster.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=2,
     )

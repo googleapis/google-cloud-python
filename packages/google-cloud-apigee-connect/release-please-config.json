@@ -7,7 +7,7 @@
         "google/cloud/apigeeconnect/gapic_version.py",
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_apigeeconnect_v1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeconnect.v1.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]

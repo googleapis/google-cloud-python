@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +69,7 @@ class ConnectionServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ConnectionServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -330,7 +341,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConnectionServiceTransport, None] = None,
+        transport: Optional[Union[str, ConnectionServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -428,11 +439,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def list_connections(
         self,
-        request: Union[connection.ListConnectionsRequest, dict] = None,
+        request: Optional[Union[connection.ListConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsPager:
         r"""Lists connections that are currently active for the

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -161,9 +171,9 @@ class ConnectionServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ConnectionServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the connection service client.
@@ -207,11 +217,11 @@ class ConnectionServiceAsyncClient:
 
     async def list_connections(
         self,
-        request: Union[connection.ListConnectionsRequest, dict] = None,
+        request: Optional[Union[connection.ListConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsAsyncPager:
         r"""Lists connections that are currently active for the
@@ -245,7 +255,7 @@ class ConnectionServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.apigeeconnect_v1.types.ListConnectionsRequest, dict]):
+            request (Optional[Union[google.cloud.apigeeconnect_v1.types.ListConnectionsRequest, dict]]):
                 The request object. The request for
                 [ListConnections][Management.ListConnections].
             parent (:class:`str`):

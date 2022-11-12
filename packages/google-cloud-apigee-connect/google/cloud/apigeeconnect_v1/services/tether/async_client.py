@@ -22,6 +22,8 @@ from typing import (
     Awaitable,
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Sequence,
     Tuple,
@@ -163,9 +165,9 @@ class TetherAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TetherTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the tether client.
@@ -209,10 +211,10 @@ class TetherAsyncClient:
 
     def egress(
         self,
-        requests: AsyncIterator[tether.EgressResponse] = None,
+        requests: Optional[AsyncIterator[tether.EgressResponse]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[tether.EgressRequest]]:
         r"""Egress streams egress requests and responses.

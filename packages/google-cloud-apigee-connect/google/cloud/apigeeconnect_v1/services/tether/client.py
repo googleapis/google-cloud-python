@@ -21,6 +21,8 @@ from typing import (
     Iterable,
     Iterator,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Sequence,
     Tuple,
@@ -68,7 +70,7 @@ class TetherClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TetherTransport]:
         """Returns an appropriate transport class.
 
@@ -325,7 +327,7 @@ class TetherClient(metaclass=TetherClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TetherTransport, None] = None,
+        transport: Optional[Union[str, TetherTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -423,10 +425,10 @@ class TetherClient(metaclass=TetherClientMeta):
 
     def egress(
         self,
-        requests: Iterator[tether.EgressResponse] = None,
+        requests: Optional[Iterator[tether.EgressResponse]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[tether.EgressRequest]:
         r"""Egress streams egress requests and responses.

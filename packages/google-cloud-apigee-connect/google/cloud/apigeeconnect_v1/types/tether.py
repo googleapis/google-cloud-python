@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -74,29 +76,29 @@ class EgressRequest(proto.Message):
             Timeout for the HTTP request.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    payload = proto.Field(
+    payload: "Payload" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Payload",
     )
-    endpoint = proto.Field(
+    endpoint: "TetherEndpoint" = proto.Field(
         proto.ENUM,
         number=3,
         enum="TetherEndpoint",
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    trace_id = proto.Field(
+    trace_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
@@ -128,19 +130,19 @@ class Payload(proto.Message):
             This field is a member of `oneof`_ ``kind``.
     """
 
-    http_request = proto.Field(
+    http_request: "HttpRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="kind",
         message="HttpRequest",
     )
-    stream_info = proto.Field(
+    stream_info: "StreamInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="kind",
         message="StreamInfo",
     )
-    action = proto.Field(
+    action: "Action" = proto.Field(
         proto.ENUM,
         number=3,
         oneof="kind",
@@ -156,7 +158,7 @@ class StreamInfo(proto.Message):
             Unique identifier for the stream.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -187,34 +189,34 @@ class EgressResponse(proto.Message):
             ``projects/{project_number or project_id}/endpoints/{endpoint}``
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    http_response = proto.Field(
+    http_response: "HttpResponse" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="HttpResponse",
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    trace_id = proto.Field(
+    trace_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    endpoint = proto.Field(
+    endpoint: "TetherEndpoint" = proto.Field(
         proto.ENUM,
         number=6,
         enum="TetherEndpoint",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -232,31 +234,31 @@ class HttpRequest(proto.Message):
             "PATCH","DELETE".
         url (google.cloud.apigeeconnect_v1.types.Url):
             The HTTP request URL.
-        headers (Sequence[google.cloud.apigeeconnect_v1.types.Header]):
+        headers (MutableSequence[google.cloud.apigeeconnect_v1.types.Header]):
             The HTTP request headers.
         body (bytes):
             HTTP request body.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    method = proto.Field(
+    method: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    url = proto.Field(
+    url: "Url" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Url",
     )
-    headers = proto.RepeatedField(
+    headers: MutableSequence["Header"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Header",
     )
-    body = proto.Field(
+    body: bytes = proto.Field(
         proto.BYTES,
         number=5,
     )
@@ -277,16 +279,16 @@ class Url(proto.Message):
             Path starts with ``/``.
     """
 
-    scheme = proto.Field(
+    scheme: "Scheme" = proto.Field(
         proto.ENUM,
         number=1,
         enum="Scheme",
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -298,15 +300,15 @@ class Header(proto.Message):
     Attributes:
         key (str):
 
-        values (Sequence[str]):
+        values (MutableSequence[str]):
 
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -325,7 +327,7 @@ class HttpResponse(proto.Message):
             Status code of http response, e.g. 200.
         body (bytes):
             The HTTP 1.1 response body.
-        headers (Sequence[google.cloud.apigeeconnect_v1.types.Header]):
+        headers (MutableSequence[google.cloud.apigeeconnect_v1.types.Header]):
             The HTTP response headers.
         content_length (int):
             Content length records the length of the
@@ -335,28 +337,28 @@ class HttpResponse(proto.Message):
             number of bytes may be read from Body.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    status = proto.Field(
+    status: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    status_code = proto.Field(
+    status_code: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    body = proto.Field(
+    body: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    headers = proto.RepeatedField(
+    headers: MutableSequence["Header"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Header",
     )
-    content_length = proto.Field(
+    content_length: int = proto.Field(
         proto.INT64,
         number=6,
     )
