@@ -1,0 +1,2 @@
+recursive-include google/maps/routing *.py
+recursive-include google/maps/routing_v2 *.py
