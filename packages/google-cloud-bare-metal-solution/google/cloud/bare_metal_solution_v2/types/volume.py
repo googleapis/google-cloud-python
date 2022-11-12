@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -70,7 +72,7 @@ class Volume(proto.Message):
         snapshot_auto_delete_behavior (google.cloud.bare_metal_solution_v2.types.Volume.SnapshotAutoDeleteBehavior):
             The behavior to use when snapshot reserved
             space is full.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels as key value pairs.
         snapshot_enabled (bool):
             Whether snapshots are enabled.
@@ -125,81 +127,81 @@ class Volume(proto.Message):
                 effectively set snapshot_enabled to true.
         """
 
-        reserved_space_gib = proto.Field(
+        reserved_space_gib: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        reserved_space_used_percent = proto.Field(
+        reserved_space_used_percent: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        reserved_space_remaining_gib = proto.Field(
+        reserved_space_remaining_gib: int = proto.Field(
             proto.INT64,
             number=3,
         )
-        reserved_space_percent = proto.Field(
+        reserved_space_percent: int = proto.Field(
             proto.INT32,
             number=4,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    storage_type = proto.Field(
+    storage_type: StorageType = proto.Field(
         proto.ENUM,
         number=2,
         enum=StorageType,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    requested_size_gib = proto.Field(
+    requested_size_gib: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    current_size_gib = proto.Field(
+    current_size_gib: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    emergency_size_gib = proto.Field(
+    emergency_size_gib: int = proto.Field(
         proto.INT64,
         number=14,
     )
-    auto_grown_size_gib = proto.Field(
+    auto_grown_size_gib: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    remaining_space_gib = proto.Field(
+    remaining_space_gib: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    snapshot_reservation_detail = proto.Field(
+    snapshot_reservation_detail: SnapshotReservationDetail = proto.Field(
         proto.MESSAGE,
         number=8,
         message=SnapshotReservationDetail,
     )
-    snapshot_auto_delete_behavior = proto.Field(
+    snapshot_auto_delete_behavior: SnapshotAutoDeleteBehavior = proto.Field(
         proto.ENUM,
         number=9,
         enum=SnapshotAutoDeleteBehavior,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,
     )
-    snapshot_enabled = proto.Field(
+    snapshot_enabled: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    pod = proto.Field(
+    pod: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -213,7 +215,7 @@ class GetVolumeRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -237,19 +239,19 @@ class ListVolumesRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -259,12 +261,12 @@ class ListVolumesResponse(proto.Message):
     r"""Response message containing the list of storage volumes.
 
     Attributes:
-        volumes (Sequence[google.cloud.bare_metal_solution_v2.types.Volume]):
+        volumes (MutableSequence[google.cloud.bare_metal_solution_v2.types.Volume]):
             The list of storage volumes.
         next_page_token (str):
             A token identifying a page of results from
             the server.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -272,16 +274,16 @@ class ListVolumesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    volumes = proto.RepeatedField(
+    volumes: MutableSequence["Volume"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Volume",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -305,12 +307,12 @@ class UpdateVolumeRequest(proto.Message):
             'snapshot_reservation_detail.reserved_space_percent'
     """
 
-    volume = proto.Field(
+    volume: "Volume" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Volume",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -327,11 +329,11 @@ class ResizeVolumeRequest(proto.Message):
             New Volume size, in GiB.
     """
 
-    volume = proto.Field(
+    volume: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    size_gib = proto.Field(
+    size_gib: int = proto.Field(
         proto.INT64,
         number=2,
     )

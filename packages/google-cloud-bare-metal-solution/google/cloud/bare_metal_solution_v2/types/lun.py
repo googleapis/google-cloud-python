@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -77,46 +79,46 @@ class Lun(proto.Message):
         SSD = 1
         HDD = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    size_gb = proto.Field(
+    size_gb: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    multiprotocol_type = proto.Field(
+    multiprotocol_type: MultiprotocolType = proto.Field(
         proto.ENUM,
         number=4,
         enum=MultiprotocolType,
     )
-    storage_volume = proto.Field(
+    storage_volume: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    shareable = proto.Field(
+    shareable: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    boot_lun = proto.Field(
+    boot_lun: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    storage_type = proto.Field(
+    storage_type: StorageType = proto.Field(
         proto.ENUM,
         number=8,
         enum=StorageType,
     )
-    wwid = proto.Field(
+    wwid: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -130,7 +132,7 @@ class GetLunRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -151,15 +153,15 @@ class ListLunsRequest(proto.Message):
             the server.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -169,12 +171,12 @@ class ListLunsResponse(proto.Message):
     r"""Response message containing the list of storage volume luns.
 
     Attributes:
-        luns (Sequence[google.cloud.bare_metal_solution_v2.types.Lun]):
+        luns (MutableSequence[google.cloud.bare_metal_solution_v2.types.Lun]):
             The list of luns.
         next_page_token (str):
             A token identifying a page of results from
             the server.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -182,16 +184,16 @@ class ListLunsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    luns = proto.RepeatedField(
+    luns: MutableSequence["Lun"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Lun",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )

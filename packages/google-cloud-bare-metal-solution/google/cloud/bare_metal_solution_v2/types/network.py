@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -49,7 +51,7 @@ class Network(proto.Message):
             The type of this network.
         ip_address (str):
             IP address configured.
-        mac_address (Sequence[str]):
+        mac_address (MutableSequence[str]):
             List of physical interfaces.
         state (google.cloud.bare_metal_solution_v2.types.Network.State):
             The Network state.
@@ -59,12 +61,12 @@ class Network(proto.Message):
             The cidr of the Network.
         vrf (google.cloud.bare_metal_solution_v2.types.VRF):
             The vrf for the Network.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels as key value pairs.
         services_cidr (str):
             IP range for reserved for services (e.g.
             NFS).
-        reservations (Sequence[google.cloud.bare_metal_solution_v2.types.NetworkAddressReservation]):
+        reservations (MutableSequence[google.cloud.bare_metal_solution_v2.types.NetworkAddressReservation]):
             List of IP address reservations in this
             network. When updating this field, an error will
             be generated if a reservation conflicts with an
@@ -84,55 +86,55 @@ class Network(proto.Message):
         PROVISIONING = 1
         PROVISIONED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    mac_address = proto.RepeatedField(
+    mac_address: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    vlan_id = proto.Field(
+    vlan_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    cidr = proto.Field(
+    cidr: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    vrf = proto.Field(
+    vrf: "VRF" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="VRF",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=11,
     )
-    services_cidr = proto.Field(
+    services_cidr: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    reservations = proto.RepeatedField(
+    reservations: MutableSequence["NetworkAddressReservation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="NetworkAddressReservation",
@@ -157,15 +159,15 @@ class NetworkAddressReservation(proto.Message):
             human consumption.
     """
 
-    start_address = proto.Field(
+    start_address: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    end_address = proto.Field(
+    end_address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    note = proto.Field(
+    note: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -181,7 +183,7 @@ class VRF(proto.Message):
             The possible state of VRF.
         qos_policy (google.cloud.bare_metal_solution_v2.types.VRF.QosPolicy):
             The QOS policy applied to this VRF.
-        vlan_attachments (Sequence[google.cloud.bare_metal_solution_v2.types.VRF.VlanAttachment]):
+        vlan_attachments (MutableSequence[google.cloud.bare_metal_solution_v2.types.VRF.VlanAttachment]):
             The list of VLAN attachments for the VRF.
     """
 
@@ -200,7 +202,7 @@ class VRF(proto.Message):
                 gbps.
         """
 
-        bandwidth_gbps = proto.Field(
+        bandwidth_gbps: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
@@ -217,34 +219,34 @@ class VRF(proto.Message):
                 The router IP of the attachment.
         """
 
-        peer_vlan_id = proto.Field(
+        peer_vlan_id: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        peer_ip = proto.Field(
+        peer_ip: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        router_ip = proto.Field(
+        router_ip: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    qos_policy = proto.Field(
+    qos_policy: QosPolicy = proto.Field(
         proto.MESSAGE,
         number=6,
         message=QosPolicy,
     )
-    vlan_attachments = proto.RepeatedField(
+    vlan_attachments: MutableSequence[VlanAttachment] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=VlanAttachment,
@@ -259,7 +261,7 @@ class LogicalInterface(proto.Message):
     interface.
 
     Attributes:
-        logical_network_interfaces (Sequence[google.cloud.bare_metal_solution_v2.types.LogicalInterface.LogicalNetworkInterface]):
+        logical_network_interfaces (MutableSequence[google.cloud.bare_metal_solution_v2.types.LogicalInterface.LogicalNetworkInterface]):
             List of logical network interfaces within a
             logical interface.
         name (str):
@@ -290,38 +292,40 @@ class LogicalInterface(proto.Message):
                 An identifier for the ``Network``, generated by the backend.
         """
 
-        network = proto.Field(
+        network: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        ip_address = proto.Field(
+        ip_address: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        default_gateway = proto.Field(
+        default_gateway: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        network_type = proto.Field(
+        network_type: "Network.Type" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Network.Type",
         )
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=5,
         )
 
-    logical_network_interfaces = proto.RepeatedField(
+    logical_network_interfaces: MutableSequence[
+        LogicalNetworkInterface
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=LogicalNetworkInterface,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    interface_index = proto.Field(
+    interface_index: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -335,7 +339,7 @@ class GetNetworkRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -359,19 +363,19 @@ class ListNetworksRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -381,12 +385,12 @@ class ListNetworksResponse(proto.Message):
     r"""Response message containing the list of networks.
 
     Attributes:
-        networks (Sequence[google.cloud.bare_metal_solution_v2.types.Network]):
+        networks (MutableSequence[google.cloud.bare_metal_solution_v2.types.Network]):
             The list of networks.
         next_page_token (str):
             A token identifying a page of results from
             the server.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -394,16 +398,16 @@ class ListNetworksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    networks = proto.RepeatedField(
+    networks: MutableSequence["Network"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Network",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -424,12 +428,12 @@ class UpdateNetworkRequest(proto.Message):
             fields are: ``labels``, ``reservations``
     """
 
-    network = proto.Field(
+    network: "Network" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Network",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -442,16 +446,16 @@ class NetworkUsage(proto.Message):
     Attributes:
         network (google.cloud.bare_metal_solution_v2.types.Network):
             Network.
-        used_ips (Sequence[str]):
+        used_ips (MutableSequence[str]):
             All used IP addresses in this network.
     """
 
-    network = proto.Field(
+    network: "Network" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Network",
     )
-    used_ips = proto.RepeatedField(
+    used_ips: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -466,7 +470,7 @@ class ListNetworkUsageRequest(proto.Message):
             location).
     """
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -476,11 +480,11 @@ class ListNetworkUsageResponse(proto.Message):
     r"""Response with Networks with IPs
 
     Attributes:
-        networks (Sequence[google.cloud.bare_metal_solution_v2.types.NetworkUsage]):
+        networks (MutableSequence[google.cloud.bare_metal_solution_v2.types.NetworkUsage]):
             Networks with IPs.
     """
 
-    networks = proto.RepeatedField(
+    networks: MutableSequence["NetworkUsage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="NetworkUsage",

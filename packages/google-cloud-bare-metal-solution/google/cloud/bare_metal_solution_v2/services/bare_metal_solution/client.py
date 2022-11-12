@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -72,7 +83,7 @@ class BareMetalSolutionClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BareMetalSolutionTransport]:
         """Returns an appropriate transport class.
 
@@ -468,7 +479,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BareMetalSolutionTransport, None] = None,
+        transport: Optional[Union[str, BareMetalSolutionTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -566,11 +577,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def list_instances(
         self,
-        request: Union[instance.ListInstancesRequest, dict] = None,
+        request: Optional[Union[instance.ListInstancesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""List servers in a given project and location.
@@ -681,11 +692,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def get_instance(
         self,
-        request: Union[instance.GetInstanceRequest, dict] = None,
+        request: Optional[Union[instance.GetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Get details about a single server.
@@ -779,12 +790,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def update_instance(
         self,
-        request: Union[gcb_instance.UpdateInstanceRequest, dict] = None,
+        request: Optional[Union[gcb_instance.UpdateInstanceRequest, dict]] = None,
         *,
-        instance: gcb_instance.Instance = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        instance: Optional[gcb_instance.Instance] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update details of a single server.
@@ -911,11 +922,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def reset_instance(
         self,
-        request: Union[instance.ResetInstanceRequest, dict] = None,
+        request: Optional[Union[instance.ResetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Perform an ungraceful, hard reset on a server.
@@ -1028,11 +1039,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def start_instance(
         self,
-        request: Union[instance.StartInstanceRequest, dict] = None,
+        request: Optional[Union[instance.StartInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a server that was shutdown.
@@ -1143,11 +1154,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def stop_instance(
         self,
-        request: Union[instance.StopInstanceRequest, dict] = None,
+        request: Optional[Union[instance.StopInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Stop a running server.
@@ -1257,12 +1268,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def detach_lun(
         self,
-        request: Union[gcb_instance.DetachLunRequest, dict] = None,
+        request: Optional[Union[gcb_instance.DetachLunRequest, dict]] = None,
         *,
-        instance: str = None,
-        lun: str = None,
+        instance: Optional[str] = None,
+        lun: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Detach LUN from Instance.
@@ -1381,11 +1392,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def list_volumes(
         self,
-        request: Union[volume.ListVolumesRequest, dict] = None,
+        request: Optional[Union[volume.ListVolumesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVolumesPager:
         r"""List storage volumes in a given project and location.
@@ -1496,11 +1507,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def get_volume(
         self,
-        request: Union[volume.GetVolumeRequest, dict] = None,
+        request: Optional[Union[volume.GetVolumeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> volume.Volume:
         r"""Get details of a single storage volume.
@@ -1594,12 +1605,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def update_volume(
         self,
-        request: Union[gcb_volume.UpdateVolumeRequest, dict] = None,
+        request: Optional[Union[gcb_volume.UpdateVolumeRequest, dict]] = None,
         *,
-        volume: gcb_volume.Volume = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        volume: Optional[gcb_volume.Volume] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update details of a single storage volume.
@@ -1727,12 +1738,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def resize_volume(
         self,
-        request: Union[gcb_volume.ResizeVolumeRequest, dict] = None,
+        request: Optional[Union[gcb_volume.ResizeVolumeRequest, dict]] = None,
         *,
-        volume: str = None,
-        size_gib: int = None,
+        volume: Optional[str] = None,
+        size_gib: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Emergency Volume resize.
@@ -1849,11 +1860,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def list_networks(
         self,
-        request: Union[network.ListNetworksRequest, dict] = None,
+        request: Optional[Union[network.ListNetworksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNetworksPager:
         r"""List network in a given project and location.
@@ -1964,11 +1975,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def list_network_usage(
         self,
-        request: Union[network.ListNetworkUsageRequest, dict] = None,
+        request: Optional[Union[network.ListNetworkUsageRequest, dict]] = None,
         *,
-        location: str = None,
+        location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> network.ListNetworkUsageResponse:
         r"""List all Networks (and used IPs for each Network) in
@@ -2065,11 +2076,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def get_network(
         self,
-        request: Union[network.GetNetworkRequest, dict] = None,
+        request: Optional[Union[network.GetNetworkRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> network.Network:
         r"""Get details of a single network.
@@ -2163,12 +2174,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def update_network(
         self,
-        request: Union[gcb_network.UpdateNetworkRequest, dict] = None,
+        request: Optional[Union[gcb_network.UpdateNetworkRequest, dict]] = None,
         *,
-        network: gcb_network.Network = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        network: Optional[gcb_network.Network] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update details of a single network.
@@ -2294,11 +2305,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def get_lun(
         self,
-        request: Union[lun.GetLunRequest, dict] = None,
+        request: Optional[Union[lun.GetLunRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> lun.Lun:
         r"""Get details of a single storage logical unit
@@ -2395,11 +2406,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def list_luns(
         self,
-        request: Union[lun.ListLunsRequest, dict] = None,
+        request: Optional[Union[lun.ListLunsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLunsPager:
         r"""List storage volume luns for given storage volume.
@@ -2510,11 +2521,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def get_nfs_share(
         self,
-        request: Union[nfs_share.GetNfsShareRequest, dict] = None,
+        request: Optional[Union[nfs_share.GetNfsShareRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> nfs_share.NfsShare:
         r"""Get details of a single NFS share.
@@ -2608,11 +2619,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def list_nfs_shares(
         self,
-        request: Union[nfs_share.ListNfsSharesRequest, dict] = None,
+        request: Optional[Union[nfs_share.ListNfsSharesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNfsSharesPager:
         r"""List NFS shares.
@@ -2723,12 +2734,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     def update_nfs_share(
         self,
-        request: Union[gcb_nfs_share.UpdateNfsShareRequest, dict] = None,
+        request: Optional[Union[gcb_nfs_share.UpdateNfsShareRequest, dict]] = None,
         *,
-        nfs_share: gcb_nfs_share.NfsShare = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        nfs_share: Optional[gcb_nfs_share.NfsShare] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update details of a single NFS share.

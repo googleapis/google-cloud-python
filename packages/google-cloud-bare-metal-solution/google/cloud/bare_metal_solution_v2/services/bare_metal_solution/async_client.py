@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -196,9 +206,9 @@ class BareMetalSolutionAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BareMetalSolutionTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the bare metal solution client.
@@ -242,11 +252,11 @@ class BareMetalSolutionAsyncClient:
 
     async def list_instances(
         self,
-        request: Union[instance.ListInstancesRequest, dict] = None,
+        request: Optional[Union[instance.ListInstancesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
         r"""List servers in a given project and location.
@@ -279,7 +289,7 @@ class BareMetalSolutionAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ListInstancesRequest, dict]]):
                 The request object. Message for requesting the list of
                 servers.
             parent (:class:`str`):
@@ -357,11 +367,11 @@ class BareMetalSolutionAsyncClient:
 
     async def get_instance(
         self,
-        request: Union[instance.GetInstanceRequest, dict] = None,
+        request: Optional[Union[instance.GetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Get details about a single server.
@@ -393,7 +403,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.GetInstanceRequest, dict]]):
                 The request object. Message for requesting server
                 information.
             name (:class:`str`):
@@ -455,12 +465,12 @@ class BareMetalSolutionAsyncClient:
 
     async def update_instance(
         self,
-        request: Union[gcb_instance.UpdateInstanceRequest, dict] = None,
+        request: Optional[Union[gcb_instance.UpdateInstanceRequest, dict]] = None,
         *,
-        instance: gcb_instance.Instance = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        instance: Optional[gcb_instance.Instance] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update details of a single server.
@@ -495,7 +505,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.UpdateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.UpdateInstanceRequest, dict]]):
                 The request object. Message requesting to updating a
                 server.
             instance (:class:`google.cloud.bare_metal_solution_v2.types.Instance`):
@@ -587,11 +597,11 @@ class BareMetalSolutionAsyncClient:
 
     async def reset_instance(
         self,
-        request: Union[instance.ResetInstanceRequest, dict] = None,
+        request: Optional[Union[instance.ResetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Perform an ungraceful, hard reset on a server.
@@ -629,7 +639,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ResetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ResetInstanceRequest, dict]]):
                 The request object. Message requesting to reset a
                 server.
             name (:class:`str`):
@@ -704,11 +714,11 @@ class BareMetalSolutionAsyncClient:
 
     async def start_instance(
         self,
-        request: Union[instance.StartInstanceRequest, dict] = None,
+        request: Optional[Union[instance.StartInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts a server that was shutdown.
@@ -744,7 +754,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.StartInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.StartInstanceRequest, dict]]):
                 The request object. Message requesting to start a
                 server.
             name (:class:`str`):
@@ -819,11 +829,11 @@ class BareMetalSolutionAsyncClient:
 
     async def stop_instance(
         self,
-        request: Union[instance.StopInstanceRequest, dict] = None,
+        request: Optional[Union[instance.StopInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Stop a running server.
@@ -859,7 +869,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.StopInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.StopInstanceRequest, dict]]):
                 The request object. Message requesting to stop a server.
             name (:class:`str`):
                 Required. Name of the resource.
@@ -933,12 +943,12 @@ class BareMetalSolutionAsyncClient:
 
     async def detach_lun(
         self,
-        request: Union[gcb_instance.DetachLunRequest, dict] = None,
+        request: Optional[Union[gcb_instance.DetachLunRequest, dict]] = None,
         *,
-        instance: str = None,
-        lun: str = None,
+        instance: Optional[str] = None,
+        lun: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Detach LUN from Instance.
@@ -975,7 +985,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.DetachLunRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.DetachLunRequest, dict]]):
                 The request object. Message for detach specific LUN from
                 an Instance.
             instance (:class:`str`):
@@ -1057,11 +1067,11 @@ class BareMetalSolutionAsyncClient:
 
     async def list_volumes(
         self,
-        request: Union[volume.ListVolumesRequest, dict] = None,
+        request: Optional[Union[volume.ListVolumesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVolumesAsyncPager:
         r"""List storage volumes in a given project and location.
@@ -1094,7 +1104,7 @@ class BareMetalSolutionAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ListVolumesRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ListVolumesRequest, dict]]):
                 The request object. Message for requesting a list of
                 storage volumes.
             parent (:class:`str`):
@@ -1172,11 +1182,11 @@ class BareMetalSolutionAsyncClient:
 
     async def get_volume(
         self,
-        request: Union[volume.GetVolumeRequest, dict] = None,
+        request: Optional[Union[volume.GetVolumeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> volume.Volume:
         r"""Get details of a single storage volume.
@@ -1208,7 +1218,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.GetVolumeRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.GetVolumeRequest, dict]]):
                 The request object. Message for requesting storage
                 volume information.
             name (:class:`str`):
@@ -1270,12 +1280,12 @@ class BareMetalSolutionAsyncClient:
 
     async def update_volume(
         self,
-        request: Union[gcb_volume.UpdateVolumeRequest, dict] = None,
+        request: Optional[Union[gcb_volume.UpdateVolumeRequest, dict]] = None,
         *,
-        volume: gcb_volume.Volume = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        volume: Optional[gcb_volume.Volume] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update details of a single storage volume.
@@ -1310,7 +1320,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.UpdateVolumeRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.UpdateVolumeRequest, dict]]):
                 The request object. Message for updating a volume.
             volume (:class:`google.cloud.bare_metal_solution_v2.types.Volume`):
                 Required. The volume to update.
@@ -1403,12 +1413,12 @@ class BareMetalSolutionAsyncClient:
 
     async def resize_volume(
         self,
-        request: Union[gcb_volume.ResizeVolumeRequest, dict] = None,
+        request: Optional[Union[gcb_volume.ResizeVolumeRequest, dict]] = None,
         *,
-        volume: str = None,
-        size_gib: int = None,
+        volume: Optional[str] = None,
+        size_gib: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Emergency Volume resize.
@@ -1444,7 +1454,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ResizeVolumeRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ResizeVolumeRequest, dict]]):
                 The request object. Request for emergency resize Volume.
             volume (:class:`str`):
                 Required. Volume to resize.
@@ -1525,11 +1535,11 @@ class BareMetalSolutionAsyncClient:
 
     async def list_networks(
         self,
-        request: Union[network.ListNetworksRequest, dict] = None,
+        request: Optional[Union[network.ListNetworksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNetworksAsyncPager:
         r"""List network in a given project and location.
@@ -1562,7 +1572,7 @@ class BareMetalSolutionAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ListNetworksRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ListNetworksRequest, dict]]):
                 The request object. Message for requesting a list of
                 networks.
             parent (:class:`str`):
@@ -1640,11 +1650,11 @@ class BareMetalSolutionAsyncClient:
 
     async def list_network_usage(
         self,
-        request: Union[network.ListNetworkUsageRequest, dict] = None,
+        request: Optional[Union[network.ListNetworkUsageRequest, dict]] = None,
         *,
-        location: str = None,
+        location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> network.ListNetworkUsageResponse:
         r"""List all Networks (and used IPs for each Network) in
@@ -1678,7 +1688,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ListNetworkUsageRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ListNetworkUsageRequest, dict]]):
                 The request object. Request to get networks with IPs.
             location (:class:`str`):
                 Required. Parent value (project and
@@ -1741,11 +1751,11 @@ class BareMetalSolutionAsyncClient:
 
     async def get_network(
         self,
-        request: Union[network.GetNetworkRequest, dict] = None,
+        request: Optional[Union[network.GetNetworkRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> network.Network:
         r"""Get details of a single network.
@@ -1777,7 +1787,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.GetNetworkRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.GetNetworkRequest, dict]]):
                 The request object. Message for requesting network
                 information.
             name (:class:`str`):
@@ -1839,12 +1849,12 @@ class BareMetalSolutionAsyncClient:
 
     async def update_network(
         self,
-        request: Union[gcb_network.UpdateNetworkRequest, dict] = None,
+        request: Optional[Union[gcb_network.UpdateNetworkRequest, dict]] = None,
         *,
-        network: gcb_network.Network = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        network: Optional[gcb_network.Network] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update details of a single network.
@@ -1879,7 +1889,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.UpdateNetworkRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.UpdateNetworkRequest, dict]]):
                 The request object. Message requesting to updating a
                 network.
             network (:class:`google.cloud.bare_metal_solution_v2.types.Network`):
@@ -1970,11 +1980,11 @@ class BareMetalSolutionAsyncClient:
 
     async def get_lun(
         self,
-        request: Union[lun.GetLunRequest, dict] = None,
+        request: Optional[Union[lun.GetLunRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> lun.Lun:
         r"""Get details of a single storage logical unit
@@ -2007,7 +2017,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.GetLunRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.GetLunRequest, dict]]):
                 The request object. Message for requesting storage lun
                 information.
             name (:class:`str`):
@@ -2071,11 +2081,11 @@ class BareMetalSolutionAsyncClient:
 
     async def list_luns(
         self,
-        request: Union[lun.ListLunsRequest, dict] = None,
+        request: Optional[Union[lun.ListLunsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLunsAsyncPager:
         r"""List storage volume luns for given storage volume.
@@ -2108,7 +2118,7 @@ class BareMetalSolutionAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ListLunsRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ListLunsRequest, dict]]):
                 The request object. Message for requesting a list of
                 storage volume luns.
             parent (:class:`str`):
@@ -2186,11 +2196,11 @@ class BareMetalSolutionAsyncClient:
 
     async def get_nfs_share(
         self,
-        request: Union[nfs_share.GetNfsShareRequest, dict] = None,
+        request: Optional[Union[nfs_share.GetNfsShareRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> nfs_share.NfsShare:
         r"""Get details of a single NFS share.
@@ -2222,7 +2232,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.GetNfsShareRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.GetNfsShareRequest, dict]]):
                 The request object. Message for requesting NFS share
                 information.
             name (:class:`str`):
@@ -2284,11 +2294,11 @@ class BareMetalSolutionAsyncClient:
 
     async def list_nfs_shares(
         self,
-        request: Union[nfs_share.ListNfsSharesRequest, dict] = None,
+        request: Optional[Union[nfs_share.ListNfsSharesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNfsSharesAsyncPager:
         r"""List NFS shares.
@@ -2321,7 +2331,7 @@ class BareMetalSolutionAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.ListNfsSharesRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.ListNfsSharesRequest, dict]]):
                 The request object. Message for requesting a list of NFS
                 shares.
             parent (:class:`str`):
@@ -2399,12 +2409,12 @@ class BareMetalSolutionAsyncClient:
 
     async def update_nfs_share(
         self,
-        request: Union[gcb_nfs_share.UpdateNfsShareRequest, dict] = None,
+        request: Optional[Union[gcb_nfs_share.UpdateNfsShareRequest, dict]] = None,
         *,
-        nfs_share: gcb_nfs_share.NfsShare = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        nfs_share: Optional[gcb_nfs_share.NfsShare] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update details of a single NFS share.
@@ -2439,7 +2449,7 @@ class BareMetalSolutionAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bare_metal_solution_v2.types.UpdateNfsShareRequest, dict]):
+            request (Optional[Union[google.cloud.bare_metal_solution_v2.types.UpdateNfsShareRequest, dict]]):
                 The request object. Message requesting to updating a NFS
                 share.
             nfs_share (:class:`google.cloud.bare_metal_solution_v2.types.NfsShare`):

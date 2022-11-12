@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -65,11 +67,11 @@ class Instance(proto.Message):
             True if you enable hyperthreading for the
             server, otherwise false. The default value is
             false.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels as key value pairs.
-        luns (Sequence[google.cloud.bare_metal_solution_v2.types.Lun]):
+        luns (MutableSequence[google.cloud.bare_metal_solution_v2.types.Lun]):
             List of LUNs associated with this server.
-        networks (Sequence[google.cloud.bare_metal_solution_v2.types.Network]):
+        networks (MutableSequence[google.cloud.bare_metal_solution_v2.types.Network]):
             List of networks associated with this server.
         interactive_serial_console_enabled (bool):
             True if the interactive serial console
@@ -88,7 +90,7 @@ class Instance(proto.Message):
             Instance network template name. For eg, bondaa-bondaa,
             bondab-nic, etc. Generally, the template name follows the
             syntax of "bond<bond_mode>" or "nic".
-        logical_interfaces (Sequence[google.cloud.bare_metal_solution_v2.types.LogicalInterface]):
+        logical_interfaces (MutableSequence[google.cloud.bare_metal_solution_v2.types.LogicalInterface]):
             List of logical interfaces for the instance. The number of
             logical interfaces will be the same as number of hardware
             bond/nic on the chosen network template. For the
@@ -107,69 +109,69 @@ class Instance(proto.Message):
         RUNNING = 2
         DELETED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    hyperthreading_enabled = proto.Field(
+    hyperthreading_enabled: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    luns = proto.RepeatedField(
+    luns: MutableSequence[gcb_lun.Lun] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=gcb_lun.Lun,
     )
-    networks = proto.RepeatedField(
+    networks: MutableSequence[network.Network] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=network.Network,
     )
-    interactive_serial_console_enabled = proto.Field(
+    interactive_serial_console_enabled: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    os_image = proto.Field(
+    os_image: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    pod = proto.Field(
+    pod: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    network_template = proto.Field(
+    network_template: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    logical_interfaces = proto.RepeatedField(
+    logical_interfaces: MutableSequence[network.LogicalInterface] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message=network.LogicalInterface,
@@ -184,7 +186,7 @@ class GetInstanceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -208,19 +210,19 @@ class ListInstancesRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -230,12 +232,12 @@ class ListInstancesResponse(proto.Message):
     r"""Response message for the list of servers.
 
     Attributes:
-        instances (Sequence[google.cloud.bare_metal_solution_v2.types.Instance]):
+        instances (MutableSequence[google.cloud.bare_metal_solution_v2.types.Instance]):
             The list of servers.
         next_page_token (str):
             A token identifying a page of results from
             the server.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -243,16 +245,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -273,12 +275,12 @@ class UpdateInstanceRequest(proto.Message):
             are: ``labels`` ``hyperthreading_enabled`` ``os_image``
     """
 
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -293,7 +295,7 @@ class ResetInstanceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -307,7 +309,7 @@ class StartInstanceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -321,7 +323,7 @@ class StopInstanceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -337,11 +339,11 @@ class DetachLunRequest(proto.Message):
             Required. Name of the Lun to detach.
     """
 
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    lun = proto.Field(
+    lun: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -358,10 +360,10 @@ class ServerNetworkTemplate(proto.Message):
             Generally, the {server_network_template} follows the syntax
             of "bond<interface_type_index><bond_mode>" or
             "nic<interface_type_index>".
-        applicable_instance_types (Sequence[str]):
+        applicable_instance_types (MutableSequence[str]):
             Instance types this template is applicable
             to.
-        logical_interfaces (Sequence[google.cloud.bare_metal_solution_v2.types.ServerNetworkTemplate.LogicalInterface]):
+        logical_interfaces (MutableSequence[google.cloud.bare_metal_solution_v2.types.ServerNetworkTemplate.LogicalInterface]):
             Logical interfaces.
     """
 
@@ -388,29 +390,29 @@ class ServerNetworkTemplate(proto.Message):
             BOND = 1
             NIC = 2
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "ServerNetworkTemplate.LogicalInterface.InterfaceType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="ServerNetworkTemplate.LogicalInterface.InterfaceType",
         )
-        required = proto.Field(
+        required: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    applicable_instance_types = proto.RepeatedField(
+    applicable_instance_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    logical_interfaces = proto.RepeatedField(
+    logical_interfaces: MutableSequence[LogicalInterface] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=LogicalInterface,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -41,9 +43,9 @@ class NfsShare(proto.Message):
             The state of the NFS share.
         volume (str):
             The volume containing the share.
-        allowed_clients (Sequence[google.cloud.bare_metal_solution_v2.types.NfsShare.AllowedClient]):
+        allowed_clients (MutableSequence[google.cloud.bare_metal_solution_v2.types.NfsShare.AllowedClient]):
             List of allowed access points.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels as key value pairs.
     """
 
@@ -83,59 +85,59 @@ class NfsShare(proto.Message):
                 identity authentication.
         """
 
-        network = proto.Field(
+        network: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        share_ip = proto.Field(
+        share_ip: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        allowed_clients_cidr = proto.Field(
+        allowed_clients_cidr: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        mount_permissions = proto.Field(
+        mount_permissions: "NfsShare.MountPermissions" = proto.Field(
             proto.ENUM,
             number=4,
             enum="NfsShare.MountPermissions",
         )
-        allow_dev = proto.Field(
+        allow_dev: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
-        allow_suid = proto.Field(
+        allow_suid: bool = proto.Field(
             proto.BOOL,
             number=6,
         )
-        no_root_squash = proto.Field(
+        no_root_squash: bool = proto.Field(
             proto.BOOL,
             number=7,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    nfs_share_id = proto.Field(
+    nfs_share_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    volume = proto.Field(
+    volume: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    allowed_clients = proto.RepeatedField(
+    allowed_clients: MutableSequence[AllowedClient] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=AllowedClient,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
@@ -150,7 +152,7 @@ class GetNfsShareRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -174,19 +176,19 @@ class ListNfsSharesRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -196,12 +198,12 @@ class ListNfsSharesResponse(proto.Message):
     r"""Response message containing the list of NFS shares.
 
     Attributes:
-        nfs_shares (Sequence[google.cloud.bare_metal_solution_v2.types.NfsShare]):
+        nfs_shares (MutableSequence[google.cloud.bare_metal_solution_v2.types.NfsShare]):
             The list of NFS shares.
         next_page_token (str):
             A token identifying a page of results from
             the server.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -209,16 +211,16 @@ class ListNfsSharesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    nfs_shares = proto.RepeatedField(
+    nfs_shares: MutableSequence["NfsShare"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="NfsShare",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -239,12 +241,12 @@ class UpdateNfsShareRequest(proto.Message):
             fields are: ``labels``
     """
 
-    nfs_share = proto.Field(
+    nfs_share: "NfsShare" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="NfsShare",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
