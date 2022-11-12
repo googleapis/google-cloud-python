@@ -4,7 +4,12 @@
     ".": {
       "release-type": "python",
       "extra-files": [
-        "google/cloud/apigee_registry/gapic_version.py"
+        "google/cloud/apigee_registry/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeregistry.v1.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
       ]
     }
   },

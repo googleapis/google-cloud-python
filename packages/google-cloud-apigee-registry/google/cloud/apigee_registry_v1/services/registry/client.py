@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -67,7 +78,7 @@ class RegistryClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RegistryTransport]:
         """Returns an appropriate transport class.
 
@@ -440,7 +451,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RegistryTransport, None] = None,
+        transport: Optional[Union[str, RegistryTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -541,11 +552,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_apis(
         self,
-        request: Union[registry_service.ListApisRequest, dict] = None,
+        request: Optional[Union[registry_service.ListApisRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApisPager:
         r"""Returns matching APIs.
@@ -654,11 +665,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_api(
         self,
-        request: Union[registry_service.GetApiRequest, dict] = None,
+        request: Optional[Union[registry_service.GetApiRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Api:
         r"""Returns a specified API.
@@ -756,13 +767,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def create_api(
         self,
-        request: Union[registry_service.CreateApiRequest, dict] = None,
+        request: Optional[Union[registry_service.CreateApiRequest, dict]] = None,
         *,
-        parent: str = None,
-        api: registry_models.Api = None,
-        api_id: str = None,
+        parent: Optional[str] = None,
+        api: Optional[registry_models.Api] = None,
+        api_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Api:
         r"""Creates a specified API.
@@ -882,12 +893,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def update_api(
         self,
-        request: Union[registry_service.UpdateApiRequest, dict] = None,
+        request: Optional[Union[registry_service.UpdateApiRequest, dict]] = None,
         *,
-        api: registry_models.Api = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        api: Optional[registry_models.Api] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Api:
         r"""Used to modify a specified API.
@@ -998,11 +1009,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_api(
         self,
-        request: Union[registry_service.DeleteApiRequest, dict] = None,
+        request: Optional[Union[registry_service.DeleteApiRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a specified API and all of the resources that
@@ -1088,11 +1099,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_api_versions(
         self,
-        request: Union[registry_service.ListApiVersionsRequest, dict] = None,
+        request: Optional[Union[registry_service.ListApiVersionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiVersionsPager:
         r"""Returns matching versions.
@@ -1201,11 +1212,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_api_version(
         self,
-        request: Union[registry_service.GetApiVersionRequest, dict] = None,
+        request: Optional[Union[registry_service.GetApiVersionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiVersion:
         r"""Returns a specified version.
@@ -1303,13 +1314,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def create_api_version(
         self,
-        request: Union[registry_service.CreateApiVersionRequest, dict] = None,
+        request: Optional[Union[registry_service.CreateApiVersionRequest, dict]] = None,
         *,
-        parent: str = None,
-        api_version: registry_models.ApiVersion = None,
-        api_version_id: str = None,
+        parent: Optional[str] = None,
+        api_version: Optional[registry_models.ApiVersion] = None,
+        api_version_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiVersion:
         r"""Creates a specified version.
@@ -1431,12 +1442,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def update_api_version(
         self,
-        request: Union[registry_service.UpdateApiVersionRequest, dict] = None,
+        request: Optional[Union[registry_service.UpdateApiVersionRequest, dict]] = None,
         *,
-        api_version: registry_models.ApiVersion = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        api_version: Optional[registry_models.ApiVersion] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiVersion:
         r"""Used to modify a specified version.
@@ -1551,11 +1562,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_api_version(
         self,
-        request: Union[registry_service.DeleteApiVersionRequest, dict] = None,
+        request: Optional[Union[registry_service.DeleteApiVersionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a specified version and all of the resources
@@ -1642,11 +1653,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_api_specs(
         self,
-        request: Union[registry_service.ListApiSpecsRequest, dict] = None,
+        request: Optional[Union[registry_service.ListApiSpecsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiSpecsPager:
         r"""Returns matching specs.
@@ -1756,11 +1767,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_api_spec(
         self,
-        request: Union[registry_service.GetApiSpecRequest, dict] = None,
+        request: Optional[Union[registry_service.GetApiSpecRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
         r"""Returns a specified spec.
@@ -1869,11 +1880,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_api_spec_contents(
         self,
-        request: Union[registry_service.GetApiSpecContentsRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.GetApiSpecContentsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""Returns the contents of a specified spec. If specs are stored
@@ -2019,13 +2032,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def create_api_spec(
         self,
-        request: Union[registry_service.CreateApiSpecRequest, dict] = None,
+        request: Optional[Union[registry_service.CreateApiSpecRequest, dict]] = None,
         *,
-        parent: str = None,
-        api_spec: registry_models.ApiSpec = None,
-        api_spec_id: str = None,
+        parent: Optional[str] = None,
+        api_spec: Optional[registry_models.ApiSpec] = None,
+        api_spec_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
         r"""Creates a specified spec.
@@ -2157,12 +2170,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def update_api_spec(
         self,
-        request: Union[registry_service.UpdateApiSpecRequest, dict] = None,
+        request: Optional[Union[registry_service.UpdateApiSpecRequest, dict]] = None,
         *,
-        api_spec: registry_models.ApiSpec = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        api_spec: Optional[registry_models.ApiSpec] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
         r"""Used to modify a specified spec.
@@ -2287,11 +2300,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_api_spec(
         self,
-        request: Union[registry_service.DeleteApiSpecRequest, dict] = None,
+        request: Optional[Union[registry_service.DeleteApiSpecRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a specified spec, all revisions, and all
@@ -2377,10 +2390,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def tag_api_spec_revision(
         self,
-        request: Union[registry_service.TagApiSpecRevisionRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.TagApiSpecRevisionRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
         r"""Adds a tag to a specified revision of a spec.
@@ -2471,10 +2486,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_api_spec_revisions(
         self,
-        request: Union[registry_service.ListApiSpecRevisionsRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.ListApiSpecRevisionsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiSpecRevisionsPager:
         r"""Lists all revisions of a spec.
@@ -2567,10 +2584,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def rollback_api_spec(
         self,
-        request: Union[registry_service.RollbackApiSpecRequest, dict] = None,
+        request: Optional[Union[registry_service.RollbackApiSpecRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
         r"""Sets the current revision to a specified prior
@@ -2662,11 +2679,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_api_spec_revision(
         self,
-        request: Union[registry_service.DeleteApiSpecRevisionRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.DeleteApiSpecRevisionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
         r"""Deletes a revision of a spec.
@@ -2779,11 +2798,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_api_deployments(
         self,
-        request: Union[registry_service.ListApiDeploymentsRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.ListApiDeploymentsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiDeploymentsPager:
         r"""Returns matching deployments.
@@ -2894,11 +2915,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_api_deployment(
         self,
-        request: Union[registry_service.GetApiDeploymentRequest, dict] = None,
+        request: Optional[Union[registry_service.GetApiDeploymentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
         r"""Returns a specified deployment.
@@ -3003,13 +3024,15 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def create_api_deployment(
         self,
-        request: Union[registry_service.CreateApiDeploymentRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.CreateApiDeploymentRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        api_deployment: registry_models.ApiDeployment = None,
-        api_deployment_id: str = None,
+        parent: Optional[str] = None,
+        api_deployment: Optional[registry_models.ApiDeployment] = None,
+        api_deployment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
         r"""Creates a specified deployment.
@@ -3137,12 +3160,14 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def update_api_deployment(
         self,
-        request: Union[registry_service.UpdateApiDeploymentRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.UpdateApiDeploymentRequest, dict]
+        ] = None,
         *,
-        api_deployment: registry_models.ApiDeployment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        api_deployment: Optional[registry_models.ApiDeployment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
         r"""Used to modify a specified deployment.
@@ -3263,11 +3288,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_api_deployment(
         self,
-        request: Union[registry_service.DeleteApiDeploymentRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.DeleteApiDeploymentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a specified deployment, all revisions, and
@@ -3354,10 +3381,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def tag_api_deployment_revision(
         self,
-        request: Union[registry_service.TagApiDeploymentRevisionRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.TagApiDeploymentRevisionRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
         r"""Adds a tag to a specified revision of a
@@ -3446,10 +3475,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_api_deployment_revisions(
         self,
-        request: Union[registry_service.ListApiDeploymentRevisionsRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.ListApiDeploymentRevisionsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiDeploymentRevisionsPager:
         r"""Lists all revisions of a deployment.
@@ -3544,10 +3575,12 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def rollback_api_deployment(
         self,
-        request: Union[registry_service.RollbackApiDeploymentRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.RollbackApiDeploymentRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
         r"""Sets the current revision to a specified prior
@@ -3635,13 +3668,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_api_deployment_revision(
         self,
-        request: Union[
-            registry_service.DeleteApiDeploymentRevisionRequest, dict
+        request: Optional[
+            Union[registry_service.DeleteApiDeploymentRevisionRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
         r"""Deletes a revision of a deployment.
@@ -3751,11 +3784,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_artifacts(
         self,
-        request: Union[registry_service.ListArtifactsRequest, dict] = None,
+        request: Optional[Union[registry_service.ListArtifactsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListArtifactsPager:
         r"""Returns matching artifacts.
@@ -3864,11 +3897,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_artifact(
         self,
-        request: Union[registry_service.GetArtifactRequest, dict] = None,
+        request: Optional[Union[registry_service.GetArtifactRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Artifact:
         r"""Returns a specified artifact.
@@ -3974,11 +4007,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_artifact_contents(
         self,
-        request: Union[registry_service.GetArtifactContentsRequest, dict] = None,
+        request: Optional[
+            Union[registry_service.GetArtifactContentsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
         r"""Returns the contents of a specified artifact. If artifacts are
@@ -4123,13 +4158,13 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def create_artifact(
         self,
-        request: Union[registry_service.CreateArtifactRequest, dict] = None,
+        request: Optional[Union[registry_service.CreateArtifactRequest, dict]] = None,
         *,
-        parent: str = None,
-        artifact: registry_models.Artifact = None,
-        artifact_id: str = None,
+        parent: Optional[str] = None,
+        artifact: Optional[registry_models.Artifact] = None,
+        artifact_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Artifact:
         r"""Creates a specified artifact.
@@ -4258,11 +4293,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def replace_artifact(
         self,
-        request: Union[registry_service.ReplaceArtifactRequest, dict] = None,
+        request: Optional[Union[registry_service.ReplaceArtifactRequest, dict]] = None,
         *,
-        artifact: registry_models.Artifact = None,
+        artifact: Optional[registry_models.Artifact] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Artifact:
         r"""Used to replace a specified artifact.
@@ -4371,11 +4406,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_artifact(
         self,
-        request: Union[registry_service.DeleteArtifactRequest, dict] = None,
+        request: Optional[Union[registry_service.DeleteArtifactRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a specified artifact.
@@ -4473,10 +4508,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -4527,10 +4562,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -4581,10 +4616,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -4636,10 +4671,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -4690,10 +4725,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -4810,10 +4845,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -4931,10 +4966,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -4990,10 +5025,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -5044,10 +5079,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

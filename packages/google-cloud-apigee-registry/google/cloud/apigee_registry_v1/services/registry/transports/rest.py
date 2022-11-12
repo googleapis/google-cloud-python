@@ -1296,10 +1296,10 @@ class RegistryRestTransport(RegistryTransport):
         self,
         *,
         host: str = "apigeeregistry.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -1393,7 +1393,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.CreateApiRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.Api:
             r"""Call the create api method over HTTP.
@@ -1491,7 +1491,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.CreateApiDeploymentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the create api deployment method over HTTP.
@@ -1599,7 +1599,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.CreateApiSpecRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the create api spec method over HTTP.
@@ -1708,7 +1708,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.CreateApiVersionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiVersion:
             r"""Call the create api version method over HTTP.
@@ -1808,7 +1808,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.CreateArtifactRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.Artifact:
             r"""Call the create artifact method over HTTP.
@@ -1932,7 +1932,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteApiRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete api method over HTTP.
@@ -2004,7 +2004,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteApiDeploymentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete api deployment method over HTTP.
@@ -2080,7 +2080,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteApiDeploymentRevisionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the delete api deployment
@@ -2178,7 +2178,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteApiSpecRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete api spec method over HTTP.
@@ -2250,7 +2250,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteApiSpecRevisionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the delete api spec revision method over HTTP.
@@ -2352,7 +2352,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteApiVersionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete api version method over HTTP.
@@ -2426,7 +2426,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.DeleteArtifactRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
             r"""Call the delete artifact method over HTTP.
@@ -2514,7 +2514,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetApiRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.Api:
             r"""Call the get api method over HTTP.
@@ -2601,7 +2601,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetApiDeploymentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the get api deployment method over HTTP.
@@ -2696,7 +2696,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetApiSpecRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the get api spec method over HTTP.
@@ -2794,7 +2794,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetApiSpecContentsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> httpbody_pb2.HttpBody:
             r"""Call the get api spec contents method over HTTP.
@@ -2931,7 +2931,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetApiVersionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiVersion:
             r"""Call the get api version method over HTTP.
@@ -3018,7 +3018,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetArtifactRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.Artifact:
             r"""Call the get artifact method over HTTP.
@@ -3129,7 +3129,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.GetArtifactContentsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> httpbody_pb2.HttpBody:
             r"""Call the get artifact contents method over HTTP.
@@ -3282,7 +3282,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListApiDeploymentRevisionsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListApiDeploymentRevisionsResponse:
             r"""Call the list api deployment
@@ -3373,7 +3373,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListApiDeploymentsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListApiDeploymentsResponse:
             r"""Call the list api deployments method over HTTP.
@@ -3463,7 +3463,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListApisRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListApisResponse:
             r"""Call the list apis method over HTTP.
@@ -3547,7 +3547,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListApiSpecRevisionsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListApiSpecRevisionsResponse:
             r"""Call the list api spec revisions method over HTTP.
@@ -3637,7 +3637,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListApiSpecsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListApiSpecsResponse:
             r"""Call the list api specs method over HTTP.
@@ -3721,7 +3721,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListApiVersionsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListApiVersionsResponse:
             r"""Call the list api versions method over HTTP.
@@ -3807,7 +3807,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ListArtifactsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_service.ListArtifactsResponse:
             r"""Call the list artifacts method over HTTP.
@@ -3907,7 +3907,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.ReplaceArtifactRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.Artifact:
             r"""Call the replace artifact method over HTTP.
@@ -4033,7 +4033,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.RollbackApiDeploymentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the rollback api deployment method over HTTP.
@@ -4139,7 +4139,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.RollbackApiSpecRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the rollback api spec method over HTTP.
@@ -4248,7 +4248,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.TagApiDeploymentRevisionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the tag api deployment
@@ -4355,7 +4355,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.TagApiSpecRevisionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the tag api spec revision method over HTTP.
@@ -4466,7 +4466,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.UpdateApiRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.Api:
             r"""Call the update api method over HTTP.
@@ -4562,7 +4562,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.UpdateApiDeploymentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the update api deployment method over HTTP.
@@ -4668,7 +4668,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.UpdateApiSpecRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the update api spec method over HTTP.
@@ -4775,7 +4775,7 @@ class RegistryRestTransport(RegistryTransport):
             request: registry_service.UpdateApiVersionRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> registry_models.ApiVersion:
             r"""Call the update api version method over HTTP.
@@ -5184,7 +5184,7 @@ class RegistryRestTransport(RegistryTransport):
             request: locations_pb2.GetLocationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> locations_pb2.Location:
 
@@ -5251,7 +5251,7 @@ class RegistryRestTransport(RegistryTransport):
             request: locations_pb2.ListLocationsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> locations_pb2.ListLocationsResponse:
 
@@ -5318,7 +5318,7 @@ class RegistryRestTransport(RegistryTransport):
             request: iam_policy_pb2.GetIamPolicyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> policy_pb2.Policy:
 
@@ -5421,7 +5421,7 @@ class RegistryRestTransport(RegistryTransport):
             request: iam_policy_pb2.SetIamPolicyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> policy_pb2.Policy:
 
@@ -5536,7 +5536,7 @@ class RegistryRestTransport(RegistryTransport):
             request: iam_policy_pb2.TestIamPermissionsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
 
@@ -5653,7 +5653,7 @@ class RegistryRestTransport(RegistryTransport):
             request: operations_pb2.CancelOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
 
@@ -5719,7 +5719,7 @@ class RegistryRestTransport(RegistryTransport):
             request: operations_pb2.DeleteOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
 
@@ -5782,7 +5782,7 @@ class RegistryRestTransport(RegistryTransport):
             request: operations_pb2.GetOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
 
@@ -5849,7 +5849,7 @@ class RegistryRestTransport(RegistryTransport):
             request: operations_pb2.ListOperationsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
 

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -55,7 +57,7 @@ class Api(proto.Message):
         recommended_deployment (str):
             The recommended deployment of the API. Format:
             ``apis/{api}/deployments/{deployment}``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels attach identifying metadata to resources. Identifying
             metadata can be used to filter list operations.
 
@@ -68,7 +70,7 @@ class Api(proto.Message):
             See https://goo.gl/xmQnxf for more information and examples
             of labels. System reserved label keys are prefixed with
             ``apigeeregistry.googleapis.com/`` and cannot be changed.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
             Annotation keys and values are less restricted
@@ -78,46 +80,46 @@ class Api(proto.Message):
             Artifacts.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    availability = proto.Field(
+    availability: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    recommended_version = proto.Field(
+    recommended_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    recommended_deployment = proto.Field(
+    recommended_deployment: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
@@ -146,7 +148,7 @@ class ApiVersion(proto.Message):
             maturity, e.g., "CONCEPT", "DESIGN",
             "DEVELOPMENT", "STAGING", "PRODUCTION",
             "DEPRECATED", "RETIRED".
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels attach identifying metadata to resources. Identifying
             metadata can be used to filter list operations.
 
@@ -159,7 +161,7 @@ class ApiVersion(proto.Message):
             See https://goo.gl/xmQnxf for more information and examples
             of labels. System reserved label keys are prefixed with
             ``apigeeregistry.googleapis.com/`` and cannot be changed.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
             Annotation keys and values are less restricted
@@ -169,38 +171,38 @@ class ApiVersion(proto.Message):
             Artifacts.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
@@ -270,7 +272,7 @@ class ApiSpec(proto.Message):
             Provided by API callers when specs are created
             or updated. To access the contents of a spec,
             use GetApiSpecContents.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels attach identifying metadata to resources. Identifying
             metadata can be used to filter list operations.
 
@@ -283,7 +285,7 @@ class ApiSpec(proto.Message):
             See https://goo.gl/xmQnxf for more information and examples
             of labels. System reserved label keys are prefixed with
             ``apigeeregistry.googleapis.com/`` and cannot be changed.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
             Annotation keys and values are less restricted
@@ -293,63 +295,63 @@ class ApiSpec(proto.Message):
             Artifacts.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filename = proto.Field(
+    filename: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    revision_create_time = proto.Field(
+    revision_create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    revision_update_time = proto.Field(
+    revision_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    hash_ = proto.Field(
+    hash_: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    source_uri = proto.Field(
+    source_uri: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    contents = proto.Field(
+    contents: bytes = proto.Field(
         proto.BYTES,
         number=12,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=15,
@@ -405,7 +407,7 @@ class ApiDeployment(proto.Message):
             Text briefly describing how to access the
             endpoint. Changes to this value will not affect
             the revision.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels attach identifying metadata to resources. Identifying
             metadata can be used to filter list operations.
 
@@ -418,7 +420,7 @@ class ApiDeployment(proto.Message):
             See https://goo.gl/xmQnxf for more information and examples
             of labels. System reserved label keys are prefixed with
             ``apigeeregistry.googleapis.com/`` and cannot be changed.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
             Annotation keys and values are less restricted
@@ -428,63 +430,63 @@ class ApiDeployment(proto.Message):
             Artifacts.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    revision_create_time = proto.Field(
+    revision_create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    revision_update_time = proto.Field(
+    revision_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    api_spec_revision = proto.Field(
+    api_spec_revision: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    endpoint_uri = proto.Field(
+    endpoint_uri: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    external_channel_uri = proto.Field(
+    external_channel_uri: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    intended_audience = proto.Field(
+    intended_audience: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    access_guidance = proto.Field(
+    access_guidance: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=15,
@@ -532,33 +534,33 @@ class Artifact(proto.Message):
             an artifact, use GetArtifactContents.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    hash_ = proto.Field(
+    hash_: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    contents = proto.Field(
+    contents: bytes = proto.Field(
         proto.BYTES,
         number=7,
     )

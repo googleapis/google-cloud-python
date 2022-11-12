@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -93,19 +95,19 @@ class ListApisRequest(proto.Message):
             and can refer to all message fields.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -115,7 +117,7 @@ class ListApisResponse(proto.Message):
     r"""Response message for ListApis.
 
     Attributes:
-        apis (Sequence[google.cloud.apigee_registry_v1.types.Api]):
+        apis (MutableSequence[google.cloud.apigee_registry_v1.types.Api]):
             The APIs from the specified publisher.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -127,12 +129,12 @@ class ListApisResponse(proto.Message):
     def raw_page(self):
         return self
 
-    apis = proto.RepeatedField(
+    apis: MutableSequence[registry_models.Api] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.Api,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -147,7 +149,7 @@ class GetApiRequest(proto.Message):
             ``projects/*/locations/*/apis/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -172,16 +174,16 @@ class CreateApiRequest(proto.Message):
             Following AIP-162, IDs must not have the form of a UUID.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api = proto.Field(
+    api: registry_models.Api = proto.Field(
         proto.MESSAGE,
         number=2,
         message=registry_models.Api,
     )
-    api_id = proto.Field(
+    api_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -207,17 +209,17 @@ class UpdateApiRequest(proto.Message):
             created. In this situation, ``update_mask`` is ignored.
     """
 
-    api = proto.Field(
+    api: registry_models.Api = proto.Field(
         proto.MESSAGE,
         number=1,
         message=registry_models.Api,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -236,11 +238,11 @@ class DeleteApiRequest(proto.Message):
             work if there are no child resources.)
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -272,19 +274,19 @@ class ListApiVersionsRequest(proto.Message):
             and can refer to all message fields.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -294,7 +296,7 @@ class ListApiVersionsResponse(proto.Message):
     r"""Response message for ListApiVersions.
 
     Attributes:
-        api_versions (Sequence[google.cloud.apigee_registry_v1.types.ApiVersion]):
+        api_versions (MutableSequence[google.cloud.apigee_registry_v1.types.ApiVersion]):
             The versions from the specified publisher.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -306,12 +308,12 @@ class ListApiVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_versions = proto.RepeatedField(
+    api_versions: MutableSequence[registry_models.ApiVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiVersion,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -326,7 +328,7 @@ class GetApiVersionRequest(proto.Message):
             ``projects/*/locations/*/apis/*/versions/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -351,16 +353,16 @@ class CreateApiVersionRequest(proto.Message):
             Following AIP-162, IDs must not have the form of a UUID.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_version = proto.Field(
+    api_version: registry_models.ApiVersion = proto.Field(
         proto.MESSAGE,
         number=2,
         message=registry_models.ApiVersion,
     )
-    api_version_id = proto.Field(
+    api_version_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -387,17 +389,17 @@ class UpdateApiVersionRequest(proto.Message):
             ignored.
     """
 
-    api_version = proto.Field(
+    api_version: registry_models.ApiVersion = proto.Field(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiVersion,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -416,11 +418,11 @@ class DeleteApiVersionRequest(proto.Message):
             work if there are no child resources.)
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -453,19 +455,19 @@ class ListApiSpecsRequest(proto.Message):
             contents.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -475,7 +477,7 @@ class ListApiSpecsResponse(proto.Message):
     r"""Response message for ListApiSpecs.
 
     Attributes:
-        api_specs (Sequence[google.cloud.apigee_registry_v1.types.ApiSpec]):
+        api_specs (MutableSequence[google.cloud.apigee_registry_v1.types.ApiSpec]):
             The specs from the specified publisher.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -487,12 +489,12 @@ class ListApiSpecsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_specs = proto.RepeatedField(
+    api_specs: MutableSequence[registry_models.ApiSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiSpec,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -507,7 +509,7 @@ class GetApiSpecRequest(proto.Message):
             ``projects/*/locations/*/apis/*/versions/*/specs/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -523,7 +525,7 @@ class GetApiSpecContentsRequest(proto.Message):
             ``projects/*/locations/*/apis/*/versions/*/specs/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -548,16 +550,16 @@ class CreateApiSpecRequest(proto.Message):
             Following AIP-162, IDs must not have the form of a UUID.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_spec = proto.Field(
+    api_spec: registry_models.ApiSpec = proto.Field(
         proto.MESSAGE,
         number=2,
         message=registry_models.ApiSpec,
     )
-    api_spec_id = proto.Field(
+    api_spec_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -583,17 +585,17 @@ class UpdateApiSpecRequest(proto.Message):
             be created. In this situation, ``update_mask`` is ignored.
     """
 
-    api_spec = proto.Field(
+    api_spec: registry_models.ApiSpec = proto.Field(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiSpec,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -612,11 +614,11 @@ class DeleteApiSpecRequest(proto.Message):
             work if there are no child resources.)
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -634,11 +636,11 @@ class TagApiSpecRevisionRequest(proto.Message):
             characters, and match ``[a-z][a-z0-9-]{3,39}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -660,15 +662,15 @@ class ListApiSpecRevisionsRequest(proto.Message):
             retrieve the subsequent page.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -678,7 +680,7 @@ class ListApiSpecRevisionsResponse(proto.Message):
     r"""Response message for ListApiSpecRevisionsResponse.
 
     Attributes:
-        api_specs (Sequence[google.cloud.apigee_registry_v1.types.ApiSpec]):
+        api_specs (MutableSequence[google.cloud.apigee_registry_v1.types.ApiSpec]):
             The revisions of the spec.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
@@ -690,12 +692,12 @@ class ListApiSpecRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_specs = proto.RepeatedField(
+    api_specs: MutableSequence[registry_models.ApiSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiSpec,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -714,11 +716,11 @@ class RollbackApiSpecRequest(proto.Message):
             Example: ``c7cfa2a8``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -736,7 +738,7 @@ class DeleteApiSpecRevisionRequest(proto.Message):
             ``projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -769,19 +771,19 @@ class ListApiDeploymentsRequest(proto.Message):
             and can refer to all message fields.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -791,7 +793,7 @@ class ListApiDeploymentsResponse(proto.Message):
     r"""Response message for ListApiDeployments.
 
     Attributes:
-        api_deployments (Sequence[google.cloud.apigee_registry_v1.types.ApiDeployment]):
+        api_deployments (MutableSequence[google.cloud.apigee_registry_v1.types.ApiDeployment]):
             The deployments from the specified publisher.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -803,12 +805,14 @@ class ListApiDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_deployments = proto.RepeatedField(
+    api_deployments: MutableSequence[
+        registry_models.ApiDeployment
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiDeployment,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -823,7 +827,7 @@ class GetApiDeploymentRequest(proto.Message):
             ``projects/*/locations/*/apis/*/deployments/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -849,16 +853,16 @@ class CreateApiDeploymentRequest(proto.Message):
             Following AIP-162, IDs must not have the form of a UUID.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_deployment = proto.Field(
+    api_deployment: registry_models.ApiDeployment = proto.Field(
         proto.MESSAGE,
         number=2,
         message=registry_models.ApiDeployment,
     )
-    api_deployment_id = proto.Field(
+    api_deployment_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -886,17 +890,17 @@ class UpdateApiDeploymentRequest(proto.Message):
             ``update_mask`` is ignored.
     """
 
-    api_deployment = proto.Field(
+    api_deployment: registry_models.ApiDeployment = proto.Field(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiDeployment,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -915,11 +919,11 @@ class DeleteApiDeploymentRequest(proto.Message):
             work if there are no child resources.)
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -937,11 +941,11 @@ class TagApiDeploymentRevisionRequest(proto.Message):
             characters, and match ``[a-z][a-z0-9-]{3,39}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -963,15 +967,15 @@ class ListApiDeploymentRevisionsRequest(proto.Message):
             retrieve the subsequent page.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -981,7 +985,7 @@ class ListApiDeploymentRevisionsResponse(proto.Message):
     r"""Response message for ListApiDeploymentRevisionsResponse.
 
     Attributes:
-        api_deployments (Sequence[google.cloud.apigee_registry_v1.types.ApiDeployment]):
+        api_deployments (MutableSequence[google.cloud.apigee_registry_v1.types.ApiDeployment]):
             The revisions of the deployment.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
@@ -993,12 +997,14 @@ class ListApiDeploymentRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_deployments = proto.RepeatedField(
+    api_deployments: MutableSequence[
+        registry_models.ApiDeployment
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.ApiDeployment,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1017,11 +1023,11 @@ class RollbackApiDeploymentRequest(proto.Message):
             Example: ``c7cfa2a8``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1039,7 +1045,7 @@ class DeleteApiDeploymentRevisionRequest(proto.Message):
             ``projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1072,19 +1078,19 @@ class ListArtifactsRequest(proto.Message):
             contents.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1094,7 +1100,7 @@ class ListArtifactsResponse(proto.Message):
     r"""Response message for ListArtifacts.
 
     Attributes:
-        artifacts (Sequence[google.cloud.apigee_registry_v1.types.Artifact]):
+        artifacts (MutableSequence[google.cloud.apigee_registry_v1.types.Artifact]):
             The artifacts from the specified publisher.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -1106,12 +1112,12 @@ class ListArtifactsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    artifacts = proto.RepeatedField(
+    artifacts: MutableSequence[registry_models.Artifact] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=registry_models.Artifact,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1126,7 +1132,7 @@ class GetArtifactRequest(proto.Message):
             ``{parent}/artifacts/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1141,7 +1147,7 @@ class GetArtifactContentsRequest(proto.Message):
             retrieved. Format: ``{parent}/artifacts/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1166,16 +1172,16 @@ class CreateArtifactRequest(proto.Message):
             Following AIP-162, IDs must not have the form of a UUID.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    artifact = proto.Field(
+    artifact: registry_models.Artifact = proto.Field(
         proto.MESSAGE,
         number=2,
         message=registry_models.Artifact,
     )
-    artifact_id = proto.Field(
+    artifact_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1192,7 +1198,7 @@ class ReplaceArtifactRequest(proto.Message):
             replace. Format: ``{parent}/artifacts/*``
     """
 
-    artifact = proto.Field(
+    artifact: registry_models.Artifact = proto.Field(
         proto.MESSAGE,
         number=1,
         message=registry_models.Artifact,
@@ -1208,7 +1214,7 @@ class DeleteArtifactRequest(proto.Message):
             ``{parent}/artifacts/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

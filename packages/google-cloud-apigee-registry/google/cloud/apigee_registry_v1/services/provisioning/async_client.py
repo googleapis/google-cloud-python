@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -165,9 +175,9 @@ class ProvisioningAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ProvisioningTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the provisioning client.
@@ -211,13 +221,15 @@ class ProvisioningAsyncClient:
 
     async def create_instance(
         self,
-        request: Union[provisioning_service.CreateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[provisioning_service.CreateInstanceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instance: provisioning_service.Instance = None,
-        instance_id: str = None,
+        parent: Optional[str] = None,
+        instance: Optional[provisioning_service.Instance] = None,
+        instance_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Provisions instance resources for the Registry.
@@ -258,7 +270,7 @@ class ProvisioningAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.apigee_registry_v1.types.CreateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.apigee_registry_v1.types.CreateInstanceRequest, dict]]):
                 The request object. Request message for CreateInstance.
             parent (:class:`str`):
                 Required. Parent resource of the Instance, of the form:
@@ -351,11 +363,13 @@ class ProvisioningAsyncClient:
 
     async def delete_instance(
         self,
-        request: Union[provisioning_service.DeleteInstanceRequest, dict] = None,
+        request: Optional[
+            Union[provisioning_service.DeleteInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes the Registry instance.
@@ -391,7 +405,7 @@ class ProvisioningAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.apigee_registry_v1.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.apigee_registry_v1.types.DeleteInstanceRequest, dict]]):
                 The request object. Request message for DeleteInstance.
             name (:class:`str`):
                 Required. The name of the Instance to delete. Format:
@@ -474,11 +488,11 @@ class ProvisioningAsyncClient:
 
     async def get_instance(
         self,
-        request: Union[provisioning_service.GetInstanceRequest, dict] = None,
+        request: Optional[Union[provisioning_service.GetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> provisioning_service.Instance:
         r"""Gets details of a single Instance.
@@ -510,7 +524,7 @@ class ProvisioningAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.apigee_registry_v1.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.apigee_registry_v1.types.GetInstanceRequest, dict]]):
                 The request object. Request message for GetInstance.
             name (:class:`str`):
                 Required. The name of the Instance to retrieve. Format:
@@ -577,10 +591,10 @@ class ProvisioningAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -631,10 +645,10 @@ class ProvisioningAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -685,10 +699,10 @@ class ProvisioningAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -740,10 +754,10 @@ class ProvisioningAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -794,10 +808,10 @@ class ProvisioningAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -914,10 +928,10 @@ class ProvisioningAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1035,10 +1049,10 @@ class ProvisioningAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -1094,10 +1108,10 @@ class ProvisioningAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1148,10 +1162,10 @@ class ProvisioningAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
