@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -66,7 +77,7 @@ class AssuredWorkloadsServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AssuredWorkloadsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -341,7 +352,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AssuredWorkloadsServiceTransport, None] = None,
+        transport: Optional[Union[str, AssuredWorkloadsServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -439,12 +450,12 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def create_workload(
         self,
-        request: Union[assuredworkloads.CreateWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.CreateWorkloadRequest, dict]] = None,
         *,
-        parent: str = None,
-        workload: assuredworkloads.Workload = None,
+        parent: Optional[str] = None,
+        workload: Optional[assuredworkloads.Workload] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates Assured Workload.
@@ -568,12 +579,12 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def update_workload(
         self,
-        request: Union[assuredworkloads.UpdateWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.UpdateWorkloadRequest, dict]] = None,
         *,
-        workload: assuredworkloads.Workload = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        workload: Optional[assuredworkloads.Workload] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.Workload:
         r"""Updates an existing workload. Currently allows updating of
@@ -683,10 +694,12 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def restrict_allowed_resources(
         self,
-        request: Union[assuredworkloads.RestrictAllowedResourcesRequest, dict] = None,
+        request: Optional[
+            Union[assuredworkloads.RestrictAllowedResourcesRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.RestrictAllowedResourcesResponse:
         r"""Restrict the list of resources allowed in the
@@ -774,11 +787,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def delete_workload(
         self,
-        request: Union[assuredworkloads.DeleteWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.DeleteWorkloadRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the workload. Make sure that workload's direct children
@@ -869,11 +882,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def get_workload(
         self,
-        request: Union[assuredworkloads.GetWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.GetWorkloadRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.Workload:
         r"""Gets Assured Workload associated with a CRM Node
@@ -969,12 +982,14 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def analyze_workload_move(
         self,
-        request: Union[assuredworkloads.AnalyzeWorkloadMoveRequest, dict] = None,
+        request: Optional[
+            Union[assuredworkloads.AnalyzeWorkloadMoveRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        target: str = None,
+        project: Optional[str] = None,
+        target: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.AnalyzeWorkloadMoveResponse:
         r"""Analyze if the source Assured Workloads can be moved
@@ -1088,11 +1103,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def list_workloads(
         self,
-        request: Union[assuredworkloads.ListWorkloadsRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.ListWorkloadsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkloadsPager:
         r"""Lists Assured Workloads under a CRM Node.
@@ -1210,10 +1225,10 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1264,10 +1279,10 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

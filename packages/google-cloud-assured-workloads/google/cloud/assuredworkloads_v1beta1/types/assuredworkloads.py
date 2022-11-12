@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -56,16 +58,16 @@ class CreateWorkloadRequest(proto.Message):
             projects with the identifier as the value.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workload = proto.Field(
+    workload: "Workload" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Workload",
     )
-    external_id = proto.Field(
+    external_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -84,12 +86,12 @@ class UpdateWorkloadRequest(proto.Message):
             Required. The list of fields to be updated.
     """
 
-    workload = proto.Field(
+    workload: "Workload" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Workload",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -118,11 +120,11 @@ class RestrictAllowedResourcesRequest(proto.Message):
         ALLOW_ALL_GCP_RESOURCES = 1
         ALLOW_COMPLIANT_RESOURCES = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    restriction_type = proto.Field(
+    restriction_type: RestrictionType = proto.Field(
         proto.ENUM,
         number=2,
         enum=RestrictionType,
@@ -147,11 +149,11 @@ class DeleteWorkloadRequest(proto.Message):
             etag.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -169,7 +171,7 @@ class GetWorkloadRequest(proto.Message):
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -215,17 +217,17 @@ class AnalyzeWorkloadMoveRequest(proto.Message):
             "organizations/123/locations/us-east1/workloads/assured-workload-2".
     """
 
-    source = proto.Field(
+    source: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="projectOrWorkloadResource",
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="projectOrWorkloadResource",
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -236,14 +238,14 @@ class AnalyzeWorkloadMoveResponse(proto.Message):
     resource move.
 
     Attributes:
-        blockers (Sequence[str]):
+        blockers (MutableSequence[str]):
             A list of blockers that should be addressed
             before moving the source project or
             project-based workload to the destination
             folder-based workload.
     """
 
-    blockers = proto.RepeatedField(
+    blockers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -269,19 +271,19 @@ class ListWorkloadsRequest(proto.Message):
             labels is supported.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -291,7 +293,7 @@ class ListWorkloadsResponse(proto.Message):
     r"""Response of ListWorkloads endpoint.
 
     Attributes:
-        workloads (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload]):
+        workloads (MutableSequence[google.cloud.assuredworkloads_v1beta1.types.Workload]):
             List of Workloads under a given parent.
         next_page_token (str):
             The next page token. Return empty if reached
@@ -302,12 +304,12 @@ class ListWorkloadsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workloads = proto.RepeatedField(
+    workloads: MutableSequence["Workload"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Workload",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -338,7 +340,7 @@ class Workload(proto.Message):
             hyphen, and spaces.
 
             Example: My Workload
-        resources (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceInfo]):
+        resources (MutableSequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceInfo]):
             Output only. The resources associated with
             this workload. These resources will be created
             when creating the workload. If any of the
@@ -384,7 +386,7 @@ class Workload(proto.Message):
             calculated on the basis of the Workload
             contents. It will be used in Update & Delete
             operations.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Labels applied to the workload.
         provisioned_resources_parent (str):
             Input only. The parent resource for the resources managed by
@@ -398,7 +400,7 @@ class Workload(proto.Message):
             field is deprecated as of Feb 28, 2022. In order to create a
             Keyring, callers should specify, ENCRYPTION_KEYS_PROJECT or
             KEYRING in ResourceSettings.resource_type field.
-        resource_settings (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceSettings]):
+        resource_settings (MutableSequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceSettings]):
             Input only. Resource properties that are used
             to customize workload resources. These
             properties (such as custom project id) will be
@@ -417,7 +419,7 @@ class Workload(proto.Message):
             response is queried during GetWorkload call. In
             failure cases, user friendly error message is
             shown in SAA details page.
-        compliant_but_disallowed_services (Sequence[str]):
+        compliant_but_disallowed_services (MutableSequence[str]):
             Output only. Urls for services which are
             compliant for this Assured Workload, but which
             are currently disallowed by the
@@ -467,11 +469,11 @@ class Workload(proto.Message):
             ENCRYPTION_KEYS_PROJECT = 2
             KEYRING = 3
 
-        resource_id = proto.Field(
+        resource_id: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        resource_type = proto.Field(
+        resource_type: "Workload.ResourceInfo.ResourceType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Workload.ResourceInfo.ResourceType",
@@ -493,12 +495,12 @@ class Workload(proto.Message):
                 at most 876,000 hours.
         """
 
-        next_rotation_time = proto.Field(
+        next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        rotation_period = proto.Field(
+        rotation_period: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -513,7 +515,7 @@ class Workload(proto.Message):
                 create a CMEK crypto key.
         """
 
-        kms_settings = proto.Field(
+        kms_settings: "Workload.KMSSettings" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Workload.KMSSettings",
@@ -528,7 +530,7 @@ class Workload(proto.Message):
                 create a CMEK crypto key.
         """
 
-        kms_settings = proto.Field(
+        kms_settings: "Workload.KMSSettings" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Workload.KMSSettings",
@@ -543,7 +545,7 @@ class Workload(proto.Message):
                 create a CMEK crypto key.
         """
 
-        kms_settings = proto.Field(
+        kms_settings: "Workload.KMSSettings" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Workload.KMSSettings",
@@ -558,7 +560,7 @@ class Workload(proto.Message):
                 create a CMEK crypto key.
         """
 
-        kms_settings = proto.Field(
+        kms_settings: "Workload.KMSSettings" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Workload.KMSSettings",
@@ -585,16 +587,16 @@ class Workload(proto.Message):
                 resource with the specified name.
         """
 
-        resource_id = proto.Field(
+        resource_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        resource_type = proto.Field(
+        resource_type: "Workload.ResourceInfo.ResourceType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Workload.ResourceInfo.ResourceType",
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -610,7 +612,7 @@ class Workload(proto.Message):
                 workload.
 
                 This field is a member of `oneof`_ ``_setup_status``.
-            setup_errors (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.SaaEnrollmentResponse.SetupError]):
+            setup_errors (MutableSequence[google.cloud.assuredworkloads_v1beta1.types.Workload.SaaEnrollmentResponse.SetupError]):
                 Indicates SAA enrollment setup error if any.
         """
 
@@ -628,107 +630,109 @@ class Workload(proto.Message):
             ERROR_NOT_ALL_SERVICES_ENROLLED = 3
             ERROR_SETUP_CHECK_FAILED = 4
 
-        setup_status = proto.Field(
+        setup_status: "Workload.SaaEnrollmentResponse.SetupState" = proto.Field(
             proto.ENUM,
             number=1,
             optional=True,
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
-        setup_errors = proto.RepeatedField(
+        setup_errors: MutableSequence[
+            "Workload.SaaEnrollmentResponse.SetupError"
+        ] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="Workload.SaaEnrollmentResponse.SetupError",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resources = proto.RepeatedField(
+    resources: MutableSequence[ResourceInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ResourceInfo,
     )
-    compliance_regime = proto.Field(
+    compliance_regime: ComplianceRegime = proto.Field(
         proto.ENUM,
         number=4,
         enum=ComplianceRegime,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    billing_account = proto.Field(
+    billing_account: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    il4_settings = proto.Field(
+    il4_settings: IL4Settings = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="compliance_regime_settings",
         message=IL4Settings,
     )
-    cjis_settings = proto.Field(
+    cjis_settings: CJISSettings = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="compliance_regime_settings",
         message=CJISSettings,
     )
-    fedramp_high_settings = proto.Field(
+    fedramp_high_settings: FedrampHighSettings = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="compliance_regime_settings",
         message=FedrampHighSettings,
     )
-    fedramp_moderate_settings = proto.Field(
+    fedramp_moderate_settings: FedrampModerateSettings = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="compliance_regime_settings",
         message=FedrampModerateSettings,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    provisioned_resources_parent = proto.Field(
+    provisioned_resources_parent: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    kms_settings = proto.Field(
+    kms_settings: KMSSettings = proto.Field(
         proto.MESSAGE,
         number=14,
         message=KMSSettings,
     )
-    resource_settings = proto.RepeatedField(
+    resource_settings: MutableSequence[ResourceSettings] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message=ResourceSettings,
     )
-    kaj_enrollment_state = proto.Field(
+    kaj_enrollment_state: KajEnrollmentState = proto.Field(
         proto.ENUM,
         number=17,
         enum=KajEnrollmentState,
     )
-    enable_sovereign_controls = proto.Field(
+    enable_sovereign_controls: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    saa_enrollment_response = proto.Field(
+    saa_enrollment_response: SaaEnrollmentResponse = proto.Field(
         proto.MESSAGE,
         number=20,
         message=SaaEnrollmentResponse,
     )
-    compliant_but_disallowed_services = proto.RepeatedField(
+    compliant_but_disallowed_services: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=24,
     )
@@ -749,31 +753,33 @@ class CreateWorkloadOperationMetadata(proto.Message):
             Optional. Compliance controls that should be
             applied to the resources managed by the
             workload.
-        resource_settings (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceSettings]):
+        resource_settings (MutableSequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceSettings]):
             Optional. Resource properties in the input
             that are used for creating/customizing workload
             resources.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    compliance_regime = proto.Field(
+    compliance_regime: "Workload.ComplianceRegime" = proto.Field(
         proto.ENUM,
         number=4,
         enum="Workload.ComplianceRegime",
     )
-    resource_settings = proto.RepeatedField(
+    resource_settings: MutableSequence[
+        "Workload.ResourceSettings"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Workload.ResourceSettings",

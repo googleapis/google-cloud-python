@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -176,9 +186,9 @@ class AssuredWorkloadsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AssuredWorkloadsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the assured workloads service client.
@@ -222,12 +232,12 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def create_workload(
         self,
-        request: Union[assuredworkloads.CreateWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.CreateWorkloadRequest, dict]] = None,
         *,
-        parent: str = None,
-        workload: assuredworkloads.Workload = None,
+        parent: Optional[str] = None,
+        workload: Optional[assuredworkloads.Workload] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates Assured Workload.
@@ -268,7 +278,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.CreateWorkloadRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.CreateWorkloadRequest, dict]]):
                 The request object. Request for creating a workload.
             parent (:class:`str`):
                 Required. The resource name of the new Workload's
@@ -351,12 +361,12 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def update_workload(
         self,
-        request: Union[assuredworkloads.UpdateWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.UpdateWorkloadRequest, dict]] = None,
         *,
-        workload: assuredworkloads.Workload = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        workload: Optional[assuredworkloads.Workload] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.Workload:
         r"""Updates an existing workload. Currently allows updating of
@@ -395,7 +405,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.UpdateWorkloadRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.UpdateWorkloadRequest, dict]]):
                 The request object. Request for Updating a workload.
             workload (:class:`google.cloud.assuredworkloads_v1.types.Workload`):
                 Required. The workload to update. The workload's
@@ -473,10 +483,12 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def restrict_allowed_resources(
         self,
-        request: Union[assuredworkloads.RestrictAllowedResourcesRequest, dict] = None,
+        request: Optional[
+            Union[assuredworkloads.RestrictAllowedResourcesRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.RestrictAllowedResourcesResponse:
         r"""Restrict the list of resources allowed in the
@@ -516,7 +528,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.RestrictAllowedResourcesRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.RestrictAllowedResourcesRequest, dict]]):
                 The request object. Request for restricting list of
                 available resources in Workload environment.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -561,11 +573,11 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def delete_workload(
         self,
-        request: Union[assuredworkloads.DeleteWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.DeleteWorkloadRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the workload. Make sure that workload's direct children
@@ -596,7 +608,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 await client.delete_workload(request=request)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.DeleteWorkloadRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.DeleteWorkloadRequest, dict]]):
                 The request object. Request for deleting a Workload.
             name (:class:`str`):
                 Required. The ``name`` field is used to identify the
@@ -653,11 +665,11 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def get_workload(
         self,
-        request: Union[assuredworkloads.GetWorkloadRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.GetWorkloadRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.Workload:
         r"""Gets Assured Workload associated with a CRM Node
@@ -689,7 +701,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.GetWorkloadRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.GetWorkloadRequest, dict]]):
                 The request object. Request for fetching a workload.
             name (:class:`str`):
                 Required. The resource name of the Workload to fetch.
@@ -758,11 +770,11 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def list_workloads(
         self,
-        request: Union[assuredworkloads.ListWorkloadsRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.ListWorkloadsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkloadsAsyncPager:
         r"""Lists Assured Workloads under a CRM Node.
@@ -795,7 +807,7 @@ class AssuredWorkloadsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.ListWorkloadsRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.ListWorkloadsRequest, dict]]):
                 The request object. Request for fetching workloads in an
                 organization.
             parent (:class:`str`):
@@ -873,11 +885,11 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def list_violations(
         self,
-        request: Union[assuredworkloads.ListViolationsRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.ListViolationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListViolationsAsyncPager:
         r"""Lists the Violations in the AssuredWorkload Environment. Callers
@@ -915,7 +927,7 @@ class AssuredWorkloadsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.ListViolationsRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.ListViolationsRequest, dict]]):
                 The request object. Request for fetching violations in
                 an organization.
             parent (:class:`str`):
@@ -986,11 +998,11 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def get_violation(
         self,
-        request: Union[assuredworkloads.GetViolationRequest, dict] = None,
+        request: Optional[Union[assuredworkloads.GetViolationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.Violation:
         r"""Retrieves Assured Workload Violation based on ID.
@@ -1022,7 +1034,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.GetViolationRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.GetViolationRequest, dict]]):
                 The request object. Request for fetching a Workload
                 Violation.
             name (:class:`str`):
@@ -1082,10 +1094,12 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def acknowledge_violation(
         self,
-        request: Union[assuredworkloads.AcknowledgeViolationRequest, dict] = None,
+        request: Optional[
+            Union[assuredworkloads.AcknowledgeViolationRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.AcknowledgeViolationResponse:
         r"""Acknowledges an existing violation. By acknowledging
@@ -1123,7 +1137,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.assuredworkloads_v1.types.AcknowledgeViolationRequest, dict]):
+            request (Optional[Union[google.cloud.assuredworkloads_v1.types.AcknowledgeViolationRequest, dict]]):
                 The request object. Request for acknowledging the
                 violation Next Id: 4
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1162,10 +1176,10 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1216,10 +1230,10 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.

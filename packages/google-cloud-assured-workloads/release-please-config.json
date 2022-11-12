@@ -7,12 +7,12 @@
         "google/cloud/assuredworkloads/gapic_version.py",
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_assuredworkloads_v1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1beta1.json",
           "jsonpath": "$.clientLibrary.version"
         },
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_assuredworkloads_v1beta1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]

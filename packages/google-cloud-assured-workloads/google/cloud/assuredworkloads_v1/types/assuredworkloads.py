@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -61,16 +63,16 @@ class CreateWorkloadRequest(proto.Message):
             projects with the identifier as the value.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workload = proto.Field(
+    workload: "Workload" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Workload",
     )
-    external_id = proto.Field(
+    external_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -89,12 +91,12 @@ class UpdateWorkloadRequest(proto.Message):
             Required. The list of fields to be updated.
     """
 
-    workload = proto.Field(
+    workload: "Workload" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Workload",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -115,11 +117,11 @@ class DeleteWorkloadRequest(proto.Message):
             etag.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -137,7 +139,7 @@ class GetWorkloadRequest(proto.Message):
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -163,19 +165,19 @@ class ListWorkloadsRequest(proto.Message):
             labels is supported.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -185,7 +187,7 @@ class ListWorkloadsResponse(proto.Message):
     r"""Response of ListWorkloads endpoint.
 
     Attributes:
-        workloads (Sequence[google.cloud.assuredworkloads_v1.types.Workload]):
+        workloads (MutableSequence[google.cloud.assuredworkloads_v1.types.Workload]):
             List of Workloads under a given parent.
         next_page_token (str):
             The next page token. Return empty if reached
@@ -196,12 +198,12 @@ class ListWorkloadsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workloads = proto.RepeatedField(
+    workloads: MutableSequence["Workload"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Workload",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -225,7 +227,7 @@ class Workload(proto.Message):
             hyphen, and spaces.
 
             Example: My Workload
-        resources (Sequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo]):
+        resources (MutableSequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo]):
             Output only. The resources associated with
             this workload. These resources will be created
             when creating the workload. If any of the
@@ -251,7 +253,7 @@ class Workload(proto.Message):
             calculated on the basis of the Workload
             contents. It will be used in Update & Delete
             operations.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Labels applied to the workload.
         provisioned_resources_parent (str):
             Input only. The parent resource for the resources managed by
@@ -265,7 +267,7 @@ class Workload(proto.Message):
             field is deprecated as of Feb 28, 2022. In order to create a
             Keyring, callers should specify, ENCRYPTION_KEYS_PROJECT or
             KEYRING in ResourceSettings.resource_type field.
-        resource_settings (Sequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceSettings]):
+        resource_settings (MutableSequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceSettings]):
             Input only. Resource properties that are used
             to customize workload resources. These
             properties (such as custom project id) will be
@@ -284,7 +286,7 @@ class Workload(proto.Message):
             response is queried during GetWorkload call. In
             failure cases, user friendly error message is
             shown in SAA details page.
-        compliant_but_disallowed_services (Sequence[str]):
+        compliant_but_disallowed_services (MutableSequence[str]):
             Output only. Urls for services which are
             compliant for this Assured Workload, but which
             are currently disallowed by the
@@ -343,11 +345,11 @@ class Workload(proto.Message):
             ENCRYPTION_KEYS_PROJECT = 2
             KEYRING = 3
 
-        resource_id = proto.Field(
+        resource_id: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        resource_type = proto.Field(
+        resource_type: "Workload.ResourceInfo.ResourceType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Workload.ResourceInfo.ResourceType",
@@ -372,12 +374,12 @@ class Workload(proto.Message):
                 at most 876,000 hours.
         """
 
-        next_rotation_time = proto.Field(
+        next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        rotation_period = proto.Field(
+        rotation_period: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -404,16 +406,16 @@ class Workload(proto.Message):
                 resource with the specified name.
         """
 
-        resource_id = proto.Field(
+        resource_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        resource_type = proto.Field(
+        resource_type: "Workload.ResourceInfo.ResourceType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Workload.ResourceInfo.ResourceType",
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -429,7 +431,7 @@ class Workload(proto.Message):
                 workload.
 
                 This field is a member of `oneof`_ ``_setup_status``.
-            setup_errors (Sequence[google.cloud.assuredworkloads_v1.types.Workload.SaaEnrollmentResponse.SetupError]):
+            setup_errors (MutableSequence[google.cloud.assuredworkloads_v1.types.Workload.SaaEnrollmentResponse.SetupError]):
                 Indicates SAA enrollment setup error if any.
         """
 
@@ -447,87 +449,89 @@ class Workload(proto.Message):
             ERROR_NOT_ALL_SERVICES_ENROLLED = 3
             ERROR_SETUP_CHECK_FAILED = 4
 
-        setup_status = proto.Field(
+        setup_status: "Workload.SaaEnrollmentResponse.SetupState" = proto.Field(
             proto.ENUM,
             number=1,
             optional=True,
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
-        setup_errors = proto.RepeatedField(
+        setup_errors: MutableSequence[
+            "Workload.SaaEnrollmentResponse.SetupError"
+        ] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="Workload.SaaEnrollmentResponse.SetupError",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resources = proto.RepeatedField(
+    resources: MutableSequence[ResourceInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ResourceInfo,
     )
-    compliance_regime = proto.Field(
+    compliance_regime: ComplianceRegime = proto.Field(
         proto.ENUM,
         number=4,
         enum=ComplianceRegime,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    billing_account = proto.Field(
+    billing_account: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    provisioned_resources_parent = proto.Field(
+    provisioned_resources_parent: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    kms_settings = proto.Field(
+    kms_settings: KMSSettings = proto.Field(
         proto.MESSAGE,
         number=14,
         message=KMSSettings,
     )
-    resource_settings = proto.RepeatedField(
+    resource_settings: MutableSequence[ResourceSettings] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message=ResourceSettings,
     )
-    kaj_enrollment_state = proto.Field(
+    kaj_enrollment_state: KajEnrollmentState = proto.Field(
         proto.ENUM,
         number=17,
         enum=KajEnrollmentState,
     )
-    enable_sovereign_controls = proto.Field(
+    enable_sovereign_controls: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    saa_enrollment_response = proto.Field(
+    saa_enrollment_response: SaaEnrollmentResponse = proto.Field(
         proto.MESSAGE,
         number=20,
         message=SaaEnrollmentResponse,
     )
-    compliant_but_disallowed_services = proto.RepeatedField(
+    compliant_but_disallowed_services: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=24,
     )
-    partner = proto.Field(
+    partner: Partner = proto.Field(
         proto.ENUM,
         number=25,
         enum=Partner,
@@ -551,20 +555,20 @@ class CreateWorkloadOperationMetadata(proto.Message):
             workload.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    compliance_regime = proto.Field(
+    compliance_regime: "Workload.ComplianceRegime" = proto.Field(
         proto.ENUM,
         number=4,
         enum="Workload.ComplianceRegime",
@@ -593,11 +597,11 @@ class RestrictAllowedResourcesRequest(proto.Message):
         ALLOW_ALL_GCP_RESOURCES = 1
         ALLOW_COMPLIANT_RESOURCES = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    restriction_type = proto.Field(
+    restriction_type: RestrictionType = proto.Field(
         proto.ENUM,
         number=2,
         enum=RestrictionType,
@@ -630,15 +634,15 @@ class AcknowledgeViolationRequest(proto.Message):
             organizations/{organization_id}/policies/{constraint_name}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    comment = proto.Field(
+    comment: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    non_compliant_org_policy = proto.Field(
+    non_compliant_org_policy: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -658,12 +662,12 @@ class TimeWindow(proto.Message):
             The end of the time window.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -691,24 +695,24 @@ class ListViolationsRequest(proto.Message):
             the Violations properties.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    interval = proto.Field(
+    interval: "TimeWindow" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TimeWindow",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -718,7 +722,7 @@ class ListViolationsResponse(proto.Message):
     r"""Response of ListViolations endpoint.
 
     Attributes:
-        violations (Sequence[google.cloud.assuredworkloads_v1.types.Violation]):
+        violations (MutableSequence[google.cloud.assuredworkloads_v1.types.Violation]):
             List of Violations under a Workload.
         next_page_token (str):
             The next page token. Returns empty if reached
@@ -729,12 +733,12 @@ class ListViolationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    violations = proto.RepeatedField(
+    violations: MutableSequence["Violation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Violation",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -750,7 +754,7 @@ class GetViolationRequest(proto.Message):
             organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -831,7 +835,7 @@ class Violation(proto.Message):
             instructions (google.cloud.assuredworkloads_v1.types.Violation.Remediation.Instructions):
                 Required. Remediation instructions to resolve
                 violations
-            compliant_values (Sequence[str]):
+            compliant_values (MutableSequence[str]):
                 Values that can resolve the violation
                 For example: for list org policy violations,
                 this will either be the list of allowed or
@@ -870,24 +874,24 @@ class Violation(proto.Message):
                 r"""Remediation instructions to resolve violation via gcloud cli
 
                 Attributes:
-                    gcloud_commands (Sequence[str]):
+                    gcloud_commands (MutableSequence[str]):
                         Gcloud command to resolve violation
-                    steps (Sequence[str]):
+                    steps (MutableSequence[str]):
                         Steps to resolve violation via gcloud cli
-                    additional_links (Sequence[str]):
+                    additional_links (MutableSequence[str]):
                         Additional urls for more information about
                         steps
                 """
 
-                gcloud_commands = proto.RepeatedField(
+                gcloud_commands: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=1,
                 )
-                steps = proto.RepeatedField(
+                steps: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=2,
                 )
-                additional_links = proto.RepeatedField(
+                additional_links: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=3,
                 )
@@ -897,115 +901,119 @@ class Violation(proto.Message):
                 console
 
                 Attributes:
-                    console_uris (Sequence[str]):
+                    console_uris (MutableSequence[str]):
                         Link to console page where violations can be
                         resolved
-                    steps (Sequence[str]):
+                    steps (MutableSequence[str]):
                         Steps to resolve violation via cloud console
-                    additional_links (Sequence[str]):
+                    additional_links (MutableSequence[str]):
                         Additional urls for more information about
                         steps
                 """
 
-                console_uris = proto.RepeatedField(
+                console_uris: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=1,
                 )
-                steps = proto.RepeatedField(
+                steps: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=2,
                 )
-                additional_links = proto.RepeatedField(
+                additional_links: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=3,
                 )
 
-            gcloud_instructions = proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Violation.Remediation.Instructions.Gcloud",
+            gcloud_instructions: "Violation.Remediation.Instructions.Gcloud" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Violation.Remediation.Instructions.Gcloud",
+                )
             )
-            console_instructions = proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="Violation.Remediation.Instructions.Console",
+            console_instructions: "Violation.Remediation.Instructions.Console" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Violation.Remediation.Instructions.Console",
+                )
             )
 
-        instructions = proto.Field(
+        instructions: "Violation.Remediation.Instructions" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Violation.Remediation.Instructions",
         )
-        compliant_values = proto.RepeatedField(
+        compliant_values: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        remediation_type = proto.Field(
+        remediation_type: "Violation.Remediation.RemediationType" = proto.Field(
             proto.ENUM,
             number=3,
             enum="Violation.Remediation.RemediationType",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    begin_time = proto.Field(
+    begin_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    resolve_time = proto.Field(
+    resolve_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    category = proto.Field(
+    category: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    org_policy_constraint = proto.Field(
+    org_policy_constraint: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    audit_log_link = proto.Field(
+    audit_log_link: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    non_compliant_org_policy = proto.Field(
+    non_compliant_org_policy: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    remediation = proto.Field(
+    remediation: Remediation = proto.Field(
         proto.MESSAGE,
         number=13,
         message=Remediation,
     )
-    acknowledged = proto.Field(
+    acknowledged: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    acknowledgement_time = proto.Field(
+    acknowledgement_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=15,
         optional=True,
         message=timestamp_pb2.Timestamp,
     )
-    exception_audit_log_link = proto.Field(
+    exception_audit_log_link: str = proto.Field(
         proto.STRING,
         number=16,
     )
