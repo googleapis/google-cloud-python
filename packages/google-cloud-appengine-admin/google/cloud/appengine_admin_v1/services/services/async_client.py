@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -155,9 +165,9 @@ class ServicesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ServicesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the services client.
@@ -201,10 +211,10 @@ class ServicesAsyncClient:
 
     async def list_services(
         self,
-        request: Union[appengine.ListServicesRequest, dict] = None,
+        request: Optional[Union[appengine.ListServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists all the services in the application.
@@ -236,7 +246,7 @@ class ServicesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.ListServicesRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.ListServicesRequest, dict]]):
                 The request object. Request message for
                 `Services.ListServices`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -292,10 +302,10 @@ class ServicesAsyncClient:
 
     async def get_service(
         self,
-        request: Union[appengine.GetServiceRequest, dict] = None,
+        request: Optional[Union[appengine.GetServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Service:
         r"""Gets the current configuration of the specified
@@ -327,7 +337,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.GetServiceRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.GetServiceRequest, dict]]):
                 The request object. Request message for
                 `Services.GetService`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -382,10 +392,10 @@ class ServicesAsyncClient:
 
     async def update_service(
         self,
-        request: Union[appengine.UpdateServiceRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the configuration of the specified service.
@@ -420,7 +430,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.UpdateServiceRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.UpdateServiceRequest, dict]]):
                 The request object. Request message for
                 `Services.UpdateService`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -482,10 +492,10 @@ class ServicesAsyncClient:
 
     async def delete_service(
         self,
-        request: Union[appengine.DeleteServiceRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified service and all enclosed
@@ -521,7 +531,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.DeleteServiceRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.DeleteServiceRequest, dict]]):
                 The request object. Request message for
                 `Services.DeleteService`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

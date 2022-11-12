@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +73,7 @@ class InstancesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[InstancesTransport]:
         """Returns an appropriate transport class.
 
@@ -339,7 +350,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, InstancesTransport, None] = None,
+        transport: Optional[Union[str, InstancesTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -437,10 +448,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def list_instances(
         self,
-        request: Union[appengine.ListInstancesRequest, dict] = None,
+        request: Optional[Union[appengine.ListInstancesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""Lists the instances of a version.
@@ -533,10 +544,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_instance(
         self,
-        request: Union[appengine.GetInstanceRequest, dict] = None,
+        request: Optional[Union[appengine.GetInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Gets instance information.
@@ -614,10 +625,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_instance(
         self,
-        request: Union[appengine.DeleteInstanceRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Stops a running instance.
@@ -730,10 +741,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def debug_instance(
         self,
-        request: Union[appengine.DebugInstanceRequest, dict] = None,
+        request: Optional[Union[appengine.DebugInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Enables debugging on a VM instance. This allows you

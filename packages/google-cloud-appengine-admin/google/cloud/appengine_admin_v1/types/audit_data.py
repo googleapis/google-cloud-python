@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.appengine_admin_v1.types import appengine
@@ -50,13 +52,13 @@ class AuditData(proto.Message):
             This field is a member of `oneof`_ ``method``.
     """
 
-    update_service = proto.Field(
+    update_service: "UpdateServiceMethod" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="method",
         message="UpdateServiceMethod",
     )
-    create_version = proto.Field(
+    create_version: "CreateVersionMethod" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="method",
@@ -72,7 +74,7 @@ class UpdateServiceMethod(proto.Message):
             Update service request.
     """
 
-    request = proto.Field(
+    request: appengine.UpdateServiceRequest = proto.Field(
         proto.MESSAGE,
         number=1,
         message=appengine.UpdateServiceRequest,
@@ -87,7 +89,7 @@ class CreateVersionMethod(proto.Message):
             Create version request.
     """
 
-    request = proto.Field(
+    request: appengine.CreateVersionRequest = proto.Field(
         proto.MESSAGE,
         number=1,
         message=appengine.CreateVersionRequest,

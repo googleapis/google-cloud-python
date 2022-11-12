@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -41,7 +43,7 @@ class DomainMapping(proto.Message):
             SSL configuration for this domain. If
             unconfigured, this domain will not serve with
             SSL.
-        resource_records (Sequence[google.cloud.appengine_admin_v1.types.ResourceRecord]):
+        resource_records (MutableSequence[google.cloud.appengine_admin_v1.types.ResourceRecord]):
             The resource records required to configure
             this domain mapping. These records must be added
             to the domain's DNS configuration in order to
@@ -49,20 +51,20 @@ class DomainMapping(proto.Message):
             @OutputOnly
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ssl_settings = proto.Field(
+    ssl_settings: "SslSettings" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SslSettings",
     )
-    resource_records = proto.RepeatedField(
+    resource_records: MutableSequence["ResourceRecord"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="ResourceRecord",
@@ -110,16 +112,16 @@ class SslSettings(proto.Message):
         AUTOMATIC = 1
         MANUAL = 2
 
-    certificate_id = proto.Field(
+    certificate_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ssl_management_type = proto.Field(
+    ssl_management_type: SslManagementType = proto.Field(
         proto.ENUM,
         number=3,
         enum=SslManagementType,
     )
-    pending_managed_certificate_id = proto.Field(
+    pending_managed_certificate_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -147,15 +149,15 @@ class ResourceRecord(proto.Message):
         AAAA = 2
         CNAME = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rrdata = proto.Field(
+    rrdata: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: RecordType = proto.Field(
         proto.ENUM,
         number=3,
         enum=RecordType,

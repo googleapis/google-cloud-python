@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -157,9 +167,9 @@ class ApplicationsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ApplicationsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the applications client.
@@ -203,11 +213,11 @@ class ApplicationsAsyncClient:
 
     async def get_application(
         self,
-        request: Union[appengine.GetApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.GetApplicationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> application.Application:
         r"""Gets information about an application.
@@ -238,7 +248,7 @@ class ApplicationsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.GetApplicationRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.GetApplicationRequest, dict]]):
                 The request object. Request message for
                 `Applications.GetApplication`.
             name (:class:`str`):
@@ -305,10 +315,10 @@ class ApplicationsAsyncClient:
 
     async def create_application(
         self,
-        request: Union[appengine.CreateApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.CreateApplicationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an App Engine application for a Google Cloud Platform
@@ -353,7 +363,7 @@ class ApplicationsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.CreateApplicationRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.CreateApplicationRequest, dict]]):
                 The request object. Request message for
                 `Applications.CreateApplication`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -402,10 +412,10 @@ class ApplicationsAsyncClient:
 
     async def update_application(
         self,
-        request: Union[appengine.UpdateApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateApplicationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified Application resource. You can update the
@@ -448,7 +458,7 @@ class ApplicationsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.UpdateApplicationRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.UpdateApplicationRequest, dict]]):
                 The request object. Request message for
                 `Applications.UpdateApplication`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -503,10 +513,10 @@ class ApplicationsAsyncClient:
 
     async def repair_application(
         self,
-        request: Union[appengine.RepairApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.RepairApplicationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Recreates the required App Engine features for the specified App
@@ -551,7 +561,7 @@ class ApplicationsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.RepairApplicationRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.RepairApplicationRequest, dict]]):
                 The request object. Request message for
                 'Applications.RepairApplication'.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -82,26 +84,26 @@ class ApiConfigHandler(proto.Message):
             URL to serve the endpoint at.
     """
 
-    auth_fail_action = proto.Field(
+    auth_fail_action: "AuthFailAction" = proto.Field(
         proto.ENUM,
         number=1,
         enum="AuthFailAction",
     )
-    login = proto.Field(
+    login: "LoginRequirement" = proto.Field(
         proto.ENUM,
         number=2,
         enum="LoginRequirement",
     )
-    script = proto.Field(
+    script: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    security_level = proto.Field(
+    security_level: "SecurityLevel" = proto.Field(
         proto.ENUM,
         number=4,
         enum="SecurityLevel",
     )
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -129,16 +131,16 @@ class ErrorHandler(proto.Message):
         ERROR_CODE_DOS_API_DENIAL = 2
         ERROR_CODE_TIMEOUT = 3
 
-    error_code = proto.Field(
+    error_code: ErrorCode = proto.Field(
         proto.ENUM,
         number=1,
         enum=ErrorCode,
     )
-    static_file = proto.Field(
+    static_file: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -203,44 +205,44 @@ class UrlMap(proto.Message):
         REDIRECT_HTTP_RESPONSE_CODE_303 = 3
         REDIRECT_HTTP_RESPONSE_CODE_307 = 4
 
-    url_regex = proto.Field(
+    url_regex: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    static_files = proto.Field(
+    static_files: "StaticFilesHandler" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="handler_type",
         message="StaticFilesHandler",
     )
-    script = proto.Field(
+    script: "ScriptHandler" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="handler_type",
         message="ScriptHandler",
     )
-    api_endpoint = proto.Field(
+    api_endpoint: "ApiEndpointHandler" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="handler_type",
         message="ApiEndpointHandler",
     )
-    security_level = proto.Field(
+    security_level: "SecurityLevel" = proto.Field(
         proto.ENUM,
         number=5,
         enum="SecurityLevel",
     )
-    login = proto.Field(
+    login: "LoginRequirement" = proto.Field(
         proto.ENUM,
         number=6,
         enum="LoginRequirement",
     )
-    auth_fail_action = proto.Field(
+    auth_fail_action: "AuthFailAction" = proto.Field(
         proto.ENUM,
         number=7,
         enum="AuthFailAction",
     )
-    redirect_http_response_code = proto.Field(
+    redirect_http_response_code: RedirectHttpResponseCode = proto.Field(
         proto.ENUM,
         number=8,
         enum=RedirectHttpResponseCode,
@@ -263,7 +265,7 @@ class StaticFilesHandler(proto.Message):
             Regular expression that matches the file
             paths for all files that should be referenced by
             this handler.
-        http_headers (Mapping[str, str]):
+        http_headers (MutableMapping[str, str]):
             HTTP headers to use for all responses from
             these URLs.
         mime_type (str):
@@ -288,33 +290,33 @@ class StaticFilesHandler(proto.Message):
             resource quotas.
     """
 
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    upload_path_regex = proto.Field(
+    upload_path_regex: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    http_headers = proto.MapField(
+    http_headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    expiration = proto.Field(
+    expiration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    require_matching_file = proto.Field(
+    require_matching_file: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    application_readable = proto.Field(
+    application_readable: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
@@ -330,7 +332,7 @@ class ScriptHandler(proto.Message):
             directory.
     """
 
-    script_path = proto.Field(
+    script_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -345,7 +347,7 @@ class ApiEndpointHandler(proto.Message):
             directory.
     """
 
-    script_path = proto.Field(
+    script_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -379,32 +381,32 @@ class HealthCheck(proto.Message):
             failed.
     """
 
-    disable_health_check = proto.Field(
+    disable_health_check: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    healthy_threshold = proto.Field(
+    healthy_threshold: int = proto.Field(
         proto.UINT32,
         number=3,
     )
-    unhealthy_threshold = proto.Field(
+    unhealthy_threshold: int = proto.Field(
         proto.UINT32,
         number=4,
     )
-    restart_threshold = proto.Field(
+    restart_threshold: int = proto.Field(
         proto.UINT32,
         number=5,
     )
-    check_interval = proto.Field(
+    check_interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -438,33 +440,33 @@ class ReadinessCheck(proto.Message):
             healthcheck until it is ready to serve traffic.
     """
 
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    failure_threshold = proto.Field(
+    failure_threshold: int = proto.Field(
         proto.UINT32,
         number=3,
     )
-    success_threshold = proto.Field(
+    success_threshold: int = proto.Field(
         proto.UINT32,
         number=4,
     )
-    check_interval = proto.Field(
+    check_interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    app_start_timeout = proto.Field(
+    app_start_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -496,33 +498,33 @@ class LivenessCheck(proto.Message):
             the checks.
     """
 
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    failure_threshold = proto.Field(
+    failure_threshold: int = proto.Field(
         proto.UINT32,
         number=3,
     )
-    success_threshold = proto.Field(
+    success_threshold: int = proto.Field(
         proto.UINT32,
         number=4,
     )
-    check_interval = proto.Field(
+    check_interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    initial_delay = proto.Field(
+    initial_delay: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -541,11 +543,11 @@ class Library(proto.Message):
             "latest".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )

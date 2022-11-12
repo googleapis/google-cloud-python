@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,15 +44,15 @@ class LocationMetadata(proto.Message):
             is available in the given location.
     """
 
-    standard_environment_available = proto.Field(
+    standard_environment_available: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    flexible_environment_available = proto.Field(
+    flexible_environment_available: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    search_api_available = proto.Field(
+    search_api_available: bool = proto.Field(
         proto.BOOL,
         number=6,
     )

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -160,9 +170,9 @@ class AuthorizedDomainsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AuthorizedDomainsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the authorized domains client.
@@ -206,10 +216,10 @@ class AuthorizedDomainsAsyncClient:
 
     async def list_authorized_domains(
         self,
-        request: Union[appengine.ListAuthorizedDomainsRequest, dict] = None,
+        request: Optional[Union[appengine.ListAuthorizedDomainsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizedDomainsAsyncPager:
         r"""Lists all domains the user is authorized to
@@ -242,7 +252,7 @@ class AuthorizedDomainsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.ListAuthorizedDomainsRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.ListAuthorizedDomainsRequest, dict]]):
                 The request object. Request message for
                 `AuthorizedDomains.ListAuthorizedDomains`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

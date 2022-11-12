@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -64,20 +66,20 @@ class FirewallRule(proto.Message):
         ALLOW = 1
         DENY = 2
 
-    priority = proto.Field(
+    priority: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    action = proto.Field(
+    action: Action = proto.Field(
         proto.ENUM,
         number=2,
         enum=Action,
     )
-    source_range = proto.Field(
+    source_range: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )

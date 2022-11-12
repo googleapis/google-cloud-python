@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -39,7 +41,7 @@ class NetworkSettings(proto.Message):
         INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY = 2
         INGRESS_TRAFFIC_ALLOWED_INTERNAL_AND_LB = 3
 
-    ingress_traffic_allowed = proto.Field(
+    ingress_traffic_allowed: IngressTrafficAllowed = proto.Field(
         proto.ENUM,
         number=1,
         enum=IngressTrafficAllowed,

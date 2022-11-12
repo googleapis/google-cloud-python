@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -64,7 +75,7 @@ class VersionsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[VersionsTransport]:
         """Returns an appropriate transport class.
 
@@ -317,7 +328,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VersionsTransport, None] = None,
+        transport: Optional[Union[str, VersionsTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -415,10 +426,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def list_versions(
         self,
-        request: Union[appengine.ListVersionsRequest, dict] = None,
+        request: Optional[Union[appengine.ListVersionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVersionsPager:
         r"""Lists the versions of a service.
@@ -507,10 +518,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def get_version(
         self,
-        request: Union[appengine.GetVersionRequest, dict] = None,
+        request: Optional[Union[appengine.GetVersionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> version.Version:
         r"""Gets the specified Version resource. By default, only a
@@ -590,10 +601,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def create_version(
         self,
-        request: Union[appengine.CreateVersionRequest, dict] = None,
+        request: Optional[Union[appengine.CreateVersionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Deploys code and resource files to a new version.
@@ -684,10 +695,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def update_version(
         self,
-        request: Union[appengine.UpdateVersionRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateVersionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates the specified Version resource. You can specify the
@@ -813,10 +824,10 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def delete_version(
         self,
-        request: Union[appengine.DeleteVersionRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteVersionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Deletes an existing Version resource.

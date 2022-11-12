@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -56,7 +67,7 @@ class FirewallClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[FirewallTransport]:
         """Returns an appropriate transport class.
 
@@ -320,7 +331,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, FirewallTransport, None] = None,
+        transport: Optional[Union[str, FirewallTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -418,10 +429,10 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def list_ingress_rules(
         self,
-        request: Union[appengine.ListIngressRulesRequest, dict] = None,
+        request: Optional[Union[appengine.ListIngressRulesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIngressRulesPager:
         r"""Lists the firewall rules of an application.
@@ -510,10 +521,10 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def batch_update_ingress_rules(
         self,
-        request: Union[appengine.BatchUpdateIngressRulesRequest, dict] = None,
+        request: Optional[Union[appengine.BatchUpdateIngressRulesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> appengine.BatchUpdateIngressRulesResponse:
         r"""Replaces the entire firewall ruleset in one bulk operation. This
@@ -596,10 +607,10 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def create_ingress_rule(
         self,
-        request: Union[appengine.CreateIngressRuleRequest, dict] = None,
+        request: Optional[Union[appengine.CreateIngressRuleRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firewall.FirewallRule:
         r"""Creates a firewall rule for the application.
@@ -678,10 +689,10 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def get_ingress_rule(
         self,
-        request: Union[appengine.GetIngressRuleRequest, dict] = None,
+        request: Optional[Union[appengine.GetIngressRuleRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firewall.FirewallRule:
         r"""Gets the specified firewall rule.
@@ -760,10 +771,10 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def update_ingress_rule(
         self,
-        request: Union[appengine.UpdateIngressRuleRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateIngressRuleRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firewall.FirewallRule:
         r"""Updates the specified firewall rule.
@@ -842,10 +853,10 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def delete_ingress_rule(
         self,
-        request: Union[appengine.DeleteIngressRuleRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteIngressRuleRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified firewall rule.

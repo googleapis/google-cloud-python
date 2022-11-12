@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -108,7 +110,7 @@ class GetApplicationRequest(proto.Message):
             ``apps/myapp``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -122,7 +124,7 @@ class CreateApplicationRequest(proto.Message):
             Application configuration.
     """
 
-    application = proto.Field(
+    application: ga_application.Application = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_application.Application,
@@ -144,16 +146,16 @@ class UpdateApplicationRequest(proto.Message):
             fields to be updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    application = proto.Field(
+    application: ga_application.Application = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_application.Application,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -168,7 +170,7 @@ class RepairApplicationRequest(proto.Message):
             Name of the application to repair. Example: ``apps/myapp``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -188,15 +190,15 @@ class ListServicesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -206,7 +208,7 @@ class ListServicesResponse(proto.Message):
     r"""Response message for ``Services.ListServices``.
 
     Attributes:
-        services (Sequence[google.cloud.appengine_admin_v1.types.Service]):
+        services (MutableSequence[google.cloud.appengine_admin_v1.types.Service]):
             The services belonging to the requested
             application.
         next_page_token (str):
@@ -218,12 +220,12 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence[ga_service.Service] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ga_service.Service,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -238,7 +240,7 @@ class GetServiceRequest(proto.Message):
             ``apps/myapp/services/default``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -275,21 +277,21 @@ class UpdateServiceRequest(proto.Message):
             Traffic <https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic>`__.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service = proto.Field(
+    service: ga_service.Service = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_service.Service,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
     )
-    migrate_traffic = proto.Field(
+    migrate_traffic: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -304,7 +306,7 @@ class DeleteServiceRequest(proto.Message):
             ``apps/myapp/services/default``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -327,20 +329,20 @@ class ListVersionsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "VersionView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="VersionView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -350,7 +352,7 @@ class ListVersionsResponse(proto.Message):
     r"""Response message for ``Versions.ListVersions``.
 
     Attributes:
-        versions (Sequence[google.cloud.appengine_admin_v1.types.Version]):
+        versions (MutableSequence[google.cloud.appengine_admin_v1.types.Version]):
             The versions belonging to the requested
             service.
         next_page_token (str):
@@ -362,12 +364,12 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(
+    versions: MutableSequence[ga_version.Version] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ga_version.Version,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -384,11 +386,11 @@ class GetVersionRequest(proto.Message):
             Controls the set of fields returned in the ``Get`` response.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "VersionView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="VersionView",
@@ -406,11 +408,11 @@ class CreateVersionRequest(proto.Message):
             Application deployment configuration.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: ga_version.Version = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_version.Version,
@@ -433,16 +435,16 @@ class UpdateVersionRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: ga_version.Version = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_version.Version,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -458,7 +460,7 @@ class DeleteVersionRequest(proto.Message):
             ``apps/myapp/services/default/versions/v1``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -478,15 +480,15 @@ class ListInstancesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -496,7 +498,7 @@ class ListInstancesResponse(proto.Message):
     r"""Response message for ``Instances.ListInstances``.
 
     Attributes:
-        instances (Sequence[google.cloud.appengine_admin_v1.types.Instance]):
+        instances (MutableSequence[google.cloud.appengine_admin_v1.types.Instance]):
             The instances belonging to the requested
             version.
         next_page_token (str):
@@ -508,12 +510,12 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence[instance.Instance] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=instance.Instance,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -528,7 +530,7 @@ class GetInstanceRequest(proto.Message):
             ``apps/myapp/services/default/versions/v1/instances/instance-1``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -543,7 +545,7 @@ class DeleteInstanceRequest(proto.Message):
             ``apps/myapp/services/default/versions/v1/instances/instance-1``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -566,11 +568,11 @@ class DebugInstanceRequest(proto.Message):
             Keys <https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys>`__.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ssh_key = proto.Field(
+    ssh_key: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -595,19 +597,19 @@ class ListIngressRulesRequest(proto.Message):
             on requests from this IP.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    matching_address = proto.Field(
+    matching_address: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -617,7 +619,7 @@ class ListIngressRulesResponse(proto.Message):
     r"""Response message for ``Firewall.ListIngressRules``.
 
     Attributes:
-        ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
+        ingress_rules (MutableSequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             The ingress FirewallRules for this
             application.
         next_page_token (str):
@@ -629,12 +631,12 @@ class ListIngressRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    ingress_rules = proto.RepeatedField(
+    ingress_rules: MutableSequence[firewall.FirewallRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=firewall.FirewallRule,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -647,16 +649,16 @@ class BatchUpdateIngressRulesRequest(proto.Message):
         name (str):
             Name of the Firewall collection to set. Example:
             ``apps/myapp/firewall/ingressRules``.
-        ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
+        ingress_rules (MutableSequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             A list of FirewallRules to replace the
             existing set.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ingress_rules = proto.RepeatedField(
+    ingress_rules: MutableSequence[firewall.FirewallRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=firewall.FirewallRule,
@@ -667,12 +669,12 @@ class BatchUpdateIngressRulesResponse(proto.Message):
     r"""Response message for ``Firewall.UpdateAllIngressRules``.
 
     Attributes:
-        ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
+        ingress_rules (MutableSequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             The full list of ingress FirewallRules for
             this application.
     """
 
-    ingress_rules = proto.RepeatedField(
+    ingress_rules: MutableSequence[firewall.FirewallRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=firewall.FirewallRule,
@@ -701,11 +703,11 @@ class CreateIngressRuleRequest(proto.Message):
             or deny-all rule.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rule = proto.Field(
+    rule: firewall.FirewallRule = proto.Field(
         proto.MESSAGE,
         number=2,
         message=firewall.FirewallRule,
@@ -721,7 +723,7 @@ class GetIngressRuleRequest(proto.Message):
             ``apps/myapp/firewall/ingressRules/100``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -742,16 +744,16 @@ class UpdateIngressRuleRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rule = proto.Field(
+    rule: firewall.FirewallRule = proto.Field(
         proto.MESSAGE,
         number=2,
         message=firewall.FirewallRule,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -767,7 +769,7 @@ class DeleteIngressRuleRequest(proto.Message):
             ``apps/myapp/firewall/ingressRules/100``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -787,15 +789,15 @@ class ListAuthorizedDomainsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -805,7 +807,7 @@ class ListAuthorizedDomainsResponse(proto.Message):
     r"""Response message for ``AuthorizedDomains.ListAuthorizedDomains``.
 
     Attributes:
-        domains (Sequence[google.cloud.appengine_admin_v1.types.AuthorizedDomain]):
+        domains (MutableSequence[google.cloud.appengine_admin_v1.types.AuthorizedDomain]):
             The authorized domains belonging to the user.
         next_page_token (str):
             Continuation token for fetching the next page
@@ -816,12 +818,12 @@ class ListAuthorizedDomainsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    domains = proto.RepeatedField(
+    domains: MutableSequence[domain.AuthorizedDomain] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=domain.AuthorizedDomain,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -845,20 +847,20 @@ class ListAuthorizedCertificatesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "AuthorizedCertificateView" = proto.Field(
         proto.ENUM,
         number=4,
         enum="AuthorizedCertificateView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -869,7 +871,7 @@ class ListAuthorizedCertificatesResponse(proto.Message):
     ``AuthorizedCertificates.ListAuthorizedCertificates``.
 
     Attributes:
-        certificates (Sequence[google.cloud.appengine_admin_v1.types.AuthorizedCertificate]):
+        certificates (MutableSequence[google.cloud.appengine_admin_v1.types.AuthorizedCertificate]):
             The SSL certificates the user is authorized
             to administer.
         next_page_token (str):
@@ -881,12 +883,14 @@ class ListAuthorizedCertificatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificates = proto.RepeatedField(
+    certificates: MutableSequence[
+        ga_certificate.AuthorizedCertificate
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ga_certificate.AuthorizedCertificate,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -904,11 +908,11 @@ class GetAuthorizedCertificateRequest(proto.Message):
             Controls the set of fields returned in the ``GET`` response.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "AuthorizedCertificateView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="AuthorizedCertificateView",
@@ -927,11 +931,11 @@ class CreateAuthorizedCertificateRequest(proto.Message):
             SSL certificate data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate = proto.Field(
+    certificate: ga_certificate.AuthorizedCertificate = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_certificate.AuthorizedCertificate,
@@ -955,16 +959,16 @@ class UpdateAuthorizedCertificateRequest(proto.Message):
             and ``display_name`` fields.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate = proto.Field(
+    certificate: ga_certificate.AuthorizedCertificate = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_certificate.AuthorizedCertificate,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -981,7 +985,7 @@ class DeleteAuthorizedCertificateRequest(proto.Message):
             ``apps/myapp/authorizedCertificates/12345``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1001,15 +1005,15 @@ class ListDomainMappingsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1019,7 +1023,7 @@ class ListDomainMappingsResponse(proto.Message):
     r"""Response message for ``DomainMappings.ListDomainMappings``.
 
     Attributes:
-        domain_mappings (Sequence[google.cloud.appengine_admin_v1.types.DomainMapping]):
+        domain_mappings (MutableSequence[google.cloud.appengine_admin_v1.types.DomainMapping]):
             The domain mappings for the application.
         next_page_token (str):
             Continuation token for fetching the next page
@@ -1030,12 +1034,14 @@ class ListDomainMappingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    domain_mappings = proto.RepeatedField(
+    domain_mappings: MutableSequence[
+        ga_domain_mapping.DomainMapping
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ga_domain_mapping.DomainMapping,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1050,7 +1056,7 @@ class GetDomainMappingRequest(proto.Message):
             ``apps/myapp/domainMappings/example.com``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1071,16 +1077,16 @@ class CreateDomainMappingRequest(proto.Message):
             default, overrides are rejected.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    domain_mapping = proto.Field(
+    domain_mapping: ga_domain_mapping.DomainMapping = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_domain_mapping.DomainMapping,
     )
-    override_strategy = proto.Field(
+    override_strategy: "DomainOverrideStrategy" = proto.Field(
         proto.ENUM,
         number=4,
         enum="DomainOverrideStrategy",
@@ -1103,16 +1109,16 @@ class UpdateDomainMappingRequest(proto.Message):
             fields to be updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    domain_mapping = proto.Field(
+    domain_mapping: ga_domain_mapping.DomainMapping = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ga_domain_mapping.DomainMapping,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -1128,7 +1134,7 @@ class DeleteDomainMappingRequest(proto.Message):
             ``apps/myapp/domainMappings/example.com``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

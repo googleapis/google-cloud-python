@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -159,9 +169,9 @@ class InstancesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, InstancesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the instances client.
@@ -205,10 +215,10 @@ class InstancesAsyncClient:
 
     async def list_instances(
         self,
-        request: Union[appengine.ListInstancesRequest, dict] = None,
+        request: Optional[Union[appengine.ListInstancesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists the instances of a version.
@@ -244,7 +254,7 @@ class InstancesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.ListInstancesRequest, dict]]):
                 The request object. Request message for
                 `Instances.ListInstances`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -300,10 +310,10 @@ class InstancesAsyncClient:
 
     async def get_instance(
         self,
-        request: Union[appengine.GetInstanceRequest, dict] = None,
+        request: Optional[Union[appengine.GetInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Gets instance information.
@@ -334,7 +344,7 @@ class InstancesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.GetInstanceRequest, dict]]):
                 The request object. Request message for
                 `Instances.GetInstance`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -380,10 +390,10 @@ class InstancesAsyncClient:
 
     async def delete_instance(
         self,
-        request: Union[appengine.DeleteInstanceRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Stops a running instance.
@@ -432,7 +442,7 @@ class InstancesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.DeleteInstanceRequest, dict]]):
                 The request object. Request message for
                 `Instances.DeleteInstance`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -495,10 +505,10 @@ class InstancesAsyncClient:
 
     async def debug_instance(
         self,
-        request: Union[appengine.DebugInstanceRequest, dict] = None,
+        request: Optional[Union[appengine.DebugInstanceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Enables debugging on a VM instance. This allows you
@@ -542,7 +552,7 @@ class InstancesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.DebugInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.DebugInstanceRequest, dict]]):
                 The request object. Request message for
                 `Instances.DebugInstance`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

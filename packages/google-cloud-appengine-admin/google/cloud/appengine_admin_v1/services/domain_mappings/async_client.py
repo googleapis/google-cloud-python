@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -162,9 +172,9 @@ class DomainMappingsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DomainMappingsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the domain mappings client.
@@ -208,10 +218,10 @@ class DomainMappingsAsyncClient:
 
     async def list_domain_mappings(
         self,
-        request: Union[appengine.ListDomainMappingsRequest, dict] = None,
+        request: Optional[Union[appengine.ListDomainMappingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDomainMappingsAsyncPager:
         r"""Lists the domain mappings on an application.
@@ -243,7 +253,7 @@ class DomainMappingsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest, dict]]):
                 The request object. Request message for
                 `DomainMappings.ListDomainMappings`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -299,10 +309,10 @@ class DomainMappingsAsyncClient:
 
     async def get_domain_mapping(
         self,
-        request: Union[appengine.GetDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.GetDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domain_mapping.DomainMapping:
         r"""Gets the specified domain mapping.
@@ -333,7 +343,7 @@ class DomainMappingsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.GetDomainMappingRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.GetDomainMappingRequest, dict]]):
                 The request object. Request message for
                 `DomainMappings.GetDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -378,10 +388,10 @@ class DomainMappingsAsyncClient:
 
     async def create_domain_mapping(
         self,
-        request: Union[appengine.CreateDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.CreateDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Maps a domain to an application. A user must be authorized to
@@ -419,7 +429,7 @@ class DomainMappingsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest, dict]]):
                 The request object. Request message for
                 `DomainMappings.CreateDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -475,10 +485,10 @@ class DomainMappingsAsyncClient:
 
     async def update_domain_mapping(
         self,
-        request: Union[appengine.UpdateDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified domain mapping. To map an SSL certificate
@@ -517,7 +527,7 @@ class DomainMappingsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest, dict]]):
                 The request object. Request message for
                 `DomainMappings.UpdateDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -573,10 +583,10 @@ class DomainMappingsAsyncClient:
 
     async def delete_domain_mapping(
         self,
-        request: Union[appengine.DeleteDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified domain mapping. A user must be authorized
@@ -613,7 +623,7 @@ class DomainMappingsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest, dict]):
+            request (Optional[Union[google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest, dict]]):
                 The request object. Request message for
                 `DomainMappings.DeleteDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

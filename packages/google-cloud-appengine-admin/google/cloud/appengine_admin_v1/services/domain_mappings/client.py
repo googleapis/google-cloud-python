@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class DomainMappingsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DomainMappingsTransport]:
         """Returns an appropriate transport class.
 
@@ -316,7 +327,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DomainMappingsTransport, None] = None,
+        transport: Optional[Union[str, DomainMappingsTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -414,10 +425,10 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def list_domain_mappings(
         self,
-        request: Union[appengine.ListDomainMappingsRequest, dict] = None,
+        request: Optional[Union[appengine.ListDomainMappingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDomainMappingsPager:
         r"""Lists the domain mappings on an application.
@@ -506,10 +517,10 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def get_domain_mapping(
         self,
-        request: Union[appengine.GetDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.GetDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domain_mapping.DomainMapping:
         r"""Gets the specified domain mapping.
@@ -586,10 +597,10 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def create_domain_mapping(
         self,
-        request: Union[appengine.CreateDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.CreateDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Maps a domain to an application. A user must be authorized to
@@ -684,10 +695,10 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def update_domain_mapping(
         self,
-        request: Union[appengine.UpdateDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates the specified domain mapping. To map an SSL certificate
@@ -783,10 +794,10 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def delete_domain_mapping(
         self,
-        request: Union[appengine.DeleteDomainMappingRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteDomainMappingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Deletes the specified domain mapping. A user must be authorized

@@ -4,7 +4,12 @@
     ".": {
       "release-type": "python",
       "extra-files": [
-        "google/cloud/appengine_admin/gapic_version.py"
+        "google/cloud/appengine_admin/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.appengine.v1.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
       ]
     }
   },

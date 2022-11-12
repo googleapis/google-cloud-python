@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -107,73 +109,73 @@ class Instance(proto.Message):
             DRAINING = 4
             TIMEOUT = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    app_engine_release = proto.Field(
+    app_engine_release: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    availability = proto.Field(
+    availability: Availability = proto.Field(
         proto.ENUM,
         number=4,
         enum=Availability,
     )
-    vm_name = proto.Field(
+    vm_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    vm_zone_name = proto.Field(
+    vm_zone_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    vm_id = proto.Field(
+    vm_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    requests = proto.Field(
+    requests: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    errors = proto.Field(
+    errors: int = proto.Field(
         proto.INT32,
         number=10,
     )
-    qps = proto.Field(
+    qps: float = proto.Field(
         proto.FLOAT,
         number=11,
     )
-    average_latency = proto.Field(
+    average_latency: int = proto.Field(
         proto.INT32,
         number=12,
     )
-    memory_usage = proto.Field(
+    memory_usage: int = proto.Field(
         proto.INT64,
         number=13,
     )
-    vm_status = proto.Field(
+    vm_status: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    vm_debug_enabled = proto.Field(
+    vm_debug_enabled: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    vm_ip = proto.Field(
+    vm_ip: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    vm_liveness = proto.Field(
+    vm_liveness: Liveness.LivenessState = proto.Field(
         proto.ENUM,
         number=17,
         enum=Liveness.LivenessState,

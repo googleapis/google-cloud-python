@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -40,7 +42,7 @@ class Application(proto.Message):
             equivalent to the project ID of the Google Cloud Platform
             project where you want to deploy your application. Example:
             ``myapp``.
-        dispatch_rules (Sequence[google.cloud.appengine_admin_v1.types.UrlDispatchRule]):
+        dispatch_rules (MutableSequence[google.cloud.appengine_admin_v1.types.UrlDispatchRule]):
             HTTP path dispatch rules for requests to the
             application that do not explicitly target a
             service or version. Rules are order-dependent.
@@ -142,19 +144,19 @@ class Application(proto.Message):
                 @OutputOnly
         """
 
-        enabled = proto.Field(
+        enabled: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        oauth2_client_id = proto.Field(
+        oauth2_client_id: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        oauth2_client_secret = proto.Field(
+        oauth2_client_secret: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        oauth2_client_secret_sha256 = proto.Field(
+        oauth2_client_secret_sha256: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -177,77 +179,77 @@ class Application(proto.Message):
                 base image for VMs, rather than a base Debian image.
         """
 
-        split_health_checks = proto.Field(
+        split_health_checks: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        use_container_optimized_os = proto.Field(
+        use_container_optimized_os: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dispatch_rules = proto.RepeatedField(
+    dispatch_rules: MutableSequence["UrlDispatchRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="UrlDispatchRule",
     )
-    auth_domain = proto.Field(
+    auth_domain: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    code_bucket = proto.Field(
+    code_bucket: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    default_cookie_expiration = proto.Field(
+    default_cookie_expiration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=9,
         message=duration_pb2.Duration,
     )
-    serving_status = proto.Field(
+    serving_status: ServingStatus = proto.Field(
         proto.ENUM,
         number=10,
         enum=ServingStatus,
     )
-    default_hostname = proto.Field(
+    default_hostname: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    default_bucket = proto.Field(
+    default_bucket: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    iap = proto.Field(
+    iap: IdentityAwareProxy = proto.Field(
         proto.MESSAGE,
         number=14,
         message=IdentityAwareProxy,
     )
-    gcr_domain = proto.Field(
+    gcr_domain: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    database_type = proto.Field(
+    database_type: DatabaseType = proto.Field(
         proto.ENUM,
         number=17,
         enum=DatabaseType,
     )
-    feature_settings = proto.Field(
+    feature_settings: FeatureSettings = proto.Field(
         proto.MESSAGE,
         number=18,
         message=FeatureSettings,
@@ -276,15 +278,15 @@ class UrlDispatchRule(proto.Message):
             Example: ``default``.
     """
 
-    domain = proto.Field(
+    domain: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=3,
     )

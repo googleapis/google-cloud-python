@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.appengine_admin_v1.types import (
@@ -53,7 +55,7 @@ class Service(proto.Message):
             Mapping that defines fractional HTTP traffic
             diversion to different versions within the
             service.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A set of labels to apply to this service.
             Labels are key/value pairs that describe the
             service and all resources that belong to it
@@ -76,25 +78,25 @@ class Service(proto.Message):
             to all versions.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    split = proto.Field(
+    split: "TrafficSplit" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TrafficSplit",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    network_settings = proto.Field(
+    network_settings: ga_network_settings.NetworkSettings = proto.Field(
         proto.MESSAGE,
         number=6,
         message=ga_network_settings.NetworkSettings,
@@ -112,7 +114,7 @@ class TrafficSplit(proto.Message):
             request is sent to. The traffic selection
             algorithm will be stable for either type until
             allocations are changed.
-        allocations (Mapping[str, float]):
+        allocations (MutableMapping[str, float]):
             Mapping from version IDs within the service to fractional
             (0.000, 1] allocations of traffic for that version. Each
             version can be specified only once, but some versions in the
@@ -131,12 +133,12 @@ class TrafficSplit(proto.Message):
         IP = 2
         RANDOM = 3
 
-    shard_by = proto.Field(
+    shard_by: ShardBy = proto.Field(
         proto.ENUM,
         number=1,
         enum=ShardBy,
     )
-    allocations = proto.MapField(
+    allocations: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.DOUBLE,
         number=2,

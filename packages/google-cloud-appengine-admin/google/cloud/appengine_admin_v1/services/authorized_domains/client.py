@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +69,7 @@ class AuthorizedDomainsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AuthorizedDomainsTransport]:
         """Returns an appropriate transport class.
 
@@ -314,7 +325,7 @@ class AuthorizedDomainsClient(metaclass=AuthorizedDomainsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AuthorizedDomainsTransport, None] = None,
+        transport: Optional[Union[str, AuthorizedDomainsTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -412,10 +423,10 @@ class AuthorizedDomainsClient(metaclass=AuthorizedDomainsClientMeta):
 
     def list_authorized_domains(
         self,
-        request: Union[appengine.ListAuthorizedDomainsRequest, dict] = None,
+        request: Optional[Union[appengine.ListAuthorizedDomainsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizedDomainsPager:
         r"""Lists all domains the user is authorized to

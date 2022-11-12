@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -33,7 +35,7 @@ class Deployment(proto.Message):
     App Engine.
 
     Attributes:
-        files (Mapping[str, google.cloud.appengine_admin_v1.types.FileInfo]):
+        files (MutableMapping[str, google.cloud.appengine_admin_v1.types.FileInfo]):
             Manifest of the files stored in Google Cloud
             Storage that are included as part of this
             version. All files must be readable using the
@@ -54,23 +56,23 @@ class Deployment(proto.Message):
             Engine flexible environment using files or zip.
     """
 
-    files = proto.MapField(
+    files: MutableMapping[str, "FileInfo"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
         message="FileInfo",
     )
-    container = proto.Field(
+    container: "ContainerInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ContainerInfo",
     )
-    zip_ = proto.Field(
+    zip_: "ZipInfo" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ZipInfo",
     )
-    cloud_build_options = proto.Field(
+    cloud_build_options: "CloudBuildOptions" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="CloudBuildOptions",
@@ -95,15 +97,15 @@ class FileInfo(proto.Message):
             Defaults to the value from Google Cloud Storage.
     """
 
-    source_url = proto.Field(
+    source_url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    sha1_sum = proto.Field(
+    sha1_sum: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -123,7 +125,7 @@ class ContainerInfo(proto.Message):
             "gcr.io/my-project/image@digest".
     """
 
-    image = proto.Field(
+    image: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -149,11 +151,11 @@ class CloudBuildOptions(proto.Message):
             Defaults to 10 minutes.
     """
 
-    app_yaml_path = proto.Field(
+    app_yaml_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cloud_build_timeout = proto.Field(
+    cloud_build_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -177,11 +179,11 @@ class ZipInfo(proto.Message):
             provided, deployment may be slow.
     """
 
-    source_url = proto.Field(
+    source_url: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    files_count = proto.Field(
+    files_count: int = proto.Field(
         proto.INT32,
         number=4,
     )

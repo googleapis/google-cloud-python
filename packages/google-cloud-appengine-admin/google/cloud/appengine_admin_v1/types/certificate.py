@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -60,7 +62,7 @@ class AuthorizedCertificate(proto.Message):
         display_name (str):
             The user-specified display name of the certificate. This is
             not guaranteed to be unique. Example: ``My Certificate``.
-        domain_names (Sequence[str]):
+        domain_names (MutableSequence[str]):
             Topmost applicable domains of this certificate. This
             certificate applies to these domains and their subdomains.
             Example: ``example.com``.
@@ -85,7 +87,7 @@ class AuthorizedCertificate(proto.Message):
             manually administered by the user, this field will be empty.
 
             @OutputOnly
-        visible_domain_mappings (Sequence[str]):
+        visible_domain_mappings (MutableSequence[str]):
             The full paths to user visible Domain Mapping resources that
             have this certificate mapped. Example:
             ``apps/myapp/domainMappings/example.com``.
@@ -112,42 +114,42 @@ class AuthorizedCertificate(proto.Message):
             @OutputOnly
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    domain_names = proto.RepeatedField(
+    domain_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    certificate_raw_data = proto.Field(
+    certificate_raw_data: "CertificateRawData" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="CertificateRawData",
     )
-    managed_certificate = proto.Field(
+    managed_certificate: "ManagedCertificate" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="ManagedCertificate",
     )
-    visible_domain_mappings = proto.RepeatedField(
+    visible_domain_mappings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    domain_mappings_count = proto.Field(
+    domain_mappings_count: int = proto.Field(
         proto.INT32,
         number=9,
     )
@@ -186,11 +188,11 @@ class CertificateRawData(proto.Message):
             @InputOnly
     """
 
-    public_certificate = proto.Field(
+    public_certificate: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    private_key = proto.Field(
+    private_key: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -214,12 +216,12 @@ class ManagedCertificate(proto.Message):
             @OutputOnly
     """
 
-    last_renewal_time = proto.Field(
+    last_renewal_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    status = proto.Field(
+    status: "ManagementStatus" = proto.Field(
         proto.ENUM,
         number=2,
         enum="ManagementStatus",

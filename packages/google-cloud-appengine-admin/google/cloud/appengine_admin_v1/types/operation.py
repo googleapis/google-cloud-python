@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -55,7 +57,7 @@ class OperationMetadataV1(proto.Message):
         ephemeral_message (str):
             Ephemeral message that may change every time
             the operation is polled. @OutputOnly
-        warning (Sequence[str]):
+        warning (MutableSequence[str]):
             Durable messages that persist on every
             operation poll. @OutputOnly
         create_version_metadata (google.cloud.appengine_admin_v1.types.CreateVersionMetadataV1):
@@ -63,37 +65,37 @@ class OperationMetadataV1(proto.Message):
             This field is a member of `oneof`_ ``method_metadata``.
     """
 
-    method = proto.Field(
+    method: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    insert_time = proto.Field(
+    insert_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    user = proto.Field(
+    user: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    ephemeral_message = proto.Field(
+    ephemeral_message: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    warning = proto.RepeatedField(
+    warning: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    create_version_metadata = proto.Field(
+    create_version_metadata: "CreateVersionMetadataV1" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="method_metadata",
@@ -113,7 +115,7 @@ class CreateVersionMetadataV1(proto.Message):
             of the version create. @OutputOnly
     """
 
-    cloud_build_id = proto.Field(
+    cloud_build_id: str = proto.Field(
         proto.STRING,
         number=1,
     )

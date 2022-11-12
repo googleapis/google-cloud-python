@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +71,7 @@ class ApplicationsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ApplicationsTransport]:
         """Returns an appropriate transport class.
 
@@ -313,7 +324,7 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ApplicationsTransport, None] = None,
+        transport: Optional[Union[str, ApplicationsTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -411,11 +422,11 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
 
     def get_application(
         self,
-        request: Union[appengine.GetApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.GetApplicationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> application.Application:
         r"""Gets information about an application.
@@ -513,10 +524,10 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
 
     def create_application(
         self,
-        request: Union[appengine.CreateApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.CreateApplicationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Creates an App Engine application for a Google Cloud Platform
@@ -611,10 +622,10 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
 
     def update_application(
         self,
-        request: Union[appengine.UpdateApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateApplicationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates the specified Application resource. You can update the
@@ -713,10 +724,10 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
 
     def repair_application(
         self,
-        request: Union[appengine.RepairApplicationRequest, dict] = None,
+        request: Optional[Union[appengine.RepairApplicationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Recreates the required App Engine features for the specified App

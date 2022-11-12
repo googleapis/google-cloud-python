@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +73,7 @@ class ServicesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ServicesTransport]:
         """Returns an appropriate transport class.
 
@@ -315,7 +326,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ServicesTransport, None] = None,
+        transport: Optional[Union[str, ServicesTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -413,10 +424,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def list_services(
         self,
-        request: Union[appengine.ListServicesRequest, dict] = None,
+        request: Optional[Union[appengine.ListServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""Lists all the services in the application.
@@ -505,10 +516,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def get_service(
         self,
-        request: Union[appengine.GetServiceRequest, dict] = None,
+        request: Optional[Union[appengine.GetServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Service:
         r"""Gets the current configuration of the specified
@@ -596,10 +607,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def update_service(
         self,
-        request: Union[appengine.UpdateServiceRequest, dict] = None,
+        request: Optional[Union[appengine.UpdateServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates the configuration of the specified service.
@@ -697,10 +708,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def delete_service(
         self,
-        request: Union[appengine.DeleteServiceRequest, dict] = None,
+        request: Optional[Union[appengine.DeleteServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Deletes the specified service and all enclosed

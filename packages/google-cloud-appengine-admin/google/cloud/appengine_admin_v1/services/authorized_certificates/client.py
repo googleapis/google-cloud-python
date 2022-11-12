@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +71,7 @@ class AuthorizedCertificatesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AuthorizedCertificatesTransport]:
         """Returns an appropriate transport class.
 
@@ -316,7 +327,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AuthorizedCertificatesTransport, None] = None,
+        transport: Optional[Union[str, AuthorizedCertificatesTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -414,10 +425,12 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
 
     def list_authorized_certificates(
         self,
-        request: Union[appengine.ListAuthorizedCertificatesRequest, dict] = None,
+        request: Optional[
+            Union[appengine.ListAuthorizedCertificatesRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizedCertificatesPager:
         r"""Lists all SSL certificates the user is authorized to
@@ -510,10 +523,12 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
 
     def get_authorized_certificate(
         self,
-        request: Union[appengine.GetAuthorizedCertificateRequest, dict] = None,
+        request: Optional[
+            Union[appengine.GetAuthorizedCertificateRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
         r"""Gets the specified SSL certificate.
@@ -595,10 +610,12 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
 
     def create_authorized_certificate(
         self,
-        request: Union[appengine.CreateAuthorizedCertificateRequest, dict] = None,
+        request: Optional[
+            Union[appengine.CreateAuthorizedCertificateRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
         r"""Uploads the specified SSL certificate.
@@ -680,10 +697,12 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
 
     def update_authorized_certificate(
         self,
-        request: Union[appengine.UpdateAuthorizedCertificateRequest, dict] = None,
+        request: Optional[
+            Union[appengine.UpdateAuthorizedCertificateRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
         r"""Updates the specified SSL certificate. To renew a certificate
@@ -770,10 +789,12 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
 
     def delete_authorized_certificate(
         self,
-        request: Union[appengine.DeleteAuthorizedCertificateRequest, dict] = None,
+        request: Optional[
+            Union[appengine.DeleteAuthorizedCertificateRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified SSL certificate.
