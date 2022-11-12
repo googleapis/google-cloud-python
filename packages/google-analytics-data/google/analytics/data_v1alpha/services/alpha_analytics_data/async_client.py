@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -157,9 +167,9 @@ class AlphaAnalyticsDataAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AlphaAnalyticsDataTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the alpha analytics data client.
@@ -203,10 +213,12 @@ class AlphaAnalyticsDataAsyncClient:
 
     async def run_funnel_report(
         self,
-        request: Union[analytics_data_api.RunFunnelReportRequest, dict] = None,
+        request: Optional[
+            Union[analytics_data_api.RunFunnelReportRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunFunnelReportResponse:
         r"""Returns a customized funnel report of your Google Analytics
@@ -248,7 +260,7 @@ class AlphaAnalyticsDataAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.analytics.data_v1alpha.types.RunFunnelReportRequest, dict]):
+            request (Optional[Union[google.analytics.data_v1alpha.types.RunFunnelReportRequest, dict]]):
                 The request object. The request for a funnel report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

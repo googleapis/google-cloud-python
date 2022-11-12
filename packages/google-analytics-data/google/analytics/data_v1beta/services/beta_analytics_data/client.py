@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -59,7 +70,7 @@ class BetaAnalyticsDataClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BetaAnalyticsDataTransport]:
         """Returns an appropriate transport class.
 
@@ -327,7 +338,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BetaAnalyticsDataTransport, None] = None,
+        transport: Optional[Union[str, BetaAnalyticsDataTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -428,10 +439,10 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def run_report(
         self,
-        request: Union[analytics_data_api.RunReportRequest, dict] = None,
+        request: Optional[Union[analytics_data_api.RunReportRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunReportResponse:
         r"""Returns a customized report of your Google Analytics event data.
@@ -518,10 +529,10 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def run_pivot_report(
         self,
-        request: Union[analytics_data_api.RunPivotReportRequest, dict] = None,
+        request: Optional[Union[analytics_data_api.RunPivotReportRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunPivotReportResponse:
         r"""Returns a customized pivot report of your Google
@@ -603,10 +614,12 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def batch_run_reports(
         self,
-        request: Union[analytics_data_api.BatchRunReportsRequest, dict] = None,
+        request: Optional[
+            Union[analytics_data_api.BatchRunReportsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunReportsResponse:
         r"""Returns multiple reports in a batch. All reports must
@@ -684,10 +697,12 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def batch_run_pivot_reports(
         self,
-        request: Union[analytics_data_api.BatchRunPivotReportsRequest, dict] = None,
+        request: Optional[
+            Union[analytics_data_api.BatchRunPivotReportsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunPivotReportsResponse:
         r"""Returns multiple pivot reports in a batch. All
@@ -765,11 +780,11 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def get_metadata(
         self,
-        request: Union[analytics_data_api.GetMetadataRequest, dict] = None,
+        request: Optional[Union[analytics_data_api.GetMetadataRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.Metadata:
         r"""Returns metadata for dimensions and metrics available in
@@ -887,10 +902,12 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def run_realtime_report(
         self,
-        request: Union[analytics_data_api.RunRealtimeReportRequest, dict] = None,
+        request: Optional[
+            Union[analytics_data_api.RunRealtimeReportRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunRealtimeReportResponse:
         r"""Returns a customized report of realtime event data for your
@@ -976,10 +993,12 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def check_compatibility(
         self,
-        request: Union[analytics_data_api.CheckCompatibilityRequest, dict] = None,
+        request: Optional[
+            Union[analytics_data_api.CheckCompatibilityRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.CheckCompatibilityResponse:
         r"""This compatibility method lists dimensions and

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.analytics.data_v1alpha.types import data
@@ -39,7 +41,7 @@ class RunFunnelReportRequest(proto.Message):
             unspecified or consistent with the batch-level property.
 
             Example: properties/1234
-        date_ranges (Sequence[google.analytics.data_v1alpha.types.DateRange]):
+        date_ranges (MutableSequence[google.analytics.data_v1alpha.types.DateRange]):
             Date ranges of data to read. If multiple date
             ranges are requested, each response row will
             contain a zero based date range index. If two
@@ -70,7 +72,7 @@ class RunFunnelReportRequest(proto.Message):
             The funnel visualization type controls the dimensions
             present in the funnel visualization sub report response. If
             not specified, ``STANDARD_FUNNEL`` is used.
-        segments (Sequence[google.analytics.data_v1alpha.types.Segment]):
+        segments (MutableSequence[google.analytics.data_v1alpha.types.Segment]):
             The configurations of segments. Segments are
             subsets of a property's data. In a funnel report
             with segments, the funnel is evaluated in each
@@ -110,50 +112,50 @@ class RunFunnelReportRequest(proto.Message):
         STANDARD_FUNNEL = 1
         TRENDED_FUNNEL = 2
 
-    property = proto.Field(
+    property: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    date_ranges = proto.RepeatedField(
+    date_ranges: MutableSequence[data.DateRange] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=data.DateRange,
     )
-    funnel = proto.Field(
+    funnel: data.Funnel = proto.Field(
         proto.MESSAGE,
         number=3,
         message=data.Funnel,
     )
-    funnel_breakdown = proto.Field(
+    funnel_breakdown: data.FunnelBreakdown = proto.Field(
         proto.MESSAGE,
         number=4,
         message=data.FunnelBreakdown,
     )
-    funnel_next_action = proto.Field(
+    funnel_next_action: data.FunnelNextAction = proto.Field(
         proto.MESSAGE,
         number=5,
         message=data.FunnelNextAction,
     )
-    funnel_visualization_type = proto.Field(
+    funnel_visualization_type: FunnelVisualizationType = proto.Field(
         proto.ENUM,
         number=6,
         enum=FunnelVisualizationType,
     )
-    segments = proto.RepeatedField(
+    segments: MutableSequence[data.Segment] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=data.Segment,
     )
-    limit = proto.Field(
+    limit: int = proto.Field(
         proto.INT64,
         number=9,
     )
-    dimension_filter = proto.Field(
+    dimension_filter: data.FilterExpression = proto.Field(
         proto.MESSAGE,
         number=10,
         message=data.FilterExpression,
     )
-    return_property_quota = proto.Field(
+    return_property_quota: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
@@ -194,22 +196,22 @@ class RunFunnelReportResponse(proto.Message):
             between response types in JSON.
     """
 
-    funnel_table = proto.Field(
+    funnel_table: data.FunnelSubReport = proto.Field(
         proto.MESSAGE,
         number=1,
         message=data.FunnelSubReport,
     )
-    funnel_visualization = proto.Field(
+    funnel_visualization: data.FunnelSubReport = proto.Field(
         proto.MESSAGE,
         number=2,
         message=data.FunnelSubReport,
     )
-    property_quota = proto.Field(
+    property_quota: data.PropertyQuota = proto.Field(
         proto.MESSAGE,
         number=3,
         message=data.PropertyQuota,
     )
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=4,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -181,15 +183,15 @@ class DateRange(proto.Message):
             in the request: ``date_range_0``, ``date_range_1``, etc.
     """
 
-    start_date = proto.Field(
+    start_date: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    end_date = proto.Field(
+    end_date: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -224,11 +226,11 @@ class Dimension(proto.Message):
             ", ", city).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dimension_expression = proto.Field(
+    dimension_expression: "DimensionExpression" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DimensionExpression",
@@ -277,7 +279,7 @@ class DimensionExpression(proto.Message):
                 to a name in dimensions field of the request.
         """
 
-        dimension_name = proto.Field(
+        dimension_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -286,7 +288,7 @@ class DimensionExpression(proto.Message):
         r"""Used to combine dimension values to a single dimension.
 
         Attributes:
-            dimension_names (Sequence[str]):
+            dimension_names (MutableSequence[str]):
                 Names of dimensions. The names must refer
                 back to names in the dimensions field of the
                 request.
@@ -301,28 +303,28 @@ class DimensionExpression(proto.Message):
                 response will contain "US,FR,JP".
         """
 
-        dimension_names = proto.RepeatedField(
+        dimension_names: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        delimiter = proto.Field(
+        delimiter: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    lower_case = proto.Field(
+    lower_case: CaseExpression = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_expression",
         message=CaseExpression,
     )
-    upper_case = proto.Field(
+    upper_case: CaseExpression = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="one_expression",
         message=CaseExpression,
     )
-    concatenate = proto.Field(
+    concatenate: ConcatenateExpression = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="one_expression",
@@ -364,25 +366,25 @@ class FilterExpression(proto.Message):
             This field is a member of `oneof`_ ``expr``.
     """
 
-    and_group = proto.Field(
+    and_group: "FilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="expr",
         message="FilterExpressionList",
     )
-    or_group = proto.Field(
+    or_group: "FilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="expr",
         message="FilterExpressionList",
     )
-    not_expression = proto.Field(
+    not_expression: "FilterExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="expr",
         message="FilterExpression",
     )
-    filter = proto.Field(
+    filter: "Filter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="expr",
@@ -394,11 +396,11 @@ class FilterExpressionList(proto.Message):
     r"""A list of filter expressions.
 
     Attributes:
-        expressions (Sequence[google.analytics.data_v1alpha.types.FilterExpression]):
+        expressions (MutableSequence[google.analytics.data_v1alpha.types.FilterExpression]):
             A list of filter expressions.
     """
 
-    expressions = proto.RepeatedField(
+    expressions: MutableSequence["FilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FilterExpression",
@@ -437,29 +439,29 @@ class Filter(proto.Message):
             This field is a member of `oneof`_ ``one_filter``.
     """
 
-    field_name = proto.Field(
+    field_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    string_filter = proto.Field(
+    string_filter: "StringFilter" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="one_filter",
         message="StringFilter",
     )
-    in_list_filter = proto.Field(
+    in_list_filter: "InListFilter" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="one_filter",
         message="InListFilter",
     )
-    numeric_filter = proto.Field(
+    numeric_filter: "NumericFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_filter",
         message="NumericFilter",
     )
-    between_filter = proto.Field(
+    between_filter: "BetweenFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="one_filter",
@@ -489,16 +491,16 @@ class StringFilter(proto.Message):
         FULL_REGEXP = 5
         PARTIAL_REGEXP = 6
 
-    match_type = proto.Field(
+    match_type: MatchType = proto.Field(
         proto.ENUM,
         number=1,
         enum=MatchType,
     )
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    case_sensitive = proto.Field(
+    case_sensitive: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -508,18 +510,18 @@ class InListFilter(proto.Message):
     r"""The result needs to be in a list of string values.
 
     Attributes:
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             The list of string values.
             Must be non-empty.
         case_sensitive (bool):
             If true, the string value is case sensitive.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    case_sensitive = proto.Field(
+    case_sensitive: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -544,12 +546,12 @@ class NumericFilter(proto.Message):
         GREATER_THAN = 4
         GREATER_THAN_OR_EQUAL = 5
 
-    operation = proto.Field(
+    operation: Operation = proto.Field(
         proto.ENUM,
         number=1,
         enum=Operation,
     )
-    value = proto.Field(
+    value: "NumericValue" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="NumericValue",
@@ -567,12 +569,12 @@ class BetweenFilter(proto.Message):
             Ends with this number.
     """
 
-    from_value = proto.Field(
+    from_value: "NumericValue" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="NumericValue",
     )
-    to_value = proto.Field(
+    to_value: "NumericValue" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="NumericValue",
@@ -600,12 +602,12 @@ class NumericValue(proto.Message):
             This field is a member of `oneof`_ ``one_value``.
     """
 
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=1,
         oneof="one_value",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=2,
         oneof="one_value",
@@ -624,7 +626,7 @@ class DimensionHeader(proto.Message):
             The dimension's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -644,11 +646,11 @@ class MetricHeader(proto.Message):
             The metric's data type.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: "MetricType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="MetricType",
@@ -694,20 +696,20 @@ class Row(proto.Message):
        ]
 
     Attributes:
-        dimension_values (Sequence[google.analytics.data_v1alpha.types.DimensionValue]):
+        dimension_values (MutableSequence[google.analytics.data_v1alpha.types.DimensionValue]):
             List of requested dimension values. In a PivotReport,
             dimension_values are only listed for dimensions included in
             a pivot.
-        metric_values (Sequence[google.analytics.data_v1alpha.types.MetricValue]):
+        metric_values (MutableSequence[google.analytics.data_v1alpha.types.MetricValue]):
             List of requested visible metric values.
     """
 
-    dimension_values = proto.RepeatedField(
+    dimension_values: MutableSequence["DimensionValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DimensionValue",
     )
-    metric_values = proto.RepeatedField(
+    metric_values: MutableSequence["MetricValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MetricValue",
@@ -727,7 +729,7 @@ class DimensionValue(proto.Message):
             This field is a member of `oneof`_ ``one_value``.
     """
 
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="one_value",
@@ -746,7 +748,7 @@ class MetricValue(proto.Message):
             This field is a member of `oneof`_ ``one_value``.
     """
 
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="one_value",
@@ -790,27 +792,27 @@ class PropertyQuota(proto.Message):
             dimensions.
     """
 
-    tokens_per_day = proto.Field(
+    tokens_per_day: "QuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="QuotaStatus",
     )
-    tokens_per_hour = proto.Field(
+    tokens_per_hour: "QuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="QuotaStatus",
     )
-    concurrent_requests = proto.Field(
+    concurrent_requests: "QuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="QuotaStatus",
     )
-    server_errors_per_project_per_hour = proto.Field(
+    server_errors_per_project_per_hour: "QuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="QuotaStatus",
     )
-    potentially_thresholded_requests_per_hour = proto.Field(
+    potentially_thresholded_requests_per_hour: "QuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="QuotaStatus",
@@ -827,11 +829,11 @@ class QuotaStatus(proto.Message):
             Quota remaining after this request.
     """
 
-    consumed = proto.Field(
+    consumed: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    remaining = proto.Field(
+    remaining: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -856,12 +858,12 @@ class FunnelBreakdown(proto.Message):
             This field is a member of `oneof`_ ``_limit``.
     """
 
-    breakdown_dimension = proto.Field(
+    breakdown_dimension: "Dimension" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Dimension",
     )
-    limit = proto.Field(
+    limit: int = proto.Field(
         proto.INT64,
         number=2,
         optional=True,
@@ -897,12 +899,12 @@ class FunnelNextAction(proto.Message):
             This field is a member of `oneof`_ ``_limit``.
     """
 
-    next_action_dimension = proto.Field(
+    next_action_dimension: "Dimension" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Dimension",
     )
-    limit = proto.Field(
+    limit: int = proto.Field(
         proto.INT64,
         number=2,
         optional=True,
@@ -925,15 +927,15 @@ class Funnel(proto.Message):
             in any step, and in a closed funnel, users must
             enter the funnel in the first step. Optional. If
             unspecified, a closed funnel is used.
-        steps (Sequence[google.analytics.data_v1alpha.types.FunnelStep]):
+        steps (MutableSequence[google.analytics.data_v1alpha.types.FunnelStep]):
             The sequential steps of this funnel.
     """
 
-    is_open_funnel = proto.Field(
+    is_open_funnel: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    steps = proto.RepeatedField(
+    steps: MutableSequence["FunnelStep"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="FunnelStep",
@@ -975,21 +977,21 @@ class FunnelStep(proto.Message):
             included in this step of the funnel journey.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    is_directly_followed_by = proto.Field(
+    is_directly_followed_by: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    within_duration_from_prior_step = proto.Field(
+    within_duration_from_prior_step: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         optional=True,
         message=duration_pb2.Duration,
     )
-    filter_expression = proto.Field(
+    filter_expression: "FunnelFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="FunnelFilterExpression",
@@ -1002,41 +1004,41 @@ class FunnelSubReport(proto.Message):
     funnel.
 
     Attributes:
-        dimension_headers (Sequence[google.analytics.data_v1alpha.types.DimensionHeader]):
+        dimension_headers (MutableSequence[google.analytics.data_v1alpha.types.DimensionHeader]):
             Describes dimension columns. Funnel reports
             always include the funnel step dimension in sub
             report responses. Additional dimensions like
             breakdowns, dates, and next actions may be
             present in the response if requested.
-        metric_headers (Sequence[google.analytics.data_v1alpha.types.MetricHeader]):
+        metric_headers (MutableSequence[google.analytics.data_v1alpha.types.MetricHeader]):
             Describes metric columns. Funnel reports
             always include active users in sub report
             responses. The funnel table includes additional
             metrics like completion rate, abandonments, and
             abandonments rate.
-        rows (Sequence[google.analytics.data_v1alpha.types.Row]):
+        rows (MutableSequence[google.analytics.data_v1alpha.types.Row]):
             Rows of dimension value combinations and
             metric values in the report.
         metadata (google.analytics.data_v1alpha.types.FunnelResponseMetadata):
             Metadata for the funnel report.
     """
 
-    dimension_headers = proto.RepeatedField(
+    dimension_headers: MutableSequence["DimensionHeader"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DimensionHeader",
     )
-    metric_headers = proto.RepeatedField(
+    metric_headers: MutableSequence["MetricHeader"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MetricHeader",
     )
-    rows = proto.RepeatedField(
+    rows: MutableSequence["Row"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Row",
     )
-    metadata = proto.Field(
+    metadata: "FunnelResponseMetadata" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="FunnelResponseMetadata",
@@ -1058,12 +1060,12 @@ class UserSegment(proto.Message):
             segment. Optional.
     """
 
-    user_inclusion_criteria = proto.Field(
+    user_inclusion_criteria: "UserSegmentCriteria" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="UserSegmentCriteria",
     )
-    exclusion = proto.Field(
+    exclusion: "UserSegmentExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="UserSegmentExclusion",
@@ -1075,24 +1077,28 @@ class UserSegmentCriteria(proto.Message):
     conditions in the criteria.
 
     Attributes:
-        and_condition_groups (Sequence[google.analytics.data_v1alpha.types.UserSegmentConditionGroup]):
+        and_condition_groups (MutableSequence[google.analytics.data_v1alpha.types.UserSegmentConditionGroup]):
             A user matches this criteria if the user matches each of
             these ``andConditionGroups`` and each of the
             ``andSequenceGroups``. ``andConditionGroups`` may be empty
             if ``andSequenceGroups`` are specified.
-        and_sequence_groups (Sequence[google.analytics.data_v1alpha.types.UserSegmentSequenceGroup]):
+        and_sequence_groups (MutableSequence[google.analytics.data_v1alpha.types.UserSegmentSequenceGroup]):
             A user matches this criteria if the user matches each of
             these ``andSequenceGroups`` and each of the
             ``andConditionGroups``. ``andSequenceGroups`` may be empty
             if ``andConditionGroups`` are specified.
     """
 
-    and_condition_groups = proto.RepeatedField(
+    and_condition_groups: MutableSequence[
+        "UserSegmentConditionGroup"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="UserSegmentConditionGroup",
     )
-    and_sequence_groups = proto.RepeatedField(
+    and_sequence_groups: MutableSequence[
+        "UserSegmentSequenceGroup"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="UserSegmentSequenceGroup",
@@ -1128,12 +1134,12 @@ class UserSegmentConditionGroup(proto.Message):
             metrics, and/or parameters.
     """
 
-    condition_scoping = proto.Field(
+    condition_scoping: "UserCriteriaScoping" = proto.Field(
         proto.ENUM,
         number=1,
         enum="UserCriteriaScoping",
     )
-    segment_filter_expression = proto.Field(
+    segment_filter_expression: "SegmentFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SegmentFilterExpression",
@@ -1166,23 +1172,23 @@ class UserSegmentSequenceGroup(proto.Message):
 
             ``sequenceMaximumDuration`` is optional, and if unspecified,
             sequences can be completed in any time duration.
-        user_sequence_steps (Sequence[google.analytics.data_v1alpha.types.UserSequenceStep]):
+        user_sequence_steps (MutableSequence[google.analytics.data_v1alpha.types.UserSequenceStep]):
             An ordered sequence of condition steps. A user's events must
             complete each step in order for the user to match the
             ``UserSegmentSequenceGroup``.
     """
 
-    sequence_scoping = proto.Field(
+    sequence_scoping: "UserCriteriaScoping" = proto.Field(
         proto.ENUM,
         number=1,
         enum="UserCriteriaScoping",
     )
-    sequence_maximum_duration = proto.Field(
+    sequence_maximum_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    user_sequence_steps = proto.RepeatedField(
+    user_sequence_steps: MutableSequence["UserSequenceStep"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="UserSequenceStep",
@@ -1218,16 +1224,16 @@ class UserSequenceStep(proto.Message):
             parameters.
     """
 
-    is_directly_followed_by = proto.Field(
+    is_directly_followed_by: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    step_scoping = proto.Field(
+    step_scoping: "UserCriteriaScoping" = proto.Field(
         proto.ENUM,
         number=2,
         enum="UserCriteriaScoping",
     )
-    segment_filter_expression = proto.Field(
+    segment_filter_expression: "SegmentFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SegmentFilterExpression",
@@ -1249,12 +1255,12 @@ class UserSegmentExclusion(proto.Message):
             membership in the segment for the ``userExclusionDuration``.
     """
 
-    user_exclusion_duration = proto.Field(
+    user_exclusion_duration: "UserExclusionDuration" = proto.Field(
         proto.ENUM,
         number=1,
         enum="UserExclusionDuration",
     )
-    user_exclusion_criteria = proto.Field(
+    user_exclusion_criteria: "UserSegmentCriteria" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="UserSegmentCriteria",
@@ -1275,12 +1281,12 @@ class SessionSegment(proto.Message):
             segment. Optional.
     """
 
-    session_inclusion_criteria = proto.Field(
+    session_inclusion_criteria: "SessionSegmentCriteria" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SessionSegmentCriteria",
     )
-    exclusion = proto.Field(
+    exclusion: "SessionSegmentExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SessionSegmentExclusion",
@@ -1292,12 +1298,14 @@ class SessionSegmentCriteria(proto.Message):
     conditions in the criteria.
 
     Attributes:
-        and_condition_groups (Sequence[google.analytics.data_v1alpha.types.SessionSegmentConditionGroup]):
+        and_condition_groups (MutableSequence[google.analytics.data_v1alpha.types.SessionSegmentConditionGroup]):
             A session matches this criteria if the session matches each
             of these ``andConditionGroups``.
     """
 
-    and_condition_groups = proto.RepeatedField(
+    and_condition_groups: MutableSequence[
+        "SessionSegmentConditionGroup"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SessionSegmentConditionGroup",
@@ -1333,12 +1341,12 @@ class SessionSegmentConditionGroup(proto.Message):
             metrics, and/or parameters.
     """
 
-    condition_scoping = proto.Field(
+    condition_scoping: "SessionCriteriaScoping" = proto.Field(
         proto.ENUM,
         number=1,
         enum="SessionCriteriaScoping",
     )
-    segment_filter_expression = proto.Field(
+    segment_filter_expression: "SegmentFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SegmentFilterExpression",
@@ -1361,12 +1369,12 @@ class SessionSegmentExclusion(proto.Message):
             ``sessionExclusionDuration``.
     """
 
-    session_exclusion_duration = proto.Field(
+    session_exclusion_duration: "SessionExclusionDuration" = proto.Field(
         proto.ENUM,
         number=1,
         enum="SessionExclusionDuration",
     )
-    session_exclusion_criteria = proto.Field(
+    session_exclusion_criteria: "SessionSegmentCriteria" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SessionSegmentCriteria",
@@ -1388,12 +1396,12 @@ class EventSegment(proto.Message):
             segment. Optional.
     """
 
-    event_inclusion_criteria = proto.Field(
+    event_inclusion_criteria: "EventSegmentCriteria" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="EventSegmentCriteria",
     )
-    exclusion = proto.Field(
+    exclusion: "EventSegmentExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EventSegmentExclusion",
@@ -1405,12 +1413,14 @@ class EventSegmentCriteria(proto.Message):
     in the criteria.
 
     Attributes:
-        and_condition_groups (Sequence[google.analytics.data_v1alpha.types.EventSegmentConditionGroup]):
+        and_condition_groups (MutableSequence[google.analytics.data_v1alpha.types.EventSegmentConditionGroup]):
             An event matches this criteria if the event matches each of
             these ``andConditionGroups``.
     """
 
-    and_condition_groups = proto.RepeatedField(
+    and_condition_groups: MutableSequence[
+        "EventSegmentConditionGroup"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EventSegmentConditionGroup",
@@ -1435,12 +1445,12 @@ class EventSegmentConditionGroup(proto.Message):
             metrics, and/or parameters.
     """
 
-    condition_scoping = proto.Field(
+    condition_scoping: "EventCriteriaScoping" = proto.Field(
         proto.ENUM,
         number=1,
         enum="EventCriteriaScoping",
     )
-    segment_filter_expression = proto.Field(
+    segment_filter_expression: "SegmentFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SegmentFilterExpression",
@@ -1463,12 +1473,12 @@ class EventSegmentExclusion(proto.Message):
             ``eventExclusionDuration``.
     """
 
-    event_exclusion_duration = proto.Field(
+    event_exclusion_duration: "EventExclusionDuration" = proto.Field(
         proto.ENUM,
         number=1,
         enum="EventExclusionDuration",
     )
-    event_exclusion_criteria = proto.Field(
+    event_exclusion_criteria: "EventSegmentCriteria" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EventSegmentCriteria",
@@ -1517,23 +1527,23 @@ class Segment(proto.Message):
             This field is a member of `oneof`_ ``one_segment_scope``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_segment = proto.Field(
+    user_segment: "UserSegment" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="one_segment_scope",
         message="UserSegment",
     )
-    session_segment = proto.Field(
+    session_segment: "SessionSegment" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="one_segment_scope",
         message="SessionSegment",
     )
-    event_segment = proto.Field(
+    event_segment: "EventSegment" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_segment_scope",
@@ -1581,31 +1591,31 @@ class SegmentFilterExpression(proto.Message):
             This field is a member of `oneof`_ ``expr``.
     """
 
-    and_group = proto.Field(
+    and_group: "SegmentFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="expr",
         message="SegmentFilterExpressionList",
     )
-    or_group = proto.Field(
+    or_group: "SegmentFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="expr",
         message="SegmentFilterExpressionList",
     )
-    not_expression = proto.Field(
+    not_expression: "SegmentFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="expr",
         message="SegmentFilterExpression",
     )
-    segment_filter = proto.Field(
+    segment_filter: "SegmentFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="expr",
         message="SegmentFilter",
     )
-    segment_event_filter = proto.Field(
+    segment_event_filter: "SegmentEventFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="expr",
@@ -1617,11 +1627,11 @@ class SegmentFilterExpressionList(proto.Message):
     r"""A list of segment filter expressions.
 
     Attributes:
-        expressions (Sequence[google.analytics.data_v1alpha.types.SegmentFilterExpression]):
+        expressions (MutableSequence[google.analytics.data_v1alpha.types.SegmentFilterExpression]):
             The list of segment filter expressions
     """
 
-    expressions = proto.RepeatedField(
+    expressions: MutableSequence["SegmentFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SegmentFilterExpression",
@@ -1661,35 +1671,35 @@ class SegmentFilter(proto.Message):
             Specifies the scope for the filter.
     """
 
-    field_name = proto.Field(
+    field_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    string_filter = proto.Field(
+    string_filter: "StringFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_filter",
         message="StringFilter",
     )
-    in_list_filter = proto.Field(
+    in_list_filter: "InListFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="one_filter",
         message="InListFilter",
     )
-    numeric_filter = proto.Field(
+    numeric_filter: "NumericFilter" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="one_filter",
         message="NumericFilter",
     )
-    between_filter = proto.Field(
+    between_filter: "BetweenFilter" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="one_filter",
         message="BetweenFilter",
     )
-    filter_scoping = proto.Field(
+    filter_scoping: "SegmentFilterScoping" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="SegmentFilterScoping",
@@ -1721,7 +1731,7 @@ class SegmentFilterScoping(proto.Message):
             This field is a member of `oneof`_ ``_at_any_point_in_time``.
     """
 
-    at_any_point_in_time = proto.Field(
+    at_any_point_in_time: bool = proto.Field(
         proto.BOOL,
         number=1,
         optional=True,
@@ -1750,16 +1760,18 @@ class SegmentEventFilter(proto.Message):
             This field is a member of `oneof`_ ``_segment_parameter_filter_expression``.
     """
 
-    event_name = proto.Field(
+    event_name: str = proto.Field(
         proto.STRING,
         number=1,
         optional=True,
     )
-    segment_parameter_filter_expression = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        optional=True,
-        message="SegmentParameterFilterExpression",
+    segment_parameter_filter_expression: "SegmentParameterFilterExpression" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message="SegmentParameterFilterExpression",
+        )
     )
 
 
@@ -1795,25 +1807,25 @@ class SegmentParameterFilterExpression(proto.Message):
             This field is a member of `oneof`_ ``expr``.
     """
 
-    and_group = proto.Field(
+    and_group: "SegmentParameterFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="expr",
         message="SegmentParameterFilterExpressionList",
     )
-    or_group = proto.Field(
+    or_group: "SegmentParameterFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="expr",
         message="SegmentParameterFilterExpressionList",
     )
-    not_expression = proto.Field(
+    not_expression: "SegmentParameterFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="expr",
         message="SegmentParameterFilterExpression",
     )
-    segment_parameter_filter = proto.Field(
+    segment_parameter_filter: "SegmentParameterFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="expr",
@@ -1825,12 +1837,14 @@ class SegmentParameterFilterExpressionList(proto.Message):
     r"""A list of segment parameter filter expressions.
 
     Attributes:
-        expressions (Sequence[google.analytics.data_v1alpha.types.SegmentParameterFilterExpression]):
+        expressions (MutableSequence[google.analytics.data_v1alpha.types.SegmentParameterFilterExpression]):
             The list of segment parameter filter
             expressions.
     """
 
-    expressions = proto.RepeatedField(
+    expressions: MutableSequence[
+        "SegmentParameterFilterExpression"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SegmentParameterFilterExpression",
@@ -1898,41 +1912,41 @@ class SegmentParameterFilter(proto.Message):
             Specifies the scope for the filter.
     """
 
-    event_parameter_name = proto.Field(
+    event_parameter_name: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="one_parameter",
     )
-    item_parameter_name = proto.Field(
+    item_parameter_name: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="one_parameter",
     )
-    string_filter = proto.Field(
+    string_filter: "StringFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_filter",
         message="StringFilter",
     )
-    in_list_filter = proto.Field(
+    in_list_filter: "InListFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="one_filter",
         message="InListFilter",
     )
-    numeric_filter = proto.Field(
+    numeric_filter: "NumericFilter" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="one_filter",
         message="NumericFilter",
     )
-    between_filter = proto.Field(
+    between_filter: "BetweenFilter" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="one_filter",
         message="BetweenFilter",
     )
-    filter_scoping = proto.Field(
+    filter_scoping: "SegmentParameterFilterScoping" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="SegmentParameterFilterScoping",
@@ -1979,7 +1993,7 @@ class SegmentParameterFilterScoping(proto.Message):
             This field is a member of `oneof`_ ``_in_any_n_day_period``.
     """
 
-    in_any_n_day_period = proto.Field(
+    in_any_n_day_period: int = proto.Field(
         proto.INT64,
         number=1,
         optional=True,
@@ -2026,31 +2040,31 @@ class FunnelFilterExpression(proto.Message):
             This field is a member of `oneof`_ ``expr``.
     """
 
-    and_group = proto.Field(
+    and_group: "FunnelFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="expr",
         message="FunnelFilterExpressionList",
     )
-    or_group = proto.Field(
+    or_group: "FunnelFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="expr",
         message="FunnelFilterExpressionList",
     )
-    not_expression = proto.Field(
+    not_expression: "FunnelFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="expr",
         message="FunnelFilterExpression",
     )
-    funnel_field_filter = proto.Field(
+    funnel_field_filter: "FunnelFieldFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="expr",
         message="FunnelFieldFilter",
     )
-    funnel_event_filter = proto.Field(
+    funnel_event_filter: "FunnelEventFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="expr",
@@ -2062,11 +2076,11 @@ class FunnelFilterExpressionList(proto.Message):
     r"""A list of funnel filter expressions.
 
     Attributes:
-        expressions (Sequence[google.analytics.data_v1alpha.types.FunnelFilterExpression]):
+        expressions (MutableSequence[google.analytics.data_v1alpha.types.FunnelFilterExpression]):
             The list of funnel filter expressions.
     """
 
-    expressions = proto.RepeatedField(
+    expressions: MutableSequence["FunnelFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FunnelFilterExpression",
@@ -2104,29 +2118,29 @@ class FunnelFieldFilter(proto.Message):
             This field is a member of `oneof`_ ``one_filter``.
     """
 
-    field_name = proto.Field(
+    field_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    string_filter = proto.Field(
+    string_filter: "StringFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_filter",
         message="StringFilter",
     )
-    in_list_filter = proto.Field(
+    in_list_filter: "InListFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="one_filter",
         message="InListFilter",
     )
-    numeric_filter = proto.Field(
+    numeric_filter: "NumericFilter" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="one_filter",
         message="NumericFilter",
     )
-    between_filter = proto.Field(
+    between_filter: "BetweenFilter" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="one_filter",
@@ -2156,12 +2170,12 @@ class FunnelEventFilter(proto.Message):
             This field is a member of `oneof`_ ``_funnel_parameter_filter_expression``.
     """
 
-    event_name = proto.Field(
+    event_name: str = proto.Field(
         proto.STRING,
         number=1,
         optional=True,
     )
-    funnel_parameter_filter_expression = proto.Field(
+    funnel_parameter_filter_expression: "FunnelParameterFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=2,
         optional=True,
@@ -2201,25 +2215,25 @@ class FunnelParameterFilterExpression(proto.Message):
             This field is a member of `oneof`_ ``expr``.
     """
 
-    and_group = proto.Field(
+    and_group: "FunnelParameterFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="expr",
         message="FunnelParameterFilterExpressionList",
     )
-    or_group = proto.Field(
+    or_group: "FunnelParameterFilterExpressionList" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="expr",
         message="FunnelParameterFilterExpressionList",
     )
-    not_expression = proto.Field(
+    not_expression: "FunnelParameterFilterExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="expr",
         message="FunnelParameterFilterExpression",
     )
-    funnel_parameter_filter = proto.Field(
+    funnel_parameter_filter: "FunnelParameterFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="expr",
@@ -2231,12 +2245,14 @@ class FunnelParameterFilterExpressionList(proto.Message):
     r"""A list of funnel parameter filter expressions.
 
     Attributes:
-        expressions (Sequence[google.analytics.data_v1alpha.types.FunnelParameterFilterExpression]):
+        expressions (MutableSequence[google.analytics.data_v1alpha.types.FunnelParameterFilterExpression]):
             The list of funnel parameter filter
             expressions.
     """
 
-    expressions = proto.RepeatedField(
+    expressions: MutableSequence[
+        "FunnelParameterFilterExpression"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FunnelParameterFilterExpression",
@@ -2302,35 +2318,35 @@ class FunnelParameterFilter(proto.Message):
             This field is a member of `oneof`_ ``one_filter``.
     """
 
-    event_parameter_name = proto.Field(
+    event_parameter_name: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="one_parameter",
     )
-    item_parameter_name = proto.Field(
+    item_parameter_name: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="one_parameter",
     )
-    string_filter = proto.Field(
+    string_filter: "StringFilter" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="one_filter",
         message="StringFilter",
     )
-    in_list_filter = proto.Field(
+    in_list_filter: "InListFilter" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="one_filter",
         message="InListFilter",
     )
-    numeric_filter = proto.Field(
+    numeric_filter: "NumericFilter" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="one_filter",
         message="NumericFilter",
     )
-    between_filter = proto.Field(
+    between_filter: "BetweenFilter" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="one_filter",
@@ -2343,7 +2359,7 @@ class FunnelResponseMetadata(proto.Message):
     information about the funnel report.
 
     Attributes:
-        sampling_metadatas (Sequence[google.analytics.data_v1alpha.types.SamplingMetadata]):
+        sampling_metadatas (MutableSequence[google.analytics.data_v1alpha.types.SamplingMetadata]):
             If funnel report results are
             `sampled <https://support.google.com/analytics/answer/2637192>`__,
             this describes what percentage of events were used in this
@@ -2356,7 +2372,7 @@ class FunnelResponseMetadata(proto.Message):
             be defined.
     """
 
-    sampling_metadatas = proto.RepeatedField(
+    sampling_metadatas: MutableSequence["SamplingMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SamplingMetadata",
@@ -2389,11 +2405,11 @@ class SamplingMetadata(proto.Message):
             ``samplesReadCount/samplingSpaceSize``.
     """
 
-    samples_read_count = proto.Field(
+    samples_read_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    sampling_space_size = proto.Field(
+    sampling_space_size: int = proto.Field(
         proto.INT64,
         number=2,
     )

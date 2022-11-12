@@ -7,12 +7,12 @@
         "google/analytics/data/gapic_version.py",
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_data_v1alpha.json",
+          "path": "samples/generated_samples/snippet_metadata_google.analytics.data.v1alpha.json",
           "jsonpath": "$.clientLibrary.version"
         },
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_data_v1beta.json",
+          "path": "samples/generated_samples/snippet_metadata_google.analytics.data.v1beta.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]
