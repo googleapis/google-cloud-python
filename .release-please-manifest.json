@@ -5,5 +5,5 @@
     "packages/google-geo-type": "0.2.0",
     "packages/google-maps-addressvalidation": "0.1.0",
     "packages/google-maps-routing": "0.1.0",
-    "packages/google-apps-script-type": "0.1.0"
+    "packages/google-apps-script-type": "0.2.0"
 }
