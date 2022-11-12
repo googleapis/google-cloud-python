@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.6.1](https://github.com/googleapis/gapic-generator-python/compare/v1.6.0...v1.6.1) (2022-11-11)
+
+
+### Bug Fixes
+
+* Allow google-cloud-documentai &lt; 3 ([#1487](https://github.com/googleapis/gapic-generator-python/issues/1487)) ([b717e92](https://github.com/googleapis/gapic-generator-python/commit/b717e92f8e184edcc6e2ad3b696817435e5e37e5))
+* Fix typo in testing/constraints-3.7.txt ([#1483](https://github.com/googleapis/gapic-generator-python/issues/1483)) ([0ba5bc1](https://github.com/googleapis/gapic-generator-python/commit/0ba5bc16e4ad2197cb7071a9f8c9164b1c6f080d))
+
 ## [1.6.0](https://github.com/googleapis/gapic-generator-python/compare/v1.5.0...v1.6.0) (2022-11-09)
 
 
