@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -61,28 +63,28 @@ class AptArtifact(proto.Message):
         BINARY = 1
         SOURCE = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    package_name = proto.Field(
+    package_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    package_type = proto.Field(
+    package_type: PackageType = proto.Field(
         proto.ENUM,
         number=3,
         enum=PackageType,
     )
-    architecture = proto.Field(
+    architecture: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    component = proto.Field(
+    component: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    control_file = proto.Field(
+    control_file: bytes = proto.Field(
         proto.BYTES,
         number=6,
     )
@@ -93,18 +95,18 @@ class ImportAptArtifactsGcsSource(proto.Message):
     reside.
 
     Attributes:
-        uris (Sequence[str]):
+        uris (MutableSequence[str]):
             Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
         use_wildcards (bool):
             Supports URI wildcards for matching multiple
             objects from a single URI.
     """
 
-    uris = proto.RepeatedField(
+    uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    use_wildcards = proto.Field(
+    use_wildcards: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -126,13 +128,13 @@ class ImportAptArtifactsRequest(proto.Message):
             artifacts will be imported.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "ImportAptArtifactsGcsSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="ImportAptArtifactsGcsSource",
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -152,13 +154,13 @@ class ImportAptArtifactsErrorInfo(proto.Message):
             The detailed error status.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "ImportAptArtifactsGcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="ImportAptArtifactsGcsSource",
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
@@ -169,19 +171,19 @@ class ImportAptArtifactsResponse(proto.Message):
     r"""The response message from importing APT artifacts.
 
     Attributes:
-        apt_artifacts (Sequence[google.cloud.artifactregistry_v1beta2.types.AptArtifact]):
+        apt_artifacts (MutableSequence[google.cloud.artifactregistry_v1beta2.types.AptArtifact]):
             The Apt artifacts imported.
-        errors (Sequence[google.cloud.artifactregistry_v1beta2.types.ImportAptArtifactsErrorInfo]):
+        errors (MutableSequence[google.cloud.artifactregistry_v1beta2.types.ImportAptArtifactsErrorInfo]):
             Detailed error info for artifacts that were
             not imported.
     """
 
-    apt_artifacts = proto.RepeatedField(
+    apt_artifacts: MutableSequence["AptArtifact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AptArtifact",
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["ImportAptArtifactsErrorInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ImportAptArtifactsErrorInfo",

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -59,7 +61,7 @@ class Version(proto.Message):
             The time when the version was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the version was last updated.
-        related_tags (Sequence[google.cloud.artifactregistry_v1beta2.types.Tag]):
+        related_tags (MutableSequence[google.cloud.artifactregistry_v1beta2.types.Tag]):
             Output only. A list of related tags. Will
             contain up to 100 tags that reference this
             version.
@@ -71,30 +73,30 @@ class Version(proto.Message):
             [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    related_tags = proto.RepeatedField(
+    related_tags: MutableSequence[tag.Tag] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=tag.Tag,
     )
-    metadata = proto.Field(
+    metadata: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=8,
         message=struct_pb2.Struct,
@@ -121,24 +123,24 @@ class ListVersionsRequest(proto.Message):
             Optional. The field to order the results by.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    view = proto.Field(
+    view: "VersionView" = proto.Field(
         proto.ENUM,
         number=4,
         enum="VersionView",
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -148,7 +150,7 @@ class ListVersionsResponse(proto.Message):
     r"""The response from listing versions.
 
     Attributes:
-        versions (Sequence[google.cloud.artifactregistry_v1beta2.types.Version]):
+        versions (MutableSequence[google.cloud.artifactregistry_v1beta2.types.Version]):
             The versions returned.
         next_page_token (str):
             The token to retrieve the next page of
@@ -160,12 +162,12 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(
+    versions: MutableSequence["Version"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -182,11 +184,11 @@ class GetVersionRequest(proto.Message):
             response.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "VersionView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="VersionView",
@@ -205,11 +207,11 @@ class DeleteVersionRequest(proto.Message):
             tags pointing to the version are deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )

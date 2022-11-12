@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,12 +46,12 @@ class Hash(proto.Message):
         SHA256 = 1
         MD5 = 2
 
-    type_ = proto.Field(
+    type_: HashType = proto.Field(
         proto.ENUM,
         number=1,
         enum=HashType,
     )
-    value = proto.Field(
+    value: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
@@ -67,7 +69,7 @@ class File(proto.Message):
             escaped.
         size_bytes (int):
             The size of the File in bytes.
-        hashes (Sequence[google.cloud.artifactregistry_v1beta2.types.Hash]):
+        hashes (MutableSequence[google.cloud.artifactregistry_v1beta2.types.Hash]):
             The hashes of the file content.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the File was created.
@@ -78,30 +80,30 @@ class File(proto.Message):
             this file, if any.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    hashes = proto.RepeatedField(
+    hashes: MutableSequence["Hash"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Hash",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    owner = proto.Field(
+    owner: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -137,19 +139,19 @@ class ListFilesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -159,7 +161,7 @@ class ListFilesResponse(proto.Message):
     r"""The response from listing files.
 
     Attributes:
-        files (Sequence[google.cloud.artifactregistry_v1beta2.types.File]):
+        files (MutableSequence[google.cloud.artifactregistry_v1beta2.types.File]):
             The files returned.
         next_page_token (str):
             The token to retrieve the next page of files,
@@ -170,12 +172,12 @@ class ListFilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    files = proto.RepeatedField(
+    files: MutableSequence["File"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="File",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -189,7 +191,7 @@ class GetFileRequest(proto.Message):
             The name of the file to retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

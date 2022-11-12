@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -47,20 +49,20 @@ class Package(proto.Message):
             package.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -82,15 +84,15 @@ class ListPackagesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -100,7 +102,7 @@ class ListPackagesResponse(proto.Message):
     r"""The response from listing packages.
 
     Attributes:
-        packages (Sequence[google.cloud.artifactregistry_v1.types.Package]):
+        packages (MutableSequence[google.cloud.artifactregistry_v1.types.Package]):
             The packages returned.
         next_page_token (str):
             The token to retrieve the next page of
@@ -112,12 +114,12 @@ class ListPackagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    packages = proto.RepeatedField(
+    packages: MutableSequence["Package"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Package",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -132,7 +134,7 @@ class GetPackageRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -146,7 +148,7 @@ class DeletePackageRequest(proto.Message):
             Required. The name of the package to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

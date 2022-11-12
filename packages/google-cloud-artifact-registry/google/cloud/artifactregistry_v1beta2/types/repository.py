@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -52,7 +54,7 @@ class Repository(proto.Message):
         description (str):
             The user-provided description of the
             repository.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels with user-defined metadata.
             This field may contain up to 64 entries. Label
             keys and values may be no longer than 63
@@ -104,51 +106,51 @@ class Repository(proto.Message):
             RELEASE = 1
             SNAPSHOT = 2
 
-        allow_snapshot_overwrites = proto.Field(
+        allow_snapshot_overwrites: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        version_policy = proto.Field(
+        version_policy: "Repository.MavenRepositoryConfig.VersionPolicy" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Repository.MavenRepositoryConfig.VersionPolicy",
         )
 
-    maven_config = proto.Field(
+    maven_config: MavenRepositoryConfig = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="format_config",
         message=MavenRepositoryConfig,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    format_ = proto.Field(
+    format_: Format = proto.Field(
         proto.ENUM,
         number=2,
         enum=Format,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -169,15 +171,15 @@ class ListRepositoriesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -187,7 +189,7 @@ class ListRepositoriesResponse(proto.Message):
     r"""The response from listing repositories.
 
     Attributes:
-        repositories (Sequence[google.cloud.artifactregistry_v1beta2.types.Repository]):
+        repositories (MutableSequence[google.cloud.artifactregistry_v1beta2.types.Repository]):
             The repositories returned.
         next_page_token (str):
             The token to retrieve the next page of
@@ -199,12 +201,12 @@ class ListRepositoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    repositories = proto.RepeatedField(
+    repositories: MutableSequence["Repository"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Repository",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -219,7 +221,7 @@ class GetRepositoryRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -238,15 +240,15 @@ class CreateRepositoryRequest(proto.Message):
             The repository to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repository_id = proto.Field(
+    repository_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    repository = proto.Field(
+    repository: "Repository" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Repository",
@@ -266,12 +268,12 @@ class UpdateRepositoryRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    repository = proto.Field(
+    repository: "Repository" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Repository",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -287,7 +289,7 @@ class DeleteRepositoryRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

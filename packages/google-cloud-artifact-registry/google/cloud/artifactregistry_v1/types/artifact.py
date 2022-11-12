@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -52,7 +54,7 @@ class DockerImage(proto.Message):
             Required. URL to access the image.
             Example:
             us-west4-docker.pkg.dev/test-project/test-repo/nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Tags attached to this image.
         image_size_bytes (int):
             Calculated size of the image.
@@ -77,32 +79,32 @@ class DockerImage(proto.Message):
             the JavaScript Date constructor.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    image_size_bytes = proto.Field(
+    image_size_bytes: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    upload_time = proto.Field(
+    upload_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    media_type = proto.Field(
+    media_type: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    build_time = proto.Field(
+    build_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
@@ -123,15 +125,15 @@ class ListDockerImagesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -141,7 +143,7 @@ class ListDockerImagesResponse(proto.Message):
     r"""The response from listing docker images.
 
     Attributes:
-        docker_images (Sequence[google.cloud.artifactregistry_v1.types.DockerImage]):
+        docker_images (MutableSequence[google.cloud.artifactregistry_v1.types.DockerImage]):
             The docker images returned.
         next_page_token (str):
             The token to retrieve the next page of
@@ -153,12 +155,12 @@ class ListDockerImagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    docker_images = proto.RepeatedField(
+    docker_images: MutableSequence["DockerImage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DockerImage",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -172,7 +174,7 @@ class GetDockerImageRequest(proto.Message):
             Required. The name of the docker images.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -209,9 +219,9 @@ class ArtifactRegistryAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ArtifactRegistryTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the artifact registry client.
@@ -255,11 +265,11 @@ class ArtifactRegistryAsyncClient:
 
     async def list_docker_images(
         self,
-        request: Union[artifact.ListDockerImagesRequest, dict] = None,
+        request: Optional[Union[artifact.ListDockerImagesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDockerImagesAsyncPager:
         r"""Lists docker images.
@@ -292,7 +302,7 @@ class ArtifactRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ListDockerImagesRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ListDockerImagesRequest, dict]]):
                 The request object. The request to list docker images.
             parent (:class:`str`):
                 Required. The name of the parent
@@ -370,11 +380,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_docker_image(
         self,
-        request: Union[artifact.GetDockerImageRequest, dict] = None,
+        request: Optional[Union[artifact.GetDockerImageRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> artifact.DockerImage:
         r"""Gets a docker image.
@@ -406,7 +416,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetDockerImageRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetDockerImageRequest, dict]]):
                 The request object. The request to get docker images.
             name (:class:`str`):
                 Required. The name of the docker
@@ -474,10 +484,10 @@ class ArtifactRegistryAsyncClient:
 
     async def import_apt_artifacts(
         self,
-        request: Union[apt_artifact.ImportAptArtifactsRequest, dict] = None,
+        request: Optional[Union[apt_artifact.ImportAptArtifactsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports Apt artifacts. The returned Operation will
@@ -516,7 +526,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ImportAptArtifactsRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ImportAptArtifactsRequest, dict]]):
                 The request object. The request to import new apt
                 artifacts.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -572,10 +582,10 @@ class ArtifactRegistryAsyncClient:
 
     async def import_yum_artifacts(
         self,
-        request: Union[yum_artifact.ImportYumArtifactsRequest, dict] = None,
+        request: Optional[Union[yum_artifact.ImportYumArtifactsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports Yum (RPM) artifacts. The returned Operation
@@ -614,7 +624,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ImportYumArtifactsRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ImportYumArtifactsRequest, dict]]):
                 The request object. The request to import new yum
                 artifacts.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -670,11 +680,11 @@ class ArtifactRegistryAsyncClient:
 
     async def list_repositories(
         self,
-        request: Union[repository.ListRepositoriesRequest, dict] = None,
+        request: Optional[Union[repository.ListRepositoriesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRepositoriesAsyncPager:
         r"""Lists repositories.
@@ -707,7 +717,7 @@ class ArtifactRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ListRepositoriesRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ListRepositoriesRequest, dict]]):
                 The request object. The request to list repositories.
             parent (:class:`str`):
                 Required. The name of the parent
@@ -785,11 +795,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_repository(
         self,
-        request: Union[repository.GetRepositoryRequest, dict] = None,
+        request: Optional[Union[repository.GetRepositoryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repository.Repository:
         r"""Gets a repository.
@@ -821,7 +831,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetRepositoryRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetRepositoryRequest, dict]]):
                 The request object. The request to retrieve a
                 repository.
             name (:class:`str`):
@@ -887,13 +897,13 @@ class ArtifactRegistryAsyncClient:
 
     async def create_repository(
         self,
-        request: Union[gda_repository.CreateRepositoryRequest, dict] = None,
+        request: Optional[Union[gda_repository.CreateRepositoryRequest, dict]] = None,
         *,
-        parent: str = None,
-        repository: gda_repository.Repository = None,
-        repository_id: str = None,
+        parent: Optional[str] = None,
+        repository: Optional[gda_repository.Repository] = None,
+        repository_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a repository. The returned Operation will
@@ -931,7 +941,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.CreateRepositoryRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.CreateRepositoryRequest, dict]]):
                 The request object. The request to create a new
                 repository.
             parent (:class:`str`):
@@ -1026,12 +1036,12 @@ class ArtifactRegistryAsyncClient:
 
     async def update_repository(
         self,
-        request: Union[gda_repository.UpdateRepositoryRequest, dict] = None,
+        request: Optional[Union[gda_repository.UpdateRepositoryRequest, dict]] = None,
         *,
-        repository: gda_repository.Repository = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        repository: Optional[gda_repository.Repository] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_repository.Repository:
         r"""Updates a repository.
@@ -1062,7 +1072,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.UpdateRepositoryRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.UpdateRepositoryRequest, dict]]):
                 The request object. The request to update a repository.
             repository (:class:`google.cloud.artifactregistry_v1.types.Repository`):
                 The repository that replaces the
@@ -1139,11 +1149,11 @@ class ArtifactRegistryAsyncClient:
 
     async def delete_repository(
         self,
-        request: Union[repository.DeleteRepositoryRequest, dict] = None,
+        request: Optional[Union[repository.DeleteRepositoryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a repository and all of its contents. The
@@ -1182,7 +1192,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.DeleteRepositoryRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.DeleteRepositoryRequest, dict]]):
                 The request object. The request to delete a repository.
             name (:class:`str`):
                 Required. The name of the repository
@@ -1265,11 +1275,11 @@ class ArtifactRegistryAsyncClient:
 
     async def list_packages(
         self,
-        request: Union[package.ListPackagesRequest, dict] = None,
+        request: Optional[Union[package.ListPackagesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPackagesAsyncPager:
         r"""Lists packages.
@@ -1302,7 +1312,7 @@ class ArtifactRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ListPackagesRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ListPackagesRequest, dict]]):
                 The request object. The request to list packages.
             parent (:class:`str`):
                 Required. The name of the parent
@@ -1378,11 +1388,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_package(
         self,
-        request: Union[package.GetPackageRequest, dict] = None,
+        request: Optional[Union[package.GetPackageRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> package.Package:
         r"""Gets a package.
@@ -1414,7 +1424,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetPackageRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetPackageRequest, dict]]):
                 The request object. The request to retrieve a package.
             name (:class:`str`):
                 Required. The name of the package to
@@ -1479,11 +1489,11 @@ class ArtifactRegistryAsyncClient:
 
     async def delete_package(
         self,
-        request: Union[package.DeletePackageRequest, dict] = None,
+        request: Optional[Union[package.DeletePackageRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a package and all of its versions and tags.
@@ -1521,7 +1531,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.DeletePackageRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.DeletePackageRequest, dict]]):
                 The request object. The request to delete a package.
             name (:class:`str`):
                 Required. The name of the package to
@@ -1604,11 +1614,11 @@ class ArtifactRegistryAsyncClient:
 
     async def list_versions(
         self,
-        request: Union[version.ListVersionsRequest, dict] = None,
+        request: Optional[Union[version.ListVersionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVersionsAsyncPager:
         r"""Lists versions.
@@ -1640,7 +1650,7 @@ class ArtifactRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ListVersionsRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ListVersionsRequest, dict]]):
                 The request object. The request to list versions.
             parent (:class:`str`):
                 The name of the parent resource whose
@@ -1716,11 +1726,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_version(
         self,
-        request: Union[version.GetVersionRequest, dict] = None,
+        request: Optional[Union[version.GetVersionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> version.Version:
         r"""Gets a version
@@ -1751,7 +1761,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetVersionRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetVersionRequest, dict]]):
                 The request object. The request to retrieve a version.
             name (:class:`str`):
                 The name of the version to retrieve.
@@ -1817,11 +1827,11 @@ class ArtifactRegistryAsyncClient:
 
     async def delete_version(
         self,
-        request: Union[version.DeleteVersionRequest, dict] = None,
+        request: Optional[Union[version.DeleteVersionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a version and all of its content. The
@@ -1858,7 +1868,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.DeleteVersionRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.DeleteVersionRequest, dict]]):
                 The request object. The request to delete a version.
             name (:class:`str`):
                 The name of the version to delete.
@@ -1939,11 +1949,11 @@ class ArtifactRegistryAsyncClient:
 
     async def list_files(
         self,
-        request: Union[file.ListFilesRequest, dict] = None,
+        request: Optional[Union[file.ListFilesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFilesAsyncPager:
         r"""Lists files.
@@ -1975,7 +1985,7 @@ class ArtifactRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ListFilesRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ListFilesRequest, dict]]):
                 The request object. The request to list files.
             parent (:class:`str`):
                 The name of the repository whose
@@ -2052,11 +2062,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_file(
         self,
-        request: Union[file.GetFileRequest, dict] = None,
+        request: Optional[Union[file.GetFileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> file.File:
         r"""Gets a file.
@@ -2087,7 +2097,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetFileRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetFileRequest, dict]]):
                 The request object. The request to retrieve a file.
             name (:class:`str`):
                 The name of the file to retrieve.
@@ -2151,11 +2161,11 @@ class ArtifactRegistryAsyncClient:
 
     async def list_tags(
         self,
-        request: Union[tag.ListTagsRequest, dict] = None,
+        request: Optional[Union[tag.ListTagsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagsAsyncPager:
         r"""Lists tags.
@@ -2187,7 +2197,7 @@ class ArtifactRegistryAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.ListTagsRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.ListTagsRequest, dict]]):
                 The request object. The request to list tags.
             parent (:class:`str`):
                 The name of the parent resource whose
@@ -2263,11 +2273,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_tag(
         self,
-        request: Union[tag.GetTagRequest, dict] = None,
+        request: Optional[Union[tag.GetTagRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tag.Tag:
         r"""Gets a tag.
@@ -2298,7 +2308,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetTagRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetTagRequest, dict]]):
                 The request object. The request to retrieve a tag.
             name (:class:`str`):
                 The name of the tag to retrieve.
@@ -2362,13 +2372,13 @@ class ArtifactRegistryAsyncClient:
 
     async def create_tag(
         self,
-        request: Union[gda_tag.CreateTagRequest, dict] = None,
+        request: Optional[Union[gda_tag.CreateTagRequest, dict]] = None,
         *,
-        parent: str = None,
-        tag: gda_tag.Tag = None,
-        tag_id: str = None,
+        parent: Optional[str] = None,
+        tag: Optional[gda_tag.Tag] = None,
+        tag_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_tag.Tag:
         r"""Creates a tag.
@@ -2399,7 +2409,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.CreateTagRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.CreateTagRequest, dict]]):
                 The request object. The request to create a new tag.
             parent (:class:`str`):
                 The name of the parent resource where
@@ -2481,12 +2491,12 @@ class ArtifactRegistryAsyncClient:
 
     async def update_tag(
         self,
-        request: Union[gda_tag.UpdateTagRequest, dict] = None,
+        request: Optional[Union[gda_tag.UpdateTagRequest, dict]] = None,
         *,
-        tag: gda_tag.Tag = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        tag: Optional[gda_tag.Tag] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_tag.Tag:
         r"""Updates a tag.
@@ -2517,7 +2527,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.UpdateTagRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.UpdateTagRequest, dict]]):
                 The request object. The request to create or update a
                 tag.
             tag (:class:`google.cloud.artifactregistry_v1.types.Tag`):
@@ -2594,11 +2604,11 @@ class ArtifactRegistryAsyncClient:
 
     async def delete_tag(
         self,
-        request: Union[tag.DeleteTagRequest, dict] = None,
+        request: Optional[Union[tag.DeleteTagRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a tag.
@@ -2626,7 +2636,7 @@ class ArtifactRegistryAsyncClient:
                 await client.delete_tag(request=request)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.DeleteTagRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.DeleteTagRequest, dict]]):
                 The request object. The request to delete a tag.
             name (:class:`str`):
                 The name of the tag to delete.
@@ -2680,10 +2690,10 @@ class ArtifactRegistryAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Updates the IAM policy for a given resource.
@@ -2716,7 +2726,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2823,10 +2833,10 @@ class ArtifactRegistryAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a given resource.
@@ -2859,7 +2869,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2966,10 +2976,10 @@ class ArtifactRegistryAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests if the caller has a list of permissions on a
@@ -3004,7 +3014,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -3050,11 +3060,11 @@ class ArtifactRegistryAsyncClient:
 
     async def get_project_settings(
         self,
-        request: Union[settings.GetProjectSettingsRequest, dict] = None,
+        request: Optional[Union[settings.GetProjectSettingsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> settings.ProjectSettings:
         r"""Retrieves the Settings for the Project.
@@ -3086,7 +3096,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.GetProjectSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.GetProjectSettingsRequest, dict]]):
                 The request object. Gets the redirection status for a
                 project.
             name (:class:`str`):
@@ -3152,12 +3162,12 @@ class ArtifactRegistryAsyncClient:
 
     async def update_project_settings(
         self,
-        request: Union[settings.UpdateProjectSettingsRequest, dict] = None,
+        request: Optional[Union[settings.UpdateProjectSettingsRequest, dict]] = None,
         *,
-        project_settings: settings.ProjectSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        project_settings: Optional[settings.ProjectSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> settings.ProjectSettings:
         r"""Updates the Settings for the Project.
@@ -3188,7 +3198,7 @@ class ArtifactRegistryAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.artifactregistry_v1.types.UpdateProjectSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.artifactregistry_v1.types.UpdateProjectSettingsRequest, dict]]):
                 The request object. Sets the settings of the project.
             project_settings (:class:`google.cloud.artifactregistry_v1.types.ProjectSettings`):
                 The project settings.

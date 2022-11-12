@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -49,11 +51,11 @@ class ProjectSettings(proto.Message):
         REDIRECTION_FROM_GCR_IO_ENABLED = 2
         REDIRECTION_FROM_GCR_IO_FINALIZED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    legacy_redirection_state = proto.Field(
+    legacy_redirection_state: RedirectionState = proto.Field(
         proto.ENUM,
         number=2,
         enum=RedirectionState,
@@ -69,7 +71,7 @@ class GetProjectSettingsRequest(proto.Message):
             resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -85,12 +87,12 @@ class UpdateProjectSettingsRequest(proto.Message):
             Field mask to support partial updates.
     """
 
-    project_settings = proto.Field(
+    project_settings: "ProjectSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ProjectSettings",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,

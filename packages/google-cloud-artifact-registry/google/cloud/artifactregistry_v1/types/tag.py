@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -49,11 +51,11 @@ class Tag(proto.Message):
             slashes, the slashes are escaped.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -86,19 +88,19 @@ class ListTagsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -108,7 +110,7 @@ class ListTagsResponse(proto.Message):
     r"""The response from listing tags.
 
     Attributes:
-        tags (Sequence[google.cloud.artifactregistry_v1.types.Tag]):
+        tags (MutableSequence[google.cloud.artifactregistry_v1.types.Tag]):
             The tags returned.
         next_page_token (str):
             The token to retrieve the next page of tags,
@@ -119,12 +121,12 @@ class ListTagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tags = proto.RepeatedField(
+    tags: MutableSequence["Tag"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Tag",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -138,7 +140,7 @@ class GetTagRequest(proto.Message):
             The name of the tag to retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -157,15 +159,15 @@ class CreateTagRequest(proto.Message):
             The tag to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag_id = proto.Field(
+    tag_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tag = proto.Field(
+    tag: "Tag" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Tag",
@@ -185,12 +187,12 @@ class UpdateTagRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    tag = proto.Field(
+    tag: "Tag" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Tag",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -205,7 +207,7 @@ class DeleteTagRequest(proto.Message):
             The name of the tag to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

@@ -7,12 +7,12 @@
         "google/cloud/artifactregistry/gapic_version.py",
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_artifactregistry_v1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.devtools.artifactregistry.v1.json",
           "jsonpath": "$.clientLibrary.version"
         },
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_artifactregistry_v1beta2.json",
+          "path": "samples/generated_samples/snippet_metadata_google.devtools.artifactregistry.v1beta2.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]
