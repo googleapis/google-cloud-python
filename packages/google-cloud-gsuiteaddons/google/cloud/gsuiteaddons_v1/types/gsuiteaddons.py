@@ -13,13 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.apps.script.type import script_manifest_pb2  # type: ignore
-from google.apps.script.type.calendar import calendar_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.docs import docs_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.drive import drive_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.gmail import gmail_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.sheets import sheets_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.slides import slides_addon_manifest_pb2  # type: ignore
+from typing import MutableMapping, MutableSequence
+
+import google.apps.script.type  # type: ignore
+import google.apps.script.type.calendar
+import google.apps.script.type.docs
+import google.apps.script.type.drive
+import google.apps.script.type.gmail
+import google.apps.script.type.sheets
+import google.apps.script.type.slides
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -56,7 +58,7 @@ class GetAuthorizationRequest(proto.Message):
             Example: ``projects/my_project/authorization``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -79,15 +81,15 @@ class Authorization(proto.Message):
             access tokens for a user on the add-on's behalf.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    oauth_client_id = proto.Field(
+    oauth_client_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -111,15 +113,15 @@ class CreateDeploymentRequest(proto.Message):
             (deployment.name cannot be set).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    deployment_id = proto.Field(
+    deployment_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    deployment = proto.Field(
+    deployment: "Deployment" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Deployment",
@@ -135,7 +137,7 @@ class ReplaceDeploymentRequest(proto.Message):
             replace.
     """
 
-    deployment = proto.Field(
+    deployment: "Deployment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Deployment",
@@ -152,7 +154,7 @@ class GetDeploymentRequest(proto.Message):
             Example: ``projects/my_project/deployments/my_deployment``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -182,15 +184,15 @@ class ListDeploymentsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -200,7 +202,7 @@ class ListDeploymentsResponse(proto.Message):
     r"""Response message to list deployments.
 
     Attributes:
-        deployments (Sequence[google.cloud.gsuiteaddons_v1.types.Deployment]):
+        deployments (MutableSequence[google.cloud.gsuiteaddons_v1.types.Deployment]):
             The list of deployments for the given
             project.
         next_page_token (str):
@@ -213,12 +215,12 @@ class ListDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    deployments = proto.RepeatedField(
+    deployments: MutableSequence["Deployment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Deployment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -239,11 +241,11 @@ class DeleteDeploymentRequest(proto.Message):
             etag.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -260,7 +262,7 @@ class InstallDeploymentRequest(proto.Message):
             Example: ``projects/my_project/deployments/my_deployment``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -277,7 +279,7 @@ class UninstallDeploymentRequest(proto.Message):
             Example: ``projects/my_project/deployments/my_deployment``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -295,7 +297,7 @@ class GetInstallStatusRequest(proto.Message):
             ``projects/my_project/deployments/my_deployment/installStatus``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -316,11 +318,11 @@ class InstallStatus(proto.Message):
             user
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    installed = proto.Field(
+    installed: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.BoolValue,
@@ -334,7 +336,7 @@ class Deployment(proto.Message):
         name (str):
             The deployment resource name. Example:
             projects/123/deployments/my_deployment.
-        oauth_scopes (Sequence[str]):
+        oauth_scopes (MutableSequence[str]):
             The list of Google OAuth scopes for which to
             request consent from the end user before
             executing an add-on endpoint.
@@ -348,20 +350,20 @@ class Deployment(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    oauth_scopes = proto.RepeatedField(
+    oauth_scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    add_ons = proto.Field(
+    add_ons: "AddOns" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AddOns",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -371,65 +373,67 @@ class AddOns(proto.Message):
     r"""A Google Workspace Add-on configuration.
 
     Attributes:
-        common (google.apps.script.type.script_manifest_pb2.CommonAddOnManifest):
+        common (google.apps.script.type.types.CommonAddOnManifest):
             Configuration that is common across all
             Google Workspace Add-ons.
-        gmail (google.apps.script.type.gmail.gmail_addon_manifest_pb2.GmailAddOnManifest):
+        gmail (google.apps.script.type.gmail.types.GmailAddOnManifest):
             Gmail add-on configuration.
-        drive (google.apps.script.type.drive.drive_addon_manifest_pb2.DriveAddOnManifest):
+        drive (google.apps.script.type.drive.types.DriveAddOnManifest):
             Drive add-on configuration.
-        calendar (google.apps.script.type.calendar.calendar_addon_manifest_pb2.CalendarAddOnManifest):
+        calendar (google.apps.script.type.calendar.types.CalendarAddOnManifest):
             Calendar add-on configuration.
-        docs (google.apps.script.type.docs.docs_addon_manifest_pb2.DocsAddOnManifest):
+        docs (google.apps.script.type.docs.types.DocsAddOnManifest):
             Docs add-on configuration.
-        sheets (google.apps.script.type.sheets.sheets_addon_manifest_pb2.SheetsAddOnManifest):
+        sheets (google.apps.script.type.sheets.types.SheetsAddOnManifest):
             Sheets add-on configuration.
-        slides (google.apps.script.type.slides.slides_addon_manifest_pb2.SlidesAddOnManifest):
+        slides (google.apps.script.type.slides.types.SlidesAddOnManifest):
             Slides add-on configuration.
-        http_options (google.apps.script.type.script_manifest_pb2.HttpOptions):
+        http_options (google.apps.script.type.types.HttpOptions):
             Options for sending requests to add-on HTTP
             endpoints
     """
 
-    common = proto.Field(
+    common: google.apps.script.type.types.CommonAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=script_manifest_pb2.CommonAddOnManifest,
+        message=google.apps.script.type.types.CommonAddOnManifest,
     )
-    gmail = proto.Field(
+    gmail: google.apps.script.type.gmail.types.GmailAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=2,
-        message=gmail_addon_manifest_pb2.GmailAddOnManifest,
+        message=google.apps.script.type.gmail.types.GmailAddOnManifest,
     )
-    drive = proto.Field(
+    drive: google.apps.script.type.drive.types.DriveAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=5,
-        message=drive_addon_manifest_pb2.DriveAddOnManifest,
+        message=google.apps.script.type.drive.types.DriveAddOnManifest,
     )
-    calendar = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=calendar_addon_manifest_pb2.CalendarAddOnManifest,
+    calendar: google.apps.script.type.calendar.types.CalendarAddOnManifest = (
+        proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=google.apps.script.type.calendar.types.CalendarAddOnManifest,
+        )
     )
-    docs = proto.Field(
+    docs: google.apps.script.type.docs.types.DocsAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=7,
-        message=docs_addon_manifest_pb2.DocsAddOnManifest,
+        message=google.apps.script.type.docs.types.DocsAddOnManifest,
     )
-    sheets = proto.Field(
+    sheets: google.apps.script.type.sheets.types.SheetsAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=sheets_addon_manifest_pb2.SheetsAddOnManifest,
+        message=google.apps.script.type.sheets.types.SheetsAddOnManifest,
     )
-    slides = proto.Field(
+    slides: google.apps.script.type.slides.types.SlidesAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=10,
-        message=slides_addon_manifest_pb2.SlidesAddOnManifest,
+        message=google.apps.script.type.slides.types.SlidesAddOnManifest,
     )
-    http_options = proto.Field(
+    http_options: google.apps.script.type.types.HttpOptions = proto.Field(
         proto.MESSAGE,
         number=15,
-        message=script_manifest_pb2.HttpOptions,
+        message=google.apps.script.type.types.HttpOptions,
     )
 
 

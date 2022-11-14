@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +69,7 @@ class GSuiteAddOnsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[GSuiteAddOnsTransport]:
         """Returns an appropriate transport class.
 
@@ -393,8 +404,8 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, GSuiteAddOnsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, GSuiteAddOnsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the g suite add ons client.
@@ -408,7 +419,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
             transport (Union[str, GSuiteAddOnsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -438,6 +449,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -490,11 +502,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def get_authorization(
         self,
-        request: Union[gsuiteaddons.GetAuthorizationRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.GetAuthorizationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Authorization:
         r"""Gets the authorization information for deployments in
@@ -595,13 +607,13 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def create_deployment(
         self,
-        request: Union[gsuiteaddons.CreateDeploymentRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.CreateDeploymentRequest, dict]] = None,
         *,
-        parent: str = None,
-        deployment: gsuiteaddons.Deployment = None,
-        deployment_id: str = None,
+        parent: Optional[str] = None,
+        deployment: Optional[gsuiteaddons.Deployment] = None,
+        deployment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Deployment:
         r"""Creates a deployment with the specified name and
@@ -720,11 +732,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def replace_deployment(
         self,
-        request: Union[gsuiteaddons.ReplaceDeploymentRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.ReplaceDeploymentRequest, dict]] = None,
         *,
-        deployment: gsuiteaddons.Deployment = None,
+        deployment: Optional[gsuiteaddons.Deployment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Deployment:
         r"""Creates or replaces a deployment with the specified
@@ -822,11 +834,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def get_deployment(
         self,
-        request: Union[gsuiteaddons.GetDeploymentRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.GetDeploymentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.Deployment:
         r"""Gets the deployment with the specified name.
@@ -924,11 +936,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def list_deployments(
         self,
-        request: Union[gsuiteaddons.ListDeploymentsRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.ListDeploymentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeploymentsPager:
         r"""Lists all deployments in a particular project.
@@ -1040,11 +1052,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def delete_deployment(
         self,
-        request: Union[gsuiteaddons.DeleteDeploymentRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.DeleteDeploymentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the deployment with the given name.
@@ -1133,11 +1145,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def install_deployment(
         self,
-        request: Union[gsuiteaddons.InstallDeploymentRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.InstallDeploymentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Installs a deployment in developer mode.
@@ -1228,11 +1240,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def uninstall_deployment(
         self,
-        request: Union[gsuiteaddons.UninstallDeploymentRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.UninstallDeploymentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Uninstalls a developer mode deployment.
@@ -1323,11 +1335,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
     def get_install_status(
         self,
-        request: Union[gsuiteaddons.GetInstallStatusRequest, dict] = None,
+        request: Optional[Union[gsuiteaddons.GetInstallStatusRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gsuiteaddons.InstallStatus:
         r"""Fetches the install status of a developer mode

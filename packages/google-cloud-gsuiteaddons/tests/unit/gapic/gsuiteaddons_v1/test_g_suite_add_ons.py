@@ -27,15 +27,6 @@ import math
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.apps.script.type import addon_widget_set_pb2  # type: ignore
-from google.apps.script.type import extension_point_pb2  # type: ignore
-from google.apps.script.type import script_manifest_pb2  # type: ignore
-from google.apps.script.type.calendar import calendar_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.docs import docs_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.drive import drive_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.gmail import gmail_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.sheets import sheets_addon_manifest_pb2  # type: ignore
-from google.apps.script.type.slides import slides_addon_manifest_pb2  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
