@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/googleapis/python-documentai/compare/v2.2.0...v2.3.0) (2022-11-14)
+
+
+### Features
+
+* Added TrainProcessorVersion, EvaluateProcessorVersion, GetEvaluation, and ListEvaluations v1beta3 APIs ([#412](https://github.com/googleapis/python-documentai/issues/412)) ([caefaa7](https://github.com/googleapis/python-documentai/commit/caefaa7941b0bdb68afd760fafe0365c9cb380f8)), closes [#410](https://github.com/googleapis/python-documentai/issues/410)
+
 ## [2.2.0](https://github.com/googleapis/python-documentai/compare/v2.1.0...v2.2.0) (2022-11-14)
 
 
