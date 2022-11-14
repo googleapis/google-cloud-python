@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/googleapis/python-documentai/compare/v2.1.0...v2.2.0) (2022-11-14)
+
+
+### Features
+
+* New APIs added to reflect updates to the filestore service ([#408](https://github.com/googleapis/python-documentai/issues/408)) ([f8b06f2](https://github.com/googleapis/python-documentai/commit/f8b06f2a1def0b2bf377749693b518f8d71d8d4a))
+
+
+### Documentation
+
+* **samples:** Updated code samples for 2.1.0 release ([#406](https://github.com/googleapis/python-documentai/issues/406)) ([f64a735](https://github.com/googleapis/python-documentai/commit/f64a7357aa54aecb0933e337d45c1f008f1203fa))
+
 ## [2.1.0](https://github.com/googleapis/python-documentai/compare/v2.0.3...v2.1.0) (2022-11-09)
 
 
