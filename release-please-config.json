@@ -73,6 +73,13 @@
             "extra-files": [
                 "google/apps/script/type/gapic_version.py"
             ]
+        },
+        "packages/google-cloud-vmwareengine": {
+            "component": "google-cloud-vmwareengine",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/vmwareengine/gapic_version.py"
+            ]
         }
     }
 }
