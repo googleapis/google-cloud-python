@@ -943,7 +943,6 @@ class Test_AsyncJob(unittest.TestCase):
         conn = make_connection(
             _make_retriable_exception(),
             begun_job_resource,
-            _make_retriable_exception(),
             done_job_resource,
         )
         client = _make_client(project=self.PROJECT, connection=conn)
@@ -963,9 +962,7 @@ class Test_AsyncJob(unittest.TestCase):
             query_params={"location": "US"},
             timeout=None,
         )
-        conn.api_request.assert_has_calls(
-            [begin_call, begin_call, reload_call, reload_call]
-        )
+        conn.api_request.assert_has_calls([begin_call, begin_call, reload_call])
 
     def test_result_w_retry_wo_state(self):
         begun_job_resource = _make_job_resource(

@@ -37,6 +37,7 @@ class TestLoadJob(_Base):
         self.INPUT_BYTES = 12345
         self.OUTPUT_BYTES = 23456
         self.OUTPUT_ROWS = 345
+        self.REFERENCE_FILE_SCHEMA_URI = "gs://path/to/reference"
 
     def _make_resource(self, started=False, ended=False):
         resource = super(TestLoadJob, self)._make_resource(started, ended)
@@ -47,6 +48,7 @@ class TestLoadJob(_Base):
             "datasetId": self.DS_ID,
             "tableId": self.TABLE_ID,
         }
+        config["referenceFileSchemaUri"] = self.REFERENCE_FILE_SCHEMA_URI
 
         if ended:
             resource["status"] = {"state": "DONE"}
@@ -136,6 +138,12 @@ class TestLoadJob(_Base):
             self.assertEqual(str(job.skip_leading_rows), config["skipLeadingRows"])
         else:
             self.assertIsNone(job.skip_leading_rows)
+        if "referenceFileSchemaUri" in config:
+            self.assertEqual(
+                job.reference_file_schema_uri, config["referenceFileSchemaUri"]
+            )
+        else:
+            self.assertIsNone(job.reference_file_schema_uri)
 
         if "destinationEncryptionConfiguration" in config:
             self.assertIsNotNone(job.destination_encryption_configuration)
@@ -186,6 +194,7 @@ class TestLoadJob(_Base):
         self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
+        self.assertIsNone(job.reference_file_schema_uri)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -461,6 +470,7 @@ class TestLoadJob(_Base):
                             "datasetId": self.DS_ID,
                             "tableId": self.TABLE_ID,
                         },
+                        "referenceFileSchemaUri": self.REFERENCE_FILE_SCHEMA_URI,
                     }
                 },
             },
@@ -503,6 +513,7 @@ class TestLoadJob(_Base):
                         "datasetId": self.DS_ID,
                         "tableId": self.TABLE_ID,
                     },
+                    "referenceFileSchemaUri": self.REFERENCE_FILE_SCHEMA_URI,
                     "autodetect": True,
                 }
             },
@@ -585,6 +596,7 @@ class TestLoadJob(_Base):
         config.use_avro_logical_types = True
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.schema_update_options = [SchemaUpdateOption.ALLOW_FIELD_ADDITION]
+        config.reference_file_schema_uri = "gs://path/to/reference"
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:

@@ -757,6 +757,20 @@ class ExternalConfig(object):
         self._properties["hivePartitioningOptions"] = prop
 
     @property
+    def reference_file_schema_uri(self):
+        """Optional[str]:
+        When creating an external table, the user can provide a reference file with the
+        table schema. This is enabled for the following formats:
+
+        AVRO, PARQUET, ORC
+        """
+        return self._properties.get("referenceFileSchemaUri")
+
+    @reference_file_schema_uri.setter
+    def reference_file_schema_uri(self, value):
+        self._properties["referenceFileSchemaUri"] = value
+
+    @property
     def ignore_unknown_values(self):
         """bool: If :data:`True`, extra values that are not represented in the
         table schema are ignored. Defaults to :data:`False`.

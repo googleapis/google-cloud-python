@@ -380,6 +380,20 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("rangePartitioning", resource)
 
     @property
+    def reference_file_schema_uri(self):
+        """Optional[str]:
+        When creating an external table, the user can provide a reference file with the
+        table schema. This is enabled for the following formats:
+
+        AVRO, PARQUET, ORC
+        """
+        return self._get_sub_prop("referenceFileSchemaUri")
+
+    @reference_file_schema_uri.setter
+    def reference_file_schema_uri(self, value):
+        return self._set_sub_prop("referenceFileSchemaUri", value)
+
+    @property
     def schema(self):
         """Optional[Sequence[Union[ \
             :class:`~google.cloud.bigquery.schema.SchemaField`, \
@@ -650,6 +664,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.quote_character`.
         """
         return self._configuration.quote_character
+
+    @property
+    def reference_file_schema_uri(self):
+        """See:
+        attr:`google.cloud.bigquery.job.LoadJobConfig.reference_file_schema_uri`.
+        """
+        return self._configuration.reference_file_schema_uri
 
     @property
     def skip_leading_rows(self):
