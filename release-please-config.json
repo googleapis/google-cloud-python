@@ -78,7 +78,12 @@
             "component": "google-cloud-vmwareengine",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/vmwareengine/gapic_version.py"
+                "google/cloud/vmwareengine/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vmwareengine.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }
