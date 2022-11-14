@@ -23,6 +23,7 @@ import proto  # type: ignore
 from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
 from google.cloud.documentai_v1beta3.types import document as gcd_document
 from google.cloud.documentai_v1beta3.types import document_io
+from google.cloud.documentai_v1beta3.types import evaluation as gcd_evaluation
 from google.cloud.documentai_v1beta3.types import operation_metadata
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 from google.cloud.documentai_v1beta3.types import processor_type
@@ -66,9 +67,18 @@ __protobuf__ = proto.module(
         "SetDefaultProcessorVersionRequest",
         "SetDefaultProcessorVersionResponse",
         "SetDefaultProcessorVersionMetadata",
+        "TrainProcessorVersionRequest",
+        "TrainProcessorVersionResponse",
+        "TrainProcessorVersionMetadata",
         "ReviewDocumentRequest",
         "ReviewDocumentResponse",
         "ReviewDocumentOperationMetadata",
+        "EvaluateProcessorVersionRequest",
+        "EvaluateProcessorVersionMetadata",
+        "EvaluateProcessorVersionResponse",
+        "GetEvaluationRequest",
+        "ListEvaluationsRequest",
+        "ListEvaluationsResponse",
     },
 )
 
@@ -111,8 +121,10 @@ class ProcessRequest(proto.Message):
             Whether Human Review feature should be
             skipped for this request. Default to false.
         field_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Specifies which fields to include in
-            ProcessResponse's document.
+            Specifies which fields to include in ProcessResponse's
+            document. Only supports top level document and pages field
+            so it must be in the form of ``{document_field_name}`` or
+            ``pages.{page_field_name}``.
     """
 
     inline_document: gcd_document.Document = proto.Field(
@@ -959,6 +971,163 @@ class SetDefaultProcessorVersionMetadata(proto.Message):
     )
 
 
+class TrainProcessorVersionRequest(proto.Message):
+    r"""Request message for the create processor version method.
+
+    Attributes:
+        parent (str):
+            Required. The parent (project, location and processor) to
+            create the new version for. Format:
+            ``projects/{project}/locations/{location}/processors/{processor}``.
+        processor_version (google.cloud.documentai_v1beta3.types.ProcessorVersion):
+            Required. The processor version to be
+            created.
+        document_schema (google.cloud.documentai_v1beta3.types.DocumentSchema):
+            Optional. The schema the processor version
+            will be trained with.
+        input_data (google.cloud.documentai_v1beta3.types.TrainProcessorVersionRequest.InputData):
+            Optional. The input data used to train the
+            ``ProcessorVersion``.
+        base_processor_version (str):
+            Optional. The processor version to use as a base for
+            training. This processor version must be a child of
+            ``parent``. Format:
+            ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``.
+    """
+
+    class InputData(proto.Message):
+        r"""The input data used to train a new ``ProcessorVersion``.
+
+        Attributes:
+            training_documents (google.cloud.documentai_v1beta3.types.BatchDocumentsInputConfig):
+                The documents used for training the new
+                version.
+            test_documents (google.cloud.documentai_v1beta3.types.BatchDocumentsInputConfig):
+                The documents used for testing the trained
+                version.
+        """
+
+        training_documents: document_io.BatchDocumentsInputConfig = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=document_io.BatchDocumentsInputConfig,
+        )
+        test_documents: document_io.BatchDocumentsInputConfig = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=document_io.BatchDocumentsInputConfig,
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    processor_version: gcd_processor.ProcessorVersion = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_processor.ProcessorVersion,
+    )
+    document_schema: gcd_document_schema.DocumentSchema = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=gcd_document_schema.DocumentSchema,
+    )
+    input_data: InputData = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=InputData,
+    )
+    base_processor_version: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+
+
+class TrainProcessorVersionResponse(proto.Message):
+    r"""The response for the TrainProcessorVersion method.
+
+    Attributes:
+        processor_version (str):
+            The resource name of the processor version
+            produced by training.
+    """
+
+    processor_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class TrainProcessorVersionMetadata(proto.Message):
+    r"""The metadata that represents a processor version being
+    created.
+
+    Attributes:
+        common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
+            The basic metadata of the long running
+            operation.
+        training_dataset_validation (google.cloud.documentai_v1beta3.types.TrainProcessorVersionMetadata.DatasetValidation):
+            The training dataset validation information.
+        test_dataset_validation (google.cloud.documentai_v1beta3.types.TrainProcessorVersionMetadata.DatasetValidation):
+            The test dataset validation information.
+    """
+
+    class DatasetValidation(proto.Message):
+        r"""The dataset validation information.
+        This includes any and all errors with documents and the dataset.
+
+        Attributes:
+            document_error_count (int):
+                The total number of document errors.
+            dataset_error_count (int):
+                The total number of dataset errors.
+            document_errors (MutableSequence[google.rpc.status_pb2.Status]):
+                Error information pertaining to specific
+                documents. A maximum of 10 document errors will
+                be returned. Any document with errors will not
+                be used throughout training.
+            dataset_errors (MutableSequence[google.rpc.status_pb2.Status]):
+                Error information for the dataset as a whole.
+                A maximum of 10 dataset errors will be returned.
+                A single dataset error is terminal for training.
+        """
+
+        document_error_count: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        dataset_error_count: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        document_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=status_pb2.Status,
+        )
+        dataset_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=status_pb2.Status,
+        )
+
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=operation_metadata.CommonOperationMetadata,
+    )
+    training_dataset_validation: DatasetValidation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=DatasetValidation,
+    )
+    test_dataset_validation: DatasetValidation = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=DatasetValidation,
+    )
+
+
 class ReviewDocumentRequest(proto.Message):
     r"""Request message for review document method.
 
@@ -1113,6 +1282,140 @@ class ReviewDocumentOperationMetadata(proto.Message):
     question_id: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class EvaluateProcessorVersionRequest(proto.Message):
+    r"""Evaluates the given ProcessorVersion against the supplied
+    documents.
+
+    Attributes:
+        processor_version (str):
+            Required. The resource name of the
+            [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
+            to evaluate.
+            ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
+        evaluation_documents (google.cloud.documentai_v1beta3.types.BatchDocumentsInputConfig):
+            Optional. The documents used in the
+            evaluation. If unspecified, use the processor's
+            dataset as evaluation input.
+    """
+
+    processor_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    evaluation_documents: document_io.BatchDocumentsInputConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=document_io.BatchDocumentsInputConfig,
+    )
+
+
+class EvaluateProcessorVersionMetadata(proto.Message):
+    r"""Metadata of the EvaluateProcessorVersion method.
+
+    Attributes:
+        common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
+            The basic metadata of the long running
+            operation.
+    """
+
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=operation_metadata.CommonOperationMetadata,
+    )
+
+
+class EvaluateProcessorVersionResponse(proto.Message):
+    r"""Metadata of the EvaluateProcessorVersion method.
+
+    Attributes:
+        evaluation (str):
+            The resource name of the created evaluation.
+    """
+
+    evaluation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetEvaluationRequest(proto.Message):
+    r"""Retrieves a specific Evaluation.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the
+            [Evaluation][google.cloud.documentai.v1beta3.Evaluation] to
+            get.
+            ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}/evaluations/{evaluation}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListEvaluationsRequest(proto.Message):
+    r"""Retrieves a list of evaluations for a given ProcessorVersion.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the
+            [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
+            to list evaluations for.
+            ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
+        page_size (int):
+            The standard list page size.
+            If unspecified, at most 5 evaluations will be
+            returned. The maximum value is 100; values above
+            100 will be coerced to 100.
+        page_token (str):
+            A page token, received from a previous ``ListEvaluations``
+            call. Provide this to retrieve the subsequent page.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListEvaluationsResponse(proto.Message):
+    r"""The response from ListEvaluations.
+
+    Attributes:
+        evaluations (MutableSequence[google.cloud.documentai_v1beta3.types.Evaluation]):
+            The evaluations requested.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    evaluations: MutableSequence[gcd_evaluation.Evaluation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_evaluation.Evaluation,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

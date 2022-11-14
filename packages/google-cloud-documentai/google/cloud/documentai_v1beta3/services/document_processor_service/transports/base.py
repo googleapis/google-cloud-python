@@ -27,7 +27,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import pkg_resources
 
-from google.cloud.documentai_v1beta3.types import document_processor_service
+from google.cloud.documentai_v1beta3.types import document_processor_service, evaluation
 from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 
@@ -181,6 +181,11 @@ class DocumentProcessorServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.train_processor_version: gapic_v1.method.wrap_method(
+                self.train_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_processor_version: gapic_v1.method.wrap_method(
                 self.get_processor_version,
                 default_timeout=None,
@@ -244,6 +249,21 @@ class DocumentProcessorServiceTransport(abc.ABC):
                     deadline=120.0,
                 ),
                 default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.evaluate_processor_version: gapic_v1.method.wrap_method(
+                self.evaluate_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_evaluation: gapic_v1.method.wrap_method(
+                self.get_evaluation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_evaluations: gapic_v1.method.wrap_method(
+                self.list_evaluations,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -325,6 +345,15 @@ class DocumentProcessorServiceTransport(abc.ABC):
     ) -> Callable[
         [document_processor_service.GetProcessorRequest],
         Union[processor.Processor, Awaitable[processor.Processor]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def train_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.TrainProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -427,6 +456,36 @@ class DocumentProcessorServiceTransport(abc.ABC):
     ) -> Callable[
         [document_processor_service.ReviewDocumentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def evaluate_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.EvaluateProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_evaluation(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetEvaluationRequest],
+        Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_evaluations(
+        self,
+    ) -> Callable[
+        [document_processor_service.ListEvaluationsRequest],
+        Union[
+            document_processor_service.ListEvaluationsResponse,
+            Awaitable[document_processor_service.ListEvaluationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

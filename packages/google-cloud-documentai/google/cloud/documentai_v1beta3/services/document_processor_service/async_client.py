@@ -49,7 +49,12 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.documentai_v1beta3.services.document_processor_service import pagers
-from google.cloud.documentai_v1beta3.types import document, document_processor_service
+from google.cloud.documentai_v1beta3.types import (
+    document,
+    document_processor_service,
+    document_schema,
+    evaluation,
+)
 from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 from google.cloud.documentai_v1beta3.types import processor_type
@@ -72,6 +77,10 @@ class DocumentProcessorServiceAsyncClient:
     DEFAULT_ENDPOINT = DocumentProcessorServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DocumentProcessorServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    evaluation_path = staticmethod(DocumentProcessorServiceClient.evaluation_path)
+    parse_evaluation_path = staticmethod(
+        DocumentProcessorServiceClient.parse_evaluation_path
+    )
     human_review_config_path = staticmethod(
         DocumentProcessorServiceClient.human_review_config_path
     )
@@ -960,6 +969,137 @@ class DocumentProcessorServiceAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def train_processor_version(
+        self,
+        request: Optional[
+            Union[document_processor_service.TrainProcessorVersionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        processor_version: Optional[processor.ProcessorVersion] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Trains a new processor version. Operation metadata is returned
+        as cloud_documentai_core.TrainProcessorVersionMetadata.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import documentai_v1beta3
+
+            async def sample_train_processor_version():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = documentai_v1beta3.TrainProcessorVersionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.train_processor_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.documentai_v1beta3.types.TrainProcessorVersionRequest, dict]]):
+                The request object. Request message for the create
+                processor version method.
+            parent (:class:`str`):
+                Required. The parent (project, location and processor)
+                to create the new version for. Format:
+                ``projects/{project}/locations/{location}/processors/{processor}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            processor_version (:class:`google.cloud.documentai_v1beta3.types.ProcessorVersion`):
+                Required. The processor version to be
+                created.
+
+                This corresponds to the ``processor_version`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.documentai_v1beta3.types.TrainProcessorVersionResponse`
+                The response for the TrainProcessorVersion method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, processor_version])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = document_processor_service.TrainProcessorVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if processor_version is not None:
+            request.processor_version = processor_version
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.train_processor_version,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            document_processor_service.TrainProcessorVersionResponse,
+            metadata_type=document_processor_service.TrainProcessorVersionMetadata,
         )
 
         # Done; return the response.
@@ -2242,6 +2382,354 @@ class DocumentProcessorServiceAsyncClient:
             self._client._transport.operations_client,
             document_processor_service.ReviewDocumentResponse,
             metadata_type=document_processor_service.ReviewDocumentOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def evaluate_processor_version(
+        self,
+        request: Optional[
+            Union[document_processor_service.EvaluateProcessorVersionRequest, dict]
+        ] = None,
+        *,
+        processor_version: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Evaluates a ProcessorVersion against annotated
+        documents, producing an Evaluation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import documentai_v1beta3
+
+            async def sample_evaluate_processor_version():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = documentai_v1beta3.EvaluateProcessorVersionRequest(
+                    processor_version="processor_version_value",
+                )
+
+                # Make the request
+                operation = client.evaluate_processor_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.documentai_v1beta3.types.EvaluateProcessorVersionRequest, dict]]):
+                The request object. Evaluates the given ProcessorVersion
+                against the supplied documents.
+            processor_version (:class:`str`):
+                Required. The resource name of the
+                [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
+                to evaluate.
+                ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
+
+                This corresponds to the ``processor_version`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.documentai_v1beta3.types.EvaluateProcessorVersionResponse`
+                Metadata of the EvaluateProcessorVersion method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([processor_version])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = document_processor_service.EvaluateProcessorVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if processor_version is not None:
+            request.processor_version = processor_version
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.evaluate_processor_version,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("processor_version", request.processor_version),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            document_processor_service.EvaluateProcessorVersionResponse,
+            metadata_type=document_processor_service.EvaluateProcessorVersionMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_evaluation(
+        self,
+        request: Optional[
+            Union[document_processor_service.GetEvaluationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> evaluation.Evaluation:
+        r"""Retrieves a specific evaluation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import documentai_v1beta3
+
+            async def sample_get_evaluation():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = documentai_v1beta3.GetEvaluationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_evaluation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.documentai_v1beta3.types.GetEvaluationRequest, dict]]):
+                The request object. Retrieves a specific Evaluation.
+            name (:class:`str`):
+                Required. The resource name of the
+                [Evaluation][google.cloud.documentai.v1beta3.Evaluation]
+                to get.
+                ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}/evaluations/{evaluation}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.documentai_v1beta3.types.Evaluation:
+                An evaluation of a ProcessorVersion's
+                performance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = document_processor_service.GetEvaluationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_evaluation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_evaluations(
+        self,
+        request: Optional[
+            Union[document_processor_service.ListEvaluationsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEvaluationsAsyncPager:
+        r"""Retrieves a set of evaluations for a given processor
+        version.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import documentai_v1beta3
+
+            async def sample_list_evaluations():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = documentai_v1beta3.ListEvaluationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_evaluations(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.documentai_v1beta3.types.ListEvaluationsRequest, dict]]):
+                The request object. Retrieves a list of evaluations for
+                a given ProcessorVersion.
+            parent (:class:`str`):
+                Required. The resource name of the
+                [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
+                to list evaluations for.
+                ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListEvaluationsAsyncPager:
+                The response from ListEvaluations.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = document_processor_service.ListEvaluationsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_evaluations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListEvaluationsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

@@ -33,9 +33,10 @@ class ProcessorType(proto.Message):
     Attributes:
         name (str):
             The resource name of the processor type. Format:
-            projects/{project}/processorTypes/{processor_type}
+            ``projects/{project}/processorTypes/{processor_type}``
         type_ (str):
-            The type of the processor, e.g., "invoice_parsing".
+            The processor type, e.g., ``OCR_PROCESSOR``,
+            ``INVOICE_PROCESSOR``, etc.
         category (str):
             The processor category, used by UI to group
             processor types.

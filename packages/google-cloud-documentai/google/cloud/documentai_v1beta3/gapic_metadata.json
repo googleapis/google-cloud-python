@@ -45,9 +45,19 @@
                 "enable_processor"
               ]
             },
+            "EvaluateProcessorVersion": {
+              "methods": [
+                "evaluate_processor_version"
+              ]
+            },
             "FetchProcessorTypes": {
               "methods": [
                 "fetch_processor_types"
+              ]
+            },
+            "GetEvaluation": {
+              "methods": [
+                "get_evaluation"
               ]
             },
             "GetProcessor": {
@@ -58,6 +68,11 @@
             "GetProcessorVersion": {
               "methods": [
                 "get_processor_version"
+              ]
+            },
+            "ListEvaluations": {
+              "methods": [
+                "list_evaluations"
               ]
             },
             "ListProcessorTypes": {
@@ -88,6 +103,11 @@
             "SetDefaultProcessorVersion": {
               "methods": [
                 "set_default_processor_version"
+              ]
+            },
+            "TrainProcessorVersion": {
+              "methods": [
+                "train_processor_version"
               ]
             },
             "UndeployProcessorVersion": {
@@ -135,9 +155,19 @@
                 "enable_processor"
               ]
             },
+            "EvaluateProcessorVersion": {
+              "methods": [
+                "evaluate_processor_version"
+              ]
+            },
             "FetchProcessorTypes": {
               "methods": [
                 "fetch_processor_types"
+              ]
+            },
+            "GetEvaluation": {
+              "methods": [
+                "get_evaluation"
               ]
             },
             "GetProcessor": {
@@ -148,6 +178,11 @@
             "GetProcessorVersion": {
               "methods": [
                 "get_processor_version"
+              ]
+            },
+            "ListEvaluations": {
+              "methods": [
+                "list_evaluations"
               ]
             },
             "ListProcessorTypes": {
@@ -178,6 +213,11 @@
             "SetDefaultProcessorVersion": {
               "methods": [
                 "set_default_processor_version"
+              ]
+            },
+            "TrainProcessorVersion": {
+              "methods": [
+                "train_processor_version"
               ]
             },
             "UndeployProcessorVersion": {

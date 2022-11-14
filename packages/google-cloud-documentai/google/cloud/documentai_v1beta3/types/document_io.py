@@ -38,7 +38,8 @@ class RawDocument(proto.Message):
             Inline document content.
         mime_type (str):
             An IANA MIME type (RFC6838) indicating the nature and format
-            of the [content].
+            of the
+            [content][google.cloud.documentai.v1beta3.RawDocument.content].
     """
 
     content: bytes = proto.Field(
@@ -115,7 +116,7 @@ class BatchDocumentsInputConfig(proto.Message):
     Attributes:
         gcs_prefix (google.cloud.documentai_v1beta3.types.GcsPrefix):
             The set of documents that match the specified Cloud Storage
-            [gcs_prefix].
+            ``gcs_prefix``.
 
             This field is a member of `oneof`_ ``source``.
         gcs_documents (google.cloud.documentai_v1beta3.types.GcsDocuments):
