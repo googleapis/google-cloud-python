@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-access-approval/compare/v1.8.0...v1.9.0) (2022-11-14)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([6661f4f](https://github.com/googleapis/python-access-approval/commit/6661f4f22295316b259c4ef835207bf0cddd5dd0))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([6661f4f](https://github.com/googleapis/python-access-approval/commit/6661f4f22295316b259c4ef835207bf0cddd5dd0))
+
 ## [1.8.0](https://github.com/googleapis/python-access-approval/compare/v1.7.5...v1.8.0) (2022-11-04)
 
 
