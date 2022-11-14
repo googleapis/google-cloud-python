@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -49,15 +51,15 @@ class Barcode(proto.Message):
             'MEBKM:TITLE:Google;URL:https://www.google.com;;'.
     """
 
-    format_ = proto.Field(
+    format_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value_format = proto.Field(
+    value_format: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    raw_value = proto.Field(
+    raw_value: str = proto.Field(
         proto.STRING,
         number=3,
     )

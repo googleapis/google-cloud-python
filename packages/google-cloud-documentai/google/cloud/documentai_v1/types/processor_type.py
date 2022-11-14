@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.api import launch_stage_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -38,7 +40,7 @@ class ProcessorType(proto.Message):
         category (str):
             The processor category, used by UI to group
             processor types.
-        available_locations (Sequence[google.cloud.documentai_v1.types.ProcessorType.LocationInfo]):
+        available_locations (MutableSequence[google.cloud.documentai_v1.types.ProcessorType.LocationInfo]):
             The locations in which this processor is
             available.
         allow_creation (bool):
@@ -59,33 +61,33 @@ class ProcessorType(proto.Message):
                 The location id, currently must be one of [us, eu].
         """
 
-        location_id = proto.Field(
+        location_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    category = proto.Field(
+    category: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    available_locations = proto.RepeatedField(
+    available_locations: MutableSequence[LocationInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=LocationInfo,
     )
-    allow_creation = proto.Field(
+    allow_creation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    launch_stage = proto.Field(
+    launch_stage: launch_stage_pb2.LaunchStage = proto.Field(
         proto.ENUM,
         number=8,
         enum=launch_stage_pb2.LaunchStage,

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -170,9 +180,9 @@ class DocumentUnderstandingServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DocumentUnderstandingServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the document understanding service client.
@@ -216,13 +226,15 @@ class DocumentUnderstandingServiceAsyncClient:
 
     async def batch_process_documents(
         self,
-        request: Union[
-            document_understanding.BatchProcessDocumentsRequest, dict
+        request: Optional[
+            Union[document_understanding.BatchProcessDocumentsRequest, dict]
         ] = None,
         *,
-        requests: Sequence[document_understanding.ProcessDocumentRequest] = None,
+        requests: Optional[
+            MutableSequence[document_understanding.ProcessDocumentRequest]
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""LRO endpoint to batch process many documents. The output is
@@ -263,11 +275,11 @@ class DocumentUnderstandingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest, dict]):
+            request (Optional[Union[google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest, dict]]):
                 The request object. Request to batch process documents
                 as an asynchronous operation. The output is written to
                 Cloud Storage as JSON in the [Document] format.
-            requests (:class:`Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]`):
+            requests (:class:`MutableSequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]`):
                 Required. Individual requests for
                 each document.
 
@@ -350,10 +362,12 @@ class DocumentUnderstandingServiceAsyncClient:
 
     async def process_document(
         self,
-        request: Union[document_understanding.ProcessDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_understanding.ProcessDocumentRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Processes a single document.
@@ -389,7 +403,7 @@ class DocumentUnderstandingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest, dict]):
+            request (Optional[Union[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest, dict]]):
                 The request object. Request to process one document.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

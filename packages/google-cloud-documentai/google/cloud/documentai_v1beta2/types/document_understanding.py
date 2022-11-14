@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -46,7 +48,7 @@ class BatchProcessDocumentsRequest(proto.Message):
     output is written to Cloud Storage as JSON in the [Document] format.
 
     Attributes:
-        requests (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
+        requests (MutableSequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
             Required. Individual requests for each
             document.
         parent (str):
@@ -58,12 +60,12 @@ class BatchProcessDocumentsRequest(proto.Message):
             automatically.
     """
 
-    requests = proto.RepeatedField(
+    requests: MutableSequence["ProcessDocumentRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ProcessDocumentRequest",
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -114,45 +116,45 @@ class ProcessDocumentRequest(proto.Message):
             Params.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InputConfig",
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="OutputConfig",
     )
-    document_type = proto.Field(
+    document_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    table_extraction_params = proto.Field(
+    table_extraction_params: "TableExtractionParams" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TableExtractionParams",
     )
-    form_extraction_params = proto.Field(
+    form_extraction_params: "FormExtractionParams" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="FormExtractionParams",
     )
-    entity_extraction_params = proto.Field(
+    entity_extraction_params: "EntityExtractionParams" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="EntityExtractionParams",
     )
-    ocr_params = proto.Field(
+    ocr_params: "OcrParams" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="OcrParams",
     )
-    automl_params = proto.Field(
+    automl_params: "AutoMlParams" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="AutoMlParams",
@@ -164,11 +166,11 @@ class BatchProcessDocumentsResponse(proto.Message):
     returned in the LRO Operation after the operation is complete.
 
     Attributes:
-        responses (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentResponse]):
+        responses (MutableSequence[google.cloud.documentai_v1beta2.types.ProcessDocumentResponse]):
             Responses for each individual document.
     """
 
-    responses = proto.RepeatedField(
+    responses: MutableSequence["ProcessDocumentResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ProcessDocumentResponse",
@@ -189,12 +191,12 @@ class ProcessDocumentResponse(proto.Message):
             objects.
     """
 
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="InputConfig",
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="OutputConfig",
@@ -206,7 +208,7 @@ class OcrParams(proto.Message):
     behavior.
 
     Attributes:
-        language_hints (Sequence[str]):
+        language_hints (MutableSequence[str]):
             List of languages to use for OCR. In most cases, an empty
             value yields the best results since it enables automatic
             language detection. For languages based on the Latin
@@ -218,7 +220,7 @@ class OcrParams(proto.Message):
             specified languages is not one of the supported languages.
     """
 
-    language_hints = proto.RepeatedField(
+    language_hints: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -230,11 +232,11 @@ class TableExtractionParams(proto.Message):
     Attributes:
         enabled (bool):
             Whether to enable table extraction.
-        table_bound_hints (Sequence[google.cloud.documentai_v1beta2.types.TableBoundHint]):
+        table_bound_hints (MutableSequence[google.cloud.documentai_v1beta2.types.TableBoundHint]):
             Optional. Table bounding box hints that can
             be provided to complex cases which our algorithm
             cannot locate the table(s) in.
-        header_hints (Sequence[str]):
+        header_hints (MutableSequence[str]):
             Optional. Table header hints. The extraction
             will bias towards producing these terms as table
             headers, which may improve accuracy.
@@ -244,20 +246,20 @@ class TableExtractionParams(proto.Message):
             "builtin/latest" for the latest model.
     """
 
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    table_bound_hints = proto.RepeatedField(
+    table_bound_hints: MutableSequence["TableBoundHint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="TableBoundHint",
     )
-    header_hints = proto.RepeatedField(
+    header_hints: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    model_version = proto.Field(
+    model_version: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -279,11 +281,11 @@ class TableBoundHint(proto.Message):
             axis-aligned rectangle.
     """
 
-    page_number = proto.Field(
+    page_number: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    bounding_box = proto.Field(
+    bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
@@ -296,7 +298,7 @@ class FormExtractionParams(proto.Message):
     Attributes:
         enabled (bool):
             Whether to enable form extraction.
-        key_value_pair_hints (Sequence[google.cloud.documentai_v1beta2.types.KeyValuePairHint]):
+        key_value_pair_hints (MutableSequence[google.cloud.documentai_v1beta2.types.KeyValuePairHint]):
             User can provide pairs of (key text, value type) to improve
             the parsing result.
 
@@ -320,16 +322,16 @@ class FormExtractionParams(proto.Message):
             are stored.
     """
 
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    key_value_pair_hints = proto.RepeatedField(
+    key_value_pair_hints: MutableSequence["KeyValuePairHint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="KeyValuePairHint",
     )
-    model_version = proto.Field(
+    model_version: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -341,18 +343,18 @@ class KeyValuePairHint(proto.Message):
     Attributes:
         key (str):
             The key text for the hint.
-        value_types (Sequence[str]):
+        value_types (MutableSequence[str]):
             Type of the value. This is case-insensitive, and could be
             one of: ADDRESS, LOCATION, ORGANIZATION, PERSON,
             PHONE_NUMBER, ID, NUMBER, EMAIL, PRICE, TERMS, DATE, NAME.
             Types not in this list will be ignored.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value_types = proto.RepeatedField(
+    value_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -370,11 +372,11 @@ class EntityExtractionParams(proto.Message):
             "builtin/latest" for the latest model.
     """
 
-    enabled = proto.Field(
+    enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    model_version = proto.Field(
+    model_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -391,7 +393,7 @@ class AutoMlParams(proto.Message):
             ``projects/{project-id}/locations/{location-id}/models/{model-id}``.
     """
 
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -432,18 +434,18 @@ class InputConfig(proto.Message):
             [Document][google.cloud.documentai.v1beta2.Document] format.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="GcsSource",
     )
-    contents = proto.Field(
+    contents: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="source",
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -480,13 +482,13 @@ class OutputConfig(proto.Message):
             pages-101-to-150.json pages-151-to-157.json
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
         message="GcsDestination",
     )
-    pages_per_shard = proto.Field(
+    pages_per_shard: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -501,7 +503,7 @@ class GcsSource(proto.Message):
 
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -516,7 +518,7 @@ class GcsDestination(proto.Message):
 
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -547,21 +549,21 @@ class OperationMetadata(proto.Message):
         CANCELLED = 5
         FAILED = 6
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -39,11 +41,11 @@ class RawDocument(proto.Message):
             of the [content].
     """
 
-    content = proto.Field(
+    content: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -59,11 +61,11 @@ class GcsDocument(proto.Message):
             An IANA MIME type (RFC6838) of the content.
     """
 
-    gcs_uri = proto.Field(
+    gcs_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -73,11 +75,11 @@ class GcsDocuments(proto.Message):
     r"""Specifies a set of documents on Cloud Storage.
 
     Attributes:
-        documents (Sequence[google.cloud.documentai_v1beta3.types.GcsDocument]):
+        documents (MutableSequence[google.cloud.documentai_v1beta3.types.GcsDocument]):
             The list of documents.
     """
 
-    documents = proto.RepeatedField(
+    documents: MutableSequence["GcsDocument"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GcsDocument",
@@ -93,7 +95,7 @@ class GcsPrefix(proto.Message):
             The URI prefix.
     """
 
-    gcs_uri_prefix = proto.Field(
+    gcs_uri_prefix: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -123,13 +125,13 @@ class BatchDocumentsInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_prefix = proto.Field(
+    gcs_prefix: "GcsPrefix" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="GcsPrefix",
     )
-    gcs_documents = proto.Field(
+    gcs_documents: "GcsDocuments" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
@@ -161,12 +163,12 @@ class DocumentOutputConfig(proto.Message):
                 output.
         """
 
-        gcs_uri = proto.Field(
+        gcs_uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    gcs_output_config = proto.Field(
+    gcs_output_config: GcsOutputConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",

@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class DocumentUnderstandingServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentUnderstandingServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -321,7 +332,7 @@ class DocumentUnderstandingServiceClient(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentUnderstandingServiceTransport, None] = None,
+        transport: Optional[Union[str, DocumentUnderstandingServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -419,13 +430,15 @@ class DocumentUnderstandingServiceClient(
 
     def batch_process_documents(
         self,
-        request: Union[
-            document_understanding.BatchProcessDocumentsRequest, dict
+        request: Optional[
+            Union[document_understanding.BatchProcessDocumentsRequest, dict]
         ] = None,
         *,
-        requests: Sequence[document_understanding.ProcessDocumentRequest] = None,
+        requests: Optional[
+            MutableSequence[document_understanding.ProcessDocumentRequest]
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""LRO endpoint to batch process many documents. The output is
@@ -470,7 +483,7 @@ class DocumentUnderstandingServiceClient(
                 The request object. Request to batch process documents
                 as an asynchronous operation. The output is written to
                 Cloud Storage as JSON in the [Document] format.
-            requests (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
+            requests (MutableSequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
                 Required. Individual requests for
                 each document.
 
@@ -543,10 +556,12 @@ class DocumentUnderstandingServiceClient(
 
     def process_document(
         self,
-        request: Union[document_understanding.ProcessDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_understanding.ProcessDocumentRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Processes a single document.

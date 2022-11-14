@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -113,32 +115,32 @@ class ProcessRequest(proto.Message):
             ProcessResponse's document.
     """
 
-    inline_document = proto.Field(
+    inline_document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="source",
         message=gcd_document.Document,
     )
-    raw_document = proto.Field(
+    raw_document: document_io.RawDocument = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="source",
         message=document_io.RawDocument,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document = proto.Field(
+    document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_document.Document,
     )
-    skip_human_review = proto.Field(
+    skip_human_review: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    field_mask = proto.Field(
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=6,
         message=field_mask_pb2.FieldMask,
@@ -171,16 +173,16 @@ class HumanReviewStatus(proto.Message):
         IN_PROGRESS = 3
         ERROR = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    human_review_operation = proto.Field(
+    human_review_operation: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -205,16 +207,16 @@ class ProcessResponse(proto.Message):
             document.
     """
 
-    document = proto.Field(
+    document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_document.Document,
     )
-    human_review_operation = proto.Field(
+    human_review_operation: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    human_review_status = proto.Field(
+    human_review_status: "HumanReviewStatus" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="HumanReviewStatus",
@@ -233,7 +235,7 @@ class BatchProcessRequest(proto.Message):
             ``projects/{project}/locations/{location}/processors/{processor}``,
             or
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
-        input_configs (Sequence[google.cloud.documentai_v1beta3.types.BatchProcessRequest.BatchInputConfig]):
+        input_configs (MutableSequence[google.cloud.documentai_v1beta3.types.BatchProcessRequest.BatchInputConfig]):
             The input config for each single document in
             the batch process.
         output_config (google.cloud.documentai_v1beta3.types.BatchProcessRequest.BatchOutputConfig):
@@ -261,11 +263,11 @@ class BatchProcessRequest(proto.Message):
                 should be application/json.
         """
 
-        gcs_source = proto.Field(
+        gcs_source: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        mime_type = proto.Field(
+        mime_type: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -279,36 +281,36 @@ class BatchProcessRequest(proto.Message):
                 processed documents.
         """
 
-        gcs_destination = proto.Field(
+        gcs_destination: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_configs = proto.RepeatedField(
+    input_configs: MutableSequence[BatchInputConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=BatchInputConfig,
     )
-    output_config = proto.Field(
+    output_config: BatchOutputConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=BatchOutputConfig,
     )
-    input_documents = proto.Field(
+    input_documents: document_io.BatchDocumentsInputConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=document_io.BatchDocumentsInputConfig,
     )
-    document_output_config = proto.Field(
+    document_output_config: document_io.DocumentOutputConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         message=document_io.DocumentOutputConfig,
     )
-    skip_human_review = proto.Field(
+    skip_human_review: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -332,7 +334,7 @@ class BatchProcessMetadata(proto.Message):
             The creation time of the operation.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the operation.
-        individual_process_statuses (Sequence[google.cloud.documentai_v1beta3.types.BatchProcessMetadata.IndividualProcessStatus]):
+        individual_process_statuses (MutableSequence[google.cloud.documentai_v1beta3.types.BatchProcessMetadata.IndividualProcessStatus]):
             The list of response details of each
             document.
     """
@@ -376,49 +378,51 @@ class BatchProcessMetadata(proto.Message):
                 document.
         """
 
-        input_gcs_source = proto.Field(
+        input_gcs_source: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
         )
-        output_gcs_destination = proto.Field(
+        output_gcs_destination: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        human_review_operation = proto.Field(
+        human_review_operation: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        human_review_status = proto.Field(
+        human_review_status: "HumanReviewStatus" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="HumanReviewStatus",
         )
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    individual_process_statuses = proto.RepeatedField(
+    individual_process_statuses: MutableSequence[
+        IndividualProcessStatus
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=IndividualProcessStatus,
@@ -436,7 +440,7 @@ class FetchProcessorTypesRequest(proto.Message):
             ``projects/{project}/locations/{location}``
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -446,11 +450,13 @@ class FetchProcessorTypesResponse(proto.Message):
     r"""Response message for fetch processor types.
 
     Attributes:
-        processor_types (Sequence[google.cloud.documentai_v1beta3.types.ProcessorType]):
+        processor_types (MutableSequence[google.cloud.documentai_v1beta3.types.ProcessorType]):
             The list of processor types.
     """
 
-    processor_types = proto.RepeatedField(
+    processor_types: MutableSequence[
+        processor_type.ProcessorType
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=processor_type.ProcessorType,
@@ -476,15 +482,15 @@ class ListProcessorTypesRequest(proto.Message):
             empty if at the end of the list.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -494,7 +500,7 @@ class ListProcessorTypesResponse(proto.Message):
     r"""Response message for list processor types.
 
     Attributes:
-        processor_types (Sequence[google.cloud.documentai_v1beta3.types.ProcessorType]):
+        processor_types (MutableSequence[google.cloud.documentai_v1beta3.types.ProcessorType]):
             The processor types.
         next_page_token (str):
             Points to the next page, otherwise empty.
@@ -504,12 +510,14 @@ class ListProcessorTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processor_types = proto.RepeatedField(
+    processor_types: MutableSequence[
+        processor_type.ProcessorType
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=processor_type.ProcessorType,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -534,15 +542,15 @@ class ListProcessorsRequest(proto.Message):
             next processor.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -552,7 +560,7 @@ class ListProcessorsResponse(proto.Message):
     r"""Response message for list processors.
 
     Attributes:
-        processors (Sequence[google.cloud.documentai_v1beta3.types.Processor]):
+        processors (MutableSequence[google.cloud.documentai_v1beta3.types.Processor]):
             The list of processors.
         next_page_token (str):
             Points to the next processor, otherwise
@@ -563,12 +571,12 @@ class ListProcessorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processors = proto.RepeatedField(
+    processors: MutableSequence[gcd_processor.Processor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_processor.Processor,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -582,7 +590,7 @@ class GetProcessorRequest(proto.Message):
             Required. The processor resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -596,7 +604,7 @@ class GetProcessorVersionRequest(proto.Message):
             Required. The processor resource name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -622,15 +630,15 @@ class ListProcessorVersionsRequest(proto.Message):
             the next processor version.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -640,7 +648,7 @@ class ListProcessorVersionsResponse(proto.Message):
     r"""Response message for list processors.
 
     Attributes:
-        processor_versions (Sequence[google.cloud.documentai_v1beta3.types.ProcessorVersion]):
+        processor_versions (MutableSequence[google.cloud.documentai_v1beta3.types.ProcessorVersion]):
             The list of processors.
         next_page_token (str):
             Points to the next processor, otherwise
@@ -651,12 +659,14 @@ class ListProcessorVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processor_versions = proto.RepeatedField(
+    processor_versions: MutableSequence[
+        gcd_processor.ProcessorVersion
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_processor.ProcessorVersion,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -671,7 +681,7 @@ class DeleteProcessorVersionRequest(proto.Message):
             to be deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -687,7 +697,7 @@ class DeleteProcessorVersionMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=1,
         message=operation_metadata.CommonOperationMetadata,
@@ -703,7 +713,7 @@ class DeployProcessorVersionRequest(proto.Message):
             to be deployed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -723,7 +733,7 @@ class DeployProcessorVersionMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=1,
         message=operation_metadata.CommonOperationMetadata,
@@ -739,7 +749,7 @@ class UndeployProcessorVersionRequest(proto.Message):
             to be undeployed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -759,7 +769,7 @@ class UndeployProcessorVersionMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=1,
         message=operation_metadata.CommonOperationMetadata,
@@ -782,11 +792,11 @@ class CreateProcessorRequest(proto.Message):
             processor is under CMEK if CMEK fields are set.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    processor = proto.Field(
+    processor: gcd_processor.Processor = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_processor.Processor,
@@ -802,7 +812,7 @@ class DeleteProcessorRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -818,7 +828,7 @@ class DeleteProcessorMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=5,
         message=operation_metadata.CommonOperationMetadata,
@@ -834,7 +844,7 @@ class EnableProcessorRequest(proto.Message):
             enabled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -857,7 +867,7 @@ class EnableProcessorMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=5,
         message=operation_metadata.CommonOperationMetadata,
@@ -873,7 +883,7 @@ class DisableProcessorRequest(proto.Message):
             disabled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -896,7 +906,7 @@ class DisableProcessorMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=5,
         message=operation_metadata.CommonOperationMetadata,
@@ -918,11 +928,11 @@ class SetDefaultProcessorVersionRequest(proto.Message):
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{version}``
     """
 
-    processor = proto.Field(
+    processor: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    default_processor_version = proto.Field(
+    default_processor_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -942,7 +952,7 @@ class SetDefaultProcessorVersionMetadata(proto.Message):
             operation.
     """
 
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=1,
         message=operation_metadata.CommonOperationMetadata,
@@ -979,31 +989,31 @@ class ReviewDocumentRequest(proto.Message):
         DEFAULT = 0
         URGENT = 1
 
-    inline_document = proto.Field(
+    inline_document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="source",
         message=gcd_document.Document,
     )
-    human_review_config = proto.Field(
+    human_review_config: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    document = proto.Field(
+    document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_document.Document,
     )
-    enable_schema_validation = proto.Field(
+    enable_schema_validation: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    priority = proto.Field(
+    priority: Priority = proto.Field(
         proto.ENUM,
         number=5,
         enum=Priority,
     )
-    document_schema = proto.Field(
+    document_schema: gcd_document_schema.DocumentSchema = proto.Field(
         proto.MESSAGE,
         number=6,
         message=gcd_document_schema.DocumentSchema,
@@ -1030,16 +1040,16 @@ class ReviewDocumentResponse(proto.Message):
         REJECTED = 1
         SUCCEEDED = 2
 
-    gcs_destination = proto.Field(
+    gcs_destination: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    rejection_reason = proto.Field(
+    rejection_reason: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1076,31 +1086,31 @@ class ReviewDocumentOperationMetadata(proto.Message):
         FAILED = 4
         CANCELLED = 5
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    common_metadata = proto.Field(
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
         proto.MESSAGE,
         number=5,
         message=operation_metadata.CommonOperationMetadata,
     )
-    question_id = proto.Field(
+    question_id: str = proto.Field(
         proto.STRING,
         number=6,
     )

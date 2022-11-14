@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -80,47 +82,47 @@ class ProcessorVersion(proto.Message):
                 used as a replacement.
         """
 
-        deprecation_time = proto.Field(
+        deprecation_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        replacement_processor_version = proto.Field(
+        replacement_processor_version: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    kms_key_version_name = proto.Field(
+    kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    google_managed = proto.Field(
+    google_managed: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    deprecation_info = proto.Field(
+    deprecation_info: DeprecationInfo = proto.Field(
         proto.MESSAGE,
         number=13,
         message=DeprecationInfo,
@@ -168,37 +170,37 @@ class Processor(proto.Message):
         FAILED = 6
         DELETING = 7
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    default_processor_version = proto.Field(
+    default_processor_version: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    process_endpoint = proto.Field(
+    process_endpoint: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=8,
     )

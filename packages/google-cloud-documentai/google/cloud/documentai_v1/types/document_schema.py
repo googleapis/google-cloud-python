@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -32,7 +34,7 @@ class DocumentSchema(proto.Message):
             Display name to show to users.
         description (str):
             Description of the schema.
-        entity_types (Sequence[google.cloud.documentai_v1.types.DocumentSchema.EntityType]):
+        entity_types (MutableSequence[google.cloud.documentai_v1.types.DocumentSchema.EntityType]):
             Entity types of the schema.
         metadata (google.cloud.documentai_v1.types.DocumentSchema.Metadata):
             Metadata of the schema.
@@ -74,10 +76,10 @@ class DocumentSchema(proto.Message):
                    type. For example ``line_item/amount``. This convention
                    is deprecated, but will still be honored for backward
                    compatibility.
-            base_types (Sequence[str]):
+            base_types (MutableSequence[str]):
                 The entity type that this type is derived
                 from.  For now, one and only one should be set.
-            properties (Sequence[google.cloud.documentai_v1.types.DocumentSchema.EntityType.Property]):
+            properties (MutableSequence[google.cloud.documentai_v1.types.DocumentSchema.EntityType.Property]):
                 Describing the nested structure, or
                 composition of an entity.
         """
@@ -86,12 +88,12 @@ class DocumentSchema(proto.Message):
             r"""Defines the a list of enum values.
 
             Attributes:
-                values (Sequence[str]):
+                values (MutableSequence[str]):
                     The individual values that this enum values
                     type can include.
             """
 
-            values = proto.RepeatedField(
+            values: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
@@ -124,39 +126,43 @@ class DocumentSchema(proto.Message):
                 REQUIRED_ONCE = 3
                 REQUIRED_MULTIPLE = 4
 
-            name = proto.Field(
+            name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            value_type = proto.Field(
+            value_type: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            occurrence_type = proto.Field(
-                proto.ENUM,
-                number=3,
-                enum="DocumentSchema.EntityType.Property.OccurrenceType",
+            occurrence_type: "DocumentSchema.EntityType.Property.OccurrenceType" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=3,
+                    enum="DocumentSchema.EntityType.Property.OccurrenceType",
+                )
             )
 
-        enum_values = proto.Field(
+        enum_values: "DocumentSchema.EntityType.EnumValues" = proto.Field(
             proto.MESSAGE,
             number=14,
             oneof="value_source",
             message="DocumentSchema.EntityType.EnumValues",
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=13,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        base_types = proto.RepeatedField(
+        base_types: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        properties = proto.RepeatedField(
+        properties: MutableSequence[
+            "DocumentSchema.EntityType.Property"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="DocumentSchema.EntityType.Property",
@@ -184,37 +190,37 @@ class DocumentSchema(proto.Message):
                 checked.
         """
 
-        document_splitter = proto.Field(
+        document_splitter: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        document_allow_multiple_labels = proto.Field(
+        document_allow_multiple_labels: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        prefixed_naming_on_properties = proto.Field(
+        prefixed_naming_on_properties: bool = proto.Field(
             proto.BOOL,
             number=6,
         )
-        skip_naming_validation = proto.Field(
+        skip_naming_validation: bool = proto.Field(
             proto.BOOL,
             number=7,
         )
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    entity_types = proto.RepeatedField(
+    entity_types: MutableSequence[EntityType] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=EntityType,
     )
-    metadata = proto.Field(
+    metadata: Metadata = proto.Field(
         proto.MESSAGE,
         number=4,
         message=Metadata,

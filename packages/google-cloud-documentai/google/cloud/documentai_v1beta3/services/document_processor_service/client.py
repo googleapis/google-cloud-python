@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -68,7 +79,7 @@ class DocumentProcessorServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DocumentProcessorServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -416,7 +427,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentProcessorServiceTransport, None] = None,
+        transport: Optional[Union[str, DocumentProcessorServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -514,11 +525,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def process_document(
         self,
-        request: Union[document_processor_service.ProcessRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.ProcessRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
@@ -630,11 +643,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def batch_process_documents(
         self,
-        request: Union[document_processor_service.BatchProcessRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.BatchProcessRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""LRO endpoint to batch process many documents. The output is
@@ -754,13 +769,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def fetch_processor_types(
         self,
-        request: Union[
-            document_processor_service.FetchProcessorTypesRequest, dict
+        request: Optional[
+            Union[document_processor_service.FetchProcessorTypesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.FetchProcessorTypesResponse:
         r"""Fetches processor types. Note that we do not use
@@ -863,13 +878,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def list_processor_types(
         self,
-        request: Union[
-            document_processor_service.ListProcessorTypesRequest, dict
+        request: Optional[
+            Union[document_processor_service.ListProcessorTypesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorTypesPager:
         r"""Lists the processor types that exist.
@@ -984,11 +999,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def list_processors(
         self,
-        request: Union[document_processor_service.ListProcessorsRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.ListProcessorsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorsPager:
         r"""Lists all processors which belong to this project.
@@ -1099,11 +1116,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def get_processor(
         self,
-        request: Union[document_processor_service.GetProcessorRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.GetProcessorRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> processor.Processor:
         r"""Gets a processor detail.
@@ -1202,13 +1221,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def get_processor_version(
         self,
-        request: Union[
-            document_processor_service.GetProcessorVersionRequest, dict
+        request: Optional[
+            Union[document_processor_service.GetProcessorVersionRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> processor.ProcessorVersion:
         r"""Gets a processor version detail.
@@ -1315,13 +1334,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def list_processor_versions(
         self,
-        request: Union[
-            document_processor_service.ListProcessorVersionsRequest, dict
+        request: Optional[
+            Union[document_processor_service.ListProcessorVersionsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorVersionsPager:
         r"""Lists all versions of a processor.
@@ -1434,13 +1453,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def delete_processor_version(
         self,
-        request: Union[
-            document_processor_service.DeleteProcessorVersionRequest, dict
+        request: Optional[
+            Union[document_processor_service.DeleteProcessorVersionRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the processor version, all artifacts under
@@ -1563,13 +1582,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def deploy_processor_version(
         self,
-        request: Union[
-            document_processor_service.DeployProcessorVersionRequest, dict
+        request: Optional[
+            Union[document_processor_service.DeployProcessorVersionRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deploys the processor version.
@@ -1685,13 +1704,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def undeploy_processor_version(
         self,
-        request: Union[
-            document_processor_service.UndeployProcessorVersionRequest, dict
+        request: Optional[
+            Union[document_processor_service.UndeployProcessorVersionRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Undeploys the processor version.
@@ -1811,12 +1830,14 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def create_processor(
         self,
-        request: Union[document_processor_service.CreateProcessorRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.CreateProcessorRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        processor: gcd_processor.Processor = None,
+        parent: Optional[str] = None,
+        processor: Optional[gcd_processor.Processor] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_processor.Processor:
         r"""Creates a processor from the type processor that the
@@ -1931,11 +1952,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def delete_processor(
         self,
-        request: Union[document_processor_service.DeleteProcessorRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.DeleteProcessorRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes the processor, unloads all deployed model
@@ -2057,10 +2080,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def enable_processor(
         self,
-        request: Union[document_processor_service.EnableProcessorRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.EnableProcessorRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Enables a processor
@@ -2153,10 +2178,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def disable_processor(
         self,
-        request: Union[document_processor_service.DisableProcessorRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.DisableProcessorRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Disables a processor
@@ -2249,12 +2276,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def set_default_processor_version(
         self,
-        request: Union[
-            document_processor_service.SetDefaultProcessorVersionRequest, dict
+        request: Optional[
+            Union[document_processor_service.SetDefaultProcessorVersionRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Set the default (active) version of a
@@ -2362,11 +2389,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def review_document(
         self,
-        request: Union[document_processor_service.ReviewDocumentRequest, dict] = None,
+        request: Optional[
+            Union[document_processor_service.ReviewDocumentRequest, dict]
+        ] = None,
         *,
-        human_review_config: str = None,
+        human_review_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Send a document for Human Review. The input document
@@ -2500,10 +2529,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -2554,10 +2583,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -2608,10 +2637,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -2662,10 +2691,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -2716,10 +2745,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
