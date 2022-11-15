@@ -120,7 +120,7 @@ def system(session):
         session.run("py.test", "--verbose", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python=["3.7", "3.8", "3.9"])
+@nox.session(python=["3.7", "3.8", "3.9", "3.10"])
 @nox.parametrize(
     "library",
     ["python-pubsub", "python-texttospeech", "python-speech"],
