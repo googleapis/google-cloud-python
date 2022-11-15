@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.57.0](https://github.com/googleapis/python-api-common-protos/compare/v1.56.4...v1.57.0) (2022-11-15)
+
+
+### Features
+
+* Add support for Python 3.10 ([#143](https://github.com/googleapis/python-api-common-protos/issues/143)) ([63ca888](https://github.com/googleapis/python-api-common-protos/commit/63ca888512be84508fcf95e4d5d40df036a85e18))
+* Add support for Python 3.11 ([#145](https://github.com/googleapis/python-api-common-protos/issues/145)) ([b9dbb21](https://github.com/googleapis/python-api-common-protos/commit/b9dbb219ea46abd9851af1fc41ea37f9d5631c0b))
+* added google.api.JwtLocation.cookie ([6af2132](https://github.com/googleapis/python-api-common-protos/commit/6af21322879cba158e0a5992c9799e68c1744fac))
+* added google.api.Service.publishing and client libraries settings ([6af2132](https://github.com/googleapis/python-api-common-protos/commit/6af21322879cba158e0a5992c9799e68c1744fac))
+* new fields in enum google.api.ErrorReason ([6af2132](https://github.com/googleapis/python-api-common-protos/commit/6af21322879cba158e0a5992c9799e68c1744fac))
+
+
+### Bug Fixes
+
+* deprecate google.api.BackendRule.min_deadline ([6af2132](https://github.com/googleapis/python-api-common-protos/commit/6af21322879cba158e0a5992c9799e68c1744fac))
+* **deps:** Require protobuf &gt;=3.19.5 ([#141](https://github.com/googleapis/python-api-common-protos/issues/141)) ([9ea3530](https://github.com/googleapis/python-api-common-protos/commit/9ea3530b459269e964fcc98db1c5025e05d6495f))
+
+
+### Documentation
+
+* minor updates to comments ([6af2132](https://github.com/googleapis/python-api-common-protos/commit/6af21322879cba158e0a5992c9799e68c1744fac))
+
 ## [1.56.4](https://github.com/googleapis/python-api-common-protos/compare/v1.56.3...v1.56.4) (2022-07-12)
 
 
