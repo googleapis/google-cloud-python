@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.6.0...v2.0.0) (2022-11-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Retrieve all markdown pages (#266)
+
+### Features
+
+* Add golden testing ([#262](https://github.com/googleapis/sphinx-docfx-yaml/issues/262)) ([ff8902e](https://github.com/googleapis/sphinx-docfx-yaml/commit/ff8902ed5593b8cdb55e08809c24c49d0479200c))
+* Retrieve all markdown pages ([#266](https://github.com/googleapis/sphinx-docfx-yaml/issues/266)) ([1cee1ed](https://github.com/googleapis/sphinx-docfx-yaml/commit/1cee1edbcc8e7c441dedc0c6b9f80c545cac75a0))
+
+
+### Bug Fixes
+
+* Remove inheritance details ([#268](https://github.com/googleapis/sphinx-docfx-yaml/issues/268)) ([43751cf](https://github.com/googleapis/sphinx-docfx-yaml/commit/43751cf17818a9a6d4d2c9e37078f3356e0fb8a9))
+* Remove unused YAML fields to fix presubmit ([#265](https://github.com/googleapis/sphinx-docfx-yaml/issues/265)) ([10ecc44](https://github.com/googleapis/sphinx-docfx-yaml/commit/10ecc446d4f85801995f1810eca7261a851643a5))
+
 ## [1.6.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.5.0...v1.6.0) (2022-10-13)
 
 
