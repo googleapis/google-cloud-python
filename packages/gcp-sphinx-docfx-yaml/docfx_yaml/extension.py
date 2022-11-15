@@ -26,6 +26,8 @@ import shutil
 import black
 import logging
 
+from collections import defaultdict
+from collections.abc import MutableSet
 from pathlib import Path
 from functools import partial
 from itertools import zip_longest
@@ -39,6 +41,7 @@ except ImportError:
 
 from yaml import safe_dump as dump
 
+import sphinx.application
 from sphinx.util.console import darkgreen, bold
 from sphinx.util import ensuredir
 from sphinx.errors import ExtensionError
@@ -160,8 +163,11 @@ def build_init(app):
     app.env.docfx_uid_names = {}
     # This stores file path for class when inspect cannot retrieve file path
     app.env.docfx_class_paths = {}
-    # This stores the name and href of the markdown pages.
-    app.env.markdown_pages = []
+    # This stores the name and href of the nested markdown pages.
+    app.env.markdown_pages = defaultdict(list)
+    # This stores all the markdown pages moved from the plugin, will be used
+    # to compare and delete unused pages.
+    app.env.moved_markdown_pages = set()
 
     app.env.docfx_xrefs = {}
 
@@ -1527,6 +1533,75 @@ def search_cross_references(obj, current_object_name: str, known_uids: List[str]
                     markdown_utils.reformat_markdown_to_html(attribute_type))
 
 
+# Type alias used for toc_yaml entries.
+_toc_yaml_type_alias = dict[str, any]
+
+def merge_markdown_and_package_toc(
+    pkg_toc_yaml: list[_toc_yaml_type_alias],
+    markdown_toc_yaml: _toc_yaml_type_alias,
+    known_uids: set[str],
+) -> tuple[MutableSet[str], list[_toc_yaml_type_alias]]:
+    """
+    Merges the markdown and package table of contents.
+
+    Args:
+        pkg_toc_yaml: table of content for package files.
+        markdown_toc_yaml: table fo content for markdown files.
+
+    Returns:
+        A set of markdown pages that has been added, and the merged table of
+        contents file, with files in the correct position.
+    """
+    def _flatten_toc(
+        toc_yaml_entry: list[_toc_yaml_type_alias],
+    ) -> list[_toc_yaml_type_alias]:
+        """Flattens and retrieves all children within pkg_toc_yaml."""
+        entries = list(toc_yaml_entry)
+        for entry in toc_yaml_entry:
+            if (children := entry.get('items')):
+                entries.extend(_flatten_toc(children))
+        return entries
+
+    added_pages = set()
+
+    pkg_toc_entries = _flatten_toc(pkg_toc_yaml)
+
+    for entry in pkg_toc_entries:
+        entry_name = entry['name'].lower()
+        if entry_name not in markdown_toc_yaml:
+            continue
+
+        markdown_pages_to_add = []
+        for page in markdown_toc_yaml[entry_name]:
+            if page['href'].split('.')[0] not in known_uids and (
+                page['href'] not in added_pages):
+                markdown_pages_to_add.append(
+                    {'name': page['name'], 'href': page['href']}
+                )
+
+        if not markdown_pages_to_add:
+            continue
+
+        markdown_pages_to_add = sorted(
+            markdown_pages_to_add,
+            key=lambda entry: entry['href'])
+
+        entry['items'] = markdown_pages_to_add + entry['items']
+        added_pages.update({
+            page['href'] for page in markdown_pages_to_add
+        })
+
+    if (top_level_pages := markdown_toc_yaml.get('/')) is None or (
+        top_level_pages and top_level_pages[0]['href'] != 'index.md'):
+        return added_pages, [pkg_toc_yaml]
+
+    added_pages.update({
+        page['href'] for page in top_level_pages
+    })
+
+    return added_pages, top_level_pages + pkg_toc_yaml
+
+
 def build_finished(app, exception):
     """
     Output YAML on the file system.
@@ -1767,13 +1842,26 @@ def build_finished(app, exception):
 
     sanitize_uidname_field(pkg_toc_yaml)
 
+    known_uids = {
+        uid.split('.')[-1]
+        for uid in app.env.docfx_uid_names
+    }
+
+    added_pages, pkg_toc_yaml = merge_markdown_and_package_toc(
+        pkg_toc_yaml, app.env.markdown_pages, known_uids)
+
+    # Remove unused pages after merging the table of contents.
+    if added_pages:
+        markdown_utils.remove_unused_pages(
+            added_pages, app.env.moved_markdown_pages, normalized_outdir)
+
     toc_file = os.path.join(normalized_outdir, 'toc.yml')
     with open(toc_file, 'w') as writable:
         writable.write(
             dump(
                 [{
                     'name': app.config.project,
-                    'items': app.env.markdown_pages + pkg_toc_yaml
+                    'items': pkg_toc_yaml
                 }],
                 default_flow_style=False,
             )

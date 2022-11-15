@@ -16,11 +16,12 @@
 """Markdown related utilities for Sphinx DocFX YAML extension."""
 
 
+from collections.abc import MutableSet
 import os
 from pathlib import Path
 import re
 import shutil
-from typing import Iterable
+from typing import Iterable, List, Optional
 
 from docuploader import shell
 import sphinx.application
@@ -231,7 +232,11 @@ def _prepend_markdown_header(filename: str, mdfile: Iterable[str]) -> None:
     mdfile.write(file_content)
 
 
-def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
+def move_markdown_pages(
+    app: sphinx.application,
+    outdir: Path,
+    cwd: Optional[List[str]] = [],
+) -> None:
     """Moves markdown pages to be added to the generated reference documentation.
 
     Markdown pages may be hand written or auto generated. They're processed
@@ -254,7 +259,14 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
         'readme.md': 'index.md',
     }
 
-    markdown_dir = Path(app.builder.outdir).parent / "markdown"
+    base_markdown_dir = Path(app.builder.outdir).parent / "markdown"
+
+    markdown_dir = (
+        base_markdown_dir.joinpath(*cwd)
+        if cwd
+        else base_markdown_dir
+    )
+
     if not markdown_dir.exists():
         print("There's no markdown file to move.")
         return
@@ -264,6 +276,12 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
 
     # For each file, if it is a markdown file move to the top level pages.
     for mdfile in markdown_dir.iterdir():
+        if mdfile.is_dir():
+            cwd.append(mdfile.name)
+            move_markdown_pages(app, outdir, cwd)
+            # Restore the original cwd after finish working on the directory.
+            cwd.pop()
+
         if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
             mdfile_name = ""
 
@@ -288,6 +306,7 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
             mdfile_outdir = f"{outdir}/{mdfile_name_to_use}"
 
             shutil.copy(mdfile, mdfile_outdir)
+            app.env.moved_markdown_pages.add(mdfile_name_to_use)
 
             _highlight_md_codeblocks(mdfile_outdir)
             _clean_image_links(mdfile_outdir)
@@ -297,20 +316,29 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
                 # Save the index page entry.
                 index_page_entry = {
                     'name': 'Overview',
-                    'href': 'index.md'
+                    'href': 'index.md',
                 }
                 continue
 
+            if not cwd:
+                # Use '/' to reserve for top level pages.
+                app.env.markdown_pages['/'].append({
+                    'name': name,
+                    'href': mdfile_name_to_use,
+                })
+                continue
+
             # Add the file to the TOC later.
-            app.env.markdown_pages.append({
+            app.env.markdown_pages[cwd[-1]].append({
                 'name': name,
                 'href': mdfile_name_to_use,
             })
 
-    if app.env.markdown_pages:
-        # Sort the TOC alphabetically based on href entry.
-        app.env.markdown_pages = sorted(
-            app.env.markdown_pages,
+    if app.env.markdown_pages.get('/'):
+        # Sort the top level pages. Other pages will be sorted when they're
+        # added to package level files accordingly.
+        app.env.markdown_pages['/'] = sorted(
+            app.env.markdown_pages['/'],
             key=lambda entry: entry['href'],
         )
 
@@ -318,10 +346,42 @@ def move_markdown_pages(app: sphinx.application, outdir: Path) -> None:
             return
 
         # Place the Overview page at the top of the list.
-        app.env.markdown_pages.insert(
+        app.env.markdown_pages['/'].insert(
             0,
             index_page_entry,
         )
+
+
+def remove_unused_pages(
+    added_pages: MutableSet[str],
+    all_pages: MutableSet[str],
+    outdir: Path,
+) -> None:
+    """Removes unused markdown pages after merging the table of contents.
+
+    Pages may be generated as part of generating the document. API pages
+    are needed and may be generated as part of Sphinx config, but if not
+    used they will be identified and removed.
+
+    Args:
+        added_pages: markdown pages that have been added to the merged
+            table of contents.
+        all_pages: set of all markdown pages generated.
+        outdir: output directory containing the markdown pages.
+    """
+
+    pages_to_remove = set(
+        page for page in all_pages
+        if page not in added_pages
+    )
+
+    for page in pages_to_remove:
+        try:
+            os.remove(f"{outdir}/{page}")
+        except FileNotFoundError:
+            # This shouldn't happen, but in case we fail, ignore the failure
+            # and continue deleting other files.
+            print(f"Could not delete {page}.")
 
 
 def run_sphinx_markdown() -> None:

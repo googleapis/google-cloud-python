@@ -1,11 +1,14 @@
 from docfx_yaml import markdown_utils
 
-
 import unittest
+from unittest.mock import patch
 from parameterized import parameterized
+import pathlib
 
+import os
 from yaml import load, Loader
 
+import pytest
 import tempfile
 
 class TestGenerate(unittest.TestCase):
@@ -246,6 +249,33 @@ For example:
             header_line_got = markdown_utils._extract_header_from_markdown(mdfile)
 
         self.assertFalse(header_line_got)
+
+
+    def test_remove_unused_pages(self):
+        # Check that pages are removed as expected.
+        added_page = ['safe.md']
+        all_pages = ['to_delete.md', 'safe.md']
+        outdir = pathlib.Path('output_path')
+
+        expected_delete_call = f"{outdir}/to_delete.md"
+
+        with patch('os.remove') as mock_os_remove:
+            markdown_utils.remove_unused_pages(added_page, all_pages, outdir)
+            mock_os_remove.assert_called_once_with(expected_delete_call)
+
+
+    def test_remove_unused_pages_with_exception(self):
+        # Check that the method still runs as expected.
+        added_page = ['safe.md']
+        all_pages = ['does_not_exist.md', 'safe.md']
+        outdir = pathlib.Path('output_path')
+
+        self.assertFalse(os.path.isfile(outdir / 'does_not_exist.md'))
+
+        try:
+            markdown_utils.remove_unused_pages(added_page, all_pages, outdir)
+        except FileNotFoundError:
+            pytest.fail('Should not have thrown an exception.')
 
 
 if __name__ == '__main__':

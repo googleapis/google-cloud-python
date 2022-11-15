@@ -4,6 +4,16 @@
   - href: changelog.md
     name: Changelog
   - items:
+    - href: blobs.md
+      name: Blobs / Objects
+    - href: buckets.md
+      name: Buckets
+    - href: generation_metageneration.md
+      name: Conditional Requests Via ETag / Generation / Metageneration Preconditions
+    - href: modules.md
+      name: Modules for Python Storage
+    - href: retry_timeout.md
+      name: Configuring Timeouts and Retries
     - items:
       - name: Overview
         uid: google.cloud.storage.acl

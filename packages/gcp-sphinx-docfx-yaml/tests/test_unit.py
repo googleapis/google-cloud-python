@@ -816,5 +816,74 @@ this is not a properly formatted warning.
             self.assertDictEqual(attribute_got, attribute_want)
 
 
+    def test_merge_markdown_and_package_toc(self):
+        known_uids = {'acl','batch','blob','client','constants','fileio','hmac_key','notification','retry'}
+        markdown_pages = {
+            'storage': [
+                {'name': 'FileIO', 'href': 'fileio.md'},
+                {'name': 'Retry', 'href': 'retry.md'},
+                {'name': 'Notification', 'href': 'notification.md'},
+                {'name': 'HMAC Key Metadata', 'href': 'hmac_key.md'},
+                {'name': 'Batches', 'href': 'batch.md'},
+                {'name': 'Constants', 'href': 'constants.md'},
+                {'name': 'Storage Client', 'href': 'client.md'},
+                {'name': 'Blobs / Objects', 'href': 'blobs.md'}
+            ],
+            'acl': [
+                {'name': 'ACL', 'href': 'acl.md'},
+                {'name': 'ACL guide', 'href': 'acl_guide.md'}
+            ],
+            '/': [
+                {'name': 'Overview', 'href': 'index.md'},
+                {'name': 'Changelog', 'href': 'changelog.md'}
+            ],
+        }
+        pkg_toc_yaml = [
+            {'name': 'Storage',
+                'items': [
+                    {'name': 'acl', 'uid': 'google.cloud.storage.acl', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.acl'}]},
+                    {'name': 'batch', 'uid': 'google.cloud.storage.batch', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.batch'}]},
+                    {'name': 'blob', 'uid': 'google.cloud.storage.blob', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.blob'}]},
+                    {'name': 'bucket', 'uid': 'google.cloud.storage.bucket', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.bucket'}]},
+                    {'name': 'client', 'uid': 'google.cloud.storage.client', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.client'}]},
+                    {'name': 'constants', 'uid': 'google.cloud.storage.constants'},
+                    {'name': 'fileio', 'uid': 'google.cloud.storage.fileio', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.fileio'}]},
+                    {'name': 'hmac_key', 'uid': 'google.cloud.storage.hmac_key', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.hmac_key'}]},
+                    {'name': 'notification', 'uid': 'google.cloud.storage.notification', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.notification'}]},
+                    {'name': 'retry', 'uid': 'google.cloud.storage.retry', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.retry'}]},
+                ]
+             },
+        ]
+
+        added_pages, merged_pkg_toc_yaml = extension.merge_markdown_and_package_toc(
+            pkg_toc_yaml, markdown_pages, known_uids)
+
+        expected_added_pages = {'index.md', 'changelog.md', 'blobs.md', 'acl_guide.md'}
+        expected_merged_pkg_toc_yaml = [
+            {'name': 'Overview', 'href': 'index.md'},
+            {'name': 'Changelog', 'href': 'changelog.md'},
+            {'name': 'Storage',
+                'items': [
+                    {'name': 'Blobs / Objects', 'href': 'blobs.md'},
+                    {'name': 'acl', 'uid': 'google.cloud.storage.acl', 'items': [
+                        {'name': 'ACL guide', 'href': 'acl_guide.md'},
+                        {'name': 'Overview', 'uid': 'google.cloud.storage.acl'},
+                    ]},
+                    {'name': 'batch', 'uid': 'google.cloud.storage.batch', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.batch'}]},
+                    {'name': 'blob', 'uid': 'google.cloud.storage.blob', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.blob'}]},
+                    {'name': 'bucket', 'uid': 'google.cloud.storage.bucket', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.bucket'}]},
+                    {'name': 'client', 'uid': 'google.cloud.storage.client', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.client'}]},
+                    {'name': 'constants', 'uid': 'google.cloud.storage.constants'},
+                    {'name': 'fileio', 'uid': 'google.cloud.storage.fileio', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.fileio'}]},
+                    {'name': 'hmac_key', 'uid': 'google.cloud.storage.hmac_key', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.hmac_key'}]},
+                    {'name': 'notification', 'uid': 'google.cloud.storage.notification', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.notification'}]},
+                    {'name': 'retry', 'uid': 'google.cloud.storage.retry', 'items': [{'name': 'Overview', 'uid': 'google.cloud.storage.retry'}]},
+                ]
+             },
+        ]
+        self.assertSetEqual(added_pages, expected_added_pages)
+        self.assertListEqual(merged_pkg_toc_yaml, expected_merged_pkg_toc_yaml)
+
+
 if __name__ == '__main__':
     unittest.main()
