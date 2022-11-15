@@ -11,8 +11,6 @@ items:
   - google.cloud.storage.fileio.SlidingBuffer.write
   class: google.cloud.storage.fileio.SlidingBuffer
   fullName: google.cloud.storage.fileio.SlidingBuffer
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.storage.fileio

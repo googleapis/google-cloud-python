@@ -34,10 +34,6 @@ items:
   children: []
   class: google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams
   fullName: google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.texttospeech_v1beta1.types

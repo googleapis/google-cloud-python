@@ -9,10 +9,6 @@ items:
   - google.cloud.storage.acl.ObjectACL.user_project
   class: google.cloud.storage.acl.ObjectACL
   fullName: google.cloud.storage.acl.ObjectACL
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.storage.acl.ACL
   langs:
   - python
   module: google.cloud.storage.acl

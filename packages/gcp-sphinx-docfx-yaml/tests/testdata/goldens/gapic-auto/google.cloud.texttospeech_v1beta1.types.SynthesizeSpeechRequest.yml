@@ -19,10 +19,6 @@ items:
   - google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.TimepointType
   class: google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest
   fullName: google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.texttospeech_v1beta1.types

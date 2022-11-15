@@ -7,14 +7,6 @@ items:
   - google.cloud.storage.batch.Batch.finish
   class: google.cloud.storage.batch.Batch
   fullName: google.cloud.storage.batch.Batch
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - inheritance:
-        - type: builtins.object
-        type: google.cloud._http.Connection
-      type: google.cloud._http.JSONConnection
-    type: google.cloud.storage._http.Connection
   langs:
   - python
   module: google.cloud.storage.batch

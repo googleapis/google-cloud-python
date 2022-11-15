@@ -21,17 +21,6 @@ items:
   - google.cloud.storage.client.Client.lookup_bucket
   class: google.cloud.storage.client.Client
   fullName: google.cloud.storage.client.Client
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - inheritance:
-        - type: builtins.object
-        type: google.cloud.client._ClientFactoryMixin
-      type: google.cloud.client.Client
-    - inheritance:
-      - type: builtins.object
-      type: google.cloud.client._ClientProjectMixin
-    type: google.cloud.client.ClientWithProject
   langs:
   - python
   module: google.cloud.storage.client

@@ -15,10 +15,6 @@ items:
   children: []
   class: google.cloud.pubsub_v1.types.ModifyPushConfigRequest
   fullName: google.cloud.pubsub_v1.types.ModifyPushConfigRequest
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

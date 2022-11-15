@@ -10,10 +10,6 @@ items:
   children: []
   class: google.cloud.pubsub_v1.types.PublishResponse
   fullName: google.cloud.pubsub_v1.types.PublishResponse
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

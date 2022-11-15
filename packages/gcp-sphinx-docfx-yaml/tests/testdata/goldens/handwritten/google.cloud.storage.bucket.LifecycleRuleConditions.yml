@@ -28,10 +28,6 @@ items:
   - google.cloud.storage.bucket.LifecycleRuleConditions.values
   class: google.cloud.storage.bucket.LifecycleRuleConditions
   fullName: google.cloud.storage.bucket.LifecycleRuleConditions
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.dict
   langs:
   - python
   module: google.cloud.storage.bucket

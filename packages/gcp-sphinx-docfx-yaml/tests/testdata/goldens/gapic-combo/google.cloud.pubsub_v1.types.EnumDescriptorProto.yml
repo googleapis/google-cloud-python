@@ -5,13 +5,6 @@ items:
   - google.cloud.pubsub_v1.types.EnumDescriptorProto.EnumReservedRange
   class: google.cloud.pubsub_v1.types.EnumDescriptorProto
   fullName: google.cloud.pubsub_v1.types.EnumDescriptorProto
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google._upb._message.Message
-  - inheritance:
-    - type: builtins.object
-    type: google.protobuf.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

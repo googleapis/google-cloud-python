@@ -9,10 +9,6 @@ items:
   - google.cloud.storage.acl.BucketACL.user_project
   class: google.cloud.storage.acl.BucketACL
   fullName: google.cloud.storage.acl.BucketACL
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.storage.acl.ACL
   langs:
   - python
   module: google.cloud.storage.acl

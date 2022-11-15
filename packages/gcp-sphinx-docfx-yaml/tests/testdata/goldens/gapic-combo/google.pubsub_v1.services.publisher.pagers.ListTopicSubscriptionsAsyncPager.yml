@@ -6,8 +6,6 @@ items:
   - google.pubsub_v1.services.publisher.pagers.ListTopicSubscriptionsAsyncPager
   class: google.pubsub_v1.services.publisher.pagers.ListTopicSubscriptionsAsyncPager
   fullName: google.pubsub_v1.services.publisher.pagers.ListTopicSubscriptionsAsyncPager
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.pubsub_v1.services.publisher.pagers
@@ -57,8 +55,6 @@ items:
 - attributes: []
   class: google.pubsub_v1.services.publisher.pagers.ListTopicSubscriptionsAsyncPager
   fullName: google.pubsub_v1.services.publisher.pagers.ListTopicSubscriptionsAsyncPager
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.pubsub_v1.services.publisher.pagers

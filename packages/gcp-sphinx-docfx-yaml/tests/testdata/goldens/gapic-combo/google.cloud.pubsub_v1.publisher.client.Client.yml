@@ -45,10 +45,6 @@ items:
   - google.cloud.pubsub_v1.publisher.client.Client.update_topic
   class: google.cloud.pubsub_v1.publisher.client.Client
   fullName: google.cloud.pubsub_v1.publisher.client.Client
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.pubsub_v1.services.publisher.client.PublisherClient
   langs:
   - python
   module: google.cloud.pubsub_v1.publisher.client
@@ -78,10 +74,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.publisher.client.Client
   fullName: google.cloud.pubsub_v1.publisher.client.Client
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.pubsub_v1.services.publisher.client.PublisherClient
   langs:
   - python
   module: google.cloud.pubsub_v1.publisher.client

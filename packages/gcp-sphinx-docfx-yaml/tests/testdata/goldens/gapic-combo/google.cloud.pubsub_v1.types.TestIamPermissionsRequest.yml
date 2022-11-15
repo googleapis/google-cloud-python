@@ -4,13 +4,6 @@ items:
 - children: []
   class: google.cloud.pubsub_v1.types.TestIamPermissionsRequest
   fullName: google.cloud.pubsub_v1.types.TestIamPermissionsRequest
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google._upb._message.Message
-  - inheritance:
-    - type: builtins.object
-    type: google.protobuf.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

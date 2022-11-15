@@ -5,17 +5,6 @@ items:
   children: []
   class: google.cloud.texttospeech_v1.types.CustomVoiceParams.ReportedUsage
   fullName: google.cloud.texttospeech_v1.types.CustomVoiceParams.ReportedUsage
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - inheritance:
-        - type: builtins.object
-        type: builtins.int
-      - inheritance:
-        - type: builtins.object
-        type: enum.Enum
-      type: enum.IntEnum
-    type: proto.enums.Enum
   langs:
   - python
   module: google.cloud.texttospeech_v1.types.CustomVoiceParams

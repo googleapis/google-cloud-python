@@ -17,10 +17,6 @@ items:
   - google.cloud.storage.bucket.LifecycleRuleSetStorageClass.values
   class: google.cloud.storage.bucket.LifecycleRuleSetStorageClass
   fullName: google.cloud.storage.bucket.LifecycleRuleSetStorageClass
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.dict
   langs:
   - python
   module: google.cloud.storage.bucket

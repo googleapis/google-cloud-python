@@ -22,8 +22,6 @@ items:
   - google.cloud.storage.hmac_key.HMACKeyMetadata.user_project
   class: google.cloud.storage.hmac_key.HMACKeyMetadata
   fullName: google.cloud.storage.hmac_key.HMACKeyMetadata
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.storage.hmac_key

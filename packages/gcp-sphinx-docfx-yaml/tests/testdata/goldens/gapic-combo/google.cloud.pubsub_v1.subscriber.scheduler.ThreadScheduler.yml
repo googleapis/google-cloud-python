@@ -8,10 +8,6 @@ items:
   - google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.shutdown
   class: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler
   fullName: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.pubsub_v1.subscriber.scheduler.Scheduler
   langs:
   - python
   module: google.cloud.pubsub_v1.subscriber.scheduler

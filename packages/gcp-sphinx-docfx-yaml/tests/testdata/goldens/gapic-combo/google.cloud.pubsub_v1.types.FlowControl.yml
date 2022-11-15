@@ -11,10 +11,6 @@ items:
   - google.cloud.pubsub_v1.types.FlowControl.min_duration_per_lease_extension
   class: google.cloud.pubsub_v1.types.FlowControl
   fullName: google.cloud.pubsub_v1.types.FlowControl
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.tuple
   langs:
   - python
   module: google.cloud.pubsub_v1.types
@@ -39,10 +35,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.types.FlowControl
   fullName: google.cloud.pubsub_v1.types.FlowControl
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.tuple
   langs:
   - python
   module: google.cloud.pubsub_v1.types

@@ -12,19 +12,6 @@ items:
   - google.cloud.storage.fileio.BlobReader.writable
   class: google.cloud.storage.fileio.BlobReader
   fullName: google.cloud.storage.fileio.BlobReader
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - inheritance:
-        - type: builtins.object
-        type: _io._IOBase
-      type: _io._BufferedIOBase
-    - inheritance:
-      - inheritance:
-        - type: builtins.object
-        type: _io._IOBase
-      type: io.IOBase
-    type: io.BufferedIOBase
   langs:
   - python
   module: google.cloud.storage.fileio

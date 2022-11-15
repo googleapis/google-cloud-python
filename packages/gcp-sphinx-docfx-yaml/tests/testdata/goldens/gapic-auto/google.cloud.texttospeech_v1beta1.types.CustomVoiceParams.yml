@@ -13,10 +13,6 @@ items:
   - google.cloud.texttospeech_v1beta1.types.CustomVoiceParams.ReportedUsage
   class: google.cloud.texttospeech_v1beta1.types.CustomVoiceParams
   fullName: google.cloud.texttospeech_v1beta1.types.CustomVoiceParams
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.texttospeech_v1beta1.types

@@ -26,8 +26,6 @@ items:
   - google.cloud.texttospeech_v1.services.text_to_speech.TextToSpeechAsyncClient.transport
   class: google.cloud.texttospeech_v1.services.text_to_speech.TextToSpeechAsyncClient
   fullName: google.cloud.texttospeech_v1.services.text_to_speech.TextToSpeechAsyncClient
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.texttospeech_v1.services.text_to_speech
@@ -52,8 +50,6 @@ items:
 - attributes: []
   class: google.cloud.texttospeech_v1.services.text_to_speech.TextToSpeechAsyncClient
   fullName: google.cloud.texttospeech_v1.services.text_to_speech.TextToSpeechAsyncClient
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.texttospeech_v1.services.text_to_speech

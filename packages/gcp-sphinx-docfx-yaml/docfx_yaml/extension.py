@@ -1101,7 +1101,6 @@ def process_docstring(app, _type, name, obj, options, lines):
         else:
             app.env.docfx_yaml_functions[cls].append(datam)
 
-    insert_inheritance(app, _type, obj, datam)
     insert_children_on_module(app, _type, datam)
     insert_children_on_class(app, _type, datam)
     insert_children_on_function(app, _type, datam)
@@ -1127,25 +1126,6 @@ def process_signature(app, _type, name, obj, options, signature, return_annotati
         except InvalidInput as e:
             print(f"Could not format the given code: \n{e})")
         app.env.docfx_signature_funcs_methods[name] = signature
-
-
-def insert_inheritance(app, _type, obj, datam):
-
-    def collect_inheritance(base, to_add):
-        for new_base in base.__bases__:
-            new_add = {'type': _fullname(new_base)}
-            collect_inheritance(new_base, new_add)
-            if 'inheritance' not in to_add:
-                to_add['inheritance'] = []
-            to_add['inheritance'].append(new_add)
-
-    if hasattr(obj, '__bases__'):
-        if 'inheritance' not in datam:
-            datam['inheritance'] = []
-        for base in obj.__bases__:
-            to_add = {'type': _fullname(base)}
-            collect_inheritance(base, to_add)
-            datam['inheritance'].append(to_add)
 
 
 def insert_children_on_module(app, _type, datam):
@@ -1717,18 +1697,6 @@ def build_finished(app, exception):
                 # To distinguish distribution package and import package
                 if obj.get('type', '') == 'package' and obj.get('kind', '') != 'distribution':
                     obj['kind'] = 'import'
-
-                try:
-                    if remove_inheritance_for_notfound_class:
-                        if 'inheritance' in obj:
-                            python_sdk_name = obj['uid'].split('.')[0]
-                            obj['inheritance'] = [n for n in obj['inheritance'] if not n['type'].startswith(python_sdk_name) or
-                                                  n['type'] in app.env.docfx_info_uid_types]
-                            if not obj['inheritance']:
-                                obj.pop('inheritance')
-
-                except NameError:
-                    pass
 
                 # Extract any missing cross references where applicable.
                 # Potential targets are instances of full uid shown, or

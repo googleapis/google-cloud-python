@@ -45,10 +45,6 @@ items:
   - google.cloud.pubsub_v1.types.Topic.LabelsEntry
   class: google.cloud.pubsub_v1.types.Topic
   fullName: google.cloud.pubsub_v1.types.Topic
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

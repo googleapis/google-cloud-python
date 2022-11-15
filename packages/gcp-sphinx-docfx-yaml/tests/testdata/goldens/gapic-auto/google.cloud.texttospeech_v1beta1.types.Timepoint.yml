@@ -12,10 +12,6 @@ items:
   children: []
   class: google.cloud.texttospeech_v1beta1.types.Timepoint
   fullName: google.cloud.texttospeech_v1beta1.types.Timepoint
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.texttospeech_v1beta1.types

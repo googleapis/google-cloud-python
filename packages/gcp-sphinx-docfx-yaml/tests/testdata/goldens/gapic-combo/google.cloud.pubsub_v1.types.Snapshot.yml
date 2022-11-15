@@ -28,10 +28,6 @@ items:
   - google.cloud.pubsub_v1.types.Snapshot.LabelsEntry
   class: google.cloud.pubsub_v1.types.Snapshot
   fullName: google.cloud.pubsub_v1.types.Snapshot
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

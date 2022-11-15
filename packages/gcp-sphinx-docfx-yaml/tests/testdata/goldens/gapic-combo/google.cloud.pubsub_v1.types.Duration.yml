@@ -4,16 +4,6 @@ items:
 - children: []
   class: google.cloud.pubsub_v1.types.Duration
   fullName: google.cloud.pubsub_v1.types.Duration
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google._upb._message.Message
-  - inheritance:
-    - type: builtins.object
-    type: google.protobuf.message.Message
-  - inheritance:
-    - type: builtins.object
-    type: google.protobuf.internal.well_known_types.Duration
   langs:
   - python
   module: google.cloud.pubsub_v1.types

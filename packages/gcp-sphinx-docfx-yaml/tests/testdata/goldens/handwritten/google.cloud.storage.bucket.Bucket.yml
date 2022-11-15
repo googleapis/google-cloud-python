@@ -70,10 +70,6 @@ items:
   - google.cloud.storage.bucket.Bucket.versioning_enabled
   class: google.cloud.storage.bucket.Bucket
   fullName: google.cloud.storage.bucket.Bucket
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.storage._helpers._PropertyMixin
   langs:
   - python
   module: google.cloud.storage.bucket
@@ -105,10 +101,6 @@ items:
 - attributes: []
   class: google.cloud.storage.bucket.Bucket
   fullName: google.cloud.storage.bucket.Bucket
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.storage._helpers._PropertyMixin
   langs:
   - python
   module: google.cloud.storage.bucket

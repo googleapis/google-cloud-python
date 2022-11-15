@@ -6,16 +6,6 @@ items:
   - google.cloud.storage.batch.MIMEApplicationHTTP
   class: google.cloud.storage.batch.MIMEApplicationHTTP
   fullName: google.cloud.storage.batch.MIMEApplicationHTTP
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - inheritance:
-        - inheritance:
-          - type: builtins.object
-          type: email.message.Message
-        type: email.mime.base.MIMEBase
-      type: email.mime.nonmultipart.MIMENonMultipart
-    type: email.mime.application.MIMEApplication
   langs:
   - python
   module: google.cloud.storage.batch
@@ -50,16 +40,6 @@ items:
 - attributes: []
   class: google.cloud.storage.batch.MIMEApplicationHTTP
   fullName: google.cloud.storage.batch.MIMEApplicationHTTP
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - inheritance:
-        - inheritance:
-          - type: builtins.object
-          type: email.message.Message
-        type: email.mime.base.MIMEBase
-      type: email.mime.nonmultipart.MIMENonMultipart
-    type: email.mime.application.MIMEApplication
   langs:
   - python
   module: google.cloud.storage.batch

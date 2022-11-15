@@ -24,8 +24,6 @@ items:
   - google.cloud.storage.acl.ACL.validate_predefined
   class: google.cloud.storage.acl.ACL
   fullName: google.cloud.storage.acl.ACL
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.storage.acl

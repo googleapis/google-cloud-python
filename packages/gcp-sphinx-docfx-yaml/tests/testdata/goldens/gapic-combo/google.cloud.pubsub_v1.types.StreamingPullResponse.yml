@@ -22,10 +22,6 @@ items:
   - google.cloud.pubsub_v1.types.StreamingPullResponse.SubscriptionProperties
   class: google.cloud.pubsub_v1.types.StreamingPullResponse
   fullName: google.cloud.pubsub_v1.types.StreamingPullResponse
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

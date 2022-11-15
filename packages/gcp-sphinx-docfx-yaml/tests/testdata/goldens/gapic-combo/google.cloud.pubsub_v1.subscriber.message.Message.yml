@@ -20,8 +20,6 @@ items:
   - google.cloud.pubsub_v1.subscriber.message.Message.size
   class: google.cloud.pubsub_v1.subscriber.message.Message
   fullName: google.cloud.pubsub_v1.subscriber.message.Message
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.pubsub_v1.subscriber.message
@@ -47,8 +45,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.subscriber.message.Message
   fullName: google.cloud.pubsub_v1.subscriber.message.Message
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.pubsub_v1.subscriber.message

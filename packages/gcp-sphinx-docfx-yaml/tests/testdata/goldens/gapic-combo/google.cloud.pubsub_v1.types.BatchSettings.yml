@@ -9,10 +9,6 @@ items:
   - google.cloud.pubsub_v1.types.BatchSettings.max_messages
   class: google.cloud.pubsub_v1.types.BatchSettings
   fullName: google.cloud.pubsub_v1.types.BatchSettings
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.tuple
   langs:
   - python
   module: google.cloud.pubsub_v1.types
@@ -34,10 +30,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.types.BatchSettings
   fullName: google.cloud.pubsub_v1.types.BatchSettings
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.tuple
   langs:
   - python
   module: google.cloud.pubsub_v1.types

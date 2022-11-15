@@ -16,15 +16,6 @@ items:
   - google.cloud.pubsub_v1.publisher.futures.Future.set_running_or_notify_cancel
   class: google.cloud.pubsub_v1.publisher.futures.Future
   fullName: google.cloud.pubsub_v1.publisher.futures.Future
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - type: builtins.object
-      type: concurrent.futures._base.Future
-    - inheritance:
-      - type: builtins.object
-      type: google.api_core.future.base.Future
-    type: google.cloud.pubsub_v1.futures.Future
   langs:
   - python
   module: google.cloud.pubsub_v1.publisher.futures
@@ -52,15 +43,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.publisher.futures.Future
   fullName: google.cloud.pubsub_v1.publisher.futures.Future
-  inheritance:
-  - inheritance:
-    - inheritance:
-      - type: builtins.object
-      type: concurrent.futures._base.Future
-    - inheritance:
-      - type: builtins.object
-      type: google.api_core.future.base.Future
-    type: google.cloud.pubsub_v1.futures.Future
   langs:
   - python
   module: google.cloud.pubsub_v1.publisher.futures

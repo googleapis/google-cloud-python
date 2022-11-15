@@ -6,13 +6,6 @@ items:
   - google.cloud.pubsub_v1.types.DescriptorProto.ReservedRange
   class: google.cloud.pubsub_v1.types.DescriptorProto
   fullName: google.cloud.pubsub_v1.types.DescriptorProto
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google._upb._message.Message
-  - inheritance:
-    - type: builtins.object
-    type: google.protobuf.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

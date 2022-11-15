@@ -5,8 +5,6 @@ items:
   children: []
   class: google.cloud.storage.retry.ConditionalRetryPolicy
   fullName: google.cloud.storage.retry.ConditionalRetryPolicy
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.storage.retry

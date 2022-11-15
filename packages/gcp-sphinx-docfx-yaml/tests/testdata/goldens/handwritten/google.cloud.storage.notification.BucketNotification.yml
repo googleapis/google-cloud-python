@@ -22,8 +22,6 @@ items:
   - google.cloud.storage.notification.BucketNotification.topic_project
   class: google.cloud.storage.notification.BucketNotification
   fullName: google.cloud.storage.notification.BucketNotification
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.cloud.storage.notification

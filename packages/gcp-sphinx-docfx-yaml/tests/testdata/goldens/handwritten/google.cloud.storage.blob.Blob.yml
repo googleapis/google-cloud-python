@@ -67,10 +67,6 @@ items:
   - google.cloud.storage.blob.Blob.user_project
   class: google.cloud.storage.blob.Blob
   fullName: google.cloud.storage.blob.Blob
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.storage._helpers._PropertyMixin
   langs:
   - python
   module: google.cloud.storage.blob
@@ -117,10 +113,6 @@ items:
 - attributes: []
   class: google.cloud.storage.blob.Blob
   fullName: google.cloud.storage.blob.Blob
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.cloud.storage._helpers._PropertyMixin
   langs:
   - python
   module: google.cloud.storage.blob

@@ -26,10 +26,6 @@ items:
   - google.cloud.pubsub_v1.types.CreateSnapshotRequest.LabelsEntry
   class: google.cloud.pubsub_v1.types.CreateSnapshotRequest
   fullName: google.cloud.pubsub_v1.types.CreateSnapshotRequest
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

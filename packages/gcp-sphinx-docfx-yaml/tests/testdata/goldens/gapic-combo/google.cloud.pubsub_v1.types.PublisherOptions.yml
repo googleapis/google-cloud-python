@@ -10,10 +10,6 @@ items:
   - google.cloud.pubsub_v1.types.PublisherOptions.timeout
   class: google.cloud.pubsub_v1.types.PublisherOptions
   fullName: google.cloud.pubsub_v1.types.PublisherOptions
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.tuple
   langs:
   - python
   module: google.cloud.pubsub_v1.types
@@ -38,10 +34,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.types.PublisherOptions
   fullName: google.cloud.pubsub_v1.types.PublisherOptions
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.tuple
   langs:
   - python
   module: google.cloud.pubsub_v1.types

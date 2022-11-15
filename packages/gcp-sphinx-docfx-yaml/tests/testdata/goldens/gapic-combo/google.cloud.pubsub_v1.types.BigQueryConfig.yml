@@ -31,10 +31,6 @@ items:
   - google.cloud.pubsub_v1.types.BigQueryConfig.State
   class: google.cloud.pubsub_v1.types.BigQueryConfig
   fullName: google.cloud.pubsub_v1.types.BigQueryConfig
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.pubsub_v1.types

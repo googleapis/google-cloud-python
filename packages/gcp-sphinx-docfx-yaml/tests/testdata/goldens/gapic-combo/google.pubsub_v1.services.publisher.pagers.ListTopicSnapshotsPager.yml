@@ -6,8 +6,6 @@ items:
   - google.pubsub_v1.services.publisher.pagers.ListTopicSnapshotsPager
   class: google.pubsub_v1.services.publisher.pagers.ListTopicSnapshotsPager
   fullName: google.pubsub_v1.services.publisher.pagers.ListTopicSnapshotsPager
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.pubsub_v1.services.publisher.pagers
@@ -56,8 +54,6 @@ items:
 - attributes: []
   class: google.pubsub_v1.services.publisher.pagers.ListTopicSnapshotsPager
   fullName: google.pubsub_v1.services.publisher.pagers.ListTopicSnapshotsPager
-  inheritance:
-  - type: builtins.object
   langs:
   - python
   module: google.pubsub_v1.services.publisher.pagers

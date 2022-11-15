@@ -51,10 +51,6 @@ items:
   - google.cloud.pubsub_v1.subscriber.client.Client.update_subscription
   class: google.cloud.pubsub_v1.subscriber.client.Client
   fullName: google.cloud.pubsub_v1.subscriber.client.Client
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.pubsub_v1.services.subscriber.client.SubscriberClient
   langs:
   - python
   module: google.cloud.pubsub_v1.subscriber.client
@@ -81,10 +77,6 @@ items:
 - attributes: []
   class: google.cloud.pubsub_v1.subscriber.client.Client
   fullName: google.cloud.pubsub_v1.subscriber.client.Client
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: google.pubsub_v1.services.subscriber.client.SubscriberClient
   langs:
   - python
   module: google.cloud.pubsub_v1.subscriber.client

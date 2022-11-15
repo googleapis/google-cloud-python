@@ -23,10 +23,6 @@ items:
   - google.cloud.storage.bucket.IAMConfiguration.values
   class: google.cloud.storage.bucket.IAMConfiguration
   fullName: google.cloud.storage.bucket.IAMConfiguration
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: builtins.dict
   langs:
   - python
   module: google.cloud.storage.bucket

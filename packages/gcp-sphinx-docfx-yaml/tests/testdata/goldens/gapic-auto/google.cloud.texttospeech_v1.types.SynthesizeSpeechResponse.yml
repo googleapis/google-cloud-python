@@ -12,10 +12,6 @@ items:
   children: []
   class: google.cloud.texttospeech_v1.types.SynthesizeSpeechResponse
   fullName: google.cloud.texttospeech_v1.types.SynthesizeSpeechResponse
-  inheritance:
-  - inheritance:
-    - type: builtins.object
-    type: proto.message.Message
   langs:
   - python
   module: google.cloud.texttospeech_v1.types
