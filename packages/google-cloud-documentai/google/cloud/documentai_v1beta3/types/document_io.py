@@ -15,6 +15,7 @@
 #
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -162,11 +163,21 @@ class DocumentOutputConfig(proto.Message):
             gcs_uri (str):
                 The Cloud Storage uri (a directory) of the
                 output.
+            field_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Specifies which fields to include in the output documents.
+                Only supports top level document and pages field so it must
+                be in the form of ``{document_field_name}`` or
+                ``pages.{page_field_name}``.
         """
 
         gcs_uri: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        field_mask: field_mask_pb2.FieldMask = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=field_mask_pb2.FieldMask,
         )
 
     gcs_output_config: GcsOutputConfig = proto.Field(
