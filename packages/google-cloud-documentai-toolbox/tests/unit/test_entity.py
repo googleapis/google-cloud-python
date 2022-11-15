@@ -13,3 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+from google.cloud import documentai
+from google.cloud.documentai_toolbox import entity
+
+
+def test_Entity():
+    documentai_entity = documentai.Document.Entity(
+        type_="some_entity_type", mention_text="some_mention_text"
+    )
+    wrapper_entity = entity.Entity(documentai_entity)
+
+    assert wrapper_entity.type_ == "some_entity_type"
+    assert wrapper_entity.mention_text == "some_mention_text"

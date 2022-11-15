@@ -35,8 +35,8 @@ class Entity:
             the document, this field will be empty.
     """
     documentai_entity: documentai.Document.Entity = dataclasses.field(repr=False)
-    type_: str = dataclasses.field(init=False, repr=False)
-    mention_text: str = dataclasses.field(init=False, repr=False, default="")
+    type_: str = dataclasses.field(init=False)
+    mention_text: str = dataclasses.field(init=False, default="")
 
     def __post_init__(self):
         self.type_ = self.documentai_entity.type_
