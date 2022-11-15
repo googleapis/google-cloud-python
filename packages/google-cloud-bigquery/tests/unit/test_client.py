@@ -8395,9 +8395,19 @@ class TestClientUpload(object):
         ]"""
 
         expected = [
-            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
-            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+            SchemaField("qtr", "STRING", "REQUIRED", description="quarter"),
+            SchemaField(
+                "rep",
+                "STRING",
+                "NULLABLE",
+                description="sales representative",
+            ),
+            SchemaField(
+                "sales",
+                "FLOAT",
+                "NULLABLE",
+                description="total sales",
+            ),
         ]
 
         client = self._make_client()
@@ -8441,9 +8451,11 @@ class TestClientUpload(object):
         ]"""
 
         expected = [
-            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
-            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+            SchemaField("qtr", "STRING", "REQUIRED", description="quarter"),
+            SchemaField(
+                "rep", "STRING", "NULLABLE", description="sales representative"
+            ),
+            SchemaField("sales", "FLOAT", "NULLABLE", description="total sales"),
         ]
 
         client = self._make_client()
@@ -8477,9 +8489,11 @@ class TestClientUpload(object):
         ]
 
         schema_list = [
-            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
-            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+            SchemaField("qtr", "STRING", "REQUIRED", description="quarter"),
+            SchemaField(
+                "rep", "STRING", "NULLABLE", description="sales representative"
+            ),
+            SchemaField("sales", "FLOAT", "NULLABLE", description="total sales"),
         ]
 
         client = self._make_client()
@@ -8521,9 +8535,11 @@ class TestClientUpload(object):
         ]
 
         schema_list = [
-            SchemaField("qtr", "STRING", "REQUIRED", "quarter"),
-            SchemaField("rep", "STRING", "NULLABLE", "sales representative"),
-            SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
+            SchemaField("qtr", "STRING", "REQUIRED", description="quarter"),
+            SchemaField(
+                "rep", "STRING", "NULLABLE", description="sales representative"
+            ),
+            SchemaField("sales", "FLOAT", "NULLABLE", description="total sales"),
         ]
 
         fake_file = io.StringIO()

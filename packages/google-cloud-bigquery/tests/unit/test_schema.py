@@ -45,8 +45,10 @@ class TestSchemaField(unittest.TestCase):
         self.assertIsNone(field.description)
         self.assertEqual(field.fields, ())
         self.assertIsNone(field.policy_tags)
+        self.assertIsNone(field.default_value_expression)
 
     def test_constructor_explicit(self):
+        FIELD_DEFAULT_VALUE_EXPRESSION = "This is the default value for this field"
         field = self._make_one(
             "test",
             "STRING",
@@ -58,10 +60,12 @@ class TestSchemaField(unittest.TestCase):
                     "projects/f/locations/g/taxonomies/h/policyTags/i",
                 )
             ),
+            default_value_expression=FIELD_DEFAULT_VALUE_EXPRESSION,
         )
         self.assertEqual(field.name, "test")
         self.assertEqual(field.field_type, "STRING")
         self.assertEqual(field.mode, "REQUIRED")
+        self.assertEqual(field.default_value_expression, FIELD_DEFAULT_VALUE_EXPRESSION)
         self.assertEqual(field.description, "Testing")
         self.assertEqual(field.fields, ())
         self.assertEqual(
@@ -182,6 +186,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.field_type, "RECORD")
         self.assertEqual(field.mode, "NULLABLE")
         self.assertEqual(len(field.fields), 0)
+        self.assertEqual(field.default_value_expression, None)
 
         # Keys not present in API representation shouldn't be included in
         # _properties.
@@ -527,12 +532,12 @@ class TestSchemaField(unittest.TestCase):
 
     def test___repr__(self):
         field1 = self._make_one("field1", "STRING")
-        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, (), None)"
+        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, None, (), None)"
         self.assertEqual(repr(field1), expected)
 
     def test___repr__type_not_set(self):
         field1 = self._make_one("field1", field_type=None)
-        expected = "SchemaField('field1', None, 'NULLABLE', None, (), None)"
+        expected = "SchemaField('field1', None, 'NULLABLE', None, None, (), None)"
         self.assertEqual(repr(field1), expected)
 
     def test___repr__evaluable_no_policy_tags(self):

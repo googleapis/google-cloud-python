@@ -1421,7 +1421,7 @@ class Row(object):
             >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
             None
 
-            The default value can be overrided with the ``default`` parameter.
+            The default value can be overridden with the ``default`` parameter.
 
             >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
             ''
