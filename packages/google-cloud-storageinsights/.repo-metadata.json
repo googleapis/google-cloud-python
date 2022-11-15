@@ -1,8 +1,8 @@
 {
     "name": "storageinsights",
-    "name_pretty": "",
+    "name_pretty": "Storage Insights API",
     "api_description": "",
-    "product_documentation": "",
+    "product_documentation": "https://cloud.google.com/storage",
     "client_documentation": "https://cloud.google.com/python/docs/reference/storageinsights/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
