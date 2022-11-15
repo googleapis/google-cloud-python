@@ -24,8 +24,7 @@ def test_table_to_csv():
     table = page.Table(
         documentai_table=None, header_rows=header_rows, body_rows=body_rows
     )
-    dataframe = table.to_dataframe()
-    contents = table.to_csv(dataframe=dataframe)
+    contents = table.to_csv()
 
     assert (
         contents
@@ -43,8 +42,7 @@ def test_table_to_csv_with_empty_body_rows():
     header_rows = [["This", "Is", "A", "Header", "Test"]]
     table = page.Table(documentai_table=None, header_rows=header_rows, body_rows=[])
 
-    dataframe = table.to_dataframe()
-    contents = table.to_csv(dataframe=dataframe)
+    contents = table.to_csv()
 
     assert (
         contents

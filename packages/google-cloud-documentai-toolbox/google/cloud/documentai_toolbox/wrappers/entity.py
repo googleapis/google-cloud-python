@@ -22,7 +22,7 @@ from google.cloud import documentai
 
 @dataclasses.dataclass
 class Entity:
-    r"""Represents a wrapped google.cloud.documentai.Document.Entity.
+    r"""Represents a wrapped documentai.Document.Entity.
 
     Attributes:
         documentai_entity (google.cloud.documentai.Document.Entity):
@@ -34,12 +34,10 @@ class Entity:
             ``1600 Amphitheatre Pkwy``. If the entity is not present in
             the document, this field will be empty.
     """
-    documentai_entity: documentai.Document.Entity = dataclasses.field(
-        init=True, repr=False
-    )
+    documentai_entity: documentai.Document.Entity = dataclasses.field(repr=False)
     type_: str = dataclasses.field(init=False, repr=False)
     mention_text: str = dataclasses.field(init=False, repr=False, default="")
 
     def __post_init__(self):
-        self.type_ = self.documentai_entity.type
+        self.type_ = self.documentai_entity.type_
         self.mention_text = self.documentai_entity.mention_text

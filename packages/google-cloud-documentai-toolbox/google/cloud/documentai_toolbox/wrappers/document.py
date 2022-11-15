@@ -17,7 +17,7 @@
 
 import dataclasses
 import re
-from typing import List
+from typing import List, Optional
 
 from google.api_core import client_info
 from google.cloud import documentai
@@ -30,18 +30,17 @@ from google.cloud.documentai_toolbox.wrappers.entity import Entity
 
 
 def _entities_from_shards(
-    shards: documentai.Document,
+    shards: List[documentai.Document],
 ) -> List[Entity]:
-    r"""Returns a list of Entitys.
+    r"""Returns the list of Entities of the documentai.Documents in shards.
 
     Args:
-        shards (google.cloud.documentai.Document):
+        shards (List[google.cloud.documentai.Document]):
             Required. List of document shards.
 
     Returns:
         List[Entity]:
-            a list of Entity.
-
+            a list of Entities.
     """
     result = []
     for shard in shards:
@@ -50,17 +49,16 @@ def _entities_from_shards(
     return result
 
 
-def _pages_from_shards(shards: documentai.Document) -> List[Page]:
-    r"""Returns a list of Pages.
+def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
+    r"""Returns a list of Pages of the documentai.Documents in shards.
 
     Args:
-        shards (google.cloud.documentai.Document):
+        shards (List[google.cloud.documentai.Document]):
             Required. List of document shards.
 
     Returns:
         List[Page]:
-            A list of Page.
-
+            A list of Pages.
     """
     result = []
     for shard in shards:
@@ -71,8 +69,20 @@ def _pages_from_shards(shards: documentai.Document) -> List[Page]:
     return result
 
 
+def _get_storage_client():
+    """Returns a Storage client with custom user agent header."""
+    user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
+
+    info = client_info.ClientInfo(
+        client_library_version=documentai_toolbox.__version__,
+        user_agent=user_agent,
+    )
+
+    return storage.Client(client_info=info)
+
+
 def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
-    r"""Returns a list of shards as bytes.
+    r"""Returns the list of bytes of json files on Cloud Storage.
 
     If the filepaths are gs://abc/def/gh/{1,2,3}.json, then output_bucket should be "abc",
     and output_prefix should be "def/gh".
@@ -86,20 +96,12 @@ def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
 
     Returns:
         List[bytes]:
-            A list of shards as bytes.
+            A list of bytes.
 
     """
     result = []
 
-    user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
-
-    info = client_info.ClientInfo(
-        client_library_version=documentai_toolbox.__version__,
-        user_agent=user_agent,
-    )
-
-    storage_client = storage.Client(client_info=info)
-
+    storage_client = _get_storage_client()
     blob_list = storage_client.list_blobs(output_bucket, prefix=output_prefix)
 
     for blob in blob_list:
@@ -111,7 +113,7 @@ def _get_bytes(output_bucket: str, output_prefix: str) -> List[bytes]:
 
 
 def _get_shards(gcs_prefix: str) -> List[documentai.Document]:
-    r"""Returns a list of google.cloud.documentai.Document from shards.
+    r"""Returns the list of documentai.Documents with the given gcs_prefix.
 
     If the filepaths are gs://abc/def/gh/{1,2,3}.json, then gcs_prefix should be "gs://abc/def/gh".
 
@@ -121,7 +123,7 @@ def _get_shards(gcs_prefix: str) -> List[documentai.Document]:
 
     Returns:
         List[google.cloud.documentai.Document]:
-            A list of google.cloud.documentai.Document from shards.
+            A list of documentai.Documents.
 
     """
     shards = []
@@ -175,15 +177,7 @@ def print_gcs_document_tree(gcs_prefix: str) -> None:
     if file_check is not None:
         raise ValueError("gcs_prefix cannot contain file types")
 
-    user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
-
-    info = client_info.ClientInfo(
-        client_library_version=documentai_toolbox.__version__,
-        user_agent=user_agent,
-    )
-
-    storage_client = storage.Client(client_info=info)
-
+    storage_client = _get_storage_client()
     blob_list = storage_client.list_blobs(output_bucket, prefix=output_prefix)
 
     path_list = {}
@@ -226,16 +220,23 @@ class Document:
     extracting information within the Document.
 
     Attributes:
-        gcs_prefix (str):
-            Required.The gcs path to a single processed document.
+        shards: (List[google.cloud.documentai.Document]):
+            The list of documentai.Document shards of the same Document.  Each shard
+            consists of a number of pages in the Document.
+        gcs_prefix (Optional[str]):
+            The gcs path to a single processed document.
 
             Format: `gs://{bucket}/{optional_folder}/{operation_id}/{folder_id}`
                     where `{operation_id}` is the operation-id given from BatchProcessDocument
                     and `{folder_id}` is the number corresponding to the target document.
+        pages: (List[Page]):
+            The list of Pages in the Document.
+        entities: (List[Entity]):
+            The list of Entities in the Document.
     """
 
-    shards: List[documentai.Document] = dataclasses.field(init=True, repr=False)
-    gcs_prefix: str = dataclasses.field(init=True, repr=False, default=None)
+    shards: List[documentai.Document] = dataclasses.field(repr=False)
+    gcs_prefix: Optional[str] = dataclasses.field(default=None, repr=False)
 
     pages: List[Page] = dataclasses.field(init=False, repr=False)
     entities: List[Entity] = dataclasses.field(init=False, repr=False)
@@ -254,19 +255,19 @@ class Document:
         return Document(shards=shards, gcs_prefix=gcs_prefix)
 
     def search_pages(
-        self, target_string: str = None, pattern: str = None
+        self, target_string: Optional[str] = None, pattern: Optional[str] = None
     ) -> List[Page]:
-        r"""Returns the list of Page containing target_string.
+        r"""Returns the list of Pages containing target_string or text matching pattern.
 
         Args:
-            target_string (str):
+            target_string (Optional[str]):
                 Optional. target str.
-            pattern (str):
+            pattern (Optional[str]):
                 Optional. regex str.
 
         Returns:
             List[Page]:
-                A list of Page.
+                A list of Pages.
 
         """
         if (target_string is None and pattern is None) or (
@@ -291,7 +292,7 @@ class Document:
         return found_pages
 
     def get_entity_by_type(self, target_type: str) -> List[Entity]:
-        r"""Returns a list of wrapped entities matching target_type.
+        r"""Returns the list of Entities of target_type.
 
         Args:
             target_type (str):

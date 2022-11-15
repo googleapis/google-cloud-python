@@ -39,14 +39,12 @@ class Table:
         body_rows (List[List[str]]):
             Required. A list of body rows.
         header_rows (List[List[str]]):
-            Required. A list of headers.
+            Required. A list of header rows.
     """
 
-    documentai_table: documentai.Document.Page.Table = dataclasses.field(
-        init=True, repr=False
-    )
-    body_rows: List[List[str]] = dataclasses.field(init=True, repr=False)
-    header_rows: List[List[str]] = dataclasses.field(init=True, repr=False)
+    documentai_table: documentai.Document.Page.Table = dataclasses.field(repr=False)
+    body_rows: List[List[str]] = dataclasses.field(repr=False)
+    header_rows: List[List[str]] = dataclasses.field(repr=False)
 
     def to_dataframe(self) -> pd.DataFrame:
         r"""Returns pd.DataFrame from documentai.table
@@ -67,7 +65,7 @@ class Table:
 
         return dataframe
 
-    def to_csv(self, dataframe: pd.DataFrame) -> str:
+    def to_csv(self) -> str:
         r"""Returns a csv str.
 
             .. code-block:: python
@@ -83,8 +81,7 @@ class Table:
                     page = merged_document.pages[0]
 
                     #export the first table in page 1 to csv
-                    dataframe = page.tables[0].to_dataframe()
-                    csv_text = page.tables[0].to_csv(dataframe=dataframe)
+                    csv_text = page.tables[0].to_csv()
 
                     print(csv_text)
 
@@ -97,10 +94,7 @@ class Table:
                 The table in csv format.
 
         """
-
-        result_csv = dataframe.to_csv(index=False)
-
-        return result_csv
+        return self.to_dataframe().to_csv(index=False)
 
 
 def _table_wrapper_from_documentai_table(
@@ -166,91 +160,6 @@ class Line:
     text: str
 
 
-def _get_paragraphs(
-    paragraphs: List[documentai.Document.Page.Paragraph], text: str
-) -> List[Paragraph]:
-    r"""Returns a list of Paragraph.
-    Args:
-        paragraphs (List[documentai.Document.Page.Paragraph]):
-            Required. a list of documentai.Document.Page.Paragraph objects.
-        text (str):
-            Required. UTF-8 encoded text in reading order
-            from the document.
-    Returns:
-        List[Paragraph]:
-             A list of Paragraph.
-    """
-    result = []
-
-    for paragraph in paragraphs:
-        result.append(
-            Paragraph(
-                documentai_paragraph=paragraph,
-                text=_text_from_element_with_layout(
-                    element_with_layout=paragraph, text=text
-                ),
-            )
-        )
-
-    return result
-
-
-def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Line]:
-    r"""Returns a list of Line.
-    Args:
-        paragraphs (List[documentai.Document.Page.Line]):
-            Required. a list of documentai.Document.Page.Line objects.
-        text (str):
-            Required. UTF-8 encoded text in reading order
-            from the document.
-    Returns:
-        List[Line]:
-            A list of Line.
-    """
-    result = []
-
-    for line in lines:
-        result.append(
-            Line(
-                documentai_line=line,
-                text=_text_from_element_with_layout(
-                    element_with_layout=line, text=text
-                ),
-            )
-        )
-
-    return result
-
-
-def _table_row_from_documentai_table_row(
-    table_rows: List[documentai.Document.Page.Table.TableRow], text: str
-) -> List[str]:
-    r"""Returns a list rows from table_rows.
-
-    Args:
-        table_rows (documentai.Document.Page.Table.TableRow):
-            Required. A documentai.Document.Page.Table.TableRow.
-        text (str):
-            Required. UTF-8 encoded text in reading order
-            from the document.
-
-    Returns:
-        List[str]:
-            A list of table rows.
-    """
-    body_rows = []
-    for row in table_rows:
-        row_text = []
-
-        for cell in row.cells:
-            row_text.append(
-                _text_from_element_with_layout(element_with_layout=cell, text=text)
-            )
-
-        body_rows.append([x.replace("\n", "") for x in row_text])
-    return body_rows
-
-
 def _text_from_element_with_layout(
     element_with_layout: ElementWithLayout, text: str
 ) -> str:
@@ -281,19 +190,106 @@ def _text_from_element_with_layout(
     return result_text
 
 
+def _get_paragraphs(
+    paragraphs: List[documentai.Document.Page.Paragraph], text: str
+) -> List[Paragraph]:
+    r"""Returns a list of Paragraph.
+    Args:
+        paragraphs (List[documentai.Document.Page.Paragraph]):
+            Required. a list of documentai.Document.Page.Paragraph objects.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        List[Paragraph]:
+             A list of Paragraphs.
+    """
+    result = []
+
+    for paragraph in paragraphs:
+        result.append(
+            Paragraph(
+                documentai_paragraph=paragraph,
+                text=_text_from_element_with_layout(
+                    element_with_layout=paragraph, text=text
+                ),
+            )
+        )
+
+    return result
+
+
+def _get_lines(lines: List[documentai.Document.Page.Line], text: str) -> List[Line]:
+    r"""Returns a list of Line.
+    Args:
+        lines (List[documentai.Document.Page.Line]):
+            Required. a list of documentai.Document.Page.Line objects.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        List[Line]:
+            A list of Lines.
+    """
+    result = []
+
+    for line in lines:
+        result.append(
+            Line(
+                documentai_line=line,
+                text=_text_from_element_with_layout(
+                    element_with_layout=line, text=text
+                ),
+            )
+        )
+
+    return result
+
+
+def _table_row_from_documentai_table_row(
+    table_rows: List[documentai.Document.Page.Table.TableRow], text: str
+) -> List[str]:
+    r"""Returns a list rows from table_rows.
+
+    Args:
+        table_rows (List[documentai.Document.Page.Table.TableRow]):
+            Required. A documentai.Document.Page.Table.TableRow.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+
+    Returns:
+        List[str]:
+            A list of table rows.
+    """
+    body_rows = []
+    for row in table_rows:
+        row_text = []
+
+        for cell in row.cells:
+            row_text.append(
+                _text_from_element_with_layout(element_with_layout=cell, text=text)
+            )
+
+        body_rows.append([x.replace("\n", "") for x in row_text])
+    return body_rows
+
+
 @dataclasses.dataclass
 class Page:
     """Represents a wrapped documentai.Document.Page .
 
     Attributes:
         documentai_page (google.cloud.documentai.Document.Page):
-            Required.The original google.cloud.documentai.Document.Page object.
+            Required. The original google.cloud.documentai.Document.Page object.
+        text: (str):
+            Required. The full text of the Document containing the Page.
         lines (List[str]):
-            Required.A list of visually detected text lines on the
+            A list of visually detected text lines on the
             page. A collection of tokens that a human would
             perceive as a line.
         paragraphs (List[str]):
-            Required.A list of visually detected text paragraphs
+            A list of visually detected text paragraphs
             on the page. A collection of lines that a human
             would perceive as a paragraph.
         tables (List[Table]):
@@ -301,8 +297,8 @@ class Page:
             page.
     """
 
-    documentai_page: documentai.Document.Page = dataclasses.field(init=True, repr=False)
-    text: str = dataclasses.field(init=True, repr=False)
+    documentai_page: documentai.Document.Page = dataclasses.field(repr=False)
+    text: str = dataclasses.field(repr=False)
 
     lines: List[Line] = dataclasses.field(init=False, repr=False)
     paragraphs: List[Paragraph] = dataclasses.field(init=False, repr=False)
