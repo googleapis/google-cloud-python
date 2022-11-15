@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 import pytest
 import glob
 
-from google.cloud.documentai_toolbox.wrappers import document
+from google.cloud.documentai_toolbox import document
 
 from google.cloud import documentai
 from google.cloud import storage

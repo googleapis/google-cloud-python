@@ -19,13 +19,13 @@ from google.cloud.documentai_toolbox import version as package_version
 __version__ = package_version.__version__
 
 from .wrappers import (
-    Document,
-    Page,
-    Entity,
+    document,
+    page,
+    entity,
 )
 
 __all__ = (
-    "Document",
-    "Page",
-    "Entity",
+    document,
+    page,
+    entity,
 )

@@ -15,7 +15,7 @@
 #
 
 
-from google.cloud.documentai_toolbox.wrappers import page
+from google.cloud.documentai_toolbox import page
 
 
 def test_table_to_csv():
