@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.6.2](https://github.com/googleapis/gapic-generator-python/compare/v1.6.1...v1.6.2) (2022-11-15)
+
+
+### Bug Fixes
+
+* update dependency googleapis-common-protos to v1.57.0 ([786b0d4](https://github.com/googleapis/gapic-generator-python/commit/786b0d401fe6a188005b4bf076595a37821ee761))
+
 ## [1.6.1](https://github.com/googleapis/gapic-generator-python/compare/v1.6.0...v1.6.1) (2022-11-11)
 
 
