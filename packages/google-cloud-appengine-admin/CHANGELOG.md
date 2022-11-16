@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-appengine-admin/compare/v1.6.0...v1.7.0) (2022-11-16)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([80bd28c](https://github.com/googleapis/python-appengine-admin/commit/80bd28cf8f56ea3691aa08005445b81d8372e033))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([80bd28c](https://github.com/googleapis/python-appengine-admin/commit/80bd28cf8f56ea3691aa08005445b81d8372e033))
+
 ## [1.6.0](https://github.com/googleapis/python-appengine-admin/compare/v1.5.3...v1.6.0) (2022-11-08)
 
 
