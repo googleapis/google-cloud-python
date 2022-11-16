@@ -18,8 +18,11 @@ from google.cloud.batch import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.batch_service import BatchServiceAsyncClient, BatchServiceClient
-from .types.batch import (
+from google.cloud.batch_v1.services.batch_service.async_client import (
+    BatchServiceAsyncClient,
+)
+from google.cloud.batch_v1.services.batch_service.client import BatchServiceClient
+from google.cloud.batch_v1.types.batch import (
     CreateJobRequest,
     DeleteJobRequest,
     GetJobRequest,
@@ -30,7 +33,7 @@ from .types.batch import (
     ListTasksResponse,
     OperationMetadata,
 )
-from .types.job import (
+from google.cloud.batch_v1.types.job import (
     AllocationPolicy,
     Job,
     JobNotification,
@@ -39,7 +42,7 @@ from .types.job import (
     ServiceAccount,
     TaskGroup,
 )
-from .types.task import (
+from google.cloud.batch_v1.types.task import (
     ComputeResource,
     Environment,
     LifecyclePolicy,
@@ -50,37 +53,37 @@ from .types.task import (
     TaskSpec,
     TaskStatus,
 )
-from .types.volume import GCS, NFS, Volume
+from google.cloud.batch_v1.types.volume import GCS, NFS, Volume
 
 __all__ = (
-    "BatchServiceAsyncClient",
-    "AllocationPolicy",
     "BatchServiceClient",
-    "ComputeResource",
+    "BatchServiceAsyncClient",
     "CreateJobRequest",
     "DeleteJobRequest",
-    "Environment",
-    "GCS",
     "GetJobRequest",
     "GetTaskRequest",
-    "Job",
-    "JobNotification",
-    "JobStatus",
-    "LifecyclePolicy",
     "ListJobsRequest",
     "ListJobsResponse",
     "ListTasksRequest",
     "ListTasksResponse",
-    "LogsPolicy",
-    "NFS",
     "OperationMetadata",
-    "Runnable",
+    "AllocationPolicy",
+    "Job",
+    "JobNotification",
+    "JobStatus",
+    "LogsPolicy",
     "ServiceAccount",
+    "TaskGroup",
+    "ComputeResource",
+    "Environment",
+    "LifecyclePolicy",
+    "Runnable",
     "StatusEvent",
     "Task",
     "TaskExecution",
-    "TaskGroup",
     "TaskSpec",
     "TaskStatus",
+    "GCS",
+    "NFS",
     "Volume",
 )

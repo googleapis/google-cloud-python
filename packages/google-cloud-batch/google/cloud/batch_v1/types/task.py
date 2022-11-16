@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.batch_v1.types import volume
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.batch.v1",
@@ -48,15 +49,15 @@ class ComputeResource(proto.Message):
             Extra boot disk size in MiB for each task.
     """
 
-    cpu_milli = proto.Field(
+    cpu_milli: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    memory_mib = proto.Field(
+    memory_mib: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    boot_disk_mib = proto.Field(
+    boot_disk_mib: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -76,20 +77,20 @@ class StatusEvent(proto.Message):
             Task Execution
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    task_execution = proto.Field(
+    task_execution: "TaskExecution" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TaskExecution",
@@ -107,7 +108,7 @@ class TaskExecution(proto.Message):
             execution result, default is 0 as success.
     """
 
-    exit_code = proto.Field(
+    exit_code: int = proto.Field(
         proto.INT32,
         number=1,
     )
@@ -119,7 +120,7 @@ class TaskStatus(proto.Message):
     Attributes:
         state (google.cloud.batch_v1.types.TaskStatus.State):
             Task state
-        status_events (Sequence[google.cloud.batch_v1.types.StatusEvent]):
+        status_events (MutableSequence[google.cloud.batch_v1.types.StatusEvent]):
             Detailed info about why the state is reached.
     """
 
@@ -132,12 +133,12 @@ class TaskStatus(proto.Message):
         FAILED = 4
         SUCCEEDED = 5
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    status_events = proto.RepeatedField(
+    status_events: MutableSequence["StatusEvent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="StatusEvent",
@@ -204,14 +205,14 @@ class Runnable(proto.Message):
         Attributes:
             image_uri (str):
                 The URI to pull the container image from.
-            commands (Sequence[str]):
+            commands (MutableSequence[str]):
                 Overrides the ``CMD`` specified in the container. If there
                 is an ENTRYPOINT (either in the container image or with the
                 entrypoint field below) then commands are appended as
                 arguments to the ENTRYPOINT.
             entrypoint (str):
                 Overrides the ``ENTRYPOINT`` specified in the container.
-            volumes (Sequence[str]):
+            volumes (MutableSequence[str]):
                 Volumes to mount (bind mount) from the host
                 machine files or directories into the container,
                 formatted to match docker run's --volume option,
@@ -227,43 +228,43 @@ class Runnable(proto.Message):
                 'goog-internal'.
             username (str):
                 Optional username for logging in to a docker registry. If
-                username matches `projects/*/secrets/*/versions/*` then
+                username matches ``projects/*/secrets/*/versions/*`` then
                 Batch will read the username from the Secret Manager.
             password (str):
                 Optional password for logging in to a docker registry. If
-                password matches `projects/*/secrets/*/versions/*` then
+                password matches ``projects/*/secrets/*/versions/*`` then
                 Batch will read the password from the Secret Manager;
         """
 
-        image_uri = proto.Field(
+        image_uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        commands = proto.RepeatedField(
+        commands: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        entrypoint = proto.Field(
+        entrypoint: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        volumes = proto.RepeatedField(
+        volumes: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=7,
         )
-        options = proto.Field(
+        options: str = proto.Field(
             proto.STRING,
             number=8,
         )
-        block_external_network = proto.Field(
+        block_external_network: bool = proto.Field(
             proto.BOOL,
             number=9,
         )
-        username = proto.Field(
+        username: str = proto.Field(
             proto.STRING,
             number=10,
         )
-        password = proto.Field(
+        password: str = proto.Field(
             proto.STRING,
             number=11,
         )
@@ -289,12 +290,12 @@ class Runnable(proto.Message):
                 This field is a member of `oneof`_ ``command``.
         """
 
-        path = proto.Field(
+        path: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="command",
         )
-        text = proto.Field(
+        text: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="command",
@@ -311,47 +312,47 @@ class Runnable(proto.Message):
                 present should be an identifier.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    container = proto.Field(
+    container: Container = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="executable",
         message=Container,
     )
-    script = proto.Field(
+    script: Script = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="executable",
         message=Script,
     )
-    barrier = proto.Field(
+    barrier: Barrier = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="executable",
         message=Barrier,
     )
-    ignore_exit_status = proto.Field(
+    ignore_exit_status: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    background = proto.Field(
+    background: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    always_run = proto.Field(
+    always_run: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="Environment",
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
@@ -362,7 +363,7 @@ class TaskSpec(proto.Message):
     r"""Spec of a task
 
     Attributes:
-        runnables (Sequence[google.cloud.batch_v1.types.Runnable]):
+        runnables (MutableSequence[google.cloud.batch_v1.types.Runnable]):
             The sequence of scripts or containers to run for this Task.
             Each Task using this TaskSpec executes its list of runnables
             in order. The Task succeeds if all of its runnables either
@@ -384,7 +385,7 @@ class TaskSpec(proto.Message):
         max_retry_count (int):
             Maximum number of retries on failures. The default, 0, which
             means never retry. The valid value range is [0, 10].
-        lifecycle_policies (Sequence[google.cloud.batch_v1.types.LifecyclePolicy]):
+        lifecycle_policies (MutableSequence[google.cloud.batch_v1.types.LifecyclePolicy]):
             Lifecycle management schema when any task in a task group is
             failed. The valid size of lifecycle policies are [0, 10].
             For each lifecycle policy, when the condition is met, the
@@ -395,10 +396,10 @@ class TaskSpec(proto.Message):
             policy, we consider it as the default policy. Default policy
             means if the exit code is 0, exit task. If task ends with
             non-zero exit code, retry the task with max_retry_count.
-        environments (Mapping[str, str]):
+        environments (MutableMapping[str, str]):
             Environment variables to set before running
             the Task. You can set up to 100 environments.
-        volumes (Sequence[google.cloud.batch_v1.types.Volume]):
+        volumes (MutableSequence[google.cloud.batch_v1.types.Volume]):
             Volumes to mount before running Tasks using
             this TaskSpec.
         environment (google.cloud.batch_v1.types.Environment):
@@ -406,41 +407,41 @@ class TaskSpec(proto.Message):
             the Task.
     """
 
-    runnables = proto.RepeatedField(
+    runnables: MutableSequence["Runnable"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="Runnable",
     )
-    compute_resource = proto.Field(
+    compute_resource: "ComputeResource" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ComputeResource",
     )
-    max_run_duration = proto.Field(
+    max_run_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    max_retry_count = proto.Field(
+    max_retry_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    lifecycle_policies = proto.RepeatedField(
+    lifecycle_policies: MutableSequence["LifecyclePolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="LifecyclePolicy",
     )
-    environments = proto.MapField(
+    environments: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    volumes = proto.RepeatedField(
+    volumes: MutableSequence[volume.Volume] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=volume.Volume,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="Environment",
@@ -470,7 +471,7 @@ class LifecyclePolicy(proto.Message):
         r"""Conditions for actions to deal with task failures.
 
         Attributes:
-            exit_codes (Sequence[int]):
+            exit_codes (MutableSequence[int]):
                 Exit codes of a task execution.
                 If there are more than 1 exit codes,
                 when task executes with any of the exit code in
@@ -478,17 +479,17 @@ class LifecyclePolicy(proto.Message):
                 will be executed.
         """
 
-        exit_codes = proto.RepeatedField(
+        exit_codes: MutableSequence[int] = proto.RepeatedField(
             proto.INT32,
             number=1,
         )
 
-    action = proto.Field(
+    action: Action = proto.Field(
         proto.ENUM,
         number=1,
         enum=Action,
     )
-    action_condition = proto.Field(
+    action_condition: ActionCondition = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ActionCondition,
@@ -508,11 +509,11 @@ class Task(proto.Message):
             Task Status.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    status = proto.Field(
+    status: "TaskStatus" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TaskStatus",
@@ -524,12 +525,12 @@ class Environment(proto.Message):
     variables to set when executing Tasks.
 
     Attributes:
-        variables (Mapping[str, str]):
+        variables (MutableMapping[str, str]):
             A map of environment variable names to
             values.
     """
 
-    variables = proto.MapField(
+    variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,

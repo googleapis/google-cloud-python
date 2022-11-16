@@ -45,12 +45,7 @@ from .task import (
     TaskSpec,
     TaskStatus,
 )
-from .volume import (
-    GCS,
-    NFS,
-    PD,
-    Volume,
-)
+from .volume import GCS, NFS, PD, Volume
 
 __all__ = (
     "CreateJobRequest",

@@ -13,40 +13,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.batch import gapic_version as package_version
 
-from .services.batch_service import BatchServiceClient
-from .services.batch_service import BatchServiceAsyncClient
+__version__ = package_version.__version__
 
-from .types.batch import CreateJobRequest
-from .types.batch import DeleteJobRequest
-from .types.batch import GetJobRequest
-from .types.batch import GetTaskRequest
-from .types.batch import ListJobsRequest
-from .types.batch import ListJobsResponse
-from .types.batch import ListTasksRequest
-from .types.batch import ListTasksResponse
-from .types.batch import OperationMetadata
-from .types.job import AllocationPolicy
-from .types.job import Job
-from .types.job import JobDependency
-from .types.job import JobNotification
-from .types.job import JobStatus
-from .types.job import LogsPolicy
-from .types.job import ServiceAccount
-from .types.job import TaskGroup
-from .types.task import ComputeResource
-from .types.task import Environment
-from .types.task import LifecyclePolicy
-from .types.task import Runnable
-from .types.task import StatusEvent
-from .types.task import Task
-from .types.task import TaskExecution
-from .types.task import TaskSpec
-from .types.task import TaskStatus
-from .types.volume import GCS
-from .types.volume import NFS
-from .types.volume import PD
-from .types.volume import Volume
+
+from .services.batch_service import BatchServiceAsyncClient, BatchServiceClient
+from .types.batch import (
+    CreateJobRequest,
+    DeleteJobRequest,
+    GetJobRequest,
+    GetTaskRequest,
+    ListJobsRequest,
+    ListJobsResponse,
+    ListTasksRequest,
+    ListTasksResponse,
+    OperationMetadata,
+)
+from .types.job import (
+    AllocationPolicy,
+    Job,
+    JobDependency,
+    JobNotification,
+    JobStatus,
+    LogsPolicy,
+    ServiceAccount,
+    TaskGroup,
+)
+from .types.task import (
+    ComputeResource,
+    Environment,
+    LifecyclePolicy,
+    Runnable,
+    StatusEvent,
+    Task,
+    TaskExecution,
+    TaskSpec,
+    TaskStatus,
+)
+from .types.volume import GCS, NFS, PD, Volume
 
 __all__ = (
     "BatchServiceAsyncClient",

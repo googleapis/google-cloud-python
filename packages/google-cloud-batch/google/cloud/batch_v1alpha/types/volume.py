@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.batch.v1alpha",
@@ -59,7 +60,7 @@ class Volume(proto.Message):
             This field is a member of `oneof`_ ``source``.
         mount_path (str):
             Mount path for the volume, e.g. /mnt/share
-        mount_options (Sequence[str]):
+        mount_options (MutableSequence[str]):
             Mount options For Google Cloud Storage, mount options are
             the global options supported by gcsfuse tool. Batch will use
             them to mount the volume with the following command:
@@ -69,34 +70,34 @@ class Volume(proto.Message):
             https://help.ubuntu.com/community/Fstab
     """
 
-    nfs = proto.Field(
+    nfs: "NFS" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="NFS",
     )
-    pd = proto.Field(
+    pd: "PD" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="PD",
     )
-    gcs = proto.Field(
+    gcs: "GCS" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
         message="GCS",
     )
-    device_name = proto.Field(
+    device_name: str = proto.Field(
         proto.STRING,
         number=6,
         oneof="source",
     )
-    mount_path = proto.Field(
+    mount_path: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    mount_options = proto.RepeatedField(
+    mount_options: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -113,11 +114,11 @@ class NFS(proto.Message):
             "/share".
     """
 
-    server = proto.Field(
+    server: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    remote_path = proto.Field(
+    remote_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -139,15 +140,15 @@ class PD(proto.Message):
             and we will mount it to the given path.
     """
 
-    disk = proto.Field(
+    disk: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    device = proto.Field(
+    device: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    existing = proto.Field(
+    existing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -162,7 +163,7 @@ class GCS(proto.Message):
             bucket, e.g.: bucket_name, bucket_name/subdirectory/
     """
 
-    remote_path = proto.Field(
+    remote_path: str = proto.Field(
         proto.STRING,
         number=1,
     )

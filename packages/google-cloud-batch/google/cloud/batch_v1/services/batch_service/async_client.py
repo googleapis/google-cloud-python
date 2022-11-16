@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,20 +43,22 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.batch_v1.services.batch_service import pagers
-from google.cloud.batch_v1.types import batch
-from google.cloud.batch_v1.types import job
-from google.cloud.batch_v1.types import job as gcb_job
-from google.cloud.batch_v1.types import task
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BatchServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import BatchServiceGrpcAsyncIOTransport
+
+from google.cloud.batch_v1.services.batch_service import pagers
+from google.cloud.batch_v1.types import batch
+from google.cloud.batch_v1.types import job
+from google.cloud.batch_v1.types import job as gcb_job
+from google.cloud.batch_v1.types import task
+
 from .client import BatchServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, BatchServiceTransport
+from .transports.grpc_asyncio import BatchServiceGrpcAsyncIOTransport
 
 
 class BatchServiceAsyncClient:
@@ -172,9 +184,9 @@ class BatchServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BatchServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the batch service client.
@@ -218,13 +230,13 @@ class BatchServiceAsyncClient:
 
     async def create_job(
         self,
-        request: Union[batch.CreateJobRequest, dict] = None,
+        request: Optional[Union[batch.CreateJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        job: gcb_job.Job = None,
-        job_id: str = None,
+        parent: Optional[str] = None,
+        job: Optional[gcb_job.Job] = None,
+        job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcb_job.Job:
         r"""Create a Job.
@@ -256,7 +268,7 @@ class BatchServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.batch_v1.types.CreateJobRequest, dict]):
+            request (Optional[Union[google.cloud.batch_v1.types.CreateJobRequest, dict]]):
                 The request object. CreateJob Request.
             parent (:class:`str`):
                 Required. The parent resource name
@@ -344,11 +356,11 @@ class BatchServiceAsyncClient:
 
     async def get_job(
         self,
-        request: Union[batch.GetJobRequest, dict] = None,
+        request: Optional[Union[batch.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Get a Job specified by its resource name.
@@ -380,7 +392,7 @@ class BatchServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.batch_v1.types.GetJobRequest, dict]):
+            request (Optional[Union[google.cloud.batch_v1.types.GetJobRequest, dict]]):
                 The request object. GetJob Request.
             name (:class:`str`):
                 Required. Job name.
@@ -450,11 +462,11 @@ class BatchServiceAsyncClient:
 
     async def delete_job(
         self,
-        request: Union[batch.DeleteJobRequest, dict] = None,
+        request: Optional[Union[batch.DeleteJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a Job.
@@ -489,7 +501,7 @@ class BatchServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.batch_v1.types.DeleteJobRequest, dict]):
+            request (Optional[Union[google.cloud.batch_v1.types.DeleteJobRequest, dict]]):
                 The request object. DeleteJob Request.
             name (:class:`str`):
                 Job name.
@@ -570,11 +582,11 @@ class BatchServiceAsyncClient:
 
     async def list_jobs(
         self,
-        request: Union[batch.ListJobsRequest, dict] = None,
+        request: Optional[Union[batch.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""List all Jobs for a project within a region.
@@ -606,7 +618,7 @@ class BatchServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.batch_v1.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.batch_v1.types.ListJobsRequest, dict]]):
                 The request object. ListJob Request.
             parent (:class:`str`):
                 Parent path.
@@ -689,11 +701,11 @@ class BatchServiceAsyncClient:
 
     async def get_task(
         self,
-        request: Union[batch.GetTaskRequest, dict] = None,
+        request: Optional[Union[batch.GetTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> task.Task:
         r"""Return a single Task.
@@ -725,7 +737,7 @@ class BatchServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.batch_v1.types.GetTaskRequest, dict]):
+            request (Optional[Union[google.cloud.batch_v1.types.GetTaskRequest, dict]]):
                 The request object. Request for a single Task by name.
             name (:class:`str`):
                 Required. Task name.
@@ -795,11 +807,11 @@ class BatchServiceAsyncClient:
 
     async def list_tasks(
         self,
-        request: Union[batch.ListTasksRequest, dict] = None,
+        request: Optional[Union[batch.ListTasksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTasksAsyncPager:
         r"""List Tasks associated with a job.
@@ -832,7 +844,7 @@ class BatchServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.batch_v1.types.ListTasksRequest, dict]):
+            request (Optional[Union[google.cloud.batch_v1.types.ListTasksRequest, dict]]):
                 The request object. ListTasks Request.
             parent (:class:`str`):
                 Required. Name of a TaskGroup from which Tasks are being
@@ -918,10 +930,10 @@ class BatchServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -972,10 +984,10 @@ class BatchServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1026,10 +1038,10 @@ class BatchServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1081,10 +1093,10 @@ class BatchServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1135,10 +1147,10 @@ class BatchServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1255,10 +1267,10 @@ class BatchServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1376,10 +1388,10 @@ class BatchServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -1435,10 +1447,10 @@ class BatchServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1489,10 +1501,10 @@ class BatchServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

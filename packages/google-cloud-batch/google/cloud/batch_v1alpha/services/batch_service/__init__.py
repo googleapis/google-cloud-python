@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import BatchServiceClient
 from .async_client import BatchServiceAsyncClient
+from .client import BatchServiceClient
 
 __all__ = (
     "BatchServiceClient",

@@ -18,15 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.batch_v1.types import batch
-from google.cloud.batch_v1.types import job
-from google.cloud.batch_v1.types import task
+from google.cloud.batch_v1.types import batch, job, task
 
 
 class ListJobsPager:

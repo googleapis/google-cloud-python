@@ -1,2 +1,3 @@
 releaseType: python
 handleGHRelease: true
+manifest: true

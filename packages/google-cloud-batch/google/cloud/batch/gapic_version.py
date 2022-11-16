@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import BatchServiceAsyncClient
-from .client import BatchServiceClient
-
-__all__ = (
-    "BatchServiceClient",
-    "BatchServiceAsyncClient",
-)
+__version__ = "0.4.1"  # {x-release-please-version}

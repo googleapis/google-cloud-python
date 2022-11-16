@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.batch_v1alpha.types import task
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.batch.v1alpha",
@@ -50,12 +51,12 @@ class Job(proto.Message):
             Priority of the Job. The valid value range is [0, 100). A
             job with higher priority value is more likely to run earlier
             if all other requirements are satisfied.
-        task_groups (Sequence[google.cloud.batch_v1alpha.types.TaskGroup]):
+        task_groups (MutableSequence[google.cloud.batch_v1alpha.types.TaskGroup]):
             Required. TaskGroups in the Job. Only one
             TaskGroup is supported now.
         scheduling_policy (google.cloud.batch_v1alpha.types.Job.SchedulingPolicy):
             Scheduling policy for TaskGroups in the job.
-        dependencies (Sequence[google.cloud.batch_v1alpha.types.JobDependency]):
+        dependencies (MutableSequence[google.cloud.batch_v1alpha.types.JobDependency]):
             At least one of the dependencies must be
             satisfied before the Job is scheduled to run.
             Only one JobDependency is supported now.
@@ -63,7 +64,7 @@ class Job(proto.Message):
         allocation_policy (google.cloud.batch_v1alpha.types.AllocationPolicy):
             Compute resource allocation for all
             TaskGroups in the Job.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels for the Job. Labels could be user provided or system
             generated. For example, "labels": { "department": "finance",
             "environment": "test" } You can assign up to 64 labels.
@@ -83,7 +84,7 @@ class Job(proto.Message):
             updated.
         logs_policy (google.cloud.batch_v1alpha.types.LogsPolicy):
             Log preservation policy for the Job.
-        notifications (Sequence[google.cloud.batch_v1alpha.types.JobNotification]):
+        notifications (MutableSequence[google.cloud.batch_v1alpha.types.JobNotification]):
             Notification configurations.
     """
 
@@ -95,69 +96,69 @@ class Job(proto.Message):
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    priority = proto.Field(
+    priority: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    task_groups = proto.RepeatedField(
+    task_groups: MutableSequence["TaskGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="TaskGroup",
     )
-    scheduling_policy = proto.Field(
+    scheduling_policy: SchedulingPolicy = proto.Field(
         proto.ENUM,
         number=5,
         enum=SchedulingPolicy,
     )
-    dependencies = proto.RepeatedField(
+    dependencies: MutableSequence["JobDependency"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="JobDependency",
     )
-    allocation_policy = proto.Field(
+    allocation_policy: "AllocationPolicy" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="AllocationPolicy",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    status = proto.Field(
+    status: "JobStatus" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="JobStatus",
     )
-    notification = proto.Field(
+    notification: "JobNotification" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="JobNotification",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    logs_policy = proto.Field(
+    logs_policy: "LogsPolicy" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="LogsPolicy",
     )
-    notifications = proto.RepeatedField(
+    notifications: MutableSequence["JobNotification"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="JobNotification",
@@ -185,12 +186,12 @@ class LogsPolicy(proto.Message):
         CLOUD_LOGGING = 1
         PATH = 2
 
-    destination = proto.Field(
+    destination: Destination = proto.Field(
         proto.ENUM,
         number=1,
         enum=Destination,
     )
-    logs_path = proto.Field(
+    logs_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -202,7 +203,7 @@ class JobDependency(proto.Message):
     All dependent Jobs must have been submitted in the same region.
 
     Attributes:
-        items (Mapping[str, google.cloud.batch_v1alpha.types.JobDependency.Type]):
+        items (MutableMapping[str, google.cloud.batch_v1alpha.types.JobDependency.Type]):
             Each item maps a Job name to a Type.
             All items must be satisfied for the
             JobDependency to be satisfied (the AND
@@ -219,7 +220,7 @@ class JobDependency(proto.Message):
         FAILED = 2
         FINISHED = 3
 
-    items = proto.MapField(
+    items: MutableMapping[str, Type] = proto.MapField(
         proto.STRING,
         proto.ENUM,
         number=1,
@@ -233,9 +234,9 @@ class JobStatus(proto.Message):
     Attributes:
         state (google.cloud.batch_v1alpha.types.JobStatus.State):
             Job state
-        status_events (Sequence[google.cloud.batch_v1alpha.types.StatusEvent]):
+        status_events (MutableSequence[google.cloud.batch_v1alpha.types.StatusEvent]):
             Job status events
-        task_groups (Mapping[str, google.cloud.batch_v1alpha.types.JobStatus.TaskGroupStatus]):
+        task_groups (MutableMapping[str, google.cloud.batch_v1alpha.types.JobStatus.TaskGroupStatus]):
             Aggregated task status for each TaskGroup in
             the Job. The map key is TaskGroup ID.
         run_duration (google.protobuf.duration_pb2.Duration):
@@ -266,16 +267,16 @@ class JobStatus(proto.Message):
                 this instance type.
         """
 
-        machine_type = proto.Field(
+        machine_type: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        provisioning_model = proto.Field(
+        provisioning_model: "AllocationPolicy.ProvisioningModel" = proto.Field(
             proto.ENUM,
             number=2,
             enum="AllocationPolicy.ProvisioningModel",
         )
-        task_pack = proto.Field(
+        task_pack: int = proto.Field(
             proto.INT64,
             number=3,
         )
@@ -284,42 +285,42 @@ class JobStatus(proto.Message):
         r"""Aggregated task status for a TaskGroup.
 
         Attributes:
-            counts (Mapping[str, int]):
+            counts (MutableMapping[str, int]):
                 Count of task in each state in the TaskGroup.
                 The map key is task state name.
-            instances (Sequence[google.cloud.batch_v1alpha.types.JobStatus.InstanceStatus]):
+            instances (MutableSequence[google.cloud.batch_v1alpha.types.JobStatus.InstanceStatus]):
                 Status of instances allocated for the
                 TaskGroup.
         """
 
-        counts = proto.MapField(
+        counts: MutableMapping[str, int] = proto.MapField(
             proto.STRING,
             proto.INT64,
             number=1,
         )
-        instances = proto.RepeatedField(
+        instances: MutableSequence["JobStatus.InstanceStatus"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="JobStatus.InstanceStatus",
         )
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    status_events = proto.RepeatedField(
+    status_events: MutableSequence[task.StatusEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=task.StatusEvent,
     )
-    task_groups = proto.MapField(
+    task_groups: MutableMapping[str, TaskGroupStatus] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,
         message=TaskGroupStatus,
     )
-    run_duration = proto.Field(
+    run_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
@@ -363,27 +364,27 @@ class JobNotification(proto.Message):
                 The new task state.
         """
 
-        type_ = proto.Field(
+        type_: "JobNotification.Type" = proto.Field(
             proto.ENUM,
             number=1,
             enum="JobNotification.Type",
         )
-        new_job_state = proto.Field(
+        new_job_state: "JobStatus.State" = proto.Field(
             proto.ENUM,
             number=2,
             enum="JobStatus.State",
         )
-        new_task_state = proto.Field(
+        new_task_state: task.TaskStatus.State = proto.Field(
             proto.ENUM,
             number=3,
             enum=task.TaskStatus.State,
         )
 
-    pubsub_topic = proto.Field(
+    pubsub_topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    message = proto.Field(
+    message: Message = proto.Field(
         proto.MESSAGE,
         number=2,
         message=Message,
@@ -400,19 +401,19 @@ class AllocationPolicy(proto.Message):
             allocated for the Job.
         instance (google.cloud.batch_v1alpha.types.AllocationPolicy.InstancePolicy):
             Deprecated: please use instances[0].policy instead.
-        instances (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.InstancePolicyOrTemplate]):
+        instances (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.InstancePolicyOrTemplate]):
             Describe instances that can be created by this
             AllocationPolicy. Only instances[0] is supported now.
-        instance_templates (Sequence[str]):
+        instance_templates (MutableSequence[str]):
             Deprecated: please use instances[0].template instead.
-        provisioning_models (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel]):
+        provisioning_models (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel]):
             Deprecated: please use
             instances[i].policy.provisioning_model instead.
         service_account_email (str):
             Deprecated: please use service_account instead.
         service_account (google.cloud.batch_v1alpha.types.ServiceAccount):
             Service account that VMs will run as.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels applied to all VM instances and other resources
             created by AllocationPolicy. Labels could be user provided
             or system generated. You can assign up to 64 labels. `Google
@@ -435,7 +436,7 @@ class AllocationPolicy(proto.Message):
         r"""
 
         Attributes:
-            allowed_locations (Sequence[str]):
+            allowed_locations (MutableSequence[str]):
                 A list of allowed location names represented by internal
                 URLs. Each location can be a region or a zone. Only one
                 region or multiple zones in one region is supported now. For
@@ -447,16 +448,16 @@ class AllocationPolicy(proto.Message):
                 "zones/us-central1-a", "zones/us-central1-b",
                 "zones/us-west1-a"] contains 2 regions "us-central1" and
                 "us-west1". An error is expected in this case.
-            denied_locations (Sequence[str]):
+            denied_locations (MutableSequence[str]):
                 A list of denied location names.
                 Not yet implemented.
         """
 
-        allowed_locations = proto.RepeatedField(
+        allowed_locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        denied_locations = proto.RepeatedField(
+        denied_locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -500,25 +501,25 @@ class AllocationPolicy(proto.Message):
                 support "SCSI" for persistent disks now.
         """
 
-        image = proto.Field(
+        image: str = proto.Field(
             proto.STRING,
             number=4,
             oneof="data_source",
         )
-        snapshot = proto.Field(
+        snapshot: str = proto.Field(
             proto.STRING,
             number=5,
             oneof="data_source",
         )
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        size_gb = proto.Field(
+        size_gb: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        disk_interface = proto.Field(
+        disk_interface: str = proto.Field(
             proto.STRING,
             number=6,
         )
@@ -549,18 +550,18 @@ class AllocationPolicy(proto.Message):
                 disk, and it should match the device_name field in volumes.
         """
 
-        new_disk = proto.Field(
+        new_disk: "AllocationPolicy.Disk" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="attached",
             message="AllocationPolicy.Disk",
         )
-        existing_disk = proto.Field(
+        existing_disk: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="attached",
         )
-        device_name = proto.Field(
+        device_name: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -580,15 +581,15 @@ class AllocationPolicy(proto.Message):
                 instead.
         """
 
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        count = proto.Field(
+        count: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        install_gpu_drivers = proto.Field(
+        install_gpu_drivers: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -598,7 +599,7 @@ class AllocationPolicy(proto.Message):
         attached to each VM created by this InstancePolicy.
 
         Attributes:
-            allowed_machine_types (Sequence[str]):
+            allowed_machine_types (MutableSequence[str]):
                 Deprecated: please use machine_type instead.
             machine_type (str):
                 The Compute Engine machine type.
@@ -608,38 +609,40 @@ class AllocationPolicy(proto.Message):
                 Not yet implemented.
             provisioning_model (google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel):
                 The provisioning model.
-            accelerators (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.Accelerator]):
+            accelerators (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.Accelerator]):
                 The accelerators attached to each VM
                 instance. Not yet implemented.
-            disks (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
+            disks (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
                 be deleted when the attached VM is deleted.
         """
 
-        allowed_machine_types = proto.RepeatedField(
+        allowed_machine_types: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        machine_type = proto.Field(
+        machine_type: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        min_cpu_platform = proto.Field(
+        min_cpu_platform: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        provisioning_model = proto.Field(
+        provisioning_model: "AllocationPolicy.ProvisioningModel" = proto.Field(
             proto.ENUM,
             number=4,
             enum="AllocationPolicy.ProvisioningModel",
         )
-        accelerators = proto.RepeatedField(
+        accelerators: MutableSequence[
+            "AllocationPolicy.Accelerator"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="AllocationPolicy.Accelerator",
         )
-        disks = proto.RepeatedField(
+        disks: MutableSequence["AllocationPolicy.AttachedDisk"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="AllocationPolicy.AttachedDisk",
@@ -673,18 +676,18 @@ class AllocationPolicy(proto.Message):
                 on their behalf. Default is false.
         """
 
-        policy = proto.Field(
+        policy: "AllocationPolicy.InstancePolicy" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="policy_template",
             message="AllocationPolicy.InstancePolicy",
         )
-        instance_template = proto.Field(
+        instance_template: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="policy_template",
         )
-        install_gpu_drivers = proto.Field(
+        install_gpu_drivers: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -710,15 +713,15 @@ class AllocationPolicy(proto.Message):
                 for more information.
         """
 
-        network = proto.Field(
+        network: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        subnetwork = proto.Field(
+        subnetwork: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        no_external_ip_address = proto.Field(
+        no_external_ip_address: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -727,55 +730,57 @@ class AllocationPolicy(proto.Message):
         r"""NetworkPolicy describes VM instance network configurations.
 
         Attributes:
-            network_interfaces (Sequence[google.cloud.batch_v1alpha.types.AllocationPolicy.NetworkInterface]):
+            network_interfaces (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.NetworkInterface]):
                 Network configurations.
         """
 
-        network_interfaces = proto.RepeatedField(
+        network_interfaces: MutableSequence[
+            "AllocationPolicy.NetworkInterface"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AllocationPolicy.NetworkInterface",
         )
 
-    location = proto.Field(
+    location: LocationPolicy = proto.Field(
         proto.MESSAGE,
         number=1,
         message=LocationPolicy,
     )
-    instance = proto.Field(
+    instance: InstancePolicy = proto.Field(
         proto.MESSAGE,
         number=2,
         message=InstancePolicy,
     )
-    instances = proto.RepeatedField(
+    instances: MutableSequence[InstancePolicyOrTemplate] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=InstancePolicyOrTemplate,
     )
-    instance_templates = proto.RepeatedField(
+    instance_templates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    provisioning_models = proto.RepeatedField(
+    provisioning_models: MutableSequence[ProvisioningModel] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=ProvisioningModel,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    service_account = proto.Field(
+    service_account: "ServiceAccount" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="ServiceAccount",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    network = proto.Field(
+    network: NetworkPolicy = proto.Field(
         proto.MESSAGE,
         number=7,
         message=NetworkPolicy,
@@ -807,14 +812,14 @@ class TaskGroup(proto.Message):
             Compute resource allocation for the
             TaskGroup. If specified, it overrides resources
             in Job.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels for the TaskGroup. Labels could be user provided or
             system generated. You can assign up to 64 labels. `Google
             Compute Engine label
             restrictions <https://cloud.google.com/compute/docs/labeling-resources#restrictions>`__
             apply. Label names that start with "goog-" or "google-" are
             reserved.
-        task_environments (Sequence[google.cloud.batch_v1alpha.types.Environment]):
+        task_environments (MutableSequence[google.cloud.batch_v1alpha.types.Environment]):
             An array of environment variable mappings, which are passed
             to Tasks with matching indices. If task_environments is used
             then task_count should not be specified in the request (and
@@ -852,52 +857,52 @@ class TaskGroup(proto.Message):
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    task_spec = proto.Field(
+    task_spec: task.TaskSpec = proto.Field(
         proto.MESSAGE,
         number=3,
         message=task.TaskSpec,
     )
-    task_count = proto.Field(
+    task_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    parallelism = proto.Field(
+    parallelism: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    scheduling_policy = proto.Field(
+    scheduling_policy: SchedulingPolicy = proto.Field(
         proto.ENUM,
         number=6,
         enum=SchedulingPolicy,
     )
-    allocation_policy = proto.Field(
+    allocation_policy: "AllocationPolicy" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="AllocationPolicy",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    task_environments = proto.RepeatedField(
+    task_environments: MutableSequence[task.Environment] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message=task.Environment,
     )
-    task_count_per_node = proto.Field(
+    task_count_per_node: int = proto.Field(
         proto.INT64,
         number=10,
     )
-    require_hosts_file = proto.Field(
+    require_hosts_file: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    permissive_ssh = proto.Field(
+    permissive_ssh: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
@@ -915,18 +920,18 @@ class ServiceAccount(proto.Message):
             account has to be specified in the instance
             template and it has to match the email field
             here.
-        scopes (Sequence[str]):
+        scopes (MutableSequence[str]):
             List of scopes to be enabled for this service
             account on the VM, in addition to the
             cloud-platform API scope that will be added by
             default.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    scopes = proto.RepeatedField(
+    scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
