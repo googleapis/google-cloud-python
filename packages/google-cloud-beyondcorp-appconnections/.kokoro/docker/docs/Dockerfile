@@ -68,7 +68,7 @@ RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
 # Extract files
 RUN tar -xvf Python-3.9.13.tgz
 
-# Install python 3.9.11
+# Install python 3.9.13
 RUN ./Python-3.9.13/configure --enable-optimizations
 RUN make altinstall
 
