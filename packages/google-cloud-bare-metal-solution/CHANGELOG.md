@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.1.3...v1.2.0) (2022-11-16)
+
+
+### Features
+
+* add support for `google.cloud.bare_metal_solution.__version__` ([c47f1ab](https://github.com/googleapis/python-bare-metal-solution/commit/c47f1abeff25c62289752f56493cc95d5ed1aa51))
+* Add typing to proto.Message based class attributes ([b20397b](https://github.com/googleapis/python-bare-metal-solution/commit/b20397bdf75aa084849c5da4d715dfcefe75eb2a))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([c47f1ab](https://github.com/googleapis/python-bare-metal-solution/commit/c47f1abeff25c62289752f56493cc95d5ed1aa51))
+* **deps:** require google-api-core &gt;=1.33.2 ([c47f1ab](https://github.com/googleapis/python-bare-metal-solution/commit/c47f1abeff25c62289752f56493cc95d5ed1aa51))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([b20397b](https://github.com/googleapis/python-bare-metal-solution/commit/b20397bdf75aa084849c5da4d715dfcefe75eb2a))
+
 ## [1.1.3](https://github.com/googleapis/python-bare-metal-solution/compare/v1.1.2...v1.1.3) (2022-10-07)
 
 
