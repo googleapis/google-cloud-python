@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-api-keys/compare/v0.3.0...v0.4.0) (2022-11-16)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([d336d7d](https://github.com/googleapis/python-api-keys/commit/d336d7d554296b824f7ecf38648550307e5f0cd4))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([d336d7d](https://github.com/googleapis/python-api-keys/commit/d336d7d554296b824f7ecf38648550307e5f0cd4))
+
 ## [0.3.0](https://github.com/googleapis/python-api-keys/compare/v0.2.2...v0.3.0) (2022-11-08)
 
 
