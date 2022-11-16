@@ -22,11 +22,11 @@ run on other Python platforms as well.
 GA
 
 ### Officially Supported Python Versions
-Python 3.6, 3.7, 3.8, 3.9, 3.10
+Python 3.7, 3.8, 3.9, 3.10
 
 ### Unsupported Python Versions
 
-Python <= 3.5
+Python <= 3.6
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

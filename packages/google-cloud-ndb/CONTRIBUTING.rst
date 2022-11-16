@@ -23,7 +23,7 @@ In order to add a feature to ``python-ndb``:
 - The feature must be documented in both the API and narrative
   documentation (in ``docs/``).
 
-- The feature must work fully on the following CPython versions:  3.6
+- The feature must work fully on the following CPython versions:
   3.7, 3.8, 3.9 and 3.10 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
@@ -73,7 +73,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 - To test your changes, run unit tests with ``nox``::
 
     $ nox -s unit-3.10
-    $ nox -s unit-3.6
+    $ nox -s unit-3.7
     $ ...
 
 .. nox: https://pypi.org/project/nox-automation/
@@ -247,13 +247,11 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.6`_
 -  `Python 3.7`_
 -  `Python 3.8`_
 -  `Python 3.9`_
 -  `Python 3.10`_
 
-.. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
 .. _Python 3.9: https://docs.python.org/3.9/
