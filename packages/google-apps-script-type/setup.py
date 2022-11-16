@@ -20,7 +20,7 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-apps-script-type-slides"
+name = "google-apps-script-type"
 
 
 description = "Google Apps Script Type API client library"
