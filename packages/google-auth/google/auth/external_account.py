@@ -437,11 +437,11 @@ class Credentials(
     @staticmethod
     def validate_token_url(token_url, url_type="token"):
         _TOKEN_URL_PATTERNS = [
-            "^[^\\.\\s\\/\\\\]+\\.sts\\.googleapis\\.com$",
-            "^sts\\.googleapis\\.com$",
-            "^sts\\.[^\\.\\s\\/\\\\]+\\.googleapis\\.com$",
-            "^[^\\.\\s\\/\\\\]+\\-sts\\.googleapis\\.com$",
-            "^sts\\-[^\\.\\s\\/\\\\]+\\.p\\.googleapis\\.com$",
+            "^[^\\.\\s\\/\\\\]+\\.sts(?:\\.mtls)?\\.googleapis\\.com$",
+            "^sts(?:\\.mtls)?\\.googleapis\\.com$",
+            "^sts\\.[^\\.\\s\\/\\\\]+(?:\\.mtls)?\\.googleapis\\.com$",
+            "^[^\\.\\s\\/\\\\]+\\-sts(?:\\.mtls)?\\.googleapis\\.com$",
+            "^sts\\-[^\\.\\s\\/\\\\]+\\.p(?:\\.mtls)?\\.googleapis\\.com$",
         ]
 
         if not Credentials.is_valid_url(_TOKEN_URL_PATTERNS, token_url):
