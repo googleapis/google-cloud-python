@@ -197,7 +197,7 @@ App Engine's legacy exceptions are no longer available, but `ndb` provides
 shims for most of them, which can be imported from the `ndb.exceptions`
 package, like this::
 
-    from ndb.exceptions import BadRequestError, BadArgumentError
+    from google.cloud.ndb.exceptions import BadRequestError, BadArgumentError
 
 Datastore API
 =============
