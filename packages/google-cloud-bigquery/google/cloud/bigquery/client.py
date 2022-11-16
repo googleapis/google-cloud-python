@@ -3349,10 +3349,10 @@ class Client(ClientWithProject):
     def insert_rows(
         self,
         table: Union[Table, TableReference, str],
-        rows: Union[Iterable[Tuple], Iterable[Dict]],
+        rows: Union[Iterable[Tuple], Iterable[Mapping[str, Any]]],
         selected_fields: Sequence[SchemaField] = None,
         **kwargs,
-    ) -> Sequence[dict]:
+    ) -> Sequence[Dict[str, Any]]:
         """Insert rows into a table via the streaming API.
 
         See
@@ -3470,7 +3470,7 @@ class Client(ClientWithProject):
     def insert_rows_json(
         self,
         table: Union[Table, TableReference, TableListItem, str],
-        json_rows: Sequence[Dict],
+        json_rows: Sequence[Mapping[str, Any]],
         row_ids: Union[
             Iterable[Optional[str]], AutoRowIDs, None
         ] = AutoRowIDs.GENERATE_UUID,
