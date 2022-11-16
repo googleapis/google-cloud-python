@@ -19,11 +19,12 @@ import os
 import libcst as cst
 import pathlib
 import sys
-from typing import Any, Callable, Dict, List, Sequence, Tuple
+from typing import (Any, Callable, Dict, List, Sequence, Tuple)
 
 
 def partition(
-    predicate: Callable[[Any], bool], iterator: Sequence[Any]
+    predicate: Callable[[Any], bool],
+    iterator: Sequence[Any]
 ) -> Tuple[List[Any], List[Any]]:
     """A stable, out-of-place partition."""
     results = ([], [])
@@ -36,8 +37,9 @@ def partition(
 
 
 class slidesCallTransformer(cst.CSTTransformer):
-    CTRL_PARAMS: Tuple[str] = ("retry", "timeout", "metadata")
-    METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {}
+    CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
+    METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+    }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
         try:
@@ -55,32 +57,30 @@ class slidesCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: a.keyword.value not in self.CTRL_PARAMS, kwargs
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
+            kwargs
         )
 
-        args, ctrl_args = args[: len(kword_params)], args[len(kword_params) :]
-        ctrl_kwargs.extend(
-            cst.Arg(value=a.value, keyword=cst.Name(value=ctrl))
-            for a, ctrl in zip(ctrl_args, self.CTRL_PARAMS)
-        )
+        args, ctrl_args = args[:len(kword_params)], args[len(kword_params):]
+        ctrl_kwargs.extend(cst.Arg(value=a.value, keyword=cst.Name(value=ctrl))
+                           for a, ctrl in zip(ctrl_args, self.CTRL_PARAMS))
 
         request_arg = cst.Arg(
-            value=cst.Dict(
-                [
-                    cst.DictElement(
-                        cst.SimpleString("'{}'".format(name)),
-                        cst.Element(value=arg.value),
-                    )
-                    # Note: the args + kwargs looks silly, but keep in mind that
-                    # the control parameters had to be stripped out, and that
-                    # those could have been passed positionally or by keyword.
-                    for name, arg in zip(kword_params, args + kwargs)
-                ]
-            ),
-            keyword=cst.Name("request"),
+            value=cst.Dict([
+                cst.DictElement(
+                    cst.SimpleString("'{}'".format(name)),
+cst.Element(value=arg.value)
+                )
+                # Note: the args + kwargs looks silly, but keep in mind that
+                # the control parameters had to be stripped out, and that
+                # those could have been passed positionally or by keyword.
+                for name, arg in zip(kword_params, args + kwargs)]),
+            keyword=cst.Name("request")
         )
 
-        return updated.with_changes(args=[request_arg] + ctrl_kwargs)
+        return updated.with_changes(
+            args=[request_arg] + ctrl_kwargs
+        )
 
 
 def fix_files(
@@ -98,12 +98,11 @@ def fix_files(
     pyfile_gen = (
         pathlib.Path(os.path.join(root, f))
         for root, _, files in os.walk(in_dir)
-        for f in files
-        if os.path.splitext(f)[1] == ".py"
+        for f in files if os.path.splitext(f)[1] == ".py"
     )
 
     for fpath in pyfile_gen:
-        with open(fpath, "r") as f:
+        with open(fpath, 'r') as f:
             src = f.read()
 
         # Parse the code and insert method call fixes.
@@ -115,11 +114,11 @@ def fix_files(
         updated_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Generate the updated source file at the corresponding path.
-        with open(updated_path, "w") as f:
+        with open(updated_path, 'w') as f:
             f.write(updated.code)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="""Fix up source that uses the slides client library.
 
@@ -134,21 +133,20 @@ Note: This tool operates at a best-effort level at converting positional
 
       These all constitute false negatives. The tool will also detect false
       positives when an API method shares a name with another method.
-"""
+""")
+    parser.add_argument(
+        '-d',
+        '--input-directory',
+        required=True,
+        dest='input_dir',
+        help='the input directory to walk for python files to fix up',
     )
     parser.add_argument(
-        "-d",
-        "--input-directory",
+        '-o',
+        '--output-directory',
         required=True,
-        dest="input_dir",
-        help="the input directory to walk for python files to fix up",
-    )
-    parser.add_argument(
-        "-o",
-        "--output-directory",
-        required=True,
-        dest="output_dir",
-        help="the directory to output files fixed via un-flattening",
+        dest='output_dir',
+        help='the directory to output files fixed via un-flattening',
     )
     args = parser.parse_args()
     input_dir = pathlib.Path(args.input_dir)

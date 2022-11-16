@@ -17,7 +17,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-import google.apps.script.type.types
+import google.apps.script.type.types  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.calendar",
