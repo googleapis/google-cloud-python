@@ -17,7 +17,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.apps.script.type import extension_point_pb2  # type: ignore
+import google.apps.script.type.types  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.slides",
@@ -32,7 +32,7 @@ class SlidesAddOnManifest(proto.Message):
     r"""Slides add-on manifest.
 
     Attributes:
-        homepage_trigger (google.apps.script.type.extension_point_pb2.HomepageExtensionPoint):
+        homepage_trigger (google.apps.script.type.types.HomepageExtensionPoint):
             If present, this overrides the configuration from
             ``addOns.common.homepageTrigger``.
         on_file_scope_granted_trigger (google.apps.script.type.slides.types.SlidesExtensionPoint):
@@ -41,10 +41,12 @@ class SlidesAddOnManifest(proto.Message):
             pair.
     """
 
-    homepage_trigger: extension_point_pb2.HomepageExtensionPoint = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=extension_point_pb2.HomepageExtensionPoint,
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     on_file_scope_granted_trigger: "SlidesExtensionPoint" = proto.Field(
         proto.MESSAGE,
