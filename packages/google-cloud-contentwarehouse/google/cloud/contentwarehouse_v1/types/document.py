@@ -15,7 +15,7 @@
 #
 from typing import MutableMapping, MutableSequence
 
-import google.cloud.documentai_v1.types  # type: ignore
+import google.cloud.documentai_v1.types
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
