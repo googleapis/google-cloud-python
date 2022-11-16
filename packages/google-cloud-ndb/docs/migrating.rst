@@ -188,7 +188,7 @@ Should be written like this in Python 3::
     def function1(arg1, arg2, *, arg3=None, arg4=None):
         pass
 
-However, ``positional`` remains available and works in both Python 2 and 3.
+However, ``positional`` remains available and works in Python 3.
 
 Exceptions
 ==========

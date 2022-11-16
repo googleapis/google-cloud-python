@@ -1499,13 +1499,6 @@ class TestIntegerProperty:
         assert prop._validate(value) is value
 
     @staticmethod
-    @pytest.mark.skipif(six.PY3, reason="Test for Python 2 only.")
-    def test__validate_long():  # pragma: NO PY3 COVER
-        prop = model.IntegerProperty(name="count")
-        value = long(829038402384)  # noqa F821
-        assert prop._validate(value) is not value
-
-    @staticmethod
     def test__validate_bool():
         prop = model.IntegerProperty(name="count")
         value = True
@@ -6008,16 +6001,6 @@ class Test__legacy_db_get_value:
         v.has_stringvalue_ = 1
         v.stringvalue_ = bytes("fo\xc3", encoding="utf-8")
         assert prop._legacy_db_get_value(v, p) == "fo\xc3"
-
-    @staticmethod
-    @pytest.mark.skipif(six.PY3, reason="Test for Python 2 only.")
-    def test_str_utf8_py2():  # pragma: NO PY3 COVER
-        prop = model.Property()
-        p = _legacy_entity_pb.Property()
-        v = _legacy_entity_pb.PropertyValue()
-        v.has_stringvalue_ = 1
-        v.stringvalue_ = r"fo\xc3"
-        assert prop._legacy_db_get_value(v, p) == r"fo\xc3"
 
     @staticmethod
     def test_str_decode_error():

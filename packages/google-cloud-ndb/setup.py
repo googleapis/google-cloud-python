@@ -62,8 +62,6 @@ def main():
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
-            "Programming Language :: Python :: 2",
-            "Programming Language :: Python :: 2.7",
             "Operating System :: OS Independent",
             "Topic :: Internet",
         ],
@@ -72,7 +70,7 @@ def main():
         namespace_packages=["google", "google.cloud"],
         install_requires=dependencies,
         extras_require={},
-        python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
+        python_requires=">=3.6",
         include_package_data=False,
         zip_safe=False,
     )
