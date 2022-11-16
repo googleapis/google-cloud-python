@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-assured-workloads/compare/v1.7.0...v1.8.0) (2022-11-16)
+
+
+### Features
+
+* add support for `google.cloud.assuredworkloads.__version__` ([58b4377](https://github.com/googleapis/python-assured-workloads/commit/58b4377d7fdd56bca565df1bf2b4be8fb77c4c7f))
+* Add typing to proto.Message based class attributes ([3f09fb8](https://github.com/googleapis/python-assured-workloads/commit/3f09fb885e12d866edefabe18e7e02ca5b8cee20))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([58b4377](https://github.com/googleapis/python-assured-workloads/commit/58b4377d7fdd56bca565df1bf2b4be8fb77c4c7f))
+* **deps:** require google-api-core &gt;=1.33.2 ([58b4377](https://github.com/googleapis/python-assured-workloads/commit/58b4377d7fdd56bca565df1bf2b4be8fb77c4c7f))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([3f09fb8](https://github.com/googleapis/python-assured-workloads/commit/3f09fb885e12d866edefabe18e7e02ca5b8cee20))
+
 ## [1.7.0](https://github.com/googleapis/python-assured-workloads/compare/v1.6.1...v1.7.0) (2022-10-14)
 
 
