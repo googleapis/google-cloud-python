@@ -5608,6 +5608,40 @@ class Test_entity_from_ds_entity:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_legacy_repeated_structured_property_uneven_expandos():
+        class Expando1(model.Expando):
+            bar = model.StringProperty()
+
+        class Expando2(model.Expando):
+            qux = model.StringProperty()
+
+        class ThisKind(model.Model):
+            foo = model.StructuredProperty(model_class=Expando1, repeated=True)
+            baz = model.StructuredProperty(model_class=Expando2, repeated=True)
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.items = mock.Mock(
+            return_value=(
+                # Order matters here
+                ("foo.bar", ["foo_bar_1"]),
+                ("baz.qux", ["baz_qux_1", "baz_qux_2"]),
+                ("foo.custom_1", ["foo_c1_1", "foo_c1_2"]),  # longer than foo.bar
+            )
+        )
+        entity = model._entity_from_ds_entity(datastore_entity)
+        assert isinstance(entity, ThisKind)
+        assert len(entity.foo) == 2
+        assert len(entity.baz) == 2
+        assert entity.foo[0].bar == "foo_bar_1"
+        assert entity.foo[0].custom_1 == "foo_c1_1"
+        assert entity.foo[1].bar is None
+        assert entity.foo[1].custom_1 == "foo_c1_2"
+        assert entity.baz[0].qux == "baz_qux_1"
+        assert entity.baz[1].qux == "baz_qux_2"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_legacy_repeated_structured_property_with_name():
         class OtherKind(model.Model):
             foo = model.IntegerProperty()

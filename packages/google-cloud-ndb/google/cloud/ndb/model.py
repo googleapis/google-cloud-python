@@ -543,6 +543,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
     Args:
         ds_entity (google.cloud.datastore_v1.types.Entity): An entity to be
             deserialized.
+        model_class (class): Optional; ndb Model class type.
 
     Returns:
         .Model: The deserialized entity.
@@ -623,10 +624,14 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                         # different lengths for the subproperties, which was a
                         # bug. We work around this when reading out such values
                         # by making sure our repeated property is the same
-                        # length as the longest suproperty.
+                        # length as the longest subproperty.
+                        # Make sure to create a key of the same kind as
+                        # the other entries in the value list
                         while len(subvalue) > len(value):
                             # Need to make some more subentities
-                            value.append(new_entity(key._key))
+                            expando_kind = structprop._model_class._get_kind()
+                            expando_key = key_module.Key(expando_kind, None)
+                            value.append(new_entity(expando_key._key))
 
                         # Branch coverage bug,
                         # See: https://github.com/nedbat/coveragepy/issues/817
