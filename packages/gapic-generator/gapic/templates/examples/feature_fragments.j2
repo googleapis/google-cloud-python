@@ -242,6 +242,14 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request
 {% endif %}
 {% endmacro %}
 
+{% macro operation_text(transport) %}
+{% if transport == "grpc-async" %}
+(await operation)
+{% else %}
+operation
+{% endif %}
+{% endmacro %}
+
 {# Setting up the method invocation is the responsibility of the caller: #}
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
 {% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, transport, response_statements ) %}
@@ -286,7 +294,9 @@ operation = {{ method_invocation_text|trim }}
 
 print("Waiting for operation to complete...")
 
-response = {% if transport == "grpc-async" %}await {% endif %}operation.result()
+{% with operation_text = operation_text(transport) %}
+response = {{ operation_text|trim }}.result()
+{% endwith %}
 
 # Handle the response
 {% for statement in response_statements %}

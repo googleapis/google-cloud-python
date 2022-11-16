@@ -55,7 +55,7 @@ async def sample_analyze_iam_policy_longrunning():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
