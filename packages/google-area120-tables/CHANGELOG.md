@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-area120-tables/compare/v0.9.0...v0.10.0) (2022-11-16)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([dddcfad](https://github.com/googleapis/python-area120-tables/commit/dddcfade3932b8aa9f303a299200175e4f8547b1))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([dddcfad](https://github.com/googleapis/python-area120-tables/commit/dddcfade3932b8aa9f303a299200175e4f8547b1))
+
 ## [0.9.0](https://github.com/googleapis/python-area120-tables/compare/v0.8.2...v0.9.0) (2022-11-08)
 
 
