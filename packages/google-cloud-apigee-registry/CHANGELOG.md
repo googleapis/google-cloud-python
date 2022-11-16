@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-apigee-registry/compare/v0.4.0...v0.5.0) (2022-11-16)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([27dfa13](https://github.com/googleapis/python-apigee-registry/commit/27dfa13adb20d6f39612113effa483c4e1aa8142))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([27dfa13](https://github.com/googleapis/python-apigee-registry/commit/27dfa13adb20d6f39612113effa483c4e1aa8142))
+
 ## [0.4.0](https://github.com/googleapis/python-apigee-registry/compare/v0.3.2...v0.4.0) (2022-11-08)
 
 
