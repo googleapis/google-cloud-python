@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-artifact-registry/compare/v1.3.3...v1.4.0) (2022-11-16)
+
+
+### Features
+
+* add support for `google.cloud.artifactregistry.__version__` ([93a383f](https://github.com/googleapis/python-artifact-registry/commit/93a383ff7c66ed9f6f2a65e698cb5e22126c6cf2))
+* Add typing to proto.Message based class attributes ([9d151b1](https://github.com/googleapis/python-artifact-registry/commit/9d151b12c06d25beb5078ee293b79369eff46ca4))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([93a383f](https://github.com/googleapis/python-artifact-registry/commit/93a383ff7c66ed9f6f2a65e698cb5e22126c6cf2))
+* **deps:** require google-api-core &gt;=1.33.2 ([93a383f](https://github.com/googleapis/python-artifact-registry/commit/93a383ff7c66ed9f6f2a65e698cb5e22126c6cf2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9d151b1](https://github.com/googleapis/python-artifact-registry/commit/9d151b12c06d25beb5078ee293b79369eff46ca4))
+
 ## [1.3.3](https://github.com/googleapis/python-artifact-registry/compare/v1.3.2...v1.3.3) (2022-10-07)
 
 
