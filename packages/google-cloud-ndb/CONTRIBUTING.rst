@@ -78,6 +78,12 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 .. nox: https://pypi.org/project/nox-automation/
 
+- To run unit tests that use Memcached or Redis, you must have them running and set the appropriate environment variables:
+
+    $ export MEMCACHED_HOSTS=localhost:11211
+    $ export REDIS_CACHE_URL=http://localhost:6379
+
+
 Note on Editable Installs / Develop Mode
 ========================================
 
