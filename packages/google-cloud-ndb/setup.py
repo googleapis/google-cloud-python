@@ -25,9 +25,9 @@ def main():
         readme = readme_file.read()
     dependencies = [
         "google-cloud-datastore >= 1.7.0, < 2.0.0dev",
-        "pymemcache",
-        "redis",
-        "pytz"
+        "pymemcache >= 2.1.0, < 5.0.0dev",
+        "redis >= 3.0.0, < 5.0.0dev",
+        "pytz >= 2018.3"
     ]
 
     setuptools.setup(
