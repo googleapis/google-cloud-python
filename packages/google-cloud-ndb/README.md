@@ -21,14 +21,20 @@ run on other Python platforms as well.
 
 GA
 
-### Officially Supported Python Versions
-Python 3.7, 3.8, 3.9, 3.10
+## Supported Python Versions
+
+Our client libraries are compatible with all current [active][3] and [maintenance][4] versions of Python.
+
+Python >= 3.7
+
+[3]: https://devguide.python.org/devcycle/#in-development-main-branch
+[4]: https://devguide.python.org/devcycle/#maintenance-branches
 
 ### Unsupported Python Versions
 
 Python <= 3.6
 
-If you are using an `end-of-life`_
+If you are using an [end-of-life][5]
 version of Python, we recommend that you update as soon as possible to an actively supported version.
 
-.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
+[5]: https://devguide.python.org/devcycle/#end-of-life-branches
