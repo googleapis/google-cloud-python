@@ -1,3 +1,3 @@
-apache-beam==2.42.0
+apache-beam==2.43.0
 google-cloud-bigtable==2.13.2
 google-cloud-core==2.3.2
