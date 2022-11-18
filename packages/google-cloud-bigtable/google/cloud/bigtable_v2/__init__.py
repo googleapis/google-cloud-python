@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.bigtable import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.bigtable import BigtableClient
 from .services.bigtable import BigtableAsyncClient
@@ -43,16 +47,14 @@ from .types.data import RowRange
 from .types.data import RowSet
 from .types.data import TimestampRange
 from .types.data import ValueRange
-from .types.request_stats import AllReadStats
-from .types.request_stats import ReadEfficiencyStats
-from .types.request_stats import ReadIteratorStats
+from .types.request_stats import FullReadStatsView
+from .types.request_stats import ReadIterationStats
 from .types.request_stats import RequestLatencyStats
 from .types.request_stats import RequestStats
 from .types.response_params import ResponseParams
 
 __all__ = (
     "BigtableAsyncClient",
-    "AllReadStats",
     "BigtableClient",
     "Cell",
     "CheckAndMutateRowRequest",
@@ -60,6 +62,7 @@ __all__ = (
     "Column",
     "ColumnRange",
     "Family",
+    "FullReadStatsView",
     "MutateRowRequest",
     "MutateRowResponse",
     "MutateRowsRequest",
@@ -67,8 +70,7 @@ __all__ = (
     "Mutation",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
-    "ReadEfficiencyStats",
-    "ReadIteratorStats",
+    "ReadIterationStats",
     "ReadModifyWriteRowRequest",
     "ReadModifyWriteRowResponse",
     "ReadModifyWriteRule",

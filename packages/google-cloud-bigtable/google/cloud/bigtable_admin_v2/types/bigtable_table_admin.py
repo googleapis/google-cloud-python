@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import common
@@ -88,15 +90,15 @@ class RestoreTableRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="source",
@@ -136,26 +138,26 @@ class RestoreTableMetadata(proto.Message):
             operation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_type = proto.Field(
+    source_type: gba_table.RestoreSourceType = proto.Field(
         proto.ENUM,
         number=2,
         enum=gba_table.RestoreSourceType,
     )
-    backup_info = proto.Field(
+    backup_info: gba_table.BackupInfo = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source_info",
         message=gba_table.BackupInfo,
     )
-    optimize_table_operation_name = proto.Field(
+    optimize_table_operation_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.OperationProgress,
@@ -177,11 +179,11 @@ class OptimizeRestoredTableMetadata(proto.Message):
             optimizations.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    progress = proto.Field(
+    progress: common.OperationProgress = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.OperationProgress,
@@ -203,7 +205,7 @@ class CreateTableRequest(proto.Message):
             ``{parent}/tables/foobar``. Maximum 50 characters.
         table (google.cloud.bigtable_admin_v2.types.Table):
             Required. The Table to create.
-        initial_splits (Sequence[google.cloud.bigtable_admin_v2.types.CreateTableRequest.Split]):
+        initial_splits (MutableSequence[google.cloud.bigtable_admin_v2.types.CreateTableRequest.Split]):
             The optional list of row keys that will be used to initially
             split the table into several tablets (tablets are similar to
             HBase regions). Given two split keys, ``s1`` and ``s2``,
@@ -236,25 +238,25 @@ class CreateTableRequest(proto.Message):
                 Row key to use as an initial tablet boundary.
         """
 
-        key = proto.Field(
+        key: bytes = proto.Field(
             proto.BYTES,
             number=1,
         )
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    table = proto.Field(
+    table: gba_table.Table = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gba_table.Table,
     )
-    initial_splits = proto.RepeatedField(
+    initial_splits: MutableSequence[Split] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Split,
@@ -287,15 +289,15 @@ class CreateTableFromSnapshotRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_snapshot = proto.Field(
+    source_snapshot: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -329,16 +331,16 @@ class DropRowRangeRequest(proto.Message):
             This field is a member of `oneof`_ ``target``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    row_key_prefix = proto.Field(
+    row_key_prefix: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="target",
     )
-    delete_all_data_from_table = proto.Field(
+    delete_all_data_from_table: bool = proto.Field(
         proto.BOOL,
         number=3,
         oneof="target",
@@ -374,20 +376,20 @@ class ListTablesRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: gba_table.Table.View = proto.Field(
         proto.ENUM,
         number=2,
         enum=gba_table.Table.View,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -398,7 +400,7 @@ class ListTablesResponse(proto.Message):
     [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
 
     Attributes:
-        tables (Sequence[google.cloud.bigtable_admin_v2.types.Table]):
+        tables (MutableSequence[google.cloud.bigtable_admin_v2.types.Table]):
             The tables present in the requested instance.
         next_page_token (str):
             Set if not all tables could be returned in a single
@@ -410,12 +412,12 @@ class ListTablesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tables = proto.RepeatedField(
+    tables: MutableSequence[gba_table.Table] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_table.Table,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -435,11 +437,11 @@ class GetTableRequest(proto.Message):
             Defaults to ``SCHEMA_VIEW`` if unspecified.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: gba_table.Table.View = proto.Field(
         proto.ENUM,
         number=2,
         enum=gba_table.Table.View,
@@ -466,12 +468,12 @@ class UpdateTableRequest(proto.Message):
                ``update_mask``, it will return an UNIMPLEMENTED error.
     """
 
-    table = proto.Field(
+    table: gba_table.Table = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gba_table.Table,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -492,16 +494,16 @@ class UpdateTableMetadata(proto.Message):
             finished or was canceled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -519,7 +521,7 @@ class DeleteTableRequest(proto.Message):
             ``projects/{project}/instances/{instance}/tables/{table}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -536,7 +538,7 @@ class UndeleteTableRequest(proto.Message):
             ``projects/{project}/instances/{instance}/tables/{table}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -556,16 +558,16 @@ class UndeleteTableMetadata(proto.Message):
             finished or was cancelled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -581,7 +583,7 @@ class ModifyColumnFamiliesRequest(proto.Message):
             Required. The unique name of the table whose families should
             be modified. Values are of the form
             ``projects/{project}/instances/{instance}/tables/{table}``.
-        modifications (Sequence[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest.Modification]):
+        modifications (MutableSequence[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest.Modification]):
             Required. Modifications to be atomically
             applied to the specified table's families.
             Entries are applied in order, meaning that
@@ -622,33 +624,33 @@ class ModifyColumnFamiliesRequest(proto.Message):
                 This field is a member of `oneof`_ ``mod``.
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        create = proto.Field(
+        create: gba_table.ColumnFamily = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="mod",
             message=gba_table.ColumnFamily,
         )
-        update = proto.Field(
+        update: gba_table.ColumnFamily = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="mod",
             message=gba_table.ColumnFamily,
         )
-        drop = proto.Field(
+        drop: bool = proto.Field(
             proto.BOOL,
             number=4,
             oneof="mod",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    modifications = proto.RepeatedField(
+    modifications: MutableSequence[Modification] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Modification,
@@ -666,7 +668,7 @@ class GenerateConsistencyTokenRequest(proto.Message):
             ``projects/{project}/instances/{instance}/tables/{table}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -681,7 +683,7 @@ class GenerateConsistencyTokenResponse(proto.Message):
             The generated consistency token.
     """
 
-    consistency_token = proto.Field(
+    consistency_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -701,11 +703,11 @@ class CheckConsistencyRequest(proto.Message):
             GenerateConsistencyToken for the Table.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    consistency_token = proto.Field(
+    consistency_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -722,7 +724,7 @@ class CheckConsistencyResponse(proto.Message):
             the restrictions specified in the request.
     """
 
-    consistent = proto.Field(
+    consistent: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -763,24 +765,24 @@ class SnapshotTableRequest(proto.Message):
             Description of the snapshot.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    snapshot_id = proto.Field(
+    snapshot_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ttl = proto.Field(
+    ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -803,7 +805,7 @@ class GetSnapshotRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -835,15 +837,15 @@ class ListSnapshotsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -860,7 +862,7 @@ class ListSnapshotsResponse(proto.Message):
     any SLA or deprecation policy.
 
     Attributes:
-        snapshots (Sequence[google.cloud.bigtable_admin_v2.types.Snapshot]):
+        snapshots (MutableSequence[google.cloud.bigtable_admin_v2.types.Snapshot]):
             The snapshots present in the requested
             cluster.
         next_page_token (str):
@@ -873,12 +875,12 @@ class ListSnapshotsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    snapshots = proto.RepeatedField(
+    snapshots: MutableSequence[gba_table.Snapshot] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_table.Snapshot,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -901,7 +903,7 @@ class DeleteSnapshotRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -927,17 +929,17 @@ class SnapshotTableMetadata(proto.Message):
             completed successfully.
     """
 
-    original_request = proto.Field(
+    original_request: "SnapshotTableRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SnapshotTableRequest",
     )
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -965,17 +967,17 @@ class CreateTableFromSnapshotMetadata(proto.Message):
             completed successfully.
     """
 
-    original_request = proto.Field(
+    original_request: "CreateTableFromSnapshotRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CreateTableFromSnapshotRequest",
     )
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -1004,15 +1006,15 @@ class CreateBackupRequest(proto.Message):
             Required. The backup to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup_id = proto.Field(
+    backup_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    backup = proto.Field(
+    backup: gba_table.Backup = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gba_table.Backup,
@@ -1036,20 +1038,20 @@ class CreateBackupMetadata(proto.Message):
             finished or was cancelled.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_table = proto.Field(
+    source_table: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -1077,12 +1079,12 @@ class UpdateBackupRequest(proto.Message):
             accidentally by clients that do not know about them.
     """
 
-    backup = proto.Field(
+    backup: gba_table.Backup = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gba_table.Backup,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1099,7 +1101,7 @@ class GetBackupRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1116,7 +1118,7 @@ class DeleteBackupRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1208,23 +1210,23 @@ class ListBackupsRequest(proto.Message):
             to the same ``parent`` and with the same ``filter``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1235,7 +1237,7 @@ class ListBackupsResponse(proto.Message):
     [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
 
     Attributes:
-        backups (Sequence[google.cloud.bigtable_admin_v2.types.Backup]):
+        backups (MutableSequence[google.cloud.bigtable_admin_v2.types.Backup]):
             The list of matching backups.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -1247,12 +1249,12 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups = proto.RepeatedField(
+    backups: MutableSequence[gba_table.Backup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_table.Backup,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

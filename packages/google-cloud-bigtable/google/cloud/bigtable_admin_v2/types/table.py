@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -57,12 +59,12 @@ class RestoreInfo(proto.Message):
             This field is a member of `oneof`_ ``source_info``.
     """
 
-    source_type = proto.Field(
+    source_type: "RestoreSourceType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="RestoreSourceType",
     )
-    backup_info = proto.Field(
+    backup_info: "BackupInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source_info",
@@ -81,14 +83,14 @@ class Table(proto.Message):
             ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
             Views: ``NAME_ONLY``, ``SCHEMA_VIEW``, ``REPLICATION_VIEW``,
             ``FULL``
-        cluster_states (Mapping[str, google.cloud.bigtable_admin_v2.types.Table.ClusterState]):
+        cluster_states (MutableMapping[str, google.cloud.bigtable_admin_v2.types.Table.ClusterState]):
             Output only. Map from cluster ID to per-cluster table state.
             If it could not be determined whether or not the table has
             data in a particular cluster (for example, if its zone is
             unavailable), then there will be an entry for the cluster
             with UNKNOWN ``replication_status``. Views:
             ``REPLICATION_VIEW``, ``ENCRYPTION_VIEW``, ``FULL``
-        column_families (Mapping[str, google.cloud.bigtable_admin_v2.types.ColumnFamily]):
+        column_families (MutableMapping[str, google.cloud.bigtable_admin_v2.types.ColumnFamily]):
             The column families configured for this table, mapped by
             column family ID. Views: ``SCHEMA_VIEW``, ``FULL``
         granularity (google.cloud.bigtable_admin_v2.types.Table.TimestampGranularity):
@@ -136,7 +138,7 @@ class Table(proto.Message):
             replication_state (google.cloud.bigtable_admin_v2.types.Table.ClusterState.ReplicationState):
                 Output only. The state of replication for the
                 table in this cluster.
-            encryption_info (Sequence[google.cloud.bigtable_admin_v2.types.EncryptionInfo]):
+            encryption_info (MutableSequence[google.cloud.bigtable_admin_v2.types.EncryptionInfo]):
                 Output only. The encryption information for
                 the table in this cluster. If the encryption key
                 protecting this resource is customer managed,
@@ -156,44 +158,44 @@ class Table(proto.Message):
             READY = 4
             READY_OPTIMIZING = 5
 
-        replication_state = proto.Field(
+        replication_state: "Table.ClusterState.ReplicationState" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Table.ClusterState.ReplicationState",
         )
-        encryption_info = proto.RepeatedField(
+        encryption_info: MutableSequence["EncryptionInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="EncryptionInfo",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_states = proto.MapField(
+    cluster_states: MutableMapping[str, ClusterState] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message=ClusterState,
     )
-    column_families = proto.MapField(
+    column_families: MutableMapping[str, "ColumnFamily"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
         message="ColumnFamily",
     )
-    granularity = proto.Field(
+    granularity: TimestampGranularity = proto.Field(
         proto.ENUM,
         number=4,
         enum=TimestampGranularity,
     )
-    restore_info = proto.Field(
+    restore_info: "RestoreInfo" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="RestoreInfo",
     )
-    deletion_protection = proto.Field(
+    deletion_protection: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
@@ -213,7 +215,7 @@ class ColumnFamily(proto.Message):
             matches the active GC expression for its family.
     """
 
-    gc_rule = proto.Field(
+    gc_rule: "GcRule" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="GcRule",
@@ -260,12 +262,12 @@ class GcRule(proto.Message):
         r"""A GcRule which deletes cells matching all of the given rules.
 
         Attributes:
-            rules (Sequence[google.cloud.bigtable_admin_v2.types.GcRule]):
+            rules (MutableSequence[google.cloud.bigtable_admin_v2.types.GcRule]):
                 Only delete cells which would be deleted by every element of
                 ``rules``.
         """
 
-        rules = proto.RepeatedField(
+        rules: MutableSequence["GcRule"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="GcRule",
@@ -275,35 +277,35 @@ class GcRule(proto.Message):
         r"""A GcRule which deletes cells matching any of the given rules.
 
         Attributes:
-            rules (Sequence[google.cloud.bigtable_admin_v2.types.GcRule]):
+            rules (MutableSequence[google.cloud.bigtable_admin_v2.types.GcRule]):
                 Delete cells which would be deleted by any element of
                 ``rules``.
         """
 
-        rules = proto.RepeatedField(
+        rules: MutableSequence["GcRule"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="GcRule",
         )
 
-    max_num_versions = proto.Field(
+    max_num_versions: int = proto.Field(
         proto.INT32,
         number=1,
         oneof="rule",
     )
-    max_age = proto.Field(
+    max_age: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="rule",
         message=duration_pb2.Duration,
     )
-    intersection = proto.Field(
+    intersection: Intersection = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="rule",
         message=Intersection,
     )
-    union = proto.Field(
+    union: Union = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="rule",
@@ -338,17 +340,17 @@ class EncryptionInfo(proto.Message):
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
 
-    encryption_type = proto.Field(
+    encryption_type: EncryptionType = proto.Field(
         proto.ENUM,
         number=3,
         enum=EncryptionType,
     )
-    encryption_status = proto.Field(
+    encryption_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=4,
         message=status_pb2.Status,
     )
-    kms_key_version = proto.Field(
+    kms_key_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -400,35 +402,35 @@ class Snapshot(proto.Message):
         READY = 1
         CREATING = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_table = proto.Field(
+    source_table: "Table" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Table",
     )
-    data_size_bytes = proto.Field(
+    data_size_bytes: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -484,39 +486,39 @@ class Backup(proto.Message):
         CREATING = 1
         READY = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_table = proto.Field(
+    source_table: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    encryption_info = proto.Field(
+    encryption_info: "EncryptionInfo" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="EncryptionInfo",
@@ -542,21 +544,21 @@ class BackupInfo(proto.Message):
             created from.
     """
 
-    backup = proto.Field(
+    backup: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    source_table = proto.Field(
+    source_table: str = proto.Field(
         proto.STRING,
         number=4,
     )

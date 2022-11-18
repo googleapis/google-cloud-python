@@ -44,9 +44,8 @@ from .data import (
     ValueRange,
 )
 from .request_stats import (
-    AllReadStats,
-    ReadEfficiencyStats,
-    ReadIteratorStats,
+    FullReadStatsView,
+    ReadIterationStats,
     RequestLatencyStats,
     RequestStats,
 )
@@ -81,9 +80,8 @@ __all__ = (
     "RowSet",
     "TimestampRange",
     "ValueRange",
-    "AllReadStats",
-    "ReadEfficiencyStats",
-    "ReadIteratorStats",
+    "FullReadStatsView",
+    "ReadIterationStats",
     "RequestLatencyStats",
     "RequestStats",
     "ResponseParams",

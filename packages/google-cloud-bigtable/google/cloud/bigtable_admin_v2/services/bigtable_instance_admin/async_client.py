@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -190,9 +200,9 @@ class BigtableInstanceAdminAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BigtableInstanceAdminTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the bigtable instance admin client.
@@ -236,14 +246,16 @@ class BigtableInstanceAdminAsyncClient:
 
     async def create_instance(
         self,
-        request: Union[bigtable_instance_admin.CreateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.CreateInstanceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instance_id: str = None,
-        instance: gba_instance.Instance = None,
-        clusters: Mapping[str, gba_instance.Cluster] = None,
+        parent: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        instance: Optional[gba_instance.Instance] = None,
+        clusters: Optional[MutableMapping[str, gba_instance.Cluster]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create an instance within a project.
@@ -255,7 +267,7 @@ class BigtableInstanceAdminAsyncClient:
         non-empty, then autoscaling is enabled.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.CreateInstance.
             parent (:class:`str`):
@@ -281,7 +293,7 @@ class BigtableInstanceAdminAsyncClient:
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            clusters (:class:`Mapping[str, google.cloud.bigtable_admin_v2.types.Cluster]`):
+            clusters (:class:`MutableMapping[str, google.cloud.bigtable_admin_v2.types.Cluster]`):
                 Required. The clusters to be created within the
                 instance, mapped by desired cluster ID, e.g., just
                 ``mycluster`` rather than
@@ -368,17 +380,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def get_instance(
         self,
-        request: Union[bigtable_instance_admin.GetInstanceRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.GetInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Gets information about an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetInstanceRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.GetInstance.
             name (:class:`str`):
@@ -458,17 +472,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def list_instances(
         self,
-        request: Union[bigtable_instance_admin.ListInstancesRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListInstancesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_instance_admin.ListInstancesResponse:
         r"""Lists information about instances in a project.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListInstancesRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.ListInstances.
             parent (:class:`str`):
@@ -545,10 +561,10 @@ class BigtableInstanceAdminAsyncClient:
 
     async def update_instance(
         self,
-        request: Union[instance.Instance, dict] = None,
+        request: Optional[Union[instance.Instance, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Updates an instance within a project. This method
@@ -557,7 +573,7 @@ class BigtableInstanceAdminAsyncClient:
         PartialUpdateInstance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.Instance, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.Instance, dict]]):
                 The request object. A collection of Bigtable
                 [Tables][google.bigtable.admin.v2.Table] and the
                 resources that serve them. All tables in an instance are
@@ -619,14 +635,14 @@ class BigtableInstanceAdminAsyncClient:
 
     async def partial_update_instance(
         self,
-        request: Union[
-            bigtable_instance_admin.PartialUpdateInstanceRequest, dict
+        request: Optional[
+            Union[bigtable_instance_admin.PartialUpdateInstanceRequest, dict]
         ] = None,
         *,
-        instance: gba_instance.Instance = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        instance: Optional[gba_instance.Instance] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Partially updates an instance within a project. This
@@ -634,7 +650,7 @@ class BigtableInstanceAdminAsyncClient:
         preferred way to update an Instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.PartialUpdateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.PartialUpdateInstanceRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.PartialUpdateInstance.
             instance (:class:`google.cloud.bigtable_admin_v2.types.Instance`):
@@ -735,17 +751,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def delete_instance(
         self,
-        request: Union[bigtable_instance_admin.DeleteInstanceRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.DeleteInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete an instance from a project.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteInstanceRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.DeleteInstance.
             name (:class:`str`):
@@ -803,13 +821,15 @@ class BigtableInstanceAdminAsyncClient:
 
     async def create_cluster(
         self,
-        request: Union[bigtable_instance_admin.CreateClusterRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.CreateClusterRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        cluster_id: str = None,
-        cluster: instance.Cluster = None,
+        parent: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        cluster: Optional[instance.Cluster] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a cluster within an instance.
@@ -821,7 +841,7 @@ class BigtableInstanceAdminAsyncClient:
         non-empty, then autoscaling is enabled.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CreateClusterRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateClusterRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.CreateCluster.
             parent (:class:`str`):
@@ -920,17 +940,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def get_cluster(
         self,
-        request: Union[bigtable_instance_admin.GetClusterRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.GetClusterRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Cluster:
         r"""Gets information about a cluster.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GetClusterRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetClusterRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.GetCluster.
             name (:class:`str`):
@@ -1009,17 +1031,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def list_clusters(
         self,
-        request: Union[bigtable_instance_admin.ListClustersRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListClustersRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_instance_admin.ListClustersResponse:
         r"""Lists information about clusters in an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListClustersRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListClustersRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.ListClusters.
             parent (:class:`str`):
@@ -1098,10 +1122,10 @@ class BigtableInstanceAdminAsyncClient:
 
     async def update_cluster(
         self,
-        request: Union[instance.Cluster, dict] = None,
+        request: Optional[Union[instance.Cluster, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a cluster within an instance.
@@ -1111,7 +1135,7 @@ class BigtableInstanceAdminAsyncClient:
         it, you must use PartialUpdateCluster.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.Cluster, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.Cluster, dict]]):
                 The request object. A resizable group of nodes in a
                 particular cloud location, capable of serving all
                 [Tables][google.bigtable.admin.v2.Table] in the parent
@@ -1180,14 +1204,14 @@ class BigtableInstanceAdminAsyncClient:
 
     async def partial_update_cluster(
         self,
-        request: Union[
-            bigtable_instance_admin.PartialUpdateClusterRequest, dict
+        request: Optional[
+            Union[bigtable_instance_admin.PartialUpdateClusterRequest, dict]
         ] = None,
         *,
-        cluster: instance.Cluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        cluster: Optional[instance.Cluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Partially updates a cluster within a project. This method is the
@@ -1206,7 +1230,7 @@ class BigtableInstanceAdminAsyncClient:
         serve_node count via the update_mask.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.PartialUpdateClusterRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.PartialUpdateClusterRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.PartialUpdateCluster.
             cluster (:class:`google.cloud.bigtable_admin_v2.types.Cluster`):
@@ -1295,17 +1319,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def delete_cluster(
         self,
-        request: Union[bigtable_instance_admin.DeleteClusterRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.DeleteClusterRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a cluster from an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DeleteClusterRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteClusterRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.DeleteCluster.
             name (:class:`str`):
@@ -1363,19 +1389,21 @@ class BigtableInstanceAdminAsyncClient:
 
     async def create_app_profile(
         self,
-        request: Union[bigtable_instance_admin.CreateAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.CreateAppProfileRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        app_profile_id: str = None,
-        app_profile: instance.AppProfile = None,
+        parent: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
+        app_profile: Optional[instance.AppProfile] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.AppProfile:
         r"""Creates an app profile within an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CreateAppProfileRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateAppProfileRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.CreateAppProfile.
             parent (:class:`str`):
@@ -1463,17 +1491,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def get_app_profile(
         self,
-        request: Union[bigtable_instance_admin.GetAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.GetAppProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.AppProfile:
         r"""Gets information about an app profile.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GetAppProfileRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetAppProfileRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.GetAppProfile.
             name (:class:`str`):
@@ -1551,17 +1581,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def list_app_profiles(
         self,
-        request: Union[bigtable_instance_admin.ListAppProfilesRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListAppProfilesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAppProfilesAsyncPager:
         r"""Lists information about app profiles in an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListAppProfilesRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListAppProfilesRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.ListAppProfiles.
             parent (:class:`str`):
@@ -1653,18 +1685,20 @@ class BigtableInstanceAdminAsyncClient:
 
     async def update_app_profile(
         self,
-        request: Union[bigtable_instance_admin.UpdateAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.UpdateAppProfileRequest, dict]
+        ] = None,
         *,
-        app_profile: instance.AppProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        app_profile: Optional[instance.AppProfile] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an app profile within an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.UpdateAppProfileRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.UpdateAppProfileRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.UpdateAppProfile.
             app_profile (:class:`google.cloud.bigtable_admin_v2.types.AppProfile`):
@@ -1762,17 +1796,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def delete_app_profile(
         self,
-        request: Union[bigtable_instance_admin.DeleteAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.DeleteAppProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an app profile from an instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DeleteAppProfileRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteAppProfileRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.DeleteAppProfile.
             name (:class:`str`):
@@ -1830,11 +1866,11 @@ class BigtableInstanceAdminAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for an instance
@@ -1842,7 +1878,7 @@ class BigtableInstanceAdminAsyncClient:
         but does not have a policy set.
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1981,18 +2017,18 @@ class BigtableInstanceAdminAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on an instance
         resource. Replaces any existing policy.
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -2121,19 +2157,19 @@ class BigtableInstanceAdminAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the
         specified instance resource.
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -2145,7 +2181,7 @@ class BigtableInstanceAdminAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -2221,18 +2257,20 @@ class BigtableInstanceAdminAsyncClient:
 
     async def list_hot_tablets(
         self,
-        request: Union[bigtable_instance_admin.ListHotTabletsRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListHotTabletsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHotTabletsAsyncPager:
         r"""Lists hot tablets in a cluster, within the time range
         provided. Hot tablets are ordered based on CPU usage.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListHotTabletsRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListHotTabletsRequest, dict]]):
                 The request object. Request message for
                 BigtableInstanceAdmin.ListHotTablets.
             parent (:class:`str`):

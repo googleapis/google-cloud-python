@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -66,7 +77,7 @@ class BigtableInstanceAdminClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BigtableInstanceAdminTransport]:
         """Returns an appropriate transport class.
 
@@ -456,8 +467,8 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BigtableInstanceAdminTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, BigtableInstanceAdminTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the bigtable instance admin client.
@@ -471,7 +482,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
             transport (Union[str, BigtableInstanceAdminTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -501,6 +512,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -553,14 +565,16 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def create_instance(
         self,
-        request: Union[bigtable_instance_admin.CreateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.CreateInstanceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instance_id: str = None,
-        instance: gba_instance.Instance = None,
-        clusters: Mapping[str, gba_instance.Cluster] = None,
+        parent: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        instance: Optional[gba_instance.Instance] = None,
+        clusters: Optional[MutableMapping[str, gba_instance.Cluster]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create an instance within a project.
@@ -598,7 +612,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            clusters (Mapping[str, google.cloud.bigtable_admin_v2.types.Cluster]):
+            clusters (MutableMapping[str, google.cloud.bigtable_admin_v2.types.Cluster]):
                 Required. The clusters to be created within the
                 instance, mapped by desired cluster ID, e.g., just
                 ``mycluster`` rather than
@@ -684,11 +698,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def get_instance(
         self,
-        request: Union[bigtable_instance_admin.GetInstanceRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.GetInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Gets information about an instance.
@@ -764,11 +780,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def list_instances(
         self,
-        request: Union[bigtable_instance_admin.ListInstancesRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListInstancesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_instance_admin.ListInstancesResponse:
         r"""Lists information about instances in a project.
@@ -841,10 +859,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def update_instance(
         self,
-        request: Union[instance.Instance, dict] = None,
+        request: Optional[Union[instance.Instance, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Updates an instance within a project. This method
@@ -906,14 +924,14 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def partial_update_instance(
         self,
-        request: Union[
-            bigtable_instance_admin.PartialUpdateInstanceRequest, dict
+        request: Optional[
+            Union[bigtable_instance_admin.PartialUpdateInstanceRequest, dict]
         ] = None,
         *,
-        instance: gba_instance.Instance = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        instance: Optional[gba_instance.Instance] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Partially updates an instance within a project. This
@@ -1014,11 +1032,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def delete_instance(
         self,
-        request: Union[bigtable_instance_admin.DeleteInstanceRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.DeleteInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete an instance from a project.
@@ -1082,13 +1102,15 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def create_cluster(
         self,
-        request: Union[bigtable_instance_admin.CreateClusterRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.CreateClusterRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        cluster_id: str = None,
-        cluster: instance.Cluster = None,
+        parent: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        cluster: Optional[instance.Cluster] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a cluster within an instance.
@@ -1199,11 +1221,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def get_cluster(
         self,
-        request: Union[bigtable_instance_admin.GetClusterRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.GetClusterRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Cluster:
         r"""Gets information about a cluster.
@@ -1278,11 +1302,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def list_clusters(
         self,
-        request: Union[bigtable_instance_admin.ListClustersRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListClustersRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_instance_admin.ListClustersResponse:
         r"""Lists information about clusters in an instance.
@@ -1357,10 +1383,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def update_cluster(
         self,
-        request: Union[instance.Cluster, dict] = None,
+        request: Optional[Union[instance.Cluster, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a cluster within an instance.
@@ -1430,14 +1456,14 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def partial_update_cluster(
         self,
-        request: Union[
-            bigtable_instance_admin.PartialUpdateClusterRequest, dict
+        request: Optional[
+            Union[bigtable_instance_admin.PartialUpdateClusterRequest, dict]
         ] = None,
         *,
-        cluster: instance.Cluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        cluster: Optional[instance.Cluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Partially updates a cluster within a project. This method is the
@@ -1545,11 +1571,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def delete_cluster(
         self,
-        request: Union[bigtable_instance_admin.DeleteClusterRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.DeleteClusterRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a cluster from an instance.
@@ -1613,13 +1641,15 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def create_app_profile(
         self,
-        request: Union[bigtable_instance_admin.CreateAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.CreateAppProfileRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        app_profile_id: str = None,
-        app_profile: instance.AppProfile = None,
+        parent: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
+        app_profile: Optional[instance.AppProfile] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.AppProfile:
         r"""Creates an app profile within an instance.
@@ -1713,11 +1743,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def get_app_profile(
         self,
-        request: Union[bigtable_instance_admin.GetAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.GetAppProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.AppProfile:
         r"""Gets information about an app profile.
@@ -1791,11 +1823,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def list_app_profiles(
         self,
-        request: Union[bigtable_instance_admin.ListAppProfilesRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListAppProfilesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAppProfilesPager:
         r"""Lists information about app profiles in an instance.
@@ -1883,12 +1917,14 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def update_app_profile(
         self,
-        request: Union[bigtable_instance_admin.UpdateAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.UpdateAppProfileRequest, dict]
+        ] = None,
         *,
-        app_profile: instance.AppProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        app_profile: Optional[instance.AppProfile] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an app profile within an instance.
@@ -1982,11 +2018,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def delete_app_profile(
         self,
-        request: Union[bigtable_instance_admin.DeleteAppProfileRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.DeleteAppProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an app profile from an instance.
@@ -2050,11 +2088,11 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for an instance
@@ -2188,11 +2226,11 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on an instance
@@ -2325,12 +2363,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the
@@ -2349,7 +2387,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (Sequence[str]):
+            permissions (MutableSequence[str]):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -2413,11 +2451,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     def list_hot_tablets(
         self,
-        request: Union[bigtable_instance_admin.ListHotTabletsRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_instance_admin.ListHotTabletsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHotTabletsPager:
         r"""Lists hot tablets in a cluster, within the time range

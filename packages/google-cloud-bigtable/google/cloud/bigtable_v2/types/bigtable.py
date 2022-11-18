@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.bigtable_v2.types import data
@@ -77,32 +79,31 @@ class ReadRowsRequest(proto.Message):
         """
         REQUEST_STATS_VIEW_UNSPECIFIED = 0
         REQUEST_STATS_NONE = 1
-        REQUEST_STATS_EFFICIENCY = 2
-        REQUEST_STATS_FULL = 3
+        REQUEST_STATS_FULL = 2
 
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    rows = proto.Field(
+    rows: data.RowSet = proto.Field(
         proto.MESSAGE,
         number=2,
         message=data.RowSet,
     )
-    filter = proto.Field(
+    filter: data.RowFilter = proto.Field(
         proto.MESSAGE,
         number=3,
         message=data.RowFilter,
     )
-    rows_limit = proto.Field(
+    rows_limit: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    request_stats_view = proto.Field(
+    request_stats_view: RequestStatsView = proto.Field(
         proto.ENUM,
         number=6,
         enum=RequestStatsView,
@@ -113,7 +114,7 @@ class ReadRowsResponse(proto.Message):
     r"""Response message for Bigtable.ReadRows.
 
     Attributes:
-        chunks (Sequence[google.cloud.bigtable_v2.types.ReadRowsResponse.CellChunk]):
+        chunks (MutableSequence[google.cloud.bigtable_v2.types.ReadRowsResponse.CellChunk]):
             A collection of a row's contents as part of
             the read request.
         last_scanned_row_key (bytes):
@@ -192,7 +193,7 @@ class ReadRowsResponse(proto.Message):
                 will only allow values of ``timestamp_micros`` which are
                 multiples of 1000. Timestamps are only set in the first
                 CellChunk per cell (for cells split into multiple chunks).
-            labels (Sequence[str]):
+            labels (MutableSequence[str]):
                 Labels applied to the cell by a
                 [RowFilter][google.bigtable.v2.RowFilter]. Labels are only
                 set on the first CellChunk per cell.
@@ -222,57 +223,57 @@ class ReadRowsResponse(proto.Message):
                 This field is a member of `oneof`_ ``row_status``.
         """
 
-        row_key = proto.Field(
+        row_key: bytes = proto.Field(
             proto.BYTES,
             number=1,
         )
-        family_name = proto.Field(
+        family_name: wrappers_pb2.StringValue = proto.Field(
             proto.MESSAGE,
             number=2,
             message=wrappers_pb2.StringValue,
         )
-        qualifier = proto.Field(
+        qualifier: wrappers_pb2.BytesValue = proto.Field(
             proto.MESSAGE,
             number=3,
             message=wrappers_pb2.BytesValue,
         )
-        timestamp_micros = proto.Field(
+        timestamp_micros: int = proto.Field(
             proto.INT64,
             number=4,
         )
-        labels = proto.RepeatedField(
+        labels: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=5,
         )
-        value = proto.Field(
+        value: bytes = proto.Field(
             proto.BYTES,
             number=6,
         )
-        value_size = proto.Field(
+        value_size: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        reset_row = proto.Field(
+        reset_row: bool = proto.Field(
             proto.BOOL,
             number=8,
             oneof="row_status",
         )
-        commit_row = proto.Field(
+        commit_row: bool = proto.Field(
             proto.BOOL,
             number=9,
             oneof="row_status",
         )
 
-    chunks = proto.RepeatedField(
+    chunks: MutableSequence[CellChunk] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CellChunk,
     )
-    last_scanned_row_key = proto.Field(
+    last_scanned_row_key: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    request_stats = proto.Field(
+    request_stats: gb_request_stats.RequestStats = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gb_request_stats.RequestStats,
@@ -293,11 +294,11 @@ class SampleRowKeysRequest(proto.Message):
             profile will be used.
     """
 
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -327,11 +328,11 @@ class SampleRowKeysResponse(proto.Message):
             fields.
     """
 
-    row_key = proto.Field(
+    row_key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    offset_bytes = proto.Field(
+    offset_bytes: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -352,7 +353,7 @@ class MutateRowRequest(proto.Message):
         row_key (bytes):
             Required. The key of the row to which the
             mutation should be applied.
-        mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+        mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
             Required. Changes to be atomically applied to
             the specified row. Entries are applied in order,
             meaning that earlier mutations can be masked by
@@ -360,19 +361,19 @@ class MutateRowRequest(proto.Message):
             at most 100000.
     """
 
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    row_key = proto.Field(
+    row_key: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    mutations = proto.RepeatedField(
+    mutations: MutableSequence[data.Mutation] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=data.Mutation,
@@ -394,7 +395,7 @@ class MutateRowsRequest(proto.Message):
             This value specifies routing for replication.
             If not specified, the "default" application
             profile will be used.
-        entries (Sequence[google.cloud.bigtable_v2.types.MutateRowsRequest.Entry]):
+        entries (MutableSequence[google.cloud.bigtable_v2.types.MutateRowsRequest.Entry]):
             Required. The row keys and corresponding
             mutations to be applied in bulk. Each entry is
             applied as an atomic mutation, but the entries
@@ -411,33 +412,33 @@ class MutateRowsRequest(proto.Message):
             row_key (bytes):
                 The key of the row to which the ``mutations`` should be
                 applied.
-            mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+            mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
                 Required. Changes to be atomically applied to
                 the specified row. Mutations are applied in
                 order, meaning that earlier mutations can be
-                masked by later ones. You must specify at least
-                one mutation.
+                masked by later ones.
+                You must specify at least one mutation.
         """
 
-        row_key = proto.Field(
+        row_key: bytes = proto.Field(
             proto.BYTES,
             number=1,
         )
-        mutations = proto.RepeatedField(
+        mutations: MutableSequence[data.Mutation] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=data.Mutation,
         )
 
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    entries = proto.RepeatedField(
+    entries: MutableSequence[Entry] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Entry,
@@ -448,7 +449,7 @@ class MutateRowsResponse(proto.Message):
     r"""Response message for BigtableService.MutateRows.
 
     Attributes:
-        entries (Sequence[google.cloud.bigtable_v2.types.MutateRowsResponse.Entry]):
+        entries (MutableSequence[google.cloud.bigtable_v2.types.MutateRowsResponse.Entry]):
             One or more results for Entries from the
             batch request.
     """
@@ -469,17 +470,17 @@ class MutateRowsResponse(proto.Message):
                 will be reported for both entries.
         """
 
-        index = proto.Field(
+        index: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
         )
 
-    entries = proto.RepeatedField(
+    entries: MutableSequence[Entry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Entry,
@@ -508,14 +509,14 @@ class CheckAndMutateRowRequest(proto.Message):
             either ``true_mutations`` or ``false_mutations`` will be
             executed. If unset, checks that the row contains any values
             at all.
-        true_mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+        true_mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
             Changes to be atomically applied to the specified row if
             ``predicate_filter`` yields at least one cell when applied
             to ``row_key``. Entries are applied in order, meaning that
             earlier mutations can be masked by later ones. Must contain
             at least one entry if ``false_mutations`` is empty, and at
             most 100000.
-        false_mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+        false_mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
             Changes to be atomically applied to the specified row if
             ``predicate_filter`` does not yield any cells when applied
             to ``row_key``. Entries are applied in order, meaning that
@@ -524,29 +525,29 @@ class CheckAndMutateRowRequest(proto.Message):
             most 100000.
     """
 
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    row_key = proto.Field(
+    row_key: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    predicate_filter = proto.Field(
+    predicate_filter: data.RowFilter = proto.Field(
         proto.MESSAGE,
         number=6,
         message=data.RowFilter,
     )
-    true_mutations = proto.RepeatedField(
+    true_mutations: MutableSequence[data.Mutation] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=data.Mutation,
     )
-    false_mutations = proto.RepeatedField(
+    false_mutations: MutableSequence[data.Mutation] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=data.Mutation,
@@ -562,7 +563,7 @@ class CheckAndMutateRowResponse(proto.Message):
             any results for the specified row.
     """
 
-    predicate_matched = proto.Field(
+    predicate_matched: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -582,11 +583,11 @@ class PingAndWarmRequest(proto.Message):
             profile will be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -615,7 +616,7 @@ class ReadModifyWriteRowRequest(proto.Message):
         row_key (bytes):
             Required. The key of the row to which the
             read/modify/write rules should be applied.
-        rules (Sequence[google.cloud.bigtable_v2.types.ReadModifyWriteRule]):
+        rules (MutableSequence[google.cloud.bigtable_v2.types.ReadModifyWriteRule]):
             Required. Rules specifying how the specified
             row's contents are to be transformed into
             writes. Entries are applied in order, meaning
@@ -623,19 +624,19 @@ class ReadModifyWriteRowRequest(proto.Message):
             later ones.
     """
 
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    row_key = proto.Field(
+    row_key: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[data.ReadModifyWriteRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=data.ReadModifyWriteRule,
@@ -651,7 +652,7 @@ class ReadModifyWriteRowResponse(proto.Message):
             cells modified by the request.
     """
 
-    row = proto.Field(
+    row: data.Row = proto.Field(
         proto.MESSAGE,
         number=1,
         message=data.Row,

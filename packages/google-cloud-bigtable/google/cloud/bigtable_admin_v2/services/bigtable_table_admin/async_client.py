@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -186,9 +196,9 @@ class BigtableTableAdminAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BigtableTableAdminTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the bigtable table admin client.
@@ -232,13 +242,13 @@ class BigtableTableAdminAsyncClient:
 
     async def create_table(
         self,
-        request: Union[bigtable_table_admin.CreateTableRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.CreateTableRequest, dict]] = None,
         *,
-        parent: str = None,
-        table_id: str = None,
-        table: gba_table.Table = None,
+        parent: Optional[str] = None,
+        table_id: Optional[str] = None,
+        table: Optional[gba_table.Table] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gba_table.Table:
         r"""Creates a new table in the specified instance.
@@ -246,7 +256,7 @@ class BigtableTableAdminAsyncClient:
         column families, specified in the request.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CreateTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateTableRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable]
             parent (:class:`str`):
@@ -333,15 +343,15 @@ class BigtableTableAdminAsyncClient:
 
     async def create_table_from_snapshot(
         self,
-        request: Union[
-            bigtable_table_admin.CreateTableFromSnapshotRequest, dict
+        request: Optional[
+            Union[bigtable_table_admin.CreateTableFromSnapshotRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        table_id: str = None,
-        source_snapshot: str = None,
+        parent: Optional[str] = None,
+        table_id: Optional[str] = None,
+        source_snapshot: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new table from the specified snapshot. The
@@ -355,7 +365,7 @@ class BigtableTableAdminAsyncClient:
         SLA or deprecation policy.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CreateTableFromSnapshotRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateTableFromSnapshotRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot]
                 Note: This is a private alpha release of Cloud Bigtable
@@ -460,17 +470,17 @@ class BigtableTableAdminAsyncClient:
 
     async def list_tables(
         self,
-        request: Union[bigtable_table_admin.ListTablesRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.ListTablesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTablesAsyncPager:
         r"""Lists all tables served from a specified instance.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListTablesRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListTablesRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
             parent (:class:`str`):
@@ -559,17 +569,17 @@ class BigtableTableAdminAsyncClient:
 
     async def get_table(
         self,
-        request: Union[bigtable_table_admin.GetTableRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.GetTableRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Table:
         r"""Gets metadata information about the specified table.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GetTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetTableRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.GetTable][google.bigtable.admin.v2.BigtableTableAdmin.GetTable]
             name (:class:`str`):
@@ -648,18 +658,18 @@ class BigtableTableAdminAsyncClient:
 
     async def update_table(
         self,
-        request: Union[bigtable_table_admin.UpdateTableRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.UpdateTableRequest, dict]] = None,
         *,
-        table: gba_table.Table = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        table: Optional[gba_table.Table] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a specified table.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.UpdateTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.UpdateTableRequest, dict]]):
                 The request object. The request for
                 [UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable].
             table (:class:`google.cloud.bigtable_admin_v2.types.Table`):
@@ -756,18 +766,18 @@ class BigtableTableAdminAsyncClient:
 
     async def delete_table(
         self,
-        request: Union[bigtable_table_admin.DeleteTableRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.DeleteTableRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes a specified table and all of its
         data.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DeleteTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteTableRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable]
             name (:class:`str`):
@@ -825,18 +835,20 @@ class BigtableTableAdminAsyncClient:
 
     async def undelete_table(
         self,
-        request: Union[bigtable_table_admin.UndeleteTableRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_table_admin.UndeleteTableRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Restores a specified table which was accidentally
         deleted.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.UndeleteTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.UndeleteTableRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable]
             name (:class:`str`):
@@ -914,14 +926,18 @@ class BigtableTableAdminAsyncClient:
 
     async def modify_column_families(
         self,
-        request: Union[bigtable_table_admin.ModifyColumnFamiliesRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_table_admin.ModifyColumnFamiliesRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        modifications: Sequence[
-            bigtable_table_admin.ModifyColumnFamiliesRequest.Modification
+        name: Optional[str] = None,
+        modifications: Optional[
+            MutableSequence[
+                bigtable_table_admin.ModifyColumnFamiliesRequest.Modification
+            ]
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Table:
         r"""Performs a series of column family modifications on
@@ -931,7 +947,7 @@ class BigtableTableAdminAsyncClient:
         table where only some modifications have taken effect.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies]
             name (:class:`str`):
@@ -942,7 +958,7 @@ class BigtableTableAdminAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            modifications (:class:`Sequence[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest.Modification]`):
+            modifications (:class:`MutableSequence[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest.Modification]`):
                 Required. Modifications to be
                 atomically applied to the specified
                 table's families. Entries are applied in
@@ -1014,10 +1030,10 @@ class BigtableTableAdminAsyncClient:
 
     async def drop_row_range(
         self,
-        request: Union[bigtable_table_admin.DropRowRangeRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.DropRowRangeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently drop/delete a row range from a specified
@@ -1026,7 +1042,7 @@ class BigtableTableAdminAsyncClient:
         prefix.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DropRowRangeRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DropRowRangeRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1062,13 +1078,13 @@ class BigtableTableAdminAsyncClient:
 
     async def generate_consistency_token(
         self,
-        request: Union[
-            bigtable_table_admin.GenerateConsistencyTokenRequest, dict
+        request: Optional[
+            Union[bigtable_table_admin.GenerateConsistencyTokenRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_table_admin.GenerateConsistencyTokenResponse:
         r"""Generates a consistency token for a Table, which can
@@ -1078,7 +1094,7 @@ class BigtableTableAdminAsyncClient:
         days.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GenerateConsistencyTokenRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GenerateConsistencyTokenRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
             name (:class:`str`):
@@ -1155,12 +1171,14 @@ class BigtableTableAdminAsyncClient:
 
     async def check_consistency(
         self,
-        request: Union[bigtable_table_admin.CheckConsistencyRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_table_admin.CheckConsistencyRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        consistency_token: str = None,
+        name: Optional[str] = None,
+        consistency_token: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_table_admin.CheckConsistencyResponse:
         r"""Checks replication consistency based on a consistency
@@ -1169,7 +1187,7 @@ class BigtableTableAdminAsyncClient:
         request.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CheckConsistencyRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CheckConsistencyRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
             name (:class:`str`):
@@ -1255,14 +1273,16 @@ class BigtableTableAdminAsyncClient:
 
     async def snapshot_table(
         self,
-        request: Union[bigtable_table_admin.SnapshotTableRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_table_admin.SnapshotTableRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        cluster: str = None,
-        snapshot_id: str = None,
-        description: str = None,
+        name: Optional[str] = None,
+        cluster: Optional[str] = None,
+        snapshot_id: Optional[str] = None,
+        description: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new snapshot in the specified cluster from
@@ -1276,7 +1296,7 @@ class BigtableTableAdminAsyncClient:
         SLA or deprecation policy.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.SnapshotTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.SnapshotTableRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable][google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable]
                 Note: This is a private alpha release of Cloud Bigtable
@@ -1396,11 +1416,11 @@ class BigtableTableAdminAsyncClient:
 
     async def get_snapshot(
         self,
-        request: Union[bigtable_table_admin.GetSnapshotRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.GetSnapshotRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Snapshot:
         r"""Gets metadata information about the specified
@@ -1413,7 +1433,7 @@ class BigtableTableAdminAsyncClient:
         SLA or deprecation policy.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GetSnapshotRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetSnapshotRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot]
                 Note: This is a private alpha release of Cloud Bigtable
@@ -1506,11 +1526,13 @@ class BigtableTableAdminAsyncClient:
 
     async def list_snapshots(
         self,
-        request: Union[bigtable_table_admin.ListSnapshotsRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_table_admin.ListSnapshotsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSnapshotsAsyncPager:
         r"""Lists all snapshots associated with the specified
@@ -1523,7 +1545,7 @@ class BigtableTableAdminAsyncClient:
         SLA or deprecation policy.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListSnapshotsRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListSnapshotsRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
                 Note: This is a private alpha release of Cloud Bigtable
@@ -1628,11 +1650,13 @@ class BigtableTableAdminAsyncClient:
 
     async def delete_snapshot(
         self,
-        request: Union[bigtable_table_admin.DeleteSnapshotRequest, dict] = None,
+        request: Optional[
+            Union[bigtable_table_admin.DeleteSnapshotRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes the specified snapshot.
@@ -1644,7 +1668,7 @@ class BigtableTableAdminAsyncClient:
         SLA or deprecation policy.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DeleteSnapshotRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteSnapshotRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot]
                 Note: This is a private alpha release of Cloud Bigtable
@@ -1708,13 +1732,13 @@ class BigtableTableAdminAsyncClient:
 
     async def create_backup(
         self,
-        request: Union[bigtable_table_admin.CreateBackupRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.CreateBackupRequest, dict]] = None,
         *,
-        parent: str = None,
-        backup_id: str = None,
-        backup: table.Backup = None,
+        parent: Optional[str] = None,
+        backup_id: Optional[str] = None,
+        backup: Optional[table.Backup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts creating a new Cloud Bigtable Backup. The returned backup
@@ -1728,7 +1752,7 @@ class BigtableTableAdminAsyncClient:
         delete the backup.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.CreateBackupRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateBackupRequest, dict]]):
                 The request object. The request for
                 [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
             parent (:class:`str`):
@@ -1828,18 +1852,18 @@ class BigtableTableAdminAsyncClient:
 
     async def get_backup(
         self,
-        request: Union[bigtable_table_admin.GetBackupRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.GetBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Backup:
         r"""Gets metadata on a pending or completed Cloud
         Bigtable Backup.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.GetBackupRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetBackupRequest, dict]]):
                 The request object. The request for
                 [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
             name (:class:`str`):
@@ -1913,18 +1937,18 @@ class BigtableTableAdminAsyncClient:
 
     async def update_backup(
         self,
-        request: Union[bigtable_table_admin.UpdateBackupRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.UpdateBackupRequest, dict]] = None,
         *,
-        backup: table.Backup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup: Optional[table.Backup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Backup:
         r"""Updates a pending or completed Cloud Bigtable Backup.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.UpdateBackupRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.UpdateBackupRequest, dict]]):
                 The request object. The request for
                 [UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup].
             backup (:class:`google.cloud.bigtable_admin_v2.types.Backup`):
@@ -2008,17 +2032,17 @@ class BigtableTableAdminAsyncClient:
 
     async def delete_backup(
         self,
-        request: Union[bigtable_table_admin.DeleteBackupRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.DeleteBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a pending or completed Cloud Bigtable backup.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.DeleteBackupRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteBackupRequest, dict]]):
                 The request object. The request for
                 [DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup].
             name (:class:`str`):
@@ -2076,18 +2100,18 @@ class BigtableTableAdminAsyncClient:
 
     async def list_backups(
         self,
-        request: Union[bigtable_table_admin.ListBackupsRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.ListBackupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsAsyncPager:
         r"""Lists Cloud Bigtable backups. Returns both completed
         and pending backups.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.ListBackupsRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListBackupsRequest, dict]]):
                 The request object. The request for
                 [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
             parent (:class:`str`):
@@ -2179,10 +2203,10 @@ class BigtableTableAdminAsyncClient:
 
     async def restore_table(
         self,
-        request: Union[bigtable_table_admin.RestoreTableRequest, dict] = None,
+        request: Optional[Union[bigtable_table_admin.RestoreTableRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a new table by restoring from a completed backup. The new
@@ -2196,7 +2220,7 @@ class BigtableTableAdminAsyncClient:
         [Table][google.bigtable.admin.v2.Table], if successful.
 
         Args:
-            request (Union[google.cloud.bigtable_admin_v2.types.RestoreTableRequest, dict]):
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.RestoreTableRequest, dict]]):
                 The request object. The request for
                 [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2252,11 +2276,11 @@ class BigtableTableAdminAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a Table or Backup
@@ -2264,7 +2288,7 @@ class BigtableTableAdminAsyncClient:
         but does not have a policy set.
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -2403,18 +2427,18 @@ class BigtableTableAdminAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on a Table or Backup
         resource. Replaces any existing policy.
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -2543,19 +2567,19 @@ class BigtableTableAdminAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the
         specified Table or Backup resource.
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -2567,7 +2591,7 @@ class BigtableTableAdminAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM

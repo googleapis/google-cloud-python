@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.bigtable_admin import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.bigtable_instance_admin import BigtableInstanceAdminClient
 from .services.bigtable_instance_admin import BigtableInstanceAdminAsyncClient

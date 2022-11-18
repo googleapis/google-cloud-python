@@ -70,12 +70,13 @@ bigtable_default_version = "v2"
 bigtable_admin_default_version = "v2"
 
 for library in get_staging_dirs(bigtable_default_version, "bigtable"):
-    s.move(library / "google/cloud/bigtable_v*")
+    s.move(library / "google/cloud/bigtable_v2")
     s.move(library / "tests")
     s.move(library / "scripts")
 
 for library in get_staging_dirs(bigtable_admin_default_version, "bigtable_admin"):
-    s.move(library / "google/cloud/bigtable_admin_v*")
+    s.move(library / "google/cloud/bigtable_admin")
+    s.move(library / "google/cloud/bigtable_admin_v2")
     s.move(library / "tests")
     s.move(library / "scripts")
 
@@ -91,7 +92,7 @@ templated_files = common.py_library(
     cov_level=100,
 )
 
-s.move(templated_files, excludes=[".coveragerc", "README.rst"])
+s.move(templated_files, excludes=[".coveragerc", "README.rst", ".github/release-please.yml"])
 
 # ----------------------------------------------------------------------------
 # Customize noxfile.py
@@ -217,8 +218,6 @@ s.replace(
 # ----------------------------------------------------------------------------
 
 python.py_samples(skip_readmes=True)
-
-python.configure_previous_major_version_branches()
 
 s.replace(
     "samples/beam/noxfile.py",

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import common
@@ -51,7 +53,7 @@ class Instance(proto.Message):
             (``OutputOnly``) The current state of the instance.
         type_ (google.cloud.bigtable_admin_v2.types.Instance.Type):
             The type of the instance. Defaults to ``PRODUCTION``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
             customer's organizational needs and deployment strategies.
@@ -89,35 +91,35 @@ class Instance(proto.Message):
         PRODUCTION = 1
         DEVELOPMENT = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=4,
         enum=Type,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    satisfies_pzs = proto.Field(
+    satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=8,
         optional=True,
@@ -144,11 +146,11 @@ class AutoscalingTargets(proto.Message):
             SSD, 8192 for HDD.
     """
 
-    cpu_utilization_percent = proto.Field(
+    cpu_utilization_percent: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    storage_utilization_gib_per_node = proto.Field(
+    storage_utilization_gib_per_node: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -167,11 +169,11 @@ class AutoscalingLimits(proto.Message):
             to.
     """
 
-    min_serve_nodes = proto.Field(
+    min_serve_nodes: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_serve_nodes = proto.Field(
+    max_serve_nodes: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -235,12 +237,12 @@ class Cluster(proto.Message):
                 cluster.
         """
 
-        autoscaling_limits = proto.Field(
+        autoscaling_limits: "AutoscalingLimits" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="AutoscalingLimits",
         )
-        autoscaling_targets = proto.Field(
+        autoscaling_targets: "AutoscalingTargets" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="AutoscalingTargets",
@@ -254,7 +256,7 @@ class Cluster(proto.Message):
                 Autoscaling configuration for this cluster.
         """
 
-        cluster_autoscaling_config = proto.Field(
+        cluster_autoscaling_config: "Cluster.ClusterAutoscalingConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Cluster.ClusterAutoscalingConfig",
@@ -281,40 +283,40 @@ class Cluster(proto.Message):
                    ``projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}``
         """
 
-        kms_key_name = proto.Field(
+        kms_key_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    serve_nodes = proto.Field(
+    serve_nodes: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    cluster_config = proto.Field(
+    cluster_config: ClusterConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="config",
         message=ClusterConfig,
     )
-    default_storage_type = proto.Field(
+    default_storage_type: common.StorageType = proto.Field(
         proto.ENUM,
         number=5,
         enum=common.StorageType,
     )
-    encryption_config = proto.Field(
+    encryption_config: EncryptionConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         message=EncryptionConfig,
@@ -368,14 +370,14 @@ class AppProfile(proto.Message):
         sacrifices read-your-writes consistency to improve availability.
 
         Attributes:
-            cluster_ids (Sequence[str]):
+            cluster_ids (MutableSequence[str]):
                 The set of clusters to route to. The order is
                 ignored; clusters will be tried in order of
                 distance. If left empty, all clusters are
                 eligible.
         """
 
-        cluster_ids = proto.RepeatedField(
+        cluster_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
@@ -396,34 +398,34 @@ class AppProfile(proto.Message):
                 table/row/column in multiple clusters.
         """
 
-        cluster_id = proto.Field(
+        cluster_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        allow_transactional_writes = proto.Field(
+        allow_transactional_writes: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    multi_cluster_routing_use_any = proto.Field(
+    multi_cluster_routing_use_any: MultiClusterRoutingUseAny = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="routing_policy",
         message=MultiClusterRoutingUseAny,
     )
-    single_cluster_routing = proto.Field(
+    single_cluster_routing: SingleClusterRouting = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="routing_policy",
@@ -464,33 +466,33 @@ class HotTablet(proto.Message):
             (the node spent all cycles serving the hot tablet).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_name = proto.Field(
+    table_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    start_key = proto.Field(
+    start_key: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    end_key = proto.Field(
+    end_key: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    node_cpu_usage_percent = proto.Field(
+    node_cpu_usage_percent: float = proto.Field(
         proto.FLOAT,
         number=7,
     )

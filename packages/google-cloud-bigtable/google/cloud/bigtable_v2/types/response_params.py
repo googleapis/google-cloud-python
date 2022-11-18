@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -42,12 +44,12 @@ class ResponseParams(proto.Message):
             This field is a member of `oneof`_ ``_cluster_id``.
     """
 
-    zone_id = proto.Field(
+    zone_id: str = proto.Field(
         proto.STRING,
         number=1,
         optional=True,
     )
-    cluster_id = proto.Field(
+    cluster_id: str = proto.Field(
         proto.STRING,
         number=2,
         optional=True,

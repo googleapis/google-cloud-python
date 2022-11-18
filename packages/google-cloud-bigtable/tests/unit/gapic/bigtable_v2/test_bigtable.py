@@ -747,7 +747,7 @@ def test_read_rows_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.ReadRowsRequest(
-        {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
+        **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -765,7 +765,7 @@ def test_read_rows_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.ReadRowsRequest({"app_profile_id": "sample1"})
+    request = bigtable.ReadRowsRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -966,7 +966,7 @@ def test_sample_row_keys_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.SampleRowKeysRequest(
-        {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
+        **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -984,7 +984,7 @@ def test_sample_row_keys_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.SampleRowKeysRequest({"app_profile_id": "sample1"})
+    request = bigtable.SampleRowKeysRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sample_row_keys), "__call__") as call:
@@ -1182,7 +1182,7 @@ def test_mutate_row_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.MutateRowRequest(
-        {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
+        **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1200,7 +1200,7 @@ def test_mutate_row_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.MutateRowRequest({"app_profile_id": "sample1"})
+    request = bigtable.MutateRowRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mutate_row), "__call__") as call:
@@ -1447,7 +1447,7 @@ def test_mutate_rows_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.MutateRowsRequest(
-        {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
+        **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1465,7 +1465,7 @@ def test_mutate_rows_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.MutateRowsRequest({"app_profile_id": "sample1"})
+    request = bigtable.MutateRowsRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mutate_rows), "__call__") as call:
@@ -1685,7 +1685,7 @@ def test_check_and_mutate_row_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.CheckAndMutateRowRequest(
-        {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
+        **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1705,7 +1705,7 @@ def test_check_and_mutate_row_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.CheckAndMutateRowRequest({"app_profile_id": "sample1"})
+    request = bigtable.CheckAndMutateRowRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2055,7 +2055,7 @@ def test_ping_and_warm_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.PingAndWarmRequest(
-        {"name": "projects/sample1/instances/sample2"}
+        **{"name": "projects/sample1/instances/sample2"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2073,7 +2073,7 @@ def test_ping_and_warm_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.PingAndWarmRequest({"app_profile_id": "sample1"})
+    request = bigtable.PingAndWarmRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ping_and_warm), "__call__") as call:
@@ -2279,7 +2279,7 @@ def test_read_modify_write_row_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = bigtable.ReadModifyWriteRowRequest(
-        {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
+        **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2299,7 +2299,7 @@ def test_read_modify_write_row_routing_parameters():
     assert kw["metadata"]
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = bigtable.ReadModifyWriteRowRequest({"app_profile_id": "sample1"})
+    request = bigtable.ReadModifyWriteRowRequest(**{"app_profile_id": "sample1"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(

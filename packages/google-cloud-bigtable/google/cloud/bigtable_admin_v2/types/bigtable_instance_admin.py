@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import instance as gba_instance
@@ -68,7 +70,7 @@ class CreateInstanceRequest(proto.Message):
         instance (google.cloud.bigtable_admin_v2.types.Instance):
             Required. The instance to create. Fields marked
             ``OutputOnly`` must be left blank.
-        clusters (Mapping[str, google.cloud.bigtable_admin_v2.types.Cluster]):
+        clusters (MutableMapping[str, google.cloud.bigtable_admin_v2.types.Cluster]):
             Required. The clusters to be created within the instance,
             mapped by desired cluster ID, e.g., just ``mycluster``
             rather than
@@ -77,20 +79,20 @@ class CreateInstanceRequest(proto.Message):
             at most four clusters can be specified.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: gba_instance.Instance = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gba_instance.Instance,
     )
-    clusters = proto.MapField(
+    clusters: MutableMapping[str, gba_instance.Cluster] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,
@@ -107,7 +109,7 @@ class GetInstanceRequest(proto.Message):
             are of the form ``projects/{project}/instances/{instance}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -125,11 +127,11 @@ class ListInstancesRequest(proto.Message):
             DEPRECATED: This field is unused and ignored.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -139,9 +141,9 @@ class ListInstancesResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListInstances.
 
     Attributes:
-        instances (Sequence[google.cloud.bigtable_admin_v2.types.Instance]):
+        instances (MutableSequence[google.cloud.bigtable_admin_v2.types.Instance]):
             The list of requested instances.
-        failed_locations (Sequence[str]):
+        failed_locations (MutableSequence[str]):
             Locations from which Instance information could not be
             retrieved, due to an outage or some other transient
             condition. Instances whose Clusters are all in one of the
@@ -157,16 +159,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence[gba_instance.Instance] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_instance.Instance,
     )
-    failed_locations = proto.RepeatedField(
+    failed_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -185,12 +187,12 @@ class PartialUpdateInstanceRequest(proto.Message):
             should be replaced. Must be explicitly set.
     """
 
-    instance = proto.Field(
+    instance: gba_instance.Instance = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gba_instance.Instance,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -207,7 +209,7 @@ class DeleteInstanceRequest(proto.Message):
             ``projects/{project}/instances/{instance}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -231,15 +233,15 @@ class CreateClusterRequest(proto.Message):
             ``OutputOnly`` must be left blank.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_id = proto.Field(
+    cluster_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster = proto.Field(
+    cluster: gba_instance.Cluster = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gba_instance.Cluster,
@@ -256,7 +258,7 @@ class GetClusterRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -276,11 +278,11 @@ class ListClustersRequest(proto.Message):
             DEPRECATED: This field is unused and ignored.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -290,9 +292,9 @@ class ListClustersResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListClusters.
 
     Attributes:
-        clusters (Sequence[google.cloud.bigtable_admin_v2.types.Cluster]):
+        clusters (MutableSequence[google.cloud.bigtable_admin_v2.types.Cluster]):
             The list of requested clusters.
-        failed_locations (Sequence[str]):
+        failed_locations (MutableSequence[str]):
             Locations from which Cluster information could not be
             retrieved, due to an outage or some other transient
             condition. Clusters from these locations may be missing from
@@ -307,16 +309,16 @@ class ListClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    clusters = proto.RepeatedField(
+    clusters: MutableSequence[gba_instance.Cluster] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_instance.Cluster,
     )
-    failed_locations = proto.RepeatedField(
+    failed_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -332,7 +334,7 @@ class DeleteClusterRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -353,17 +355,17 @@ class CreateInstanceMetadata(proto.Message):
             completed successfully.
     """
 
-    original_request = proto.Field(
+    original_request: "CreateInstanceRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CreateInstanceRequest",
     )
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -385,17 +387,17 @@ class UpdateInstanceMetadata(proto.Message):
             completed successfully.
     """
 
-    original_request = proto.Field(
+    original_request: "PartialUpdateInstanceRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PartialUpdateInstanceRequest",
     )
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -415,7 +417,7 @@ class CreateClusterMetadata(proto.Message):
         finish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the operation failed or was
             completed successfully.
-        tables (Mapping[str, google.cloud.bigtable_admin_v2.types.CreateClusterMetadata.TableProgress]):
+        tables (MutableMapping[str, google.cloud.bigtable_admin_v2.types.CreateClusterMetadata.TableProgress]):
             Keys: the full ``name`` of each table that existed in the
             instance when CreateCluster was first called, i.e.
             ``projects/<project>/instances/<instance>/tables/<table>``.
@@ -449,36 +451,36 @@ class CreateClusterMetadata(proto.Message):
             COMPLETED = 3
             CANCELLED = 4
 
-        estimated_size_bytes = proto.Field(
+        estimated_size_bytes: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        estimated_copied_bytes = proto.Field(
+        estimated_copied_bytes: int = proto.Field(
             proto.INT64,
             number=3,
         )
-        state = proto.Field(
+        state: "CreateClusterMetadata.TableProgress.State" = proto.Field(
             proto.ENUM,
             number=4,
             enum="CreateClusterMetadata.TableProgress.State",
         )
 
-    original_request = proto.Field(
+    original_request: "CreateClusterRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CreateClusterRequest",
     )
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    tables = proto.MapField(
+    tables: MutableMapping[str, TableProgress] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,
@@ -501,17 +503,17 @@ class UpdateClusterMetadata(proto.Message):
             completed successfully.
     """
 
-    original_request = proto.Field(
+    original_request: gba_instance.Cluster = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gba_instance.Cluster,
     )
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -534,17 +536,17 @@ class PartialUpdateClusterMetadata(proto.Message):
             PartialUpdateCluster.
     """
 
-    request_time = proto.Field(
+    request_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    finish_time = proto.Field(
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    original_request = proto.Field(
+    original_request: "PartialUpdateClusterRequest" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="PartialUpdateClusterRequest",
@@ -564,12 +566,12 @@ class PartialUpdateClusterRequest(proto.Message):
             should be replaced.
     """
 
-    cluster = proto.Field(
+    cluster: gba_instance.Cluster = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gba_instance.Cluster,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -597,20 +599,20 @@ class CreateAppProfileRequest(proto.Message):
             the app profile.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_profile_id = proto.Field(
+    app_profile_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    app_profile = proto.Field(
+    app_profile: gba_instance.AppProfile = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gba_instance.AppProfile,
     )
-    ignore_warnings = proto.Field(
+    ignore_warnings: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -626,7 +628,7 @@ class GetAppProfileRequest(proto.Message):
             ``projects/{project}/instances/{instance}/appProfiles/{app_profile}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -659,15 +661,15 @@ class ListAppProfilesRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -677,13 +679,13 @@ class ListAppProfilesResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListAppProfiles.
 
     Attributes:
-        app_profiles (Sequence[google.cloud.bigtable_admin_v2.types.AppProfile]):
+        app_profiles (MutableSequence[google.cloud.bigtable_admin_v2.types.AppProfile]):
             The list of requested app profiles.
         next_page_token (str):
             Set if not all app profiles could be returned in a single
             response. Pass this value to ``page_token`` in another
             request to get the next page of results.
-        failed_locations (Sequence[str]):
+        failed_locations (MutableSequence[str]):
             Locations from which AppProfile information could not be
             retrieved, due to an outage or some other transient
             condition. AppProfiles from these locations may be missing
@@ -695,16 +697,16 @@ class ListAppProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    app_profiles = proto.RepeatedField(
+    app_profiles: MutableSequence[gba_instance.AppProfile] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_instance.AppProfile,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    failed_locations = proto.RepeatedField(
+    failed_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -726,17 +728,17 @@ class UpdateAppProfileRequest(proto.Message):
             the app profile.
     """
 
-    app_profile = proto.Field(
+    app_profile: gba_instance.AppProfile = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gba_instance.AppProfile,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    ignore_warnings = proto.Field(
+    ignore_warnings: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -755,11 +757,11 @@ class DeleteAppProfileRequest(proto.Message):
             deleting the app profile.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ignore_warnings = proto.Field(
+    ignore_warnings: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -807,25 +809,25 @@ class ListHotTabletsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -835,7 +837,7 @@ class ListHotTabletsResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListHotTablets.
 
     Attributes:
-        hot_tablets (Sequence[google.cloud.bigtable_admin_v2.types.HotTablet]):
+        hot_tablets (MutableSequence[google.cloud.bigtable_admin_v2.types.HotTablet]):
             List of hot tablets in the tables of the
             requested cluster that fall within the requested
             time range. Hot tablets are ordered by node cpu
@@ -854,12 +856,12 @@ class ListHotTabletsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    hot_tablets = proto.RepeatedField(
+    hot_tablets: MutableSequence[gba_instance.HotTablet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gba_instance.HotTablet,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

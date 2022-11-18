@@ -1,4 +1,5 @@
-# Copyright 2015 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +12,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""Google Cloud Bigtable API package."""
-
-from typing import Optional
-import pkg_resources
-from google.cloud.bigtable.client import Client
-
-
-__version__: Optional[str]
-try:
-    __version__ = pkg_resources.get_distribution("google-cloud-bigtable").version
-except pkg_resources.DistributionNotFound:
-    __version__ = None
-
-
-__all__ = ["__version__", "Client"]
+#
+__version__ = "2.13.2"  # {x-release-please-version}

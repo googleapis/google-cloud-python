@@ -16,7 +16,19 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Iterable, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Iterable,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -56,7 +68,7 @@ class BigtableClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[BigtableTransport]:
         """Returns an appropriate transport class.
 
@@ -350,8 +362,8 @@ class BigtableClient(metaclass=BigtableClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BigtableTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, BigtableTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the bigtable client.
@@ -365,7 +377,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
             transport (Union[str, BigtableTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -395,6 +407,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -447,12 +460,12 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def read_rows(
         self,
-        request: Union[bigtable.ReadRowsRequest, dict] = None,
+        request: Optional[Union[bigtable.ReadRowsRequest, dict]] = None,
         *,
-        table_name: str = None,
-        app_profile_id: str = None,
+        table_name: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[bigtable.ReadRowsResponse]:
         r"""Streams back the contents of all requested rows in
@@ -550,12 +563,12 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def sample_row_keys(
         self,
-        request: Union[bigtable.SampleRowKeysRequest, dict] = None,
+        request: Optional[Union[bigtable.SampleRowKeysRequest, dict]] = None,
         *,
-        table_name: str = None,
-        app_profile_id: str = None,
+        table_name: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[bigtable.SampleRowKeysResponse]:
         r"""Returns a sample of row keys in the table. The
@@ -654,14 +667,14 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def mutate_row(
         self,
-        request: Union[bigtable.MutateRowRequest, dict] = None,
+        request: Optional[Union[bigtable.MutateRowRequest, dict]] = None,
         *,
-        table_name: str = None,
-        row_key: bytes = None,
-        mutations: Sequence[data.Mutation] = None,
-        app_profile_id: str = None,
+        table_name: Optional[str] = None,
+        row_key: Optional[bytes] = None,
+        mutations: Optional[MutableSequence[data.Mutation]] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.MutateRowResponse:
         r"""Mutates a row atomically. Cells already present in the row are
@@ -686,7 +699,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 This corresponds to the ``row_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+            mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
                 Required. Changes to be atomically
                 applied to the specified row. Entries
                 are applied in order, meaning that
@@ -779,13 +792,13 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def mutate_rows(
         self,
-        request: Union[bigtable.MutateRowsRequest, dict] = None,
+        request: Optional[Union[bigtable.MutateRowsRequest, dict]] = None,
         *,
-        table_name: str = None,
-        entries: Sequence[bigtable.MutateRowsRequest.Entry] = None,
-        app_profile_id: str = None,
+        table_name: Optional[str] = None,
+        entries: Optional[MutableSequence[bigtable.MutateRowsRequest.Entry]] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[bigtable.MutateRowsResponse]:
         r"""Mutates multiple rows in a batch. Each individual row
@@ -804,7 +817,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 This corresponds to the ``table_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entries (Sequence[google.cloud.bigtable_v2.types.MutateRowsRequest.Entry]):
+            entries (MutableSequence[google.cloud.bigtable_v2.types.MutateRowsRequest.Entry]):
                 Required. The row keys and
                 corresponding mutations to be applied in
                 bulk. Each entry is applied as an atomic
@@ -898,16 +911,16 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def check_and_mutate_row(
         self,
-        request: Union[bigtable.CheckAndMutateRowRequest, dict] = None,
+        request: Optional[Union[bigtable.CheckAndMutateRowRequest, dict]] = None,
         *,
-        table_name: str = None,
-        row_key: bytes = None,
-        predicate_filter: data.RowFilter = None,
-        true_mutations: Sequence[data.Mutation] = None,
-        false_mutations: Sequence[data.Mutation] = None,
-        app_profile_id: str = None,
+        table_name: Optional[str] = None,
+        row_key: Optional[bytes] = None,
+        predicate_filter: Optional[data.RowFilter] = None,
+        true_mutations: Optional[MutableSequence[data.Mutation]] = None,
+        false_mutations: Optional[MutableSequence[data.Mutation]] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.CheckAndMutateRowResponse:
         r"""Mutates a row atomically based on the output of a
@@ -944,7 +957,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 This corresponds to the ``predicate_filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            true_mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+            true_mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
                 Changes to be atomically applied to the specified row if
                 ``predicate_filter`` yields at least one cell when
                 applied to ``row_key``. Entries are applied in order,
@@ -955,7 +968,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 This corresponds to the ``true_mutations`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            false_mutations (Sequence[google.cloud.bigtable_v2.types.Mutation]):
+            false_mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
                 Changes to be atomically applied to the specified row if
                 ``predicate_filter`` does not yield any cells when
                 applied to ``row_key``. Entries are applied in order,
@@ -1061,12 +1074,12 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def ping_and_warm(
         self,
-        request: Union[bigtable.PingAndWarmRequest, dict] = None,
+        request: Optional[Union[bigtable.PingAndWarmRequest, dict]] = None,
         *,
-        name: str = None,
-        app_profile_id: str = None,
+        name: Optional[str] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.PingAndWarmResponse:
         r"""Warm up associated instance metadata for this
@@ -1162,14 +1175,14 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def read_modify_write_row(
         self,
-        request: Union[bigtable.ReadModifyWriteRowRequest, dict] = None,
+        request: Optional[Union[bigtable.ReadModifyWriteRowRequest, dict]] = None,
         *,
-        table_name: str = None,
-        row_key: bytes = None,
-        rules: Sequence[data.ReadModifyWriteRule] = None,
-        app_profile_id: str = None,
+        table_name: Optional[str] = None,
+        row_key: Optional[bytes] = None,
+        rules: Optional[MutableSequence[data.ReadModifyWriteRule]] = None,
+        app_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.ReadModifyWriteRowResponse:
         r"""Modifies a row atomically on the server. The method
@@ -1201,7 +1214,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 This corresponds to the ``row_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            rules (Sequence[google.cloud.bigtable_v2.types.ReadModifyWriteRule]):
+            rules (MutableSequence[google.cloud.bigtable_v2.types.ReadModifyWriteRule]):
                 Required. Rules specifying how the
                 specified row's contents are to be
                 transformed into writes. Entries are

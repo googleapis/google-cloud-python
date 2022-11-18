@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -47,17 +49,17 @@ class Row(proto.Message):
             used to identify the row in, for example, a
             MutateRowRequest. May contain any non-empty byte
             string up to 4KiB in length.
-        families (Sequence[google.cloud.bigtable_v2.types.Family]):
+        families (MutableSequence[google.cloud.bigtable_v2.types.Family]):
             May be empty, but only if the entire row is
             empty. The mutual ordering of column families is
             not specified.
     """
 
-    key = proto.Field(
+    key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    families = proto.RepeatedField(
+    families: MutableSequence["Family"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Family",
@@ -77,16 +79,16 @@ class Family(proto.Message):
             ``[-_.a-zA-Z0-9]+``, except that AggregatingRowProcessors
             may produce cells in a sentinel family with an empty name.
             Must be no greater than 64 characters in length.
-        columns (Sequence[google.cloud.bigtable_v2.types.Column]):
+        columns (MutableSequence[google.cloud.bigtable_v2.types.Column]):
             Must not be empty. Sorted in order of
             increasing "qualifier".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    columns = proto.RepeatedField(
+    columns: MutableSequence["Column"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Column",
@@ -105,16 +107,16 @@ class Column(proto.Message):
             ``column_qualifier_regex_filter`` field. May contain any
             byte string, including the empty string, up to 16kiB in
             length.
-        cells (Sequence[google.cloud.bigtable_v2.types.Cell]):
+        cells (MutableSequence[google.cloud.bigtable_v2.types.Cell]):
             Must not be empty. Sorted in order of decreasing
             "timestamp_micros".
     """
 
-    qualifier = proto.Field(
+    qualifier: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    cells = proto.RepeatedField(
+    cells: MutableSequence["Cell"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Cell",
@@ -138,20 +140,20 @@ class Cell(proto.Message):
             The value stored in the cell.
             May contain any byte string, including the empty
             string, up to 100MiB in length.
-        labels (Sequence[str]):
+        labels (MutableSequence[str]):
             Labels applied to the cell by a
             [RowFilter][google.bigtable.v2.RowFilter].
     """
 
-    timestamp_micros = proto.Field(
+    timestamp_micros: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    value = proto.Field(
+    value: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    labels = proto.RepeatedField(
+    labels: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -190,22 +192,22 @@ class RowRange(proto.Message):
             This field is a member of `oneof`_ ``end_key``.
     """
 
-    start_key_closed = proto.Field(
+    start_key_closed: bytes = proto.Field(
         proto.BYTES,
         number=1,
         oneof="start_key",
     )
-    start_key_open = proto.Field(
+    start_key_open: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="start_key",
     )
-    end_key_open = proto.Field(
+    end_key_open: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="end_key",
     )
-    end_key_closed = proto.Field(
+    end_key_closed: bytes = proto.Field(
         proto.BYTES,
         number=4,
         oneof="end_key",
@@ -216,17 +218,17 @@ class RowSet(proto.Message):
     r"""Specifies a non-contiguous set of rows.
 
     Attributes:
-        row_keys (Sequence[bytes]):
+        row_keys (MutableSequence[bytes]):
             Single rows included in the set.
-        row_ranges (Sequence[google.cloud.bigtable_v2.types.RowRange]):
+        row_ranges (MutableSequence[google.cloud.bigtable_v2.types.RowRange]):
             Contiguous row ranges included in the set.
     """
 
-    row_keys = proto.RepeatedField(
+    row_keys: MutableSequence[bytes] = proto.RepeatedField(
         proto.BYTES,
         number=1,
     )
-    row_ranges = proto.RepeatedField(
+    row_ranges: MutableSequence["RowRange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="RowRange",
@@ -272,26 +274,26 @@ class ColumnRange(proto.Message):
             This field is a member of `oneof`_ ``end_qualifier``.
     """
 
-    family_name = proto.Field(
+    family_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_qualifier_closed = proto.Field(
+    start_qualifier_closed: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="start_qualifier",
     )
-    start_qualifier_open = proto.Field(
+    start_qualifier_open: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="start_qualifier",
     )
-    end_qualifier_closed = proto.Field(
+    end_qualifier_closed: bytes = proto.Field(
         proto.BYTES,
         number=4,
         oneof="end_qualifier",
     )
-    end_qualifier_open = proto.Field(
+    end_qualifier_open: bytes = proto.Field(
         proto.BYTES,
         number=5,
         oneof="end_qualifier",
@@ -310,11 +312,11 @@ class TimestampRange(proto.Message):
             interpreted as infinity.
     """
 
-    start_timestamp_micros = proto.Field(
+    start_timestamp_micros: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    end_timestamp_micros = proto.Field(
+    end_timestamp_micros: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -353,22 +355,22 @@ class ValueRange(proto.Message):
             This field is a member of `oneof`_ ``end_value``.
     """
 
-    start_value_closed = proto.Field(
+    start_value_closed: bytes = proto.Field(
         proto.BYTES,
         number=1,
         oneof="start_value",
     )
-    start_value_open = proto.Field(
+    start_value_open: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="start_value",
     )
-    end_value_closed = proto.Field(
+    end_value_closed: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="end_value",
     )
-    end_value_open = proto.Field(
+    end_value_open: bytes = proto.Field(
         proto.BYTES,
         number=4,
         oneof="end_value",
@@ -630,7 +632,7 @@ class RowFilter(proto.Message):
         sequence.
 
         Attributes:
-            filters (Sequence[google.cloud.bigtable_v2.types.RowFilter]):
+            filters (MutableSequence[google.cloud.bigtable_v2.types.RowFilter]):
                 The elements of "filters" are chained
                 together to process the input row: in row ->
                 f(0) -> intermediate row -> f(1) -> ... -> f(N)
@@ -638,7 +640,7 @@ class RowFilter(proto.Message):
                 atomically.
         """
 
-        filters = proto.RepeatedField(
+        filters: MutableSequence["RowFilter"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RowFilter",
@@ -649,7 +651,7 @@ class RowFilter(proto.Message):
         RowFilters and interleaves the results.
 
         Attributes:
-            filters (Sequence[google.cloud.bigtable_v2.types.RowFilter]):
+            filters (MutableSequence[google.cloud.bigtable_v2.types.RowFilter]):
                 The elements of "filters" all process a copy of the input
                 row, and the results are pooled, sorted, and combined into a
                 single output row. If multiple cells are produced with the
@@ -680,7 +682,7 @@ class RowFilter(proto.Message):
                 All interleaved filters are executed atomically.
         """
 
-        filters = proto.RepeatedField(
+        filters: MutableSequence["RowFilter"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RowFilter",
@@ -711,119 +713,119 @@ class RowFilter(proto.Message):
                 will be returned in the false case.
         """
 
-        predicate_filter = proto.Field(
+        predicate_filter: "RowFilter" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="RowFilter",
         )
-        true_filter = proto.Field(
+        true_filter: "RowFilter" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="RowFilter",
         )
-        false_filter = proto.Field(
+        false_filter: "RowFilter" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="RowFilter",
         )
 
-    chain = proto.Field(
+    chain: Chain = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="filter",
         message=Chain,
     )
-    interleave = proto.Field(
+    interleave: Interleave = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="filter",
         message=Interleave,
     )
-    condition = proto.Field(
+    condition: Condition = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="filter",
         message=Condition,
     )
-    sink = proto.Field(
+    sink: bool = proto.Field(
         proto.BOOL,
         number=16,
         oneof="filter",
     )
-    pass_all_filter = proto.Field(
+    pass_all_filter: bool = proto.Field(
         proto.BOOL,
         number=17,
         oneof="filter",
     )
-    block_all_filter = proto.Field(
+    block_all_filter: bool = proto.Field(
         proto.BOOL,
         number=18,
         oneof="filter",
     )
-    row_key_regex_filter = proto.Field(
+    row_key_regex_filter: bytes = proto.Field(
         proto.BYTES,
         number=4,
         oneof="filter",
     )
-    row_sample_filter = proto.Field(
+    row_sample_filter: float = proto.Field(
         proto.DOUBLE,
         number=14,
         oneof="filter",
     )
-    family_name_regex_filter = proto.Field(
+    family_name_regex_filter: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="filter",
     )
-    column_qualifier_regex_filter = proto.Field(
+    column_qualifier_regex_filter: bytes = proto.Field(
         proto.BYTES,
         number=6,
         oneof="filter",
     )
-    column_range_filter = proto.Field(
+    column_range_filter: "ColumnRange" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="filter",
         message="ColumnRange",
     )
-    timestamp_range_filter = proto.Field(
+    timestamp_range_filter: "TimestampRange" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="filter",
         message="TimestampRange",
     )
-    value_regex_filter = proto.Field(
+    value_regex_filter: bytes = proto.Field(
         proto.BYTES,
         number=9,
         oneof="filter",
     )
-    value_range_filter = proto.Field(
+    value_range_filter: "ValueRange" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="filter",
         message="ValueRange",
     )
-    cells_per_row_offset_filter = proto.Field(
+    cells_per_row_offset_filter: int = proto.Field(
         proto.INT32,
         number=10,
         oneof="filter",
     )
-    cells_per_row_limit_filter = proto.Field(
+    cells_per_row_limit_filter: int = proto.Field(
         proto.INT32,
         number=11,
         oneof="filter",
     )
-    cells_per_column_limit_filter = proto.Field(
+    cells_per_column_limit_filter: int = proto.Field(
         proto.INT32,
         number=12,
         oneof="filter",
     )
-    strip_value_transformer = proto.Field(
+    strip_value_transformer: bool = proto.Field(
         proto.BOOL,
         number=13,
         oneof="filter",
     )
-    apply_label_transformer = proto.Field(
+    apply_label_transformer: str = proto.Field(
         proto.STRING,
         number=19,
         oneof="filter",
@@ -884,19 +886,19 @@ class Mutation(proto.Message):
                 cell.
         """
 
-        family_name = proto.Field(
+        family_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        column_qualifier = proto.Field(
+        column_qualifier: bytes = proto.Field(
             proto.BYTES,
             number=2,
         )
-        timestamp_micros = proto.Field(
+        timestamp_micros: int = proto.Field(
             proto.INT64,
             number=3,
         )
-        value = proto.Field(
+        value: bytes = proto.Field(
             proto.BYTES,
             number=4,
         )
@@ -918,15 +920,15 @@ class Mutation(proto.Message):
                 should be deleted.
         """
 
-        family_name = proto.Field(
+        family_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        column_qualifier = proto.Field(
+        column_qualifier: bytes = proto.Field(
             proto.BYTES,
             number=2,
         )
-        time_range = proto.Field(
+        time_range: "TimestampRange" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="TimestampRange",
@@ -942,7 +944,7 @@ class Mutation(proto.Message):
                 Must match ``[-_.a-zA-Z0-9]+``
         """
 
-        family_name = proto.Field(
+        family_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -950,25 +952,25 @@ class Mutation(proto.Message):
     class DeleteFromRow(proto.Message):
         r"""A Mutation which deletes all cells from the containing row."""
 
-    set_cell = proto.Field(
+    set_cell: SetCell = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="mutation",
         message=SetCell,
     )
-    delete_from_column = proto.Field(
+    delete_from_column: DeleteFromColumn = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="mutation",
         message=DeleteFromColumn,
     )
-    delete_from_family = proto.Field(
+    delete_from_family: DeleteFromFamily = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="mutation",
         message=DeleteFromFamily,
     )
-    delete_from_row = proto.Field(
+    delete_from_row: DeleteFromRow = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="mutation",
@@ -1012,20 +1014,20 @@ class ReadModifyWriteRule(proto.Message):
             This field is a member of `oneof`_ ``rule``.
     """
 
-    family_name = proto.Field(
+    family_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    column_qualifier = proto.Field(
+    column_qualifier: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    append_value = proto.Field(
+    append_value: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="rule",
     )
-    increment_amount = proto.Field(
+    increment_amount: int = proto.Field(
         proto.INT64,
         number=4,
         oneof="rule",

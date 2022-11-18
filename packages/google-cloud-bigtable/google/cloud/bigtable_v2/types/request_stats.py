@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -21,19 +23,19 @@ from google.protobuf import duration_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.bigtable.v2",
     manifest={
-        "ReadIteratorStats",
+        "ReadIterationStats",
         "RequestLatencyStats",
-        "ReadEfficiencyStats",
-        "AllReadStats",
+        "FullReadStatsView",
         "RequestStats",
     },
 )
 
 
-class ReadIteratorStats(proto.Message):
-    r"""ReadIteratorStats captures information about the iteration of
-    rows or cells over the course of a read, e.g. how many results
-    were scanned in a read operation versus the results returned.
+class ReadIterationStats(proto.Message):
+    r"""ReadIterationStats captures information about the iteration
+    of rows or cells over the course of a read, e.g. how many
+    results were scanned in a read operation versus the results
+    returned.
 
     Attributes:
         rows_seen_count (int):
@@ -48,29 +50,23 @@ class ReadIteratorStats(proto.Message):
             returned, as captured below.
         cells_returned_count (int):
             The cells returned as part of the request.
-        deletes_seen_count (int):
-            The deletes seen as part of the request.
     """
 
-    rows_seen_count = proto.Field(
+    rows_seen_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    rows_returned_count = proto.Field(
+    rows_returned_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    cells_seen_count = proto.Field(
+    cells_seen_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    cells_returned_count = proto.Field(
+    cells_returned_count: int = proto.Field(
         proto.INT64,
         number=4,
-    )
-    deletes_seen_count = proto.Field(
-        proto.INT64,
-        number=5,
     )
 
 
@@ -95,21 +91,31 @@ class RequestLatencyStats(proto.Message):
             as this value needs to be sent in the response
             before the latency measurement including that
             transmission is finalized.
+
+            Note: This value includes the end-to-end latency
+            of contacting nodes in the targeted cluster,
+            e.g. measuring from when the first byte arrives
+            at the frontend server, to when this value is
+            sent back as the last value in the response,
+            including any latency incurred by contacting
+            nodes, waiting for results from nodes, and
+            finally sending results from nodes back to the
+            caller.
     """
 
-    frontend_server_latency = proto.Field(
+    frontend_server_latency: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
 
 
-class ReadEfficiencyStats(proto.Message):
-    r"""ReadEfficiencyStats captures information about the efficiency
-    of a read.
+class FullReadStatsView(proto.Message):
+    r"""FullReadStatsView captures all known information about a
+    read.
 
     Attributes:
-        read_iterator_stats (google.cloud.bigtable_v2.types.ReadIteratorStats):
+        read_iteration_stats (google.cloud.bigtable_v2.types.ReadIterationStats):
             Iteration stats describe how efficient the
             read is, e.g. comparing rows seen vs. rows
             returned or cells seen vs cells returned can
@@ -120,39 +126,12 @@ class ReadEfficiencyStats(proto.Message):
             to complete a request, from the server side.
     """
 
-    read_iterator_stats = proto.Field(
+    read_iteration_stats: "ReadIterationStats" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="ReadIteratorStats",
+        message="ReadIterationStats",
     )
-    request_latency_stats = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message="RequestLatencyStats",
-    )
-
-
-class AllReadStats(proto.Message):
-    r"""AllReadStats captures all known information about a read.
-
-    Attributes:
-        read_iterator_stats (google.cloud.bigtable_v2.types.ReadIteratorStats):
-            Iteration stats describe how efficient the
-            read is, e.g. comparing rows seen vs. rows
-            returned or cells seen vs cells returned can
-            provide an indication of read efficiency (the
-            higher the ratio of seen to retuned the better).
-        request_latency_stats (google.cloud.bigtable_v2.types.RequestLatencyStats):
-            Request latency stats describe the time taken
-            to complete a request, from the server side.
-    """
-
-    read_iterator_stats = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message="ReadIteratorStats",
-    )
-    request_latency_stats = proto.Field(
+    request_latency_stats: "RequestLatencyStats" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RequestLatencyStats",
@@ -166,39 +145,23 @@ class RequestStats(proto.Message):
 
     -  google.bigtable.v2.ReadRows
 
-    This message has `oneof`_ fields (mutually exclusive fields).
-    For each oneof, at most one member field can be set at the same time.
-    Setting any member of the oneof automatically clears all other
-    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        read_efficiency_stats (google.cloud.bigtable_v2.types.ReadEfficiencyStats):
-            Available with the
-            ReadRowsRequest.RequestStatsView.REQUEST_STATS_EFFICIENCY
-            view, see package google.bigtable.v2.
-
-            This field is a member of `oneof`_ ``stats``.
-        all_read_stats (google.cloud.bigtable_v2.types.AllReadStats):
+        full_read_stats_view (google.cloud.bigtable_v2.types.FullReadStatsView):
             Available with the
             ReadRowsRequest.RequestStatsView.REQUEST_STATS_FULL view,
             see package google.bigtable.v2.
 
-            This field is a member of `oneof`_ ``stats``.
+            This field is a member of `oneof`_ ``stats_view``.
     """
 
-    read_efficiency_stats = proto.Field(
+    full_read_stats_view: "FullReadStatsView" = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof="stats",
-        message="ReadEfficiencyStats",
-    )
-    all_read_stats = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        oneof="stats",
-        message="AllReadStats",
+        oneof="stats_view",
+        message="FullReadStatsView",
     )
 
 
