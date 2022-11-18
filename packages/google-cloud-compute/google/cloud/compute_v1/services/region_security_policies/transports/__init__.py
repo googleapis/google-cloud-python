@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionSecurityPoliciesTransport
-from .rest import RegionSecurityPoliciesRestTransport
-from .rest import RegionSecurityPoliciesRestInterceptor
-
+from .rest import (
+    RegionSecurityPoliciesRestInterceptor,
+    RegionSecurityPoliciesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

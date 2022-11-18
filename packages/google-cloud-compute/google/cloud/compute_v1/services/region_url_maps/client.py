@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.region_url_maps import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import RegionUrlMapsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, RegionUrlMapsTransport
 from .transports.rest import RegionUrlMapsRestTransport
 
 
@@ -56,7 +68,7 @@ class RegionUrlMapsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RegionUrlMapsTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RegionUrlMapsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, RegionUrlMapsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the region url maps client.
@@ -327,7 +339,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,13 +422,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.DeleteRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified UrlMap resource.
@@ -510,13 +523,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.DeleteRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified UrlMap resource.
@@ -636,13 +649,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.GetRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMap:
         r"""Returns the specified UrlMap resource. Gets a list of
@@ -757,13 +770,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.InsertRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map_resource: compute.UrlMap = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a UrlMap resource in the specified project
@@ -856,13 +869,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.InsertRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map_resource: compute.UrlMap = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a UrlMap resource in the specified project
@@ -980,12 +993,12 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListRegionUrlMapsRequest, dict] = None,
+        request: Optional[Union[compute.ListRegionUrlMapsRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of UrlMap resources available to
@@ -1082,14 +1095,14 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def patch_unary(
         self,
-        request: Union[compute.PatchRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.PatchRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
-        url_map_resource: compute.UrlMap = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
+        url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified UrlMap resource with the data
@@ -1192,14 +1205,14 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def patch(
         self,
-        request: Union[compute.PatchRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.PatchRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
-        url_map_resource: compute.UrlMap = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
+        url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified UrlMap resource with the data
@@ -1327,14 +1340,14 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def update_unary(
         self,
-        request: Union[compute.UpdateRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.UpdateRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
-        url_map_resource: compute.UrlMap = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
+        url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified UrlMap resource with the data
@@ -1437,14 +1450,14 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def update(
         self,
-        request: Union[compute.UpdateRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.UpdateRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
-        url_map_resource: compute.UrlMap = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
+        url_map_resource: Optional[compute.UrlMap] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified UrlMap resource with the data
@@ -1572,14 +1585,16 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def validate(
         self,
-        request: Union[compute.ValidateRegionUrlMapRequest, dict] = None,
+        request: Optional[Union[compute.ValidateRegionUrlMapRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        url_map: str = None,
-        region_url_maps_validate_request_resource: compute.RegionUrlMapsValidateRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        url_map: Optional[str] = None,
+        region_url_maps_validate_request_resource: Optional[
+            compute.RegionUrlMapsValidateRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMapsValidateResponse:
         r"""Runs static validation for the UrlMap. In particular,

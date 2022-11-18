@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import FirewallsTransport
-from .rest import FirewallsRestTransport
-from .rest import FirewallsRestInterceptor
-
+from .rest import FirewallsRestInterceptor, FirewallsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[FirewallsTransport]]

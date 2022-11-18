@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import GlobalOperationsTransport
-from .rest import GlobalOperationsRestTransport
-from .rest import GlobalOperationsRestInterceptor
-
+from .rest import GlobalOperationsRestInterceptor, GlobalOperationsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[GlobalOperationsTransport]]

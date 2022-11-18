@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import GlobalPublicDelegatedPrefixesTransport
-from .rest import GlobalPublicDelegatedPrefixesRestTransport
-from .rest import GlobalPublicDelegatedPrefixesRestInterceptor
-
+from .rest import (
+    GlobalPublicDelegatedPrefixesRestInterceptor,
+    GlobalPublicDelegatedPrefixesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

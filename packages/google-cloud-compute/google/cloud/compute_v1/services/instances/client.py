@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import InstancesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, InstancesTransport
 from .transports.rest import InstancesRestTransport
 
 
@@ -56,7 +68,7 @@ class InstancesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[InstancesTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, InstancesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, InstancesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the instances client.
@@ -327,7 +339,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,15 +422,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_access_config_unary(
         self,
-        request: Union[compute.AddAccessConfigInstanceRequest, dict] = None,
+        request: Optional[Union[compute.AddAccessConfigInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
-        access_config_resource: compute.AccessConfig = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
+        access_config_resource: Optional[compute.AccessConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds an access config to an instance's network
@@ -529,15 +542,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_access_config(
         self,
-        request: Union[compute.AddAccessConfigInstanceRequest, dict] = None,
+        request: Optional[Union[compute.AddAccessConfigInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
-        access_config_resource: compute.AccessConfig = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
+        access_config_resource: Optional[compute.AccessConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds an access config to an instance's network
@@ -674,14 +687,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_resource_policies_unary(
         self,
-        request: Union[compute.AddResourcePoliciesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.AddResourcePoliciesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_add_resource_policies_request_resource: compute.InstancesAddResourcePoliciesRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_add_resource_policies_request_resource: Optional[
+            compute.InstancesAddResourcePoliciesRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds existing resource policies to an instance. You
@@ -787,14 +804,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_resource_policies(
         self,
-        request: Union[compute.AddResourcePoliciesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.AddResourcePoliciesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_add_resource_policies_request_resource: compute.InstancesAddResourcePoliciesRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_add_resource_policies_request_resource: Optional[
+            compute.InstancesAddResourcePoliciesRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds existing resource policies to an instance. You
@@ -925,11 +946,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListInstancesRequest, dict] = None,
+        request: Optional[Union[compute.AggregatedListInstancesRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of all of the instances
@@ -1014,14 +1035,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def attach_disk_unary(
         self,
-        request: Union[compute.AttachDiskInstanceRequest, dict] = None,
+        request: Optional[Union[compute.AttachDiskInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        attached_disk_resource: compute.AttachedDisk = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        attached_disk_resource: Optional[compute.AttachedDisk] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Attaches an existing Disk resource to an instance.
@@ -1125,14 +1146,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def attach_disk(
         self,
-        request: Union[compute.AttachDiskInstanceRequest, dict] = None,
+        request: Optional[Union[compute.AttachDiskInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        attached_disk_resource: compute.AttachedDisk = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        attached_disk_resource: Optional[compute.AttachedDisk] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Attaches an existing Disk resource to an instance.
@@ -1261,13 +1282,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def bulk_insert_unary(
         self,
-        request: Union[compute.BulkInsertInstanceRequest, dict] = None,
+        request: Optional[Union[compute.BulkInsertInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        bulk_insert_instance_resource_resource: compute.BulkInsertInstanceResource = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        bulk_insert_instance_resource_resource: Optional[
+            compute.BulkInsertInstanceResource
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates multiple instances. Count specifies the
@@ -1365,13 +1388,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def bulk_insert(
         self,
-        request: Union[compute.BulkInsertInstanceRequest, dict] = None,
+        request: Optional[Union[compute.BulkInsertInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        bulk_insert_instance_resource_resource: compute.BulkInsertInstanceResource = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        bulk_insert_instance_resource_resource: Optional[
+            compute.BulkInsertInstanceResource
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates multiple instances. Count specifies the
@@ -1494,13 +1519,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteInstanceRequest, dict] = None,
+        request: Optional[Union[compute.DeleteInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified Instance resource. For more
@@ -1596,13 +1621,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteInstanceRequest, dict] = None,
+        request: Optional[Union[compute.DeleteInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified Instance resource. For more
@@ -1723,15 +1748,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_access_config_unary(
         self,
-        request: Union[compute.DeleteAccessConfigInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.DeleteAccessConfigInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        access_config: str = None,
-        network_interface: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        access_config: Optional[str] = None,
+        network_interface: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes an access config from an instance's network
@@ -1843,15 +1870,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_access_config(
         self,
-        request: Union[compute.DeleteAccessConfigInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.DeleteAccessConfigInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        access_config: str = None,
-        network_interface: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        access_config: Optional[str] = None,
+        network_interface: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes an access config from an instance's network
@@ -1988,14 +2017,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def detach_disk_unary(
         self,
-        request: Union[compute.DetachDiskInstanceRequest, dict] = None,
+        request: Optional[Union[compute.DetachDiskInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        device_name: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        device_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Detaches a disk from an instance.
@@ -2099,14 +2128,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def detach_disk(
         self,
-        request: Union[compute.DetachDiskInstanceRequest, dict] = None,
+        request: Optional[Union[compute.DetachDiskInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        device_name: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        device_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Detaches a disk from an instance.
@@ -2235,13 +2264,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.GetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Instance:
         r"""Returns the specified Instance resource. Gets a list
@@ -2339,14 +2368,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_effective_firewalls(
         self,
-        request: Union[compute.GetEffectiveFirewallsInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.GetEffectiveFirewallsInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstancesGetEffectiveFirewallsResponse:
         r"""Returns effective firewalls applied to an interface
@@ -2449,13 +2480,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_guest_attributes(
         self,
-        request: Union[compute.GetGuestAttributesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.GetGuestAttributesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.GuestAttributes:
         r"""Returns the specified guest attributes entry.
@@ -2548,13 +2581,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[compute.GetIamPolicyInstanceRequest, dict] = None,
+        request: Optional[Union[compute.GetIamPolicyInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        resource: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -2688,13 +2721,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_screenshot(
         self,
-        request: Union[compute.GetScreenshotInstanceRequest, dict] = None,
+        request: Optional[Union[compute.GetScreenshotInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Screenshot:
         r"""Returns the screenshot from the specified instance.
@@ -2787,13 +2820,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_serial_port_output(
         self,
-        request: Union[compute.GetSerialPortOutputInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.GetSerialPortOutputInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SerialPortOutput:
         r"""Returns the last 1 MB of serial port output from the
@@ -2887,13 +2922,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_shielded_instance_identity(
         self,
-        request: Union[compute.GetShieldedInstanceIdentityInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.GetShieldedInstanceIdentityInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ShieldedInstanceIdentity:
         r"""Returns the Shielded Instance Identity of an instance
@@ -2988,13 +3025,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertInstanceRequest, dict] = None,
+        request: Optional[Union[compute.InsertInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance_resource: compute.Instance = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance_resource: Optional[compute.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates an instance resource in the specified project
@@ -3087,13 +3124,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertInstanceRequest, dict] = None,
+        request: Optional[Union[compute.InsertInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance_resource: compute.Instance = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance_resource: Optional[compute.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an instance resource in the specified project
@@ -3211,12 +3248,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListInstancesRequest, dict] = None,
+        request: Optional[Union[compute.ListInstancesRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of instances contained within the
@@ -3312,13 +3349,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def list_referrers(
         self,
-        request: Union[compute.ListReferrersInstancesRequest, dict] = None,
+        request: Optional[Union[compute.ListReferrersInstancesRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReferrersPager:
         r"""Retrieves a list of resources that refer to the VM
@@ -3432,14 +3469,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def remove_resource_policies_unary(
         self,
-        request: Union[compute.RemoveResourcePoliciesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.RemoveResourcePoliciesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_remove_resource_policies_request_resource: compute.InstancesRemoveResourcePoliciesRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_remove_resource_policies_request_resource: Optional[
+            compute.InstancesRemoveResourcePoliciesRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes resource policies from an instance.
@@ -3548,14 +3589,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def remove_resource_policies(
         self,
-        request: Union[compute.RemoveResourcePoliciesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.RemoveResourcePoliciesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_remove_resource_policies_request_resource: compute.InstancesRemoveResourcePoliciesRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_remove_resource_policies_request_resource: Optional[
+            compute.InstancesRemoveResourcePoliciesRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Removes resource policies from an instance.
@@ -3689,13 +3734,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def reset_unary(
         self,
-        request: Union[compute.ResetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.ResetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Performs a reset on the instance. This is a hard
@@ -3791,13 +3836,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def reset(
         self,
-        request: Union[compute.ResetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.ResetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Performs a reset on the instance. This is a hard
@@ -3918,13 +3963,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def resume_unary(
         self,
-        request: Union[compute.ResumeInstanceRequest, dict] = None,
+        request: Optional[Union[compute.ResumeInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Resumes an instance that was suspended using the
@@ -4020,13 +4065,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def resume(
         self,
-        request: Union[compute.ResumeInstanceRequest, dict] = None,
+        request: Optional[Union[compute.ResumeInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Resumes an instance that was suspended using the
@@ -4147,13 +4192,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def send_diagnostic_interrupt(
         self,
-        request: Union[compute.SendDiagnosticInterruptInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SendDiagnosticInterruptInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SendDiagnosticInterruptInstanceResponse:
         r"""Sends diagnostic interrupt to the instance.
@@ -4251,13 +4298,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_deletion_protection_unary(
         self,
-        request: Union[compute.SetDeletionProtectionInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetDeletionProtectionInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        resource: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets deletion protection on the instance.
@@ -4352,13 +4401,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_deletion_protection(
         self,
-        request: Union[compute.SetDeletionProtectionInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetDeletionProtectionInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        resource: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets deletion protection on the instance.
@@ -4478,15 +4529,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_disk_auto_delete_unary(
         self,
-        request: Union[compute.SetDiskAutoDeleteInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetDiskAutoDeleteInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        auto_delete: bool = None,
-        device_name: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        auto_delete: Optional[bool] = None,
+        device_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the auto-delete flag for a disk attached to an
@@ -4600,15 +4651,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_disk_auto_delete(
         self,
-        request: Union[compute.SetDiskAutoDeleteInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetDiskAutoDeleteInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        auto_delete: bool = None,
-        device_name: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        auto_delete: Optional[bool] = None,
+        device_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the auto-delete flag for a disk attached to an
@@ -4747,14 +4798,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[compute.SetIamPolicyInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetIamPolicyInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        resource: str = None,
-        zone_set_policy_request_resource: compute.ZoneSetPolicyRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        resource: Optional[str] = None,
+        zone_set_policy_request_resource: Optional[compute.ZoneSetPolicyRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -4899,14 +4950,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_labels_unary(
         self,
-        request: Union[compute.SetLabelsInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_labels_request_resource: compute.InstancesSetLabelsRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_labels_request_resource: Optional[
+            compute.InstancesSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets labels on an instance. To learn more about
@@ -5013,14 +5066,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_labels(
         self,
-        request: Union[compute.SetLabelsInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_labels_request_resource: compute.InstancesSetLabelsRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_labels_request_resource: Optional[
+            compute.InstancesSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets labels on an instance. To learn more about
@@ -5152,14 +5207,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_resources_unary(
         self,
-        request: Union[compute.SetMachineResourcesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetMachineResourcesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_machine_resources_request_resource: compute.InstancesSetMachineResourcesRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_machine_resources_request_resource: Optional[
+            compute.InstancesSetMachineResourcesRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the number and/or type of accelerator for a
@@ -5266,14 +5325,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_resources(
         self,
-        request: Union[compute.SetMachineResourcesInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetMachineResourcesInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_machine_resources_request_resource: compute.InstancesSetMachineResourcesRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_machine_resources_request_resource: Optional[
+            compute.InstancesSetMachineResourcesRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the number and/or type of accelerator for a
@@ -5405,14 +5468,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_type_unary(
         self,
-        request: Union[compute.SetMachineTypeInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetMachineTypeInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_machine_type_request_resource: compute.InstancesSetMachineTypeRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_machine_type_request_resource: Optional[
+            compute.InstancesSetMachineTypeRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the machine type for a stopped instance to
@@ -5519,14 +5584,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_type(
         self,
-        request: Union[compute.SetMachineTypeInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetMachineTypeInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_machine_type_request_resource: compute.InstancesSetMachineTypeRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_machine_type_request_resource: Optional[
+            compute.InstancesSetMachineTypeRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the machine type for a stopped instance to
@@ -5658,14 +5725,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_metadata_unary(
         self,
-        request: Union[compute.SetMetadataInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetMetadataInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        metadata_resource: compute.Metadata = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        metadata_resource: Optional[compute.Metadata] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets metadata for the specified instance to the data
@@ -5768,14 +5835,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_metadata(
         self,
-        request: Union[compute.SetMetadataInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetMetadataInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        metadata_resource: compute.Metadata = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        metadata_resource: Optional[compute.Metadata] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets metadata for the specified instance to the data
@@ -5903,14 +5970,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_min_cpu_platform_unary(
         self,
-        request: Union[compute.SetMinCpuPlatformInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetMinCpuPlatformInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_min_cpu_platform_request_resource: compute.InstancesSetMinCpuPlatformRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_min_cpu_platform_request_resource: Optional[
+            compute.InstancesSetMinCpuPlatformRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the minimum CPU platform that this instance
@@ -6019,14 +6088,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_min_cpu_platform(
         self,
-        request: Union[compute.SetMinCpuPlatformInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetMinCpuPlatformInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_min_cpu_platform_request_resource: compute.InstancesSetMinCpuPlatformRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_min_cpu_platform_request_resource: Optional[
+            compute.InstancesSetMinCpuPlatformRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the minimum CPU platform that this instance
@@ -6160,14 +6231,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_scheduling_unary(
         self,
-        request: Union[compute.SetSchedulingInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetSchedulingInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        scheduling_resource: compute.Scheduling = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        scheduling_resource: Optional[compute.Scheduling] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets an instance's scheduling options. You can only call this
@@ -6272,14 +6343,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_scheduling(
         self,
-        request: Union[compute.SetSchedulingInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetSchedulingInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        scheduling_resource: compute.Scheduling = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        scheduling_resource: Optional[compute.Scheduling] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets an instance's scheduling options. You can only call this
@@ -6409,14 +6480,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_service_account_unary(
         self,
-        request: Union[compute.SetServiceAccountInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetServiceAccountInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_service_account_request_resource: compute.InstancesSetServiceAccountRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_service_account_request_resource: Optional[
+            compute.InstancesSetServiceAccountRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the service account on the instance. For more
@@ -6524,14 +6597,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_service_account(
         self,
-        request: Union[compute.SetServiceAccountInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetServiceAccountInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_set_service_account_request_resource: compute.InstancesSetServiceAccountRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_set_service_account_request_resource: Optional[
+            compute.InstancesSetServiceAccountRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the service account on the instance. For more
@@ -6664,16 +6739,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_instance_integrity_policy_unary(
         self,
-        request: Union[
-            compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict
+        request: Optional[
+            Union[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]
         ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        shielded_instance_integrity_policy_resource: compute.ShieldedInstanceIntegrityPolicy = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        shielded_instance_integrity_policy_resource: Optional[
+            compute.ShieldedInstanceIntegrityPolicy
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the Shielded Instance integrity policy for an
@@ -6786,16 +6863,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_instance_integrity_policy(
         self,
-        request: Union[
-            compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict
+        request: Optional[
+            Union[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]
         ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        shielded_instance_integrity_policy_resource: compute.ShieldedInstanceIntegrityPolicy = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        shielded_instance_integrity_policy_resource: Optional[
+            compute.ShieldedInstanceIntegrityPolicy
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the Shielded Instance integrity policy for an
@@ -6933,14 +7012,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_tags_unary(
         self,
-        request: Union[compute.SetTagsInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetTagsInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        tags_resource: compute.Tags = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        tags_resource: Optional[compute.Tags] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets network tags for the specified instance to the
@@ -7043,14 +7122,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_tags(
         self,
-        request: Union[compute.SetTagsInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SetTagsInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        tags_resource: compute.Tags = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        tags_resource: Optional[compute.Tags] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets network tags for the specified instance to the
@@ -7178,13 +7257,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def simulate_maintenance_event_unary(
         self,
-        request: Union[compute.SimulateMaintenanceEventInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SimulateMaintenanceEventInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Simulates a host maintenance event on a VM. For more
@@ -7282,13 +7363,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def simulate_maintenance_event(
         self,
-        request: Union[compute.SimulateMaintenanceEventInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.SimulateMaintenanceEventInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Simulates a host maintenance event on a VM. For more
@@ -7411,13 +7494,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start_unary(
         self,
-        request: Union[compute.StartInstanceRequest, dict] = None,
+        request: Optional[Union[compute.StartInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Starts an instance that was stopped using the
@@ -7513,13 +7596,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start(
         self,
-        request: Union[compute.StartInstanceRequest, dict] = None,
+        request: Optional[Union[compute.StartInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Starts an instance that was stopped using the
@@ -7640,14 +7723,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start_with_encryption_key_unary(
         self,
-        request: Union[compute.StartWithEncryptionKeyInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.StartWithEncryptionKeyInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_start_with_encryption_key_request_resource: compute.InstancesStartWithEncryptionKeyRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_start_with_encryption_key_request_resource: Optional[
+            compute.InstancesStartWithEncryptionKeyRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Starts an instance that was stopped using the
@@ -7762,14 +7849,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start_with_encryption_key(
         self,
-        request: Union[compute.StartWithEncryptionKeyInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.StartWithEncryptionKeyInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instances_start_with_encryption_key_request_resource: compute.InstancesStartWithEncryptionKeyRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instances_start_with_encryption_key_request_resource: Optional[
+            compute.InstancesStartWithEncryptionKeyRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Starts an instance that was stopped using the
@@ -7909,13 +8000,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def stop_unary(
         self,
-        request: Union[compute.StopInstanceRequest, dict] = None,
+        request: Optional[Union[compute.StopInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Stops a running instance, shutting it down cleanly,
@@ -8015,13 +8106,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def stop(
         self,
-        request: Union[compute.StopInstanceRequest, dict] = None,
+        request: Optional[Union[compute.StopInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Stops a running instance, shutting it down cleanly,
@@ -8146,13 +8237,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def suspend_unary(
         self,
-        request: Union[compute.SuspendInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SuspendInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""This method suspends a running instance, saving its
@@ -8255,13 +8346,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def suspend(
         self,
-        request: Union[compute.SuspendInstanceRequest, dict] = None,
+        request: Optional[Union[compute.SuspendInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""This method suspends a running instance, saving its
@@ -8389,14 +8480,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[compute.TestIamPermissionsInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.TestIamPermissionsInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        resource: str = None,
-        test_permissions_request_resource: compute.TestPermissionsRequest = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        resource: Optional[str] = None,
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -8501,14 +8596,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_unary(
         self,
-        request: Union[compute.UpdateInstanceRequest, dict] = None,
+        request: Optional[Union[compute.UpdateInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instance_resource: compute.Instance = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instance_resource: Optional[compute.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates an instance only if the necessary resources
@@ -8613,14 +8708,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update(
         self,
-        request: Union[compute.UpdateInstanceRequest, dict] = None,
+        request: Optional[Union[compute.UpdateInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        instance_resource: compute.Instance = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        instance_resource: Optional[compute.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates an instance only if the necessary resources
@@ -8750,15 +8845,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_access_config_unary(
         self,
-        request: Union[compute.UpdateAccessConfigInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.UpdateAccessConfigInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
-        access_config_resource: compute.AccessConfig = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
+        access_config_resource: Optional[compute.AccessConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified access config from an
@@ -8872,15 +8969,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_access_config(
         self,
-        request: Union[compute.UpdateAccessConfigInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.UpdateAccessConfigInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
-        access_config_resource: compute.AccessConfig = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
+        access_config_resource: Optional[compute.AccessConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified access config from an
@@ -9019,14 +9118,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_display_device_unary(
         self,
-        request: Union[compute.UpdateDisplayDeviceInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.UpdateDisplayDeviceInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        display_device_resource: compute.DisplayDevice = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        display_device_resource: Optional[compute.DisplayDevice] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the Display config for a VM instance. You can
@@ -9131,14 +9232,16 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_display_device(
         self,
-        request: Union[compute.UpdateDisplayDeviceInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.UpdateDisplayDeviceInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        display_device_resource: compute.DisplayDevice = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        display_device_resource: Optional[compute.DisplayDevice] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the Display config for a VM instance. You can
@@ -9268,15 +9371,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_network_interface_unary(
         self,
-        request: Union[compute.UpdateNetworkInterfaceInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.UpdateNetworkInterfaceInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
-        network_interface_resource: compute.NetworkInterface = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
+        network_interface_resource: Optional[compute.NetworkInterface] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates an instance's network interface. This method
@@ -9393,15 +9498,17 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_network_interface(
         self,
-        request: Union[compute.UpdateNetworkInterfaceInstanceRequest, dict] = None,
+        request: Optional[
+            Union[compute.UpdateNetworkInterfaceInstanceRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        network_interface: str = None,
-        network_interface_resource: compute.NetworkInterface = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface: Optional[str] = None,
+        network_interface_resource: Optional[compute.NetworkInterface] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates an instance's network interface. This method
@@ -9543,16 +9650,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_instance_config_unary(
         self,
-        request: Union[
-            compute.UpdateShieldedInstanceConfigInstanceRequest, dict
+        request: Optional[
+            Union[compute.UpdateShieldedInstanceConfigInstanceRequest, dict]
         ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        shielded_instance_config_resource: compute.ShieldedInstanceConfig = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        shielded_instance_config_resource: Optional[
+            compute.ShieldedInstanceConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the Shielded Instance config for an instance.
@@ -9663,16 +9772,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_instance_config(
         self,
-        request: Union[
-            compute.UpdateShieldedInstanceConfigInstanceRequest, dict
+        request: Optional[
+            Union[compute.UpdateShieldedInstanceConfigInstanceRequest, dict]
         ] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        instance: str = None,
-        shielded_instance_config_resource: compute.ShieldedInstanceConfig = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        shielded_instance_config_resource: Optional[
+            compute.ShieldedInstanceConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the Shielded Instance config for an instance.

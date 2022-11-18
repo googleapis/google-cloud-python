@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import SubnetworksTransport
-from .rest import SubnetworksRestTransport
-from .rest import SubnetworksRestInterceptor
-
+from .rest import SubnetworksRestInterceptor, SubnetworksRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SubnetworksTransport]]

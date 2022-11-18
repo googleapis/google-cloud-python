@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,7 +47,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.compute_v1.services.disk_types import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import DiskTypesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, DiskTypesTransport
 from .transports.rest import DiskTypesRestTransport
 
 
@@ -53,7 +65,7 @@ class DiskTypesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DiskTypesTransport]:
         """Returns an appropriate transport class.
 
@@ -306,8 +318,8 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DiskTypesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DiskTypesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the disk types client.
@@ -324,7 +336,7 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -354,6 +366,7 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -406,11 +419,11 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListDiskTypesRequest, dict] = None,
+        request: Optional[Union[compute.AggregatedListDiskTypesRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of disk types.
@@ -491,13 +504,13 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetDiskTypeRequest, dict] = None,
+        request: Optional[Union[compute.GetDiskTypeRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        disk_type: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        disk_type: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DiskType:
         r"""Returns the specified disk type. Gets a list of
@@ -599,12 +612,12 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListDiskTypesRequest, dict] = None,
+        request: Optional[Union[compute.ListDiskTypesRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of disk types available to the

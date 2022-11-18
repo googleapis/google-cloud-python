@@ -14,24 +14,21 @@
 # limitations under the License.
 #
 
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 import dataclasses
+import json  # type: ignore
 import re
 from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import json_format
+import grpc  # type: ignore
+from requests import __version__ as requests_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -41,8 +38,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.compute_v1.types import compute
 
-from .base import InstancesTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import InstancesTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1413,10 +1410,10 @@ class InstancesRestTransport(InstancesTransport):
         self,
         *,
         host: str = "compute.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -1510,7 +1507,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.AddAccessConfigInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the add access config method over HTTP.
@@ -1623,7 +1620,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.AddResourcePoliciesInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the add resource policies method over HTTP.
@@ -1736,7 +1733,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.AggregatedListInstancesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.InstanceAggregatedList:
             r"""Call the aggregated list method over HTTP.
@@ -1823,7 +1820,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.AttachDiskInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the attach disk method over HTTP.
@@ -1934,7 +1931,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.BulkInsertInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the bulk insert method over HTTP.
@@ -2045,7 +2042,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.DeleteInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
@@ -2150,7 +2147,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.DeleteAccessConfigInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the delete access config method over HTTP.
@@ -2256,7 +2253,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.DetachDiskInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the detach disk method over HTTP.
@@ -2358,7 +2355,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Instance:
             r"""Call the get method over HTTP.
@@ -2451,7 +2448,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetEffectiveFirewallsInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.InstancesGetEffectiveFirewallsResponse:
             r"""Call the get effective firewalls method over HTTP.
@@ -2540,7 +2537,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetGuestAttributesInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.GuestAttributes:
             r"""Call the get guest attributes method over HTTP.
@@ -2629,7 +2626,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetIamPolicyInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Policy:
             r"""Call the get iam policy method over HTTP.
@@ -2757,7 +2754,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetScreenshotInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Screenshot:
             r"""Call the get screenshot method over HTTP.
@@ -2844,7 +2841,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetSerialPortOutputInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.SerialPortOutput:
             r"""Call the get serial port output method over HTTP.
@@ -2933,7 +2930,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.GetShieldedInstanceIdentityInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.ShieldedInstanceIdentity:
             r"""Call the get shielded instance
@@ -3023,7 +3020,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.InsertInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
@@ -3134,7 +3131,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.ListInstancesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.InstanceList:
             r"""Call the list method over HTTP.
@@ -3220,7 +3217,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.ListReferrersInstancesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.InstanceListReferrers:
             r"""Call the list referrers method over HTTP.
@@ -3309,7 +3306,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.RemoveResourcePoliciesInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the remove resource policies method over HTTP.
@@ -3422,7 +3419,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.ResetInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the reset method over HTTP.
@@ -3524,7 +3521,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.ResumeInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the resume method over HTTP.
@@ -3626,7 +3623,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SendDiagnosticInterruptInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.SendDiagnosticInterruptInstanceResponse:
             r"""Call the send diagnostic interrupt method over HTTP.
@@ -3718,7 +3715,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetDeletionProtectionInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set deletion protection method over HTTP.
@@ -3825,7 +3822,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetDiskAutoDeleteInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set disk auto delete method over HTTP.
@@ -3929,7 +3926,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetIamPolicyInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Policy:
             r"""Call the set iam policy method over HTTP.
@@ -4066,7 +4063,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetLabelsInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
@@ -4177,7 +4174,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetMachineResourcesInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set machine resources method over HTTP.
@@ -4290,7 +4287,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetMachineTypeInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set machine type method over HTTP.
@@ -4403,7 +4400,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetMetadataInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set metadata method over HTTP.
@@ -4514,7 +4511,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetMinCpuPlatformInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set min cpu platform method over HTTP.
@@ -4627,7 +4624,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetSchedulingInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set scheduling method over HTTP.
@@ -4738,7 +4735,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetServiceAccountInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set service account method over HTTP.
@@ -4851,7 +4848,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set shielded instance
@@ -4970,7 +4967,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SetTagsInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set tags method over HTTP.
@@ -5081,7 +5078,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SimulateMaintenanceEventInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the simulate maintenance
@@ -5186,7 +5183,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.StartInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the start method over HTTP.
@@ -5288,7 +5285,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.StartWithEncryptionKeyInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the start with encryption key method over HTTP.
@@ -5401,7 +5398,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.StopInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the stop method over HTTP.
@@ -5502,7 +5499,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.SuspendInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the suspend method over HTTP.
@@ -5604,7 +5601,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.TestIamPermissionsInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.TestPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
@@ -5702,7 +5699,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.UpdateInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update method over HTTP.
@@ -5815,7 +5812,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.UpdateAccessConfigInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update access config method over HTTP.
@@ -5928,7 +5925,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.UpdateDisplayDeviceInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update display device method over HTTP.
@@ -6043,7 +6040,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.UpdateNetworkInterfaceInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update network interface method over HTTP.
@@ -6156,7 +6153,7 @@ class InstancesRestTransport(InstancesTransport):
             request: compute.UpdateShieldedInstanceConfigInstanceRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update shielded instance

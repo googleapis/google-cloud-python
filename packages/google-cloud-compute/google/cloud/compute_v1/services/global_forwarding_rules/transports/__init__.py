@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import GlobalForwardingRulesTransport
-from .rest import GlobalForwardingRulesRestTransport
-from .rest import GlobalForwardingRulesRestInterceptor
-
+from .rest import (
+    GlobalForwardingRulesRestInterceptor,
+    GlobalForwardingRulesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

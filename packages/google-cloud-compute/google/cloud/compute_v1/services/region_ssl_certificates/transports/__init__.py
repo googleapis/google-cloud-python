@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionSslCertificatesTransport
-from .rest import RegionSslCertificatesRestTransport
-from .rest import RegionSslCertificatesRestInterceptor
-
+from .rest import (
+    RegionSslCertificatesRestInterceptor,
+    RegionSslCertificatesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

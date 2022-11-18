@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.security_policies import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import SecurityPoliciesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, SecurityPoliciesTransport
 from .transports.rest import SecurityPoliciesRestTransport
 
 
@@ -58,7 +70,7 @@ class SecurityPoliciesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SecurityPoliciesTransport]:
         """Returns an appropriate transport class.
 
@@ -311,8 +323,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SecurityPoliciesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, SecurityPoliciesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the security policies client.
@@ -329,7 +341,7 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -359,6 +371,7 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -411,13 +424,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def add_rule_unary(
         self,
-        request: Union[compute.AddRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.AddRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
-        security_policy_rule_resource: compute.SecurityPolicyRule = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Inserts a rule into a security policy.
@@ -511,13 +524,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def add_rule(
         self,
-        request: Union[compute.AddRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.AddRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
-        security_policy_rule_resource: compute.SecurityPolicyRule = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts a rule into a security policy.
@@ -635,11 +648,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListSecurityPoliciesRequest, dict] = None,
+        request: Optional[
+            Union[compute.AggregatedListSecurityPoliciesRequest, dict]
+        ] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all SecurityPolicy resources,
@@ -723,12 +738,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.DeleteSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified policy.
@@ -813,12 +828,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.DeleteSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified policy.
@@ -927,12 +942,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.GetSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPolicy:
         r"""List all of the ordered rules present in a single
@@ -1020,12 +1035,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def get_rule(
         self,
-        request: Union[compute.GetRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.GetRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPolicyRule:
         r"""Gets a rule at the specified priority.
@@ -1112,12 +1127,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.InsertSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy_resource: compute.SecurityPolicy = None,
+        project: Optional[str] = None,
+        security_policy_resource: Optional[compute.SecurityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a new policy in the specified project using
@@ -1196,12 +1211,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.InsertSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy_resource: compute.SecurityPolicy = None,
+        project: Optional[str] = None,
+        security_policy_resource: Optional[compute.SecurityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new policy in the specified project using
@@ -1304,11 +1319,11 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListSecurityPoliciesRequest, dict] = None,
+        request: Optional[Union[compute.ListSecurityPoliciesRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""List all the policies that have been configured for
@@ -1390,13 +1405,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def list_preconfigured_expression_sets(
         self,
-        request: Union[
-            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest, dict
+        request: Optional[
+            Union[compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest, dict]
         ] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse:
         r"""Gets the current list of preconfigured Web
@@ -1472,13 +1487,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def patch_unary(
         self,
-        request: Union[compute.PatchSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.PatchSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
-        security_policy_resource: compute.SecurityPolicy = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_resource: Optional[compute.SecurityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified policy with the data included
@@ -1575,13 +1590,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def patch(
         self,
-        request: Union[compute.PatchSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.PatchSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
-        security_policy_resource: compute.SecurityPolicy = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_resource: Optional[compute.SecurityPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified policy with the data included
@@ -1702,13 +1717,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def patch_rule_unary(
         self,
-        request: Union[compute.PatchRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.PatchRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
-        security_policy_rule_resource: compute.SecurityPolicyRule = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches a rule at the specified priority.
@@ -1802,13 +1817,13 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def patch_rule(
         self,
-        request: Union[compute.PatchRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.PatchRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
-        security_policy_rule_resource: compute.SecurityPolicyRule = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches a rule at the specified priority.
@@ -1926,12 +1941,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def remove_rule_unary(
         self,
-        request: Union[compute.RemoveRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.RemoveRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes a rule at the specified priority.
@@ -2016,12 +2031,12 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def remove_rule(
         self,
-        request: Union[compute.RemoveRuleSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.RemoveRuleSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        security_policy: str = None,
+        project: Optional[str] = None,
+        security_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes a rule at the specified priority.
@@ -2130,13 +2145,15 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def set_labels_unary(
         self,
-        request: Union[compute.SetLabelsSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        global_set_labels_request_resource: compute.GlobalSetLabelsRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        global_set_labels_request_resource: Optional[
+            compute.GlobalSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a security policy. To learn more
@@ -2233,13 +2250,15 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
 
     def set_labels(
         self,
-        request: Union[compute.SetLabelsSecurityPolicyRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsSecurityPolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        global_set_labels_request_resource: compute.GlobalSetLabelsRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        global_set_labels_request_resource: Optional[
+            compute.GlobalSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a security policy. To learn more

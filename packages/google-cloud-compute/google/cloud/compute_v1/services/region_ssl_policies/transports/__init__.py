@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionSslPoliciesTransport
-from .rest import RegionSslPoliciesRestTransport
-from .rest import RegionSslPoliciesRestInterceptor
-
+from .rest import RegionSslPoliciesRestInterceptor, RegionSslPoliciesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[RegionSslPoliciesTransport]]

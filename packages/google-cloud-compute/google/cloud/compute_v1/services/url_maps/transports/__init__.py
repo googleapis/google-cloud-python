@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import UrlMapsTransport
-from .rest import UrlMapsRestTransport
-from .rest import UrlMapsRestInterceptor
-
+from .rest import UrlMapsRestInterceptor, UrlMapsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[UrlMapsTransport]]

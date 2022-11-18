@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import ExternalVpnGatewaysTransport
-from .rest import ExternalVpnGatewaysRestTransport
-from .rest import ExternalVpnGatewaysRestInterceptor
-
+from .rest import ExternalVpnGatewaysRestInterceptor, ExternalVpnGatewaysRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (

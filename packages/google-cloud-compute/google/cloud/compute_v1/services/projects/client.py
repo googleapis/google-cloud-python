@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.projects import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import ProjectsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, ProjectsTransport
 from .transports.rest import ProjectsRestTransport
 
 
@@ -56,7 +68,7 @@ class ProjectsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ProjectsTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ProjectsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ProjectsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the projects client.
@@ -327,7 +339,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,11 +422,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def disable_xpn_host_unary(
         self,
-        request: Union[compute.DisableXpnHostProjectRequest, dict] = None,
+        request: Optional[Union[compute.DisableXpnHostProjectRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Disable this project as a shared VPC host project.
@@ -484,11 +497,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def disable_xpn_host(
         self,
-        request: Union[compute.DisableXpnHostProjectRequest, dict] = None,
+        request: Optional[Union[compute.DisableXpnHostProjectRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Disable this project as a shared VPC host project.
@@ -583,12 +596,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def disable_xpn_resource_unary(
         self,
-        request: Union[compute.DisableXpnResourceProjectRequest, dict] = None,
+        request: Optional[Union[compute.DisableXpnResourceProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        projects_disable_xpn_resource_request_resource: compute.ProjectsDisableXpnResourceRequest = None,
+        project: Optional[str] = None,
+        projects_disable_xpn_resource_request_resource: Optional[
+            compute.ProjectsDisableXpnResourceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Disable a service resource (also known as service
@@ -671,12 +686,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def disable_xpn_resource(
         self,
-        request: Union[compute.DisableXpnResourceProjectRequest, dict] = None,
+        request: Optional[Union[compute.DisableXpnResourceProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        projects_disable_xpn_resource_request_resource: compute.ProjectsDisableXpnResourceRequest = None,
+        project: Optional[str] = None,
+        projects_disable_xpn_resource_request_resource: Optional[
+            compute.ProjectsDisableXpnResourceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Disable a service resource (also known as service
@@ -783,11 +800,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def enable_xpn_host_unary(
         self,
-        request: Union[compute.EnableXpnHostProjectRequest, dict] = None,
+        request: Optional[Union[compute.EnableXpnHostProjectRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enable this project as a shared VPC host project.
@@ -858,11 +875,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def enable_xpn_host(
         self,
-        request: Union[compute.EnableXpnHostProjectRequest, dict] = None,
+        request: Optional[Union[compute.EnableXpnHostProjectRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Enable this project as a shared VPC host project.
@@ -957,12 +974,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def enable_xpn_resource_unary(
         self,
-        request: Union[compute.EnableXpnResourceProjectRequest, dict] = None,
+        request: Optional[Union[compute.EnableXpnResourceProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        projects_enable_xpn_resource_request_resource: compute.ProjectsEnableXpnResourceRequest = None,
+        project: Optional[str] = None,
+        projects_enable_xpn_resource_request_resource: Optional[
+            compute.ProjectsEnableXpnResourceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enable service resource (a.k.a service project) for a
@@ -1046,12 +1065,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def enable_xpn_resource(
         self,
-        request: Union[compute.EnableXpnResourceProjectRequest, dict] = None,
+        request: Optional[Union[compute.EnableXpnResourceProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        projects_enable_xpn_resource_request_resource: compute.ProjectsEnableXpnResourceRequest = None,
+        project: Optional[str] = None,
+        projects_enable_xpn_resource_request_resource: Optional[
+            compute.ProjectsEnableXpnResourceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Enable service resource (a.k.a service project) for a
@@ -1159,11 +1180,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetProjectRequest, dict] = None,
+        request: Optional[Union[compute.GetProjectRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Returns the specified Project resource. To decrease latency for
@@ -1244,11 +1265,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get_xpn_host(
         self,
-        request: Union[compute.GetXpnHostProjectRequest, dict] = None,
+        request: Optional[Union[compute.GetXpnHostProjectRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Gets the shared VPC host project that this project
@@ -1323,11 +1344,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get_xpn_resources(
         self,
-        request: Union[compute.GetXpnResourcesProjectsRequest, dict] = None,
+        request: Optional[Union[compute.GetXpnResourcesProjectsRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetXpnResourcesPager:
         r"""Gets service resources (a.k.a service project)
@@ -1409,12 +1430,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def list_xpn_hosts(
         self,
-        request: Union[compute.ListXpnHostsProjectsRequest, dict] = None,
+        request: Optional[Union[compute.ListXpnHostsProjectsRequest, dict]] = None,
         *,
-        project: str = None,
-        projects_list_xpn_hosts_request_resource: compute.ProjectsListXpnHostsRequest = None,
+        project: Optional[str] = None,
+        projects_list_xpn_hosts_request_resource: Optional[
+            compute.ProjectsListXpnHostsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListXpnHostsPager:
         r"""Lists all shared VPC host projects visible to the
@@ -1505,12 +1528,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_disk_unary(
         self,
-        request: Union[compute.MoveDiskProjectRequest, dict] = None,
+        request: Optional[Union[compute.MoveDiskProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        disk_move_request_resource: compute.DiskMoveRequest = None,
+        project: Optional[str] = None,
+        disk_move_request_resource: Optional[compute.DiskMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Moves a persistent disk from one zone to another.
@@ -1588,12 +1611,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_disk(
         self,
-        request: Union[compute.MoveDiskProjectRequest, dict] = None,
+        request: Optional[Union[compute.MoveDiskProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        disk_move_request_resource: compute.DiskMoveRequest = None,
+        project: Optional[str] = None,
+        disk_move_request_resource: Optional[compute.DiskMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Moves a persistent disk from one zone to another.
@@ -1695,12 +1718,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_instance_unary(
         self,
-        request: Union[compute.MoveInstanceProjectRequest, dict] = None,
+        request: Optional[Union[compute.MoveInstanceProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        instance_move_request_resource: compute.InstanceMoveRequest = None,
+        project: Optional[str] = None,
+        instance_move_request_resource: Optional[compute.InstanceMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Moves an instance and its attached persistent disks from one
@@ -1782,12 +1805,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_instance(
         self,
-        request: Union[compute.MoveInstanceProjectRequest, dict] = None,
+        request: Optional[Union[compute.MoveInstanceProjectRequest, dict]] = None,
         *,
-        project: str = None,
-        instance_move_request_resource: compute.InstanceMoveRequest = None,
+        project: Optional[str] = None,
+        instance_move_request_resource: Optional[compute.InstanceMoveRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Moves an instance and its attached persistent disks from one
@@ -1893,12 +1916,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_common_instance_metadata_unary(
         self,
-        request: Union[compute.SetCommonInstanceMetadataProjectRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetCommonInstanceMetadataProjectRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        metadata_resource: compute.Metadata = None,
+        project: Optional[str] = None,
+        metadata_resource: Optional[compute.Metadata] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets metadata common to all instances within the
@@ -1980,12 +2005,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_common_instance_metadata(
         self,
-        request: Union[compute.SetCommonInstanceMetadataProjectRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetCommonInstanceMetadataProjectRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        metadata_resource: compute.Metadata = None,
+        project: Optional[str] = None,
+        metadata_resource: Optional[compute.Metadata] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets metadata common to all instances within the
@@ -2091,12 +2118,16 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_default_network_tier_unary(
         self,
-        request: Union[compute.SetDefaultNetworkTierProjectRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetDefaultNetworkTierProjectRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        projects_set_default_network_tier_request_resource: compute.ProjectsSetDefaultNetworkTierRequest = None,
+        project: Optional[str] = None,
+        projects_set_default_network_tier_request_resource: Optional[
+            compute.ProjectsSetDefaultNetworkTierRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the default network tier of the project. The
@@ -2181,12 +2212,16 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_default_network_tier(
         self,
-        request: Union[compute.SetDefaultNetworkTierProjectRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetDefaultNetworkTierProjectRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        projects_set_default_network_tier_request_resource: compute.ProjectsSetDefaultNetworkTierRequest = None,
+        project: Optional[str] = None,
+        projects_set_default_network_tier_request_resource: Optional[
+            compute.ProjectsSetDefaultNetworkTierRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the default network tier of the project. The
@@ -2295,12 +2330,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_usage_export_bucket_unary(
         self,
-        request: Union[compute.SetUsageExportBucketProjectRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetUsageExportBucketProjectRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        usage_export_location_resource: compute.UsageExportLocation = None,
+        project: Optional[str] = None,
+        usage_export_location_resource: Optional[compute.UsageExportLocation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enables the usage export feature and sets the usage
@@ -2381,12 +2418,14 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_usage_export_bucket(
         self,
-        request: Union[compute.SetUsageExportBucketProjectRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetUsageExportBucketProjectRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        usage_export_location_resource: compute.UsageExportLocation = None,
+        project: Optional[str] = None,
+        usage_export_location_resource: Optional[compute.UsageExportLocation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Enables the usage export feature and sets the usage

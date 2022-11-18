@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.target_pools import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import TargetPoolsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, TargetPoolsTransport
 from .transports.rest import TargetPoolsRestTransport
 
 
@@ -56,7 +68,7 @@ class TargetPoolsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TargetPoolsTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TargetPoolsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, TargetPoolsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the target pools client.
@@ -327,7 +339,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,14 +422,16 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def add_health_check_unary(
         self,
-        request: Union[compute.AddHealthCheckTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.AddHealthCheckTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_add_health_check_request_resource: compute.TargetPoolsAddHealthCheckRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_add_health_check_request_resource: Optional[
+            compute.TargetPoolsAddHealthCheckRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds health check URLs to a target pool.
@@ -527,14 +542,16 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def add_health_check(
         self,
-        request: Union[compute.AddHealthCheckTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.AddHealthCheckTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_add_health_check_request_resource: compute.TargetPoolsAddHealthCheckRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_add_health_check_request_resource: Optional[
+            compute.TargetPoolsAddHealthCheckRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds health check URLs to a target pool.
@@ -670,14 +687,16 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def add_instance_unary(
         self,
-        request: Union[compute.AddInstanceTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.AddInstanceTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_add_instance_request_resource: compute.TargetPoolsAddInstanceRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_add_instance_request_resource: Optional[
+            compute.TargetPoolsAddInstanceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds an instance to a target pool.
@@ -783,14 +802,16 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def add_instance(
         self,
-        request: Union[compute.AddInstanceTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.AddInstanceTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_add_instance_request_resource: compute.TargetPoolsAddInstanceRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_add_instance_request_resource: Optional[
+            compute.TargetPoolsAddInstanceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds an instance to a target pool.
@@ -921,11 +942,11 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListTargetPoolsRequest, dict] = None,
+        request: Optional[Union[compute.AggregatedListTargetPoolsRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of target pools.
@@ -1006,13 +1027,13 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.DeleteTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified target pool.
@@ -1107,13 +1128,13 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.DeleteTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified target pool.
@@ -1233,13 +1254,13 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.GetTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetPool:
         r"""Returns the specified target pool. Gets a list of
@@ -1340,14 +1361,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def get_health(
         self,
-        request: Union[compute.GetHealthTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.GetHealthTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        instance_reference_resource: compute.InstanceReference = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        instance_reference_resource: Optional[compute.InstanceReference] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetPoolInstanceHealth:
         r"""Gets the most recent health check results for each IP
@@ -1451,13 +1472,13 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.InsertTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool_resource: compute.TargetPool = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool_resource: Optional[compute.TargetPool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a target pool in the specified project and
@@ -1550,13 +1571,13 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.InsertTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool_resource: compute.TargetPool = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool_resource: Optional[compute.TargetPool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a target pool in the specified project and
@@ -1674,12 +1695,12 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListTargetPoolsRequest, dict] = None,
+        request: Optional[Union[compute.ListTargetPoolsRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of target pools available to the
@@ -1777,14 +1798,18 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def remove_health_check_unary(
         self,
-        request: Union[compute.RemoveHealthCheckTargetPoolRequest, dict] = None,
+        request: Optional[
+            Union[compute.RemoveHealthCheckTargetPoolRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_remove_health_check_request_resource: compute.TargetPoolsRemoveHealthCheckRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_remove_health_check_request_resource: Optional[
+            compute.TargetPoolsRemoveHealthCheckRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes health check URL from a target pool.
@@ -1893,14 +1918,18 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def remove_health_check(
         self,
-        request: Union[compute.RemoveHealthCheckTargetPoolRequest, dict] = None,
+        request: Optional[
+            Union[compute.RemoveHealthCheckTargetPoolRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_remove_health_check_request_resource: compute.TargetPoolsRemoveHealthCheckRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_remove_health_check_request_resource: Optional[
+            compute.TargetPoolsRemoveHealthCheckRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Removes health check URL from a target pool.
@@ -2034,14 +2063,16 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def remove_instance_unary(
         self,
-        request: Union[compute.RemoveInstanceTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.RemoveInstanceTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_remove_instance_request_resource: compute.TargetPoolsRemoveInstanceRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_remove_instance_request_resource: Optional[
+            compute.TargetPoolsRemoveInstanceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes instance URL from a target pool.
@@ -2152,14 +2183,16 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def remove_instance(
         self,
-        request: Union[compute.RemoveInstanceTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.RemoveInstanceTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_pools_remove_instance_request_resource: compute.TargetPoolsRemoveInstanceRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_pools_remove_instance_request_resource: Optional[
+            compute.TargetPoolsRemoveInstanceRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Removes instance URL from a target pool.
@@ -2295,14 +2328,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def set_backup_unary(
         self,
-        request: Union[compute.SetBackupTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.SetBackupTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_reference_resource: compute.TargetReference = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_reference_resource: Optional[compute.TargetReference] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes a backup target pool's configurations.
@@ -2406,14 +2439,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def set_backup(
         self,
-        request: Union[compute.SetBackupTargetPoolRequest, dict] = None,
+        request: Optional[Union[compute.SetBackupTargetPoolRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        target_pool: str = None,
-        target_reference_resource: compute.TargetReference = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        target_pool: Optional[str] = None,
+        target_reference_resource: Optional[compute.TargetReference] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes a backup target pool's configurations.

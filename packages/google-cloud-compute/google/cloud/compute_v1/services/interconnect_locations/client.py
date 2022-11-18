@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,7 +47,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.compute_v1.services.interconnect_locations import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import InterconnectLocationsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, InterconnectLocationsTransport
 from .transports.rest import InterconnectLocationsRestTransport
 
 
@@ -55,7 +67,7 @@ class InterconnectLocationsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[InterconnectLocationsTransport]:
         """Returns an appropriate transport class.
 
@@ -308,8 +320,8 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, InterconnectLocationsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, InterconnectLocationsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the interconnect locations client.
@@ -326,7 +338,7 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -356,6 +368,7 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -408,12 +421,12 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetInterconnectLocationRequest, dict] = None,
+        request: Optional[Union[compute.GetInterconnectLocationRequest, dict]] = None,
         *,
-        project: str = None,
-        interconnect_location: str = None,
+        project: Optional[str] = None,
+        interconnect_location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InterconnectLocation:
         r"""Returns the details for the specified interconnect
@@ -505,11 +518,11 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListInterconnectLocationsRequest, dict] = None,
+        request: Optional[Union[compute.ListInterconnectLocationsRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of interconnect locations

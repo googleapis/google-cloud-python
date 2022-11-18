@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.vpn_tunnels import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import VpnTunnelsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, VpnTunnelsTransport
 from .transports.rest import VpnTunnelsRestTransport
 
 
@@ -56,7 +68,7 @@ class VpnTunnelsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[VpnTunnelsTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VpnTunnelsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, VpnTunnelsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the vpn tunnels client.
@@ -327,7 +339,7 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,11 +422,11 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListVpnTunnelsRequest, dict] = None,
+        request: Optional[Union[compute.AggregatedListVpnTunnelsRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of VPN tunnels.
@@ -494,13 +507,13 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.DeleteVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_tunnel: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_tunnel: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified VpnTunnel resource.
@@ -593,13 +606,13 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.DeleteVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_tunnel: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_tunnel: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified VpnTunnel resource.
@@ -717,13 +730,13 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.GetVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_tunnel: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_tunnel: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnTunnel:
         r"""Returns the specified VpnTunnel resource. Gets a list
@@ -817,13 +830,13 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.InsertVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_tunnel_resource: compute.VpnTunnel = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_tunnel_resource: Optional[compute.VpnTunnel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a VpnTunnel resource in the specified project
@@ -914,13 +927,13 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.InsertVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_tunnel_resource: compute.VpnTunnel = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_tunnel_resource: Optional[compute.VpnTunnel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a VpnTunnel resource in the specified project
@@ -1036,12 +1049,12 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListVpnTunnelsRequest, dict] = None,
+        request: Optional[Union[compute.ListVpnTunnelsRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of VpnTunnel resources contained in
@@ -1136,14 +1149,16 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def set_labels_unary(
         self,
-        request: Union[compute.SetLabelsVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        region_set_labels_request_resource: compute.RegionSetLabelsRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        region_set_labels_request_resource: Optional[
+            compute.RegionSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a VpnTunnel. To learn more about
@@ -1248,14 +1263,16 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
     def set_labels(
         self,
-        request: Union[compute.SetLabelsVpnTunnelRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsVpnTunnelRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        region_set_labels_request_resource: compute.RegionSetLabelsRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        region_set_labels_request_resource: Optional[
+            compute.RegionSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a VpnTunnel. To learn more about

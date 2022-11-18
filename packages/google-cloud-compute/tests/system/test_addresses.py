@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.compute_v1.types import Address, InsertAddressRequest
 from google.cloud.compute_v1.services.addresses.client import AddressesClient
+from google.cloud.compute_v1.types import Address, InsertAddressRequest
 from tests.system.base import TestBase
 
 

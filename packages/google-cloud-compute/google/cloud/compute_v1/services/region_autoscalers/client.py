@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.region_autoscalers import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import RegionAutoscalersTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, RegionAutoscalersTransport
 from .transports.rest import RegionAutoscalersRestTransport
 
 
@@ -58,7 +70,7 @@ class RegionAutoscalersClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RegionAutoscalersTransport]:
         """Returns an appropriate transport class.
 
@@ -311,8 +323,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RegionAutoscalersTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, RegionAutoscalersTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the region autoscalers client.
@@ -329,7 +341,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -359,6 +371,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -411,13 +424,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.DeleteRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified autoscaler.
@@ -510,13 +523,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.DeleteRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified autoscaler.
@@ -634,13 +647,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.GetRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Autoscaler:
         r"""Returns the specified autoscaler.
@@ -742,13 +755,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.InsertRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler_resource: compute.Autoscaler = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler_resource: Optional[compute.Autoscaler] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates an autoscaler in the specified project using
@@ -841,13 +854,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.InsertRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler_resource: compute.Autoscaler = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler_resource: Optional[compute.Autoscaler] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an autoscaler in the specified project using
@@ -965,12 +978,12 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListRegionAutoscalersRequest, dict] = None,
+        request: Optional[Union[compute.ListRegionAutoscalersRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of autoscalers contained within the
@@ -1067,13 +1080,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def patch_unary(
         self,
-        request: Union[compute.PatchRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.PatchRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler_resource: compute.Autoscaler = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler_resource: Optional[compute.Autoscaler] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates an autoscaler in the specified project using
@@ -1168,13 +1181,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def patch(
         self,
-        request: Union[compute.PatchRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.PatchRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler_resource: compute.Autoscaler = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler_resource: Optional[compute.Autoscaler] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates an autoscaler in the specified project using
@@ -1294,13 +1307,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def update_unary(
         self,
-        request: Union[compute.UpdateRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.UpdateRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler_resource: compute.Autoscaler = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler_resource: Optional[compute.Autoscaler] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates an autoscaler in the specified project using
@@ -1393,13 +1406,13 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def update(
         self,
-        request: Union[compute.UpdateRegionAutoscalerRequest, dict] = None,
+        request: Optional[Union[compute.UpdateRegionAutoscalerRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        autoscaler_resource: compute.Autoscaler = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        autoscaler_resource: Optional[compute.Autoscaler] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates an autoscaler in the specified project using

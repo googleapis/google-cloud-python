@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import NodeTemplatesTransport
-from .rest import NodeTemplatesRestTransport
-from .rest import NodeTemplatesRestInterceptor
-
+from .rest import NodeTemplatesRestInterceptor, NodeTemplatesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[NodeTemplatesTransport]]

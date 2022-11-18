@@ -18,8 +18,7 @@ directory, to be then used in Google Compute Engine public documentation.
 import argparse
 import ast
 from collections import defaultdict
-from dataclasses import dataclass
-from dataclasses import field
+from dataclasses import dataclass, field
 import glob
 import os
 from pathlib import Path

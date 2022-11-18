@@ -14,6 +14,7 @@
 
 
 import time
+
 import google.api_core.exceptions
 import google.protobuf
 
@@ -21,12 +22,12 @@ from google.cloud.compute_v1.services.firewalls.client import FirewallsClient
 from google.cloud.compute_v1.services.instances.client import InstancesClient
 from google.cloud.compute_v1.types import (
     Allowed,
+    AttachedDisk,
+    AttachedDiskInitializeParams,
     Firewall,
     InsertInstanceRequest,
     Instance,
-    AttachedDisk,
     NetworkInterface,
-    AttachedDiskInitializeParams,
     ShieldedInstanceConfig,
 )
 from tests.system.base import TestBase

@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.resource_policies import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import ResourcePoliciesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, ResourcePoliciesTransport
 from .transports.rest import ResourcePoliciesRestTransport
 
 
@@ -58,7 +70,7 @@ class ResourcePoliciesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ResourcePoliciesTransport]:
         """Returns an appropriate transport class.
 
@@ -311,8 +323,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ResourcePoliciesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ResourcePoliciesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the resource policies client.
@@ -329,7 +341,7 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -359,6 +371,7 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -411,11 +424,13 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListResourcePoliciesRequest, dict] = None,
+        request: Optional[
+            Union[compute.AggregatedListResourcePoliciesRequest, dict]
+        ] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of resource policies.
@@ -497,13 +512,13 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteResourcePolicyRequest, dict] = None,
+        request: Optional[Union[compute.DeleteResourcePolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource_policy: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified resource policy.
@@ -596,13 +611,13 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteResourcePolicyRequest, dict] = None,
+        request: Optional[Union[compute.DeleteResourcePolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource_policy: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified resource policy.
@@ -720,13 +735,13 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetResourcePolicyRequest, dict] = None,
+        request: Optional[Union[compute.GetResourcePolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource_policy: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource_policy: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ResourcePolicy:
         r"""Retrieves all information of the specified resource
@@ -824,13 +839,15 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[compute.GetIamPolicyResourcePolicyRequest, dict] = None,
+        request: Optional[
+            Union[compute.GetIamPolicyResourcePolicyRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -964,13 +981,13 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertResourcePolicyRequest, dict] = None,
+        request: Optional[Union[compute.InsertResourcePolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource_policy_resource: compute.ResourcePolicy = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource_policy_resource: Optional[compute.ResourcePolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a new resource policy.
@@ -1060,13 +1077,13 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertResourcePolicyRequest, dict] = None,
+        request: Optional[Union[compute.InsertResourcePolicyRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource_policy_resource: compute.ResourcePolicy = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource_policy_resource: Optional[compute.ResourcePolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new resource policy.
@@ -1181,12 +1198,12 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListResourcePoliciesRequest, dict] = None,
+        request: Optional[Union[compute.ListResourcePoliciesRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""A list all the resource policies that have been
@@ -1281,14 +1298,18 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[compute.SetIamPolicyResourcePolicyRequest, dict] = None,
+        request: Optional[
+            Union[compute.SetIamPolicyResourcePolicyRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        region_set_policy_request_resource: compute.RegionSetPolicyRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        region_set_policy_request_resource: Optional[
+            compute.RegionSetPolicyRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -1433,14 +1454,18 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[compute.TestIamPermissionsResourcePolicyRequest, dict] = None,
+        request: Optional[
+            Union[compute.TestIamPermissionsResourcePolicyRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        test_permissions_request_resource: compute.TestPermissionsRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the

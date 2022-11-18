@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import ForwardingRulesTransport
-from .rest import ForwardingRulesRestTransport
-from .rest import ForwardingRulesRestInterceptor
-
+from .rest import ForwardingRulesRestInterceptor, ForwardingRulesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ForwardingRulesTransport]]

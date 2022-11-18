@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import NetworkEdgeSecurityServicesTransport
-from .rest import NetworkEdgeSecurityServicesRestTransport
-from .rest import NetworkEdgeSecurityServicesRestInterceptor
-
+from .rest import (
+    NetworkEdgeSecurityServicesRestInterceptor,
+    NetworkEdgeSecurityServicesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.vpn_gateways import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import VpnGatewaysTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, VpnGatewaysTransport
 from .transports.rest import VpnGatewaysRestTransport
 
 
@@ -56,7 +68,7 @@ class VpnGatewaysClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[VpnGatewaysTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VpnGatewaysTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, VpnGatewaysTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the vpn gateways client.
@@ -327,7 +339,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,11 +422,11 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListVpnGatewaysRequest, dict] = None,
+        request: Optional[Union[compute.AggregatedListVpnGatewaysRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of VPN gateways.
@@ -494,13 +507,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.DeleteVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_gateway: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_gateway: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified VPN gateway.
@@ -591,13 +604,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.DeleteVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_gateway: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_gateway: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified VPN gateway.
@@ -713,13 +726,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.GetVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_gateway: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_gateway: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnGateway:
         r"""Returns the specified VPN gateway. Gets a list of
@@ -817,13 +830,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def get_status(
         self,
-        request: Union[compute.GetStatusVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.GetStatusVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_gateway: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_gateway: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnGatewaysGetStatusResponse:
         r"""Returns the status for the specified VPN gateway.
@@ -912,13 +925,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.InsertVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_gateway_resource: compute.VpnGateway = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_gateway_resource: Optional[compute.VpnGateway] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a VPN gateway in the specified project and
@@ -1009,13 +1022,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.InsertVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        vpn_gateway_resource: compute.VpnGateway = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        vpn_gateway_resource: Optional[compute.VpnGateway] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a VPN gateway in the specified project and
@@ -1131,12 +1144,12 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListVpnGatewaysRequest, dict] = None,
+        request: Optional[Union[compute.ListVpnGatewaysRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of VPN gateways available to the
@@ -1232,14 +1245,16 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def set_labels_unary(
         self,
-        request: Union[compute.SetLabelsVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        region_set_labels_request_resource: compute.RegionSetLabelsRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        region_set_labels_request_resource: Optional[
+            compute.RegionSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a VpnGateway. To learn more about
@@ -1344,14 +1359,16 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def set_labels(
         self,
-        request: Union[compute.SetLabelsVpnGatewayRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsVpnGatewayRequest, dict]] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        region_set_labels_request_resource: compute.RegionSetLabelsRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        region_set_labels_request_resource: Optional[
+            compute.RegionSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a VpnGateway. To learn more about
@@ -1481,14 +1498,18 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[compute.TestIamPermissionsVpnGatewayRequest, dict] = None,
+        request: Optional[
+            Union[compute.TestIamPermissionsVpnGatewayRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        region: str = None,
-        resource: str = None,
-        test_permissions_request_resource: compute.TestPermissionsRequest = None,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the

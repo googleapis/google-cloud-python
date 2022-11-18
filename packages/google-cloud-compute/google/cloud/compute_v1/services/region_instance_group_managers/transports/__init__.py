@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionInstanceGroupManagersTransport
-from .rest import RegionInstanceGroupManagersRestTransport
-from .rest import RegionInstanceGroupManagersRestInterceptor
-
+from .rest import (
+    RegionInstanceGroupManagersRestInterceptor,
+    RegionInstanceGroupManagersRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

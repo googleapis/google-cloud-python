@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,7 +47,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.compute_v1.services.node_types import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import NodeTypesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, NodeTypesTransport
 from .transports.rest import NodeTypesRestTransport
 
 
@@ -53,7 +65,7 @@ class NodeTypesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[NodeTypesTransport]:
         """Returns an appropriate transport class.
 
@@ -306,8 +318,8 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NodeTypesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, NodeTypesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the node types client.
@@ -324,7 +336,7 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -354,6 +366,7 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -406,11 +419,11 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListNodeTypesRequest, dict] = None,
+        request: Optional[Union[compute.AggregatedListNodeTypesRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of node types.
@@ -491,13 +504,13 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetNodeTypeRequest, dict] = None,
+        request: Optional[Union[compute.GetNodeTypeRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        node_type: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        node_type: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeType:
         r"""Returns the specified node type. Gets a list of
@@ -598,12 +611,12 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListNodeTypesRequest, dict] = None,
+        request: Optional[Union[compute.ListNodeTypesRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of node types available to the

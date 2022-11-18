@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,7 +47,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.compute_v1.services.zone_operations import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import ZoneOperationsTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, ZoneOperationsTransport
 from .transports.rest import ZoneOperationsRestTransport
 
 
@@ -55,7 +67,7 @@ class ZoneOperationsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ZoneOperationsTransport]:
         """Returns an appropriate transport class.
 
@@ -308,8 +320,8 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ZoneOperationsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ZoneOperationsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the zone operations client.
@@ -326,7 +338,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -356,6 +368,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -408,13 +421,13 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteZoneOperationRequest, dict] = None,
+        request: Optional[Union[compute.DeleteZoneOperationRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        operation: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DeleteZoneOperationResponse:
         r"""Deletes the specified zone-specific Operations
@@ -509,13 +522,13 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetZoneOperationRequest, dict] = None,
+        request: Optional[Union[compute.GetZoneOperationRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        operation: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Retrieves the specified zone-specific Operations
@@ -622,12 +635,12 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListZoneOperationsRequest, dict] = None,
+        request: Optional[Union[compute.ListZoneOperationsRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of Operation resources contained
@@ -723,13 +736,13 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def wait(
         self,
-        request: Union[compute.WaitZoneOperationRequest, dict] = None,
+        request: Optional[Union[compute.WaitZoneOperationRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        operation: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Waits for the specified Operation resource to return as ``DONE``

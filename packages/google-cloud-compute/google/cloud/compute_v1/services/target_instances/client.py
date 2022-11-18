@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.target_instances import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import TargetInstancesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, TargetInstancesTransport
 from .transports.rest import TargetInstancesRestTransport
 
 
@@ -58,7 +70,7 @@ class TargetInstancesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TargetInstancesTransport]:
         """Returns an appropriate transport class.
 
@@ -311,8 +323,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TargetInstancesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, TargetInstancesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the target instances client.
@@ -329,7 +341,7 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -359,6 +371,7 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -411,11 +424,13 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def aggregated_list(
         self,
-        request: Union[compute.AggregatedListTargetInstancesRequest, dict] = None,
+        request: Optional[
+            Union[compute.AggregatedListTargetInstancesRequest, dict]
+        ] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of target instances.
@@ -496,13 +511,13 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteTargetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.DeleteTargetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        target_instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        target_instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified TargetInstance resource.
@@ -597,13 +612,13 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteTargetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.DeleteTargetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        target_instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        target_instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified TargetInstance resource.
@@ -723,13 +738,13 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetTargetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.GetTargetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        target_instance: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        target_instance: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetInstance:
         r"""Returns the specified TargetInstance resource. Gets a
@@ -832,13 +847,13 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertTargetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.InsertTargetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        target_instance_resource: compute.TargetInstance = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        target_instance_resource: Optional[compute.TargetInstance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a TargetInstance resource in the specified
@@ -931,13 +946,13 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertTargetInstanceRequest, dict] = None,
+        request: Optional[Union[compute.InsertTargetInstanceRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
-        target_instance_resource: compute.TargetInstance = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        target_instance_resource: Optional[compute.TargetInstance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a TargetInstance resource in the specified
@@ -1055,12 +1070,12 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListTargetInstancesRequest, dict] = None,
+        request: Optional[Union[compute.ListTargetInstancesRequest, dict]] = None,
         *,
-        project: str = None,
-        zone: str = None,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves a list of TargetInstance resources

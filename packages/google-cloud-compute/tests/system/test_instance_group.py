@@ -12,21 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.compute_v1.services.instances.client import InstancesClient
 from google.cloud.compute_v1.services.instance_group_managers.client import (
     InstanceGroupManagersClient,
 )
 from google.cloud.compute_v1.services.instance_templates.client import (
     InstanceTemplatesClient,
 )
+from google.cloud.compute_v1.services.instances.client import InstancesClient
 from google.cloud.compute_v1.types import (
+    AttachedDisk,
+    AttachedDiskInitializeParams,
     InsertInstanceRequest,
+    Instance,
     InstanceGroupManager,
     InstanceTemplate,
-    Instance,
-    AttachedDisk,
     NetworkInterface,
-    AttachedDiskInitializeParams,
 )
 from tests.system.base import TestBase
 

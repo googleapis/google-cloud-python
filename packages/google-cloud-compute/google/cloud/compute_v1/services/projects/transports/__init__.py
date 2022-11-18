@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import ProjectsTransport
-from .rest import ProjectsRestTransport
-from .rest import ProjectsRestInterceptor
-
+from .rest import ProjectsRestInterceptor, ProjectsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ProjectsTransport]]

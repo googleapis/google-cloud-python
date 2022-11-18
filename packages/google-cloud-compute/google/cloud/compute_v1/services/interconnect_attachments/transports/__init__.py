@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import InterconnectAttachmentsTransport
-from .rest import InterconnectAttachmentsRestTransport
-from .rest import InterconnectAttachmentsRestInterceptor
-
+from .rest import (
+    InterconnectAttachmentsRestInterceptor,
+    InterconnectAttachmentsRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

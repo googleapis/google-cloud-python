@@ -17,9 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionTargetHttpsProxiesTransport
-from .rest import RegionTargetHttpsProxiesRestTransport
-from .rest import RegionTargetHttpsProxiesRestInterceptor
-
+from .rest import (
+    RegionTargetHttpsProxiesRestInterceptor,
+    RegionTargetHttpsProxiesRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

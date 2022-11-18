@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.images import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import ImagesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, ImagesTransport
 from .transports.rest import ImagesRestTransport
 
 
@@ -56,7 +68,7 @@ class ImagesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ImagesTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ImagesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ImagesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the images client.
@@ -327,7 +339,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,12 +422,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteImageRequest, dict] = None,
+        request: Optional[Union[compute.DeleteImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified image.
@@ -496,12 +509,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteImageRequest, dict] = None,
+        request: Optional[Union[compute.DeleteImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified image.
@@ -607,13 +620,13 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def deprecate_unary(
         self,
-        request: Union[compute.DeprecateImageRequest, dict] = None,
+        request: Optional[Union[compute.DeprecateImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
-        deprecation_status_resource: compute.DeprecationStatus = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
+        deprecation_status_resource: Optional[compute.DeprecationStatus] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the deprecation status of an image. If an empty
@@ -705,13 +718,13 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def deprecate(
         self,
-        request: Union[compute.DeprecateImageRequest, dict] = None,
+        request: Optional[Union[compute.DeprecateImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
-        deprecation_status_resource: compute.DeprecationStatus = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
+        deprecation_status_resource: Optional[compute.DeprecationStatus] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the deprecation status of an image. If an empty
@@ -827,12 +840,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetImageRequest, dict] = None,
+        request: Optional[Union[compute.GetImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
         r"""Returns the specified image. Gets a list of available
@@ -917,12 +930,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def get_from_family(
         self,
-        request: Union[compute.GetFromFamilyImageRequest, dict] = None,
+        request: Optional[Union[compute.GetFromFamilyImageRequest, dict]] = None,
         *,
-        project: str = None,
-        family: str = None,
+        project: Optional[str] = None,
+        family: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
         r"""Returns the latest image that is part of an image
@@ -1010,12 +1023,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[compute.GetIamPolicyImageRequest, dict] = None,
+        request: Optional[Union[compute.GetIamPolicyImageRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
@@ -1139,12 +1152,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertImageRequest, dict] = None,
+        request: Optional[Union[compute.InsertImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image_resource: compute.Image = None,
+        project: Optional[str] = None,
+        image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates an image in the specified project using the
@@ -1222,12 +1235,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertImageRequest, dict] = None,
+        request: Optional[Union[compute.InsertImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image_resource: compute.Image = None,
+        project: Optional[str] = None,
+        image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an image in the specified project using the
@@ -1329,11 +1342,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListImagesRequest, dict] = None,
+        request: Optional[Union[compute.ListImagesRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of custom images available to the
@@ -1421,13 +1434,13 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def patch_unary(
         self,
-        request: Union[compute.PatchImageRequest, dict] = None,
+        request: Optional[Union[compute.PatchImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
-        image_resource: compute.Image = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
+        image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified image with the data included in
@@ -1518,13 +1531,13 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def patch(
         self,
-        request: Union[compute.PatchImageRequest, dict] = None,
+        request: Optional[Union[compute.PatchImageRequest, dict]] = None,
         *,
-        project: str = None,
-        image: str = None,
-        image_resource: compute.Image = None,
+        project: Optional[str] = None,
+        image: Optional[str] = None,
+        image_resource: Optional[compute.Image] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified image with the data included in
@@ -1639,13 +1652,15 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[compute.SetIamPolicyImageRequest, dict] = None,
+        request: Optional[Union[compute.SetIamPolicyImageRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        global_set_policy_request_resource: compute.GlobalSetPolicyRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        global_set_policy_request_resource: Optional[
+            compute.GlobalSetPolicyRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
@@ -1780,13 +1795,15 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def set_labels_unary(
         self,
-        request: Union[compute.SetLabelsImageRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsImageRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        global_set_labels_request_resource: compute.GlobalSetLabelsRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        global_set_labels_request_resource: Optional[
+            compute.GlobalSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an image. To learn more about
@@ -1883,13 +1900,15 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def set_labels(
         self,
-        request: Union[compute.SetLabelsImageRequest, dict] = None,
+        request: Optional[Union[compute.SetLabelsImageRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        global_set_labels_request_resource: compute.GlobalSetLabelsRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        global_set_labels_request_resource: Optional[
+            compute.GlobalSetLabelsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an image. To learn more about
@@ -2010,13 +2029,15 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[compute.TestIamPermissionsImageRequest, dict] = None,
+        request: Optional[Union[compute.TestIamPermissionsImageRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        test_permissions_request_resource: compute.TestPermissionsRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the

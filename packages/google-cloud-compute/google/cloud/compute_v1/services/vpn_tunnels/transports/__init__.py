@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import VpnTunnelsTransport
-from .rest import VpnTunnelsRestTransport
-from .rest import VpnTunnelsRestInterceptor
-
+from .rest import VpnTunnelsRestInterceptor, VpnTunnelsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[VpnTunnelsTransport]]

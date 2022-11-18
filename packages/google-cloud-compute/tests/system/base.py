@@ -15,14 +15,16 @@
 
 import unittest
 import uuid
+
 import google.auth
-from google.cloud.compute_v1.services.zone_operations.client import ZoneOperationsClient
-from google.cloud.compute_v1.services.region_operations.client import (
-    RegionOperationsClient,
-)
+
 from google.cloud.compute_v1.services.global_operations.client import (
     GlobalOperationsClient,
 )
+from google.cloud.compute_v1.services.region_operations.client import (
+    RegionOperationsClient,
+)
+from google.cloud.compute_v1.services.zone_operations.client import ZoneOperationsClient
 from google.cloud.compute_v1.types import Operation
 
 

@@ -18,8 +18,10 @@ from google.cloud.compute_v1.services.accelerator_types.client import (
     AcceleratorTypesClient,
 )
 from google.cloud.compute_v1.services.zones.client import ZonesClient
-from google.cloud.compute_v1.types import AggregatedListAcceleratorTypesRequest
-from google.cloud.compute_v1.types import ListZonesRequest
+from google.cloud.compute_v1.types import (
+    AggregatedListAcceleratorTypesRequest,
+    ListZonesRequest,
+)
 from tests.system.base import TestBase
 
 

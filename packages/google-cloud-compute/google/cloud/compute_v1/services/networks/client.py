@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.networks import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import NetworksTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, NetworksTransport
 from .transports.rest import NetworksRestTransport
 
 
@@ -56,7 +68,7 @@ class NetworksClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[NetworksTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NetworksTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, NetworksTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the networks client.
@@ -327,7 +339,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,13 +422,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def add_peering_unary(
         self,
-        request: Union[compute.AddPeeringNetworkRequest, dict] = None,
+        request: Optional[Union[compute.AddPeeringNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        networks_add_peering_request_resource: compute.NetworksAddPeeringRequest = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        networks_add_peering_request_resource: Optional[
+            compute.NetworksAddPeeringRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds a peering to the specified network.
@@ -511,13 +526,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def add_peering(
         self,
-        request: Union[compute.AddPeeringNetworkRequest, dict] = None,
+        request: Optional[Union[compute.AddPeeringNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        networks_add_peering_request_resource: compute.NetworksAddPeeringRequest = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        networks_add_peering_request_resource: Optional[
+            compute.NetworksAddPeeringRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Adds a peering to the specified network.
@@ -637,12 +654,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteNetworkRequest, dict] = None,
+        request: Optional[Union[compute.DeleteNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified network.
@@ -724,12 +741,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteNetworkRequest, dict] = None,
+        request: Optional[Union[compute.DeleteNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified network.
@@ -835,12 +852,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetNetworkRequest, dict] = None,
+        request: Optional[Union[compute.GetNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Network:
         r"""Returns the specified network. Gets a list of
@@ -926,12 +943,14 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def get_effective_firewalls(
         self,
-        request: Union[compute.GetEffectiveFirewallsNetworkRequest, dict] = None,
+        request: Optional[
+            Union[compute.GetEffectiveFirewallsNetworkRequest, dict]
+        ] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NetworksGetEffectiveFirewallsResponse:
         r"""Returns the effective firewalls on a given network.
@@ -1012,12 +1031,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertNetworkRequest, dict] = None,
+        request: Optional[Union[compute.InsertNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network_resource: compute.Network = None,
+        project: Optional[str] = None,
+        network_resource: Optional[compute.Network] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates a network in the specified project using the
@@ -1095,12 +1114,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertNetworkRequest, dict] = None,
+        request: Optional[Union[compute.InsertNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network_resource: compute.Network = None,
+        project: Optional[str] = None,
+        network_resource: Optional[compute.Network] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a network in the specified project using the
@@ -1202,11 +1221,11 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListNetworksRequest, dict] = None,
+        request: Optional[Union[compute.ListNetworksRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of networks available to the
@@ -1288,12 +1307,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def list_peering_routes(
         self,
-        request: Union[compute.ListPeeringRoutesNetworksRequest, dict] = None,
+        request: Optional[Union[compute.ListPeeringRoutesNetworksRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPeeringRoutesPager:
         r"""Lists the peering routes exchanged over peering
@@ -1387,13 +1406,13 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def patch_unary(
         self,
-        request: Union[compute.PatchNetworkRequest, dict] = None,
+        request: Optional[Union[compute.PatchNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        network_resource: compute.Network = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        network_resource: Optional[compute.Network] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified network with the data included
@@ -1484,13 +1503,13 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def patch(
         self,
-        request: Union[compute.PatchNetworkRequest, dict] = None,
+        request: Optional[Union[compute.PatchNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        network_resource: compute.Network = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        network_resource: Optional[compute.Network] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified network with the data included
@@ -1605,13 +1624,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def remove_peering_unary(
         self,
-        request: Union[compute.RemovePeeringNetworkRequest, dict] = None,
+        request: Optional[Union[compute.RemovePeeringNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        networks_remove_peering_request_resource: compute.NetworksRemovePeeringRequest = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        networks_remove_peering_request_resource: Optional[
+            compute.NetworksRemovePeeringRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes a peering from the specified network.
@@ -1707,13 +1728,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def remove_peering(
         self,
-        request: Union[compute.RemovePeeringNetworkRequest, dict] = None,
+        request: Optional[Union[compute.RemovePeeringNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        networks_remove_peering_request_resource: compute.NetworksRemovePeeringRequest = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        networks_remove_peering_request_resource: Optional[
+            compute.NetworksRemovePeeringRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Removes a peering from the specified network.
@@ -1833,12 +1856,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def switch_to_custom_mode_unary(
         self,
-        request: Union[compute.SwitchToCustomModeNetworkRequest, dict] = None,
+        request: Optional[Union[compute.SwitchToCustomModeNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Switches the network mode from auto subnet mode to
@@ -1922,12 +1945,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def switch_to_custom_mode(
         self,
-        request: Union[compute.SwitchToCustomModeNetworkRequest, dict] = None,
+        request: Optional[Union[compute.SwitchToCustomModeNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Switches the network mode from auto subnet mode to
@@ -2035,13 +2058,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def update_peering_unary(
         self,
-        request: Union[compute.UpdatePeeringNetworkRequest, dict] = None,
+        request: Optional[Union[compute.UpdatePeeringNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        networks_update_peering_request_resource: compute.NetworksUpdatePeeringRequest = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        networks_update_peering_request_resource: Optional[
+            compute.NetworksUpdatePeeringRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified network peering with the data included in
@@ -2140,13 +2165,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def update_peering(
         self,
-        request: Union[compute.UpdatePeeringNetworkRequest, dict] = None,
+        request: Optional[Union[compute.UpdatePeeringNetworkRequest, dict]] = None,
         *,
-        project: str = None,
-        network: str = None,
-        networks_update_peering_request_resource: compute.NetworksUpdatePeeringRequest = None,
+        project: Optional[str] = None,
+        network: Optional[str] = None,
+        networks_update_peering_request_resource: Optional[
+            compute.NetworksUpdatePeeringRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified network peering with the data included in

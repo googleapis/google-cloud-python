@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import TargetTcpProxiesTransport
-from .rest import TargetTcpProxiesRestTransport
-from .rest import TargetTcpProxiesRestInterceptor
-
+from .rest import TargetTcpProxiesRestInterceptor, TargetTcpProxiesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TargetTcpProxiesTransport]]

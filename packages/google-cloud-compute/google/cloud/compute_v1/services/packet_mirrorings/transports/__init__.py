@@ -17,9 +17,7 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import PacketMirroringsTransport
-from .rest import PacketMirroringsRestTransport
-from .rest import PacketMirroringsRestInterceptor
-
+from .rest import PacketMirroringsRestInterceptor, PacketMirroringsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[PacketMirroringsTransport]]

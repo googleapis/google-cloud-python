@@ -17,19 +17,29 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation
-from google.api_core import gapic_v1
+from google.api_core import extended_operation, gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -37,9 +47,11 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import extended_operation  # type: ignore
+
 from google.cloud.compute_v1.services.licenses import pagers
 from google.cloud.compute_v1.types import compute
-from .transports.base import LicensesTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, LicensesTransport
 from .transports.rest import LicensesRestTransport
 
 
@@ -56,7 +68,7 @@ class LicensesClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[LicensesTransport]:
         """Returns an appropriate transport class.
 
@@ -309,8 +321,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, LicensesTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, LicensesTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the licenses client.
@@ -327,7 +339,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -357,6 +369,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -409,12 +422,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def delete_unary(
         self,
-        request: Union[compute.DeleteLicenseRequest, dict] = None,
+        request: Optional[Union[compute.DeleteLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        license_: str = None,
+        project: Optional[str] = None,
+        license_: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified license. *Caution* This resource is
@@ -500,12 +513,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def delete(
         self,
-        request: Union[compute.DeleteLicenseRequest, dict] = None,
+        request: Optional[Union[compute.DeleteLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        license_: str = None,
+        project: Optional[str] = None,
+        license_: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified license. *Caution* This resource is
@@ -615,12 +628,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def get(
         self,
-        request: Union[compute.GetLicenseRequest, dict] = None,
+        request: Optional[Union[compute.GetLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        license_: str = None,
+        project: Optional[str] = None,
+        license_: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.License:
         r"""Returns the specified License resource. *Caution* This resource
@@ -709,12 +722,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[compute.GetIamPolicyLicenseRequest, dict] = None,
+        request: Optional[Union[compute.GetIamPolicyLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be empty if
@@ -840,12 +853,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def insert_unary(
         self,
-        request: Union[compute.InsertLicenseRequest, dict] = None,
+        request: Optional[Union[compute.InsertLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        license_resource: compute.License = None,
+        project: Optional[str] = None,
+        license_resource: Optional[compute.License] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Create a License resource in the specified project. *Caution*
@@ -924,12 +937,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def insert(
         self,
-        request: Union[compute.InsertLicenseRequest, dict] = None,
+        request: Optional[Union[compute.InsertLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        license_resource: compute.License = None,
+        project: Optional[str] = None,
+        license_resource: Optional[compute.License] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Create a License resource in the specified project. *Caution*
@@ -1032,11 +1045,11 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def list(
         self,
-        request: Union[compute.ListLicensesRequest, dict] = None,
+        request: Optional[Union[compute.ListLicensesRequest, dict]] = None,
         *,
-        project: str = None,
+        project: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of licenses available in the specified
@@ -1124,13 +1137,15 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[compute.SetIamPolicyLicenseRequest, dict] = None,
+        request: Optional[Union[compute.SetIamPolicyLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        global_set_policy_request_resource: compute.GlobalSetPolicyRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        global_set_policy_request_resource: Optional[
+            compute.GlobalSetPolicyRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified resource.
@@ -1267,13 +1282,15 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[compute.TestIamPermissionsLicenseRequest, dict] = None,
+        request: Optional[Union[compute.TestIamPermissionsLicenseRequest, dict]] = None,
         *,
-        project: str = None,
-        resource: str = None,
-        test_permissions_request_resource: compute.TestPermissionsRequest = None,
+        project: Optional[str] = None,
+        resource: Optional[str] = None,
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the specified resource.
