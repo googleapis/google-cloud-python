@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.beyondcorp_appconnectors_v1.types import (
     resource_info as gcba_resource_info,
 )
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.appconnectors.v1",
@@ -66,23 +67,23 @@ class ListAppConnectorsRequest(proto.Message):
             for more information.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -92,14 +93,14 @@ class ListAppConnectorsResponse(proto.Message):
     r"""Response message for BeyondCorp.ListAppConnectors.
 
     Attributes:
-        app_connectors (Sequence[google.cloud.beyondcorp_appconnectors_v1.types.AppConnector]):
+        app_connectors (MutableSequence[google.cloud.beyondcorp_appconnectors_v1.types.AppConnector]):
             A list of BeyondCorp AppConnectors in the
             project.
         next_page_token (str):
             A token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations that could not be
             reached.
     """
@@ -108,16 +109,16 @@ class ListAppConnectorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    app_connectors = proto.RepeatedField(
+    app_connectors: MutableSequence["AppConnector"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AppConnector",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -132,7 +133,7 @@ class GetAppConnectorRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -179,24 +180,24 @@ class CreateAppConnectorRequest(proto.Message):
             resource in any way.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_connector_id = proto.Field(
+    app_connector_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    app_connector = proto.Field(
+    app_connector: "AppConnector" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AppConnector",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -241,21 +242,21 @@ class UpdateAppConnectorRequest(proto.Message):
             resource in any way.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    app_connector = proto.Field(
+    app_connector: "AppConnector" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AppConnector",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -292,15 +293,15 @@ class DeleteAppConnectorRequest(proto.Message):
             resource in any way.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -339,20 +340,20 @@ class ReportStatusRequest(proto.Message):
             resource in any way.
     """
 
-    app_connector = proto.Field(
+    app_connector: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_info = proto.Field(
+    resource_info: gcba_resource_info.ResourceInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcba_resource_info.ResourceInfo,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -377,7 +378,7 @@ class AppConnector(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the resource was
             last modified.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels to represent user
             provided metadata.
         display_name (str):
@@ -425,56 +426,56 @@ class AppConnector(proto.Message):
                     Email address of the service account.
             """
 
-            email = proto.Field(
+            email: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        service_account = proto.Field(
+        service_account: "AppConnector.PrincipalInfo.ServiceAccount" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
             message="AppConnector.PrincipalInfo.ServiceAccount",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    principal_info = proto.Field(
+    principal_info: PrincipalInfo = proto.Field(
         proto.MESSAGE,
         number=8,
         message=PrincipalInfo,
     )
-    resource_info = proto.Field(
+    resource_info: gcba_resource_info.ResourceInfo = proto.Field(
         proto.MESSAGE,
         number=11,
         message=gcba_resource_info.ResourceInfo,
@@ -511,33 +512,33 @@ class AppConnectorOperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

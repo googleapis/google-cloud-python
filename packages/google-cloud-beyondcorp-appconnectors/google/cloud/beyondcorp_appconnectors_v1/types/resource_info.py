@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.appconnectors.v1",
@@ -70,30 +70,30 @@ class ResourceInfo(proto.Message):
             The timestamp to collect the info. It is
             suggested to be set by the topmost level
             resource only.
-        sub (Sequence[google.cloud.beyondcorp_appconnectors_v1.types.ResourceInfo]):
+        sub (MutableSequence[google.cloud.beyondcorp_appconnectors_v1.types.ResourceInfo]):
             List of Info for the sub level resources.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    status = proto.Field(
+    status: "HealthStatus" = proto.Field(
         proto.ENUM,
         number=2,
         enum="HealthStatus",
     )
-    resource = proto.Field(
+    resource: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=3,
         message=any_pb2.Any,
     )
-    time = proto.Field(
+    time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    sub = proto.RepeatedField(
+    sub: MutableSequence["ResourceInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="ResourceInfo",

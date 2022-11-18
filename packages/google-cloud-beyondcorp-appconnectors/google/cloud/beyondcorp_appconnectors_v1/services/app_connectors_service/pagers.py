@@ -18,10 +18,10 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.cloud.beyondcorp_appconnectors_v1.types import app_connectors_service

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import any_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.appconnectors.v1",
@@ -50,21 +50,21 @@ class AppConnectorInstanceConfig(proto.Message):
             the remote agent's control plane.
     """
 
-    sequence_number = proto.Field(
+    sequence_number: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    instance_config = proto.Field(
+    instance_config: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=2,
         message=any_pb2.Any,
     )
-    notification_config = proto.Field(
+    notification_config: "NotificationConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="NotificationConfig",
     )
-    image_config = proto.Field(
+    image_config: "ImageConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ImageConfig",
@@ -95,12 +95,12 @@ class NotificationConfig(proto.Message):
                 uses to receive notifications.
         """
 
-        pubsub_subscription = proto.Field(
+        pubsub_subscription: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    pubsub_notification = proto.Field(
+    pubsub_notification: CloudPubSubNotificationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="config",
@@ -120,11 +120,11 @@ class ImageConfig(proto.Message):
             fallback to if the target image fails.
     """
 
-    target_image = proto.Field(
+    target_image: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    stable_image = proto.Field(
+    stable_image: str = proto.Field(
         proto.STRING,
         number=2,
     )
