@@ -626,7 +626,7 @@ def test_bucket_w_retention_period(
     buckets_to_delete,
     blobs_to_delete,
 ):
-    period_secs = 10
+    period_secs = 3
     bucket_name = _helpers.unique_name("w-retention-period")
     bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
     buckets_to_delete.append(bucket)
@@ -679,6 +679,8 @@ def test_bucket_w_retention_period(
     assert not other.temporary_hold
     assert other.retention_expiration_time is None
 
+    # Object can be deleted once it reaches the age defined in the retention policy.
+    _helpers.await_config_changes_propagate(sec=period_secs)
     other.delete()
     blobs_to_delete.pop()
 
