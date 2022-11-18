@@ -19,9 +19,10 @@ from typing import Dict, Type
 from .base import AppConnectionsServiceTransport
 from .grpc import AppConnectionsServiceGrpcTransport
 from .grpc_asyncio import AppConnectionsServiceGrpcAsyncIOTransport
-from .rest import AppConnectionsServiceRestTransport
-from .rest import AppConnectionsServiceRestInterceptor
-
+from .rest import (
+    AppConnectionsServiceRestInterceptor,
+    AppConnectionsServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

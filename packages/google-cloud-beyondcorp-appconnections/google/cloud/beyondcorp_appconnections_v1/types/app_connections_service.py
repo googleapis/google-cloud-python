@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.appconnections.v1",
@@ -64,23 +64,23 @@ class ListAppConnectionsRequest(proto.Message):
             for more information.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -90,14 +90,14 @@ class ListAppConnectionsResponse(proto.Message):
     r"""Response message for BeyondCorp.ListAppConnections.
 
     Attributes:
-        app_connections (Sequence[google.cloud.beyondcorp_appconnections_v1.types.AppConnection]):
+        app_connections (MutableSequence[google.cloud.beyondcorp_appconnections_v1.types.AppConnection]):
             A list of BeyondCorp AppConnections in the
             project.
         next_page_token (str):
             A token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations that could not be
             reached.
     """
@@ -106,16 +106,16 @@ class ListAppConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    app_connections = proto.RepeatedField(
+    app_connections: MutableSequence["AppConnection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AppConnection",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -130,7 +130,7 @@ class GetAppConnectionRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -178,24 +178,24 @@ class CreateAppConnectionRequest(proto.Message):
             resource in any way.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_connection_id = proto.Field(
+    app_connection_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    app_connection = proto.Field(
+    app_connection: "AppConnection" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AppConnection",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -245,25 +245,25 @@ class UpdateAppConnectionRequest(proto.Message):
             resource if it is not found.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    app_connection = proto.Field(
+    app_connection: "AppConnection" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AppConnection",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -300,15 +300,15 @@ class DeleteAppConnectionRequest(proto.Message):
             resource in any way.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -339,19 +339,19 @@ class ResolveAppConnectionsRequest(proto.Message):
             ResolveAppConnectionsResponse, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_connector_id = proto.Field(
+    app_connector_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -361,14 +361,14 @@ class ResolveAppConnectionsResponse(proto.Message):
     r"""Response message for BeyondCorp.ResolveAppConnections.
 
     Attributes:
-        app_connection_details (Sequence[google.cloud.beyondcorp_appconnections_v1.types.ResolveAppConnectionsResponse.AppConnectionDetails]):
+        app_connection_details (MutableSequence[google.cloud.beyondcorp_appconnections_v1.types.ResolveAppConnectionsResponse.AppConnectionDetails]):
             A list of BeyondCorp AppConnections with
             details in the project.
         next_page_token (str):
             A token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations that could not be
             reached.
     """
@@ -379,18 +379,18 @@ class ResolveAppConnectionsResponse(proto.Message):
         Attributes:
             app_connection (google.cloud.beyondcorp_appconnections_v1.types.AppConnection):
                 A BeyondCorp AppConnection in the project.
-            recent_mig_vms (Sequence[str]):
+            recent_mig_vms (MutableSequence[str]):
                 If type=GCP_REGIONAL_MIG, contains most recent VM instances,
                 like
                 ``https://www.googleapis.com/compute/v1/projects/{project_id}/zones/{zone_id}/instances/{instance_id}``.
         """
 
-        app_connection = proto.Field(
+        app_connection: "AppConnection" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="AppConnection",
         )
-        recent_mig_vms = proto.RepeatedField(
+        recent_mig_vms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -399,16 +399,16 @@ class ResolveAppConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    app_connection_details = proto.RepeatedField(
+    app_connection_details: MutableSequence[AppConnectionDetails] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=AppConnectionDetails,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -432,7 +432,7 @@ class AppConnection(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the resource was
             last modified.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels to represent user
             provided metadata.
         display_name (str):
@@ -447,7 +447,7 @@ class AppConnection(proto.Message):
         application_endpoint (google.cloud.beyondcorp_appconnections_v1.types.AppConnection.ApplicationEndpoint):
             Required. Address of the remote application
             endpoint for the BeyondCorp AppConnection.
-        connectors (Sequence[str]):
+        connectors (MutableSequence[str]):
             Optional. List of
             [google.cloud.beyondcorp.v1main.Connector.name] that are
             authorised to be associated with this AppConnection.
@@ -486,11 +486,11 @@ class AppConnection(proto.Message):
                 endpoint.
         """
 
-        host = proto.Field(
+        host: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        port = proto.Field(
+        port: int = proto.Field(
             proto.INT32,
             number=2,
         )
@@ -520,71 +520,71 @@ class AppConnection(proto.Message):
             TYPE_UNSPECIFIED = 0
             GCP_REGIONAL_MIG = 1
 
-        type_ = proto.Field(
+        type_: "AppConnection.Gateway.Type" = proto.Field(
             proto.ENUM,
             number=2,
             enum="AppConnection.Gateway.Type",
         )
-        uri = proto.Field(
+        uri: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        ingress_port = proto.Field(
+        ingress_port: int = proto.Field(
             proto.INT32,
             number=4,
         )
-        app_gateway = proto.Field(
+        app_gateway: str = proto.Field(
             proto.STRING,
             number=5,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=7,
         enum=Type,
     )
-    application_endpoint = proto.Field(
+    application_endpoint: ApplicationEndpoint = proto.Field(
         proto.MESSAGE,
         number=8,
         message=ApplicationEndpoint,
     )
-    connectors = proto.RepeatedField(
+    connectors: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=10,
         enum=State,
     )
-    gateway = proto.Field(
+    gateway: Gateway = proto.Field(
         proto.MESSAGE,
         number=11,
         message=Gateway,
@@ -621,33 +621,33 @@ class AppConnectionOperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

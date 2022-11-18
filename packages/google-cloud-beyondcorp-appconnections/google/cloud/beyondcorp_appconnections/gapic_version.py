@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import AppConnectionsServiceAsyncClient
-from .client import AppConnectionsServiceClient
-
-__all__ = (
-    "AppConnectionsServiceClient",
-    "AppConnectionsServiceAsyncClient",
-)
+__version__ = "0.2.2"  # {x-release-please-version}
