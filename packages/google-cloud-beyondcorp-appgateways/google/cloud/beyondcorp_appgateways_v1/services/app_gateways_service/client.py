@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,15 +47,17 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.beyondcorp_appgateways_v1.services.app_gateways_service import pagers
-from google.cloud.beyondcorp_appgateways_v1.types import app_gateways_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import AppGatewaysServiceTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.beyondcorp_appgateways_v1.services.app_gateways_service import pagers
+from google.cloud.beyondcorp_appgateways_v1.types import app_gateways_service
+
+from .transports.base import DEFAULT_CLIENT_INFO, AppGatewaysServiceTransport
 from .transports.grpc import AppGatewaysServiceGrpcTransport
 from .transports.grpc_asyncio import AppGatewaysServiceGrpcAsyncIOTransport
 from .transports.rest import AppGatewaysServiceRestTransport
@@ -67,7 +80,7 @@ class AppGatewaysServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AppGatewaysServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -88,10 +101,14 @@ class AppGatewaysServiceClientMeta(type):
 
 
 class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
-    """API Overview: The ``beyondcorp.googleapis.com`` service implements the Google
+    """API Overview:
+
+    The ``beyondcorp.googleapis.com`` service implements the Google
     Cloud BeyondCorp API.
 
-    Data Model: The AppGatewaysService exposes the following resources:
+    Data Model:
+
+    The AppGatewaysService exposes the following resources:
 
     -  AppGateways, named as follows:
        ``projects/{project_id}/locations/{location_id}/appGateways/{app_gateway_id}``.
@@ -354,8 +371,8 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AppGatewaysServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, AppGatewaysServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the app gateways service client.
@@ -372,7 +389,7 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -402,6 +419,7 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -454,11 +472,13 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def list_app_gateways(
         self,
-        request: Union[app_gateways_service.ListAppGatewaysRequest, dict] = None,
+        request: Optional[
+            Union[app_gateways_service.ListAppGatewaysRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAppGatewaysPager:
         r"""Lists AppGateways in a given project and location.
@@ -570,11 +590,13 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def get_app_gateway(
         self,
-        request: Union[app_gateways_service.GetAppGatewayRequest, dict] = None,
+        request: Optional[
+            Union[app_gateways_service.GetAppGatewayRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> app_gateways_service.AppGateway:
         r"""Gets details of a single AppGateway.
@@ -678,13 +700,15 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def create_app_gateway(
         self,
-        request: Union[app_gateways_service.CreateAppGatewayRequest, dict] = None,
+        request: Optional[
+            Union[app_gateways_service.CreateAppGatewayRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        app_gateway: app_gateways_service.AppGateway = None,
-        app_gateway_id: str = None,
+        parent: Optional[str] = None,
+        app_gateway: Optional[app_gateways_service.AppGateway] = None,
+        app_gateway_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new AppGateway in a given project and
@@ -829,11 +853,13 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def delete_app_gateway(
         self,
-        request: Union[app_gateways_service.DeleteAppGatewayRequest, dict] = None,
+        request: Optional[
+            Union[app_gateways_service.DeleteAppGatewayRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single AppGateway.
@@ -966,10 +992,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1020,10 +1046,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1074,10 +1100,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1129,10 +1155,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1183,10 +1209,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1303,10 +1329,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1424,10 +1450,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -1483,10 +1509,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1537,10 +1563,10 @@ class AppGatewaysServiceClient(metaclass=AppGatewaysServiceClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.appgateways.v1",
@@ -59,23 +59,23 @@ class ListAppGatewaysRequest(proto.Message):
             for more information.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -85,14 +85,14 @@ class ListAppGatewaysResponse(proto.Message):
     r"""Response message for BeyondCorp.ListAppGateways.
 
     Attributes:
-        app_gateways (Sequence[google.cloud.beyondcorp_appgateways_v1.types.AppGateway]):
+        app_gateways (MutableSequence[google.cloud.beyondcorp_appgateways_v1.types.AppGateway]):
             A list of BeyondCorp AppGateways in the
             project.
         next_page_token (str):
             A token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations that could not be
             reached.
     """
@@ -101,16 +101,16 @@ class ListAppGatewaysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    app_gateways = proto.RepeatedField(
+    app_gateways: MutableSequence["AppGateway"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AppGateway",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -125,7 +125,7 @@ class GetAppGatewayRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/appGateways/{app_gateway_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -172,24 +172,24 @@ class CreateAppGatewayRequest(proto.Message):
             resource in any way.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    app_gateway_id = proto.Field(
+    app_gateway_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    app_gateway = proto.Field(
+    app_gateway: "AppGateway" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AppGateway",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -226,15 +226,15 @@ class DeleteAppGatewayRequest(proto.Message):
             resource in any way.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -258,7 +258,7 @@ class AppGateway(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the resource was
             last modified.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels to represent user
             provided metadata.
         display_name (str):
@@ -276,7 +276,7 @@ class AppGateway(proto.Message):
         uri (str):
             Output only. Server-defined URI for this
             resource.
-        allocated_connections (Sequence[google.cloud.beyondcorp_appgateways_v1.types.AppGateway.AllocatedConnection]):
+        allocated_connections (MutableSequence[google.cloud.beyondcorp_appgateways_v1.types.AppGateway.AllocatedConnection]):
             Output only. A list of connections allocated
             for the Gateway
         host_type (google.cloud.beyondcorp_appgateways_v1.types.AppGateway.HostType):
@@ -319,62 +319,62 @@ class AppGateway(proto.Message):
                 connection
         """
 
-        psc_uri = proto.Field(
+        psc_uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        ingress_port = proto.Field(
+        ingress_port: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=7,
         enum=Type,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=8,
         enum=State,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    allocated_connections = proto.RepeatedField(
+    allocated_connections: MutableSequence[AllocatedConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=AllocatedConnection,
     )
-    host_type = proto.Field(
+    host_type: HostType = proto.Field(
         proto.ENUM,
         number=11,
         enum=HostType,
@@ -411,33 +411,33 @@ class AppGatewayOperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

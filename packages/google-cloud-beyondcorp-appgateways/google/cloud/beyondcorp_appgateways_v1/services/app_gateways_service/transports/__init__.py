@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import AppGatewaysServiceTransport
 from .grpc import AppGatewaysServiceGrpcTransport
 from .grpc_asyncio import AppGatewaysServiceGrpcAsyncIOTransport
-from .rest import AppGatewaysServiceRestTransport
-from .rest import AppGatewaysServiceRestInterceptor
-
+from .rest import AppGatewaysServiceRestInterceptor, AppGatewaysServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
