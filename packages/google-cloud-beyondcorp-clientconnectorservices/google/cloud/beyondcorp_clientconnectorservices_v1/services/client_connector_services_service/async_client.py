@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,12 +43,6 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service import (
-    pagers,
-)
-from google.cloud.beyondcorp_clientconnectorservices_v1.types import (
-    client_connector_services_service,
-)
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -46,19 +50,31 @@ from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+
+from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service import (
+    pagers,
+)
+from google.cloud.beyondcorp_clientconnectorservices_v1.types import (
+    client_connector_services_service,
+)
+
+from .client import ClientConnectorServicesServiceClient
 from .transports.base import (
-    ClientConnectorServicesServiceTransport,
     DEFAULT_CLIENT_INFO,
+    ClientConnectorServicesServiceTransport,
 )
 from .transports.grpc_asyncio import ClientConnectorServicesServiceGrpcAsyncIOTransport
-from .client import ClientConnectorServicesServiceClient
 
 
 class ClientConnectorServicesServiceAsyncClient:
-    """API Overview: The ``beyondcorp.googleapis.com`` service implements the Google
+    """API Overview:
+
+    The ``beyondcorp.googleapis.com`` service implements the Google
     Cloud BeyondCorp API.
 
-    Data Model: The ClientConnectorServicesService exposes the following resources:
+    Data Model:
+
+    The ClientConnectorServicesService exposes the following resources:
 
     -  Client Connector Services, named as follows:
        ``projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}``.
@@ -192,9 +208,9 @@ class ClientConnectorServicesServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ClientConnectorServicesServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the client connector services service client.
@@ -238,13 +254,16 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def list_client_connector_services(
         self,
-        request: Union[
-            client_connector_services_service.ListClientConnectorServicesRequest, dict
+        request: Optional[
+            Union[
+                client_connector_services_service.ListClientConnectorServicesRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClientConnectorServicesAsyncPager:
         r"""Lists ClientConnectorServices in a given project and
@@ -278,7 +297,7 @@ class ClientConnectorServicesServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.ListClientConnectorServicesRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.ListClientConnectorServicesRequest, dict]]):
                 The request object. Message for requesting list of
                 ClientConnectorServices.
             parent (:class:`str`):
@@ -358,13 +377,15 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def get_client_connector_service(
         self,
-        request: Union[
-            client_connector_services_service.GetClientConnectorServiceRequest, dict
+        request: Optional[
+            Union[
+                client_connector_services_service.GetClientConnectorServiceRequest, dict
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> client_connector_services_service.ClientConnectorService:
         r"""Gets details of a single ClientConnectorService.
@@ -396,7 +417,7 @@ class ClientConnectorServicesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.GetClientConnectorServiceRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.GetClientConnectorServiceRequest, dict]]):
                 The request object. Message for getting a
                 ClientConnectorService.
             name (:class:`str`):
@@ -462,15 +483,20 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def create_client_connector_service(
         self,
-        request: Union[
-            client_connector_services_service.CreateClientConnectorServiceRequest, dict
+        request: Optional[
+            Union[
+                client_connector_services_service.CreateClientConnectorServiceRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
-        client_connector_service: client_connector_services_service.ClientConnectorService = None,
-        client_connector_service_id: str = None,
+        parent: Optional[str] = None,
+        client_connector_service: Optional[
+            client_connector_services_service.ClientConnectorService
+        ] = None,
+        client_connector_service_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new ClientConnectorService in a given
@@ -515,7 +541,7 @@ class ClientConnectorServicesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.CreateClientConnectorServiceRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.CreateClientConnectorServiceRequest, dict]]):
                 The request object. Message for creating a
                 ClientConnectorService.
             parent (:class:`str`):
@@ -618,14 +644,19 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def update_client_connector_service(
         self,
-        request: Union[
-            client_connector_services_service.UpdateClientConnectorServiceRequest, dict
+        request: Optional[
+            Union[
+                client_connector_services_service.UpdateClientConnectorServiceRequest,
+                dict,
+            ]
         ] = None,
         *,
-        client_connector_service: client_connector_services_service.ClientConnectorService = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        client_connector_service: Optional[
+            client_connector_services_service.ClientConnectorService
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single
@@ -669,7 +700,7 @@ class ClientConnectorServicesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.UpdateClientConnectorServiceRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.UpdateClientConnectorServiceRequest, dict]]):
                 The request object. Message for updating a
                 ClientConnectorService
             client_connector_service (:class:`google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService`):
@@ -769,13 +800,16 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def delete_client_connector_service(
         self,
-        request: Union[
-            client_connector_services_service.DeleteClientConnectorServiceRequest, dict
+        request: Optional[
+            Union[
+                client_connector_services_service.DeleteClientConnectorServiceRequest,
+                dict,
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single ClientConnectorService.
@@ -811,7 +845,7 @@ class ClientConnectorServicesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.DeleteClientConnectorServiceRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientconnectorservices_v1.types.DeleteClientConnectorServiceRequest, dict]]):
                 The request object. Message for deleting a
                 ClientConnectorService.
             name (:class:`str`):
@@ -895,10 +929,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -949,10 +983,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1003,10 +1037,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1058,10 +1092,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1112,10 +1146,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1232,10 +1266,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1353,10 +1387,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -1412,10 +1446,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1466,10 +1500,10 @@ class ClientConnectorServicesServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

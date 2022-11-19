@@ -19,9 +19,10 @@ from typing import Dict, Type
 from .base import ClientConnectorServicesServiceTransport
 from .grpc import ClientConnectorServicesServiceGrpcTransport
 from .grpc_asyncio import ClientConnectorServicesServiceGrpcAsyncIOTransport
-from .rest import ClientConnectorServicesServiceRestTransport
-from .rest import ClientConnectorServicesServiceRestInterceptor
-
+from .rest import (
+    ClientConnectorServicesServiceRestInterceptor,
+    ClientConnectorServicesServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

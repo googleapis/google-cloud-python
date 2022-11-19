@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.clientconnectorservices.v1",
@@ -93,7 +93,7 @@ class ClientConnectorService(proto.Message):
                 transport_protocol (google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService.Ingress.Config.TransportProtocol):
                     Required. Immutable. The transport protocol
                     used between the client and the server.
-                destination_routes (Sequence[google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService.Ingress.Config.DestinationRoute]):
+                destination_routes (MutableSequence[google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService.Ingress.Config.DestinationRoute]):
                     Required. The settings used to configure
                     basic ClientGateways.
             """
@@ -119,27 +119,29 @@ class ClientConnectorService(proto.Message):
                         ClientGateway.
                 """
 
-                address = proto.Field(
+                address: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                netmask = proto.Field(
+                netmask: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
 
-            transport_protocol = proto.Field(
+            transport_protocol: "ClientConnectorService.Ingress.Config.TransportProtocol" = proto.Field(
                 proto.ENUM,
                 number=1,
                 enum="ClientConnectorService.Ingress.Config.TransportProtocol",
             )
-            destination_routes = proto.RepeatedField(
+            destination_routes: MutableSequence[
+                "ClientConnectorService.Ingress.Config.DestinationRoute"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="ClientConnectorService.Ingress.Config.DestinationRoute",
             )
 
-        config = proto.Field(
+        config: "ClientConnectorService.Ingress.Config" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="ingress_config",
@@ -169,47 +171,47 @@ class ClientConnectorService(proto.Message):
                     the consumer project.
             """
 
-            network_vpc = proto.Field(
+            network_vpc: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        peered_vpc = proto.Field(
+        peered_vpc: "ClientConnectorService.Egress.PeeredVpc" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="destination_type",
             message="ClientConnectorService.Egress.PeeredVpc",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    ingress = proto.Field(
+    ingress: Ingress = proto.Field(
         proto.MESSAGE,
         number=6,
         message=Ingress,
     )
-    egress = proto.Field(
+    egress: Egress = proto.Field(
         proto.MESSAGE,
         number=7,
         message=Egress,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=8,
         enum=State,
@@ -237,23 +239,23 @@ class ListClientConnectorServicesRequest(proto.Message):
             Optional. Hint for how to order the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -263,12 +265,12 @@ class ListClientConnectorServicesResponse(proto.Message):
     r"""Message for response to listing ClientConnectorServices.
 
     Attributes:
-        client_connector_services (Sequence[google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService]):
+        client_connector_services (MutableSequence[google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService]):
             The list of ClientConnectorService.
         next_page_token (str):
             A token identifying a page of results the
             server should return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -276,16 +278,18 @@ class ListClientConnectorServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    client_connector_services = proto.RepeatedField(
+    client_connector_services: MutableSequence[
+        "ClientConnectorService"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ClientConnectorService",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -299,7 +303,7 @@ class GetClientConnectorServiceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -348,24 +352,24 @@ class CreateClientConnectorServiceRequest(proto.Message):
             resource in any way.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_connector_service_id = proto.Field(
+    client_connector_service_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    client_connector_service = proto.Field(
+    client_connector_service: "ClientConnectorService" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ClientConnectorService",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -413,25 +417,25 @@ class UpdateClientConnectorServiceRequest(proto.Message):
             resource if it is not found.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    client_connector_service = proto.Field(
+    client_connector_service: "ClientConnectorService" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ClientConnectorService",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -467,15 +471,15 @@ class DeleteClientConnectorServiceRequest(proto.Message):
             resource in any way.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -511,33 +515,33 @@ class ClientConnectorServiceOperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

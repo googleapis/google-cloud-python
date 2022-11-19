@@ -20,11 +20,13 @@ from google.cloud.beyondcorp_clientconnectorservices import (
 __version__ = package_version.__version__
 
 
-from .services.client_connector_services_service import (
+from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service.async_client import (
     ClientConnectorServicesServiceAsyncClient,
+)
+from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service.client import (
     ClientConnectorServicesServiceClient,
 )
-from .types.client_connector_services_service import (
+from google.cloud.beyondcorp_clientconnectorservices_v1.types.client_connector_services_service import (
     ClientConnectorService,
     ClientConnectorServiceOperationMetadata,
     CreateClientConnectorServiceRequest,
@@ -36,10 +38,10 @@ from .types.client_connector_services_service import (
 )
 
 __all__ = (
+    "ClientConnectorServicesServiceClient",
     "ClientConnectorServicesServiceAsyncClient",
     "ClientConnectorService",
     "ClientConnectorServiceOperationMetadata",
-    "ClientConnectorServicesServiceClient",
     "CreateClientConnectorServiceRequest",
     "DeleteClientConnectorServiceRequest",
     "GetClientConnectorServiceRequest",
