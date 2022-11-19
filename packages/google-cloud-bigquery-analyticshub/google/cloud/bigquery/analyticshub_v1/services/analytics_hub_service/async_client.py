@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -177,9 +187,9 @@ class AnalyticsHubServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AnalyticsHubServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the analytics hub service client.
@@ -223,11 +233,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def list_data_exchanges(
         self,
-        request: Union[analyticshub.ListDataExchangesRequest, dict] = None,
+        request: Optional[Union[analyticshub.ListDataExchangesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataExchangesAsyncPager:
         r"""Lists all data exchanges in a given project and
@@ -261,7 +271,7 @@ class AnalyticsHubServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.ListDataExchangesRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.ListDataExchangesRequest, dict]]):
                 The request object. Message for requesting the list of
                 data exchanges.
             parent (:class:`str`):
@@ -339,11 +349,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def list_org_data_exchanges(
         self,
-        request: Union[analyticshub.ListOrgDataExchangesRequest, dict] = None,
+        request: Optional[Union[analyticshub.ListOrgDataExchangesRequest, dict]] = None,
         *,
-        organization: str = None,
+        organization: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOrgDataExchangesAsyncPager:
         r"""Lists all data exchanges from projects in a given
@@ -377,7 +387,7 @@ class AnalyticsHubServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.ListOrgDataExchangesRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.ListOrgDataExchangesRequest, dict]]):
                 The request object. Message for requesting the list of
                 data exchanges from projects in an organization and
                 location.
@@ -460,11 +470,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def get_data_exchange(
         self,
-        request: Union[analyticshub.GetDataExchangeRequest, dict] = None,
+        request: Optional[Union[analyticshub.GetDataExchangeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.DataExchange:
         r"""Gets the details of a data exchange.
@@ -496,7 +506,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.GetDataExchangeRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.GetDataExchangeRequest, dict]]):
                 The request object. Message for getting a data exchange.
             name (:class:`str`):
                 Required. The resource name of the data exchange. e.g.
@@ -564,12 +574,12 @@ class AnalyticsHubServiceAsyncClient:
 
     async def create_data_exchange(
         self,
-        request: Union[analyticshub.CreateDataExchangeRequest, dict] = None,
+        request: Optional[Union[analyticshub.CreateDataExchangeRequest, dict]] = None,
         *,
-        parent: str = None,
-        data_exchange: analyticshub.DataExchange = None,
+        parent: Optional[str] = None,
+        data_exchange: Optional[analyticshub.DataExchange] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.DataExchange:
         r"""Creates a new data exchange.
@@ -606,7 +616,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.CreateDataExchangeRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.CreateDataExchangeRequest, dict]]):
                 The request object. Message for creating a data
                 exchange.
             parent (:class:`str`):
@@ -684,12 +694,12 @@ class AnalyticsHubServiceAsyncClient:
 
     async def update_data_exchange(
         self,
-        request: Union[analyticshub.UpdateDataExchangeRequest, dict] = None,
+        request: Optional[Union[analyticshub.UpdateDataExchangeRequest, dict]] = None,
         *,
-        data_exchange: analyticshub.DataExchange = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        data_exchange: Optional[analyticshub.DataExchange] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.DataExchange:
         r"""Updates an existing data exchange.
@@ -724,7 +734,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.UpdateDataExchangeRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.UpdateDataExchangeRequest, dict]]):
                 The request object. Message for updating a data
                 exchange.
             data_exchange (:class:`google.cloud.bigquery.analyticshub_v1.types.DataExchange`):
@@ -806,11 +816,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def delete_data_exchange(
         self,
-        request: Union[analyticshub.DeleteDataExchangeRequest, dict] = None,
+        request: Optional[Union[analyticshub.DeleteDataExchangeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing data exchange.
@@ -839,7 +849,7 @@ class AnalyticsHubServiceAsyncClient:
                 await client.delete_data_exchange(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.DeleteDataExchangeRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.DeleteDataExchangeRequest, dict]]):
                 The request object. Message for deleting a data
                 exchange.
             name (:class:`str`):
@@ -897,11 +907,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def list_listings(
         self,
-        request: Union[analyticshub.ListListingsRequest, dict] = None,
+        request: Optional[Union[analyticshub.ListListingsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListListingsAsyncPager:
         r"""Lists all listings in a given project and location.
@@ -934,7 +944,7 @@ class AnalyticsHubServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.ListListingsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.ListListingsRequest, dict]]):
                 The request object. Message for requesting the list of
                 listings.
             parent (:class:`str`):
@@ -1012,11 +1022,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def get_listing(
         self,
-        request: Union[analyticshub.GetListingRequest, dict] = None,
+        request: Optional[Union[analyticshub.GetListingRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.Listing:
         r"""Gets the details of a listing.
@@ -1048,7 +1058,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.GetListingRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.GetListingRequest, dict]]):
                 The request object. Message for getting a listing.
             name (:class:`str`):
                 Required. The resource name of the listing. e.g.
@@ -1117,12 +1127,12 @@ class AnalyticsHubServiceAsyncClient:
 
     async def create_listing(
         self,
-        request: Union[analyticshub.CreateListingRequest, dict] = None,
+        request: Optional[Union[analyticshub.CreateListingRequest, dict]] = None,
         *,
-        parent: str = None,
-        listing: analyticshub.Listing = None,
+        parent: Optional[str] = None,
+        listing: Optional[analyticshub.Listing] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.Listing:
         r"""Creates a new listing.
@@ -1159,7 +1169,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.CreateListingRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.CreateListingRequest, dict]]):
                 The request object. Message for creating a listing.
             parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
@@ -1235,12 +1245,12 @@ class AnalyticsHubServiceAsyncClient:
 
     async def update_listing(
         self,
-        request: Union[analyticshub.UpdateListingRequest, dict] = None,
+        request: Optional[Union[analyticshub.UpdateListingRequest, dict]] = None,
         *,
-        listing: analyticshub.Listing = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        listing: Optional[analyticshub.Listing] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.Listing:
         r"""Updates an existing listing.
@@ -1275,7 +1285,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.UpdateListingRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.UpdateListingRequest, dict]]):
                 The request object. Message for updating a Listing.
             listing (:class:`google.cloud.bigquery.analyticshub_v1.types.Listing`):
                 Required. The listing to update.
@@ -1355,11 +1365,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def delete_listing(
         self,
-        request: Union[analyticshub.DeleteListingRequest, dict] = None,
+        request: Optional[Union[analyticshub.DeleteListingRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a listing.
@@ -1388,7 +1398,7 @@ class AnalyticsHubServiceAsyncClient:
                 await client.delete_listing(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.DeleteListingRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.DeleteListingRequest, dict]]):
                 The request object. Message for deleting a listing.
             name (:class:`str`):
                 Required. Resource name of the listing to delete. e.g.
@@ -1444,11 +1454,11 @@ class AnalyticsHubServiceAsyncClient:
 
     async def subscribe_listing(
         self,
-        request: Union[analyticshub.SubscribeListingRequest, dict] = None,
+        request: Optional[Union[analyticshub.SubscribeListingRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.SubscribeListingResponse:
         r"""Subscribes to a listing.
@@ -1491,7 +1501,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.analyticshub_v1.types.SubscribeListingRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery.analyticshub_v1.types.SubscribeListingRequest, dict]]):
                 The request object. Message for subscribing to a
                 listing.
             name (:class:`str`):
@@ -1558,10 +1568,10 @@ class AnalyticsHubServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy.
@@ -1594,7 +1604,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1701,10 +1711,10 @@ class AnalyticsHubServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM policy.
@@ -1737,7 +1747,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1844,10 +1854,10 @@ class AnalyticsHubServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has.
@@ -1881,7 +1891,7 @@ class AnalyticsHubServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
