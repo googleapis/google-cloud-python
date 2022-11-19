@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,26 +43,32 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.beyondcorp_clientgateways_v1.services.client_gateways_service import (
-    pagers,
-)
-from google.cloud.beyondcorp_clientgateways_v1.types import client_gateways_service
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import ClientGatewaysServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ClientGatewaysServiceGrpcAsyncIOTransport
+
+from google.cloud.beyondcorp_clientgateways_v1.services.client_gateways_service import (
+    pagers,
+)
+from google.cloud.beyondcorp_clientgateways_v1.types import client_gateways_service
+
 from .client import ClientGatewaysServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, ClientGatewaysServiceTransport
+from .transports.grpc_asyncio import ClientGatewaysServiceGrpcAsyncIOTransport
 
 
 class ClientGatewaysServiceAsyncClient:
-    """API Overview: The ``beyondcorp.googleapis.com`` service implements the Google
+    """API Overview:
+
+    The ``beyondcorp.googleapis.com`` service implements the Google
     Cloud BeyondCorp API.
 
-    Data Model: The ClientGatewaysService exposes the following resources:
+    Data Model:
+
+    The ClientGatewaysService exposes the following resources:
 
     -  Client Gateways, named as follows:
        ``projects/{project_id}/locations/{location_id}/clientGateways/{client_gateway_id}``.
@@ -180,9 +196,9 @@ class ClientGatewaysServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ClientGatewaysServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the client gateways service client.
@@ -226,11 +242,13 @@ class ClientGatewaysServiceAsyncClient:
 
     async def list_client_gateways(
         self,
-        request: Union[client_gateways_service.ListClientGatewaysRequest, dict] = None,
+        request: Optional[
+            Union[client_gateways_service.ListClientGatewaysRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClientGatewaysAsyncPager:
         r"""Lists ClientGateways in a given project and location.
@@ -263,7 +281,7 @@ class ClientGatewaysServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientgateways_v1.types.ListClientGatewaysRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientgateways_v1.types.ListClientGatewaysRequest, dict]]):
                 The request object. Message for requesting list of
                 ClientGateways.
             parent (:class:`str`):
@@ -341,11 +359,13 @@ class ClientGatewaysServiceAsyncClient:
 
     async def get_client_gateway(
         self,
-        request: Union[client_gateways_service.GetClientGatewayRequest, dict] = None,
+        request: Optional[
+            Union[client_gateways_service.GetClientGatewayRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> client_gateways_service.ClientGateway:
         r"""Gets details of a single ClientGateway.
@@ -377,7 +397,7 @@ class ClientGatewaysServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientgateways_v1.types.GetClientGatewayRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientgateways_v1.types.GetClientGatewayRequest, dict]]):
                 The request object. Message for getting a ClientGateway.
             name (:class:`str`):
                 Required. Name of the resource
@@ -440,13 +460,15 @@ class ClientGatewaysServiceAsyncClient:
 
     async def create_client_gateway(
         self,
-        request: Union[client_gateways_service.CreateClientGatewayRequest, dict] = None,
+        request: Optional[
+            Union[client_gateways_service.CreateClientGatewayRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        client_gateway: client_gateways_service.ClientGateway = None,
-        client_gateway_id: str = None,
+        parent: Optional[str] = None,
+        client_gateway: Optional[client_gateways_service.ClientGateway] = None,
+        client_gateway_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new ClientGateway in a given project and
@@ -487,7 +509,7 @@ class ClientGatewaysServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientgateways_v1.types.CreateClientGatewayRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientgateways_v1.types.CreateClientGatewayRequest, dict]]):
                 The request object. Message for creating a
                 ClientGateway.
             parent (:class:`str`):
@@ -582,11 +604,13 @@ class ClientGatewaysServiceAsyncClient:
 
     async def delete_client_gateway(
         self,
-        request: Union[client_gateways_service.DeleteClientGatewayRequest, dict] = None,
+        request: Optional[
+            Union[client_gateways_service.DeleteClientGatewayRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single ClientGateway.
@@ -622,7 +646,7 @@ class ClientGatewaysServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.beyondcorp_clientgateways_v1.types.DeleteClientGatewayRequest, dict]):
+            request (Optional[Union[google.cloud.beyondcorp_clientgateways_v1.types.DeleteClientGatewayRequest, dict]]):
                 The request object. Message for deleting a ClientGateway
             name (:class:`str`):
                 Required. Name of the resource
@@ -703,10 +727,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -757,10 +781,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -811,10 +835,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -866,10 +890,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -920,10 +944,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1040,10 +1064,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1161,10 +1185,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -1220,10 +1244,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1274,10 +1298,10 @@ class ClientGatewaysServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

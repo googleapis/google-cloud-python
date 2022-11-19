@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.clientgateways.v1",
@@ -66,30 +66,30 @@ class ClientGateway(proto.Message):
         DOWN = 5
         ERROR = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    client_connector_service = proto.Field(
+    client_connector_service: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -116,23 +116,23 @@ class ListClientGatewaysRequest(proto.Message):
             Optional. Hint for how to order the results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -142,12 +142,12 @@ class ListClientGatewaysResponse(proto.Message):
     r"""Message for response to listing ClientGateways.
 
     Attributes:
-        client_gateways (Sequence[google.cloud.beyondcorp_clientgateways_v1.types.ClientGateway]):
+        client_gateways (MutableSequence[google.cloud.beyondcorp_clientgateways_v1.types.ClientGateway]):
             The list of ClientGateway.
         next_page_token (str):
             A token identifying a page of results the
             server should return.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -155,16 +155,16 @@ class ListClientGatewaysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    client_gateways = proto.RepeatedField(
+    client_gateways: MutableSequence["ClientGateway"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ClientGateway",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -178,7 +178,7 @@ class GetClientGatewayRequest(proto.Message):
             Required. Name of the resource
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -223,24 +223,24 @@ class CreateClientGatewayRequest(proto.Message):
             resource in any way.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_gateway_id = proto.Field(
+    client_gateway_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    client_gateway = proto.Field(
+    client_gateway: "ClientGateway" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ClientGateway",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -276,15 +276,15 @@ class DeleteClientGatewayRequest(proto.Message):
             resource in any way.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -320,33 +320,33 @@ class ClientGatewayOperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

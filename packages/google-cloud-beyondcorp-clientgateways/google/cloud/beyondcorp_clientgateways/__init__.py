@@ -18,11 +18,13 @@ from google.cloud.beyondcorp_clientgateways import gapic_version as package_vers
 __version__ = package_version.__version__
 
 
-from .services.client_gateways_service import (
+from google.cloud.beyondcorp_clientgateways_v1.services.client_gateways_service.async_client import (
     ClientGatewaysServiceAsyncClient,
+)
+from google.cloud.beyondcorp_clientgateways_v1.services.client_gateways_service.client import (
     ClientGatewaysServiceClient,
 )
-from .types.client_gateways_service import (
+from google.cloud.beyondcorp_clientgateways_v1.types.client_gateways_service import (
     ClientGateway,
     ClientGatewayOperationMetadata,
     CreateClientGatewayRequest,
@@ -33,10 +35,10 @@ from .types.client_gateways_service import (
 )
 
 __all__ = (
+    "ClientGatewaysServiceClient",
     "ClientGatewaysServiceAsyncClient",
     "ClientGateway",
     "ClientGatewayOperationMetadata",
-    "ClientGatewaysServiceClient",
     "CreateClientGatewayRequest",
     "DeleteClientGatewayRequest",
     "GetClientGatewayRequest",

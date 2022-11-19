@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ClientGatewaysServiceAsyncClient
-from .client import ClientGatewaysServiceClient
-
-__all__ = (
-    "ClientGatewaysServiceClient",
-    "ClientGatewaysServiceAsyncClient",
-)
+__version__ = "0.1.3"  # {x-release-please-version}

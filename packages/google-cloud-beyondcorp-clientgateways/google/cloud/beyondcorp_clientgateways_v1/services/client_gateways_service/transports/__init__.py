@@ -20,7 +20,6 @@ from .base import ClientGatewaysServiceTransport
 from .grpc import ClientGatewaysServiceGrpcTransport
 from .grpc_asyncio import ClientGatewaysServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
