@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.dataexchange.v1beta1",
@@ -92,31 +92,31 @@ class DataExchange(proto.Message):
             using JSON on the wire.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    primary_contact = proto.Field(
+    primary_contact: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    documentation = proto.Field(
+    documentation: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    listing_count = proto.Field(
+    listing_count: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    icon = proto.Field(
+    icon: bytes = proto.Field(
         proto.BYTES,
         number=7,
     )
@@ -133,11 +133,11 @@ class DataProvider(proto.Message):
             Max Length: 1000 bytes.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    primary_contact = proto.Field(
+    primary_contact: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -154,11 +154,11 @@ class Publisher(proto.Message):
             publisher. Max Length: 1000 bytes.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    primary_contact = proto.Field(
+    primary_contact: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -179,11 +179,11 @@ class DestinationDatasetReference(proto.Message):
             this dataset.
     """
 
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -201,7 +201,7 @@ class DestinationDataset(proto.Message):
         description (google.protobuf.wrappers_pb2.StringValue):
             Optional. A user-friendly description of the
             dataset.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The labels associated with this
             dataset. You can use these to organize and group
             your datasets. You can set this property when
@@ -215,27 +215,27 @@ class DestinationDataset(proto.Message):
             for supported locations.
     """
 
-    dataset_reference = proto.Field(
+    dataset_reference: "DestinationDatasetReference" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DestinationDatasetReference",
     )
-    friendly_name = proto.Field(
+    friendly_name: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.StringValue,
     )
-    description = proto.Field(
+    description: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=3,
         message=wrappers_pb2.StringValue,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -294,7 +294,7 @@ class Listing(proto.Message):
         data_provider (google.cloud.bigquery_data_exchange_v1beta1.types.DataProvider):
             Optional. Details of the data provider who
             owns the source data.
-        categories (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing.Category]):
+        categories (MutableSequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing.Category]):
             Optional. Categories of the listing. Up to
             two categories are allowed.
         publisher (google.cloud.bigquery_data_exchange_v1beta1.types.Publisher):
@@ -349,62 +349,62 @@ class Listing(proto.Message):
                 ``projects/myproject/datasets/123``
         """
 
-        dataset = proto.Field(
+        dataset: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    bigquery_dataset = proto.Field(
+    bigquery_dataset: BigQueryDatasetSource = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="source",
         message=BigQueryDatasetSource,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    primary_contact = proto.Field(
+    primary_contact: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    documentation = proto.Field(
+    documentation: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    icon = proto.Field(
+    icon: bytes = proto.Field(
         proto.BYTES,
         number=8,
     )
-    data_provider = proto.Field(
+    data_provider: "DataProvider" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="DataProvider",
     )
-    categories = proto.RepeatedField(
+    categories: MutableSequence[Category] = proto.RepeatedField(
         proto.ENUM,
         number=10,
         enum=Category,
     )
-    publisher = proto.Field(
+    publisher: "Publisher" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="Publisher",
     )
-    request_access = proto.Field(
+    request_access: str = proto.Field(
         proto.STRING,
         number=12,
     )
@@ -426,15 +426,15 @@ class ListDataExchangesRequest(proto.Message):
             request the next page of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -444,7 +444,7 @@ class ListDataExchangesResponse(proto.Message):
     r"""Message for response to the list of data exchanges.
 
     Attributes:
-        data_exchanges (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
+        data_exchanges (MutableSequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
             The list of data exchanges.
         next_page_token (str):
             A token to request the next page of results.
@@ -454,12 +454,12 @@ class ListDataExchangesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_exchanges = proto.RepeatedField(
+    data_exchanges: MutableSequence["DataExchange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataExchange",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -483,15 +483,15 @@ class ListOrgDataExchangesRequest(proto.Message):
             request the next page of results.
     """
 
-    organization = proto.Field(
+    organization: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -502,7 +502,7 @@ class ListOrgDataExchangesResponse(proto.Message):
     organization and location.
 
     Attributes:
-        data_exchanges (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
+        data_exchanges (MutableSequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
             The list of data exchanges.
         next_page_token (str):
             A token to request the next page of results.
@@ -512,12 +512,12 @@ class ListOrgDataExchangesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_exchanges = proto.RepeatedField(
+    data_exchanges: MutableSequence["DataExchange"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataExchange",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -532,7 +532,7 @@ class GetDataExchangeRequest(proto.Message):
             ``projects/myproject/locations/US/dataExchanges/123``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -554,15 +554,15 @@ class CreateDataExchangeRequest(proto.Message):
             Required. The data exchange to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_exchange_id = proto.Field(
+    data_exchange_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    data_exchange = proto.Field(
+    data_exchange: "DataExchange" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DataExchange",
@@ -582,12 +582,12 @@ class UpdateDataExchangeRequest(proto.Message):
             Required. The data exchange to update.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    data_exchange = proto.Field(
+    data_exchange: "DataExchange" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DataExchange",
@@ -604,7 +604,7 @@ class DeleteDataExchangeRequest(proto.Message):
             ``projects/myproject/locations/US/dataExchanges/123``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -626,15 +626,15 @@ class ListListingsRequest(proto.Message):
             request the next page of results.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -644,7 +644,7 @@ class ListListingsResponse(proto.Message):
     r"""Message for response to the list of Listings.
 
     Attributes:
-        listings (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing]):
+        listings (MutableSequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing]):
             The list of Listing.
         next_page_token (str):
             A token to request the next page of results.
@@ -654,12 +654,12 @@ class ListListingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    listings = proto.RepeatedField(
+    listings: MutableSequence["Listing"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Listing",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -674,7 +674,7 @@ class GetListingRequest(proto.Message):
             ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -696,15 +696,15 @@ class CreateListingRequest(proto.Message):
             Required. The listing to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    listing_id = proto.Field(
+    listing_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    listing = proto.Field(
+    listing: "Listing" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Listing",
@@ -723,12 +723,12 @@ class UpdateListingRequest(proto.Message):
             Required. The listing to update.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    listing = proto.Field(
+    listing: "Listing" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Listing",
@@ -744,7 +744,7 @@ class DeleteListingRequest(proto.Message):
             ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -767,13 +767,13 @@ class SubscribeListingRequest(proto.Message):
             ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
     """
 
-    destination_dataset = proto.Field(
+    destination_dataset: "DestinationDataset" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="destination",
         message="DestinationDataset",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

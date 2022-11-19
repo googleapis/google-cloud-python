@@ -20,7 +20,6 @@ from .base import AnalyticsHubServiceTransport
 from .grpc import AnalyticsHubServiceGrpcTransport
 from .grpc_asyncio import AnalyticsHubServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
