@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -53,15 +55,15 @@ class CreateConnectionRequest(proto.Message):
             Required. Connection to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connection_id = proto.Field(
+    connection_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    connection = proto.Field(
+    connection: "Connection" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Connection",
@@ -78,7 +80,7 @@ class GetConnectionRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/connections/{connection_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -98,15 +100,15 @@ class ListConnectionsRequest(proto.Message):
             Page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -119,7 +121,7 @@ class ListConnectionsResponse(proto.Message):
     Attributes:
         next_page_token (str):
             Next page token.
-        connections (Sequence[google.cloud.bigquery_connection_v1.types.Connection]):
+        connections (MutableSequence[google.cloud.bigquery_connection_v1.types.Connection]):
             List of connections.
     """
 
@@ -127,11 +129,11 @@ class ListConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connections = proto.RepeatedField(
+    connections: MutableSequence["Connection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Connection",
@@ -154,16 +156,16 @@ class UpdateConnectionRequest(proto.Message):
             fields to be updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connection = proto.Field(
+    connection: "Connection" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Connection",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -179,7 +181,7 @@ class DeleteConnectionRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/connections/{connection_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -236,57 +238,57 @@ class Connection(proto.Message):
             configured for this connection.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    friendly_name = proto.Field(
+    friendly_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cloud_sql = proto.Field(
+    cloud_sql: "CloudSqlProperties" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="properties",
         message="CloudSqlProperties",
     )
-    aws = proto.Field(
+    aws: "AwsProperties" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="properties",
         message="AwsProperties",
     )
-    azure = proto.Field(
+    azure: "AzureProperties" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="properties",
         message="AzureProperties",
     )
-    cloud_spanner = proto.Field(
+    cloud_spanner: "CloudSpannerProperties" = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="properties",
         message="CloudSpannerProperties",
     )
-    cloud_resource = proto.Field(
+    cloud_resource: "CloudResourceProperties" = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="properties",
         message="CloudResourceProperties",
     )
-    creation_time = proto.Field(
+    creation_time: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    last_modified_time = proto.Field(
+    last_modified_time: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    has_credential = proto.Field(
+    has_credential: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
@@ -321,25 +323,25 @@ class CloudSqlProperties(proto.Message):
         POSTGRES = 1
         MYSQL = 2
 
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: DatabaseType = proto.Field(
         proto.ENUM,
         number=3,
         enum=DatabaseType,
     )
-    credential = proto.Field(
+    credential: "CloudSqlCredential" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="CloudSqlCredential",
     )
-    service_account_id = proto.Field(
+    service_account_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -355,11 +357,11 @@ class CloudSqlCredential(proto.Message):
             The password for the credential.
     """
 
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -377,11 +379,11 @@ class CloudSpannerProperties(proto.Message):
             from Cloud Spanner
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    use_parallelism = proto.Field(
+    use_parallelism: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -411,13 +413,13 @@ class AwsProperties(proto.Message):
             This field is a member of `oneof`_ ``authentication_method``.
     """
 
-    cross_account_role = proto.Field(
+    cross_account_role: "AwsCrossAccountRole" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="authentication_method",
         message="AwsCrossAccountRole",
     )
-    access_role = proto.Field(
+    access_role: "AwsAccessRole" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="authentication_method",
@@ -444,15 +446,15 @@ class AwsCrossAccountRole(proto.Message):
             https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html
     """
 
-    iam_role_id = proto.Field(
+    iam_role_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    iam_user_id = proto.Field(
+    iam_user_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    external_id = proto.Field(
+    external_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -473,11 +475,11 @@ class AwsAccessRole(proto.Message):
             be used to access the user's AWS IAM Role.
     """
 
-    iam_role_id = proto.Field(
+    iam_role_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    identity = proto.Field(
+    identity: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -513,31 +515,31 @@ class AzureProperties(proto.Message):
             Azure Active Directory Application.
     """
 
-    application = proto.Field(
+    application: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_id = proto.Field(
+    client_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    object_id = proto.Field(
+    object_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    customer_tenant_id = proto.Field(
+    customer_tenant_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    redirect_uri = proto.Field(
+    redirect_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    federated_application_client_id = proto.Field(
+    federated_application_client_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    identity = proto.Field(
+    identity: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -564,7 +566,7 @@ class CloudResourceProperties(proto.Message):
             <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
     """
 
-    service_account_id = proto.Field(
+    service_account_id: str = proto.Field(
         proto.STRING,
         number=1,
     )

@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class ConnectionServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ConnectionServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -340,8 +351,8 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConnectionServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ConnectionServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the connection service client.
@@ -355,7 +366,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
             transport (Union[str, ConnectionServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -385,6 +396,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -437,13 +449,13 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def create_connection(
         self,
-        request: Union[gcbc_connection.CreateConnectionRequest, dict] = None,
+        request: Optional[Union[gcbc_connection.CreateConnectionRequest, dict]] = None,
         *,
-        parent: str = None,
-        connection: gcbc_connection.Connection = None,
-        connection_id: str = None,
+        parent: Optional[str] = None,
+        connection: Optional[gcbc_connection.Connection] = None,
+        connection_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbc_connection.Connection:
         r"""Creates a new connection.
@@ -558,11 +570,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def get_connection(
         self,
-        request: Union[connection.GetConnectionRequest, dict] = None,
+        request: Optional[Union[connection.GetConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> connection.Connection:
         r"""Returns specified connection.
@@ -661,11 +673,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def list_connections(
         self,
-        request: Union[connection.ListConnectionsRequest, dict] = None,
+        request: Optional[Union[connection.ListConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsPager:
         r"""Returns a list of connections in the given project.
@@ -777,13 +789,13 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def update_connection(
         self,
-        request: Union[gcbc_connection.UpdateConnectionRequest, dict] = None,
+        request: Optional[Union[gcbc_connection.UpdateConnectionRequest, dict]] = None,
         *,
-        name: str = None,
-        connection: gcbc_connection.Connection = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        connection: Optional[gcbc_connection.Connection] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbc_connection.Connection:
         r"""Updates the specified connection. For security
@@ -902,11 +914,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def delete_connection(
         self,
-        request: Union[connection.DeleteConnectionRequest, dict] = None,
+        request: Optional[Union[connection.DeleteConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes connection and associated credential.
@@ -992,11 +1004,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a resource.
@@ -1157,11 +1169,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified resource.
@@ -1324,12 +1336,12 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on the specified resource.
@@ -1382,7 +1394,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (Sequence[str]):
+            permissions (MutableSequence[str]):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
