@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
@@ -69,7 +71,7 @@ class Budget(proto.Message):
             filters.
         amount (google.cloud.billing.budgets_v1.types.BudgetAmount):
             Required. Budgeted amount.
-        threshold_rules (Sequence[google.cloud.billing.budgets_v1.types.ThresholdRule]):
+        threshold_rules (MutableSequence[google.cloud.billing.budgets_v1.types.ThresholdRule]):
             Optional. Rules that trigger alerts
             (notifications of thresholds being crossed) when
             spend exceeds the specified percentages of the
@@ -84,35 +86,35 @@ class Budget(proto.Message):
             other changes.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    budget_filter = proto.Field(
+    budget_filter: "Filter" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Filter",
     )
-    amount = proto.Field(
+    amount: "BudgetAmount" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="BudgetAmount",
     )
-    threshold_rules = proto.RepeatedField(
+    threshold_rules: MutableSequence["ThresholdRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="ThresholdRule",
     )
-    notifications_rule = proto.Field(
+    notifications_rule: "NotificationsRule" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="NotificationsRule",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -149,13 +151,13 @@ class BudgetAmount(proto.Message):
             This field is a member of `oneof`_ ``budget_amount``.
     """
 
-    specified_amount = proto.Field(
+    specified_amount: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="budget_amount",
         message=money_pb2.Money,
     )
-    last_period_amount = proto.Field(
+    last_period_amount: "LastPeriodAmount" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="budget_amount",
@@ -204,11 +206,11 @@ class ThresholdRule(proto.Message):
         CURRENT_SPEND = 1
         FORECASTED_SPEND = 2
 
-    threshold_percent = proto.Field(
+    threshold_percent: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    spend_basis = proto.Field(
+    spend_basis: Basis = proto.Field(
         proto.ENUM,
         number=2,
         enum=Basis,
@@ -241,7 +243,7 @@ class NotificationsRule(proto.Message):
             Only "1.0" is accepted. It represents the JSON schema as
             defined in
             https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
-        monitoring_notification_channels (Sequence[str]):
+        monitoring_notification_channels (MutableSequence[str]):
             Optional. Targets to send notifications to when a threshold
             is exceeded. This is in addition to default recipients who
             have billing account IAM roles. The value is the full REST
@@ -259,19 +261,19 @@ class NotificationsRule(proto.Message):
             Account User IAM roles for the target account.
     """
 
-    pubsub_topic = proto.Field(
+    pubsub_topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schema_version = proto.Field(
+    schema_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    monitoring_notification_channels = proto.RepeatedField(
+    monitoring_notification_channels: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    disable_default_iam_recipients = proto.Field(
+    disable_default_iam_recipients: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -289,14 +291,14 @@ class Filter(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        projects (Sequence[str]):
+        projects (MutableSequence[str]):
             Optional. A set of projects of the form
             ``projects/{project}``, specifying that usage from only this
             set of projects should be included in the budget. If
             omitted, the report will include all usage for the billing
             account, regardless of which project the usage occurred on.
             Only zero or one project can be specified currently.
-        credit_types (Sequence[str]):
+        credit_types (MutableSequence[str]):
             Optional. If
             [Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment]
             is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types
@@ -312,14 +314,14 @@ class Filter(proto.Message):
         credit_types_treatment (google.cloud.billing.budgets_v1.types.Filter.CreditTypesTreatment):
             Optional. If not set, default behavior is
             ``INCLUDE_ALL_CREDITS``.
-        services (Sequence[str]):
+        services (MutableSequence[str]):
             Optional. A set of services of the form
             ``services/{service_id}``, specifying that usage from only
             this set of services should be included in the budget. If
             omitted, the report will include usage for all the services.
             The service names are available through the Catalog API:
             https://cloud.google.com/billing/v1/how-tos/catalog-api.
-        subaccounts (Sequence[str]):
+        subaccounts (MutableSequence[str]):
             Optional. A set of subaccounts of the form
             ``billingAccounts/{account_id}``, specifying that usage from
             only this set of subaccounts should be included in the
@@ -327,7 +329,7 @@ class Filter(proto.Message):
             account, usage from the parent account will be included. If
             the field is omitted, the report will include usage from the
             parent account and all subaccounts, if they exist.
-        labels (Mapping[str, google.protobuf.struct_pb2.ListValue]):
+        labels (MutableMapping[str, google.protobuf.struct_pb2.ListValue]):
             Optional. A single label and value pair
             specifying that usage from only this set of
             labeled resources should be included in the
@@ -367,40 +369,40 @@ class Filter(proto.Message):
         EXCLUDE_ALL_CREDITS = 2
         INCLUDE_SPECIFIED_CREDITS = 3
 
-    projects = proto.RepeatedField(
+    projects: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    credit_types = proto.RepeatedField(
+    credit_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    credit_types_treatment = proto.Field(
+    credit_types_treatment: CreditTypesTreatment = proto.Field(
         proto.ENUM,
         number=4,
         enum=CreditTypesTreatment,
     )
-    services = proto.RepeatedField(
+    services: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    subaccounts = proto.RepeatedField(
+    subaccounts: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, struct_pb2.ListValue] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=6,
         message=struct_pb2.ListValue,
     )
-    calendar_period = proto.Field(
+    calendar_period: "CalendarPeriod" = proto.Field(
         proto.ENUM,
         number=8,
         oneof="usage_period",
         enum="CalendarPeriod",
     )
-    custom_period = proto.Field(
+    custom_period: "CustomPeriod" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="usage_period",
@@ -422,12 +424,12 @@ class CustomPeriod(proto.Message):
             track all usage incurred since the start_date.
     """
 
-    start_date = proto.Field(
+    start_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=1,
         message=date_pb2.Date,
     )
-    end_date = proto.Field(
+    end_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=2,
         message=date_pb2.Date,

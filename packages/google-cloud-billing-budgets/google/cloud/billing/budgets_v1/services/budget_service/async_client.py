@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -164,9 +174,9 @@ class BudgetServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BudgetServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the budget service client.
@@ -210,12 +220,12 @@ class BudgetServiceAsyncClient:
 
     async def create_budget(
         self,
-        request: Union[budget_service.CreateBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.CreateBudgetRequest, dict]] = None,
         *,
-        parent: str = None,
-        budget: budget_model.Budget = None,
+        parent: Optional[str] = None,
+        budget: Optional[budget_model.Budget] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Creates a new budget. See `Quotas and
@@ -250,7 +260,7 @@ class BudgetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1.types.CreateBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1.types.CreateBudgetRequest, dict]]):
                 The request object. Request for CreateBudget
             parent (:class:`str`):
                 Required. The name of the billing account to create the
@@ -330,12 +340,12 @@ class BudgetServiceAsyncClient:
 
     async def update_budget(
         self,
-        request: Union[budget_service.UpdateBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.UpdateBudgetRequest, dict]] = None,
         *,
-        budget: budget_model.Budget = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        budget: Optional[budget_model.Budget] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Updates a budget and returns the updated budget.
@@ -370,7 +380,7 @@ class BudgetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1.types.UpdateBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1.types.UpdateBudgetRequest, dict]]):
                 The request object. Request for UpdateBudget
             budget (:class:`google.cloud.billing.budgets_v1.types.Budget`):
                 Required. The updated budget object.
@@ -468,11 +478,11 @@ class BudgetServiceAsyncClient:
 
     async def get_budget(
         self,
-        request: Union[budget_service.GetBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.GetBudgetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Returns a budget.
@@ -509,7 +519,7 @@ class BudgetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1.types.GetBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1.types.GetBudgetRequest, dict]]):
                 The request object. Request for GetBudget
             name (:class:`str`):
                 Required. Name of budget to get. Values are of the form
@@ -591,11 +601,11 @@ class BudgetServiceAsyncClient:
 
     async def list_budgets(
         self,
-        request: Union[budget_service.ListBudgetsRequest, dict] = None,
+        request: Optional[Union[budget_service.ListBudgetsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBudgetsAsyncPager:
         r"""Returns a list of budgets for a billing account.
@@ -633,7 +643,7 @@ class BudgetServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1.types.ListBudgetsRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1.types.ListBudgetsRequest, dict]]):
                 The request object. Request for ListBudgets
             parent (:class:`str`):
                 Required. Name of billing account to list budgets under.
@@ -720,11 +730,11 @@ class BudgetServiceAsyncClient:
 
     async def delete_budget(
         self,
-        request: Union[budget_service.DeleteBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.DeleteBudgetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a budget. Returns successfully if already
@@ -754,7 +764,7 @@ class BudgetServiceAsyncClient:
                 await client.delete_budget(request=request)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1.types.DeleteBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1.types.DeleteBudgetRequest, dict]]):
                 The request object. Request for DeleteBudget
             name (:class:`str`):
                 Required. Name of the budget to delete. Values are of

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -162,9 +172,9 @@ class BudgetServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BudgetServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the budget service client.
@@ -208,10 +218,10 @@ class BudgetServiceAsyncClient:
 
     async def create_budget(
         self,
-        request: Union[budget_service.CreateBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.CreateBudgetRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Creates a new budget. See `Quotas and
@@ -246,7 +256,7 @@ class BudgetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1beta1.types.CreateBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1beta1.types.CreateBudgetRequest, dict]]):
                 The request object. Request for CreateBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -297,10 +307,10 @@ class BudgetServiceAsyncClient:
 
     async def update_budget(
         self,
-        request: Union[budget_service.UpdateBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.UpdateBudgetRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Updates a budget and returns the updated budget.
@@ -335,7 +345,7 @@ class BudgetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1beta1.types.UpdateBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1beta1.types.UpdateBudgetRequest, dict]]):
                 The request object. Request for UpdateBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -398,10 +408,10 @@ class BudgetServiceAsyncClient:
 
     async def get_budget(
         self,
-        request: Union[budget_service.GetBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.GetBudgetRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Returns a budget.
@@ -438,7 +448,7 @@ class BudgetServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1beta1.types.GetBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1beta1.types.GetBudgetRequest, dict]]):
                 The request object. Request for GetBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -499,10 +509,10 @@ class BudgetServiceAsyncClient:
 
     async def list_budgets(
         self,
-        request: Union[budget_service.ListBudgetsRequest, dict] = None,
+        request: Optional[Union[budget_service.ListBudgetsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBudgetsAsyncPager:
         r"""Returns a list of budgets for a billing account.
@@ -540,7 +550,7 @@ class BudgetServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest, dict]]):
                 The request object. Request for ListBudgets
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -605,10 +615,10 @@ class BudgetServiceAsyncClient:
 
     async def delete_budget(
         self,
-        request: Union[budget_service.DeleteBudgetRequest, dict] = None,
+        request: Optional[Union[budget_service.DeleteBudgetRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a budget. Returns successfully if already
@@ -638,7 +648,7 @@ class BudgetServiceAsyncClient:
                 await client.delete_budget(request=request)
 
         Args:
-            request (Union[google.cloud.billing.budgets_v1beta1.types.DeleteBudgetRequest, dict]):
+            request (Optional[Union[google.cloud.billing.budgets_v1beta1.types.DeleteBudgetRequest, dict]]):
                 The request object. Request for DeleteBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

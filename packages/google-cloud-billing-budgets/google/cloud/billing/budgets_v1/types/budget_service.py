@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -43,11 +45,11 @@ class CreateBudgetRequest(proto.Message):
             Required. Budget to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    budget = proto.Field(
+    budget: budget_model.Budget = proto.Field(
         proto.MESSAGE,
         number=2,
         message=budget_model.Budget,
@@ -71,12 +73,12 @@ class UpdateBudgetRequest(proto.Message):
             for more details about default values.
     """
 
-    budget = proto.Field(
+    budget: budget_model.Budget = proto.Field(
         proto.MESSAGE,
         number=1,
         message=budget_model.Budget,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -92,7 +94,7 @@ class GetBudgetRequest(proto.Message):
             ``billingAccounts/{billingAccountId}/budgets/{budgetId}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -117,15 +119,15 @@ class ListBudgetsRequest(proto.Message):
             system should return the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -135,7 +137,7 @@ class ListBudgetsResponse(proto.Message):
     r"""Response for ListBudgets
 
     Attributes:
-        budgets (Sequence[google.cloud.billing.budgets_v1.types.Budget]):
+        budgets (MutableSequence[google.cloud.billing.budgets_v1.types.Budget]):
             List of the budgets owned by the requested
             billing account.
         next_page_token (str):
@@ -148,12 +150,12 @@ class ListBudgetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    budgets = proto.RepeatedField(
+    budgets: MutableSequence[budget_model.Budget] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=budget_model.Budget,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -169,7 +171,7 @@ class DeleteBudgetRequest(proto.Message):
             ``billingAccounts/{billingAccountId}/budgets/{budgetId}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

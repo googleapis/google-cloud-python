@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.billing.budgets import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.billing.budgets_v1.services.budget_service.async_client import (
     BudgetServiceAsyncClient,
