@@ -2643,6 +2643,7 @@ def test_create_job_rest(request_type):
                                 "device_name": "device_name_value",
                             }
                         ],
+                        "reservation": "reservation_value",
                     },
                     "instances": [
                         {
@@ -3018,6 +3019,7 @@ def test_create_job_rest_bad_request(
                                 "device_name": "device_name_value",
                             }
                         ],
+                        "reservation": "reservation_value",
                     },
                     "instances": [
                         {

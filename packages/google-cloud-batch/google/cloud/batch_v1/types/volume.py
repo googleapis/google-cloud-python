@@ -28,9 +28,8 @@ __protobuf__ = proto.module(
 
 
 class Volume(proto.Message):
-    r"""Volume and mount parameters to be associated with a TaskSpec.
-    A TaskSpec might describe zero, one, or multiple volumes to be
-    mounted as part of the task.
+    r"""Volume describes a volume and parameters for it to be mounted
+    to a VM.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -41,28 +40,39 @@ class Volume(proto.Message):
 
     Attributes:
         nfs (google.cloud.batch_v1.types.NFS):
-            An NFS source for the volume (could be a
-            Filestore, for example).
+            A Network File System (NFS) volume. For
+            example, a Filestore file share.
 
             This field is a member of `oneof`_ ``source``.
         gcs (google.cloud.batch_v1.types.GCS):
-            A Google Cloud Storage source for the volume.
+            A Google Cloud Storage (GCS) volume.
 
             This field is a member of `oneof`_ ``source``.
         device_name (str):
-            Device name of an attached disk
+            Device name of an attached disk volume, which should align
+            with a device_name specified by
+            job.allocation_policy.instances[0].policy.disks[i].device_name
+            or defined by the given instance template in
+            job.allocation_policy.instances[0].instance_template.
 
             This field is a member of `oneof`_ ``source``.
         mount_path (str):
-            Mount path for the volume, e.g. /mnt/share
+            The mount path for the volume, e.g.
+            /mnt/disks/share.
         mount_options (MutableSequence[str]):
-            Mount options For Google Cloud Storage, mount options are
-            the global options supported by gcsfuse tool. Batch will use
-            them to mount the volume with the following command:
-            "gcsfuse [global options] bucket mountpoint". For PD, NFS,
-            mount options are these supported by /etc/fstab. Batch will
-            use Fstab to mount such volumes.
-            https://help.ubuntu.com/community/Fstab
+            For Google Cloud Storage (GCS), mount options
+            are the options supported by the gcsfuse tool
+            (https://github.com/GoogleCloudPlatform/gcsfuse).
+            For existing persistent disks, mount options
+            provided by the mount command
+            (https://man7.org/linux/man-pages/man8/mount.8.html)
+            except writing are supported. This is due to
+            restrictions of multi-writer mode
+            (https://cloud.google.com/compute/docs/disks/sharing-disks-between-vms).
+            For other attached disks and Network File System
+            (NFS), mount options are these supported by the
+            mount command
+            (https://man7.org/linux/man-pages/man8/mount.8.html).
     """
 
     nfs: "NFS" = proto.Field(
@@ -93,14 +103,14 @@ class Volume(proto.Message):
 
 
 class NFS(proto.Message):
-    r"""Represents an NFS server and remote path: :<remote_path>
+    r"""Represents an NFS volume.
 
     Attributes:
         server (str):
-            URI of the NFS server, e.g. an IP address.
+            The IP address of the NFS.
         remote_path (str):
-            Remote source path exported from NFS, e.g.,
-            "/share".
+            Remote source path exported from the NFS,
+            e.g., "/share".
     """
 
     server: str = proto.Field(
@@ -114,7 +124,7 @@ class NFS(proto.Message):
 
 
 class GCS(proto.Message):
-    r"""Represents a Google Cloud Storage volume source config.
+    r"""Represents a Google Cloud Storage volume.
 
     Attributes:
         remote_path (str):

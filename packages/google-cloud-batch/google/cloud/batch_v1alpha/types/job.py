@@ -408,7 +408,7 @@ class AllocationPolicy(proto.Message):
             Deprecated: please use instances[0].template instead.
         provisioning_models (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel]):
             Deprecated: please use
-            instances[i].policy.provisioning_model instead.
+            instances[0].policy.provisioning_model instead.
         service_account_email (str):
             Deprecated: please use service_account instead.
         service_account (google.cloud.batch_v1alpha.types.ServiceAccount):
@@ -525,8 +525,8 @@ class AllocationPolicy(proto.Message):
         )
 
     class AttachedDisk(proto.Message):
-        r"""A new or an existing persistent disk or a local ssd attached
-        to a VM instance.
+        r"""A new or an existing persistent disk (PD) or a local ssd
+        attached to a VM instance.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -568,7 +568,7 @@ class AllocationPolicy(proto.Message):
 
     class Accelerator(proto.Message):
         r"""Accelerator describes Compute Engine accelerators to be
-        attached to VMs.
+        attached to the VM.
 
         Attributes:
             type_ (str):
@@ -611,11 +611,14 @@ class AllocationPolicy(proto.Message):
                 The provisioning model.
             accelerators (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.Accelerator]):
                 The accelerators attached to each VM
-                instance. Not yet implemented.
+                instance.
             disks (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
-                be deleted when the attached VM is deleted.
+                be deleted when the VM is deleted.
+            reservation (str):
+                If specified, VMs will be allocated only
+                inside the matching reservation.
         """
 
         allowed_machine_types: MutableSequence[str] = proto.RepeatedField(
@@ -646,6 +649,10 @@ class AllocationPolicy(proto.Message):
             proto.MESSAGE,
             number=6,
             message="AllocationPolicy.AttachedDisk",
+        )
+        reservation: str = proto.Field(
+            proto.STRING,
+            number=7,
         )
 
     class InstancePolicyOrTemplate(proto.Message):
