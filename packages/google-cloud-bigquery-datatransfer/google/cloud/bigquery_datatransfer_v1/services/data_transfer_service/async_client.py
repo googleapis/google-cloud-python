@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -177,9 +187,9 @@ class DataTransferServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DataTransferServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the data transfer service client.
@@ -223,11 +233,11 @@ class DataTransferServiceAsyncClient:
 
     async def get_data_source(
         self,
-        request: Union[datatransfer.GetDataSourceRequest, dict] = None,
+        request: Optional[Union[datatransfer.GetDataSourceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.DataSource:
         r"""Retrieves a supported data source and returns its
@@ -260,7 +270,7 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest, dict]]):
                 The request object. A request to get data source info.
             name (:class:`str`):
                 Required. The field will contain name of the resource
@@ -338,11 +348,11 @@ class DataTransferServiceAsyncClient:
 
     async def list_data_sources(
         self,
-        request: Union[datatransfer.ListDataSourcesRequest, dict] = None,
+        request: Optional[Union[datatransfer.ListDataSourcesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataSourcesAsyncPager:
         r"""Lists supported data sources and returns their
@@ -376,14 +386,14 @@ class DataTransferServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest, dict]]):
                 The request object. Request to list supported data
                 sources and their data transfer settings.
             parent (:class:`str`):
                 Required. The BigQuery project id for which data sources
                 should be returned. Must be in the form:
                 ``projects/{project_id}`` or
-                \`projects/{project_id}/locations/{location_id}
+                ``projects/{project_id}/locations/{location_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -466,12 +476,12 @@ class DataTransferServiceAsyncClient:
 
     async def create_transfer_config(
         self,
-        request: Union[datatransfer.CreateTransferConfigRequest, dict] = None,
+        request: Optional[Union[datatransfer.CreateTransferConfigRequest, dict]] = None,
         *,
-        parent: str = None,
-        transfer_config: transfer.TransferConfig = None,
+        parent: Optional[str] = None,
+        transfer_config: Optional[transfer.TransferConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Creates a new data transfer configuration.
@@ -507,13 +517,13 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest, dict]]):
                 The request object. A request to create a data transfer
                 configuration. If new credentials are needed for this
-                transfer configuration, an authorization code must be
-                provided. If an authorization code is provided, the
+                transfer configuration, authorization info must be
+                provided. If authorization info is provided, the
                 transfer configuration will be associated with the user
-                id corresponding to the authorization code. Otherwise,
+                id corresponding to the authorization info. Otherwise,
                 the transfer configuration will be associated with the
                 calling user.
             parent (:class:`str`):
@@ -598,12 +608,12 @@ class DataTransferServiceAsyncClient:
 
     async def update_transfer_config(
         self,
-        request: Union[datatransfer.UpdateTransferConfigRequest, dict] = None,
+        request: Optional[Union[datatransfer.UpdateTransferConfigRequest, dict]] = None,
         *,
-        transfer_config: transfer.TransferConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        transfer_config: Optional[transfer.TransferConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Updates a data transfer configuration.
@@ -639,11 +649,10 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest, dict]]):
                 The request object. A request to update a transfer
                 configuration. To update the user id of the transfer
-                configuration, an authorization code needs to be
-                provided.
+                configuration, authorization info needs to be provided.
             transfer_config (:class:`google.cloud.bigquery_datatransfer_v1.types.TransferConfig`):
                 Required. Data transfer configuration
                 to create.
@@ -724,11 +733,11 @@ class DataTransferServiceAsyncClient:
 
     async def delete_transfer_config(
         self,
-        request: Union[datatransfer.DeleteTransferConfigRequest, dict] = None,
+        request: Optional[Union[datatransfer.DeleteTransferConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a data transfer configuration, including any
@@ -758,7 +767,7 @@ class DataTransferServiceAsyncClient:
                 await client.delete_transfer_config(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]]):
                 The request object. A request to delete data transfer
                 information. All associated transfer runs and log
                 messages will be deleted as well.
@@ -828,11 +837,11 @@ class DataTransferServiceAsyncClient:
 
     async def get_transfer_config(
         self,
-        request: Union[datatransfer.GetTransferConfigRequest, dict] = None,
+        request: Optional[Union[datatransfer.GetTransferConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Returns information about a data transfer config.
@@ -864,7 +873,7 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest, dict]]):
                 The request object. A request to get data transfer
                 information.
             name (:class:`str`):
@@ -948,11 +957,11 @@ class DataTransferServiceAsyncClient:
 
     async def list_transfer_configs(
         self,
-        request: Union[datatransfer.ListTransferConfigsRequest, dict] = None,
+        request: Optional[Union[datatransfer.ListTransferConfigsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferConfigsAsyncPager:
         r"""Returns information about all transfer configs owned
@@ -986,12 +995,12 @@ class DataTransferServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest, dict]]):
                 The request object. A request to list data transfers
                 configured for a BigQuery project.
             parent (:class:`str`):
-                Required. The BigQuery project id for which data sources
-                should be returned: ``projects/{project_id}`` or
+                Required. The BigQuery project id for which transfer
+                configs should be returned: ``projects/{project_id}`` or
                 ``projects/{project_id}/locations/{location_id}``
 
                 This corresponds to the ``parent`` field
@@ -1075,13 +1084,13 @@ class DataTransferServiceAsyncClient:
 
     async def schedule_transfer_runs(
         self,
-        request: Union[datatransfer.ScheduleTransferRunsRequest, dict] = None,
+        request: Optional[Union[datatransfer.ScheduleTransferRunsRequest, dict]] = None,
         *,
-        parent: str = None,
-        start_time: timestamp_pb2.Timestamp = None,
-        end_time: timestamp_pb2.Timestamp = None,
+        parent: Optional[str] = None,
+        start_time: Optional[timestamp_pb2.Timestamp] = None,
+        end_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.ScheduleTransferRunsResponse:
         r"""Creates transfer runs for a time range [start_time, end_time].
@@ -1117,7 +1126,7 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest, dict]]):
                 The request object. A request to schedule transfer runs
                 for a time range.
             parent (:class:`str`):
@@ -1207,10 +1216,12 @@ class DataTransferServiceAsyncClient:
 
     async def start_manual_transfer_runs(
         self,
-        request: Union[datatransfer.StartManualTransferRunsRequest, dict] = None,
+        request: Optional[
+            Union[datatransfer.StartManualTransferRunsRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.StartManualTransferRunsResponse:
         r"""Start manual transfer runs to be executed now with schedule_time
@@ -1244,7 +1255,7 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest, dict]]):
                 The request object. A request to start manual transfer
                 runs.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1289,11 +1300,11 @@ class DataTransferServiceAsyncClient:
 
     async def get_transfer_run(
         self,
-        request: Union[datatransfer.GetTransferRunRequest, dict] = None,
+        request: Optional[Union[datatransfer.GetTransferRunRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferRun:
         r"""Returns information about the particular transfer
@@ -1326,7 +1337,7 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest, dict]]):
                 The request object. A request to get data transfer run
                 information.
             name (:class:`str`):
@@ -1403,11 +1414,11 @@ class DataTransferServiceAsyncClient:
 
     async def delete_transfer_run(
         self,
-        request: Union[datatransfer.DeleteTransferRunRequest, dict] = None,
+        request: Optional[Union[datatransfer.DeleteTransferRunRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified transfer run.
@@ -1436,7 +1447,7 @@ class DataTransferServiceAsyncClient:
                 await client.delete_transfer_run(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest, dict]]):
                 The request object. A request to delete data transfer
                 run information.
             name (:class:`str`):
@@ -1506,11 +1517,11 @@ class DataTransferServiceAsyncClient:
 
     async def list_transfer_runs(
         self,
-        request: Union[datatransfer.ListTransferRunsRequest, dict] = None,
+        request: Optional[Union[datatransfer.ListTransferRunsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferRunsAsyncPager:
         r"""Returns information about running and completed
@@ -1544,7 +1555,7 @@ class DataTransferServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest, dict]]):
                 The request object. A request to list data transfer
                 runs.
             parent (:class:`str`):
@@ -1635,11 +1646,11 @@ class DataTransferServiceAsyncClient:
 
     async def list_transfer_logs(
         self,
-        request: Union[datatransfer.ListTransferLogsRequest, dict] = None,
+        request: Optional[Union[datatransfer.ListTransferLogsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferLogsAsyncPager:
         r"""Returns log messages for the transfer run.
@@ -1672,7 +1683,7 @@ class DataTransferServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest, dict]]):
                 The request object. A request to get user facing log
                 messages associated with data transfer run.
             parent (:class:`str`):
@@ -1762,11 +1773,11 @@ class DataTransferServiceAsyncClient:
 
     async def check_valid_creds(
         self,
-        request: Union[datatransfer.CheckValidCredsRequest, dict] = None,
+        request: Optional[Union[datatransfer.CheckValidCredsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.CheckValidCredsResponse:
         r"""Returns true if valid credentials exist for the given
@@ -1799,7 +1810,7 @@ class DataTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest, dict]]):
                 The request object. A request to determine whether the
                 user has valid credentials. This method is used to limit
                 the number of OAuth popups in the user interface. The
@@ -1883,20 +1894,21 @@ class DataTransferServiceAsyncClient:
 
     async def enroll_data_sources(
         self,
-        request: Union[datatransfer.EnrollDataSourcesRequest, dict] = None,
+        request: Optional[Union[datatransfer.EnrollDataSourcesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Enroll data sources in a user project. This allows
-        users to create transfer configurations for these data
-        sources. They will also appear in the ListDataSources
-        RPC and as such, will appear in the BigQuery UI
-        'https://bigquery.cloud.google.com' (and the documents
-        can be found at
-        https://cloud.google.com/bigquery/bigquery-web-ui and
-        https://cloud.google.com/bigquery/docs/working-with-transfers).
+        r"""Enroll data sources in a user project. This allows users to
+        create transfer configurations for these data sources. They will
+        also appear in the ListDataSources RPC and as such, will appear
+        in the `BigQuery
+        UI <https://console.cloud.google.com/bigquery>`__, and the
+        documents can be found in the public guide for `BigQuery Web
+        UI <https://cloud.google.com/bigquery/bigquery-web-ui>`__ and
+        `Data Transfer
+        Service <https://cloud.google.com/bigquery/docs/working-with-transfers>`__.
 
         .. code-block:: python
 
@@ -1921,7 +1933,7 @@ class DataTransferServiceAsyncClient:
                 await client.enroll_data_sources(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]]):
                 The request object. A request to enroll a set of data
                 sources so they are visible in the BigQuery UI's
                 `Transfer` tab.

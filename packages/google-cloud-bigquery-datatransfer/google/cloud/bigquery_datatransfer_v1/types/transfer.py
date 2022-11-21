@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -61,7 +63,7 @@ class EmailPreferences(proto.Message):
             transfer run failures.
     """
 
-    enable_failure_email = proto.Field(
+    enable_failure_email: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -95,16 +97,16 @@ class ScheduleOptions(proto.Message):
             option.
     """
 
-    disable_auto_scheduling = proto.Field(
+    disable_auto_scheduling: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -121,7 +123,7 @@ class UserInfo(proto.Message):
             This field is a member of `oneof`_ ``_email``.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
         optional=True,
@@ -155,8 +157,11 @@ class TransferConfig(proto.Message):
             User specified display name for the data
             transfer.
         data_source_id (str):
-            Data source id. Cannot be changed once data
-            transfer is created.
+            Data source ID. This cannot be changed once
+            data transfer is created. The full list of
+            available data source IDs can be returned
+            through an API call:
+            https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
         params (google.protobuf.struct_pb2.Struct):
             Parameters specific to each data source. For
             more information see the bq tab in the 'Setting
@@ -226,78 +231,78 @@ class TransferConfig(proto.Message):
             This field is a member of `oneof`_ ``_owner_info``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination_dataset_id = proto.Field(
+    destination_dataset_id: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="destination",
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_source_id = proto.Field(
+    data_source_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    params = proto.Field(
+    params: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=9,
         message=struct_pb2.Struct,
     )
-    schedule = proto.Field(
+    schedule: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    schedule_options = proto.Field(
+    schedule_options: "ScheduleOptions" = proto.Field(
         proto.MESSAGE,
         number=24,
         message="ScheduleOptions",
     )
-    data_refresh_window_days = proto.Field(
+    data_refresh_window_days: int = proto.Field(
         proto.INT32,
         number=12,
     )
-    disabled = proto.Field(
+    disabled: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    next_run_time = proto.Field(
+    next_run_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: "TransferState" = proto.Field(
         proto.ENUM,
         number=10,
         enum="TransferState",
     )
-    user_id = proto.Field(
+    user_id: int = proto.Field(
         proto.INT64,
         number=11,
     )
-    dataset_region = proto.Field(
+    dataset_region: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    notification_pubsub_topic = proto.Field(
+    notification_pubsub_topic: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    email_preferences = proto.Field(
+    email_preferences: "EmailPreferences" = proto.Field(
         proto.MESSAGE,
         number=18,
         message="EmailPreferences",
     )
-    owner_info = proto.Field(
+    owner_info: "UserInfo" = proto.Field(
         proto.MESSAGE,
         number=27,
         optional=True,
@@ -373,72 +378,72 @@ class TransferRun(proto.Message):
             this run was derived from.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schedule_time = proto.Field(
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    run_time = proto.Field(
+    run_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    error_status = proto.Field(
+    error_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=21,
         message=status_pb2.Status,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    params = proto.Field(
+    params: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=9,
         message=struct_pb2.Struct,
     )
-    destination_dataset_id = proto.Field(
+    destination_dataset_id: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="destination",
     )
-    data_source_id = proto.Field(
+    data_source_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: "TransferState" = proto.Field(
         proto.ENUM,
         number=8,
         enum="TransferState",
     )
-    user_id = proto.Field(
+    user_id: int = proto.Field(
         proto.INT64,
         number=11,
     )
-    schedule = proto.Field(
+    schedule: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    notification_pubsub_topic = proto.Field(
+    notification_pubsub_topic: str = proto.Field(
         proto.STRING,
         number=23,
     )
-    email_preferences = proto.Field(
+    email_preferences: "EmailPreferences" = proto.Field(
         proto.MESSAGE,
         number=25,
         message="EmailPreferences",
@@ -465,17 +470,17 @@ class TransferMessage(proto.Message):
         WARNING = 2
         ERROR = 3
 
-    message_time = proto.Field(
+    message_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: MessageSeverity = proto.Field(
         proto.ENUM,
         number=2,
         enum=MessageSeverity,
     )
-    message_text = proto.Field(
+    message_text: str = proto.Field(
         proto.STRING,
         number=3,
     )

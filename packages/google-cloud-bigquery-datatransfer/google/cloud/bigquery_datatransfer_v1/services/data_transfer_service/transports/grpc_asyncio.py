@@ -50,7 +50,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
     def create_channel(
         cls,
         host: str = "bigquerydatatransfer.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -93,15 +93,15 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         self,
         *,
         host: str = "bigquerydatatransfer.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
+        channel: Optional[aio.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
@@ -651,14 +651,15 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
     ) -> Callable[[datatransfer.EnrollDataSourcesRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the enroll data sources method over gRPC.
 
-        Enroll data sources in a user project. This allows
-        users to create transfer configurations for these data
-        sources. They will also appear in the ListDataSources
-        RPC and as such, will appear in the BigQuery UI
-        'https://bigquery.cloud.google.com' (and the documents
-        can be found at
-        https://cloud.google.com/bigquery/bigquery-web-ui and
-        https://cloud.google.com/bigquery/docs/working-with-transfers).
+        Enroll data sources in a user project. This allows users to
+        create transfer configurations for these data sources. They will
+        also appear in the ListDataSources RPC and as such, will appear
+        in the `BigQuery
+        UI <https://console.cloud.google.com/bigquery>`__, and the
+        documents can be found in the public guide for `BigQuery Web
+        UI <https://cloud.google.com/bigquery/bigquery-web-ui>`__ and
+        `Data Transfer
+        Service <https://cloud.google.com/bigquery/docs/working-with-transfers>`__.
 
         Returns:
             Callable[[~.EnrollDataSourcesRequest],
