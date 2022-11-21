@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -118,33 +120,33 @@ class Reservation(proto.Message):
             organization's default region.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    slot_capacity = proto.Field(
+    slot_capacity: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    ignore_idle_slots = proto.Field(
+    ignore_idle_slots: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    concurrency = proto.Field(
+    concurrency: int = proto.Field(
         proto.INT64,
         number=16,
     )
-    creation_time = proto.Field(
+    creation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    multi_region_auxiliary = proto.Field(
+    multi_region_auxiliary: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
@@ -223,45 +225,45 @@ class CapacityCommitment(proto.Message):
         ACTIVE = 2
         FAILED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    slot_count = proto.Field(
+    slot_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    plan = proto.Field(
+    plan: CommitmentPlan = proto.Field(
         proto.ENUM,
         number=3,
         enum=CommitmentPlan,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    commitment_start_time = proto.Field(
+    commitment_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    commitment_end_time = proto.Field(
+    commitment_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    failure_status = proto.Field(
+    failure_status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=7,
         message=status_pb2.Status,
     )
-    renewal_plan = proto.Field(
+    renewal_plan: CommitmentPlan = proto.Field(
         proto.ENUM,
         number=8,
         enum=CommitmentPlan,
     )
-    multi_region_auxiliary = proto.Field(
+    multi_region_auxiliary: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
@@ -284,15 +286,15 @@ class CreateReservationRequest(proto.Message):
             Definition of the new reservation to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reservation_id = proto.Field(
+    reservation_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    reservation = proto.Field(
+    reservation: "Reservation" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Reservation",
@@ -315,15 +317,15 @@ class ListReservationsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -334,7 +336,7 @@ class ListReservationsResponse(proto.Message):
     [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
 
     Attributes:
-        reservations (Sequence[google.cloud.bigquery_reservation_v1.types.Reservation]):
+        reservations (MutableSequence[google.cloud.bigquery_reservation_v1.types.Reservation]):
             List of reservations visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -346,12 +348,12 @@ class ListReservationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reservations = proto.RepeatedField(
+    reservations: MutableSequence["Reservation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Reservation",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -368,7 +370,7 @@ class GetReservationRequest(proto.Message):
             ``projects/myproject/locations/US/reservations/team1-prod``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -385,7 +387,7 @@ class DeleteReservationRequest(proto.Message):
             ``projects/myproject/locations/US/reservations/team1-prod``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -403,12 +405,12 @@ class UpdateReservationRequest(proto.Message):
             be updated.
     """
 
-    reservation = proto.Field(
+    reservation: "Reservation" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Reservation",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -439,20 +441,20 @@ class CreateCapacityCommitmentRequest(proto.Message):
             split or merged.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    capacity_commitment = proto.Field(
+    capacity_commitment: "CapacityCommitment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CapacityCommitment",
     )
-    enforce_single_admin_project_per_org = proto.Field(
+    enforce_single_admin_project_per_org: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    capacity_commitment_id = proto.Field(
+    capacity_commitment_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -473,15 +475,15 @@ class ListCapacityCommitmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -492,7 +494,7 @@ class ListCapacityCommitmentsResponse(proto.Message):
     [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
 
     Attributes:
-        capacity_commitments (Sequence[google.cloud.bigquery_reservation_v1.types.CapacityCommitment]):
+        capacity_commitments (MutableSequence[google.cloud.bigquery_reservation_v1.types.CapacityCommitment]):
             List of capacity commitments visible to the
             user.
         next_page_token (str):
@@ -505,12 +507,12 @@ class ListCapacityCommitmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    capacity_commitments = proto.RepeatedField(
+    capacity_commitments: MutableSequence["CapacityCommitment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CapacityCommitment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -527,7 +529,7 @@ class GetCapacityCommitmentRequest(proto.Message):
             ``projects/myproject/locations/US/capacityCommitments/123``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -549,11 +551,11 @@ class DeleteCapacityCommitmentRequest(proto.Message):
             longer have access to slots.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -571,12 +573,12 @@ class UpdateCapacityCommitmentRequest(proto.Message):
             be updated.
     """
 
-    capacity_commitment = proto.Field(
+    capacity_commitment: "CapacityCommitment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CapacityCommitment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -596,11 +598,11 @@ class SplitCapacityCommitmentRequest(proto.Message):
             after the split.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    slot_count = proto.Field(
+    slot_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -618,12 +620,12 @@ class SplitCapacityCommitmentResponse(proto.Message):
             split.
     """
 
-    first = proto.Field(
+    first: "CapacityCommitment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CapacityCommitment",
     )
-    second = proto.Field(
+    second: "CapacityCommitment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CapacityCommitment",
@@ -638,7 +640,7 @@ class MergeCapacityCommitmentsRequest(proto.Message):
         parent (str):
             Parent resource that identifies admin project and location
             e.g., ``projects/myproject/locations/us``
-        capacity_commitment_ids (Sequence[str]):
+        capacity_commitment_ids (MutableSequence[str]):
             Ids of capacity commitments to merge.
             These capacity commitments must exist under
             admin project and location specified in the
@@ -648,11 +650,11 @@ class MergeCapacityCommitmentsRequest(proto.Message):
             projects/myproject/locations/US/capacityCommitments/abc
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    capacity_commitment_ids = proto.RepeatedField(
+    capacity_commitment_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -696,20 +698,20 @@ class Assignment(proto.Message):
         PENDING = 1
         ACTIVE = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    assignee = proto.Field(
+    assignee: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    job_type = proto.Field(
+    job_type: JobType = proto.Field(
         proto.ENUM,
         number=3,
         enum=JobType,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
@@ -736,16 +738,16 @@ class CreateAssignmentRequest(proto.Message):
             64 characters.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    assignment = proto.Field(
+    assignment: "Assignment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Assignment",
     )
-    assignment_id = proto.Field(
+    assignment_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -772,15 +774,15 @@ class ListAssignmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -791,7 +793,7 @@ class ListAssignmentsResponse(proto.Message):
     [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
 
     Attributes:
-        assignments (Sequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
+        assignments (MutableSequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
             List of assignments visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -803,12 +805,12 @@ class ListAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(
+    assignments: MutableSequence["Assignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Assignment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -826,7 +828,7 @@ class DeleteAssignmentRequest(proto.Message):
             ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -859,19 +861,19 @@ class SearchAssignmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -904,19 +906,19 @@ class SearchAllAssignmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -927,7 +929,7 @@ class SearchAssignmentsResponse(proto.Message):
     [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
 
     Attributes:
-        assignments (Sequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
+        assignments (MutableSequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
             List of assignments visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -939,12 +941,12 @@ class SearchAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(
+    assignments: MutableSequence["Assignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Assignment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -955,7 +957,7 @@ class SearchAllAssignmentsResponse(proto.Message):
     [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
 
     Attributes:
-        assignments (Sequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
+        assignments (MutableSequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
             List of assignments visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -967,12 +969,12 @@ class SearchAllAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(
+    assignments: MutableSequence["Assignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Assignment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -998,11 +1000,11 @@ class MoveAssignmentRequest(proto.Message):
             ``projects/myotherproject/locations/US/reservations/team2-prod``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination_id = proto.Field(
+    destination_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1020,12 +1022,12 @@ class UpdateAssignmentRequest(proto.Message):
             be updated.
     """
 
-    assignment = proto.Field(
+    assignment: "Assignment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Assignment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1045,15 +1047,15 @@ class TableReference(proto.Message):
             The ID of the table in the above dataset.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1072,24 +1074,24 @@ class BiReservation(proto.Message):
             reservation.
         size (int):
             Size of a reservation, in bytes.
-        preferred_tables (Sequence[google.cloud.bigquery_reservation_v1.types.TableReference]):
+        preferred_tables (MutableSequence[google.cloud.bigquery_reservation_v1.types.TableReference]):
             Preferred tables to use BI capacity for.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    size = proto.Field(
+    size: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    preferred_tables = proto.RepeatedField(
+    preferred_tables: MutableSequence["TableReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="TableReference",
@@ -1105,7 +1107,7 @@ class GetBiReservationRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/biReservation``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1122,12 +1124,12 @@ class UpdateBiReservationRequest(proto.Message):
             request.
     """
 
-    bi_reservation = proto.Field(
+    bi_reservation: "BiReservation" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="BiReservation",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,

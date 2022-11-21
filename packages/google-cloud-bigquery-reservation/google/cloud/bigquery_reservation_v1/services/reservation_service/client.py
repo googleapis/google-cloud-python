@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -64,7 +75,7 @@ class ReservationServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ReservationServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -424,8 +435,8 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ReservationServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ReservationServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the reservation service client.
@@ -439,7 +450,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
             transport (Union[str, ReservationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -469,6 +480,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -521,13 +533,15 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def create_reservation(
         self,
-        request: Union[gcbr_reservation.CreateReservationRequest, dict] = None,
+        request: Optional[
+            Union[gcbr_reservation.CreateReservationRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        reservation: gcbr_reservation.Reservation = None,
-        reservation_id: str = None,
+        parent: Optional[str] = None,
+        reservation: Optional[gcbr_reservation.Reservation] = None,
+        reservation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
         r"""Creates a new reservation resource.
@@ -646,11 +660,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def list_reservations(
         self,
-        request: Union[reservation.ListReservationsRequest, dict] = None,
+        request: Optional[Union[reservation.ListReservationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsPager:
         r"""Lists all the reservations for the project in the
@@ -762,11 +776,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def get_reservation(
         self,
-        request: Union[reservation.GetReservationRequest, dict] = None,
+        request: Optional[Union[reservation.GetReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Reservation:
         r"""Returns information about the reservation.
@@ -865,11 +879,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def delete_reservation(
         self,
-        request: Union[reservation.DeleteReservationRequest, dict] = None,
+        request: Optional[Union[reservation.DeleteReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a reservation. Returns
@@ -958,12 +972,14 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def update_reservation(
         self,
-        request: Union[gcbr_reservation.UpdateReservationRequest, dict] = None,
+        request: Optional[
+            Union[gcbr_reservation.UpdateReservationRequest, dict]
+        ] = None,
         *,
-        reservation: gcbr_reservation.Reservation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        reservation: Optional[gcbr_reservation.Reservation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
         r"""Updates an existing reservation resource.
@@ -1069,12 +1085,14 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def create_capacity_commitment(
         self,
-        request: Union[reservation.CreateCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.CreateCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        capacity_commitment: reservation.CapacityCommitment = None,
+        parent: Optional[str] = None,
+        capacity_commitment: Optional[reservation.CapacityCommitment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Creates a new capacity commitment resource.
@@ -1195,11 +1213,13 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def list_capacity_commitments(
         self,
-        request: Union[reservation.ListCapacityCommitmentsRequest, dict] = None,
+        request: Optional[
+            Union[reservation.ListCapacityCommitmentsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCapacityCommitmentsPager:
         r"""Lists all the capacity commitments for the admin
@@ -1313,11 +1333,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def get_capacity_commitment(
         self,
-        request: Union[reservation.GetCapacityCommitmentRequest, dict] = None,
+        request: Optional[Union[reservation.GetCapacityCommitmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Returns information about the capacity commitment.
@@ -1428,11 +1448,13 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def delete_capacity_commitment(
         self,
-        request: Union[reservation.DeleteCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.DeleteCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a capacity commitment. Attempting to delete capacity
@@ -1523,12 +1545,14 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def update_capacity_commitment(
         self,
-        request: Union[reservation.UpdateCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.UpdateCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        capacity_commitment: reservation.CapacityCommitment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        capacity_commitment: Optional[reservation.CapacityCommitment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Updates an existing capacity commitment.
@@ -1657,12 +1681,14 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def split_capacity_commitment(
         self,
-        request: Union[reservation.SplitCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.SplitCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        slot_count: int = None,
+        name: Optional[str] = None,
+        slot_count: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.SplitCapacityCommitmentResponse:
         r"""Splits capacity commitment to two commitments of the same plan
@@ -1779,12 +1805,14 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def merge_capacity_commitments(
         self,
-        request: Union[reservation.MergeCapacityCommitmentsRequest, dict] = None,
+        request: Optional[
+            Union[reservation.MergeCapacityCommitmentsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        capacity_commitment_ids: Sequence[str] = None,
+        parent: Optional[str] = None,
+        capacity_commitment_ids: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Merges capacity commitments of the same plan into a single
@@ -1834,7 +1862,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            capacity_commitment_ids (Sequence[str]):
+            capacity_commitment_ids (MutableSequence[str]):
                 Ids of capacity commitments to merge.
                 These capacity commitments must exist
                 under admin project and location
@@ -1918,12 +1946,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def create_assignment(
         self,
-        request: Union[reservation.CreateAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.CreateAssignmentRequest, dict]] = None,
         *,
-        parent: str = None,
-        assignment: reservation.Assignment = None,
+        parent: Optional[str] = None,
+        assignment: Optional[reservation.Assignment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Creates an assignment object which allows the given project to
@@ -2069,11 +2097,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def list_assignments(
         self,
-        request: Union[reservation.ListAssignmentsRequest, dict] = None,
+        request: Optional[Union[reservation.ListAssignmentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssignmentsPager:
         r"""Lists assignments.
@@ -2210,11 +2238,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def delete_assignment(
         self,
-        request: Union[reservation.DeleteAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.DeleteAssignmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a assignment. No expansion will happen.
@@ -2317,12 +2345,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def search_assignments(
         self,
-        request: Union[reservation.SearchAssignmentsRequest, dict] = None,
+        request: Optional[Union[reservation.SearchAssignmentsRequest, dict]] = None,
         *,
-        parent: str = None,
-        query: str = None,
+        parent: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAssignmentsPager:
         r"""Deprecated: Looks up assignments for a specified resource for a
@@ -2479,12 +2507,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def search_all_assignments(
         self,
-        request: Union[reservation.SearchAllAssignmentsRequest, dict] = None,
+        request: Optional[Union[reservation.SearchAllAssignmentsRequest, dict]] = None,
         *,
-        parent: str = None,
-        query: str = None,
+        parent: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllAssignmentsPager:
         r"""Looks up assignments for a specified resource for a particular
@@ -2634,12 +2662,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def move_assignment(
         self,
-        request: Union[reservation.MoveAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.MoveAssignmentRequest, dict]] = None,
         *,
-        name: str = None,
-        destination_id: str = None,
+        name: Optional[str] = None,
+        destination_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Moves an assignment under a new reservation.
@@ -2757,12 +2785,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def update_assignment(
         self,
-        request: Union[reservation.UpdateAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.UpdateAssignmentRequest, dict]] = None,
         *,
-        assignment: reservation.Assignment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        assignment: Optional[reservation.Assignment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Updates an existing assignment.
@@ -2871,11 +2899,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def get_bi_reservation(
         self,
-        request: Union[reservation.GetBiReservationRequest, dict] = None,
+        request: Optional[Union[reservation.GetBiReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
         r"""Retrieves a BI reservation.
@@ -2972,12 +3000,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
     def update_bi_reservation(
         self,
-        request: Union[reservation.UpdateBiReservationRequest, dict] = None,
+        request: Optional[Union[reservation.UpdateBiReservationRequest, dict]] = None,
         *,
-        bi_reservation: reservation.BiReservation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        bi_reservation: Optional[reservation.BiReservation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
         r"""Updates a BI reservation.

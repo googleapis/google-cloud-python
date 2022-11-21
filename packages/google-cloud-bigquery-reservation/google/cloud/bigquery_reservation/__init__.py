@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.bigquery_reservation import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.bigquery_reservation_v1.services.reservation_service.async_client import (
     ReservationServiceAsyncClient,

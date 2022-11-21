@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -197,9 +207,9 @@ class ReservationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ReservationServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the reservation service client.
@@ -243,13 +253,15 @@ class ReservationServiceAsyncClient:
 
     async def create_reservation(
         self,
-        request: Union[gcbr_reservation.CreateReservationRequest, dict] = None,
+        request: Optional[
+            Union[gcbr_reservation.CreateReservationRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        reservation: gcbr_reservation.Reservation = None,
-        reservation_id: str = None,
+        parent: Optional[str] = None,
+        reservation: Optional[gcbr_reservation.Reservation] = None,
+        reservation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
         r"""Creates a new reservation resource.
@@ -281,7 +293,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.CreateReservationRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.CreateReservationRequest, dict]]):
                 The request object. The request for
                 [ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation].
             parent (:class:`str`):
@@ -368,11 +380,11 @@ class ReservationServiceAsyncClient:
 
     async def list_reservations(
         self,
-        request: Union[reservation.ListReservationsRequest, dict] = None,
+        request: Optional[Union[reservation.ListReservationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsAsyncPager:
         r"""Lists all the reservations for the project in the
@@ -406,7 +418,7 @@ class ReservationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.ListReservationsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.ListReservationsRequest, dict]]):
                 The request object. The request for
                 [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
             parent (:class:`str`):
@@ -494,11 +506,11 @@ class ReservationServiceAsyncClient:
 
     async def get_reservation(
         self,
-        request: Union[reservation.GetReservationRequest, dict] = None,
+        request: Optional[Union[reservation.GetReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Reservation:
         r"""Returns information about the reservation.
@@ -530,7 +542,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.GetReservationRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.GetReservationRequest, dict]]):
                 The request object. The request for
                 [ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation].
             name (:class:`str`):
@@ -607,11 +619,11 @@ class ReservationServiceAsyncClient:
 
     async def delete_reservation(
         self,
-        request: Union[reservation.DeleteReservationRequest, dict] = None,
+        request: Optional[Union[reservation.DeleteReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a reservation. Returns
@@ -642,7 +654,7 @@ class ReservationServiceAsyncClient:
                 await client.delete_reservation(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.DeleteReservationRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.DeleteReservationRequest, dict]]):
                 The request object. The request for
                 [ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation].
             name (:class:`str`):
@@ -710,12 +722,14 @@ class ReservationServiceAsyncClient:
 
     async def update_reservation(
         self,
-        request: Union[gcbr_reservation.UpdateReservationRequest, dict] = None,
+        request: Optional[
+            Union[gcbr_reservation.UpdateReservationRequest, dict]
+        ] = None,
         *,
-        reservation: gcbr_reservation.Reservation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        reservation: Optional[gcbr_reservation.Reservation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
         r"""Updates an existing reservation resource.
@@ -746,7 +760,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.UpdateReservationRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.UpdateReservationRequest, dict]]):
                 The request object. The request for
                 [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation].
             reservation (:class:`google.cloud.bigquery_reservation_v1.types.Reservation`):
@@ -821,12 +835,14 @@ class ReservationServiceAsyncClient:
 
     async def create_capacity_commitment(
         self,
-        request: Union[reservation.CreateCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.CreateCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        capacity_commitment: reservation.CapacityCommitment = None,
+        parent: Optional[str] = None,
+        capacity_commitment: Optional[reservation.CapacityCommitment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Creates a new capacity commitment resource.
@@ -858,7 +874,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.CreateCapacityCommitmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.CreateCapacityCommitmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment].
             parent (:class:`str`):
@@ -945,11 +961,13 @@ class ReservationServiceAsyncClient:
 
     async def list_capacity_commitments(
         self,
-        request: Union[reservation.ListCapacityCommitmentsRequest, dict] = None,
+        request: Optional[
+            Union[reservation.ListCapacityCommitmentsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCapacityCommitmentsAsyncPager:
         r"""Lists all the capacity commitments for the admin
@@ -983,7 +1001,7 @@ class ReservationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsRequest, dict]]):
                 The request object. The request for
                 [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
             parent (:class:`str`):
@@ -1071,11 +1089,11 @@ class ReservationServiceAsyncClient:
 
     async def get_capacity_commitment(
         self,
-        request: Union[reservation.GetCapacityCommitmentRequest, dict] = None,
+        request: Optional[Union[reservation.GetCapacityCommitmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Returns information about the capacity commitment.
@@ -1107,7 +1125,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.GetCapacityCommitmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.GetCapacityCommitmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment].
             name (:class:`str`):
@@ -1196,11 +1214,13 @@ class ReservationServiceAsyncClient:
 
     async def delete_capacity_commitment(
         self,
-        request: Union[reservation.DeleteCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.DeleteCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a capacity commitment. Attempting to delete capacity
@@ -1231,7 +1251,7 @@ class ReservationServiceAsyncClient:
                 await client.delete_capacity_commitment(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.DeleteCapacityCommitmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.DeleteCapacityCommitmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment].
             name (:class:`str`):
@@ -1299,12 +1319,14 @@ class ReservationServiceAsyncClient:
 
     async def update_capacity_commitment(
         self,
-        request: Union[reservation.UpdateCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.UpdateCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        capacity_commitment: reservation.CapacityCommitment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        capacity_commitment: Optional[reservation.CapacityCommitment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Updates an existing capacity commitment.
@@ -1342,7 +1364,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.UpdateCapacityCommitmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.UpdateCapacityCommitmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment].
             capacity_commitment (:class:`google.cloud.bigquery_reservation_v1.types.CapacityCommitment`):
@@ -1431,12 +1453,14 @@ class ReservationServiceAsyncClient:
 
     async def split_capacity_commitment(
         self,
-        request: Union[reservation.SplitCapacityCommitmentRequest, dict] = None,
+        request: Optional[
+            Union[reservation.SplitCapacityCommitmentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        slot_count: int = None,
+        name: Optional[str] = None,
+        slot_count: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.SplitCapacityCommitmentResponse:
         r"""Splits capacity commitment to two commitments of the same plan
@@ -1476,7 +1500,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.SplitCapacityCommitmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.SplitCapacityCommitmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
             name (:class:`str`):
@@ -1551,12 +1575,14 @@ class ReservationServiceAsyncClient:
 
     async def merge_capacity_commitments(
         self,
-        request: Union[reservation.MergeCapacityCommitmentsRequest, dict] = None,
+        request: Optional[
+            Union[reservation.MergeCapacityCommitmentsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        capacity_commitment_ids: Sequence[str] = None,
+        parent: Optional[str] = None,
+        capacity_commitment_ids: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
         r"""Merges capacity commitments of the same plan into a single
@@ -1596,7 +1622,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.MergeCapacityCommitmentsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.MergeCapacityCommitmentsRequest, dict]]):
                 The request object. The request for
                 [ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments].
             parent (:class:`str`):
@@ -1606,7 +1632,7 @@ class ReservationServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            capacity_commitment_ids (:class:`Sequence[str]`):
+            capacity_commitment_ids (:class:`MutableSequence[str]`):
                 Ids of capacity commitments to merge.
                 These capacity commitments must exist
                 under admin project and location
@@ -1688,12 +1714,12 @@ class ReservationServiceAsyncClient:
 
     async def create_assignment(
         self,
-        request: Union[reservation.CreateAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.CreateAssignmentRequest, dict]] = None,
         *,
-        parent: str = None,
-        assignment: reservation.Assignment = None,
+        parent: Optional[str] = None,
+        assignment: Optional[reservation.Assignment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Creates an assignment object which allows the given project to
@@ -1762,7 +1788,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.CreateAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.CreateAssignmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment].
                 Note: "bigquery.reservationAssignments.create"
@@ -1839,11 +1865,11 @@ class ReservationServiceAsyncClient:
 
     async def list_assignments(
         self,
-        request: Union[reservation.ListAssignmentsRequest, dict] = None,
+        request: Optional[Union[reservation.ListAssignmentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssignmentsAsyncPager:
         r"""Lists assignments.
@@ -1897,7 +1923,7 @@ class ReservationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.ListAssignmentsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.ListAssignmentsRequest, dict]]):
                 The request object. The request for
                 [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
             parent (:class:`str`):
@@ -1990,11 +2016,11 @@ class ReservationServiceAsyncClient:
 
     async def delete_assignment(
         self,
-        request: Union[reservation.DeleteAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.DeleteAssignmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a assignment. No expansion will happen.
@@ -2038,7 +2064,7 @@ class ReservationServiceAsyncClient:
                 await client.delete_assignment(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.DeleteAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.DeleteAssignmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment].
                 Note: "bigquery.reservationAssignments.delete"
@@ -2107,12 +2133,12 @@ class ReservationServiceAsyncClient:
 
     async def search_assignments(
         self,
-        request: Union[reservation.SearchAssignmentsRequest, dict] = None,
+        request: Optional[Union[reservation.SearchAssignmentsRequest, dict]] = None,
         *,
-        parent: str = None,
-        query: str = None,
+        parent: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAssignmentsAsyncPager:
         r"""Deprecated: Looks up assignments for a specified resource for a
@@ -2169,7 +2195,7 @@ class ReservationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.SearchAssignmentsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.SearchAssignmentsRequest, dict]]):
                 The request object. The request for
                 [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
                 Note: "bigquery.reservationAssignments.search"
@@ -2279,12 +2305,12 @@ class ReservationServiceAsyncClient:
 
     async def search_all_assignments(
         self,
-        request: Union[reservation.SearchAllAssignmentsRequest, dict] = None,
+        request: Optional[Union[reservation.SearchAllAssignmentsRequest, dict]] = None,
         *,
-        parent: str = None,
-        query: str = None,
+        parent: Optional[str] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllAssignmentsAsyncPager:
         r"""Looks up assignments for a specified resource for a particular
@@ -2339,7 +2365,7 @@ class ReservationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsRequest, dict]]):
                 The request object. The request for
                 [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
                 Note: "bigquery.reservationAssignments.search"
@@ -2434,12 +2460,12 @@ class ReservationServiceAsyncClient:
 
     async def move_assignment(
         self,
-        request: Union[reservation.MoveAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.MoveAssignmentRequest, dict]] = None,
         *,
-        name: str = None,
-        destination_id: str = None,
+        name: Optional[str] = None,
+        destination_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Moves an assignment under a new reservation.
@@ -2475,7 +2501,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.MoveAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.MoveAssignmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment].
                 **Note**: "bigquery.reservationAssignments.create"
@@ -2557,12 +2583,12 @@ class ReservationServiceAsyncClient:
 
     async def update_assignment(
         self,
-        request: Union[reservation.UpdateAssignmentRequest, dict] = None,
+        request: Optional[Union[reservation.UpdateAssignmentRequest, dict]] = None,
         *,
-        assignment: reservation.Assignment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        assignment: Optional[reservation.Assignment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Updates an existing assignment.
@@ -2595,7 +2621,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.UpdateAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.UpdateAssignmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment].
             assignment (:class:`google.cloud.bigquery_reservation_v1.types.Assignment`):
@@ -2671,11 +2697,11 @@ class ReservationServiceAsyncClient:
 
     async def get_bi_reservation(
         self,
-        request: Union[reservation.GetBiReservationRequest, dict] = None,
+        request: Optional[Union[reservation.GetBiReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
         r"""Retrieves a BI reservation.
@@ -2707,7 +2733,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.GetBiReservationRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.GetBiReservationRequest, dict]]):
                 The request object. A request to get a singleton BI
                 reservation.
             name (:class:`str`):
@@ -2782,12 +2808,12 @@ class ReservationServiceAsyncClient:
 
     async def update_bi_reservation(
         self,
-        request: Union[reservation.UpdateBiReservationRequest, dict] = None,
+        request: Optional[Union[reservation.UpdateBiReservationRequest, dict]] = None,
         *,
-        bi_reservation: reservation.BiReservation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        bi_reservation: Optional[reservation.BiReservation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
         r"""Updates a BI reservation.
@@ -2825,7 +2851,7 @@ class ReservationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_reservation_v1.types.UpdateBiReservationRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.UpdateBiReservationRequest, dict]]):
                 The request object. A request to update a BI
                 reservation.
             bi_reservation (:class:`google.cloud.bigquery_reservation_v1.types.BiReservation`):

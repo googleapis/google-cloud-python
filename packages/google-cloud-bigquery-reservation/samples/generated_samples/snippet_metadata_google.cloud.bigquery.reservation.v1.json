@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-bigquery-reservation"
+    "name": "google-cloud-bigquery-reservation",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -1984,7 +1985,7 @@
           },
           {
             "name": "capacity_commitment_ids",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -2068,7 +2069,7 @@
           },
           {
             "name": "capacity_commitment_ids",
-            "type": "Sequence[str]"
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
