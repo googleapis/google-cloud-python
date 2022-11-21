@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.binaryauthorization.v1beta1",
@@ -51,27 +51,27 @@ class Policy(proto.Message):
             project admission policy. This setting has no
             effect when specified inside a global admission
             policy.
-        admission_whitelist_patterns (Sequence[google.cloud.binaryauthorization_v1beta1.types.AdmissionWhitelistPattern]):
+        admission_whitelist_patterns (MutableSequence[google.cloud.binaryauthorization_v1beta1.types.AdmissionWhitelistPattern]):
             Optional. Admission policy allowlisting. A
             matching admission request will always be
             permitted. This feature is typically used to
             exclude Google or third-party infrastructure
             images from Binary Authorization policies.
-        cluster_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
+        cluster_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-cluster admission rules. Cluster spec format:
             ``location.clusterId``. There can be at most one admission
             rule per cluster spec. A ``location`` is either a compute
             zone (e.g. us-central1-a) or a region (e.g. us-central1).
             For ``clusterId`` syntax restrictions see
             https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
-        kubernetes_namespace_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
+        kubernetes_namespace_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-kubernetes-namespace admission rules. K8s
             namespace spec format: ``[a-z.-]+``, e.g. ``some-namespace``
-        kubernetes_service_account_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
+        kubernetes_service_account_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-kubernetes-service-account admission rules.
             Service account spec format: ``namespace:serviceaccount``.
             e.g. ``test-ns:default``
-        istio_service_identity_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
+        istio_service_identity_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-istio-service-identity admission rules. Istio
             service identity spec format:
             ``spiffe://<domain>/ns/<namespace>/sa/<serviceaccount>`` or
@@ -93,54 +93,62 @@ class Policy(proto.Message):
         ENABLE = 1
         DISABLE = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    global_policy_evaluation_mode = proto.Field(
+    global_policy_evaluation_mode: GlobalPolicyEvaluationMode = proto.Field(
         proto.ENUM,
         number=7,
         enum=GlobalPolicyEvaluationMode,
     )
-    admission_whitelist_patterns = proto.RepeatedField(
+    admission_whitelist_patterns: MutableSequence[
+        "AdmissionWhitelistPattern"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AdmissionWhitelistPattern",
     )
-    cluster_admission_rules = proto.MapField(
+    cluster_admission_rules: MutableMapping[str, "AdmissionRule"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
         message="AdmissionRule",
     )
-    kubernetes_namespace_admission_rules = proto.MapField(
+    kubernetes_namespace_admission_rules: MutableMapping[
+        str, "AdmissionRule"
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=10,
         message="AdmissionRule",
     )
-    kubernetes_service_account_admission_rules = proto.MapField(
+    kubernetes_service_account_admission_rules: MutableMapping[
+        str, "AdmissionRule"
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=8,
         message="AdmissionRule",
     )
-    istio_service_identity_admission_rules = proto.MapField(
+    istio_service_identity_admission_rules: MutableMapping[
+        str, "AdmissionRule"
+    ] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=9,
         message="AdmissionRule",
     )
-    default_admission_rule = proto.Field(
+    default_admission_rule: "AdmissionRule" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AdmissionRule",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -165,7 +173,7 @@ class AdmissionWhitelistPattern(proto.Message):
             i.e., ``gcr.io/nginx**`` matches ``gcr.io/nginx/image``.
     """
 
-    name_pattern = proto.Field(
+    name_pattern: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -189,7 +197,7 @@ class AdmissionRule(proto.Message):
         evaluation_mode (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule.EvaluationMode):
             Required. How this admission rule will be
             evaluated.
-        require_attestations_by (Sequence[str]):
+        require_attestations_by (MutableSequence[str]):
             Optional. The resource names of the attestors that must
             attest to a container image, in the format
             ``projects/*/attestors/*``. Each attestor must exist before
@@ -220,16 +228,16 @@ class AdmissionRule(proto.Message):
         ENFORCED_BLOCK_AND_AUDIT_LOG = 1
         DRYRUN_AUDIT_LOG_ONLY = 2
 
-    evaluation_mode = proto.Field(
+    evaluation_mode: EvaluationMode = proto.Field(
         proto.ENUM,
         number=1,
         enum=EvaluationMode,
     )
-    require_attestations_by = proto.RepeatedField(
+    require_attestations_by: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    enforcement_mode = proto.Field(
+    enforcement_mode: EnforcementMode = proto.Field(
         proto.ENUM,
         number=3,
         enum=EnforcementMode,
@@ -261,21 +269,21 @@ class Attestor(proto.Message):
             updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    user_owned_drydock_note = proto.Field(
+    user_owned_drydock_note: "UserOwnedDrydockNote" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="attestor_type",
         message="UserOwnedDrydockNote",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -298,7 +306,7 @@ class UserOwnedDrydockNote(proto.Message):
             ATTESTATION_AUTHORITY Occurrence that names a container
             image and that links to this Note. Drydock is an external
             dependency.
-        public_keys (Sequence[google.cloud.binaryauthorization_v1beta1.types.AttestorPublicKey]):
+        public_keys (MutableSequence[google.cloud.binaryauthorization_v1beta1.types.AttestorPublicKey]):
             Optional. Public keys that verify
             attestations signed by this attestor.  This
             field may be updated.
@@ -323,16 +331,16 @@ class UserOwnedDrydockNote(proto.Message):
             email based on a different naming pattern.
     """
 
-    note_reference = proto.Field(
+    note_reference: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    public_keys = proto.RepeatedField(
+    public_keys: MutableSequence["AttestorPublicKey"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AttestorPublicKey",
     )
-    delegation_service_account_email = proto.Field(
+    delegation_service_account_email: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -382,11 +390,11 @@ class PkixPublicKey(proto.Message):
         ECDSA_P521_SHA512 = 11
         EC_SIGN_P521_SHA512 = 11
 
-    public_key_pem = proto.Field(
+    public_key_pem: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    signature_algorithm = proto.Field(
+    signature_algorithm: SignatureAlgorithm = proto.Field(
         proto.ENUM,
         number=2,
         enum=SignatureAlgorithm,
@@ -440,20 +448,20 @@ class AttestorPublicKey(proto.Message):
             This field is a member of `oneof`_ ``public_key``.
     """
 
-    comment = proto.Field(
+    comment: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ascii_armored_pgp_public_key = proto.Field(
+    ascii_armored_pgp_public_key: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="public_key",
     )
-    pkix_public_key = proto.Field(
+    pkix_public_key: "PkixPublicKey" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="public_key",

@@ -20,7 +20,6 @@ from .base import ValidationHelperV1Transport
 from .grpc import ValidationHelperV1GrpcTransport
 from .grpc_asyncio import ValidationHelperV1GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

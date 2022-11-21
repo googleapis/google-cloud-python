@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.binaryauthorization_v1beta1.types import resources
-
 
 __protobuf__ = proto.module(
     package="google.cloud.binaryauthorization.v1beta1",
@@ -44,7 +45,7 @@ class GetPolicyRequest(proto.Message):
             retrieve, in the format ``projects/*/policy``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -63,7 +64,7 @@ class UpdatePolicyRequest(proto.Message):
             format ``projects/*/policy``.
     """
 
-    policy = proto.Field(
+    policy: resources.Policy = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Policy,
@@ -90,15 +91,15 @@ class CreateAttestorRequest(proto.Message):
             ``projects/*/attestors/*``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    attestor_id = proto.Field(
+    attestor_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    attestor = proto.Field(
+    attestor: resources.Attestor = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.Attestor,
@@ -115,7 +116,7 @@ class GetAttestorRequest(proto.Message):
             to retrieve, in the format ``projects/*/attestors/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -134,7 +135,7 @@ class UpdateAttestorRequest(proto.Message):
             format ``projects/*/attestors/*``.
     """
 
-    attestor = proto.Field(
+    attestor: resources.Attestor = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Attestor,
@@ -162,15 +163,15 @@ class ListAttestorsRequest(proto.Message):
             method.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -180,7 +181,7 @@ class ListAttestorsResponse(proto.Message):
     r"""Response message for [BinauthzManagementService.ListAttestors][].
 
     Attributes:
-        attestors (Sequence[google.cloud.binaryauthorization_v1beta1.types.Attestor]):
+        attestors (MutableSequence[google.cloud.binaryauthorization_v1beta1.types.Attestor]):
             The list of
             [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].
         next_page_token (str):
@@ -195,12 +196,12 @@ class ListAttestorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    attestors = proto.RepeatedField(
+    attestors: MutableSequence[resources.Attestor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Attestor,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -216,7 +217,7 @@ class DeleteAttestorRequest(proto.Message):
             to delete, in the format ``projects/*/attestors/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -232,7 +233,7 @@ class GetSystemPolicyRequest(proto.Message):
             associated with a project.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

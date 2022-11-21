@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -32,9 +42,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.binaryauthorization_v1.types import service
-from .transports.base import ValidationHelperV1Transport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ValidationHelperV1GrpcAsyncIOTransport
+
 from .client import ValidationHelperV1Client
+from .transports.base import DEFAULT_CLIENT_INFO, ValidationHelperV1Transport
+from .transports.grpc_asyncio import ValidationHelperV1GrpcAsyncIOTransport
 
 
 class ValidationHelperV1AsyncClient:
@@ -156,9 +167,9 @@ class ValidationHelperV1AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ValidationHelperV1Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the validation helper v1 client.
@@ -202,10 +213,12 @@ class ValidationHelperV1AsyncClient:
 
     async def validate_attestation_occurrence(
         self,
-        request: Union[service.ValidateAttestationOccurrenceRequest, dict] = None,
+        request: Optional[
+            Union[service.ValidateAttestationOccurrenceRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.ValidateAttestationOccurrenceResponse:
         r"""Returns whether the given Attestation for the given
@@ -240,7 +253,7 @@ class ValidationHelperV1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1.types.ValidateAttestationOccurrenceRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1.types.ValidateAttestationOccurrenceRequest, dict]]):
                 The request object. Request message for
                 [ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

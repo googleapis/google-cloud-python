@@ -13,34 +13,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.binaryauthorization import gapic_version as package_version
 
-from .services.binauthz_management_service_v1 import BinauthzManagementServiceV1Client
+__version__ = package_version.__version__
+
+
 from .services.binauthz_management_service_v1 import (
     BinauthzManagementServiceV1AsyncClient,
+    BinauthzManagementServiceV1Client,
 )
-from .services.system_policy_v1 import SystemPolicyV1Client
-from .services.system_policy_v1 import SystemPolicyV1AsyncClient
-from .services.validation_helper_v1 import ValidationHelperV1Client
-from .services.validation_helper_v1 import ValidationHelperV1AsyncClient
-
-from .types.resources import AdmissionRule
-from .types.resources import AdmissionWhitelistPattern
-from .types.resources import Attestor
-from .types.resources import AttestorPublicKey
-from .types.resources import PkixPublicKey
-from .types.resources import Policy
-from .types.resources import UserOwnedGrafeasNote
-from .types.service import CreateAttestorRequest
-from .types.service import DeleteAttestorRequest
-from .types.service import GetAttestorRequest
-from .types.service import GetPolicyRequest
-from .types.service import GetSystemPolicyRequest
-from .types.service import ListAttestorsRequest
-from .types.service import ListAttestorsResponse
-from .types.service import UpdateAttestorRequest
-from .types.service import UpdatePolicyRequest
-from .types.service import ValidateAttestationOccurrenceRequest
-from .types.service import ValidateAttestationOccurrenceResponse
+from .services.system_policy_v1 import SystemPolicyV1AsyncClient, SystemPolicyV1Client
+from .services.validation_helper_v1 import (
+    ValidationHelperV1AsyncClient,
+    ValidationHelperV1Client,
+)
+from .types.resources import (
+    AdmissionRule,
+    AdmissionWhitelistPattern,
+    Attestor,
+    AttestorPublicKey,
+    PkixPublicKey,
+    Policy,
+    UserOwnedGrafeasNote,
+)
+from .types.service import (
+    CreateAttestorRequest,
+    DeleteAttestorRequest,
+    GetAttestorRequest,
+    GetPolicyRequest,
+    GetSystemPolicyRequest,
+    ListAttestorsRequest,
+    ListAttestorsResponse,
+    UpdateAttestorRequest,
+    UpdatePolicyRequest,
+    ValidateAttestationOccurrenceRequest,
+    ValidateAttestationOccurrenceResponse,
+)
 
 __all__ = (
     "BinauthzManagementServiceV1AsyncClient",

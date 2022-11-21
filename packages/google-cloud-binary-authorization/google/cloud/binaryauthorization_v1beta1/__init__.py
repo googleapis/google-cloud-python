@@ -13,33 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.binaryauthorization import gapic_version as package_version
 
-from .services.binauthz_management_service_v1_beta1 import (
-    BinauthzManagementServiceV1Beta1Client,
-)
+__version__ = package_version.__version__
+
+
 from .services.binauthz_management_service_v1_beta1 import (
     BinauthzManagementServiceV1Beta1AsyncClient,
+    BinauthzManagementServiceV1Beta1Client,
 )
-from .services.system_policy_v1_beta1 import SystemPolicyV1Beta1Client
-from .services.system_policy_v1_beta1 import SystemPolicyV1Beta1AsyncClient
-
+from .services.system_policy_v1_beta1 import (
+    SystemPolicyV1Beta1AsyncClient,
+    SystemPolicyV1Beta1Client,
+)
 from .types.continuous_validation_logging import ContinuousValidationEvent
-from .types.resources import AdmissionRule
-from .types.resources import AdmissionWhitelistPattern
-from .types.resources import Attestor
-from .types.resources import AttestorPublicKey
-from .types.resources import PkixPublicKey
-from .types.resources import Policy
-from .types.resources import UserOwnedDrydockNote
-from .types.service import CreateAttestorRequest
-from .types.service import DeleteAttestorRequest
-from .types.service import GetAttestorRequest
-from .types.service import GetPolicyRequest
-from .types.service import GetSystemPolicyRequest
-from .types.service import ListAttestorsRequest
-from .types.service import ListAttestorsResponse
-from .types.service import UpdateAttestorRequest
-from .types.service import UpdatePolicyRequest
+from .types.resources import (
+    AdmissionRule,
+    AdmissionWhitelistPattern,
+    Attestor,
+    AttestorPublicKey,
+    PkixPublicKey,
+    Policy,
+    UserOwnedDrydockNote,
+)
+from .types.service import (
+    CreateAttestorRequest,
+    DeleteAttestorRequest,
+    GetAttestorRequest,
+    GetPolicyRequest,
+    GetSystemPolicyRequest,
+    ListAttestorsRequest,
+    ListAttestorsResponse,
+    UpdateAttestorRequest,
+    UpdatePolicyRequest,
+)
 
 __all__ = (
     "BinauthzManagementServiceV1Beta1AsyncClient",

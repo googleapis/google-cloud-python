@@ -1,10 +1,10 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,18 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
+import json
+from pathlib import Path
+import shutil
 
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+
     # Rename package to 'google-cloud-binary-authorization'
+    # Remove once cl/490002122 is submitted
     s.replace(
         [library / "google/**/*.py", library / "tests/**/*.py"],
         "google-cloud-binaryauthorization",
@@ -41,7 +55,7 @@ for library in s.get_staging_dirs(default_version):
         s.replace(
             [library / "google/**/*.py", library / "tests/**/*.py"],
             "from grafeas.grafeas_v1 import attestation_pb2",
-            "from grafeas.grafeas_v1.types import attestation",
+            "import grafeas.grafeas_v1.types",
         )
 
         s.replace(
@@ -53,30 +67,36 @@ for library in s.get_staging_dirs(default_version):
         s.replace(
             [library / "google/**/*.py", library / "tests/**/*.py"],
             "message=attestation_pb2",
-            "message=attestation",
+            "message=grafeas.grafeas_v1.types",
+        )
+
+        s.replace(
+            [library / "google/**/*.py", library / "tests/**/*.py"],
+            "attestation: attestation_pb2.AttestationOccurrence",
+            "attestation: grafeas.grafeas_v1.types.AttestationOccurrence",
         )
 
         s.replace(
             [library / "google/**/*.py", library / "tests/**/*.py"],
             "grafeas.v1.attestation_pb2.AttestationOccurrence",
-            "grafeas.grafeas_v1.types.attestation.AttestationOccurrence",
+            "grafeas.grafeas_v1.types.AttestationOccurrence",
         )
-
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
-
+    s.move(library, excludes=["setup.py", "**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 
-templated_files = common.py_library(cov_level=100, microgenerator=True)
-python.py_samples(skip_readmes=True)
-s.move(
-    templated_files,
-    excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
-python.configure_previous_major_version_branches()
+python.py_samples(skip_readmes=True)
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

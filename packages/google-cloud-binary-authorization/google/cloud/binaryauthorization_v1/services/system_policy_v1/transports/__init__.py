@@ -20,7 +20,6 @@ from .base import SystemPolicyV1Transport
 from .grpc import SystemPolicyV1GrpcTransport
 from .grpc_asyncio import SystemPolicyV1GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SystemPolicyV1Transport]]
 _transport_registry["grpc"] = SystemPolicyV1GrpcTransport

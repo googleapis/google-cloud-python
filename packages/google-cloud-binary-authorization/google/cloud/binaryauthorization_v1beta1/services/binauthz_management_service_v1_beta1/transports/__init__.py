@@ -20,7 +20,6 @@ from .base import BinauthzManagementServiceV1Beta1Transport
 from .grpc import BinauthzManagementServiceV1Beta1GrpcTransport
 from .grpc_asyncio import BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

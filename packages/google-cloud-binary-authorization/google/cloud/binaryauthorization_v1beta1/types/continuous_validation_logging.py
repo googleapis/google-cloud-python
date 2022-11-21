@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.binaryauthorization.v1beta1",
@@ -62,7 +62,7 @@ class ContinuousValidationEvent(proto.Message):
                 nothing if still running.
             verdict (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.PolicyConformanceVerdict):
                 Auditing verdict for this Pod.
-            images (Sequence[google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails]):
+            images (MutableSequence[google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails]):
                 List of images with auditing details.
         """
 
@@ -89,44 +89,46 @@ class ContinuousValidationEvent(proto.Message):
                 ALLOW = 1
                 DENY = 2
 
-            image = proto.Field(
+            image: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            result = proto.Field(
+            result: "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.AuditResult" = proto.Field(
                 proto.ENUM,
                 number=2,
                 enum="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.AuditResult",
             )
-            description = proto.Field(
+            description: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
 
-        pod_namespace = proto.Field(
+        pod_namespace: str = proto.Field(
             proto.STRING,
             number=7,
         )
-        pod = proto.Field(
+        pod: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        deploy_time = proto.Field(
+        deploy_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
-        end_time = proto.Field(
+        end_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
-        verdict = proto.Field(
+        verdict: "ContinuousValidationEvent.ContinuousValidationPodEvent.PolicyConformanceVerdict" = proto.Field(
             proto.ENUM,
             number=4,
             enum="ContinuousValidationEvent.ContinuousValidationPodEvent.PolicyConformanceVerdict",
         )
-        images = proto.RepeatedField(
+        images: MutableSequence[
+            "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails",
@@ -141,18 +143,18 @@ class ContinuousValidationEvent(proto.Message):
                 A description of the unsupported policy.
         """
 
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    pod_event = proto.Field(
+    pod_event: ContinuousValidationPodEvent = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="event_type",
         message=ContinuousValidationPodEvent,
     )
-    unsupported_policy_event = proto.Field(
+    unsupported_policy_event: UnsupportedPolicyEvent = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="event_type",

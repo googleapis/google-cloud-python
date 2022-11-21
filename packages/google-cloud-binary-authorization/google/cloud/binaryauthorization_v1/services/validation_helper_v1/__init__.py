@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ValidationHelperV1Client
 from .async_client import ValidationHelperV1AsyncClient
+from .client import ValidationHelperV1Client
 
 __all__ = (
     "ValidationHelperV1Client",

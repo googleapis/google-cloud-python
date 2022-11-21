@@ -16,27 +16,38 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.binaryauthorization_v1.types import resources
-from google.cloud.binaryauthorization_v1.types import service
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import SystemPolicyV1Transport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import SystemPolicyV1GrpcAsyncIOTransport
+
+from google.cloud.binaryauthorization_v1.types import resources, service
+
 from .client import SystemPolicyV1Client
+from .transports.base import DEFAULT_CLIENT_INFO, SystemPolicyV1Transport
+from .transports.grpc_asyncio import SystemPolicyV1GrpcAsyncIOTransport
 
 
 class SystemPolicyV1AsyncClient:
@@ -159,9 +170,9 @@ class SystemPolicyV1AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SystemPolicyV1Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the system policy v1 client.
@@ -205,11 +216,11 @@ class SystemPolicyV1AsyncClient:
 
     async def get_system_policy(
         self,
-        request: Union[service.GetSystemPolicyRequest, dict] = None,
+        request: Optional[Union[service.GetSystemPolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Policy:
         r"""Gets the current system policy in the specified
@@ -242,7 +253,7 @@ class SystemPolicyV1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest, dict]]):
                 The request object. Request to read the current system
                 policy.
             name (:class:`str`):

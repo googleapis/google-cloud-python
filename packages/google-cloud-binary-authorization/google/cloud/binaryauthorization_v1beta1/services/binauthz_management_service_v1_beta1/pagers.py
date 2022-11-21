@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.binaryauthorization_v1beta1.types import resources
-from google.cloud.binaryauthorization_v1beta1.types import service
+from google.cloud.binaryauthorization_v1beta1.types import resources, service
 
 
 class ListAttestorsPager:

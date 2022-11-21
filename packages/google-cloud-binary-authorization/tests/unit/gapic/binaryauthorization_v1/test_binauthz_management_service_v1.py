@@ -22,38 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1 import (
-    BinauthzManagementServiceV1AsyncClient,
-)
-from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1 import (
-    BinauthzManagementServiceV1Client,
-)
-from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1 import (
-    pagers,
-)
-from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1 import (
-    transports,
-)
-from google.cloud.binaryauthorization_v1.types import resources
-from google.cloud.binaryauthorization_v1.types import service
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1 import (
+    BinauthzManagementServiceV1AsyncClient,
+    BinauthzManagementServiceV1Client,
+    pagers,
+    transports,
+)
+from google.cloud.binaryauthorization_v1.types import resources, service
 
 
 def client_cert_source_callback():

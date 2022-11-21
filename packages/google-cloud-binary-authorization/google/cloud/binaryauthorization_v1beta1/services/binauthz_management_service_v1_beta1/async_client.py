@@ -16,35 +16,46 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.binaryauthorization_v1beta1.services.binauthz_management_service_v1_beta1 import (
     pagers,
 )
-from google.cloud.binaryauthorization_v1beta1.types import resources
-from google.cloud.binaryauthorization_v1beta1.types import service
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.cloud.binaryauthorization_v1beta1.types import resources, service
+
+from .client import BinauthzManagementServiceV1Beta1Client
 from .transports.base import (
-    BinauthzManagementServiceV1Beta1Transport,
     DEFAULT_CLIENT_INFO,
+    BinauthzManagementServiceV1Beta1Transport,
 )
 from .transports.grpc_asyncio import (
     BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport,
 )
-from .client import BinauthzManagementServiceV1Beta1Client
 
 
 class BinauthzManagementServiceV1Beta1AsyncClient:
@@ -187,11 +198,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[
             str, BinauthzManagementServiceV1Beta1Transport
         ] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the binauthz management service v1 beta1 client.
@@ -235,11 +246,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def get_policy(
         self,
-        request: Union[service.GetPolicyRequest, dict] = None,
+        request: Optional[Union[service.GetPolicyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Policy:
         r"""A [policy][google.cloud.binaryauthorization.v1beta1.Policy]
@@ -283,7 +294,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.GetPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.GetPolicyRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.GetPolicy][].
             name (:class:`str`):
@@ -361,11 +372,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def update_policy(
         self,
-        request: Union[service.UpdatePolicyRequest, dict] = None,
+        request: Optional[Union[service.UpdatePolicyRequest, dict]] = None,
         *,
-        policy: resources.Policy = None,
+        policy: Optional[resources.Policy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Policy:
         r"""Creates or updates a project's
@@ -408,7 +419,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.UpdatePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.UpdatePolicyRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.UpdatePolicy][].
             policy (:class:`google.cloud.binaryauthorization_v1beta1.types.Policy`):
@@ -491,13 +502,13 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def create_attestor(
         self,
-        request: Union[service.CreateAttestorRequest, dict] = None,
+        request: Optional[Union[service.CreateAttestorRequest, dict]] = None,
         *,
-        parent: str = None,
-        attestor_id: str = None,
-        attestor: resources.Attestor = None,
+        parent: Optional[str] = None,
+        attestor_id: Optional[str] = None,
+        attestor: Optional[resources.Attestor] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Attestor:
         r"""Creates an
@@ -543,7 +554,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.CreateAttestorRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.CreateAttestorRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.CreateAttestor][].
             parent (:class:`str`):
@@ -633,11 +644,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def get_attestor(
         self,
-        request: Union[service.GetAttestorRequest, dict] = None,
+        request: Optional[Union[service.GetAttestorRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Attestor:
         r"""Gets an
@@ -673,7 +684,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.GetAttestorRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.GetAttestorRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.GetAttestor][].
             name (:class:`str`):
@@ -751,11 +762,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def update_attestor(
         self,
-        request: Union[service.UpdateAttestorRequest, dict] = None,
+        request: Optional[Union[service.UpdateAttestorRequest, dict]] = None,
         *,
-        attestor: resources.Attestor = None,
+        attestor: Optional[resources.Attestor] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Attestor:
         r"""Updates an
@@ -795,7 +806,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.UpdateAttestorRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.UpdateAttestorRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.UpdateAttestor][].
             attestor (:class:`google.cloud.binaryauthorization_v1beta1.types.Attestor`):
@@ -878,11 +889,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def list_attestors(
         self,
-        request: Union[service.ListAttestorsRequest, dict] = None,
+        request: Optional[Union[service.ListAttestorsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAttestorsAsyncPager:
         r"""Lists
@@ -917,7 +928,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.ListAttestorsRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.ListAttestorsRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.ListAttestors][].
             parent (:class:`str`):
@@ -1007,11 +1018,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     async def delete_attestor(
         self,
-        request: Union[service.DeleteAttestorRequest, dict] = None,
+        request: Optional[Union[service.DeleteAttestorRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an
@@ -1044,7 +1055,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 await client.delete_attestor(request=request)
 
         Args:
-            request (Union[google.cloud.binaryauthorization_v1beta1.types.DeleteAttestorRequest, dict]):
+            request (Optional[Union[google.cloud.binaryauthorization_v1beta1.types.DeleteAttestorRequest, dict]]):
                 The request object. Request message for
                 [BinauthzManagementService.DeleteAttestor][].
             name (:class:`str`):
