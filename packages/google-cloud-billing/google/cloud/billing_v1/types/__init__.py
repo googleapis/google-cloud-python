@@ -29,6 +29,7 @@ from .cloud_billing import (
 from .cloud_catalog import (
     AggregationInfo,
     Category,
+    GeoTaxonomy,
     ListServicesRequest,
     ListServicesResponse,
     ListSkusRequest,
@@ -53,6 +54,7 @@ __all__ = (
     "UpdateProjectBillingInfoRequest",
     "AggregationInfo",
     "Category",
+    "GeoTaxonomy",
     "ListServicesRequest",
     "ListServicesResponse",
     "ListSkusRequest",

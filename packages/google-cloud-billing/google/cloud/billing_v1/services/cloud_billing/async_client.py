@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,8 +53,8 @@ from .transports.grpc_asyncio import CloudBillingGrpcAsyncIOTransport
 
 
 class CloudBillingAsyncClient:
-    """Retrieves GCP Console billing accounts and associates them
-    with projects.
+    """Retrieves the Google Cloud Console billing accounts and
+    associates them with projects.
     """
 
     _client: CloudBillingClient
@@ -158,9 +168,9 @@ class CloudBillingAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudBillingTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud billing client.
@@ -204,11 +214,11 @@ class CloudBillingAsyncClient:
 
     async def get_billing_account(
         self,
-        request: Union[cloud_billing.GetBillingAccountRequest, dict] = None,
+        request: Optional[Union[cloud_billing.GetBillingAccountRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
         r"""Gets information about a billing account. The current
@@ -242,7 +252,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.GetBillingAccountRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.GetBillingAccountRequest, dict]]):
                 The request object. Request message for
                 `GetBillingAccount`.
             name (:class:`str`):
@@ -261,9 +271,10 @@ class CloudBillingAsyncClient:
 
         Returns:
             google.cloud.billing_v1.types.BillingAccount:
-                A billing account in [GCP Console](\ https://console.cloud.google.com/).
-                   You can assign a billing account to one or more
-                   projects.
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -320,10 +331,10 @@ class CloudBillingAsyncClient:
 
     async def list_billing_accounts(
         self,
-        request: Union[cloud_billing.ListBillingAccountsRequest, dict] = None,
+        request: Optional[Union[cloud_billing.ListBillingAccountsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBillingAccountsAsyncPager:
         r"""Lists the billing accounts that the current authenticated user
@@ -357,7 +368,7 @@ class CloudBillingAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.ListBillingAccountsRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.ListBillingAccountsRequest, dict]]):
                 The request object. Request message for
                 `ListBillingAccounts`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -417,12 +428,14 @@ class CloudBillingAsyncClient:
 
     async def update_billing_account(
         self,
-        request: Union[cloud_billing.UpdateBillingAccountRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.UpdateBillingAccountRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        account: cloud_billing.BillingAccount = None,
+        name: Optional[str] = None,
+        account: Optional[cloud_billing.BillingAccount] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
         r"""Updates a billing account's fields. Currently the only field
@@ -459,7 +472,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.UpdateBillingAccountRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.UpdateBillingAccountRequest, dict]]):
                 The request object. Request message for
                 `UpdateBillingAccount`.
             name (:class:`str`):
@@ -485,9 +498,10 @@ class CloudBillingAsyncClient:
 
         Returns:
             google.cloud.billing_v1.types.BillingAccount:
-                A billing account in [GCP Console](\ https://console.cloud.google.com/).
-                   You can assign a billing account to one or more
-                   projects.
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -546,22 +560,28 @@ class CloudBillingAsyncClient:
 
     async def create_billing_account(
         self,
-        request: Union[cloud_billing.CreateBillingAccountRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.CreateBillingAccountRequest, dict]
+        ] = None,
         *,
-        billing_account: cloud_billing.BillingAccount = None,
+        billing_account: Optional[cloud_billing.BillingAccount] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
-        r"""Creates a billing account. This method can only be used to
-        create `billing
-        subaccounts <https://cloud.google.com/billing/docs/concepts>`__
-        by GCP resellers. When creating a subaccount, the current
-        authenticated user must have the ``billing.accounts.update`` IAM
-        permission on the master account, which is typically given to
-        billing account
+        r"""This method creates `billing
+        subaccounts <https://cloud.google.com/billing/docs/concepts#subaccounts>`__.
+
+        Google Cloud resellers should use the Channel Services APIs,
+        `accounts.customers.create <https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers/create>`__
+        and
+        `accounts.customers.entitlements.create <https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers.entitlements/create>`__.
+
+        When creating a subaccount, the current authenticated user must
+        have the ``billing.accounts.update`` IAM permission on the
+        parent account, which is typically given to billing account
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
-        This method will return an error if the master account has not
+        This method will return an error if the parent account has not
         been provisioned as a reseller account.
 
         .. code-block:: python
@@ -590,7 +610,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.CreateBillingAccountRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.CreateBillingAccountRequest, dict]]):
                 The request object. Request message for
                 `CreateBillingAccount`.
             billing_account (:class:`google.cloud.billing_v1.types.BillingAccount`):
@@ -599,7 +619,7 @@ class CloudBillingAsyncClient:
                 CreateBillingAccount only supports
                 subaccount creation, so any created
                 billing accounts must be under a
-                provided master billing account.
+                provided parent billing account.
 
                 This corresponds to the ``billing_account`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -612,9 +632,10 @@ class CloudBillingAsyncClient:
 
         Returns:
             google.cloud.billing_v1.types.BillingAccount:
-                A billing account in [GCP Console](\ https://console.cloud.google.com/).
-                   You can assign a billing account to one or more
-                   projects.
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -655,11 +676,13 @@ class CloudBillingAsyncClient:
 
     async def list_project_billing_info(
         self,
-        request: Union[cloud_billing.ListProjectBillingInfoRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.ListProjectBillingInfoRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProjectBillingInfoAsyncPager:
         r"""Lists the projects associated with a billing account. The
@@ -696,7 +719,7 @@ class CloudBillingAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.ListProjectBillingInfoRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.ListProjectBillingInfoRequest, dict]]):
                 The request object. Request message for
                 `ListProjectBillingInfo`.
             name (:class:`str`):
@@ -784,16 +807,21 @@ class CloudBillingAsyncClient:
 
     async def get_project_billing_info(
         self,
-        request: Union[cloud_billing.GetProjectBillingInfoRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.GetProjectBillingInfoRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.ProjectBillingInfo:
         r"""Gets the billing information for a project. The current
-        authenticated user must have `permission to view the
-        project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
+        authenticated user must have the
+        ``resourcemanager.projects.get`` permission for the project,
+        which can be granted by assigning the `Project
+        Viewer <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
+        role.
 
         .. code-block:: python
 
@@ -822,7 +850,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.GetProjectBillingInfoRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.GetProjectBillingInfoRequest, dict]]):
                 The request object. Request message for
                 `GetProjectBillingInfo`.
             name (:class:`str`):
@@ -842,10 +870,11 @@ class CloudBillingAsyncClient:
         Returns:
             google.cloud.billing_v1.types.ProjectBillingInfo:
                 Encapsulation of billing information
-                for a GCP Console project. A project has
-                at most one associated billing account
-                at a time (but a billing account can be
-                assigned to multiple projects).
+                for a Google Cloud Console project. A
+                project has at most one associated
+                billing account at a time (but a billing
+                account can be assigned to multiple
+                projects).
 
         """
         # Create or coerce a protobuf request object.
@@ -902,12 +931,14 @@ class CloudBillingAsyncClient:
 
     async def update_project_billing_info(
         self,
-        request: Union[cloud_billing.UpdateProjectBillingInfoRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.UpdateProjectBillingInfoRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        project_billing_info: cloud_billing.ProjectBillingInfo = None,
+        name: Optional[str] = None,
+        project_billing_info: Optional[cloud_billing.ProjectBillingInfo] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.ProjectBillingInfo:
         r"""Sets or updates the billing account associated with a project.
@@ -920,9 +951,9 @@ class CloudBillingAsyncClient:
         for resource usage charges.
 
         *Note:* Incurred charges that have not yet been reported in the
-        transaction history of the GCP Console might be billed to the
-        new billing account, even if the charge occurred before the new
-        billing account was assigned to the project.
+        transaction history of the Google Cloud Console might be billed
+        to the new billing account, even if the charge occurred before
+        the new billing account was assigned to the project.
 
         The current authenticated user must have ownership privileges
         for both the
@@ -974,7 +1005,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.billing_v1.types.UpdateProjectBillingInfoRequest, dict]):
+            request (Optional[Union[google.cloud.billing_v1.types.UpdateProjectBillingInfoRequest, dict]]):
                 The request object. Request message for
                 `UpdateProjectBillingInfo`.
             name (:class:`str`):
@@ -1002,10 +1033,11 @@ class CloudBillingAsyncClient:
         Returns:
             google.cloud.billing_v1.types.ProjectBillingInfo:
                 Encapsulation of billing information
-                for a GCP Console project. A project has
-                at most one associated billing account
-                at a time (but a billing account can be
-                assigned to multiple projects).
+                for a Google Cloud Console project. A
+                project has at most one associated
+                billing account at a time (but a billing
+                account can be assigned to multiple
+                projects).
 
         """
         # Create or coerce a protobuf request object.
@@ -1064,11 +1096,11 @@ class CloudBillingAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a billing account. The caller
@@ -1104,7 +1136,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1243,11 +1275,11 @@ class CloudBillingAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy for a billing account. Replaces
@@ -1284,7 +1316,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1423,12 +1455,12 @@ class CloudBillingAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the access control policy for a billing
@@ -1466,7 +1498,7 @@ class CloudBillingAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -1478,7 +1510,7 @@ class CloudBillingAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (:class:`MutableSequence[str]`):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM

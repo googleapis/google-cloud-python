@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.billing import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.billing_v1.services.cloud_billing.async_client import (
     CloudBillingAsyncClient,
@@ -38,6 +42,7 @@ from google.cloud.billing_v1.types.cloud_billing import (
 from google.cloud.billing_v1.types.cloud_catalog import (
     AggregationInfo,
     Category,
+    GeoTaxonomy,
     ListServicesRequest,
     ListServicesResponse,
     ListSkusRequest,
@@ -66,6 +71,7 @@ __all__ = (
     "UpdateProjectBillingInfoRequest",
     "AggregationInfo",
     "Category",
+    "GeoTaxonomy",
     "ListServicesRequest",
     "ListServicesResponse",
     "ListSkusRequest",

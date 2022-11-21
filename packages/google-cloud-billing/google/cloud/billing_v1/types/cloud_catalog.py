@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
 import proto  # type: ignore
@@ -26,6 +28,7 @@ __protobuf__ = proto.module(
         "PricingInfo",
         "PricingExpression",
         "AggregationInfo",
+        "GeoTaxonomy",
         "ListServicesRequest",
         "ListServicesResponse",
         "ListSkusRequest",
@@ -53,19 +56,19 @@ class Service(proto.Message):
             "businessEntities/Maps".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_id = proto.Field(
+    service_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    business_entity_name = proto.Field(
+    business_entity_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -88,49 +91,56 @@ class Sku(proto.Message):
         category (google.cloud.billing_v1.types.Category):
             The category hierarchy of this SKU, purely
             for organizational purpose.
-        service_regions (Sequence[str]):
+        service_regions (MutableSequence[str]):
             List of service regions this SKU is offered
             at. Example: "asia-east1"
             Service regions can be found at
             https://cloud.google.com/about/locations/
-        pricing_info (Sequence[google.cloud.billing_v1.types.PricingInfo]):
+        pricing_info (MutableSequence[google.cloud.billing_v1.types.PricingInfo]):
             A timeline of pricing info for this SKU in
             chronological order.
         service_provider_name (str):
             Identifies the service provider.
             This is 'Google' for first party services in
             Google Cloud Platform.
+        geo_taxonomy (google.cloud.billing_v1.types.GeoTaxonomy):
+            The geographic taxonomy for this sku.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    sku_id = proto.Field(
+    sku_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    category = proto.Field(
+    category: "Category" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Category",
     )
-    service_regions = proto.RepeatedField(
+    service_regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    pricing_info = proto.RepeatedField(
+    pricing_info: MutableSequence["PricingInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="PricingInfo",
     )
-    service_provider_name = proto.Field(
+    service_provider_name: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    geo_taxonomy: "GeoTaxonomy" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="GeoTaxonomy",
     )
 
 
@@ -155,19 +165,19 @@ class Category(proto.Message):
             "Commit1Yr" etc.
     """
 
-    service_display_name = proto.Field(
+    service_display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_family = proto.Field(
+    resource_family: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource_group = proto.Field(
+    resource_group: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    usage_type = proto.Field(
+    usage_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -205,26 +215,26 @@ class PricingInfo(proto.Message):
             1.0. Example: USD \* currency_conversion_rate = JPY
     """
 
-    effective_time = proto.Field(
+    effective_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    summary = proto.Field(
+    summary: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    pricing_expression = proto.Field(
+    pricing_expression: "PricingExpression" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="PricingExpression",
     )
-    aggregation_info = proto.Field(
+    aggregation_info: "AggregationInfo" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AggregationInfo",
     )
-    currency_conversion_rate = proto.Field(
+    currency_conversion_rate: float = proto.Field(
         proto.DOUBLE,
         number=5,
     )
@@ -246,6 +256,20 @@ class PricingExpression(proto.Message):
             The short hand for unit of usage this pricing is specified
             in. Example: usage_unit of "GiBy" means that usage is
             specified in "Gibi Byte".
+        display_quantity (float):
+            The recommended quantity of units for displaying pricing
+            info. When displaying pricing info it is recommended to
+            display: (unit_price \* display_quantity) per
+            display_quantity usage_unit. This field does not affect the
+            pricing formula and is for display purposes only. Example:
+            If the unit_price is "0.0001 USD", the usage_unit is "GB"
+            and the display_quantity is "1000" then the recommended way
+            of displaying the pricing info is "0.10 USD per 1000 GB".
+        tiered_rates (MutableSequence[google.cloud.billing_v1.types.PricingExpression.TierRate]):
+            The list of tiered rates for this pricing. The total cost is
+            computed by applying each of the tiered rates on usage. This
+            repeated list is sorted by ascending order of
+            start_usage_amount.
         usage_unit_description (str):
             The unit of usage in human readable form.
             Example: "gibi byte".
@@ -262,20 +286,6 @@ class PricingExpression(proto.Message):
             base_unit_conversion_factor = price per base_unit.
             start_usage_amount \* base_unit_conversion_factor =
             start_usage_amount in base_unit.
-        display_quantity (float):
-            The recommended quantity of units for displaying pricing
-            info. When displaying pricing info it is recommended to
-            display: (unit_price \* display_quantity) per
-            display_quantity usage_unit. This field does not affect the
-            pricing formula and is for display purposes only. Example:
-            If the unit_price is "0.0001 USD", the usage_unit is "GB"
-            and the display_quantity is "1000" then the recommended way
-            of displaying the pricing info is "0.10 USD per 1000 GB".
-        tiered_rates (Sequence[google.cloud.billing_v1.types.PricingExpression.TierRate]):
-            The list of tiered rates for this pricing. The total cost is
-            computed by applying each of the tiered rates on usage. This
-            repeated list is sorted by ascending order of
-            start_usage_amount.
     """
 
     class TierRate(proto.Message):
@@ -293,44 +303,44 @@ class PricingExpression(proto.Message):
                 $10 indicates that each unit will cost $10.
         """
 
-        start_usage_amount = proto.Field(
+        start_usage_amount: float = proto.Field(
             proto.DOUBLE,
             number=1,
         )
-        unit_price = proto.Field(
+        unit_price: money_pb2.Money = proto.Field(
             proto.MESSAGE,
             number=2,
             message=money_pb2.Money,
         )
 
-    usage_unit = proto.Field(
+    usage_unit: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    usage_unit_description = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    base_unit = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-    base_unit_description = proto.Field(
-        proto.STRING,
-        number=6,
-    )
-    base_unit_conversion_factor = proto.Field(
-        proto.DOUBLE,
-        number=7,
-    )
-    display_quantity = proto.Field(
+    display_quantity: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    tiered_rates = proto.RepeatedField(
+    tiered_rates: MutableSequence[TierRate] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=TierRate,
+    )
+    usage_unit_description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    base_unit: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    base_unit_description: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    base_unit_conversion_factor: float = proto.Field(
+        proto.DOUBLE,
+        number=7,
     )
 
 
@@ -368,19 +378,50 @@ class AggregationInfo(proto.Message):
         DAILY = 1
         MONTHLY = 2
 
-    aggregation_level = proto.Field(
+    aggregation_level: AggregationLevel = proto.Field(
         proto.ENUM,
         number=1,
         enum=AggregationLevel,
     )
-    aggregation_interval = proto.Field(
+    aggregation_interval: AggregationInterval = proto.Field(
         proto.ENUM,
         number=2,
         enum=AggregationInterval,
     )
-    aggregation_count = proto.Field(
+    aggregation_count: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class GeoTaxonomy(proto.Message):
+    r"""Encapsulates the geographic taxonomy data for a sku.
+
+    Attributes:
+        type_ (google.cloud.billing_v1.types.GeoTaxonomy.Type):
+            The type of Geo Taxonomy: GLOBAL, REGIONAL, or
+            MULTI_REGIONAL.
+        regions (MutableSequence[str]):
+            The list of regions associated with a sku.
+            Empty for Global skus, which are associated with
+            all Google Cloud regions.
+    """
+
+    class Type(proto.Enum):
+        r"""The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL."""
+        TYPE_UNSPECIFIED = 0
+        GLOBAL = 1
+        REGIONAL = 2
+        MULTI_REGIONAL = 3
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    regions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -397,11 +438,11 @@ class ListServicesRequest(proto.Message):
             results is returned.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -411,7 +452,7 @@ class ListServicesResponse(proto.Message):
     r"""Response message for ``ListServices``.
 
     Attributes:
-        services (Sequence[google.cloud.billing_v1.types.Service]):
+        services (MutableSequence[google.cloud.billing_v1.types.Service]):
             A list of services.
         next_page_token (str):
             A token to retrieve the next page of results. To retrieve
@@ -424,12 +465,12 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence["Service"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Service",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -469,29 +510,29 @@ class ListSkusRequest(proto.Message):
             is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -501,7 +542,7 @@ class ListSkusResponse(proto.Message):
     r"""Response message for ``ListSkus``.
 
     Attributes:
-        skus (Sequence[google.cloud.billing_v1.types.Sku]):
+        skus (MutableSequence[google.cloud.billing_v1.types.Sku]):
             The list of public SKUs of the given service.
         next_page_token (str):
             A token to retrieve the next page of results. To retrieve
@@ -514,12 +555,12 @@ class ListSkusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    skus = proto.RepeatedField(
+    skus: MutableSequence["Sku"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Sku",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

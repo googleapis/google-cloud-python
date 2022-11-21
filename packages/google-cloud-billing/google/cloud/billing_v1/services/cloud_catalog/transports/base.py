@@ -40,7 +40,11 @@ except pkg_resources.DistributionNotFound:
 class CloudCatalogTransport(abc.ABC):
     """Abstract transport class for CloudCatalog."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-billing",
+        "https://www.googleapis.com/auth/cloud-billing.readonly",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
 
     DEFAULT_HOST: str = "cloudbilling.googleapis.com"
 
@@ -48,7 +52,7 @@ class CloudCatalogTransport(abc.ABC):
         self,
         *,
         host: str = DEFAULT_HOST,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
