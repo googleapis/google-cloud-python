@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -66,7 +77,7 @@ class MigrationServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[MigrationServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -365,8 +376,8 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, MigrationServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, MigrationServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the migration service client.
@@ -380,7 +391,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
             transport (Union[str, MigrationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -410,6 +421,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -462,12 +474,14 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def create_migration_workflow(
         self,
-        request: Union[migration_service.CreateMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.CreateMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        migration_workflow: migration_entities.MigrationWorkflow = None,
+        parent: Optional[str] = None,
+        migration_workflow: Optional[migration_entities.MigrationWorkflow] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationWorkflow:
         r"""Creates a migration workflow.
@@ -578,11 +592,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def get_migration_workflow(
         self,
-        request: Union[migration_service.GetMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.GetMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationWorkflow:
         r"""Gets a previously created migration workflow.
@@ -682,11 +698,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def list_migration_workflows(
         self,
-        request: Union[migration_service.ListMigrationWorkflowsRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.ListMigrationWorkflowsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationWorkflowsPager:
         r"""Lists previously created migration workflow.
@@ -797,11 +815,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def delete_migration_workflow(
         self,
-        request: Union[migration_service.DeleteMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.DeleteMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a migration workflow by name.
@@ -890,11 +910,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def start_migration_workflow(
         self,
-        request: Union[migration_service.StartMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.StartMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts a previously created migration workflow. I.e.,
@@ -985,11 +1007,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def get_migration_subtask(
         self,
-        request: Union[migration_service.GetMigrationSubtaskRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.GetMigrationSubtaskRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationSubtask:
         r"""Gets a previously created migration subtask.
@@ -1092,11 +1116,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     def list_migration_subtasks(
         self,
-        request: Union[migration_service.ListMigrationSubtasksRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.ListMigrationSubtasksRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationSubtasksPager:
         r"""Lists previously created migration subtasks.

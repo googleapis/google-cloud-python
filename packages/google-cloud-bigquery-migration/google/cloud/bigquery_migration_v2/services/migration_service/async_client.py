@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -175,9 +185,9 @@ class MigrationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, MigrationServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the migration service client.
@@ -221,12 +231,14 @@ class MigrationServiceAsyncClient:
 
     async def create_migration_workflow(
         self,
-        request: Union[migration_service.CreateMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.CreateMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        migration_workflow: migration_entities.MigrationWorkflow = None,
+        parent: Optional[str] = None,
+        migration_workflow: Optional[migration_entities.MigrationWorkflow] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationWorkflow:
         r"""Creates a migration workflow.
@@ -258,7 +270,7 @@ class MigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.CreateMigrationWorkflowRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.CreateMigrationWorkflowRequest, dict]]):
                 The request object. Request to create a migration
                 workflow resource.
             parent (:class:`str`):
@@ -335,11 +347,13 @@ class MigrationServiceAsyncClient:
 
     async def get_migration_workflow(
         self,
-        request: Union[migration_service.GetMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.GetMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationWorkflow:
         r"""Gets a previously created migration workflow.
@@ -371,7 +385,7 @@ class MigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.GetMigrationWorkflowRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.GetMigrationWorkflowRequest, dict]]):
                 The request object. A request to get a previously
                 created migration workflow.
             name (:class:`str`):
@@ -448,11 +462,13 @@ class MigrationServiceAsyncClient:
 
     async def list_migration_workflows(
         self,
-        request: Union[migration_service.ListMigrationWorkflowsRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.ListMigrationWorkflowsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationWorkflowsAsyncPager:
         r"""Lists previously created migration workflow.
@@ -485,7 +501,7 @@ class MigrationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.ListMigrationWorkflowsRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.ListMigrationWorkflowsRequest, dict]]):
                 The request object. A request to list previously created
                 migration workflows.
             parent (:class:`str`):
@@ -572,11 +588,13 @@ class MigrationServiceAsyncClient:
 
     async def delete_migration_workflow(
         self,
-        request: Union[migration_service.DeleteMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.DeleteMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a migration workflow by name.
@@ -605,7 +623,7 @@ class MigrationServiceAsyncClient:
                 await client.delete_migration_workflow(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.DeleteMigrationWorkflowRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.DeleteMigrationWorkflowRequest, dict]]):
                 The request object. A request to delete a previously
                 created migration workflow.
             name (:class:`str`):
@@ -663,11 +681,13 @@ class MigrationServiceAsyncClient:
 
     async def start_migration_workflow(
         self,
-        request: Union[migration_service.StartMigrationWorkflowRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.StartMigrationWorkflowRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts a previously created migration workflow. I.e.,
@@ -700,7 +720,7 @@ class MigrationServiceAsyncClient:
                 await client.start_migration_workflow(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.StartMigrationWorkflowRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.StartMigrationWorkflowRequest, dict]]):
                 The request object. A request to start a previously
                 created migration workflow.
             name (:class:`str`):
@@ -767,11 +787,13 @@ class MigrationServiceAsyncClient:
 
     async def get_migration_subtask(
         self,
-        request: Union[migration_service.GetMigrationSubtaskRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.GetMigrationSubtaskRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationSubtask:
         r"""Gets a previously created migration subtask.
@@ -803,7 +825,7 @@ class MigrationServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.GetMigrationSubtaskRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.GetMigrationSubtaskRequest, dict]]):
                 The request object. A request to get a previously
                 created migration subtasks.
             name (:class:`str`):
@@ -874,11 +896,13 @@ class MigrationServiceAsyncClient:
 
     async def list_migration_subtasks(
         self,
-        request: Union[migration_service.ListMigrationSubtasksRequest, dict] = None,
+        request: Optional[
+            Union[migration_service.ListMigrationSubtasksRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationSubtasksAsyncPager:
         r"""Lists previously created migration subtasks.
@@ -911,7 +935,7 @@ class MigrationServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery_migration_v2.types.ListMigrationSubtasksRequest, dict]):
+            request (Optional[Union[google.cloud.bigquery_migration_v2.types.ListMigrationSubtasksRequest, dict]]):
                 The request object. A request to list previously created
                 migration subtasks.
             parent (:class:`str`):

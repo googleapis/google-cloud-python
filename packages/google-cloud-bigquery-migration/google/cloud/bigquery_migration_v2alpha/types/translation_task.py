@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,11 +44,11 @@ class TranslationFileMapping(proto.Message):
             corresponding input file to.
     """
 
-    input_path = proto.Field(
+    input_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_path = proto.Field(
+    output_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -80,7 +82,7 @@ class TranslationTaskDetails(proto.Message):
         output_path (str):
             The Cloud Storage path for translation output
             files.
-        file_paths (Sequence[google.cloud.bigquery_migration_v2alpha.types.TranslationFileMapping]):
+        file_paths (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.TranslationFileMapping]):
             Cloud Storage files to be processed for
             translation.
         schema_path (str):
@@ -90,7 +92,7 @@ class TranslationTaskDetails(proto.Message):
             The file encoding type.
         identifier_settings (google.cloud.bigquery_migration_v2alpha.types.IdentifierSettings):
             The settings for SQL identifiers.
-        special_token_map (Mapping[str, google.cloud.bigquery_migration_v2alpha.types.TranslationTaskDetails.TokenType]):
+        special_token_map (MutableMapping[str, google.cloud.bigquery_migration_v2alpha.types.TranslationTaskDetails.TokenType]):
             The map capturing special tokens to be
             replaced during translation. The key is special
             token in string. The value is the token data
@@ -134,57 +136,57 @@ class TranslationTaskDetails(proto.Message):
         DATE = 6
         TIMESTAMP = 7
 
-    teradata_options = proto.Field(
+    teradata_options: "TeradataOptions" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="language_options",
         message="TeradataOptions",
     )
-    bteq_options = proto.Field(
+    bteq_options: "BteqOptions" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="language_options",
         message="BteqOptions",
     )
-    input_path = proto.Field(
+    input_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_path = proto.Field(
+    output_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    file_paths = proto.RepeatedField(
+    file_paths: MutableSequence["TranslationFileMapping"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="TranslationFileMapping",
     )
-    schema_path = proto.Field(
+    schema_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    file_encoding = proto.Field(
+    file_encoding: FileEncoding = proto.Field(
         proto.ENUM,
         number=4,
         enum=FileEncoding,
     )
-    identifier_settings = proto.Field(
+    identifier_settings: "IdentifierSettings" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="IdentifierSettings",
     )
-    special_token_map = proto.MapField(
+    special_token_map: MutableMapping[str, TokenType] = proto.MapField(
         proto.STRING,
         proto.ENUM,
         number=6,
         enum=TokenType,
     )
-    filter = proto.Field(
+    filter: "Filter" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="Filter",
     )
-    translation_exception_table = proto.Field(
+    translation_exception_table: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -194,12 +196,12 @@ class Filter(proto.Message):
     r"""The filter applied to fields of translation details.
 
     Attributes:
-        input_file_exclusion_prefixes (Sequence[str]):
+        input_file_exclusion_prefixes (MutableSequence[str]):
             The list of prefixes used to exclude
             processing for input files.
     """
 
-    input_file_exclusion_prefixes = proto.RepeatedField(
+    input_file_exclusion_prefixes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -230,12 +232,12 @@ class IdentifierSettings(proto.Message):
         NONE = 1
         REWRITE_ALL = 2
 
-    output_identifier_case = proto.Field(
+    output_identifier_case: IdentifierCase = proto.Field(
         proto.ENUM,
         number=1,
         enum=IdentifierCase,
     )
-    identifier_rewrite_mode = proto.Field(
+    identifier_rewrite_mode: IdentifierRewriteMode = proto.Field(
         proto.ENUM,
         number=2,
         enum=IdentifierRewriteMode,
@@ -258,23 +260,23 @@ class BteqOptions(proto.Message):
             The Cloud Storage location to be used as the
             default path for files that are not otherwise
             specified in the file replacement map.
-        file_replacement_map (Mapping[str, str]):
+        file_replacement_map (MutableMapping[str, str]):
             Maps the local paths that are used in BTEQ
             scripts (the keys) to the paths in Cloud Storage
             that should be used in their stead in the
             translation (the value).
     """
 
-    project_dataset = proto.Field(
+    project_dataset: "DatasetReference" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DatasetReference",
     )
-    default_path_uri = proto.Field(
+    default_path_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    file_replacement_map = proto.MapField(
+    file_replacement_map: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -294,11 +296,11 @@ class DatasetReference(proto.Message):
             dataset.
     """
 
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

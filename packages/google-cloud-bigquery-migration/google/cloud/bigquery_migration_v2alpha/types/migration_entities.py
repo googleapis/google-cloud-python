@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
@@ -50,7 +52,7 @@ class MigrationWorkflow(proto.Message):
             The display name of the workflow. This can be
             set to give a workflow a descriptive name. There
             is no guarantee or enforcement of uniqueness.
-        tasks (Mapping[str, google.cloud.bigquery_migration_v2alpha.types.MigrationTask]):
+        tasks (MutableMapping[str, google.cloud.bigquery_migration_v2alpha.types.MigrationTask]):
             The tasks in a workflow in a named map. The
             name (i.e. key) has no meaning and is merely a
             convenient way to address a specific task in a
@@ -71,31 +73,31 @@ class MigrationWorkflow(proto.Message):
         PAUSED = 3
         COMPLETED = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    tasks = proto.MapField(
+    tasks: MutableMapping[str, "MigrationTask"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message="MigrationTask",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    last_update_time = proto.Field(
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -158,52 +160,52 @@ class MigrationTask(proto.Message):
         SUCCEEDED = 5
         FAILED = 6
 
-    assessment_task_details = proto.Field(
+    assessment_task_details: assessment_task.AssessmentTaskDetails = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="task_details",
         message=assessment_task.AssessmentTaskDetails,
     )
-    translation_task_details = proto.Field(
+    translation_task_details: translation_task.TranslationTaskDetails = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="task_details",
         message=translation_task.TranslationTaskDetails,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    details = proto.Field(
+    details: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=3,
         message=any_pb2.Any,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    processing_error = proto.Field(
+    processing_error: error_details_pb2.ErrorInfo = proto.Field(
         proto.MESSAGE,
         number=5,
         message=error_details_pb2.ErrorInfo,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    last_update_time = proto.Field(
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    orchestration_result = proto.Field(
+    orchestration_result: "MigrationTaskOrchestrationResult" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="MigrationTaskOrchestrationResult",
@@ -239,7 +241,7 @@ class MigrationSubtask(proto.Message):
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
             Output only. An explanation that may be
             populated when the task is in FAILED state.
-        resource_error_details (Sequence[google.cloud.bigquery_migration_v2alpha.types.ResourceErrorDetail]):
+        resource_error_details (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.ResourceErrorDetail]):
             Output only. Provides details to errors and
             issues encountered while processing the subtask.
             Presence of error details does not mean that the
@@ -254,7 +256,7 @@ class MigrationSubtask(proto.Message):
             Time when the subtask was created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the subtask was last updated.
-        metrics (Sequence[google.cloud.bigquery_migration_v2alpha.types.TimeSeries]):
+        metrics (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.TimeSeries]):
             The metrics for the subtask.
     """
 
@@ -267,48 +269,50 @@ class MigrationSubtask(proto.Message):
         FAILED = 4
         PAUSED = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    task_id = proto.Field(
+    task_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    processing_error = proto.Field(
+    processing_error: error_details_pb2.ErrorInfo = proto.Field(
         proto.MESSAGE,
         number=6,
         message=error_details_pb2.ErrorInfo,
     )
-    resource_error_details = proto.RepeatedField(
+    resource_error_details: MutableSequence[
+        migration_error_details.ResourceErrorDetail
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=migration_error_details.ResourceErrorDetail,
     )
-    resource_error_count = proto.Field(
+    resource_error_count: int = proto.Field(
         proto.INT32,
         number=13,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    last_update_time = proto.Field(
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence[migration_metrics.TimeSeries] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=migration_metrics.TimeSeries,
@@ -329,11 +333,13 @@ class MigrationTaskOrchestrationResult(proto.Message):
             This field is a member of `oneof`_ ``details``.
     """
 
-    assessment_details = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        oneof="details",
-        message=assessment_task.AssessmentOrchestrationResultDetails,
+    assessment_details: assessment_task.AssessmentOrchestrationResultDetails = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="details",
+            message=assessment_task.AssessmentOrchestrationResultDetails,
+        )
     )
 
 

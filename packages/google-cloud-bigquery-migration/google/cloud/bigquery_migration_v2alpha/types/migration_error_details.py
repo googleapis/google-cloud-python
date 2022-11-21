@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import error_details_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -33,7 +35,7 @@ class ResourceErrorDetail(proto.Message):
         resource_info (google.rpc.error_details_pb2.ResourceInfo):
             Required. Information about the resource
             where the error is located.
-        error_details (Sequence[google.cloud.bigquery_migration_v2alpha.types.ErrorDetail]):
+        error_details (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.ErrorDetail]):
             Required. The error details for the resource.
         error_count (int):
             Required. How many errors there are in total for the
@@ -42,17 +44,17 @@ class ResourceErrorDetail(proto.Message):
             ``error_details``.
     """
 
-    resource_info = proto.Field(
+    resource_info: error_details_pb2.ResourceInfo = proto.Field(
         proto.MESSAGE,
         number=1,
         message=error_details_pb2.ResourceInfo,
     )
-    error_details = proto.RepeatedField(
+    error_details: MutableSequence["ErrorDetail"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ErrorDetail",
     )
-    error_count = proto.Field(
+    error_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -71,12 +73,12 @@ class ErrorDetail(proto.Message):
             with structured detail.
     """
 
-    location = proto.Field(
+    location: "ErrorLocation" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ErrorLocation",
     )
-    error_info = proto.Field(
+    error_info: error_details_pb2.ErrorInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=error_details_pb2.ErrorInfo,
@@ -97,11 +99,11 @@ class ErrorLocation(proto.Message):
             that there is no columns information.
     """
 
-    line = proto.Field(
+    line: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    column = proto.Field(
+    column: int = proto.Field(
         proto.INT32,
         number=2,
     )

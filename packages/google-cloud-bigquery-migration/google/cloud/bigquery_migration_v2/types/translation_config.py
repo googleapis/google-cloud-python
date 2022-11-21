@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -76,33 +78,33 @@ class TranslationConfigDetails(proto.Message):
             translation.
     """
 
-    gcs_source_path = proto.Field(
+    gcs_source_path: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="source_location",
     )
-    gcs_target_path = proto.Field(
+    gcs_target_path: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="target_location",
     )
-    source_dialect = proto.Field(
+    source_dialect: "Dialect" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Dialect",
     )
-    target_dialect = proto.Field(
+    target_dialect: "Dialect" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Dialect",
     )
-    name_mapping_list = proto.Field(
+    name_mapping_list: "ObjectNameMappingList" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="output_name_mapping",
         message="ObjectNameMappingList",
     )
-    source_env = proto.Field(
+    source_env: "SourceEnv" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="SourceEnv",
@@ -178,85 +180,85 @@ class Dialect(proto.Message):
             This field is a member of `oneof`_ ``dialect_value``.
     """
 
-    bigquery_dialect = proto.Field(
+    bigquery_dialect: "BigQueryDialect" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="dialect_value",
         message="BigQueryDialect",
     )
-    hiveql_dialect = proto.Field(
+    hiveql_dialect: "HiveQLDialect" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="dialect_value",
         message="HiveQLDialect",
     )
-    redshift_dialect = proto.Field(
+    redshift_dialect: "RedshiftDialect" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="dialect_value",
         message="RedshiftDialect",
     )
-    teradata_dialect = proto.Field(
+    teradata_dialect: "TeradataDialect" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="dialect_value",
         message="TeradataDialect",
     )
-    oracle_dialect = proto.Field(
+    oracle_dialect: "OracleDialect" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="dialect_value",
         message="OracleDialect",
     )
-    sparksql_dialect = proto.Field(
+    sparksql_dialect: "SparkSQLDialect" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="dialect_value",
         message="SparkSQLDialect",
     )
-    snowflake_dialect = proto.Field(
+    snowflake_dialect: "SnowflakeDialect" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="dialect_value",
         message="SnowflakeDialect",
     )
-    netezza_dialect = proto.Field(
+    netezza_dialect: "NetezzaDialect" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="dialect_value",
         message="NetezzaDialect",
     )
-    azure_synapse_dialect = proto.Field(
+    azure_synapse_dialect: "AzureSynapseDialect" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="dialect_value",
         message="AzureSynapseDialect",
     )
-    vertica_dialect = proto.Field(
+    vertica_dialect: "VerticaDialect" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="dialect_value",
         message="VerticaDialect",
     )
-    sql_server_dialect = proto.Field(
+    sql_server_dialect: "SQLServerDialect" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="dialect_value",
         message="SQLServerDialect",
     )
-    postgresql_dialect = proto.Field(
+    postgresql_dialect: "PostgresqlDialect" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="dialect_value",
         message="PostgresqlDialect",
     )
-    presto_dialect = proto.Field(
+    presto_dialect: "PrestoDialect" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="dialect_value",
         message="PrestoDialect",
     )
-    mysql_dialect = proto.Field(
+    mysql_dialect: "MySQLDialect" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="dialect_value",
@@ -291,7 +293,7 @@ class TeradataDialect(proto.Message):
         SQL = 1
         BTEQ = 2
 
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=1,
         enum=Mode,
@@ -343,11 +345,11 @@ class ObjectNameMappingList(proto.Message):
     proto messages of existing name to desired output name.
 
     Attributes:
-        name_map (Sequence[google.cloud.bigquery_migration_v2.types.ObjectNameMapping]):
+        name_map (MutableSequence[google.cloud.bigquery_migration_v2.types.ObjectNameMapping]):
             The elements of the object name map.
     """
 
-    name_map = proto.RepeatedField(
+    name_map: MutableSequence["ObjectNameMapping"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ObjectNameMapping",
@@ -368,12 +370,12 @@ class ObjectNameMapping(proto.Message):
             being mapped.
     """
 
-    source = proto.Field(
+    source: "NameMappingKey" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="NameMappingKey",
     )
-    target = proto.Field(
+    target: "NameMappingValue" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="NameMappingValue",
@@ -412,24 +414,24 @@ class NameMappingKey(proto.Message):
         ATTRIBUTE_ALIAS = 6
         FUNCTION = 7
 
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    schema = proto.Field(
+    schema: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    relation = proto.Field(
+    relation: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    attribute = proto.Field(
+    attribute: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -454,19 +456,19 @@ class NameMappingValue(proto.Message):
             equivalent in the target data warehouse).
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schema = proto.Field(
+    schema: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    relation = proto.Field(
+    relation: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    attribute = proto.Field(
+    attribute: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -480,17 +482,17 @@ class SourceEnv(proto.Message):
         default_database (str):
             The default database name to fully qualify
             SQL objects when their database name is missing.
-        schema_search_path (Sequence[str]):
+        schema_search_path (MutableSequence[str]):
             The schema search path. When SQL objects are
             missing schema name, translation engine will
             search through this list to find the value.
     """
 
-    default_database = proto.Field(
+    default_database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schema_search_path = proto.RepeatedField(
+    schema_search_path: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

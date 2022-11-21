@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.bigquery.migration.v2",
-        "version": "v2"
+        "id": "google.cloud.bigquery.migration.v2alpha",
+        "version": "v2alpha"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-bigquery-migration"
+    "name": "google-cloud-bigquery-migration",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.create_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.create_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.CreateMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.CreateMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "CreateMigrationWorkflow"
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.CreateMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.CreateMigrationWorkflowRequest"
           },
           {
             "name": "parent",
@@ -38,7 +39,7 @@
           },
           {
             "name": "migration_workflow",
-            "type": "google.cloud.bigquery_migration_v2.types.MigrationWorkflow"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow"
           },
           {
             "name": "retry",
@@ -53,14 +54,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.types.MigrationWorkflow",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow",
         "shortName": "create_migration_workflow"
       },
       "description": "Sample for CreateMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_create_migration_workflow_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_create_migration_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_CreateMigrationWorkflow_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_async",
       "segments": [
         {
           "end": 51,
@@ -93,20 +94,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_create_migration_workflow_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_create_migration_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.create_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.create_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.CreateMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.CreateMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "CreateMigrationWorkflow"
@@ -114,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.CreateMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.CreateMigrationWorkflowRequest"
           },
           {
             "name": "parent",
@@ -122,7 +123,7 @@
           },
           {
             "name": "migration_workflow",
-            "type": "google.cloud.bigquery_migration_v2.types.MigrationWorkflow"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow"
           },
           {
             "name": "retry",
@@ -137,14 +138,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.types.MigrationWorkflow",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow",
         "shortName": "create_migration_workflow"
       },
       "description": "Sample for CreateMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_create_migration_workflow_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_create_migration_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_CreateMigrationWorkflow_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_sync",
       "segments": [
         {
           "end": 51,
@@ -177,21 +178,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_create_migration_workflow_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_create_migration_workflow_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.delete_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.delete_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.DeleteMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.DeleteMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "DeleteMigrationWorkflow"
@@ -199,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.DeleteMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.DeleteMigrationWorkflowRequest"
           },
           {
             "name": "name",
@@ -221,10 +222,10 @@
         "shortName": "delete_migration_workflow"
       },
       "description": "Sample for DeleteMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_delete_migration_workflow_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_delete_migration_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_DeleteMigrationWorkflow_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_async",
       "segments": [
         {
           "end": 49,
@@ -255,20 +256,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_delete_migration_workflow_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_delete_migration_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.delete_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.delete_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.DeleteMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.DeleteMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "DeleteMigrationWorkflow"
@@ -276,7 +277,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.DeleteMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.DeleteMigrationWorkflowRequest"
           },
           {
             "name": "name",
@@ -298,10 +299,10 @@
         "shortName": "delete_migration_workflow"
       },
       "description": "Sample for DeleteMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_delete_migration_workflow_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_delete_migration_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_DeleteMigrationWorkflow_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_sync",
       "segments": [
         {
           "end": 49,
@@ -332,21 +333,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_delete_migration_workflow_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_delete_migration_workflow_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.get_migration_subtask",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.get_migration_subtask",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.GetMigrationSubtask",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.GetMigrationSubtask",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "GetMigrationSubtask"
@@ -354,7 +355,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.GetMigrationSubtaskRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.GetMigrationSubtaskRequest"
           },
           {
             "name": "name",
@@ -373,14 +374,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.types.MigrationSubtask",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask",
         "shortName": "get_migration_subtask"
       },
       "description": "Sample for GetMigrationSubtask",
-      "file": "bigquerymigration_v2_generated_migration_service_get_migration_subtask_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_subtask_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationSubtask_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationSubtask_async",
       "segments": [
         {
           "end": 51,
@@ -413,20 +414,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_get_migration_subtask_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_get_migration_subtask_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.get_migration_subtask",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.get_migration_subtask",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.GetMigrationSubtask",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.GetMigrationSubtask",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "GetMigrationSubtask"
@@ -434,7 +435,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.GetMigrationSubtaskRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.GetMigrationSubtaskRequest"
           },
           {
             "name": "name",
@@ -453,14 +454,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.types.MigrationSubtask",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask",
         "shortName": "get_migration_subtask"
       },
       "description": "Sample for GetMigrationSubtask",
-      "file": "bigquerymigration_v2_generated_migration_service_get_migration_subtask_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_subtask_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationSubtask_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationSubtask_sync",
       "segments": [
         {
           "end": 51,
@@ -493,21 +494,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_get_migration_subtask_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_get_migration_subtask_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.get_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.get_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.GetMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.GetMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "GetMigrationWorkflow"
@@ -515,7 +516,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.GetMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.GetMigrationWorkflowRequest"
           },
           {
             "name": "name",
@@ -534,14 +535,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.types.MigrationWorkflow",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow",
         "shortName": "get_migration_workflow"
       },
       "description": "Sample for GetMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_get_migration_workflow_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationWorkflow_async",
       "segments": [
         {
           "end": 51,
@@ -574,20 +575,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_get_migration_workflow_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_get_migration_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.get_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.get_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.GetMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.GetMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "GetMigrationWorkflow"
@@ -595,7 +596,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.GetMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.GetMigrationWorkflowRequest"
           },
           {
             "name": "name",
@@ -614,14 +615,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.types.MigrationWorkflow",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow",
         "shortName": "get_migration_workflow"
       },
       "description": "Sample for GetMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_get_migration_workflow_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationWorkflow_sync",
       "segments": [
         {
           "end": 51,
@@ -654,21 +655,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_get_migration_workflow_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_get_migration_workflow_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.list_migration_subtasks",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.list_migration_subtasks",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.ListMigrationSubtasks",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.ListMigrationSubtasks",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "ListMigrationSubtasks"
@@ -676,7 +677,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.ListMigrationSubtasksRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest"
           },
           {
             "name": "parent",
@@ -695,14 +696,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.services.migration_service.pagers.ListMigrationSubtasksAsyncPager",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.services.migration_service.pagers.ListMigrationSubtasksAsyncPager",
         "shortName": "list_migration_subtasks"
       },
       "description": "Sample for ListMigrationSubtasks",
-      "file": "bigquerymigration_v2_generated_migration_service_list_migration_subtasks_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_subtasks_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_async",
       "segments": [
         {
           "end": 52,
@@ -735,20 +736,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_list_migration_subtasks_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_list_migration_subtasks_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.list_migration_subtasks",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.list_migration_subtasks",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.ListMigrationSubtasks",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.ListMigrationSubtasks",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "ListMigrationSubtasks"
@@ -756,7 +757,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.ListMigrationSubtasksRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest"
           },
           {
             "name": "parent",
@@ -775,14 +776,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.services.migration_service.pagers.ListMigrationSubtasksPager",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.services.migration_service.pagers.ListMigrationSubtasksPager",
         "shortName": "list_migration_subtasks"
       },
       "description": "Sample for ListMigrationSubtasks",
-      "file": "bigquerymigration_v2_generated_migration_service_list_migration_subtasks_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_subtasks_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_sync",
       "segments": [
         {
           "end": 52,
@@ -815,21 +816,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_list_migration_subtasks_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_list_migration_subtasks_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.list_migration_workflows",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.list_migration_workflows",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.ListMigrationWorkflows",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.ListMigrationWorkflows",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "ListMigrationWorkflows"
@@ -837,7 +838,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.ListMigrationWorkflowsRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest"
           },
           {
             "name": "parent",
@@ -856,14 +857,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.services.migration_service.pagers.ListMigrationWorkflowsAsyncPager",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.services.migration_service.pagers.ListMigrationWorkflowsAsyncPager",
         "shortName": "list_migration_workflows"
       },
       "description": "Sample for ListMigrationWorkflows",
-      "file": "bigquerymigration_v2_generated_migration_service_list_migration_workflows_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_workflows_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationWorkflows_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_async",
       "segments": [
         {
           "end": 52,
@@ -896,20 +897,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_list_migration_workflows_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_list_migration_workflows_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.list_migration_workflows",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.list_migration_workflows",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.ListMigrationWorkflows",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.ListMigrationWorkflows",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "ListMigrationWorkflows"
@@ -917,7 +918,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.ListMigrationWorkflowsRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest"
           },
           {
             "name": "parent",
@@ -936,14 +937,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery_migration_v2.services.migration_service.pagers.ListMigrationWorkflowsPager",
+        "resultType": "google.cloud.bigquery_migration_v2alpha.services.migration_service.pagers.ListMigrationWorkflowsPager",
         "shortName": "list_migration_workflows"
       },
       "description": "Sample for ListMigrationWorkflows",
-      "file": "bigquerymigration_v2_generated_migration_service_list_migration_workflows_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_workflows_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationWorkflows_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_sync",
       "segments": [
         {
           "end": 52,
@@ -976,21 +977,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_list_migration_workflows_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_list_migration_workflows_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient",
           "shortName": "MigrationServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceAsyncClient.start_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceAsyncClient.start_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.StartMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.StartMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "StartMigrationWorkflow"
@@ -998,7 +999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.StartMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.StartMigrationWorkflowRequest"
           },
           {
             "name": "name",
@@ -1020,10 +1021,10 @@
         "shortName": "start_migration_workflow"
       },
       "description": "Sample for StartMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_start_migration_workflow_async.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_start_migration_workflow_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_StartMigrationWorkflow_async",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_StartMigrationWorkflow_async",
       "segments": [
         {
           "end": 49,
@@ -1054,20 +1055,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_start_migration_workflow_async.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_start_migration_workflow_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient",
+          "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient",
           "shortName": "MigrationServiceClient"
         },
-        "fullName": "google.cloud.bigquery_migration_v2.MigrationServiceClient.start_migration_workflow",
+        "fullName": "google.cloud.bigquery_migration_v2alpha.MigrationServiceClient.start_migration_workflow",
         "method": {
-          "fullName": "google.cloud.bigquery.migration.v2.MigrationService.StartMigrationWorkflow",
+          "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService.StartMigrationWorkflow",
           "service": {
-            "fullName": "google.cloud.bigquery.migration.v2.MigrationService",
+            "fullName": "google.cloud.bigquery.migration.v2alpha.MigrationService",
             "shortName": "MigrationService"
           },
           "shortName": "StartMigrationWorkflow"
@@ -1075,7 +1076,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_migration_v2.types.StartMigrationWorkflowRequest"
+            "type": "google.cloud.bigquery_migration_v2alpha.types.StartMigrationWorkflowRequest"
           },
           {
             "name": "name",
@@ -1097,10 +1098,10 @@
         "shortName": "start_migration_workflow"
       },
       "description": "Sample for StartMigrationWorkflow",
-      "file": "bigquerymigration_v2_generated_migration_service_start_migration_workflow_sync.py",
+      "file": "bigquerymigration_v2alpha_generated_migration_service_start_migration_workflow_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerymigration_v2_generated_MigrationService_StartMigrationWorkflow_sync",
+      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_StartMigrationWorkflow_sync",
       "segments": [
         {
           "end": 49,
@@ -1131,7 +1132,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerymigration_v2_generated_migration_service_start_migration_workflow_sync.py"
+      "title": "bigquerymigration_v2alpha_generated_migration_service_start_migration_workflow_sync.py"
     }
   ]
 }

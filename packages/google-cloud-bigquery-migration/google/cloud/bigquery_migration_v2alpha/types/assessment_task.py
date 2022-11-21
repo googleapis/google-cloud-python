@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -43,19 +45,19 @@ class AssessmentTaskDetails(proto.Message):
             input data is extracted.
     """
 
-    input_path = proto.Field(
+    input_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_dataset = proto.Field(
+    output_dataset: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    querylogs_path = proto.Field(
+    querylogs_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_source = proto.Field(
+    data_source: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -70,7 +72,7 @@ class AssessmentOrchestrationResultDetails(proto.Message):
             table schemas.
     """
 
-    output_tables_schema_version = proto.Field(
+    output_tables_schema_version: str = proto.Field(
         proto.STRING,
         number=1,
     )

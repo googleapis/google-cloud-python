@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -45,11 +47,11 @@ class CreateMigrationWorkflowRequest(proto.Message):
             Required. The migration workflow to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    migration_workflow = proto.Field(
+    migration_workflow: migration_entities.MigrationWorkflow = proto.Field(
         proto.MESSAGE,
         number=2,
         message=migration_entities.MigrationWorkflow,
@@ -67,11 +69,11 @@ class GetMigrationWorkflowRequest(proto.Message):
             The list of fields to be retrieved.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -101,20 +103,20 @@ class ListMigrationWorkflowsRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -124,7 +126,7 @@ class ListMigrationWorkflowsResponse(proto.Message):
     r"""Response object for a ``ListMigrationWorkflows`` call.
 
     Attributes:
-        migration_workflows (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow]):
+        migration_workflows (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow]):
             The migration workflows for the specified
             project / location.
         next_page_token (str):
@@ -137,12 +139,14 @@ class ListMigrationWorkflowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migration_workflows = proto.RepeatedField(
+    migration_workflows: MutableSequence[
+        migration_entities.MigrationWorkflow
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=migration_entities.MigrationWorkflow,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -157,7 +161,7 @@ class DeleteMigrationWorkflowRequest(proto.Message):
             Example: ``projects/123/locations/us/workflows/1234``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -172,7 +176,7 @@ class StartMigrationWorkflowRequest(proto.Message):
             Example: ``projects/123/locations/us/workflows/1234``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -190,11 +194,11 @@ class GetMigrationSubtaskRequest(proto.Message):
             Optional. The list of fields to be retrieved.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -229,24 +233,24 @@ class ListMigrationSubtasksRequest(proto.Message):
             ID (not the name in the named map).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -256,7 +260,7 @@ class ListMigrationSubtasksResponse(proto.Message):
     r"""Response object for a ``ListMigrationSubtasks`` call.
 
     Attributes:
-        migration_subtasks (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask]):
+        migration_subtasks (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask]):
             The migration subtasks for the specified
             task.
         next_page_token (str):
@@ -269,12 +273,14 @@ class ListMigrationSubtasksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migration_subtasks = proto.RepeatedField(
+    migration_subtasks: MutableSequence[
+        migration_entities.MigrationSubtask
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=migration_entities.MigrationSubtask,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -47,7 +49,7 @@ class TimeSeries(proto.Message):
             must be auto-created, then this field specifies the metric
             kind of the new descriptor and must be either ``GAUGE`` (the
             default) or ``CUMULATIVE``.
-        points (Sequence[google.cloud.bigquery_migration_v2alpha.types.Point]):
+        points (MutableSequence[google.cloud.bigquery_migration_v2alpha.types.Point]):
             Required. The data points of this time series. When listing
             time series, points are returned in reverse time order.
 
@@ -59,21 +61,21 @@ class TimeSeries(proto.Message):
             ``BOOL``, ``INT64``, ``DOUBLE``, or ``DISTRIBUTION``.
     """
 
-    metric = proto.Field(
+    metric: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value_type = proto.Field(
+    value_type: metric_pb2.MetricDescriptor.ValueType = proto.Field(
         proto.ENUM,
         number=2,
         enum=metric_pb2.MetricDescriptor.ValueType,
     )
-    metric_kind = proto.Field(
+    metric_kind: metric_pb2.MetricDescriptor.MetricKind = proto.Field(
         proto.ENUM,
         number=3,
         enum=metric_pb2.MetricDescriptor.MetricKind,
     )
-    points = proto.RepeatedField(
+    points: MutableSequence["Point"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Point",
@@ -100,12 +102,12 @@ class Point(proto.Message):
             The value of the data point.
     """
 
-    interval = proto.Field(
+    interval: "TimeInterval" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TimeInterval",
     )
-    value = proto.Field(
+    value: "TypedValue" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TypedValue",
@@ -127,12 +129,12 @@ class TimeInterval(proto.Message):
             Required. The end of the time interval.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -176,27 +178,27 @@ class TypedValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="value",
     )
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="value",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=3,
         oneof="value",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="value",
     )
-    distribution_value = proto.Field(
+    distribution_value: distribution_pb2.Distribution = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="value",
