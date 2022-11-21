@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -198,9 +208,9 @@ class ContactCenterInsightsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ContactCenterInsightsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the contact center insights client.
@@ -244,13 +254,15 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_conversation(
         self,
-        request: Union[contact_center_insights.CreateConversationRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.CreateConversationRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        conversation: resources.Conversation = None,
-        conversation_id: str = None,
+        parent: Optional[str] = None,
+        conversation: Optional[resources.Conversation] = None,
+        conversation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
         r"""Creates a conversation.
@@ -282,7 +294,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CreateConversationRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateConversationRequest, dict]]):
                 The request object. Request to create a conversation.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -369,12 +381,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_conversation(
         self,
-        request: Union[contact_center_insights.UpdateConversationRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UpdateConversationRequest, dict]
+        ] = None,
         *,
-        conversation: resources.Conversation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        conversation: Optional[resources.Conversation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
         r"""Updates a conversation.
@@ -405,7 +419,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UpdateConversationRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateConversationRequest, dict]]):
                 The request object. The request to update a
                 conversation.
             conversation (:class:`google.cloud.contact_center_insights_v1.types.Conversation`):
@@ -478,11 +492,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_conversation(
         self,
-        request: Union[contact_center_insights.GetConversationRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.GetConversationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Conversation:
         r"""Gets a conversation.
@@ -514,7 +530,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetConversationRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetConversationRequest, dict]]):
                 The request object. The request to get a conversation.
             name (:class:`str`):
                 Required. The name of the
@@ -577,11 +593,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_conversations(
         self,
-        request: Union[contact_center_insights.ListConversationsRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.ListConversationsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationsAsyncPager:
         r"""Lists conversations.
@@ -614,7 +632,7 @@ class ContactCenterInsightsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ListConversationsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListConversationsRequest, dict]]):
                 The request object. Request to list conversations.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -691,11 +709,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_conversation(
         self,
-        request: Union[contact_center_insights.DeleteConversationRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.DeleteConversationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a conversation.
@@ -724,7 +744,7 @@ class ContactCenterInsightsAsyncClient:
                 await client.delete_conversation(request=request)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.DeleteConversationRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteConversationRequest, dict]]):
                 The request object. The request to delete a
                 conversation.
             name (:class:`str`):
@@ -781,12 +801,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_analysis(
         self,
-        request: Union[contact_center_insights.CreateAnalysisRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.CreateAnalysisRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        analysis: resources.Analysis = None,
+        parent: Optional[str] = None,
+        analysis: Optional[resources.Analysis] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an analysis. The long running operation is
@@ -823,7 +845,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CreateAnalysisRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateAnalysisRequest, dict]]):
                 The request object. The request to create an analysis.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -906,11 +928,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_analysis(
         self,
-        request: Union[contact_center_insights.GetAnalysisRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.GetAnalysisRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Analysis:
         r"""Gets an analysis.
@@ -942,7 +966,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetAnalysisRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetAnalysisRequest, dict]]):
                 The request object. The request to get an analysis.
             name (:class:`str`):
                 Required. The name of the analysis to
@@ -1005,11 +1029,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_analyses(
         self,
-        request: Union[contact_center_insights.ListAnalysesRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.ListAnalysesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnalysesAsyncPager:
         r"""Lists analyses.
@@ -1042,7 +1068,7 @@ class ContactCenterInsightsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ListAnalysesRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListAnalysesRequest, dict]]):
                 The request object. The request to list analyses.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -1118,11 +1144,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_analysis(
         self,
-        request: Union[contact_center_insights.DeleteAnalysisRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.DeleteAnalysisRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an analysis.
@@ -1151,7 +1179,7 @@ class ContactCenterInsightsAsyncClient:
                 await client.delete_analysis(request=request)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.DeleteAnalysisRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteAnalysisRequest, dict]]):
                 The request object. The request to delete an analysis.
             name (:class:`str`):
                 Required. The name of the analysis to
@@ -1207,11 +1235,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def export_insights_data(
         self,
-        request: Union[contact_center_insights.ExportInsightsDataRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.ExportInsightsDataRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Export insights data to a destination defined in the
@@ -1252,7 +1282,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest, dict]]):
                 The request object. The request to export insights.
             parent (:class:`str`):
                 Required. The parent resource to
@@ -1328,12 +1358,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_issue_model(
         self,
-        request: Union[contact_center_insights.CreateIssueModelRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.CreateIssueModelRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        issue_model: resources.IssueModel = None,
+        parent: Optional[str] = None,
+        issue_model: Optional[resources.IssueModel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an issue model.
@@ -1369,7 +1401,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest, dict]]):
                 The request object. The request to create an issue
                 model.
             parent (:class:`str`):
@@ -1453,12 +1485,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_issue_model(
         self,
-        request: Union[contact_center_insights.UpdateIssueModelRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UpdateIssueModelRequest, dict]
+        ] = None,
         *,
-        issue_model: resources.IssueModel = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        issue_model: Optional[resources.IssueModel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.IssueModel:
         r"""Updates an issue model.
@@ -1489,7 +1523,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UpdateIssueModelRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateIssueModelRequest, dict]]):
                 The request object. The request to update an issue
                 model.
             issue_model (:class:`google.cloud.contact_center_insights_v1.types.IssueModel`):
@@ -1562,11 +1596,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_issue_model(
         self,
-        request: Union[contact_center_insights.GetIssueModelRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.GetIssueModelRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.IssueModel:
         r"""Gets an issue model.
@@ -1598,7 +1634,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetIssueModelRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetIssueModelRequest, dict]]):
                 The request object. The request to get an issue model.
             name (:class:`str`):
                 Required. The name of the issue model
@@ -1661,11 +1697,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_issue_models(
         self,
-        request: Union[contact_center_insights.ListIssueModelsRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.ListIssueModelsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.ListIssueModelsResponse:
         r"""Lists issue models.
@@ -1697,7 +1735,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ListIssueModelsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListIssueModelsRequest, dict]]):
                 The request object. Request to list issue models.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -1760,11 +1798,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_issue_model(
         self,
-        request: Union[contact_center_insights.DeleteIssueModelRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.DeleteIssueModelRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an issue model.
@@ -1800,7 +1840,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest, dict]]):
                 The request object. The request to delete an issue
                 model.
             name (:class:`str`):
@@ -1884,11 +1924,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def deploy_issue_model(
         self,
-        request: Union[contact_center_insights.DeployIssueModelRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.DeployIssueModelRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deploys an issue model. Returns an error if a model
@@ -1926,7 +1968,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest, dict]]):
                 The request object. The request to deploy an issue
                 model.
             name (:class:`str`):
@@ -2001,11 +2043,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def undeploy_issue_model(
         self,
-        request: Union[contact_center_insights.UndeployIssueModelRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UndeployIssueModelRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Undeploys an issue model.
@@ -2043,7 +2087,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UndeployIssueModelRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UndeployIssueModelRequest, dict]]):
                 The request object. The request to undeploy an issue
                 model.
             name (:class:`str`):
@@ -2120,11 +2164,11 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_issue(
         self,
-        request: Union[contact_center_insights.GetIssueRequest, dict] = None,
+        request: Optional[Union[contact_center_insights.GetIssueRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Issue:
         r"""Gets an issue.
@@ -2156,7 +2200,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetIssueRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetIssueRequest, dict]]):
                 The request object. The request to get an issue.
             name (:class:`str`):
                 Required. The name of the issue to
@@ -2219,11 +2263,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_issues(
         self,
-        request: Union[contact_center_insights.ListIssuesRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.ListIssuesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.ListIssuesResponse:
         r"""Lists issues.
@@ -2255,7 +2301,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ListIssuesRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListIssuesRequest, dict]]):
                 The request object. Request to list issues.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -2318,12 +2364,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_issue(
         self,
-        request: Union[contact_center_insights.UpdateIssueRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UpdateIssueRequest, dict]
+        ] = None,
         *,
-        issue: resources.Issue = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        issue: Optional[resources.Issue] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Issue:
         r"""Updates an issue.
@@ -2354,7 +2402,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UpdateIssueRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateIssueRequest, dict]]):
                 The request object. The request to update an issue.
             issue (:class:`google.cloud.contact_center_insights_v1.types.Issue`):
                 Required. The new values for the
@@ -2426,13 +2474,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def calculate_issue_model_stats(
         self,
-        request: Union[
-            contact_center_insights.CalculateIssueModelStatsRequest, dict
+        request: Optional[
+            Union[contact_center_insights.CalculateIssueModelStatsRequest, dict]
         ] = None,
         *,
-        issue_model: str = None,
+        issue_model: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.CalculateIssueModelStatsResponse:
         r"""Gets an issue model's statistics.
@@ -2464,7 +2512,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CalculateIssueModelStatsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CalculateIssueModelStatsRequest, dict]]):
                 The request object. Request to get statistics of an
                 issue model.
             issue_model (:class:`str`):
@@ -2532,12 +2580,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_phrase_matcher(
         self,
-        request: Union[contact_center_insights.CreatePhraseMatcherRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.CreatePhraseMatcherRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        phrase_matcher: resources.PhraseMatcher = None,
+        parent: Optional[str] = None,
+        phrase_matcher: Optional[resources.PhraseMatcher] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.PhraseMatcher:
         r"""Creates a phrase matcher.
@@ -2573,7 +2623,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CreatePhraseMatcherRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreatePhraseMatcherRequest, dict]]):
                 The request object. Request to create a phrase matcher.
             parent (:class:`str`):
                 Required. The parent resource of the phrase matcher.
@@ -2648,11 +2698,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_phrase_matcher(
         self,
-        request: Union[contact_center_insights.GetPhraseMatcherRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.GetPhraseMatcherRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.PhraseMatcher:
         r"""Gets a phrase matcher.
@@ -2684,7 +2736,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetPhraseMatcherRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetPhraseMatcherRequest, dict]]):
                 The request object. The request to get a a phrase
                 matcher.
             name (:class:`str`):
@@ -2748,11 +2800,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_phrase_matchers(
         self,
-        request: Union[contact_center_insights.ListPhraseMatchersRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.ListPhraseMatchersRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPhraseMatchersAsyncPager:
         r"""Lists phrase matchers.
@@ -2785,7 +2839,7 @@ class ContactCenterInsightsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ListPhraseMatchersRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListPhraseMatchersRequest, dict]]):
                 The request object. Request to list phrase matchers.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -2862,11 +2916,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_phrase_matcher(
         self,
-        request: Union[contact_center_insights.DeletePhraseMatcherRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.DeletePhraseMatcherRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a phrase matcher.
@@ -2895,7 +2951,7 @@ class ContactCenterInsightsAsyncClient:
                 await client.delete_phrase_matcher(request=request)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.DeletePhraseMatcherRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeletePhraseMatcherRequest, dict]]):
                 The request object. The request to delete a phrase
                 matcher.
             name (:class:`str`):
@@ -2952,12 +3008,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_phrase_matcher(
         self,
-        request: Union[contact_center_insights.UpdatePhraseMatcherRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UpdatePhraseMatcherRequest, dict]
+        ] = None,
         *,
-        phrase_matcher: resources.PhraseMatcher = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        phrase_matcher: Optional[resources.PhraseMatcher] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.PhraseMatcher:
         r"""Updates a phrase matcher.
@@ -2992,7 +3050,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UpdatePhraseMatcherRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdatePhraseMatcherRequest, dict]]):
                 The request object. The request to update a phrase
                 matcher.
             phrase_matcher (:class:`google.cloud.contact_center_insights_v1.types.PhraseMatcher`):
@@ -3065,11 +3123,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def calculate_stats(
         self,
-        request: Union[contact_center_insights.CalculateStatsRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.CalculateStatsRequest, dict]
+        ] = None,
         *,
-        location: str = None,
+        location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> contact_center_insights.CalculateStatsResponse:
         r"""Gets conversation statistics.
@@ -3101,7 +3161,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CalculateStatsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CalculateStatsRequest, dict]]):
                 The request object. The request for calculating
                 conversation statistics.
             location (:class:`str`):
@@ -3167,11 +3227,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_settings(
         self,
-        request: Union[contact_center_insights.GetSettingsRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.GetSettingsRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Settings:
         r"""Gets project-level settings.
@@ -3203,7 +3265,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetSettingsRequest, dict]]):
                 The request object. The request to get project-level
                 settings.
             name (:class:`str`):
@@ -3267,12 +3329,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_settings(
         self,
-        request: Union[contact_center_insights.UpdateSettingsRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UpdateSettingsRequest, dict]
+        ] = None,
         *,
-        settings: resources.Settings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        settings: Optional[resources.Settings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Settings:
         r"""Updates project-level settings.
@@ -3303,7 +3367,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UpdateSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateSettingsRequest, dict]]):
                 The request object. The request to update project-level
                 settings.
             settings (:class:`google.cloud.contact_center_insights_v1.types.Settings`):
@@ -3376,12 +3440,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_view(
         self,
-        request: Union[contact_center_insights.CreateViewRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.CreateViewRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        view: resources.View = None,
+        parent: Optional[str] = None,
+        view: Optional[resources.View] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.View:
         r"""Creates a view.
@@ -3413,7 +3479,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.CreateViewRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateViewRequest, dict]]):
                 The request object. The request to create a view.
             parent (:class:`str`):
                 Required. The parent resource of the view. Required. The
@@ -3487,11 +3553,11 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_view(
         self,
-        request: Union[contact_center_insights.GetViewRequest, dict] = None,
+        request: Optional[Union[contact_center_insights.GetViewRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.View:
         r"""Gets a view.
@@ -3523,7 +3589,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.GetViewRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetViewRequest, dict]]):
                 The request object. The request to get a view.
             name (:class:`str`):
                 Required. The name of the view to
@@ -3586,11 +3652,11 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_views(
         self,
-        request: Union[contact_center_insights.ListViewsRequest, dict] = None,
+        request: Optional[Union[contact_center_insights.ListViewsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListViewsAsyncPager:
         r"""Lists views.
@@ -3623,7 +3689,7 @@ class ContactCenterInsightsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.ListViewsRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListViewsRequest, dict]]):
                 The request object. The request to list views.
             parent (:class:`str`):
                 Required. The parent resource of the
@@ -3699,12 +3765,14 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_view(
         self,
-        request: Union[contact_center_insights.UpdateViewRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.UpdateViewRequest, dict]
+        ] = None,
         *,
-        view: resources.View = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        view: Optional[resources.View] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.View:
         r"""Updates a view.
@@ -3735,7 +3803,7 @@ class ContactCenterInsightsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.UpdateViewRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateViewRequest, dict]]):
                 The request object. The request to update a view.
             view (:class:`google.cloud.contact_center_insights_v1.types.View`):
                 Required. The new view.
@@ -3805,11 +3873,13 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_view(
         self,
-        request: Union[contact_center_insights.DeleteViewRequest, dict] = None,
+        request: Optional[
+            Union[contact_center_insights.DeleteViewRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a view.
@@ -3838,7 +3908,7 @@ class ContactCenterInsightsAsyncClient:
                 await client.delete_view(request=request)
 
         Args:
-            request (Union[google.cloud.contact_center_insights_v1.types.DeleteViewRequest, dict]):
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteViewRequest, dict]]):
                 The request object. The request to delete a view.
             name (:class:`str`):
                 Required. The name of the view to
