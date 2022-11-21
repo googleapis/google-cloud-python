@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import decimal_pb2  # type: ignore
@@ -59,16 +61,16 @@ class CustomerRepricingConfig(proto.Message):
             then it indicates this was set mid-month.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repricing_config = proto.Field(
+    repricing_config: "RepricingConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RepricingConfig",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -95,16 +97,16 @@ class ChannelPartnerRepricingConfig(proto.Message):
             then it indicates this was set mid-month.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repricing_config = proto.Field(
+    repricing_config: "RepricingConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RepricingConfig",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -159,7 +161,7 @@ class RepricingConfig(proto.Message):
                 accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         """
 
-        entitlement = proto.Field(
+        entitlement: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -171,29 +173,29 @@ class RepricingConfig(proto.Message):
 
         """
 
-    entitlement_granularity = proto.Field(
+    entitlement_granularity: EntitlementGranularity = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="granularity",
         message=EntitlementGranularity,
     )
-    channel_partner_granularity = proto.Field(
+    channel_partner_granularity: ChannelPartnerGranularity = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="granularity",
         message=ChannelPartnerGranularity,
     )
-    effective_invoice_month = proto.Field(
+    effective_invoice_month: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=1,
         message=date_pb2.Date,
     )
-    adjustment = proto.Field(
+    adjustment: "RepricingAdjustment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RepricingAdjustment",
     )
-    rebilling_basis = proto.Field(
+    rebilling_basis: "RebillingBasis" = proto.Field(
         proto.ENUM,
         number=3,
         enum="RebillingBasis",
@@ -214,7 +216,7 @@ class RepricingAdjustment(proto.Message):
             This field is a member of `oneof`_ ``adjustment``.
     """
 
-    percentage_adjustment = proto.Field(
+    percentage_adjustment: "PercentageAdjustment" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="adjustment",
@@ -235,7 +237,7 @@ class PercentageAdjustment(proto.Message):
             Pass-Through    => "0.00".
     """
 
-    percentage = proto.Field(
+    percentage: decimal_pb2.Decimal = proto.Field(
         proto.MESSAGE,
         number=2,
         message=decimal_pb2.Decimal,

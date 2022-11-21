@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
 import proto  # type: ignore
@@ -107,60 +109,67 @@ class Offer(proto.Message):
             Describes the payment plan for the Offer.
         constraints (google.cloud.channel_v1.types.Constraints):
             Constraints on transacting the Offer.
-        price_by_resources (Sequence[google.cloud.channel_v1.types.PriceByResource]):
+        price_by_resources (MutableSequence[google.cloud.channel_v1.types.PriceByResource]):
             Price for each monetizable resource type.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start of the Offer validity time.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. End of the Offer validity time.
-        parameter_definitions (Sequence[google.cloud.channel_v1.types.ParameterDefinition]):
+        parameter_definitions (MutableSequence[google.cloud.channel_v1.types.ParameterDefinition]):
             Parameters required to use current Offer to
             purchase.
+        deal_code (str):
+            The deal code of the offer to get a special
+            promotion or discount.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    marketing_info = proto.Field(
+    marketing_info: products.MarketingInfo = proto.Field(
         proto.MESSAGE,
         number=2,
         message=products.MarketingInfo,
     )
-    sku = proto.Field(
+    sku: products.Sku = proto.Field(
         proto.MESSAGE,
         number=3,
         message=products.Sku,
     )
-    plan = proto.Field(
+    plan: "Plan" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Plan",
     )
-    constraints = proto.Field(
+    constraints: "Constraints" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Constraints",
     )
-    price_by_resources = proto.RepeatedField(
+    price_by_resources: MutableSequence["PriceByResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="PriceByResource",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    parameter_definitions = proto.RepeatedField(
+    parameter_definitions: MutableSequence["ParameterDefinition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="ParameterDefinition",
+    )
+    deal_code: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -186,7 +195,7 @@ class ParameterDefinition(proto.Message):
             seats when purchasing Google Workspace Business
             Standard. Applicable to INT64 and DOUBLE
             parameter types.
-        allowed_values (Sequence[google.cloud.channel_v1.types.Value]):
+        allowed_values (MutableSequence[google.cloud.channel_v1.types.Value]):
             If not empty, parameter values must be drawn from this list.
             For example, [us-west1, us-west2, ...] Applicable to STRING
             parameter type.
@@ -202,31 +211,31 @@ class ParameterDefinition(proto.Message):
         STRING = 2
         DOUBLE = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parameter_type = proto.Field(
+    parameter_type: ParameterType = proto.Field(
         proto.ENUM,
         number=2,
         enum=ParameterType,
     )
-    min_value = proto.Field(
+    min_value: common.Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.Value,
     )
-    max_value = proto.Field(
+    max_value: common.Value = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.Value,
     )
-    allowed_values = proto.RepeatedField(
+    allowed_values: MutableSequence[common.Value] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=common.Value,
     )
-    optional = proto.Field(
+    optional: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -241,7 +250,7 @@ class Constraints(proto.Message):
             the Offer for a customer.
     """
 
-    customer_constraints = proto.Field(
+    customer_constraints: "CustomerConstraints" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CustomerConstraints",
@@ -253,25 +262,29 @@ class CustomerConstraints(proto.Message):
     customer.
 
     Attributes:
-        allowed_regions (Sequence[str]):
+        allowed_regions (MutableSequence[str]):
             Allowed geographical regions of the customer.
-        allowed_customer_types (Sequence[google.cloud.channel_v1.types.CloudIdentityInfo.CustomerType]):
+        allowed_customer_types (MutableSequence[google.cloud.channel_v1.types.CloudIdentityInfo.CustomerType]):
             Allowed Customer Type.
-        promotional_order_types (Sequence[google.cloud.channel_v1.types.PromotionalOrderType]):
+        promotional_order_types (MutableSequence[google.cloud.channel_v1.types.PromotionalOrderType]):
             Allowed Promotional Order Type. Present for
             Promotional offers.
     """
 
-    allowed_regions = proto.RepeatedField(
+    allowed_regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    allowed_customer_types = proto.RepeatedField(
+    allowed_customer_types: MutableSequence[
+        common.CloudIdentityInfo.CustomerType
+    ] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=common.CloudIdentityInfo.CustomerType,
     )
-    promotional_order_types = proto.RepeatedField(
+    promotional_order_types: MutableSequence[
+        "PromotionalOrderType"
+    ] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum="PromotionalOrderType",
@@ -305,27 +318,27 @@ class Plan(proto.Message):
             Platform offers.
     """
 
-    payment_plan = proto.Field(
+    payment_plan: "PaymentPlan" = proto.Field(
         proto.ENUM,
         number=1,
         enum="PaymentPlan",
     )
-    payment_type = proto.Field(
+    payment_type: "PaymentType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="PaymentType",
     )
-    payment_cycle = proto.Field(
+    payment_cycle: "Period" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Period",
     )
-    trial_period = proto.Field(
+    trial_period: "Period" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Period",
     )
-    billing_account = proto.Field(
+    billing_account: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -340,21 +353,21 @@ class PriceByResource(proto.Message):
         price (google.cloud.channel_v1.types.Price):
             Price of the Offer. Present if there are no
             price phases.
-        price_phases (Sequence[google.cloud.channel_v1.types.PricePhase]):
+        price_phases (MutableSequence[google.cloud.channel_v1.types.PricePhase]):
             Specifies the price by time range.
     """
 
-    resource_type = proto.Field(
+    resource_type: "ResourceType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="ResourceType",
     )
-    price = proto.Field(
+    price: "Price" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Price",
     )
-    price_phases = proto.RepeatedField(
+    price_phases: MutableSequence["PricePhase"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="PricePhase",
@@ -378,21 +391,21 @@ class Price(proto.Message):
             Google Voice rate card.
     """
 
-    base_price = proto.Field(
+    base_price: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=1,
         message=money_pb2.Money,
     )
-    discount = proto.Field(
+    discount: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    effective_price = proto.Field(
+    effective_price: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=3,
         message=money_pb2.Money,
     )
-    external_price_uri = proto.Field(
+    external_price_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -413,29 +426,29 @@ class PricePhase(proto.Message):
         price (google.cloud.channel_v1.types.Price):
             Price of the phase. Present if there are no
             price tiers.
-        price_tiers (Sequence[google.cloud.channel_v1.types.PriceTier]):
+        price_tiers (MutableSequence[google.cloud.channel_v1.types.PriceTier]):
             Price by the resource tiers.
     """
 
-    period_type = proto.Field(
+    period_type: "PeriodType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="PeriodType",
     )
-    first_period = proto.Field(
+    first_period: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    last_period = proto.Field(
+    last_period: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    price = proto.Field(
+    price: "Price" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Price",
     )
-    price_tiers = proto.RepeatedField(
+    price_tiers: MutableSequence["PriceTier"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="PriceTier",
@@ -463,15 +476,15 @@ class PriceTier(proto.Message):
             Price of the tier.
     """
 
-    first_resource = proto.Field(
+    first_resource: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    last_resource = proto.Field(
+    last_resource: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    price = proto.Field(
+    price: "Price" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Price",
@@ -488,11 +501,11 @@ class Period(proto.Message):
             Period Type.
     """
 
-    duration = proto.Field(
+    duration: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    period_type = proto.Field(
+    period_type: "PeriodType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="PeriodType",

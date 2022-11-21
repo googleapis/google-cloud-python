@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
@@ -82,56 +84,56 @@ class Customer(proto.Message):
             exists for this customer.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    org_display_name = proto.Field(
+    org_display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    org_postal_address = proto.Field(
+    org_postal_address: postal_address_pb2.PostalAddress = proto.Field(
         proto.MESSAGE,
         number=3,
         message=postal_address_pb2.PostalAddress,
     )
-    primary_contact_info = proto.Field(
+    primary_contact_info: "ContactInfo" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ContactInfo",
     )
-    alternate_email = proto.Field(
+    alternate_email: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    domain = proto.Field(
+    domain: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    cloud_identity_id = proto.Field(
+    cloud_identity_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    cloud_identity_info = proto.Field(
+    cloud_identity_info: common.CloudIdentityInfo = proto.Field(
         proto.MESSAGE,
         number=12,
         message=common.CloudIdentityInfo,
     )
-    channel_partner_id = proto.Field(
+    channel_partner_id: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -164,27 +166,27 @@ class ContactInfo(proto.Message):
             The customer account's contact phone number.
     """
 
-    first_name = proto.Field(
+    first_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    last_name = proto.Field(
+    last_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    phone = proto.Field(
+    phone: str = proto.Field(
         proto.STRING,
         number=7,
     )

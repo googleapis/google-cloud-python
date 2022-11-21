@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -43,11 +45,11 @@ class CustomerEvent(proto.Message):
         PRIMARY_DOMAIN_CHANGED = 1
         PRIMARY_DOMAIN_VERIFIED = 2
 
-    customer = proto.Field(
+    customer: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_type = proto.Field(
+    event_type: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
@@ -83,11 +85,11 @@ class EntitlementEvent(proto.Message):
         LICENSE_ASSIGNMENT_CHANGED = 12
         LICENSE_CAP_CHANGED = 13
 
-    entitlement = proto.Field(
+    entitlement: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_type = proto.Field(
+    event_type: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
@@ -118,13 +120,13 @@ class SubscriberEvent(proto.Message):
             This field is a member of `oneof`_ ``event``.
     """
 
-    customer_event = proto.Field(
+    customer_event: "CustomerEvent" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="event",
         message="CustomerEvent",
     )
-    entitlement_event = proto.Field(
+    entitlement_event: "EntitlementEvent" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="event",

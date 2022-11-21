@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 from pathlib import Path
+import shutil
 
 import synthtool as s
 import synthtool.gcp as gcp
@@ -22,10 +24,18 @@ from synthtool.languages import python
 # Copy the generated client from the owl-bot staging directory
 # ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
-    s.move(library, excludes=["setup.py"])
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -33,16 +43,13 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
-    cov_level=99,
 )
-s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
-
-python.configure_previous_major_version_branches()
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
-
 
 # run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):

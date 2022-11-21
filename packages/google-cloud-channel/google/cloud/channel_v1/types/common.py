@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import any_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -57,17 +59,17 @@ class EduData(proto.Message):
         SIZE_5001_10000 = 6
         SIZE_10001_OR_MORE = 7
 
-    institute_type = proto.Field(
+    institute_type: InstituteType = proto.Field(
         proto.ENUM,
         number=1,
         enum=InstituteType,
     )
-    institute_size = proto.Field(
+    institute_size: InstituteSize = proto.Field(
         proto.ENUM,
         number=2,
         enum=InstituteSize,
     )
-    website = proto.Field(
+    website: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -109,36 +111,36 @@ class CloudIdentityInfo(proto.Message):
         DOMAIN = 1
         TEAM = 2
 
-    customer_type = proto.Field(
+    customer_type: CustomerType = proto.Field(
         proto.ENUM,
         number=1,
         enum=CustomerType,
     )
-    primary_domain = proto.Field(
+    primary_domain: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    is_domain_verified = proto.Field(
+    is_domain_verified: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    alternate_email = proto.Field(
+    alternate_email: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    phone_number = proto.Field(
+    phone_number: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    admin_console_uri = proto.Field(
+    admin_console_uri: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    edu_data = proto.Field(
+    edu_data: "EduData" = proto.Field(
         proto.MESSAGE,
         number=22,
         message="EduData",
@@ -178,28 +180,28 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``kind``.
     """
 
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=1,
         oneof="kind",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="kind",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=3,
         oneof="kind",
     )
-    proto_value = proto.Field(
+    proto_value: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="kind",
         message=any_pb2.Any,
     )
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=5,
         oneof="kind",
@@ -219,15 +221,15 @@ class AdminUser(proto.Message):
             Family name of the admin user.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    given_name = proto.Field(
+    given_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    family_name = proto.Field(
+    family_name: str = proto.Field(
         proto.STRING,
         number=3,
     )

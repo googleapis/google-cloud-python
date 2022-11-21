@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -81,38 +83,38 @@ class ChannelPartnerLink(proto.Message):
             channel partner (IR).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reseller_cloud_identity_id = proto.Field(
+    reseller_cloud_identity_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    link_state = proto.Field(
+    link_state: "ChannelPartnerLinkState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="ChannelPartnerLinkState",
     )
-    invite_link_uri = proto.Field(
+    invite_link_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    public_id = proto.Field(
+    public_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    channel_partner_cloud_identity_info = proto.Field(
+    channel_partner_cloud_identity_info: common.CloudIdentityInfo = proto.Field(
         proto.MESSAGE,
         number=8,
         message=common.CloudIdentityInfo,

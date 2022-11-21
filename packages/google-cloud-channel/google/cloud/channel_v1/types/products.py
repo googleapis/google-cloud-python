@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -44,11 +46,11 @@ class Product(proto.Message):
             Marketing information for the product.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    marketing_info = proto.Field(
+    marketing_info: "MarketingInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="MarketingInfo",
@@ -71,16 +73,16 @@ class Sku(proto.Message):
             Product the SKU is associated with.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    marketing_info = proto.Field(
+    marketing_info: "MarketingInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="MarketingInfo",
     )
-    product = proto.Field(
+    product: "Product" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Product",
@@ -101,15 +103,15 @@ class MarketingInfo(proto.Message):
             Default logo.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    default_logo = proto.Field(
+    default_logo: "Media" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Media",
@@ -128,15 +130,15 @@ class Media(proto.Message):
             Type of the media.
     """
 
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    content = proto.Field(
+    content: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: "MediaType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="MediaType",

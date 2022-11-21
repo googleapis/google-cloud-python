@@ -42,6 +42,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
@@ -8947,6 +8948,7 @@ def test_lookup_offer(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = offers.Offer(
             name="name_value",
+            deal_code="deal_code_value",
         )
         response = client.lookup_offer(request)
 
@@ -8958,6 +8960,7 @@ def test_lookup_offer(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, offers.Offer)
     assert response.name == "name_value"
+    assert response.deal_code == "deal_code_value"
 
 
 def test_lookup_offer_empty_call():
@@ -8995,6 +8998,7 @@ async def test_lookup_offer_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             offers.Offer(
                 name="name_value",
+                deal_code="deal_code_value",
             )
         )
         response = await client.lookup_offer(request)
@@ -9007,6 +9011,7 @@ async def test_lookup_offer_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, offers.Offer)
     assert response.name == "name_value"
+    assert response.deal_code == "deal_code_value"
 
 
 @pytest.mark.asyncio

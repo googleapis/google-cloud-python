@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,7 +50,7 @@ class OperationMetadata(proto.Message):
         CHANGE_PARAMETERS = 15
         PROVISION_CLOUD_IDENTITY = 16
 
-    operation_type = proto.Field(
+    operation_type: OperationType = proto.Field(
         proto.ENUM,
         number=1,
         enum=OperationType,

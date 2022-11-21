@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -61,7 +63,7 @@ class Entitlement(proto.Message):
         provisioned_service (google.cloud.channel_v1.types.ProvisionedService):
             Output only. Service provisioning details for
             the entitlement.
-        suspension_reasons (Sequence[google.cloud.channel_v1.types.Entitlement.SuspensionReason]):
+        suspension_reasons (MutableSequence[google.cloud.channel_v1.types.Entitlement.SuspensionReason]):
             Output only. Enumerable of all current
             suspension reasons for an entitlement.
         purchase_order_id (str):
@@ -78,7 +80,7 @@ class Entitlement(proto.Message):
         association_info (google.cloud.channel_v1.types.AssociationInfo):
             Association information to other
             entitlements.
-        parameters (Sequence[google.cloud.channel_v1.types.Parameter]):
+        parameters (MutableSequence[google.cloud.channel_v1.types.Parameter]):
             Extended entitlement parameters. When creating an
             entitlement, valid parameter names and values are defined in
             the
@@ -114,59 +116,59 @@ class Entitlement(proto.Message):
         PENDING_TOS_ACCEPTANCE = 4
         OTHER = 100
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    offer = proto.Field(
+    offer: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    commitment_settings = proto.Field(
+    commitment_settings: "CommitmentSettings" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="CommitmentSettings",
     )
-    provisioning_state = proto.Field(
+    provisioning_state: ProvisioningState = proto.Field(
         proto.ENUM,
         number=13,
         enum=ProvisioningState,
     )
-    provisioned_service = proto.Field(
+    provisioned_service: "ProvisionedService" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="ProvisionedService",
     )
-    suspension_reasons = proto.RepeatedField(
+    suspension_reasons: MutableSequence[SuspensionReason] = proto.RepeatedField(
         proto.ENUM,
         number=18,
         enum=SuspensionReason,
     )
-    purchase_order_id = proto.Field(
+    purchase_order_id: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    trial_settings = proto.Field(
+    trial_settings: "TrialSettings" = proto.Field(
         proto.MESSAGE,
         number=21,
         message="TrialSettings",
     )
-    association_info = proto.Field(
+    association_info: "AssociationInfo" = proto.Field(
         proto.MESSAGE,
         number=23,
         message="AssociationInfo",
     )
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence["Parameter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=26,
         message="Parameter",
@@ -188,16 +190,16 @@ class Parameter(proto.Message):
             editable when entitlement is active.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: common.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.Value,
     )
-    editable = proto.Field(
+    editable: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -213,7 +215,7 @@ class AssociationInfo(proto.Message):
             this entitlement is an add-on.
     """
 
-    base_entitlement = proto.Field(
+    base_entitlement: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -237,15 +239,15 @@ class ProvisionedService(proto.Message):
             provisioning resource as specified in the Offer.
     """
 
-    provisioning_id = proto.Field(
+    provisioning_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    product_id = proto.Field(
+    product_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    sku_id = proto.Field(
+    sku_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -264,17 +266,17 @@ class CommitmentSettings(proto.Message):
             commitment-based Offer.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    renewal_settings = proto.Field(
+    renewal_settings: "RenewalSettings" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="RenewalSettings",
@@ -299,20 +301,20 @@ class RenewalSettings(proto.Message):
             billed, such as once per month.
     """
 
-    enable_renewal = proto.Field(
+    enable_renewal: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    resize_unit_count = proto.Field(
+    resize_unit_count: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    payment_plan = proto.Field(
+    payment_plan: offers.PaymentPlan = proto.Field(
         proto.ENUM,
         number=5,
         enum=offers.PaymentPlan,
     )
-    payment_cycle = proto.Field(
+    payment_cycle: offers.Period = proto.Field(
         proto.MESSAGE,
         number=6,
         message=offers.Period,
@@ -334,11 +336,11 @@ class TrialSettings(proto.Message):
             converter <https://www.epochconverter.com>`__.
     """
 
-    trial = proto.Field(
+    trial: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -361,17 +363,17 @@ class TransferableSku(proto.Message):
             entitlement with the populated legacy SKU.
     """
 
-    transfer_eligibility = proto.Field(
+    transfer_eligibility: "TransferEligibility" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="TransferEligibility",
     )
-    sku = proto.Field(
+    sku: products.Sku = proto.Field(
         proto.MESSAGE,
         number=11,
         message=products.Sku,
     )
-    legacy_sku = proto.Field(
+    legacy_sku: products.Sku = proto.Field(
         proto.MESSAGE,
         number=12,
         message=products.Sku,
@@ -399,15 +401,15 @@ class TransferEligibility(proto.Message):
         SKU_NOT_ELIGIBLE = 2
         SKU_SUSPENDED = 3
 
-    is_eligible = proto.Field(
+    is_eligible: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ineligibility_reason = proto.Field(
+    ineligibility_reason: Reason = proto.Field(
         proto.ENUM,
         number=3,
         enum=Reason,

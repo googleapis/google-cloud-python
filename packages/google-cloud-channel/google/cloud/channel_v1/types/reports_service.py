@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
@@ -72,20 +74,20 @@ class RunReportJobRequest(proto.Message):
             Default is "en-US".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    date_range = proto.Field(
+    date_range: "DateRange" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DateRange",
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -107,12 +109,12 @@ class RunReportJobResponse(proto.Message):
             finishes, you may see incomplete data.
     """
 
-    report_job = proto.Field(
+    report_job: "ReportJob" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ReportJob",
     )
-    report_metadata = proto.Field(
+    report_metadata: "ReportResultsMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ReportResultsMetadata",
@@ -147,15 +149,15 @@ class FetchReportResultsRequest(proto.Message):
             call.
     """
 
-    report_job = proto.Field(
+    report_job: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -170,7 +172,7 @@ class FetchReportResultsResponse(proto.Message):
         report_metadata (google.cloud.channel_v1.types.ReportResultsMetadata):
             The metadata for the report results (display
             name, columns, row count, and date ranges).
-        rows (Sequence[google.cloud.channel_v1.types.Row]):
+        rows (MutableSequence[google.cloud.channel_v1.types.Row]):
             The report's lists of values. Each row follows the settings
             and ordering of the columns from ``report_metadata``.
         next_page_token (str):
@@ -183,17 +185,17 @@ class FetchReportResultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    report_metadata = proto.Field(
+    report_metadata: "ReportResultsMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ReportResultsMetadata",
     )
-    rows = proto.RepeatedField(
+    rows: MutableSequence["Row"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Row",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -228,19 +230,19 @@ class ListReportsRequest(proto.Message):
             Default is "en-US".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -251,7 +253,7 @@ class ListReportsResponse(proto.Message):
     [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
 
     Attributes:
-        reports (Sequence[google.cloud.channel_v1.types.Report]):
+        reports (MutableSequence[google.cloud.channel_v1.types.Report]):
             The reports available to the partner.
         next_page_token (str):
             Pass this token to
@@ -263,12 +265,12 @@ class ListReportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reports = proto.RepeatedField(
+    reports: MutableSequence["Report"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Report",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -288,11 +290,11 @@ class ReportJob(proto.Message):
             The current status of report generation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    report_status = proto.Field(
+    report_status: "ReportStatus" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ReportStatus",
@@ -322,21 +324,21 @@ class ReportResultsMetadata(proto.Message):
             ``preceding_date_range`` will be June 16-30.
     """
 
-    report = proto.Field(
+    report: "Report" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Report",
     )
-    row_count = proto.Field(
+    row_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    date_range = proto.Field(
+    date_range: "DateRange" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DateRange",
     )
-    preceding_date_range = proto.Field(
+    preceding_date_range: "DateRange" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="DateRange",
@@ -372,15 +374,15 @@ class Column(proto.Message):
         DATE = 5
         DATE_TIME = 6
 
-    column_id = proto.Field(
+    column_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    data_type = proto.Field(
+    data_type: DataType = proto.Field(
         proto.ENUM,
         number=3,
         enum=DataType,
@@ -421,22 +423,22 @@ class DateRange(proto.Message):
             following month.
     """
 
-    usage_start_date_time = proto.Field(
+    usage_start_date_time: datetime_pb2.DateTime = proto.Field(
         proto.MESSAGE,
         number=1,
         message=datetime_pb2.DateTime,
     )
-    usage_end_date_time = proto.Field(
+    usage_end_date_time: datetime_pb2.DateTime = proto.Field(
         proto.MESSAGE,
         number=2,
         message=datetime_pb2.DateTime,
     )
-    invoice_start_date = proto.Field(
+    invoice_start_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=3,
         message=date_pb2.Date,
     )
-    invoice_end_date = proto.Field(
+    invoice_end_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=4,
         message=date_pb2.Date,
@@ -447,11 +449,11 @@ class Row(proto.Message):
     r"""A row of report values.
 
     Attributes:
-        values (Sequence[google.cloud.channel_v1.types.ReportValue]):
+        values (MutableSequence[google.cloud.channel_v1.types.ReportValue]):
             The list of values in the row.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence["ReportValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ReportValue",
@@ -498,35 +500,35 @@ class ReportValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="value",
     )
-    int_value = proto.Field(
+    int_value: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="value",
     )
-    decimal_value = proto.Field(
+    decimal_value: decimal_pb2.Decimal = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="value",
         message=decimal_pb2.Decimal,
     )
-    money_value = proto.Field(
+    money_value: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="value",
         message=money_pb2.Money,
     )
-    date_value = proto.Field(
+    date_value: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="value",
         message=date_pb2.Date,
     )
-    date_time_value = proto.Field(
+    date_time_value: datetime_pb2.DateTime = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="value",
@@ -555,17 +557,17 @@ class ReportStatus(proto.Message):
         AVAILABLE = 3
         FAILED = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -587,7 +589,7 @@ class Report(proto.Message):
             accounts/{account_id}/reports/{report_id}
         display_name (str):
             A human-readable name for this report.
-        columns (Sequence[google.cloud.channel_v1.types.Column]):
+        columns (MutableSequence[google.cloud.channel_v1.types.Column]):
             The list of columns included in the report.
             This defines the schema of the report results.
         description (str):
@@ -595,20 +597,20 @@ class Report(proto.Message):
             such as the products it supports.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    columns = proto.RepeatedField(
+    columns: MutableSequence["Column"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Column",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -228,9 +238,9 @@ class CloudChannelServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudChannelServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud channel service client.
@@ -274,10 +284,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_customers(
         self,
-        request: Union[service.ListCustomersRequest, dict] = None,
+        request: Optional[Union[service.ListCustomersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomersAsyncPager:
         r"""List [Customer][google.cloud.channel.v1.Customer]s.
@@ -321,7 +331,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListCustomersRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListCustomersRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -378,11 +388,11 @@ class CloudChannelServiceAsyncClient:
 
     async def get_customer(
         self,
-        request: Union[service.GetCustomerRequest, dict] = None,
+        request: Optional[Union[service.GetCustomerRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> customers.Customer:
         r"""Returns the requested
@@ -427,7 +437,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.GetCustomerRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.GetCustomerRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.GetCustomer][google.cloud.channel.v1.CloudChannelService.GetCustomer].
             name (:class:`str`):
@@ -494,10 +504,12 @@ class CloudChannelServiceAsyncClient:
 
     async def check_cloud_identity_accounts_exist(
         self,
-        request: Union[service.CheckCloudIdentityAccountsExistRequest, dict] = None,
+        request: Optional[
+            Union[service.CheckCloudIdentityAccountsExistRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.CheckCloudIdentityAccountsExistResponse:
         r"""Confirms the existence of Cloud Identity accounts based on the
@@ -549,7 +561,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CheckCloudIdentityAccountsExist][google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -594,10 +606,10 @@ class CloudChannelServiceAsyncClient:
 
     async def create_customer(
         self,
-        request: Union[service.CreateCustomerRequest, dict] = None,
+        request: Optional[Union[service.CreateCustomerRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> customers.Customer:
         r"""Creates a new [Customer][google.cloud.channel.v1.Customer]
@@ -647,7 +659,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CreateCustomerRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CreateCustomerRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CreateCustomer][google.cloud.channel.v1.CloudChannelService.CreateCustomer]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -692,10 +704,10 @@ class CloudChannelServiceAsyncClient:
 
     async def update_customer(
         self,
-        request: Union[service.UpdateCustomerRequest, dict] = None,
+        request: Optional[Union[service.UpdateCustomerRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> customers.Customer:
         r"""Updates an existing [Customer][google.cloud.channel.v1.Customer]
@@ -744,7 +756,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.UpdateCustomerRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.UpdateCustomerRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.UpdateCustomer][google.cloud.channel.v1.CloudChannelService.UpdateCustomer].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -791,11 +803,11 @@ class CloudChannelServiceAsyncClient:
 
     async def delete_customer(
         self,
-        request: Union[service.DeleteCustomerRequest, dict] = None,
+        request: Optional[Union[service.DeleteCustomerRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the given [Customer][google.cloud.channel.v1.Customer]
@@ -835,7 +847,7 @@ class CloudChannelServiceAsyncClient:
                 await client.delete_customer(request=request)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.DeleteCustomerRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.DeleteCustomerRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.DeleteCustomer][google.cloud.channel.v1.CloudChannelService.DeleteCustomer].
             name (:class:`str`):
@@ -892,10 +904,10 @@ class CloudChannelServiceAsyncClient:
 
     async def import_customer(
         self,
-        request: Union[service.ImportCustomerRequest, dict] = None,
+        request: Optional[Union[service.ImportCustomerRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> customers.Customer:
         r"""Imports a [Customer][google.cloud.channel.v1.Customer] from the
@@ -945,7 +957,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ImportCustomerRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ImportCustomerRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ImportCustomer][google.cloud.channel.v1.CloudChannelService.ImportCustomer]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -990,10 +1002,10 @@ class CloudChannelServiceAsyncClient:
 
     async def provision_cloud_identity(
         self,
-        request: Union[service.ProvisionCloudIdentityRequest, dict] = None,
+        request: Optional[Union[service.ProvisionCloudIdentityRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Cloud Identity for the given customer using the
@@ -1051,7 +1063,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ProvisionCloudIdentityRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ProvisionCloudIdentityRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ProvisionCloudIdentity][google.cloud.channel.v1.CloudChannelService.ProvisionCloudIdentity]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1107,10 +1119,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_entitlements(
         self,
-        request: Union[service.ListEntitlementsRequest, dict] = None,
+        request: Optional[Union[service.ListEntitlementsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntitlementsAsyncPager:
         r"""Lists [Entitlement][google.cloud.channel.v1.Entitlement]s
@@ -1154,7 +1166,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListEntitlementsRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListEntitlementsRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1211,10 +1223,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_transferable_skus(
         self,
-        request: Union[service.ListTransferableSkusRequest, dict] = None,
+        request: Optional[Union[service.ListTransferableSkusRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferableSkusAsyncPager:
         r"""List [TransferableSku][google.cloud.channel.v1.TransferableSku]s
@@ -1270,7 +1282,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListTransferableSkusRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListTransferableSkusRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1327,10 +1339,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_transferable_offers(
         self,
-        request: Union[service.ListTransferableOffersRequest, dict] = None,
+        request: Optional[Union[service.ListTransferableOffersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferableOffersAsyncPager:
         r"""List
@@ -1390,7 +1402,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListTransferableOffersRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListTransferableOffersRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1447,10 +1459,10 @@ class CloudChannelServiceAsyncClient:
 
     async def get_entitlement(
         self,
-        request: Union[service.GetEntitlementRequest, dict] = None,
+        request: Optional[Union[service.GetEntitlementRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> entitlements.Entitlement:
         r"""Returns the requested
@@ -1494,7 +1506,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.GetEntitlementRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.GetEntitlementRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.GetEntitlement][google.cloud.channel.v1.CloudChannelService.GetEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1539,10 +1551,10 @@ class CloudChannelServiceAsyncClient:
 
     async def create_entitlement(
         self,
-        request: Union[service.CreateEntitlementRequest, dict] = None,
+        request: Optional[Union[service.CreateEntitlementRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an entitlement for a customer.
@@ -1626,7 +1638,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CreateEntitlementRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CreateEntitlementRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CreateEntitlement][google.cloud.channel.v1.CloudChannelService.CreateEntitlement]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1683,10 +1695,10 @@ class CloudChannelServiceAsyncClient:
 
     async def change_parameters(
         self,
-        request: Union[service.ChangeParametersRequest, dict] = None,
+        request: Optional[Union[service.ChangeParametersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Change parameters of the entitlement.
@@ -1746,7 +1758,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ChangeParametersRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ChangeParametersRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ChangeParametersRequest][].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1803,10 +1815,10 @@ class CloudChannelServiceAsyncClient:
 
     async def change_renewal_settings(
         self,
-        request: Union[service.ChangeRenewalSettingsRequest, dict] = None,
+        request: Optional[Union[service.ChangeRenewalSettingsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the renewal settings for an existing customer
@@ -1868,7 +1880,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ChangeRenewalSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ChangeRenewalSettingsRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ChangeRenewalSettings][google.cloud.channel.v1.CloudChannelService.ChangeRenewalSettings].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1925,10 +1937,10 @@ class CloudChannelServiceAsyncClient:
 
     async def change_offer(
         self,
-        request: Union[service.ChangeOfferRequest, dict] = None,
+        request: Optional[Union[service.ChangeOfferRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the Offer for an existing customer entitlement.
@@ -1987,7 +1999,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ChangeOfferRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ChangeOfferRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ChangeOffer][google.cloud.channel.v1.CloudChannelService.ChangeOffer].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2044,10 +2056,10 @@ class CloudChannelServiceAsyncClient:
 
     async def start_paid_service(
         self,
-        request: Union[service.StartPaidServiceRequest, dict] = None,
+        request: Optional[Union[service.StartPaidServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts paid service for a trial entitlement.
@@ -2108,7 +2120,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.StartPaidServiceRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.StartPaidServiceRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.StartPaidService][google.cloud.channel.v1.CloudChannelService.StartPaidService].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2165,10 +2177,10 @@ class CloudChannelServiceAsyncClient:
 
     async def suspend_entitlement(
         self,
-        request: Union[service.SuspendEntitlementRequest, dict] = None,
+        request: Optional[Union[service.SuspendEntitlementRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Suspends a previously fulfilled entitlement.
@@ -2226,7 +2238,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.SuspendEntitlementRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.SuspendEntitlementRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.SuspendEntitlement][google.cloud.channel.v1.CloudChannelService.SuspendEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2283,10 +2295,10 @@ class CloudChannelServiceAsyncClient:
 
     async def cancel_entitlement(
         self,
-        request: Union[service.CancelEntitlementRequest, dict] = None,
+        request: Optional[Union[service.CancelEntitlementRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Cancels a previously fulfilled entitlement.
@@ -2349,7 +2361,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CancelEntitlementRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CancelEntitlementRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CancelEntitlement][google.cloud.channel.v1.CloudChannelService.CancelEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2412,10 +2424,10 @@ class CloudChannelServiceAsyncClient:
 
     async def activate_entitlement(
         self,
-        request: Union[service.ActivateEntitlementRequest, dict] = None,
+        request: Optional[Union[service.ActivateEntitlementRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Activates a previously suspended entitlement. Entitlements
@@ -2480,7 +2492,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ActivateEntitlementRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ActivateEntitlementRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ActivateEntitlement][google.cloud.channel.v1.CloudChannelService.ActivateEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2537,10 +2549,10 @@ class CloudChannelServiceAsyncClient:
 
     async def transfer_entitlements(
         self,
-        request: Union[service.TransferEntitlementsRequest, dict] = None,
+        request: Optional[Union[service.TransferEntitlementsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Transfers customer entitlements to new reseller.
@@ -2615,7 +2627,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.TransferEntitlementsRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.TransferEntitlementsRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2671,10 +2683,12 @@ class CloudChannelServiceAsyncClient:
 
     async def transfer_entitlements_to_google(
         self,
-        request: Union[service.TransferEntitlementsToGoogleRequest, dict] = None,
+        request: Optional[
+            Union[service.TransferEntitlementsToGoogleRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Transfers customer entitlements from their current reseller to
@@ -2749,7 +2763,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.TransferEntitlementsToGoogle][google.cloud.channel.v1.CloudChannelService.TransferEntitlementsToGoogle].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2812,10 +2826,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_channel_partner_links(
         self,
-        request: Union[service.ListChannelPartnerLinksRequest, dict] = None,
+        request: Optional[Union[service.ListChannelPartnerLinksRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelPartnerLinksAsyncPager:
         r"""List
@@ -2862,7 +2876,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListChannelPartnerLinksRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListChannelPartnerLinksRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListChannelPartnerLinks][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2919,10 +2933,10 @@ class CloudChannelServiceAsyncClient:
 
     async def get_channel_partner_link(
         self,
-        request: Union[service.GetChannelPartnerLinkRequest, dict] = None,
+        request: Optional[Union[service.GetChannelPartnerLinkRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_partner_links.ChannelPartnerLink:
         r"""Returns the requested
@@ -2969,7 +2983,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.GetChannelPartnerLinkRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.GetChannelPartnerLinkRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.GetChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.GetChannelPartnerLink].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -3015,10 +3029,10 @@ class CloudChannelServiceAsyncClient:
 
     async def create_channel_partner_link(
         self,
-        request: Union[service.CreateChannelPartnerLinkRequest, dict] = None,
+        request: Optional[Union[service.CreateChannelPartnerLinkRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_partner_links.ChannelPartnerLink:
         r"""Initiates a channel partner link between a distributor and a
@@ -3079,7 +3093,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CreateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerLink]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -3125,10 +3139,10 @@ class CloudChannelServiceAsyncClient:
 
     async def update_channel_partner_link(
         self,
-        request: Union[service.UpdateChannelPartnerLinkRequest, dict] = None,
+        request: Optional[Union[service.UpdateChannelPartnerLinkRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_partner_links.ChannelPartnerLink:
         r"""Updates a channel partner link. Distributors call this method to
@@ -3189,7 +3203,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.UpdateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerLink]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -3235,11 +3249,13 @@ class CloudChannelServiceAsyncClient:
 
     async def get_customer_repricing_config(
         self,
-        request: Union[service.GetCustomerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.GetCustomerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repricing.CustomerRepricingConfig:
         r"""Gets information about how a Reseller modifies their bill before
@@ -3286,7 +3302,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.GetCustomerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.GetCustomerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.GetCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.GetCustomerRepricingConfig].
             name (:class:`str`):
@@ -3353,11 +3369,13 @@ class CloudChannelServiceAsyncClient:
 
     async def list_customer_repricing_configs(
         self,
-        request: Union[service.ListCustomerRepricingConfigsRequest, dict] = None,
+        request: Optional[
+            Union[service.ListCustomerRepricingConfigsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomerRepricingConfigsAsyncPager:
         r"""Lists information about how a Reseller modifies their bill
@@ -3414,7 +3432,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
             parent (:class:`str`):
@@ -3495,12 +3513,14 @@ class CloudChannelServiceAsyncClient:
 
     async def create_customer_repricing_config(
         self,
-        request: Union[service.CreateCustomerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.CreateCustomerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        customer_repricing_config: repricing.CustomerRepricingConfig = None,
+        parent: Optional[str] = None,
+        customer_repricing_config: Optional[repricing.CustomerRepricingConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repricing.CustomerRepricingConfig:
         r"""Creates a CustomerRepricingConfig. Call this method to set
@@ -3582,7 +3602,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CreateCustomerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CreateCustomerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CreateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig].
             parent (:class:`str`):
@@ -3658,11 +3678,13 @@ class CloudChannelServiceAsyncClient:
 
     async def update_customer_repricing_config(
         self,
-        request: Union[service.UpdateCustomerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.UpdateCustomerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        customer_repricing_config: repricing.CustomerRepricingConfig = None,
+        customer_repricing_config: Optional[repricing.CustomerRepricingConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repricing.CustomerRepricingConfig:
         r"""Updates a CustomerRepricingConfig. Call this method to set
@@ -3729,7 +3751,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.UpdateCustomerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.UpdateCustomerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.UpdateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.UpdateCustomerRepricingConfig].
             customer_repricing_config (:class:`google.cloud.channel_v1.types.CustomerRepricingConfig`):
@@ -3802,11 +3824,13 @@ class CloudChannelServiceAsyncClient:
 
     async def delete_customer_repricing_config(
         self,
-        request: Union[service.DeleteCustomerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.DeleteCustomerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the given
@@ -3852,7 +3876,7 @@ class CloudChannelServiceAsyncClient:
                 await client.delete_customer_repricing_config(request=request)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.DeleteCustomerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.DeleteCustomerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.DeleteCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.DeleteCustomerRepricingConfig].
             name (:class:`str`):
@@ -3910,11 +3934,13 @@ class CloudChannelServiceAsyncClient:
 
     async def get_channel_partner_repricing_config(
         self,
-        request: Union[service.GetChannelPartnerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.GetChannelPartnerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repricing.ChannelPartnerRepricingConfig:
         r"""Gets information about how a Distributor modifies their bill
@@ -3961,7 +3987,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.GetChannelPartnerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.GetChannelPartnerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.GetChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.GetChannelPartnerRepricingConfig]
             name (:class:`str`):
@@ -4030,11 +4056,13 @@ class CloudChannelServiceAsyncClient:
 
     async def list_channel_partner_repricing_configs(
         self,
-        request: Union[service.ListChannelPartnerRepricingConfigsRequest, dict] = None,
+        request: Optional[
+            Union[service.ListChannelPartnerRepricingConfigsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelPartnerRepricingConfigsAsyncPager:
         r"""Lists information about how a Reseller modifies their bill
@@ -4090,7 +4118,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.ListChannelPartnerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs].
             parent (:class:`str`):
@@ -4172,12 +4200,16 @@ class CloudChannelServiceAsyncClient:
 
     async def create_channel_partner_repricing_config(
         self,
-        request: Union[service.CreateChannelPartnerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.CreateChannelPartnerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = None,
+        parent: Optional[str] = None,
+        channel_partner_repricing_config: Optional[
+            repricing.ChannelPartnerRepricingConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repricing.ChannelPartnerRepricingConfig:
         r"""Creates a ChannelPartnerRepricingConfig. Call this method to set
@@ -4256,7 +4288,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.CreateChannelPartnerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.CreateChannelPartnerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.CreateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig].
             parent (:class:`str`):
@@ -4336,11 +4368,15 @@ class CloudChannelServiceAsyncClient:
 
     async def update_channel_partner_repricing_config(
         self,
-        request: Union[service.UpdateChannelPartnerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.UpdateChannelPartnerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = None,
+        channel_partner_repricing_config: Optional[
+            repricing.ChannelPartnerRepricingConfig
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repricing.ChannelPartnerRepricingConfig:
         r"""Updates a ChannelPartnerRepricingConfig. Call this method to set
@@ -4407,7 +4443,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.UpdateChannelPartnerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.UpdateChannelPartnerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 [CloudChannelService.UpdateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerRepricingConfig].
             channel_partner_repricing_config (:class:`google.cloud.channel_v1.types.ChannelPartnerRepricingConfig`):
@@ -4483,11 +4519,13 @@ class CloudChannelServiceAsyncClient:
 
     async def delete_channel_partner_repricing_config(
         self,
-        request: Union[service.DeleteChannelPartnerRepricingConfigRequest, dict] = None,
+        request: Optional[
+            Union[service.DeleteChannelPartnerRepricingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the given
@@ -4533,7 +4571,7 @@ class CloudChannelServiceAsyncClient:
                 await client.delete_channel_partner_repricing_config(request=request)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.DeleteChannelPartnerRepricingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.DeleteChannelPartnerRepricingConfigRequest, dict]]):
                 The request object. Request message for
                 DeleteChannelPartnerRepricingConfig.
             name (:class:`str`):
@@ -4591,10 +4629,10 @@ class CloudChannelServiceAsyncClient:
 
     async def lookup_offer(
         self,
-        request: Union[service.LookupOfferRequest, dict] = None,
+        request: Optional[Union[service.LookupOfferRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> offers.Offer:
         r"""Returns the requested [Offer][google.cloud.channel.v1.Offer]
@@ -4638,7 +4676,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.LookupOfferRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.LookupOfferRequest, dict]]):
                 The request object. Request message for LookupOffer.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -4687,10 +4725,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_products(
         self,
-        request: Union[service.ListProductsRequest, dict] = None,
+        request: Optional[Union[service.ListProductsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProductsAsyncPager:
         r"""Lists the Products the reseller is authorized to sell.
@@ -4728,7 +4766,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListProductsRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListProductsRequest, dict]]):
                 The request object. Request message for ListProducts.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -4777,10 +4815,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_skus(
         self,
-        request: Union[service.ListSkusRequest, dict] = None,
+        request: Optional[Union[service.ListSkusRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSkusAsyncPager:
         r"""Lists the SKUs for a product the reseller is authorized to sell.
@@ -4819,7 +4857,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListSkusRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListSkusRequest, dict]]):
                 The request object. Request message for ListSkus.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -4874,10 +4912,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_offers(
         self,
-        request: Union[service.ListOffersRequest, dict] = None,
+        request: Optional[Union[service.ListOffersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOffersAsyncPager:
         r"""Lists the Offers the reseller can sell.
@@ -4915,7 +4953,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListOffersRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListOffersRequest, dict]]):
                 The request object. Request message for ListOffers.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -4970,10 +5008,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_purchasable_skus(
         self,
-        request: Union[service.ListPurchasableSkusRequest, dict] = None,
+        request: Optional[Union[service.ListPurchasableSkusRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPurchasableSkusAsyncPager:
         r"""Lists the following:
@@ -5020,7 +5058,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListPurchasableSkusRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListPurchasableSkusRequest, dict]]):
                 The request object. Request message for
                 ListPurchasableSkus.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -5077,10 +5115,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_purchasable_offers(
         self,
-        request: Union[service.ListPurchasableOffersRequest, dict] = None,
+        request: Optional[Union[service.ListPurchasableOffersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPurchasableOffersAsyncPager:
         r"""Lists the following:
@@ -5127,7 +5165,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListPurchasableOffersRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListPurchasableOffersRequest, dict]]):
                 The request object. Request message for
                 ListPurchasableOffers.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -5184,10 +5222,10 @@ class CloudChannelServiceAsyncClient:
 
     async def register_subscriber(
         self,
-        request: Union[service.RegisterSubscriberRequest, dict] = None,
+        request: Optional[Union[service.RegisterSubscriberRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.RegisterSubscriberResponse:
         r"""Registers a service account with subscriber privileges on the
@@ -5238,7 +5276,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.RegisterSubscriberRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.RegisterSubscriberRequest, dict]]):
                 The request object. Request Message for
                 RegisterSubscriber.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -5283,10 +5321,10 @@ class CloudChannelServiceAsyncClient:
 
     async def unregister_subscriber(
         self,
-        request: Union[service.UnregisterSubscriberRequest, dict] = None,
+        request: Optional[Union[service.UnregisterSubscriberRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.UnregisterSubscriberResponse:
         r"""Unregisters a service account with subscriber privileges on the
@@ -5340,7 +5378,7 @@ class CloudChannelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.UnregisterSubscriberRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.UnregisterSubscriberRequest, dict]]):
                 The request object. Request Message for
                 UnregisterSubscriber.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -5385,10 +5423,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_subscribers(
         self,
-        request: Union[service.ListSubscribersRequest, dict] = None,
+        request: Optional[Union[service.ListSubscribersRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubscribersAsyncPager:
         r"""Lists service accounts with subscriber privileges on the Cloud
@@ -5437,7 +5475,7 @@ class CloudChannelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.channel_v1.types.ListSubscribersRequest, dict]):
+            request (Optional[Union[google.cloud.channel_v1.types.ListSubscribersRequest, dict]]):
                 The request object. Request Message for ListSubscribers.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -5492,10 +5530,10 @@ class CloudChannelServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -5546,10 +5584,10 @@ class CloudChannelServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -5600,10 +5638,10 @@ class CloudChannelServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -5655,10 +5693,10 @@ class CloudChannelServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
