@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-certificate-manager"
+    "name": "google-cloud-certificate-manager",
+    "version": "0.1.0"
   },
   "snippets": [
     {

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -58,23 +60,23 @@ class ListCertificateIssuanceConfigsRequest(proto.Message):
             suffix " desc".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -84,7 +86,7 @@ class ListCertificateIssuanceConfigsResponse(proto.Message):
     r"""Response for the ``ListCertificateIssuanceConfigs`` method.
 
     Attributes:
-        certificate_issuance_configs (Sequence[google.cloud.certificate_manager_v1.types.CertificateIssuanceConfig]):
+        certificate_issuance_configs (MutableSequence[google.cloud.certificate_manager_v1.types.CertificateIssuanceConfig]):
             A list of certificate configs for the parent
             resource.
         next_page_token (str):
@@ -92,7 +94,7 @@ class ListCertificateIssuanceConfigsResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -100,16 +102,18 @@ class ListCertificateIssuanceConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_issuance_configs = proto.RepeatedField(
+    certificate_issuance_configs: MutableSequence[
+        "CertificateIssuanceConfig"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CertificateIssuanceConfig",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -125,7 +129,7 @@ class GetCertificateIssuanceConfigRequest(proto.Message):
             ``projects/*/locations/*/certificateIssuanceConfigs/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -146,15 +150,15 @@ class CreateCertificateIssuanceConfigRequest(proto.Message):
             issuance config to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_issuance_config_id = proto.Field(
+    certificate_issuance_config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate_issuance_config = proto.Field(
+    certificate_issuance_config: "CertificateIssuanceConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CertificateIssuanceConfig",
@@ -171,7 +175,7 @@ class DeleteCertificateIssuanceConfigRequest(proto.Message):
             ``projects/*/locations/*/certificateIssuanceConfigs/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -193,7 +197,7 @@ class CertificateIssuanceConfig(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             CertificateIssuanceConfig.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Set of labels associated with a
             CertificateIssuanceConfig.
         description (str):
@@ -247,56 +251,56 @@ class CertificateIssuanceConfig(proto.Message):
                     "projects/{project}/locations/{location}/caPools/{ca_pool}".
             """
 
-            ca_pool = proto.Field(
+            ca_pool: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        certificate_authority_service_config = proto.Field(
+        certificate_authority_service_config: "CertificateIssuanceConfig.CertificateAuthorityConfig.CertificateAuthorityServiceConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="kind",
             message="CertificateIssuanceConfig.CertificateAuthorityConfig.CertificateAuthorityServiceConfig",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    certificate_authority_config = proto.Field(
+    certificate_authority_config: CertificateAuthorityConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         message=CertificateAuthorityConfig,
     )
-    lifetime = proto.Field(
+    lifetime: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
     )
-    rotation_window_percentage = proto.Field(
+    rotation_window_percentage: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    key_algorithm = proto.Field(
+    key_algorithm: KeyAlgorithm = proto.Field(
         proto.ENUM,
         number=9,
         enum=KeyAlgorithm,

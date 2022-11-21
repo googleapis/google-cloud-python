@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -227,9 +237,9 @@ class CertificateManagerAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CertificateManagerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the certificate manager client.
@@ -273,11 +283,13 @@ class CertificateManagerAsyncClient:
 
     async def list_certificates(
         self,
-        request: Union[certificate_manager.ListCertificatesRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.ListCertificatesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificatesAsyncPager:
         r"""Lists Certificates in a given project and location.
@@ -310,7 +322,7 @@ class CertificateManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.ListCertificatesRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.ListCertificatesRequest, dict]]):
                 The request object. Request for the `ListCertificates`
                 method.
             parent (:class:`str`):
@@ -397,11 +409,13 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate(
         self,
-        request: Union[certificate_manager.GetCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetCertificateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.Certificate:
         r"""Gets details of a single Certificate.
@@ -433,7 +447,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.GetCertificateRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.GetCertificateRequest, dict]]):
                 The request object. Request for the `GetCertificate`
                 method.
             name (:class:`str`):
@@ -506,13 +520,15 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate(
         self,
-        request: Union[certificate_manager.CreateCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.CreateCertificateRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        certificate: certificate_manager.Certificate = None,
-        certificate_id: str = None,
+        parent: Optional[str] = None,
+        certificate: Optional[certificate_manager.Certificate] = None,
+        certificate_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Certificate in a given project and
@@ -550,7 +566,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.CreateCertificateRequest, dict]]):
                 The request object. Request for the `CreateCertificate`
                 method.
             parent (:class:`str`):
@@ -654,12 +670,14 @@ class CertificateManagerAsyncClient:
 
     async def update_certificate(
         self,
-        request: Union[certificate_manager.UpdateCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.UpdateCertificateRequest, dict]
+        ] = None,
         *,
-        certificate: certificate_manager.Certificate = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        certificate: Optional[certificate_manager.Certificate] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a Certificate.
@@ -694,7 +712,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.UpdateCertificateRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.UpdateCertificateRequest, dict]]):
                 The request object. Request for the `UpdateCertificate`
                 method.
             certificate (:class:`google.cloud.certificate_manager_v1.types.Certificate`):
@@ -792,11 +810,13 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate(
         self,
-        request: Union[certificate_manager.DeleteCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.DeleteCertificateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Certificate.
@@ -832,7 +852,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.DeleteCertificateRequest, dict]]):
                 The request object. Request for the `DeleteCertificate`
                 method.
             name (:class:`str`):
@@ -925,11 +945,13 @@ class CertificateManagerAsyncClient:
 
     async def list_certificate_maps(
         self,
-        request: Union[certificate_manager.ListCertificateMapsRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.ListCertificateMapsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateMapsAsyncPager:
         r"""Lists CertificateMaps in a given project and
@@ -963,7 +985,7 @@ class CertificateManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.ListCertificateMapsRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.ListCertificateMapsRequest, dict]]):
                 The request object. Request for the
                 `ListCertificateMaps` method.
             parent (:class:`str`):
@@ -1050,11 +1072,13 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate_map(
         self,
-        request: Union[certificate_manager.GetCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetCertificateMapRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.CertificateMap:
         r"""Gets details of a single CertificateMap.
@@ -1086,7 +1110,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.GetCertificateMapRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.GetCertificateMapRequest, dict]]):
                 The request object. Request for the `GetCertificateMap`
                 method.
             name (:class:`str`):
@@ -1162,13 +1186,15 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate_map(
         self,
-        request: Union[certificate_manager.CreateCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.CreateCertificateMapRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        certificate_map: certificate_manager.CertificateMap = None,
-        certificate_map_id: str = None,
+        parent: Optional[str] = None,
+        certificate_map: Optional[certificate_manager.CertificateMap] = None,
+        certificate_map_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new CertificateMap in a given project and
@@ -1206,7 +1232,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateMapRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.CreateCertificateMapRequest, dict]]):
                 The request object. Request for the
                 `CreateCertificateMap` method.
             parent (:class:`str`):
@@ -1310,12 +1336,14 @@ class CertificateManagerAsyncClient:
 
     async def update_certificate_map(
         self,
-        request: Union[certificate_manager.UpdateCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.UpdateCertificateMapRequest, dict]
+        ] = None,
         *,
-        certificate_map: certificate_manager.CertificateMap = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        certificate_map: Optional[certificate_manager.CertificateMap] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a CertificateMap.
@@ -1350,7 +1378,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.UpdateCertificateMapRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.UpdateCertificateMapRequest, dict]]):
                 The request object. Request for the
                 `UpdateCertificateMap` method.
             certificate_map (:class:`google.cloud.certificate_manager_v1.types.CertificateMap`):
@@ -1448,11 +1476,13 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate_map(
         self,
-        request: Union[certificate_manager.DeleteCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.DeleteCertificateMapRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single CertificateMap. A Certificate Map
@@ -1491,7 +1521,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateMapRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.DeleteCertificateMapRequest, dict]]):
                 The request object. Request for the
                 `DeleteCertificateMap` method.
             name (:class:`str`):
@@ -1585,13 +1615,13 @@ class CertificateManagerAsyncClient:
 
     async def list_certificate_map_entries(
         self,
-        request: Union[
-            certificate_manager.ListCertificateMapEntriesRequest, dict
+        request: Optional[
+            Union[certificate_manager.ListCertificateMapEntriesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateMapEntriesAsyncPager:
         r"""Lists CertificateMapEntries in a given project and
@@ -1625,7 +1655,7 @@ class CertificateManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.ListCertificateMapEntriesRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.ListCertificateMapEntriesRequest, dict]]):
                 The request object. Request for the
                 `ListCertificateMapEntries` method.
             parent (:class:`str`):
@@ -1713,11 +1743,13 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate_map_entry(
         self,
-        request: Union[certificate_manager.GetCertificateMapEntryRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetCertificateMapEntryRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.CertificateMapEntry:
         r"""Gets details of a single CertificateMapEntry.
@@ -1749,7 +1781,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.GetCertificateMapEntryRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.GetCertificateMapEntryRequest, dict]]):
                 The request object. Request for the
                 `GetCertificateMapEntry` method.
             name (:class:`str`):
@@ -1823,15 +1855,15 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate_map_entry(
         self,
-        request: Union[
-            certificate_manager.CreateCertificateMapEntryRequest, dict
+        request: Optional[
+            Union[certificate_manager.CreateCertificateMapEntryRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        certificate_map_entry: certificate_manager.CertificateMapEntry = None,
-        certificate_map_entry_id: str = None,
+        parent: Optional[str] = None,
+        certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
+        certificate_map_entry_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new CertificateMapEntry in a given project
@@ -1873,7 +1905,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateMapEntryRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.CreateCertificateMapEntryRequest, dict]]):
                 The request object. Request for the
                 `CreateCertificateMapEntry` method.
             parent (:class:`str`):
@@ -1980,14 +2012,14 @@ class CertificateManagerAsyncClient:
 
     async def update_certificate_map_entry(
         self,
-        request: Union[
-            certificate_manager.UpdateCertificateMapEntryRequest, dict
+        request: Optional[
+            Union[certificate_manager.UpdateCertificateMapEntryRequest, dict]
         ] = None,
         *,
-        certificate_map_entry: certificate_manager.CertificateMapEntry = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a CertificateMapEntry.
@@ -2026,7 +2058,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.UpdateCertificateMapEntryRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.UpdateCertificateMapEntryRequest, dict]]):
                 The request object. Request for the
                 `UpdateCertificateMapEntry` method.
             certificate_map_entry (:class:`google.cloud.certificate_manager_v1.types.CertificateMapEntry`):
@@ -2125,13 +2157,13 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate_map_entry(
         self,
-        request: Union[
-            certificate_manager.DeleteCertificateMapEntryRequest, dict
+        request: Optional[
+            Union[certificate_manager.DeleteCertificateMapEntryRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single CertificateMapEntry.
@@ -2167,7 +2199,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateMapEntryRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.DeleteCertificateMapEntryRequest, dict]]):
                 The request object. Request for the
                 `DeleteCertificateMapEntry` method.
             name (:class:`str`):
@@ -2261,11 +2293,13 @@ class CertificateManagerAsyncClient:
 
     async def list_dns_authorizations(
         self,
-        request: Union[certificate_manager.ListDnsAuthorizationsRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.ListDnsAuthorizationsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDnsAuthorizationsAsyncPager:
         r"""Lists DnsAuthorizations in a given project and
@@ -2299,7 +2333,7 @@ class CertificateManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.ListDnsAuthorizationsRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.ListDnsAuthorizationsRequest, dict]]):
                 The request object. Request for the
                 `ListDnsAuthorizations` method.
             parent (:class:`str`):
@@ -2386,11 +2420,13 @@ class CertificateManagerAsyncClient:
 
     async def get_dns_authorization(
         self,
-        request: Union[certificate_manager.GetDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.DnsAuthorization:
         r"""Gets details of a single DnsAuthorization.
@@ -2422,7 +2458,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.GetDnsAuthorizationRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.GetDnsAuthorizationRequest, dict]]):
                 The request object. Request for the
                 `GetDnsAuthorization` method.
             name (:class:`str`):
@@ -2499,13 +2535,15 @@ class CertificateManagerAsyncClient:
 
     async def create_dns_authorization(
         self,
-        request: Union[certificate_manager.CreateDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.CreateDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        dns_authorization: certificate_manager.DnsAuthorization = None,
-        dns_authorization_id: str = None,
+        parent: Optional[str] = None,
+        dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
+        dns_authorization_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new DnsAuthorization in a given project and
@@ -2547,7 +2585,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.CreateDnsAuthorizationRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.CreateDnsAuthorizationRequest, dict]]):
                 The request object. Request for the
                 `CreateDnsAuthorization` method.
             parent (:class:`str`):
@@ -2650,12 +2688,14 @@ class CertificateManagerAsyncClient:
 
     async def update_dns_authorization(
         self,
-        request: Union[certificate_manager.UpdateDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.UpdateDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        dns_authorization: certificate_manager.DnsAuthorization = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a DnsAuthorization.
@@ -2694,7 +2734,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.UpdateDnsAuthorizationRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.UpdateDnsAuthorizationRequest, dict]]):
                 The request object. Request for the
                 `UpdateDnsAuthorization` method.
             dns_authorization (:class:`google.cloud.certificate_manager_v1.types.DnsAuthorization`):
@@ -2791,11 +2831,13 @@ class CertificateManagerAsyncClient:
 
     async def delete_dns_authorization(
         self,
-        request: Union[certificate_manager.DeleteDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.DeleteDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DnsAuthorization.
@@ -2831,7 +2873,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.DeleteDnsAuthorizationRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.DeleteDnsAuthorizationRequest, dict]]):
                 The request object. Request for the
                 `DeleteDnsAuthorization` method.
             name (:class:`str`):
@@ -2925,13 +2967,15 @@ class CertificateManagerAsyncClient:
 
     async def list_certificate_issuance_configs(
         self,
-        request: Union[
-            certificate_issuance_config.ListCertificateIssuanceConfigsRequest, dict
+        request: Optional[
+            Union[
+                certificate_issuance_config.ListCertificateIssuanceConfigsRequest, dict
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateIssuanceConfigsAsyncPager:
         r"""Lists CertificateIssuanceConfigs in a given project
@@ -2965,7 +3009,7 @@ class CertificateManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.ListCertificateIssuanceConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.ListCertificateIssuanceConfigsRequest, dict]]):
                 The request object. Request for the
                 `ListCertificateIssuanceConfigs` method.
             parent (:class:`str`):
@@ -3054,13 +3098,13 @@ class CertificateManagerAsyncClient:
 
     async def get_certificate_issuance_config(
         self,
-        request: Union[
-            certificate_issuance_config.GetCertificateIssuanceConfigRequest, dict
+        request: Optional[
+            Union[certificate_issuance_config.GetCertificateIssuanceConfigRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_issuance_config.CertificateIssuanceConfig:
         r"""Gets details of a single CertificateIssuanceConfig.
@@ -3092,7 +3136,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.GetCertificateIssuanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.GetCertificateIssuanceConfigRequest, dict]]):
                 The request object. Request for the
                 `GetCertificateIssuanceConfig` method.
             name (:class:`str`):
@@ -3170,15 +3214,20 @@ class CertificateManagerAsyncClient:
 
     async def create_certificate_issuance_config(
         self,
-        request: Union[
-            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest, dict
+        request: Optional[
+            Union[
+                gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
-        certificate_issuance_config: gcc_certificate_issuance_config.CertificateIssuanceConfig = None,
-        certificate_issuance_config_id: str = None,
+        parent: Optional[str] = None,
+        certificate_issuance_config: Optional[
+            gcc_certificate_issuance_config.CertificateIssuanceConfig
+        ] = None,
+        certificate_issuance_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new CertificateIssuanceConfig in a given
@@ -3222,7 +3271,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.CreateCertificateIssuanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.CreateCertificateIssuanceConfigRequest, dict]]):
                 The request object. Request for the
                 `CreateCertificateIssuanceConfig` method.
             parent (:class:`str`):
@@ -3334,13 +3383,15 @@ class CertificateManagerAsyncClient:
 
     async def delete_certificate_issuance_config(
         self,
-        request: Union[
-            certificate_issuance_config.DeleteCertificateIssuanceConfigRequest, dict
+        request: Optional[
+            Union[
+                certificate_issuance_config.DeleteCertificateIssuanceConfigRequest, dict
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single CertificateIssuanceConfig.
@@ -3376,7 +3427,7 @@ class CertificateManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.certificate_manager_v1.types.DeleteCertificateIssuanceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.certificate_manager_v1.types.DeleteCertificateIssuanceConfigRequest, dict]]):
                 The request object. Request for the
                 `DeleteCertificateIssuanceConfig` method.
             name (:class:`str`):
@@ -3472,10 +3523,10 @@ class CertificateManagerAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -3526,10 +3577,10 @@ class CertificateManagerAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -3580,10 +3631,10 @@ class CertificateManagerAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -3635,10 +3686,10 @@ class CertificateManagerAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -3689,10 +3740,10 @@ class CertificateManagerAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -3743,10 +3794,10 @@ class CertificateManagerAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

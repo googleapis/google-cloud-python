@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -71,7 +82,7 @@ class CertificateManagerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CertificateManagerTransport]:
         """Returns an appropriate transport class.
 
@@ -488,8 +499,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CertificateManagerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CertificateManagerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the certificate manager client.
@@ -503,7 +514,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             transport (Union[str, CertificateManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -533,6 +544,7 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -585,11 +597,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_certificates(
         self,
-        request: Union[certificate_manager.ListCertificatesRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.ListCertificatesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificatesPager:
         r"""Lists Certificates in a given project and location.
@@ -700,11 +714,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_certificate(
         self,
-        request: Union[certificate_manager.GetCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetCertificateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.Certificate:
         r"""Gets details of a single Certificate.
@@ -800,13 +816,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def create_certificate(
         self,
-        request: Union[certificate_manager.CreateCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.CreateCertificateRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        certificate: certificate_manager.Certificate = None,
-        certificate_id: str = None,
+        parent: Optional[str] = None,
+        certificate: Optional[certificate_manager.Certificate] = None,
+        certificate_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Certificate in a given project and
@@ -939,12 +957,14 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def update_certificate(
         self,
-        request: Union[certificate_manager.UpdateCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.UpdateCertificateRequest, dict]
+        ] = None,
         *,
-        certificate: certificate_manager.Certificate = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        certificate: Optional[certificate_manager.Certificate] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a Certificate.
@@ -1068,11 +1088,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def delete_certificate(
         self,
-        request: Union[certificate_manager.DeleteCertificateRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.DeleteCertificateRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Certificate.
@@ -1192,11 +1214,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_certificate_maps(
         self,
-        request: Union[certificate_manager.ListCertificateMapsRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.ListCertificateMapsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateMapsPager:
         r"""Lists CertificateMaps in a given project and
@@ -1308,11 +1332,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_certificate_map(
         self,
-        request: Union[certificate_manager.GetCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetCertificateMapRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.CertificateMap:
         r"""Gets details of a single CertificateMap.
@@ -1411,13 +1437,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def create_certificate_map(
         self,
-        request: Union[certificate_manager.CreateCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.CreateCertificateMapRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        certificate_map: certificate_manager.CertificateMap = None,
-        certificate_map_id: str = None,
+        parent: Optional[str] = None,
+        certificate_map: Optional[certificate_manager.CertificateMap] = None,
+        certificate_map_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new CertificateMap in a given project and
@@ -1550,12 +1578,14 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def update_certificate_map(
         self,
-        request: Union[certificate_manager.UpdateCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.UpdateCertificateMapRequest, dict]
+        ] = None,
         *,
-        certificate_map: certificate_manager.CertificateMap = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        certificate_map: Optional[certificate_manager.CertificateMap] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a CertificateMap.
@@ -1679,11 +1709,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def delete_certificate_map(
         self,
-        request: Union[certificate_manager.DeleteCertificateMapRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.DeleteCertificateMapRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single CertificateMap. A Certificate Map
@@ -1807,13 +1839,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_certificate_map_entries(
         self,
-        request: Union[
-            certificate_manager.ListCertificateMapEntriesRequest, dict
+        request: Optional[
+            Union[certificate_manager.ListCertificateMapEntriesRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateMapEntriesPager:
         r"""Lists CertificateMapEntries in a given project and
@@ -1930,11 +1962,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_certificate_map_entry(
         self,
-        request: Union[certificate_manager.GetCertificateMapEntryRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetCertificateMapEntryRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.CertificateMapEntry:
         r"""Gets details of a single CertificateMapEntry.
@@ -2033,15 +2067,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def create_certificate_map_entry(
         self,
-        request: Union[
-            certificate_manager.CreateCertificateMapEntryRequest, dict
+        request: Optional[
+            Union[certificate_manager.CreateCertificateMapEntryRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        certificate_map_entry: certificate_manager.CertificateMapEntry = None,
-        certificate_map_entry_id: str = None,
+        parent: Optional[str] = None,
+        certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
+        certificate_map_entry_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new CertificateMapEntry in a given project
@@ -2185,14 +2219,14 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def update_certificate_map_entry(
         self,
-        request: Union[
-            certificate_manager.UpdateCertificateMapEntryRequest, dict
+        request: Optional[
+            Union[certificate_manager.UpdateCertificateMapEntryRequest, dict]
         ] = None,
         *,
-        certificate_map_entry: certificate_manager.CertificateMapEntry = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        certificate_map_entry: Optional[certificate_manager.CertificateMapEntry] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a CertificateMapEntry.
@@ -2325,13 +2359,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def delete_certificate_map_entry(
         self,
-        request: Union[
-            certificate_manager.DeleteCertificateMapEntryRequest, dict
+        request: Optional[
+            Union[certificate_manager.DeleteCertificateMapEntryRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single CertificateMapEntry.
@@ -2456,11 +2490,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_dns_authorizations(
         self,
-        request: Union[certificate_manager.ListDnsAuthorizationsRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.ListDnsAuthorizationsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDnsAuthorizationsPager:
         r"""Lists DnsAuthorizations in a given project and
@@ -2572,11 +2608,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_dns_authorization(
         self,
-        request: Union[certificate_manager.GetDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.GetDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_manager.DnsAuthorization:
         r"""Gets details of a single DnsAuthorization.
@@ -2676,13 +2714,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def create_dns_authorization(
         self,
-        request: Union[certificate_manager.CreateDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.CreateDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        dns_authorization: certificate_manager.DnsAuthorization = None,
-        dns_authorization_id: str = None,
+        parent: Optional[str] = None,
+        dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
+        dns_authorization_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new DnsAuthorization in a given project and
@@ -2818,12 +2858,14 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def update_dns_authorization(
         self,
-        request: Union[certificate_manager.UpdateDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.UpdateDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        dns_authorization: certificate_manager.DnsAuthorization = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        dns_authorization: Optional[certificate_manager.DnsAuthorization] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a DnsAuthorization.
@@ -2950,11 +2992,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def delete_dns_authorization(
         self,
-        request: Union[certificate_manager.DeleteDnsAuthorizationRequest, dict] = None,
+        request: Optional[
+            Union[certificate_manager.DeleteDnsAuthorizationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single DnsAuthorization.
@@ -3075,13 +3119,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_certificate_issuance_configs(
         self,
-        request: Union[
-            certificate_issuance_config.ListCertificateIssuanceConfigsRequest, dict
+        request: Optional[
+            Union[
+                certificate_issuance_config.ListCertificateIssuanceConfigsRequest, dict
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCertificateIssuanceConfigsPager:
         r"""Lists CertificateIssuanceConfigs in a given project
@@ -3199,13 +3245,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_certificate_issuance_config(
         self,
-        request: Union[
-            certificate_issuance_config.GetCertificateIssuanceConfigRequest, dict
+        request: Optional[
+            Union[certificate_issuance_config.GetCertificateIssuanceConfigRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate_issuance_config.CertificateIssuanceConfig:
         r"""Gets details of a single CertificateIssuanceConfig.
@@ -3310,15 +3356,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def create_certificate_issuance_config(
         self,
-        request: Union[
-            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest, dict
+        request: Optional[
+            Union[
+                gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
-        certificate_issuance_config: gcc_certificate_issuance_config.CertificateIssuanceConfig = None,
-        certificate_issuance_config_id: str = None,
+        parent: Optional[str] = None,
+        certificate_issuance_config: Optional[
+            gcc_certificate_issuance_config.CertificateIssuanceConfig
+        ] = None,
+        certificate_issuance_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new CertificateIssuanceConfig in a given
@@ -3470,13 +3521,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def delete_certificate_issuance_config(
         self,
-        request: Union[
-            certificate_issuance_config.DeleteCertificateIssuanceConfigRequest, dict
+        request: Optional[
+            Union[
+                certificate_issuance_config.DeleteCertificateIssuanceConfigRequest, dict
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single CertificateIssuanceConfig.
@@ -3618,10 +3671,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -3672,10 +3725,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -3726,10 +3779,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -3781,10 +3834,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -3835,10 +3888,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -3889,10 +3942,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

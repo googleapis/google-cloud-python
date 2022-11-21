@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -88,23 +90,23 @@ class ListCertificatesRequest(proto.Message):
             desc".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -114,7 +116,7 @@ class ListCertificatesResponse(proto.Message):
     r"""Response for the ``ListCertificates`` method.
 
     Attributes:
-        certificates (Sequence[google.cloud.certificate_manager_v1.types.Certificate]):
+        certificates (MutableSequence[google.cloud.certificate_manager_v1.types.Certificate]):
             A list of certificates for the parent
             resource.
         next_page_token (str):
@@ -122,7 +124,7 @@ class ListCertificatesResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             A list of locations that could not be
             reached.
     """
@@ -131,16 +133,16 @@ class ListCertificatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificates = proto.RepeatedField(
+    certificates: MutableSequence["Certificate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Certificate",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -155,7 +157,7 @@ class GetCertificateRequest(proto.Message):
             the format ``projects/*/locations/*/certificates/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -176,15 +178,15 @@ class CreateCertificateRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_id = proto.Field(
+    certificate_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate = proto.Field(
+    certificate: "Certificate" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Certificate",
@@ -204,12 +206,12 @@ class UpdateCertificateRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
     """
 
-    certificate = proto.Field(
+    certificate: "Certificate" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Certificate",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -225,7 +227,7 @@ class DeleteCertificateRequest(proto.Message):
             the format ``projects/*/locations/*/certificates/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -258,23 +260,23 @@ class ListCertificateMapsRequest(proto.Message):
             desc".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -284,7 +286,7 @@ class ListCertificateMapsResponse(proto.Message):
     r"""Response for the ``ListCertificateMaps`` method.
 
     Attributes:
-        certificate_maps (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap]):
+        certificate_maps (MutableSequence[google.cloud.certificate_manager_v1.types.CertificateMap]):
             A list of certificate maps for the parent
             resource.
         next_page_token (str):
@@ -292,7 +294,7 @@ class ListCertificateMapsResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -300,16 +302,16 @@ class ListCertificateMapsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_maps = proto.RepeatedField(
+    certificate_maps: MutableSequence["CertificateMap"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CertificateMap",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -324,7 +326,7 @@ class GetCertificateMapRequest(proto.Message):
             in the format ``projects/*/locations/*/certificateMaps/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -345,15 +347,15 @@ class CreateCertificateMapRequest(proto.Message):
             to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_map_id = proto.Field(
+    certificate_map_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate_map = proto.Field(
+    certificate_map: "CertificateMap" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CertificateMap",
@@ -373,12 +375,12 @@ class UpdateCertificateMapRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
     """
 
-    certificate_map = proto.Field(
+    certificate_map: "CertificateMap" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CertificateMap",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -394,7 +396,7 @@ class DeleteCertificateMapRequest(proto.Message):
             in the format ``projects/*/locations/*/certificateMaps/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -433,23 +435,23 @@ class ListCertificateMapEntriesRequest(proto.Message):
             suffix " desc".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -459,7 +461,7 @@ class ListCertificateMapEntriesResponse(proto.Message):
     r"""Response for the ``ListCertificateMapEntries`` method.
 
     Attributes:
-        certificate_map_entries (Sequence[google.cloud.certificate_manager_v1.types.CertificateMapEntry]):
+        certificate_map_entries (MutableSequence[google.cloud.certificate_manager_v1.types.CertificateMapEntry]):
             A list of certificate map entries for the
             parent resource.
         next_page_token (str):
@@ -467,7 +469,7 @@ class ListCertificateMapEntriesResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -475,16 +477,18 @@ class ListCertificateMapEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_map_entries = proto.RepeatedField(
+    certificate_map_entries: MutableSequence[
+        "CertificateMapEntry"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CertificateMapEntry",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -500,7 +504,7 @@ class GetCertificateMapEntryRequest(proto.Message):
             ``projects/*/locations/*/certificateMaps/*/certificateMapEntries/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -522,15 +526,15 @@ class CreateCertificateMapEntryRequest(proto.Message):
             entry to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    certificate_map_entry_id = proto.Field(
+    certificate_map_entry_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    certificate_map_entry = proto.Field(
+    certificate_map_entry: "CertificateMapEntry" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CertificateMapEntry",
@@ -550,12 +554,12 @@ class UpdateCertificateMapEntryRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
     """
 
-    certificate_map_entry = proto.Field(
+    certificate_map_entry: "CertificateMapEntry" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CertificateMapEntry",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -572,7 +576,7 @@ class DeleteCertificateMapEntryRequest(proto.Message):
             ``projects/*/locations/*/certificateMaps/*/certificateMapEntries/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -605,23 +609,23 @@ class ListDnsAuthorizationsRequest(proto.Message):
             suffix " desc".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -631,7 +635,7 @@ class ListDnsAuthorizationsResponse(proto.Message):
     r"""Response for the ``ListDnsAuthorizations`` method.
 
     Attributes:
-        dns_authorizations (Sequence[google.cloud.certificate_manager_v1.types.DnsAuthorization]):
+        dns_authorizations (MutableSequence[google.cloud.certificate_manager_v1.types.DnsAuthorization]):
             A list of dns authorizations for the parent
             resource.
         next_page_token (str):
@@ -639,7 +643,7 @@ class ListDnsAuthorizationsResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -647,16 +651,16 @@ class ListDnsAuthorizationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    dns_authorizations = proto.RepeatedField(
+    dns_authorizations: MutableSequence["DnsAuthorization"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DnsAuthorization",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -672,7 +676,7 @@ class GetDnsAuthorizationRequest(proto.Message):
             ``projects/*/locations/*/dnsAuthorizations/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -693,15 +697,15 @@ class CreateDnsAuthorizationRequest(proto.Message):
             authorization to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dns_authorization_id = proto.Field(
+    dns_authorization_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dns_authorization = proto.Field(
+    dns_authorization: "DnsAuthorization" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DnsAuthorization",
@@ -721,12 +725,12 @@ class UpdateDnsAuthorizationRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
     """
 
-    dns_authorization = proto.Field(
+    dns_authorization: "DnsAuthorization" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DnsAuthorization",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -743,7 +747,7 @@ class DeleteDnsAuthorizationRequest(proto.Message):
             ``projects/*/locations/*/dnsAuthorizations/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -776,33 +780,33 @@ class OperationMetadata(proto.Message):
             API version used to start the operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -832,7 +836,7 @@ class Certificate(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             Certificate.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Set of labels associated with a Certificate.
         self_managed (google.cloud.certificate_manager_v1.types.Certificate.SelfManagedCertificate):
             If set, defines data of a self-managed
@@ -844,7 +848,7 @@ class Certificate(proto.Message):
             managed certificate.
 
             This field is a member of `oneof`_ ``type``.
-        san_dnsnames (Sequence[str]):
+        san_dnsnames (MutableSequence[str]):
             Output only. The list of Subject Alternative
             Names of dnsName type defined in the certificate
             (see RFC 5280 4.2.1.6). Managed certificates
@@ -882,11 +886,11 @@ class Certificate(proto.Message):
                 the leaf certificate.
         """
 
-        pem_certificate = proto.Field(
+        pem_certificate: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        pem_private_key = proto.Field(
+        pem_private_key: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -897,12 +901,12 @@ class Certificate(proto.Message):
         automatically, for as long as it's authorized to do so.
 
         Attributes:
-            domains (Sequence[str]):
+            domains (MutableSequence[str]):
                 Immutable. The domains for which a managed
                 SSL certificate will be generated. Wildcard
                 domains are only supported with DNS challenge
                 resolution.
-            dns_authorizations (Sequence[str]):
+            dns_authorizations (MutableSequence[str]):
                 Immutable. Authorizations that will be used
                 for performing domain authorization.
             issuance_config (str):
@@ -919,7 +923,7 @@ class Certificate(proto.Message):
             provisioning_issue (google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.ProvisioningIssue):
                 Output only. Information about issues with
                 provisioning a Managed Certificate.
-            authorization_attempt_info (Sequence[google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.AuthorizationAttemptInfo]):
+            authorization_attempt_info (MutableSequence[google.cloud.certificate_manager_v1.types.Certificate.ManagedCertificate.AuthorizationAttemptInfo]):
                 Output only. Detailed state of the latest
                 authorization attempt for each domain specified
                 for managed certificate resource.
@@ -953,12 +957,14 @@ class Certificate(proto.Message):
                 AUTHORIZATION_ISSUE = 1
                 RATE_LIMITED = 2
 
-            reason = proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="Certificate.ManagedCertificate.ProvisioningIssue.Reason",
+            reason: "Certificate.ManagedCertificate.ProvisioningIssue.Reason" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    enum="Certificate.ManagedCertificate.ProvisioningIssue.Reason",
+                )
             )
-            details = proto.Field(
+            details: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
@@ -998,102 +1004,106 @@ class Certificate(proto.Message):
                 CAA = 2
                 RATE_LIMITED = 3
 
-            domain = proto.Field(
+            domain: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            state = proto.Field(
+            state: "Certificate.ManagedCertificate.AuthorizationAttemptInfo.State" = proto.Field(
                 proto.ENUM,
                 number=2,
                 enum="Certificate.ManagedCertificate.AuthorizationAttemptInfo.State",
             )
-            failure_reason = proto.Field(
+            failure_reason: "Certificate.ManagedCertificate.AuthorizationAttemptInfo.FailureReason" = proto.Field(
                 proto.ENUM,
                 number=3,
                 enum="Certificate.ManagedCertificate.AuthorizationAttemptInfo.FailureReason",
             )
-            details = proto.Field(
+            details: str = proto.Field(
                 proto.STRING,
                 number=4,
             )
 
-        domains = proto.RepeatedField(
+        domains: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        dns_authorizations = proto.RepeatedField(
+        dns_authorizations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        issuance_config = proto.Field(
+        issuance_config: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        state = proto.Field(
+        state: "Certificate.ManagedCertificate.State" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Certificate.ManagedCertificate.State",
         )
-        provisioning_issue = proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="Certificate.ManagedCertificate.ProvisioningIssue",
+        provisioning_issue: "Certificate.ManagedCertificate.ProvisioningIssue" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="Certificate.ManagedCertificate.ProvisioningIssue",
+            )
         )
-        authorization_attempt_info = proto.RepeatedField(
+        authorization_attempt_info: MutableSequence[
+            "Certificate.ManagedCertificate.AuthorizationAttemptInfo"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="Certificate.ManagedCertificate.AuthorizationAttemptInfo",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    self_managed = proto.Field(
+    self_managed: SelfManagedCertificate = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="type",
         message=SelfManagedCertificate,
     )
-    managed = proto.Field(
+    managed: ManagedCertificate = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="type",
         message=ManagedCertificate,
     )
-    san_dnsnames = proto.RepeatedField(
+    san_dnsnames: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    pem_certificate = proto.Field(
+    pem_certificate: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    scope = proto.Field(
+    scope: Scope = proto.Field(
         proto.ENUM,
         number=12,
         enum=Scope,
@@ -1117,10 +1127,10 @@ class CertificateMap(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update timestamp of a
             Certificate Map.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Set of labels associated with a Certificate
             Map.
-        gclb_targets (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget]):
+        gclb_targets (MutableSequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget]):
             Output only. A list of GCLB targets which use
             this Certificate Map. A Target Proxy is only
             present on this list if it's attached to a
@@ -1150,7 +1160,7 @@ class CertificateMap(proto.Message):
                 ``//compute.googleapis.com/projects/*/global/targetSslProxies/*``.
 
                 This field is a member of `oneof`_ ``target_proxy``.
-            ip_configs (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget.IpConfig]):
+            ip_configs (MutableSequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget.IpConfig]):
                 Output only. IP configurations for this
                 Target Proxy where the Certificate Map is
                 serving.
@@ -1163,59 +1173,61 @@ class CertificateMap(proto.Message):
             Attributes:
                 ip_address (str):
                     Output only. An external IP address.
-                ports (Sequence[int]):
+                ports (MutableSequence[int]):
                     Output only. Ports.
             """
 
-            ip_address = proto.Field(
+            ip_address: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            ports = proto.RepeatedField(
+            ports: MutableSequence[int] = proto.RepeatedField(
                 proto.UINT32,
                 number=3,
             )
 
-        target_https_proxy = proto.Field(
+        target_https_proxy: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="target_proxy",
         )
-        target_ssl_proxy = proto.Field(
+        target_ssl_proxy: str = proto.Field(
             proto.STRING,
             number=3,
             oneof="target_proxy",
         )
-        ip_configs = proto.RepeatedField(
+        ip_configs: MutableSequence[
+            "CertificateMap.GclbTarget.IpConfig"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CertificateMap.GclbTarget.IpConfig",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    gclb_targets = proto.RepeatedField(
+    gclb_targets: MutableSequence[GclbTarget] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=GclbTarget,
@@ -1247,7 +1259,7 @@ class CertificateMapEntry(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update timestamp of a
             Certificate Map Entry.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Set of labels associated with a Certificate
             Map Entry.
         hostname (str):
@@ -1262,7 +1274,7 @@ class CertificateMapEntry(proto.Message):
             other than SNI selection.
 
             This field is a member of `oneof`_ ``match``.
-        certificates (Sequence[str]):
+        certificates (MutableSequence[str]):
             A set of Certificates defines for the given ``hostname``.
             There can be defined up to fifteen certificates in each
             Certificate Map Entry. Each certificate must match pattern
@@ -1279,45 +1291,45 @@ class CertificateMapEntry(proto.Message):
         MATCHER_UNSPECIFIED = 0
         PRIMARY = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="match",
     )
-    matcher = proto.Field(
+    matcher: Matcher = proto.Field(
         proto.ENUM,
         number=10,
         oneof="match",
         enum=Matcher,
     )
-    certificates = proto.RepeatedField(
+    certificates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: "ServingState" = proto.Field(
         proto.ENUM,
         number=8,
         enum="ServingState",
@@ -1339,7 +1351,7 @@ class DnsAuthorization(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             DnsAuthorization.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Set of labels associated with a
             DnsAuthorization.
         description (str):
@@ -1372,47 +1384,47 @@ class DnsAuthorization(proto.Message):
                 Output only. Data of the DNS Resource Record.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        data = proto.Field(
+        data: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    domain = proto.Field(
+    domain: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    dns_resource_record = proto.Field(
+    dns_resource_record: DnsResourceRecord = proto.Field(
         proto.MESSAGE,
         number=10,
         message=DnsResourceRecord,
