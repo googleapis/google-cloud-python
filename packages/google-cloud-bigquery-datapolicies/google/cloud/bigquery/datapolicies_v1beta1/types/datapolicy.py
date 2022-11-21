@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,11 +46,11 @@ class CreateDataPolicyRequest(proto.Message):
             not need to be provided for the data policy creation.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_policy = proto.Field(
+    data_policy: "DataPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DataPolicy",
@@ -76,12 +78,12 @@ class UpdateDataPolicyRequest(proto.Message):
             allowed.
     """
 
-    data_policy = proto.Field(
+    data_policy: "DataPolicy" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DataPolicy",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -98,7 +100,7 @@ class DeleteDataPolicyRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -114,7 +116,7 @@ class GetDataPolicyRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -137,15 +139,15 @@ class ListDataPoliciesRequest(proto.Message):
             request, if any. If not set, defaults to an empty string.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -155,7 +157,7 @@ class ListDataPoliciesResponse(proto.Message):
     r"""Response message for the ListDataPolicies method.
 
     Attributes:
-        data_policies (Sequence[google.cloud.bigquery.datapolicies_v1beta1.types.DataPolicy]):
+        data_policies (MutableSequence[google.cloud.bigquery.datapolicies_v1beta1.types.DataPolicy]):
             Data policies that belong to the requested
             project.
         next_page_token (str):
@@ -167,12 +169,12 @@ class ListDataPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_policies = proto.RepeatedField(
+    data_policies: MutableSequence["DataPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataPolicy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -212,27 +214,27 @@ class DataPolicy(proto.Message):
         COLUMN_LEVEL_SECURITY_POLICY = 3
         DATA_MASKING_POLICY = 2
 
-    policy_tag = proto.Field(
+    policy_tag: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="matching_label",
     )
-    data_masking_policy = proto.Field(
+    data_masking_policy: "DataMaskingPolicy" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="policy",
         message="DataMaskingPolicy",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_policy_type = proto.Field(
+    data_policy_type: DataPolicyType = proto.Field(
         proto.ENUM,
         number=2,
         enum=DataPolicyType,
     )
-    data_policy_id = proto.Field(
+    data_policy_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -261,7 +263,7 @@ class DataMaskingPolicy(proto.Message):
         ALWAYS_NULL = 5
         DEFAULT_MASKING_VALUE = 7
 
-    predefined_expression = proto.Field(
+    predefined_expression: PredefinedExpression = proto.Field(
         proto.ENUM,
         number=1,
         oneof="masking_expression",
