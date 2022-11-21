@@ -86,6 +86,7 @@ __protobuf__ = proto.module(
         "AggregatedListTargetHttpsProxiesRequest",
         "AggregatedListTargetInstancesRequest",
         "AggregatedListTargetPoolsRequest",
+        "AggregatedListTargetTcpProxiesRequest",
         "AggregatedListTargetVpnGatewaysRequest",
         "AggregatedListUrlMapsRequest",
         "AggregatedListVpnGatewaysRequest",
@@ -1212,9 +1213,11 @@ __protobuf__ = proto.module(
         "TargetSslProxiesSetSslCertificatesRequest",
         "TargetSslProxy",
         "TargetSslProxyList",
+        "TargetTcpProxiesScopedList",
         "TargetTcpProxiesSetBackendServiceRequest",
         "TargetTcpProxiesSetProxyHeaderRequest",
         "TargetTcpProxy",
+        "TargetTcpProxyAggregatedList",
         "TargetTcpProxyList",
         "TargetVpnGateway",
         "TargetVpnGatewayAggregatedList",
@@ -8181,6 +8184,142 @@ class AggregatedListTargetPoolsRequest(proto.Message):
     )
 
 
+class AggregatedListTargetTcpProxiesRequest(proto.Message):
+    r"""A request message for TargetTcpProxies.AggregatedList. See
+    the method description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
+
+            This field is a member of `oneof`_ ``_filter``.
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+
+            This field is a member of `oneof`_ ``_include_all_scopes``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Name of the project scoping this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    include_all_scopes: bool = proto.Field(
+        proto.BOOL,
+        number=391327988,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
 class AggregatedListTargetVpnGatewaysRequest(proto.Message):
     r"""A request message for TargetVpnGateways.AggregatedList. See
     the method description for details.
@@ -9520,15 +9659,17 @@ class AttachedDiskInitializeParams(proto.Message):
             https://www.googleapis.com/compute/v1/projects/project/zones/zone
             /diskTypes/pd-standard For a full list of
             acceptable values, see Persistent disk types. If
-            you define this field, you can provide either
-            the full or partial URL. For example, the
-            following are valid values: -
+            you specify this field when creating a VM, you
+            can provide either the full or partial URL. For
+            example, the following values are valid: -
             https://www.googleapis.com/compute/v1/projects/project/zones/zone
             /diskTypes/diskType -
             projects/project/zones/zone/diskTypes/diskType -
-            zones/zone/diskTypes/diskType Note that for
-            InstanceTemplate, this is the name of the disk
-            type, not URL.
+            zones/zone/diskTypes/diskType If you specify
+            this field when creating or updating an instance
+            template or all-instances configuration, specify
+            the type of the disk, not the URL. For example:
+            pd-standard.
 
             This field is a member of `oneof`_ ``_disk_type``.
         labels (MutableMapping[str, str]):
@@ -9595,11 +9736,11 @@ class AttachedDiskInitializeParams(proto.Message):
             The customer-supplied encryption key of the
             source image. Required if the source image is
             protected by a customer-supplied encryption key.
-            Instance templates do not store
-            customer-supplied encryption keys, so you cannot
-            create disks for instances in a managed instance
-            group if the source images are encrypted with
-            your own keys.
+            InstanceTemplate and InstancePropertiesPatch do
+            not store customer-supplied encryption keys, so
+            you cannot create disks for instances in a
+            managed instance group if the source images are
+            encrypted with your own keys.
 
             This field is a member of `oneof`_ ``_source_image_encryption_key``.
         source_snapshot (str):
@@ -14878,11 +15019,12 @@ class CorsPolicy(proto.Message):
             Specifies the content for the
             Access-Control-Allow-Methods header.
         allow_origin_regexes (MutableSequence[str]):
-            Specifies a regular expression that matches
-            allowed origins. For more information about the
-            regular expression syntax, see Syntax. An origin
-            is allowed if it matches either an item in
-            allowOrigins or an item in allowOriginRegexes.
+            Specifies a regular expression that matches allowed origins.
+            For more information about the regular expression syntax,
+            see Syntax. An origin is allowed if it matches either an
+            item in allowOrigins or an item in allowOriginRegexes.
+            Regular expressions can only be used when the
+            loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
         allow_origins (MutableSequence[str]):
             Specifies the list of origins that is allowed
             to do CORS requests. An origin is allowed if it
@@ -22816,10 +22958,11 @@ class ForwardingRule(proto.Message):
             address resource. When omitted, Google Cloud assigns an
             ephemeral IP address. Use one of the following formats to
             specify an IP address while creating a forwarding rule: \*
-            IP address number, as in ``100.1.2.3`` \* Full resource URL,
-            as in
-            https://www.googleapis.com/compute/v1/projects/project_id/regions/region
-            /addresses/address-name \* Partial URL or by name, as in: -
+            IP address number, as in ``100.1.2.3`` \* IPv6 address
+            range, as in ``2600:1234::/96`` \* Full resource URL, as in
+            https://www.googleapis.com/compute/v1/projects/
+            project_id/regions/region/addresses/address-name \* Partial
+            URL or by name, as in: -
             projects/project_id/regions/region/addresses/address-name -
             regions/region/addresses/address-name -
             global/addresses/address-name - address-name The forwarding
@@ -29341,9 +29484,9 @@ class HttpHeaderMatch(proto.Message):
             headerName set to PORT and a regular expression that
             satisfies the RFC2616 Host header's port specifier. Only one
             of exactMatch, prefixMatch, suffixMatch, regexMatch,
-            presentMatch or rangeMatch must be set. regexMatch only
-            applies to load balancers that have loadBalancingScheme set
-            to INTERNAL_SELF_MANAGED.
+            presentMatch or rangeMatch must be set. Regular expressions
+            can only be used when the loadBalancingScheme is set to
+            INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_regex_match``.
         suffix_match (str):
@@ -29468,8 +29611,9 @@ class HttpQueryParameterMatch(proto.Message):
             parameter matches the regular expression specified by
             regexMatch. For more information about regular expression
             syntax, see Syntax. Only one of presentMatch, exactMatch, or
-            regexMatch must be set. regexMatch only applies when the
-            loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
+            regexMatch must be set. Regular expressions can only be used
+            when the loadBalancingScheme is set to
+            INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_regex_match``.
     """
@@ -30037,8 +30181,8 @@ class HttpRouteRuleMatch(proto.Message):
             supplied with the original URL. For more information about
             regular expression syntax, see Syntax. Only one of
             prefixMatch, fullPathMatch or regexMatch must be specified.
-            regexMatch only applies to load balancers that have
-            loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+            Regular expressions can only be used when the
+            loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_regex_match``.
     """
@@ -66026,7 +66170,11 @@ class Reservation(proto.Message):
 
             This field is a member of `oneof`_ ``_self_link``.
         share_settings (google.cloud.compute_v1.types.ShareSettings):
-            Share-settings for shared-reservation
+            Specify share-settings to create a shared
+            reservation. This property is optional. For more
+            information about the syntax and options for
+            this field and its subfields, see the guide for
+            creating a shared reservation.
 
             This field is a member of `oneof`_ ``_share_settings``.
         specific_reservation (google.cloud.compute_v1.types.AllocationSpecificSKUReservation):
@@ -71560,29 +71708,29 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
             Determines the key to enforce the rate_limit_threshold on.
             Possible values are: - ALL: A single rate limit threshold is
             applied to all the requests matching this rule. This is the
-            default value if this field 'enforce_on_key' is not
-            configured. - IP: The source IP address of the request is
-            the key. Each IP has this limit enforced separately. -
-            HTTP_HEADER: The value of the HTTP header whose name is
-            configured under "enforce_on_key_name". The key value is
-            truncated to the first 128 bytes of the header value. If no
-            such header is present in the request, the key type defaults
-            to ALL. - XFF_IP: The first IP address (i.e. the originating
-            client IP address) specified in the list of IPs under
-            X-Forwarded-For HTTP header. If no such header is present or
-            the value is not a valid IP, the key defaults to the source
-            IP address of the request i.e. key type IP. - HTTP_COOKIE:
-            The value of the HTTP cookie whose name is configured under
-            "enforce_on_key_name". The key value is truncated to the
-            first 128 bytes of the cookie value. If no such cookie is
-            present in the request, the key type defaults to ALL. -
-            HTTP_PATH: The URL path of the HTTP request. The key value
-            is truncated to the first 128 bytes. - SNI: Server name
-            indication in the TLS session of the HTTPS request. The key
-            value is truncated to the first 128 bytes. The key type
-            defaults to ALL on a HTTP session. - REGION_CODE: The
-            country/region from which the request originates. Check the
-            EnforceOnKey enum for the list of possible values.
+            default value if "enforceOnKey" is not configured. - IP: The
+            source IP address of the request is the key. Each IP has
+            this limit enforced separately. - HTTP_HEADER: The value of
+            the HTTP header whose name is configured under
+            "enforceOnKeyName". The key value is truncated to the first
+            128 bytes of the header value. If no such header is present
+            in the request, the key type defaults to ALL. - XFF_IP: The
+            first IP address (i.e. the originating client IP address)
+            specified in the list of IPs under X-Forwarded-For HTTP
+            header. If no such header is present or the value is not a
+            valid IP, the key defaults to the source IP address of the
+            request i.e. key type IP. - HTTP_COOKIE: The value of the
+            HTTP cookie whose name is configured under
+            "enforceOnKeyName". The key value is truncated to the first
+            128 bytes of the cookie value. If no such cookie is present
+            in the request, the key type defaults to ALL. - HTTP_PATH:
+            The URL path of the HTTP request. The key value is truncated
+            to the first 128 bytes. - SNI: Server name indication in the
+            TLS session of the HTTPS request. The key value is truncated
+            to the first 128 bytes. The key type defaults to ALL on a
+            HTTP session. - REGION_CODE: The country/region from which
+            the request originates. Check the EnforceOnKey enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_enforce_on_key``.
         enforce_on_key_name (str):
@@ -71618,26 +71766,26 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
     class EnforceOnKey(proto.Enum):
         r"""Determines the key to enforce the rate_limit_threshold on. Possible
         values are: - ALL: A single rate limit threshold is applied to all
-        the requests matching this rule. This is the default value if this
-        field 'enforce_on_key' is not configured. - IP: The source IP
-        address of the request is the key. Each IP has this limit enforced
-        separately. - HTTP_HEADER: The value of the HTTP header whose name
-        is configured under "enforce_on_key_name". The key value is
-        truncated to the first 128 bytes of the header value. If no such
-        header is present in the request, the key type defaults to ALL. -
-        XFF_IP: The first IP address (i.e. the originating client IP
-        address) specified in the list of IPs under X-Forwarded-For HTTP
-        header. If no such header is present or the value is not a valid IP,
-        the key defaults to the source IP address of the request i.e. key
-        type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is
-        configured under "enforce_on_key_name". The key value is truncated
-        to the first 128 bytes of the cookie value. If no such cookie is
-        present in the request, the key type defaults to ALL. - HTTP_PATH:
-        The URL path of the HTTP request. The key value is truncated to the
-        first 128 bytes. - SNI: Server name indication in the TLS session of
-        the HTTPS request. The key value is truncated to the first 128
-        bytes. The key type defaults to ALL on a HTTP session. -
-        REGION_CODE: The country/region from which the request originates.
+        the requests matching this rule. This is the default value if
+        "enforceOnKey" is not configured. - IP: The source IP address of the
+        request is the key. Each IP has this limit enforced separately. -
+        HTTP_HEADER: The value of the HTTP header whose name is configured
+        under "enforceOnKeyName". The key value is truncated to the first
+        128 bytes of the header value. If no such header is present in the
+        request, the key type defaults to ALL. - XFF_IP: The first IP
+        address (i.e. the originating client IP address) specified in the
+        list of IPs under X-Forwarded-For HTTP header. If no such header is
+        present or the value is not a valid IP, the key defaults to the
+        source IP address of the request i.e. key type IP. - HTTP_COOKIE:
+        The value of the HTTP cookie whose name is configured under
+        "enforceOnKeyName". The key value is truncated to the first 128
+        bytes of the cookie value. If no such cookie is present in the
+        request, the key type defaults to ALL. - HTTP_PATH: The URL path of
+        the HTTP request. The key value is truncated to the first 128 bytes.
+        - SNI: Server name indication in the TLS session of the HTTPS
+        request. The key value is truncated to the first 128 bytes. The key
+        type defaults to ALL on a HTTP session. - REGION_CODE: The
+        country/region from which the request originates.
         """
         UNDEFINED_ENFORCE_ON_KEY = 0
         ALL = 64897
@@ -78129,8 +78277,8 @@ class Subnetwork(proto.Message):
 
             This field is a member of `oneof`_ ``_enable_flow_logs``.
         external_ipv6_prefix (str):
-            [Output Only] The external IPv6 address range that is
-            assigned to this subnetwork.
+            The external IPv6 address range that is owned
+            by this subnetwork.
 
             This field is a member of `oneof`_ ``_external_ipv6_prefix``.
         fingerprint (str):
@@ -81246,6 +81394,33 @@ class TargetSslProxyList(proto.Message):
     )
 
 
+class TargetTcpProxiesScopedList(proto.Message):
+    r"""
+
+    Attributes:
+        target_tcp_proxies (MutableSequence[google.cloud.compute_v1.types.TargetTcpProxy]):
+            A list of TargetTcpProxies contained in this
+            scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            Informational warning which replaces the list
+            of backend services when the list is empty.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    target_tcp_proxies: MutableSequence["TargetTcpProxy"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=262056832,
+        message="TargetTcpProxy",
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
 class TargetTcpProxiesSetBackendServiceRequest(proto.Message):
     r"""
 
@@ -81422,6 +81597,87 @@ class TargetTcpProxy(proto.Message):
         proto.STRING,
         number=373540533,
         optional=True,
+    )
+
+
+class TargetTcpProxyAggregatedList(proto.Message):
+    r"""
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableMapping[str, google.cloud.compute_v1.types.TargetTcpProxiesScopedList]):
+            A list of TargetTcpProxiesScopedList
+            resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#targetTcpProxyAggregatedList for lists of Target TCP
+            Proxies.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            [Output Only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableMapping[str, "TargetTcpProxiesScopedList"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="TargetTcpProxiesScopedList",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
     )
 
 
@@ -85301,9 +85557,9 @@ class VpnGateway(proto.Message):
             This field is a member of `oneof`_ ``_self_link``.
         stack_type (str):
             The stack type for this VPN gateway to identify the IP
-            protocols that are enabled. If not specified, IPV4_ONLY will
-            be used. Check the StackType enum for the list of possible
-            values.
+            protocols that are enabled. Possible values are: IPV4_ONLY,
+            IPV4_IPV6. If not specified, IPV4_ONLY will be used. Check
+            the StackType enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_stack_type``.
         vpn_interfaces (MutableSequence[google.cloud.compute_v1.types.VpnGatewayVpnGatewayInterface]):
@@ -85313,7 +85569,8 @@ class VpnGateway(proto.Message):
 
     class StackType(proto.Enum):
         r"""The stack type for this VPN gateway to identify the IP protocols
-        that are enabled. If not specified, IPV4_ONLY will be used.
+        that are enabled. Possible values are: IPV4_ONLY, IPV4_IPV6. If not
+        specified, IPV4_ONLY will be used.
         """
         UNDEFINED_STACK_TYPE = 0
         IPV4_IPV6 = 22197249
@@ -85849,9 +86106,11 @@ class VpnTunnel(proto.Message):
 
             This field is a member of `oneof`_ ``_peer_external_gateway``.
         peer_external_gateway_interface (int):
-            The interface ID of the external VPN gateway
-            to which this VPN tunnel is connected. Provided
-            by the client when the VPN tunnel is created.
+            The interface ID of the external VPN gateway to which this
+            VPN tunnel is connected. Provided by the client when the VPN
+            tunnel is created. Possible values are: ``0``, ``1``, ``2``,
+            ``3``. The number of IDs in use depends on the external VPN
+            gateway redundancy type.
 
             This field is a member of `oneof`_ ``_peer_external_gateway_interface``.
         peer_gcp_gateway (str):
@@ -85945,8 +86204,8 @@ class VpnTunnel(proto.Message):
 
             This field is a member of `oneof`_ ``_vpn_gateway``.
         vpn_gateway_interface (int):
-            The interface ID of the VPN gateway with
-            which this VPN tunnel is associated.
+            The interface ID of the VPN gateway with which this VPN
+            tunnel is associated. Possible values are: ``0``, ``1``.
 
             This field is a member of `oneof`_ ``_vpn_gateway_interface``.
     """

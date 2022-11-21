@@ -3865,6 +3865,11 @@
         "rest": {
           "libraryClient": "TargetTcpProxiesClient",
           "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
