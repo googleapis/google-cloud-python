@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,38 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
+import json
+from pathlib import Path
+import shutil
 
 import synthtool as s
-from synthtool import gcp
+import synthtool.gcp as gcp
 from synthtool.languages import python
 
-common = gcp.CommonTemplates()
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-default_version = "v1"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+
     # Work around sphinx docs issue
+    # Determine if this is a gapic-generator-python bug or docstring issue
     s.replace(library / f"google/cloud/devtools/cloudbuild_{library.name}/services/cloud_build/*client.py",
         "`WorkerPool`s.",
         r"`WorkerPool`\\s.",
     )
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
+    # Remove replacement once repo has migrated to google-cloud-python
+    s.replace(
+        library / "setup.py",
+        """url = \"https://github.com/googleapis/python-build\"""",
+        """url = \"https://github.com/googleapis/python-cloudbuild\""""
+    )
+
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    samples=False,  # set to True only if there are samples
-    microgenerator=True,
-    cov_level=100,
-)
 
-s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
-python.configure_previous_major_version_branches()
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
+)
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)

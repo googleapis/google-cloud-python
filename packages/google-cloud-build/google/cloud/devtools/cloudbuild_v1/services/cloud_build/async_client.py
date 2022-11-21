@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -184,9 +194,9 @@ class CloudBuildAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudBuildTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud build client.
@@ -230,12 +240,12 @@ class CloudBuildAsyncClient:
 
     async def create_build(
         self,
-        request: Union[cloudbuild.CreateBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CreateBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        build: cloudbuild.Build = None,
+        project_id: Optional[str] = None,
+        build: Optional[cloudbuild.Build] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts a build with the specified configuration.
@@ -275,7 +285,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildRequest, dict]]):
                 The request object. Request to create a new build.
             project_id (:class:`str`):
                 Required. ID of the project.
@@ -380,12 +390,12 @@ class CloudBuildAsyncClient:
 
     async def get_build(
         self,
-        request: Union[cloudbuild.GetBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.GetBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        id: str = None,
+        project_id: Optional[str] = None,
+        id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Returns information about a previously requested build.
@@ -422,7 +432,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildRequest, dict]]):
                 The request object. Request to get a build.
             project_id (:class:`str`):
                 Required. ID of the project.
@@ -528,12 +538,12 @@ class CloudBuildAsyncClient:
 
     async def list_builds(
         self,
-        request: Union[cloudbuild.ListBuildsRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ListBuildsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        filter: str = None,
+        project_id: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildsAsyncPager:
         r"""Lists previously requested builds.
@@ -568,7 +578,7 @@ class CloudBuildAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildsRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildsRequest, dict]]):
                 The request object. Request to list builds.
             project_id (:class:`str`):
                 Required. ID of the project.
@@ -663,12 +673,12 @@ class CloudBuildAsyncClient:
 
     async def cancel_build(
         self,
-        request: Union[cloudbuild.CancelBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CancelBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        id: str = None,
+        project_id: Optional[str] = None,
+        id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Cancels a build in progress.
@@ -701,7 +711,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.CancelBuildRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.CancelBuildRequest, dict]]):
                 The request object. Request to cancel an ongoing build.
             project_id (:class:`str`):
                 Required. ID of the project.
@@ -797,12 +807,12 @@ class CloudBuildAsyncClient:
 
     async def retry_build(
         self,
-        request: Union[cloudbuild.RetryBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.RetryBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        id: str = None,
+        project_id: Optional[str] = None,
+        id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new build based on the specified build.
@@ -868,7 +878,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.RetryBuildRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.RetryBuildRequest, dict]]):
                 The request object. Specifies a build to retry.
             project_id (:class:`str`):
                 Required. ID of the project.
@@ -978,12 +988,12 @@ class CloudBuildAsyncClient:
 
     async def approve_build(
         self,
-        request: Union[cloudbuild.ApproveBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ApproveBuildRequest, dict]] = None,
         *,
-        name: str = None,
-        approval_result: cloudbuild.ApprovalResult = None,
+        name: Optional[str] = None,
+        approval_result: Optional[cloudbuild.ApprovalResult] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Approves or rejects a pending build.
@@ -1023,7 +1033,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.ApproveBuildRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ApproveBuildRequest, dict]]):
                 The request object. Request to approve or reject a
                 pending build.
             name (:class:`str`):
@@ -1129,12 +1139,12 @@ class CloudBuildAsyncClient:
 
     async def create_build_trigger(
         self,
-        request: Union[cloudbuild.CreateBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CreateBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger: cloudbuild.BuildTrigger = None,
+        project_id: Optional[str] = None,
+        trigger: Optional[cloudbuild.BuildTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Creates a new ``BuildTrigger``.
@@ -1172,7 +1182,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest, dict]]):
                 The request object. Request to create a new
                 `BuildTrigger`.
             project_id (:class:`str`):
@@ -1248,12 +1258,12 @@ class CloudBuildAsyncClient:
 
     async def get_build_trigger(
         self,
-        request: Union[cloudbuild.GetBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.GetBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Returns information about a ``BuildTrigger``.
@@ -1288,7 +1298,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest, dict]]):
                 The request object. Returns the `BuildTrigger` with the
                 specified ID.
             project_id (:class:`str`):
@@ -1379,11 +1389,11 @@ class CloudBuildAsyncClient:
 
     async def list_build_triggers(
         self,
-        request: Union[cloudbuild.ListBuildTriggersRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ListBuildTriggersRequest, dict]] = None,
         *,
-        project_id: str = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildTriggersAsyncPager:
         r"""Lists existing ``BuildTrigger``\ s.
@@ -1418,7 +1428,7 @@ class CloudBuildAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest, dict]]):
                 The request object. Request to list existing
                 `BuildTriggers`.
             project_id (:class:`str`):
@@ -1507,12 +1517,12 @@ class CloudBuildAsyncClient:
 
     async def delete_build_trigger(
         self,
-        request: Union[cloudbuild.DeleteBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.DeleteBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ``BuildTrigger`` by its project ID and trigger ID.
@@ -1544,7 +1554,7 @@ class CloudBuildAsyncClient:
                 await client.delete_build_trigger(request=request)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest, dict]]):
                 The request object. Request to delete a `BuildTrigger`.
             project_id (:class:`str`):
                 Required. ID of the project that owns
@@ -1622,13 +1632,13 @@ class CloudBuildAsyncClient:
 
     async def update_build_trigger(
         self,
-        request: Union[cloudbuild.UpdateBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.UpdateBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
-        trigger: cloudbuild.BuildTrigger = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
+        trigger: Optional[cloudbuild.BuildTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Updates a ``BuildTrigger`` by its project ID and trigger ID.
@@ -1667,7 +1677,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest, dict]]):
                 The request object. Request to update an existing
                 `BuildTrigger`.
             project_id (:class:`str`):
@@ -1753,13 +1763,13 @@ class CloudBuildAsyncClient:
 
     async def run_build_trigger(
         self,
-        request: Union[cloudbuild.RunBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.RunBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
-        source: cloudbuild.RepoSource = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
+        source: Optional[cloudbuild.RepoSource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
@@ -1796,7 +1806,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.RunBuildTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.RunBuildTriggerRequest, dict]]):
                 The request object. Specifies a build trigger to run and
                 the source to use.
             project_id (:class:`str`):
@@ -1912,10 +1922,10 @@ class CloudBuildAsyncClient:
 
     async def receive_trigger_webhook(
         self,
-        request: Union[cloudbuild.ReceiveTriggerWebhookRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ReceiveTriggerWebhookRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.ReceiveTriggerWebhookResponse:
         r"""ReceiveTriggerWebhook [Experimental] is called when the API
@@ -1947,7 +1957,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]]):
                 The request object. ReceiveTriggerWebhookRequest
                 [Experimental] is the request object accepted by the
                 ReceiveTriggerWebhook method.
@@ -1998,13 +2008,13 @@ class CloudBuildAsyncClient:
 
     async def create_worker_pool(
         self,
-        request: Union[cloudbuild.CreateWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CreateWorkerPoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        worker_pool: cloudbuild.WorkerPool = None,
-        worker_pool_id: str = None,
+        parent: Optional[str] = None,
+        worker_pool: Optional[cloudbuild.WorkerPool] = None,
+        worker_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a ``WorkerPool``.
@@ -2041,7 +2051,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest, dict]]):
                 The request object. Request to create a new
                 `WorkerPool`.
             parent (:class:`str`):
@@ -2153,11 +2163,11 @@ class CloudBuildAsyncClient:
 
     async def get_worker_pool(
         self,
-        request: Union[cloudbuild.GetWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.GetWorkerPoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.WorkerPool:
         r"""Returns details of a ``WorkerPool``.
@@ -2189,7 +2199,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest, dict]]):
                 The request object. Request to get a `WorkerPool` with
                 the specified name.
             name (:class:`str`):
@@ -2279,11 +2289,11 @@ class CloudBuildAsyncClient:
 
     async def delete_worker_pool(
         self,
-        request: Union[cloudbuild.DeleteWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.DeleteWorkerPoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``WorkerPool``.
@@ -2319,7 +2329,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest, dict]]):
                 The request object. Request to delete a `WorkerPool`.
             name (:class:`str`):
                 Required. The name of the ``WorkerPool`` to delete.
@@ -2403,12 +2413,12 @@ class CloudBuildAsyncClient:
 
     async def update_worker_pool(
         self,
-        request: Union[cloudbuild.UpdateWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.UpdateWorkerPoolRequest, dict]] = None,
         *,
-        worker_pool: cloudbuild.WorkerPool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        worker_pool: Optional[cloudbuild.WorkerPool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``WorkerPool``.
@@ -2443,7 +2453,7 @@ class CloudBuildAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest, dict]]):
                 The request object. Request to update a `WorkerPool`.
             worker_pool (:class:`google.cloud.devtools.cloudbuild_v1.types.WorkerPool`):
                 Required. The ``WorkerPool`` to update.
@@ -2547,11 +2557,11 @@ class CloudBuildAsyncClient:
 
     async def list_worker_pools(
         self,
-        request: Union[cloudbuild.ListWorkerPoolsRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ListWorkerPoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkerPoolsAsyncPager:
         r"""Lists ``WorkerPool``\ s.
@@ -2584,7 +2594,7 @@ class CloudBuildAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest, dict]):
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest, dict]]):
                 The request object. Request to list `WorkerPool`\s.
             parent (:class:`str`):
                 Required. The parent of the collection of

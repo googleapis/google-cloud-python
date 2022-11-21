@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.devtools.cloudbuild import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.devtools.cloudbuild_v1.services.cloud_build.client import (
     CloudBuildClient,
@@ -95,6 +99,8 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     UpdateWorkerPoolOperationMetadata,
 )
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UpdateWorkerPoolRequest
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UploadedMavenArtifact
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UploadedPythonPackage
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Volume
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WebhookConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerPool
@@ -156,6 +162,8 @@ __all__ = (
     "UpdateBuildTriggerRequest",
     "UpdateWorkerPoolOperationMetadata",
     "UpdateWorkerPoolRequest",
+    "UploadedMavenArtifact",
+    "UploadedPythonPackage",
     "Volume",
     "WebhookConfig",
     "WorkerPool",

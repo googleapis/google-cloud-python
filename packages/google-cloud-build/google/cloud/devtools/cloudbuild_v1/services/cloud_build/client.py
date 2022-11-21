@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -61,7 +72,7 @@ class CloudBuildClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CloudBuildTransport]:
         """Returns an appropriate transport class.
 
@@ -501,8 +512,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudBuildTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CloudBuildTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud build client.
@@ -516,7 +527,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             transport (Union[str, CloudBuildTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -546,6 +557,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -598,12 +610,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def create_build(
         self,
-        request: Union[cloudbuild.CreateBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CreateBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        build: cloudbuild.Build = None,
+        project_id: Optional[str] = None,
+        build: Optional[cloudbuild.Build] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a build with the specified configuration.
@@ -748,12 +760,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def get_build(
         self,
-        request: Union[cloudbuild.GetBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.GetBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        id: str = None,
+        project_id: Optional[str] = None,
+        id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Returns information about a previously requested build.
@@ -886,12 +898,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def list_builds(
         self,
-        request: Union[cloudbuild.ListBuildsRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ListBuildsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        filter: str = None,
+        project_id: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildsPager:
         r"""Lists previously requested builds.
@@ -1011,12 +1023,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def cancel_build(
         self,
-        request: Union[cloudbuild.CancelBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CancelBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        id: str = None,
+        project_id: Optional[str] = None,
+        id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Cancels a build in progress.
@@ -1145,12 +1157,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def retry_build(
         self,
-        request: Union[cloudbuild.RetryBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.RetryBuildRequest, dict]] = None,
         *,
-        project_id: str = None,
-        id: str = None,
+        project_id: Optional[str] = None,
+        id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new build based on the specified build.
@@ -1326,12 +1338,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def approve_build(
         self,
-        request: Union[cloudbuild.ApproveBuildRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ApproveBuildRequest, dict]] = None,
         *,
-        name: str = None,
-        approval_result: cloudbuild.ApprovalResult = None,
+        name: Optional[str] = None,
+        approval_result: Optional[cloudbuild.ApprovalResult] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Approves or rejects a pending build.
@@ -1477,12 +1489,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def create_build_trigger(
         self,
-        request: Union[cloudbuild.CreateBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CreateBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger: cloudbuild.BuildTrigger = None,
+        project_id: Optional[str] = None,
+        trigger: Optional[cloudbuild.BuildTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Creates a new ``BuildTrigger``.
@@ -1596,12 +1608,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def get_build_trigger(
         self,
-        request: Union[cloudbuild.GetBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.GetBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Returns information about a ``BuildTrigger``.
@@ -1717,11 +1729,11 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def list_build_triggers(
         self,
-        request: Union[cloudbuild.ListBuildTriggersRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ListBuildTriggersRequest, dict]] = None,
         *,
-        project_id: str = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildTriggersPager:
         r"""Lists existing ``BuildTrigger``\ s.
@@ -1835,12 +1847,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def delete_build_trigger(
         self,
-        request: Union[cloudbuild.DeleteBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.DeleteBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ``BuildTrigger`` by its project ID and trigger ID.
@@ -1940,13 +1952,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def update_build_trigger(
         self,
-        request: Union[cloudbuild.UpdateBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.UpdateBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
-        trigger: cloudbuild.BuildTrigger = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
+        trigger: Optional[cloudbuild.BuildTrigger] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.BuildTrigger:
         r"""Updates a ``BuildTrigger`` by its project ID and trigger ID.
@@ -2071,13 +2083,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def run_build_trigger(
         self,
-        request: Union[cloudbuild.RunBuildTriggerRequest, dict] = None,
+        request: Optional[Union[cloudbuild.RunBuildTriggerRequest, dict]] = None,
         *,
-        project_id: str = None,
-        trigger_id: str = None,
-        source: cloudbuild.RepoSource = None,
+        project_id: Optional[str] = None,
+        trigger_id: Optional[str] = None,
+        source: Optional[cloudbuild.RepoSource] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
@@ -2230,10 +2242,10 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def receive_trigger_webhook(
         self,
-        request: Union[cloudbuild.ReceiveTriggerWebhookRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ReceiveTriggerWebhookRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.ReceiveTriggerWebhookResponse:
         r"""ReceiveTriggerWebhook [Experimental] is called when the API
@@ -2317,13 +2329,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def create_worker_pool(
         self,
-        request: Union[cloudbuild.CreateWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.CreateWorkerPoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        worker_pool: cloudbuild.WorkerPool = None,
-        worker_pool_id: str = None,
+        parent: Optional[str] = None,
+        worker_pool: Optional[cloudbuild.WorkerPool] = None,
+        worker_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a ``WorkerPool``.
@@ -2472,11 +2484,11 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def get_worker_pool(
         self,
-        request: Union[cloudbuild.GetWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.GetWorkerPoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.WorkerPool:
         r"""Returns details of a ``WorkerPool``.
@@ -2588,11 +2600,11 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def delete_worker_pool(
         self,
-        request: Union[cloudbuild.DeleteWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.DeleteWorkerPoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a ``WorkerPool``.
@@ -2712,12 +2724,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def update_worker_pool(
         self,
-        request: Union[cloudbuild.UpdateWorkerPoolRequest, dict] = None,
+        request: Optional[Union[cloudbuild.UpdateWorkerPoolRequest, dict]] = None,
         *,
-        worker_pool: cloudbuild.WorkerPool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        worker_pool: Optional[cloudbuild.WorkerPool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a ``WorkerPool``.
@@ -2856,11 +2868,11 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def list_worker_pools(
         self,
-        request: Union[cloudbuild.ListWorkerPoolsRequest, dict] = None,
+        request: Optional[Union[cloudbuild.ListWorkerPoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkerPoolsPager:
         r"""Lists ``WorkerPool``\ s.
