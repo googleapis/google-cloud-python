@@ -149,7 +149,7 @@ class ComposeTrigger(proto.Message):
     r"""A trigger that activates when user is composing an email.
 
     Attributes:
-        actions (google.apps.script.type.types.MenuItemExtensionPoint]):
+        actions (MutableSequence[google.apps.script.type.types.MenuItemExtensionPoint]):
             Defines the set of actions for compose time
             add-on. These are actions that user can trigger
             on a compose time addon.
