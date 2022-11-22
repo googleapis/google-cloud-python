@@ -497,22 +497,7 @@ class OperationMetadata(proto.Message):
 
 
 class FrequencyOptions(proto.Message):
-    r"""--------------
-
-    -  ::
-
-                                                                            *
-
-    -  ::
-
-                          ReportConfig Resource                             *
-
-    -  ::
-
-                                                                            *
-
-    --------------
-
+    r"""ReportConfig Resource:
     Options to setup frequency of report generation.
 
     Attributes:
@@ -520,10 +505,10 @@ class FrequencyOptions(proto.Message):
             Frequency of report generation.
         start_date (google.type.date_pb2.Date):
             The date from which report generation should
-            start. // UTC Timezone.
+            start. UTC time zone.
         end_date (google.type.date_pb2.Date):
             The date on which report generation should
-            stop (Inclusive). // UTC Timezone.
+            stop (Inclusive). UTC time zone.
     """
 
     class Frequency(proto.Enum):
