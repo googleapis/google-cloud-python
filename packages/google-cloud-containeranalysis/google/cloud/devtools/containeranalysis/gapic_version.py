@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import ContainerAnalysisAsyncClient
-from .client import ContainerAnalysisClient
-
-__all__ = (
-    "ContainerAnalysisClient",
-    "ContainerAnalysisAsyncClient",
-)
+__version__ = "2.9.3"  # {x-release-please-version}

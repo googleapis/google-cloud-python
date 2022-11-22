@@ -13,12 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.devtools.containeranalysis import gapic_version as package_version
 
-from .services.container_analysis import ContainerAnalysisClient
-from .services.container_analysis import ContainerAnalysisAsyncClient
+__version__ = package_version.__version__
 
-from .types.containeranalysis import GetVulnerabilityOccurrencesSummaryRequest
-from .types.containeranalysis import VulnerabilityOccurrencesSummary
+
+from .services.container_analysis import (
+    ContainerAnalysisAsyncClient,
+    ContainerAnalysisClient,
+)
+from .types.containeranalysis import (
+    GetVulnerabilityOccurrencesSummaryRequest,
+    VulnerabilityOccurrencesSummary,
+)
 
 __all__ = (
     "ContainerAnalysisAsyncClient",

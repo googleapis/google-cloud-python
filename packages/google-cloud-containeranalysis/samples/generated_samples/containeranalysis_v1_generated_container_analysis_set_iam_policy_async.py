@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-devtools-containeranalysis
+#   python3 -m pip install google-cloud-containeranalysis
 
 
 # [START containeranalysis_v1_generated_ContainerAnalysis_SetIamPolicy_async]

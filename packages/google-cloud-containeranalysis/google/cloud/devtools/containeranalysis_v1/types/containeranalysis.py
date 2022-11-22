@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+import grafeas.grafeas_v1  # type: ignore
 import proto  # type: ignore
-
-from grafeas.grafeas_v1.types import severity  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.devtools.containeranalysis.v1",
@@ -39,11 +39,11 @@ class GetVulnerabilityOccurrencesSummaryRequest(proto.Message):
             The filter expression.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -54,7 +54,7 @@ class VulnerabilityOccurrencesSummary(proto.Message):
     resource and severity type.
 
     Attributes:
-        counts (Sequence[google.cloud.devtools.containeranalysis_v1.types.VulnerabilityOccurrencesSummary.FixableTotalByDigest]):
+        counts (MutableSequence[google.cloud.devtools.containeranalysis_v1.types.VulnerabilityOccurrencesSummary.FixableTotalByDigest]):
             A listing by resource of the number of
             fixable and total vulnerabilities.
     """
@@ -66,7 +66,7 @@ class VulnerabilityOccurrencesSummary(proto.Message):
         Attributes:
             resource_uri (str):
                 The affected resource.
-            severity (grafeas.v1.severity.Severity):
+            severity (grafeas.v1.grafeas.grafeas_v1.Severity):
                 The severity for this count. SEVERITY_UNSPECIFIED indicates
                 total across all severities.
             fixable_count (int):
@@ -77,25 +77,25 @@ class VulnerabilityOccurrencesSummary(proto.Message):
                 associated with this resource.
         """
 
-        resource_uri = proto.Field(
+        resource_uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        severity = proto.Field(
+        severity: grafeas.grafeas_v1.Severity = proto.Field(
             proto.ENUM,
             number=2,
-            enum=severity.Severity,
+            enum=grafeas.grafeas_v1.Severity,
         )
-        fixable_count = proto.Field(
+        fixable_count: int = proto.Field(
             proto.INT64,
             number=3,
         )
-        total_count = proto.Field(
+        total_count: int = proto.Field(
             proto.INT64,
             number=4,
         )
 
-    counts = proto.RepeatedField(
+    counts: MutableSequence[FixableTotalByDigest] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=FixableTotalByDigest,

@@ -1,7 +1,5 @@
 from google.cloud.devtools.containeranalysis_v1.services.container_analysis import (
     ContainerAnalysisAsyncClient,
-)
-from google.cloud.devtools.containeranalysis_v1.services.container_analysis import (
     ContainerAnalysisClient,
 )
 

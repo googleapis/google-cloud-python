@@ -20,7 +20,6 @@ from .base import ContainerAnalysisTransport
 from .grpc import ContainerAnalysisGrpcTransport
 from .grpc_asyncio import ContainerAnalysisGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ContainerAnalysisTransport]]
 _transport_registry["grpc"] = ContainerAnalysisGrpcTransport

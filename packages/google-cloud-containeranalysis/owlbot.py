@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,38 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This script is used to synthesize generated parts of this library."""
+import json
+from pathlib import Path
+import shutil
 
 import synthtool as s
 import synthtool.gcp as gcp
-import logging
 from synthtool.languages import python
 
-logging.basicConfig(level=logging.DEBUG)
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-common = gcp.CommonTemplates()
+clean_up_generated_samples = True
 
-default_version = "v1"
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get("default_version")
 
 for library in s.get_staging_dirs(default_version):
-    s.replace(
-        library / "google/**/*client.py",
-        r"""google-cloud-devtools-containeranalysis""",
-        r"""google-cloud-containeranalysis""",
-    )
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
 
     # Fix imported type from grafeas
     s.replace(
         library / "google/**/types/containeranalysis.py",
         "from grafeas\.v1 import severity_pb2",
-        "from grafeas.grafeas_v1.types import severity"
+        "import grafeas.grafeas_v1",
     )
 
     # Fix imported type from grafeas
     s.replace(
-        library / "google/**/types/containeranalysis.py",
-        "severity_pb2",
-        "severity"
+        library / "google/**/types/containeranalysis.py", "severity_pb2", "grafeas.grafeas_v1"
     )
 
     # Insert helper method to get grafeas client
@@ -66,7 +66,7 @@ for library in s.get_staging_dirs(default_version):
     s.replace(
         library / "google/**/client.py",
         r"""(\s+)def set_iam_policy\(""",
-        r'''\n\g<1>def get_grafeas_client(
+        r"""\n\g<1>def get_grafeas_client(
             self
         ) -> grafeas_v1.GrafeasClient:
             grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
@@ -81,13 +81,13 @@ for library in s.get_staging_dirs(default_version):
             return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
     \g<1># Service calls
-    \g<1>def set_iam_policy(''',
+    \g<1>def set_iam_policy(""",
     )
 
     s.replace(
         library / "google/**/async_client.py",
         r"""(\s+)async def set_iam_policy\(""",
-        r'''\n\g<1>def get_grafeas_client(
+        r"""\n\g<1>def get_grafeas_client(
             self
         ) -> grafeas_v1.GrafeasClient:
             grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
@@ -102,11 +102,12 @@ for library in s.get_staging_dirs(default_version):
             return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
     \g<1># Service calls
-    \g<1>async def set_iam_policy(''',
+    \g<1>async def set_iam_policy(""",
     )
 
     # Add test to ensure that credentials propagate to client.get_grafeas_client()
-    num_replacements = s.replace(library / "tests/**/test_container_analysis.py",
+    num_replacements = s.replace(
+        library / "tests/**/test_container_analysis.py",
         """create_channel.assert_called_with\(
             "containeranalysis.googleapis.com:443",
             credentials=file_creds,
@@ -142,31 +143,33 @@ for library in s.get_staging_dirs(default_version):
 
         # Also check client.get_grafeas_client() to make sure that the file credentials are used
         assert file_creds == client.get_grafeas_client().transport._credentials
-        """
+        """,
     )
 
     assert num_replacements == 1
 
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
-
+    s.move([library], excludes=["**/gapic_version.py", "setup.py", "testing/constraints-3.7.txt"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    samples=False,  # set to True only if there are samples
-    microgenerator=True,
-    cov_level=98,
-)
-s.move(templated_files,
-    excludes=[
-        ".coveragerc", # microgenerator has a good coveragerc
-        ".github/workflows", # exclude templated gh actions as tests require credentials
-        ]
-    )
 
-python.configure_previous_major_version_branches()
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
+)
+s.move(
+    templated_files,
+    excludes=[
+        ".coveragerc",
+        ".github/release-please.yml",
+        ".github/workflows",
+    ],
+)  # exclude templated gh actions as tests require credentials
 python.py_samples(skip_readmes=True)
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)
