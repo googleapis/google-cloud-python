@@ -635,12 +635,30 @@ def test_transaction_read_and_insert_or_update_then_commit(
 
 
 def _generate_insert_statements():
+    for row in _sample_data.ROW_DATA:
+        yield _generate_insert_statement(row)
+
+
+def _generate_insert_statement(row):
     table = _sample_data.TABLE
     column_list = ", ".join(_sample_data.COLUMNS)
+    row_data = "{}, '{}', '{}', '{}'".format(*row)
+    return f"INSERT INTO {table} ({column_list}) VALUES ({row_data})"
 
-    for row in _sample_data.ROW_DATA:
-        row_data = "{}, '{}', '{}', '{}'".format(*row)
-        yield f"INSERT INTO {table} ({column_list}) VALUES ({row_data})"
+
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def _generate_insert_returning_statement(row, database_dialect):
+    table = _sample_data.TABLE
+    column_list = ", ".join(_sample_data.COLUMNS)
+    row_data = "{}, '{}', '{}', '{}'".format(*row)
+    returning = (
+        f"RETURNING {column_list}"
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else f"THEN RETURN {column_list}"
+    )
+    return f"INSERT INTO {table} ({column_list}) VALUES ({row_data}) {returning}"
 
 
 @_helpers.retry_mabye_conflict
@@ -740,6 +758,98 @@ def test_transaction_execute_update_then_insert_commit(
     sd._check_rows_data(rows)
     # [END spanner_test_dml_update]
     # [END spanner_test_dml_with_mutation]
+
+
+@_helpers.retry_mabye_conflict
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def test_transaction_execute_sql_dml_returning(
+    sessions_database, sessions_to_delete, database_dialect
+):
+    sd = _sample_data
+
+    session = sessions_database.session()
+    session.create()
+    sessions_to_delete.append(session)
+
+    with session.batch() as batch:
+        batch.delete(sd.TABLE, sd.ALL)
+
+    with session.transaction() as transaction:
+        for row in sd.ROW_DATA:
+            insert_statement = _generate_insert_returning_statement(
+                row, database_dialect
+            )
+            results = transaction.execute_sql(insert_statement)
+            returned = results.one()
+            assert list(row) == list(returned)
+            row_count = results.stats.row_count_exact
+            assert row_count == 1
+
+    rows = list(session.read(sd.TABLE, sd.COLUMNS, sd.ALL))
+    sd._check_rows_data(rows)
+
+
+@_helpers.retry_mabye_conflict
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def test_transaction_execute_update_dml_returning(
+    sessions_database, sessions_to_delete, database_dialect
+):
+    sd = _sample_data
+
+    session = sessions_database.session()
+    session.create()
+    sessions_to_delete.append(session)
+
+    with session.batch() as batch:
+        batch.delete(sd.TABLE, sd.ALL)
+
+    with session.transaction() as transaction:
+        for row in sd.ROW_DATA:
+            insert_statement = _generate_insert_returning_statement(
+                row, database_dialect
+            )
+            row_count = transaction.execute_update(insert_statement)
+            assert row_count == 1
+
+    rows = list(session.read(sd.TABLE, sd.COLUMNS, sd.ALL))
+    sd._check_rows_data(rows)
+
+
+@_helpers.retry_mabye_conflict
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def test_transaction_batch_update_dml_returning(
+    sessions_database, sessions_to_delete, database_dialect
+):
+    sd = _sample_data
+
+    session = sessions_database.session()
+    session.create()
+    sessions_to_delete.append(session)
+
+    with session.batch() as batch:
+        batch.delete(sd.TABLE, sd.ALL)
+
+    with session.transaction() as transaction:
+        insert_statements = [
+            _generate_insert_returning_statement(row, database_dialect)
+            for row in sd.ROW_DATA
+        ]
+
+        status, row_counts = transaction.batch_update(insert_statements)
+        _check_batch_status(status.code)
+        assert len(row_counts) == 3
+
+        for row_count in row_counts:
+            assert row_count == 1
+
+    rows = list(session.read(sd.TABLE, sd.COLUMNS, sd.ALL))
+    sd._check_rows_data(rows)
 
 
 def test_transaction_batch_update_success(

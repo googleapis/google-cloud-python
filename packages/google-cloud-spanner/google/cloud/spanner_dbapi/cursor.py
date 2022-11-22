@@ -47,7 +47,7 @@ from google.rpc.code_pb2 import ABORTED, OK
 _UNSET_COUNT = -1
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
-Statement = namedtuple("Statement", "sql, params, param_types, checksum, is_insert")
+Statement = namedtuple("Statement", "sql, params, param_types, checksum")
 
 
 def check_not_closed(function):
@@ -137,14 +137,21 @@ class Cursor(object):
 
     @property
     def rowcount(self):
-        """The number of rows updated by the last UPDATE, DELETE request's `execute()` call.
+        """The number of rows updated by the last INSERT, UPDATE, DELETE request's `execute()` call.
         For SELECT requests the rowcount returns -1.
 
         :rtype: int
-        :returns: The number of rows updated by the last UPDATE, DELETE request's .execute*() call.
+        :returns: The number of rows updated by the last INSERT, UPDATE, DELETE request's .execute*() call.
         """
 
-        return self._row_count
+        if self._row_count != _UNSET_COUNT or self._result_set is None:
+            return self._row_count
+
+        stats = getattr(self._result_set, "stats", None)
+        if stats is not None and "row_count_exact" in stats:
+            return stats.row_count_exact
+
+        return _UNSET_COUNT
 
     @check_not_closed
     def callproc(self, procname, args=None):
@@ -171,17 +178,11 @@ class Cursor(object):
         self._is_closed = True
 
     def _do_execute_update(self, transaction, sql, params):
-        result = transaction.execute_update(
-            sql,
-            params=params,
-            param_types=get_param_types(params),
-            request_options=self.connection.request_options,
+        self._result_set = transaction.execute_sql(
+            sql, params=params, param_types=get_param_types(params)
         )
-        self._itr = None
-        if type(result) == int:
-            self._row_count = result
-
-        return result
+        self._itr = PeekIterator(self._result_set)
+        self._row_count = _UNSET_COUNT
 
     def _do_batch_update(self, transaction, statements, many_result_set):
         status, res = transaction.batch_update(statements)
@@ -227,7 +228,9 @@ class Cursor(object):
         :type args: list
         :param args: Additional parameters to supplement the SQL query.
         """
+        self._itr = None
         self._result_set = None
+        self._row_count = _UNSET_COUNT
 
         try:
             if self.connection.read_only:
@@ -249,18 +252,14 @@ class Cursor(object):
             if class_ == parse_utils.STMT_UPDATING:
                 sql = parse_utils.ensure_where_clause(sql)
 
-            if class_ != parse_utils.STMT_INSERT:
-                sql, args = sql_pyformat_args_to_spanner(sql, args or None)
+            sql, args = sql_pyformat_args_to_spanner(sql, args or None)
 
             if not self.connection.autocommit:
                 statement = Statement(
                     sql,
                     args,
-                    get_param_types(args or None)
-                    if class_ != parse_utils.STMT_INSERT
-                    else {},
+                    get_param_types(args or None),
                     ResultsChecksum(),
-                    class_ == parse_utils.STMT_INSERT,
                 )
 
                 (
@@ -277,8 +276,6 @@ class Cursor(object):
 
             if class_ == parse_utils.STMT_NON_UPDATING:
                 self._handle_DQL(sql, args or None)
-            elif class_ == parse_utils.STMT_INSERT:
-                _helpers.handle_insert(self.connection, sql, args or None)
             else:
                 self.connection.database.run_in_transaction(
                     self._do_execute_update,
@@ -304,6 +301,10 @@ class Cursor(object):
         :param seq_of_params: Sequence of additional parameters to run
                               the query with.
         """
+        self._itr = None
+        self._result_set = None
+        self._row_count = _UNSET_COUNT
+
         class_ = parse_utils.classify_stmt(operation)
         if class_ == parse_utils.STMT_DDL:
             raise ProgrammingError(
@@ -327,6 +328,7 @@ class Cursor(object):
                 )
             else:
                 retried = False
+                total_row_count = 0
                 while True:
                     try:
                         transaction = self.connection.transaction_checkout()
@@ -341,12 +343,14 @@ class Cursor(object):
                         many_result_set.add_iter(res)
                         res_checksum.consume_result(res)
                         res_checksum.consume_result(status.code)
+                        total_row_count += sum([max(val, 0) for val in res])
 
                         if status.code == ABORTED:
                             self.connection._transaction = None
                             raise Aborted(status.message)
                         elif status.code != OK:
                             raise OperationalError(status.message)
+                        self._row_count = total_row_count
                         break
                     except Aborted:
                         self.connection.retry_transaction()

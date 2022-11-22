@@ -364,7 +364,7 @@ class TestConnection(unittest.TestCase):
 
         connection = self._make_connection()
         connection.transaction_checkout = mock.Mock()
-        statement = Statement(sql, params, param_types, ResultsChecksum(), False)
+        statement = Statement(sql, params, param_types, ResultsChecksum())
         connection.run_statement(statement)
 
         self.assertEqual(connection._statements[0].sql, sql)
@@ -383,7 +383,7 @@ class TestConnection(unittest.TestCase):
 
         connection = self._make_connection()
         connection.transaction_checkout = mock.Mock()
-        statement = Statement(sql, params, param_types, ResultsChecksum(), False)
+        statement = Statement(sql, params, param_types, ResultsChecksum())
         connection.run_statement(statement, retried=True)
 
         self.assertEqual(len(connection._statements), 0)
@@ -403,7 +403,7 @@ class TestConnection(unittest.TestCase):
         transaction = mock.MagicMock()
         connection.transaction_checkout = mock.Mock(return_value=transaction)
         transaction.batch_update = mock.Mock(return_value=(Status(code=OK), 1))
-        statement = Statement(sql, params, param_types, ResultsChecksum(), True)
+        statement = Statement(sql, params, param_types, ResultsChecksum())
 
         connection.run_statement(statement, retried=True)
 
@@ -424,7 +424,7 @@ class TestConnection(unittest.TestCase):
         transaction = mock.MagicMock()
         connection.transaction_checkout = mock.Mock(return_value=transaction)
         transaction.batch_update = mock.Mock(return_value=(Status(code=OK), 1))
-        statement = Statement(sql, params, param_types, ResultsChecksum(), True)
+        statement = Statement(sql, params, param_types, ResultsChecksum())
 
         connection.run_statement(statement, retried=True)
 
@@ -476,7 +476,7 @@ class TestConnection(unittest.TestCase):
         run_mock = connection.run_statement = mock.Mock()
         run_mock.return_value = ([row], retried_checkum)
 
-        statement = Statement("SELECT 1", [], {}, checksum, False)
+        statement = Statement("SELECT 1", [], {}, checksum)
         connection._statements.append(statement)
 
         with mock.patch(
@@ -506,7 +506,7 @@ class TestConnection(unittest.TestCase):
         run_mock = connection.run_statement = mock.Mock()
         run_mock.return_value = ([retried_row], retried_checkum)
 
-        statement = Statement("SELECT 1", [], {}, checksum, False)
+        statement = Statement("SELECT 1", [], {}, checksum)
         connection._statements.append(statement)
 
         with self.assertRaises(RetryAborted):
@@ -528,7 +528,7 @@ class TestConnection(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum)
         connection._statements.append(statement)
         mock_transaction = mock.Mock(rolled_back=False, committed=False)
         connection._transaction = mock_transaction
@@ -573,7 +573,7 @@ class TestConnection(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum)
         connection._statements.append(statement)
         metadata_mock = mock.Mock()
         metadata_mock.trailing_metadata.return_value = {}
@@ -605,7 +605,7 @@ class TestConnection(unittest.TestCase):
         checksum = ResultsChecksum()
         checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, checksum, False)
+        statement = Statement("SELECT 1", [], {}, checksum)
         connection._statements.append(statement)
 
         with self.assertRaises(Exception):
@@ -632,7 +632,7 @@ class TestConnection(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum)
         connection._statements.append(statement)
         metadata_mock = mock.Mock()
         metadata_mock.trailing_metadata.return_value = {}
@@ -664,8 +664,8 @@ class TestConnection(unittest.TestCase):
         checksum.consume_result(row)
         retried_checkum = ResultsChecksum()
 
-        statement = Statement("SELECT 1", [], {}, checksum, False)
-        statement1 = Statement("SELECT 2", [], {}, checksum, False)
+        statement = Statement("SELECT 1", [], {}, checksum)
+        statement1 = Statement("SELECT 2", [], {}, checksum)
         connection._statements.append(statement)
         connection._statements.append(statement1)
         run_mock = connection.run_statement = mock.Mock()
@@ -692,7 +692,7 @@ class TestConnection(unittest.TestCase):
         checksum.count = 1
         retried_checkum = ResultsChecksum()
 
-        statement = Statement("SELECT 1", [], {}, checksum, False)
+        statement = Statement("SELECT 1", [], {}, checksum)
         connection._statements.append(statement)
         run_mock = connection.run_statement = mock.Mock()
         run_mock.return_value = ([row], retried_checkum)
@@ -901,9 +901,7 @@ class TestConnection(unittest.TestCase):
 
         req_opts = RequestOptions(priority=priority)
 
-        connection.run_statement(
-            Statement(sql, params, param_types, ResultsChecksum(), False)
-        )
+        connection.run_statement(Statement(sql, params, param_types, ResultsChecksum()))
 
         connection._transaction.execute_sql.assert_called_with(
             sql, params, param_types=param_types, request_options=req_opts
@@ -911,9 +909,7 @@ class TestConnection(unittest.TestCase):
         assert connection.request_priority is None
 
         # check that priority is applied for only one request
-        connection.run_statement(
-            Statement(sql, params, param_types, ResultsChecksum(), False)
-        )
+        connection.run_statement(Statement(sql, params, param_types, ResultsChecksum()))
 
         connection._transaction.execute_sql.assert_called_with(
             sql, params, param_types=param_types, request_options=None

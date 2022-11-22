@@ -85,7 +85,10 @@ def spanner_client():
             credentials=credentials,
         )
     else:
-        return spanner_v1.Client()  # use google.auth.default credentials
+        client_options = {"api_endpoint": _helpers.API_ENDPOINT}
+        return spanner_v1.Client(
+            client_options=client_options
+        )  # use google.auth.default credentials
 
 
 @pytest.fixture(scope="session")

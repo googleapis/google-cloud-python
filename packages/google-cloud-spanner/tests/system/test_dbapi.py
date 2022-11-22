@@ -501,3 +501,126 @@ VALUES (1, 'first-name', 'last-name', 'test.email@example.com')
     assert len(cursor.fetchall()) == 1
 
     conn.close()
+
+
+@pytest.mark.parametrize("autocommit", [False, True])
+def test_rowcount(shared_instance, dbapi_database, autocommit):
+    conn = Connection(shared_instance, dbapi_database)
+    conn.autocommit = autocommit
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+    CREATE TABLE Singers (
+        SingerId INT64 NOT NULL,
+        Name     STRING(1024),
+    ) PRIMARY KEY (SingerId)
+    """
+    )
+    conn.commit()
+
+    # executemany sets rowcount to the total modified rows
+    rows = [(i, f"Singer {i}") for i in range(100)]
+    cur.executemany("INSERT INTO Singers (SingerId, Name) VALUES (%s, %s)", rows[:98])
+    assert cur.rowcount == 98
+
+    # execute with INSERT
+    cur.execute(
+        "INSERT INTO Singers (SingerId, Name) VALUES (%s, %s), (%s, %s)",
+        [x for row in rows[98:] for x in row],
+    )
+    assert cur.rowcount == 2
+
+    # execute with UPDATE
+    cur.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
+    assert cur.rowcount == 25
+
+    # execute with SELECT
+    cur.execute("SELECT Name FROM Singers WHERE SingerId < 75")
+    assert len(cur.fetchall()) == 75
+    # rowcount is not available for SELECT
+    assert cur.rowcount == -1
+
+    # execute with DELETE
+    cur.execute("DELETE FROM Singers")
+    assert cur.rowcount == 100
+
+    # execute with UPDATE matching 0 rows
+    cur.execute("UPDATE Singers SET Name = 'Cher' WHERE SingerId < 25")
+    assert cur.rowcount == 0
+
+    conn.commit()
+    cur.execute("DROP TABLE Singers")
+    conn.commit()
+
+
+@pytest.mark.parametrize("autocommit", [False, True])
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def test_dml_returning_insert(shared_instance, dbapi_database, autocommit):
+    conn = Connection(shared_instance, dbapi_database)
+    conn.autocommit = autocommit
+    cur = conn.cursor()
+    cur.execute(
+        """
+INSERT INTO contacts (contact_id, first_name, last_name, email)
+VALUES (1, 'first-name', 'last-name', 'test.email@example.com')
+THEN RETURN contact_id, first_name
+    """
+    )
+    assert cur.fetchone() == (1, "first-name")
+    assert cur.rowcount == 1
+    conn.commit()
+
+
+@pytest.mark.parametrize("autocommit", [False, True])
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def test_dml_returning_update(shared_instance, dbapi_database, autocommit):
+    conn = Connection(shared_instance, dbapi_database)
+    conn.autocommit = autocommit
+    cur = conn.cursor()
+    cur.execute(
+        """
+INSERT INTO contacts (contact_id, first_name, last_name, email)
+VALUES (1, 'first-name', 'last-name', 'test.email@example.com')
+    """
+    )
+    assert cur.rowcount == 1
+    cur.execute(
+        """
+UPDATE contacts SET first_name = 'new-name' WHERE contact_id = 1
+THEN RETURN contact_id, first_name
+    """
+    )
+    assert cur.fetchone() == (1, "new-name")
+    assert cur.rowcount == 1
+    conn.commit()
+
+
+@pytest.mark.parametrize("autocommit", [False, True])
+@pytest.mark.skipif(
+    _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
+)
+def test_dml_returning_delete(shared_instance, dbapi_database, autocommit):
+    conn = Connection(shared_instance, dbapi_database)
+    conn.autocommit = autocommit
+    cur = conn.cursor()
+    cur.execute(
+        """
+INSERT INTO contacts (contact_id, first_name, last_name, email)
+VALUES (1, 'first-name', 'last-name', 'test.email@example.com')
+    """
+    )
+    assert cur.rowcount == 1
+    cur.execute(
+        """
+DELETE FROM contacts WHERE contact_id = 1
+THEN RETURN contact_id, first_name
+    """
+    )
+    assert cur.fetchone() == (1, "first-name")
+    assert cur.rowcount == 1
+    conn.commit()
