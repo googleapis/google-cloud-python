@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -61,7 +72,7 @@ class PolicyTagManagerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[PolicyTagManagerTransport]:
         """Returns an appropriate transport class.
 
@@ -362,8 +373,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PolicyTagManagerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, PolicyTagManagerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the policy tag manager client.
@@ -377,7 +388,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
             transport (Union[str, PolicyTagManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -407,6 +418,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -459,12 +471,12 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def create_taxonomy(
         self,
-        request: Union[policytagmanager.CreateTaxonomyRequest, dict] = None,
+        request: Optional[Union[policytagmanager.CreateTaxonomyRequest, dict]] = None,
         *,
-        parent: str = None,
-        taxonomy: policytagmanager.Taxonomy = None,
+        parent: Optional[str] = None,
+        taxonomy: Optional[policytagmanager.Taxonomy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.Taxonomy:
         r"""Creates a taxonomy in the specified project.
@@ -574,11 +586,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def delete_taxonomy(
         self,
-        request: Union[policytagmanager.DeleteTaxonomyRequest, dict] = None,
+        request: Optional[Union[policytagmanager.DeleteTaxonomyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a taxonomy. This operation will also delete
@@ -667,11 +679,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def update_taxonomy(
         self,
-        request: Union[policytagmanager.UpdateTaxonomyRequest, dict] = None,
+        request: Optional[Union[policytagmanager.UpdateTaxonomyRequest, dict]] = None,
         *,
-        taxonomy: policytagmanager.Taxonomy = None,
+        taxonomy: Optional[policytagmanager.Taxonomy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.Taxonomy:
         r"""Updates a taxonomy.
@@ -774,11 +786,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def list_taxonomies(
         self,
-        request: Union[policytagmanager.ListTaxonomiesRequest, dict] = None,
+        request: Optional[Union[policytagmanager.ListTaxonomiesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTaxonomiesPager:
         r"""Lists all taxonomies in a project in a particular
@@ -890,11 +902,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def get_taxonomy(
         self,
-        request: Union[policytagmanager.GetTaxonomyRequest, dict] = None,
+        request: Optional[Union[policytagmanager.GetTaxonomyRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.Taxonomy:
         r"""Gets a taxonomy.
@@ -996,12 +1008,12 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def create_policy_tag(
         self,
-        request: Union[policytagmanager.CreatePolicyTagRequest, dict] = None,
+        request: Optional[Union[policytagmanager.CreatePolicyTagRequest, dict]] = None,
         *,
-        parent: str = None,
-        policy_tag: policytagmanager.PolicyTag = None,
+        parent: Optional[str] = None,
+        policy_tag: Optional[policytagmanager.PolicyTag] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.PolicyTag:
         r"""Creates a policy tag in the specified taxonomy.
@@ -1113,11 +1125,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def delete_policy_tag(
         self,
-        request: Union[policytagmanager.DeletePolicyTagRequest, dict] = None,
+        request: Optional[Union[policytagmanager.DeletePolicyTagRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a policy tag. Also deletes all of its
@@ -1205,11 +1217,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def update_policy_tag(
         self,
-        request: Union[policytagmanager.UpdatePolicyTagRequest, dict] = None,
+        request: Optional[Union[policytagmanager.UpdatePolicyTagRequest, dict]] = None,
         *,
-        policy_tag: policytagmanager.PolicyTag = None,
+        policy_tag: Optional[policytagmanager.PolicyTag] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.PolicyTag:
         r"""Updates a policy tag.
@@ -1315,11 +1327,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def list_policy_tags(
         self,
-        request: Union[policytagmanager.ListPolicyTagsRequest, dict] = None,
+        request: Optional[Union[policytagmanager.ListPolicyTagsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPolicyTagsPager:
         r"""Lists all policy tags in a taxonomy.
@@ -1430,11 +1442,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def get_policy_tag(
         self,
-        request: Union[policytagmanager.GetPolicyTagRequest, dict] = None,
+        request: Optional[Union[policytagmanager.GetPolicyTagRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.PolicyTag:
         r"""Gets a policy tag.
@@ -1538,10 +1550,10 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a taxonomy or a policy tag.
@@ -1680,10 +1692,10 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM policy for a taxonomy or a policy tag.
@@ -1822,10 +1834,10 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has on the

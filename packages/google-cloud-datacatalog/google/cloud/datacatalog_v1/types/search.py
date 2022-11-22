@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -115,48 +117,48 @@ class SearchCatalogResult(proto.Message):
             contents.
     """
 
-    search_result_type = proto.Field(
+    search_result_type: "SearchResultType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="SearchResultType",
     )
-    search_result_subtype = proto.Field(
+    search_result_subtype: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    relative_resource_name = proto.Field(
+    relative_resource_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    linked_resource = proto.Field(
+    linked_resource: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    modify_time = proto.Field(
+    modify_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    integrated_system = proto.Field(
+    integrated_system: common.IntegratedSystem = proto.Field(
         proto.ENUM,
         number=8,
         oneof="system",
         enum=common.IntegratedSystem,
     )
-    user_specified_system = proto.Field(
+    user_specified_system: str = proto.Field(
         proto.STRING,
         number=9,
         oneof="system",
     )
-    fully_qualified_name = proto.Field(
+    fully_qualified_name: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=13,
     )

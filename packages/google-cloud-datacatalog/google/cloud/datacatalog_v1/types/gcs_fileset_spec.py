@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import timestamps
@@ -30,7 +32,7 @@ class GcsFilesetSpec(proto.Message):
     r"""Describes a Cloud Storage fileset entry.
 
     Attributes:
-        file_patterns (Sequence[str]):
+        file_patterns (MutableSequence[str]):
             Required. Patterns to identify a set of files in Google
             Cloud Storage.
 
@@ -65,17 +67,17 @@ class GcsFilesetSpec(proto.Message):
             for example:
 
             ``gs://bucket_name/[a-m]??.j*g``
-        sample_gcs_file_specs (Sequence[google.cloud.datacatalog_v1.types.GcsFileSpec]):
+        sample_gcs_file_specs (MutableSequence[google.cloud.datacatalog_v1.types.GcsFileSpec]):
             Output only. Sample files contained in this
             fileset, not all files contained in this fileset
             are represented here.
     """
 
-    file_patterns = proto.RepeatedField(
+    file_patterns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    sample_gcs_file_specs = proto.RepeatedField(
+    sample_gcs_file_specs: MutableSequence["GcsFileSpec"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="GcsFileSpec",
@@ -96,16 +98,16 @@ class GcsFileSpec(proto.Message):
             Output only. File size in bytes.
     """
 
-    file_path = proto.Field(
+    file_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_timestamps = proto.Field(
+    gcs_timestamps: timestamps.SystemTimestamps = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamps.SystemTimestamps,
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT64,
         number=4,
     )

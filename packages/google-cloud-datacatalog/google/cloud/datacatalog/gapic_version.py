@@ -13,25 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import MutableMapping, MutableSequence
-
-import proto  # type: ignore
-
-__protobuf__ = proto.module(
-    package="google.cloud.datacatalog.v1beta1",
-    manifest={
-        "IntegratedSystem",
-    },
-)
-
-
-class IntegratedSystem(proto.Enum):
-    r"""This enum describes all the possible systems that Data
-    Catalog integrates with.
-    """
-    INTEGRATED_SYSTEM_UNSPECIFIED = 0
-    BIGQUERY = 1
-    CLOUD_PUBSUB = 2
-
-
-__all__ = tuple(sorted(__protobuf__.manifest))
+__version__ = "3.9.3"  # {x-release-please-version}

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -173,9 +183,9 @@ class PolicyTagManagerSerializationAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PolicyTagManagerSerializationTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the policy tag manager serialization client.
@@ -219,12 +229,12 @@ class PolicyTagManagerSerializationAsyncClient:
 
     async def import_taxonomies(
         self,
-        request: Union[
-            policytagmanagerserialization.ImportTaxonomiesRequest, dict
+        request: Optional[
+            Union[policytagmanagerserialization.ImportTaxonomiesRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ImportTaxonomiesResponse:
         r"""Imports all taxonomies and their policy tags to a
@@ -264,7 +274,7 @@ class PolicyTagManagerSerializationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesRequest, dict]]):
                 The request object. Request message for
                 [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -309,12 +319,12 @@ class PolicyTagManagerSerializationAsyncClient:
 
     async def export_taxonomies(
         self,
-        request: Union[
-            policytagmanagerserialization.ExportTaxonomiesRequest, dict
+        request: Optional[
+            Union[policytagmanagerserialization.ExportTaxonomiesRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ExportTaxonomiesResponse:
         r"""Exports all taxonomies and their policy tags in a
@@ -352,7 +362,7 @@ class PolicyTagManagerSerializationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesRequest, dict]]):
                 The request object. Request message for
                 [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

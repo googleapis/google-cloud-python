@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -52,19 +54,19 @@ class UsageStats(proto.Message):
             milliseconds.
     """
 
-    total_completions = proto.Field(
+    total_completions: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    total_failures = proto.Field(
+    total_failures: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    total_cancellations = proto.Field(
+    total_cancellations: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    total_execution_time_for_completions_millis = proto.Field(
+    total_execution_time_for_completions_millis: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
@@ -79,18 +81,19 @@ class UsageSignal(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The end timestamp of the duration of usage
             statistics.
-        usage_within_time_range (Mapping[str, google.cloud.datacatalog_v1.types.UsageStats]):
-            Usage statistics over each of the predefined time ranges.
+        usage_within_time_range (MutableMapping[str, google.cloud.datacatalog_v1.types.UsageStats]):
+            Output only. BigQuery usage statistics over each of the
+            predefined time ranges.
 
             Supported time ranges are ``{"24H", "7D", "30D"}``.
     """
 
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    usage_within_time_range = proto.MapField(
+    usage_within_time_range: MutableMapping[str, "UsageStats"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,

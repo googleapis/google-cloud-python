@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -69,7 +71,7 @@ class PhysicalSchema(proto.Message):
                 JSON source of the Avro schema.
         """
 
-        text = proto.Field(
+        text: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -82,7 +84,7 @@ class PhysicalSchema(proto.Message):
                 Thrift IDL source of the schema.
         """
 
-        text = proto.Field(
+        text: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -95,7 +97,7 @@ class PhysicalSchema(proto.Message):
                 Protocol buffer source of the schema.
         """
 
-        text = proto.Field(
+        text: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -109,37 +111,37 @@ class PhysicalSchema(proto.Message):
     class CsvSchema(proto.Message):
         r"""Marks a CSV-encoded data source."""
 
-    avro = proto.Field(
+    avro: AvroSchema = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="schema",
         message=AvroSchema,
     )
-    thrift = proto.Field(
+    thrift: ThriftSchema = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="schema",
         message=ThriftSchema,
     )
-    protobuf = proto.Field(
+    protobuf: ProtobufSchema = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="schema",
         message=ProtobufSchema,
     )
-    parquet = proto.Field(
+    parquet: ParquetSchema = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="schema",
         message=ParquetSchema,
     )
-    orc = proto.Field(
+    orc: OrcSchema = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="schema",
         message=OrcSchema,
     )
-    csv = proto.Field(
+    csv: CsvSchema = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="schema",

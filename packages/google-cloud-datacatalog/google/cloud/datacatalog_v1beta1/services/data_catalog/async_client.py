@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -180,9 +190,9 @@ class DataCatalogAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DataCatalogTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the data catalog client.
@@ -226,12 +236,12 @@ class DataCatalogAsyncClient:
 
     async def search_catalog(
         self,
-        request: Union[datacatalog.SearchCatalogRequest, dict] = None,
+        request: Optional[Union[datacatalog.SearchCatalogRequest, dict]] = None,
         *,
-        scope: datacatalog.SearchCatalogRequest.Scope = None,
-        query: str = None,
+        scope: Optional[datacatalog.SearchCatalogRequest.Scope] = None,
+        query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchCatalogAsyncPager:
         r"""Searches Data Catalog for multiple resources like entries, tags
@@ -280,7 +290,7 @@ class DataCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest, dict]]):
                 The request object. Request message for
                 [SearchCatalog][google.cloud.datacatalog.v1beta1.DataCatalog.SearchCatalog].
             scope (:class:`google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope`):
@@ -376,13 +386,13 @@ class DataCatalogAsyncClient:
 
     async def create_entry_group(
         self,
-        request: Union[datacatalog.CreateEntryGroupRequest, dict] = None,
+        request: Optional[Union[datacatalog.CreateEntryGroupRequest, dict]] = None,
         *,
-        parent: str = None,
-        entry_group_id: str = None,
-        entry_group: datacatalog.EntryGroup = None,
+        parent: Optional[str] = None,
+        entry_group_id: Optional[str] = None,
+        entry_group: Optional[datacatalog.EntryGroup] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
         r"""A maximum of 10,000 entry groups may be created per organization
@@ -422,7 +432,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.CreateEntryGroupRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.CreateEntryGroupRequest, dict]]):
                 The request object. Request message for
                 [CreateEntryGroup][google.cloud.datacatalog.v1beta1.DataCatalog.CreateEntryGroup].
             parent (:class:`str`):
@@ -518,12 +528,12 @@ class DataCatalogAsyncClient:
 
     async def update_entry_group(
         self,
-        request: Union[datacatalog.UpdateEntryGroupRequest, dict] = None,
+        request: Optional[Union[datacatalog.UpdateEntryGroupRequest, dict]] = None,
         *,
-        entry_group: datacatalog.EntryGroup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        entry_group: Optional[datacatalog.EntryGroup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
         r"""Updates an EntryGroup. The user should enable the Data Catalog
@@ -558,7 +568,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.UpdateEntryGroupRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.UpdateEntryGroupRequest, dict]]):
                 The request object. Request message for
                 [UpdateEntryGroup][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateEntryGroup].
             entry_group (:class:`google.cloud.datacatalog_v1beta1.types.EntryGroup`):
@@ -639,12 +649,12 @@ class DataCatalogAsyncClient:
 
     async def get_entry_group(
         self,
-        request: Union[datacatalog.GetEntryGroupRequest, dict] = None,
+        request: Optional[Union[datacatalog.GetEntryGroupRequest, dict]] = None,
         *,
-        name: str = None,
-        read_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        read_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
         r"""Gets an EntryGroup.
@@ -676,7 +686,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.GetEntryGroupRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.GetEntryGroupRequest, dict]]):
                 The request object. Request message for
                 [GetEntryGroup][google.cloud.datacatalog.v1beta1.DataCatalog.GetEntryGroup].
             name (:class:`str`):
@@ -764,11 +774,11 @@ class DataCatalogAsyncClient:
 
     async def delete_entry_group(
         self,
-        request: Union[datacatalog.DeleteEntryGroupRequest, dict] = None,
+        request: Optional[Union[datacatalog.DeleteEntryGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an EntryGroup. Only entry groups that do not contain
@@ -802,7 +812,7 @@ class DataCatalogAsyncClient:
                 await client.delete_entry_group(request=request)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryGroupRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryGroupRequest, dict]]):
                 The request object. Request message for
                 [DeleteEntryGroup][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteEntryGroup].
             name (:class:`str`):
@@ -869,11 +879,11 @@ class DataCatalogAsyncClient:
 
     async def list_entry_groups(
         self,
-        request: Union[datacatalog.ListEntryGroupsRequest, dict] = None,
+        request: Optional[Union[datacatalog.ListEntryGroupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntryGroupsAsyncPager:
         r"""Lists entry groups.
@@ -906,7 +916,7 @@ class DataCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.ListEntryGroupsRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.ListEntryGroupsRequest, dict]]):
                 The request object. Request message for
                 [ListEntryGroups][google.cloud.datacatalog.v1beta1.DataCatalog.ListEntryGroups].
             parent (:class:`str`):
@@ -987,13 +997,13 @@ class DataCatalogAsyncClient:
 
     async def create_entry(
         self,
-        request: Union[datacatalog.CreateEntryRequest, dict] = None,
+        request: Optional[Union[datacatalog.CreateEntryRequest, dict]] = None,
         *,
-        parent: str = None,
-        entry_id: str = None,
-        entry: datacatalog.Entry = None,
+        parent: Optional[str] = None,
+        entry_id: Optional[str] = None,
+        entry: Optional[datacatalog.Entry] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
         r"""Creates an entry. Only entries of 'FILESET' type or
@@ -1041,7 +1051,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.CreateEntryRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.CreateEntryRequest, dict]]):
                 The request object. Request message for
                 [CreateEntry][google.cloud.datacatalog.v1beta1.DataCatalog.CreateEntry].
             parent (:class:`str`):
@@ -1138,12 +1148,12 @@ class DataCatalogAsyncClient:
 
     async def update_entry(
         self,
-        request: Union[datacatalog.UpdateEntryRequest, dict] = None,
+        request: Optional[Union[datacatalog.UpdateEntryRequest, dict]] = None,
         *,
-        entry: datacatalog.Entry = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        entry: Optional[datacatalog.Entry] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
         r"""Updates an existing entry. Users should enable the Data Catalog
@@ -1184,7 +1194,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest, dict]]):
                 The request object. Request message for
                 [UpdateEntry][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateEntry].
             entry (:class:`google.cloud.datacatalog_v1beta1.types.Entry`):
@@ -1295,11 +1305,11 @@ class DataCatalogAsyncClient:
 
     async def delete_entry(
         self,
-        request: Union[datacatalog.DeleteEntryRequest, dict] = None,
+        request: Optional[Union[datacatalog.DeleteEntryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing entry. Only entries created through
@@ -1334,7 +1344,7 @@ class DataCatalogAsyncClient:
                 await client.delete_entry(request=request)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryRequest, dict]]):
                 The request object. Request message for
                 [DeleteEntry][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteEntry].
             name (:class:`str`):
@@ -1402,11 +1412,11 @@ class DataCatalogAsyncClient:
 
     async def get_entry(
         self,
-        request: Union[datacatalog.GetEntryRequest, dict] = None,
+        request: Optional[Union[datacatalog.GetEntryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
         r"""Gets an entry.
@@ -1438,7 +1448,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.GetEntryRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.GetEntryRequest, dict]]):
                 The request object. Request message for
                 [GetEntry][google.cloud.datacatalog.v1beta1.DataCatalog.GetEntry].
             name (:class:`str`):
@@ -1525,10 +1535,10 @@ class DataCatalogAsyncClient:
 
     async def lookup_entry(
         self,
-        request: Union[datacatalog.LookupEntryRequest, dict] = None,
+        request: Optional[Union[datacatalog.LookupEntryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
         r"""Get an entry by target resource name. This method
@@ -1563,7 +1573,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.LookupEntryRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.LookupEntryRequest, dict]]):
                 The request object. Request message for
                 [LookupEntry][google.cloud.datacatalog.v1beta1.DataCatalog.LookupEntry].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1622,11 +1632,11 @@ class DataCatalogAsyncClient:
 
     async def list_entries(
         self,
-        request: Union[datacatalog.ListEntriesRequest, dict] = None,
+        request: Optional[Union[datacatalog.ListEntriesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntriesAsyncPager:
         r"""Lists entries.
@@ -1659,7 +1669,7 @@ class DataCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.ListEntriesRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.ListEntriesRequest, dict]]):
                 The request object. Request message for
                 [ListEntries][google.cloud.datacatalog.v1beta1.DataCatalog.ListEntries].
             parent (:class:`str`):
@@ -1739,13 +1749,13 @@ class DataCatalogAsyncClient:
 
     async def create_tag_template(
         self,
-        request: Union[datacatalog.CreateTagTemplateRequest, dict] = None,
+        request: Optional[Union[datacatalog.CreateTagTemplateRequest, dict]] = None,
         *,
-        parent: str = None,
-        tag_template_id: str = None,
-        tag_template: tags.TagTemplate = None,
+        parent: Optional[str] = None,
+        tag_template_id: Optional[str] = None,
+        tag_template: Optional[tags.TagTemplate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplate:
         r"""Creates a tag template. The user should enable the Data Catalog
@@ -1782,7 +1792,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest, dict]]):
                 The request object. Request message for
                 [CreateTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTagTemplate].
             parent (:class:`str`):
@@ -1876,11 +1886,11 @@ class DataCatalogAsyncClient:
 
     async def get_tag_template(
         self,
-        request: Union[datacatalog.GetTagTemplateRequest, dict] = None,
+        request: Optional[Union[datacatalog.GetTagTemplateRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplate:
         r"""Gets a tag template.
@@ -1912,7 +1922,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest, dict]]):
                 The request object. Request message for
                 [GetTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.GetTagTemplate].
             name (:class:`str`):
@@ -1996,12 +2006,12 @@ class DataCatalogAsyncClient:
 
     async def update_tag_template(
         self,
-        request: Union[datacatalog.UpdateTagTemplateRequest, dict] = None,
+        request: Optional[Union[datacatalog.UpdateTagTemplateRequest, dict]] = None,
         *,
-        tag_template: tags.TagTemplate = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        tag_template: Optional[tags.TagTemplate] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplate:
         r"""Updates a tag template. This method cannot be used to update the
@@ -2040,7 +2050,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest, dict]]):
                 The request object. Request message for
                 [UpdateTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTagTemplate].
             tag_template (:class:`google.cloud.datacatalog_v1beta1.types.TagTemplate`):
@@ -2131,12 +2141,12 @@ class DataCatalogAsyncClient:
 
     async def delete_tag_template(
         self,
-        request: Union[datacatalog.DeleteTagTemplateRequest, dict] = None,
+        request: Optional[Union[datacatalog.DeleteTagTemplateRequest, dict]] = None,
         *,
-        name: str = None,
-        force: bool = None,
+        name: Optional[str] = None,
+        force: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a tag template and all tags using the template. Users
@@ -2170,7 +2180,7 @@ class DataCatalogAsyncClient:
                 await client.delete_tag_template(request=request)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest, dict]]):
                 The request object. Request message for
                 [DeleteTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTagTemplate].
             name (:class:`str`):
@@ -2250,13 +2260,15 @@ class DataCatalogAsyncClient:
 
     async def create_tag_template_field(
         self,
-        request: Union[datacatalog.CreateTagTemplateFieldRequest, dict] = None,
+        request: Optional[
+            Union[datacatalog.CreateTagTemplateFieldRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        tag_template_field_id: str = None,
-        tag_template_field: tags.TagTemplateField = None,
+        parent: Optional[str] = None,
+        tag_template_field_id: Optional[str] = None,
+        tag_template_field: Optional[tags.TagTemplateField] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
         r"""Creates a field in a tag template. The user should enable the
@@ -2297,7 +2309,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest, dict]]):
                 The request object. Request message for
                 [CreateTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTagTemplateField].
             parent (:class:`str`):
@@ -2390,13 +2402,15 @@ class DataCatalogAsyncClient:
 
     async def update_tag_template_field(
         self,
-        request: Union[datacatalog.UpdateTagTemplateFieldRequest, dict] = None,
+        request: Optional[
+            Union[datacatalog.UpdateTagTemplateFieldRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        tag_template_field: tags.TagTemplateField = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        tag_template_field: Optional[tags.TagTemplateField] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
         r"""Updates a field in a tag template. This method cannot be used to
@@ -2437,7 +2451,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest, dict]]):
                 The request object. Request message for
                 [UpdateTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTagTemplateField].
             name (:class:`str`):
@@ -2533,12 +2547,14 @@ class DataCatalogAsyncClient:
 
     async def rename_tag_template_field(
         self,
-        request: Union[datacatalog.RenameTagTemplateFieldRequest, dict] = None,
+        request: Optional[
+            Union[datacatalog.RenameTagTemplateFieldRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        new_tag_template_field_id: str = None,
+        name: Optional[str] = None,
+        new_tag_template_field_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
         r"""Renames a field in a tag template. The user should enable the
@@ -2575,7 +2591,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest, dict]]):
                 The request object. Request message for
                 [RenameTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.RenameTagTemplateField].
             name (:class:`str`):
@@ -2651,12 +2667,14 @@ class DataCatalogAsyncClient:
 
     async def delete_tag_template_field(
         self,
-        request: Union[datacatalog.DeleteTagTemplateFieldRequest, dict] = None,
+        request: Optional[
+            Union[datacatalog.DeleteTagTemplateFieldRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        force: bool = None,
+        name: Optional[str] = None,
+        force: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a field in a tag template and all uses of that field.
@@ -2691,7 +2709,7 @@ class DataCatalogAsyncClient:
                 await client.delete_tag_template_field(request=request)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest, dict]]):
                 The request object. Request message for
                 [DeleteTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTagTemplateField].
             name (:class:`str`):
@@ -2771,12 +2789,12 @@ class DataCatalogAsyncClient:
 
     async def create_tag(
         self,
-        request: Union[datacatalog.CreateTagRequest, dict] = None,
+        request: Optional[Union[datacatalog.CreateTagRequest, dict]] = None,
         *,
-        parent: str = None,
-        tag: tags.Tag = None,
+        parent: Optional[str] = None,
+        tag: Optional[tags.Tag] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.Tag:
         r"""Creates a tag on an
@@ -2819,7 +2837,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.CreateTagRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.CreateTagRequest, dict]]):
                 The request object. Request message for
                 [CreateTag][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTag].
             parent (:class:`str`):
@@ -2903,12 +2921,12 @@ class DataCatalogAsyncClient:
 
     async def update_tag(
         self,
-        request: Union[datacatalog.UpdateTagRequest, dict] = None,
+        request: Optional[Union[datacatalog.UpdateTagRequest, dict]] = None,
         *,
-        tag: tags.Tag = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        tag: Optional[tags.Tag] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.Tag:
         r"""Updates an existing tag.
@@ -2944,7 +2962,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTagRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.UpdateTagRequest, dict]]):
                 The request object. Request message for
                 [UpdateTag][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTag].
             tag (:class:`google.cloud.datacatalog_v1beta1.types.Tag`):
@@ -3026,11 +3044,11 @@ class DataCatalogAsyncClient:
 
     async def delete_tag(
         self,
-        request: Union[datacatalog.DeleteTagRequest, dict] = None,
+        request: Optional[Union[datacatalog.DeleteTagRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a tag.
@@ -3059,7 +3077,7 @@ class DataCatalogAsyncClient:
                 await client.delete_tag(request=request)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.DeleteTagRequest, dict]]):
                 The request object. Request message for
                 [DeleteTag][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTag].
             name (:class:`str`):
@@ -3127,11 +3145,11 @@ class DataCatalogAsyncClient:
 
     async def list_tags(
         self,
-        request: Union[datacatalog.ListTagsRequest, dict] = None,
+        request: Optional[Union[datacatalog.ListTagsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagsAsyncPager:
         r"""Lists the tags on an
@@ -3165,7 +3183,7 @@ class DataCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog_v1beta1.types.ListTagsRequest, dict]):
+            request (Optional[Union[google.cloud.datacatalog_v1beta1.types.ListTagsRequest, dict]]):
                 The request object. Request message for
                 [ListTags][google.cloud.datacatalog.v1beta1.DataCatalog.ListTags].
             parent (:class:`str`):
@@ -3260,11 +3278,11 @@ class DataCatalogAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy for a resource. Replaces any
@@ -3313,7 +3331,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -3442,11 +3460,11 @@ class DataCatalogAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a resource. A ``NOT_FOUND``
@@ -3499,7 +3517,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -3628,10 +3646,10 @@ class DataCatalogAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the caller's permissions on a resource. If the resource
@@ -3678,7 +3696,7 @@ class DataCatalogAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

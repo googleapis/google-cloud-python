@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -59,18 +61,18 @@ class BigQueryTableSpec(proto.Message):
             This field is a member of `oneof`_ ``type_spec``.
     """
 
-    table_source_type = proto.Field(
+    table_source_type: "TableSourceType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="TableSourceType",
     )
-    view_spec = proto.Field(
+    view_spec: "ViewSpec" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type_spec",
         message="ViewSpec",
     )
-    table_spec = proto.Field(
+    table_spec: "TableSpec" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="type_spec",
@@ -87,7 +89,7 @@ class ViewSpec(proto.Message):
             view.
     """
 
-    view_query = proto.Field(
+    view_query: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -106,7 +108,7 @@ class TableSpec(proto.Message):
             Otherwise, ``grouped_entry`` is empty.
     """
 
-    grouped_entry = proto.Field(
+    grouped_entry: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -131,15 +133,15 @@ class BigQueryDateShardedSpec(proto.Message):
             Output only. Total number of shards.
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_prefix = proto.Field(
+    table_prefix: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    shard_count = proto.Field(
+    shard_count: int = proto.Field(
         proto.INT64,
         number=3,
     )

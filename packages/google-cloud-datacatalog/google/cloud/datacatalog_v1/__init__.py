@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.datacatalog import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.data_catalog import DataCatalogAsyncClient, DataCatalogClient
 from .services.policy_tag_manager import (

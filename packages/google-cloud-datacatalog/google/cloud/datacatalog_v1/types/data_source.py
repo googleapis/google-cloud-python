@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -53,20 +55,20 @@ class DataSource(proto.Message):
         CLOUD_STORAGE = 1
         BIGQUERY = 2
 
-    service = proto.Field(
+    service: Service = proto.Field(
         proto.ENUM,
         number=1,
         enum=Service,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_entry = proto.Field(
+    source_entry: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    storage_properties = proto.Field(
+    storage_properties: "StorageProperties" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="properties",
@@ -78,7 +80,7 @@ class StorageProperties(proto.Message):
     r"""Details the properties of the underlying storage.
 
     Attributes:
-        file_pattern (Sequence[str]):
+        file_pattern (MutableSequence[str]):
             Patterns to identify a set of files for this fileset.
 
             Examples of a valid ``file_pattern``:
@@ -106,11 +108,11 @@ class StorageProperties(proto.Message):
             File type in MIME format, for example, ``text/plain``.
     """
 
-    file_pattern = proto.RepeatedField(
+    file_pattern: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    file_type = proto.Field(
+    file_type: str = proto.Field(
         proto.STRING,
         number=2,
     )

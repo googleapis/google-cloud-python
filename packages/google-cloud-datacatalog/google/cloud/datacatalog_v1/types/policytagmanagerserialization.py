@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import policytagmanager
@@ -46,28 +48,30 @@ class SerializedTaxonomy(proto.Message):
             Description of the serialized taxonomy. At
             most 2000 bytes when encoded in UTF-8. If not
             set, defaults to an empty description.
-        policy_tags (Sequence[google.cloud.datacatalog_v1.types.SerializedPolicyTag]):
+        policy_tags (MutableSequence[google.cloud.datacatalog_v1.types.SerializedPolicyTag]):
             Top level policy tags associated with the
             taxonomy, if any.
-        activated_policy_types (Sequence[google.cloud.datacatalog_v1.types.Taxonomy.PolicyType]):
+        activated_policy_types (MutableSequence[google.cloud.datacatalog_v1.types.Taxonomy.PolicyType]):
             A list of policy types that are activated per
             taxonomy.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    policy_tags = proto.RepeatedField(
+    policy_tags: MutableSequence["SerializedPolicyTag"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="SerializedPolicyTag",
     )
-    activated_policy_types = proto.RepeatedField(
+    activated_policy_types: MutableSequence[
+        policytagmanager.Taxonomy.PolicyType
+    ] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=policytagmanager.Taxonomy.PolicyType,
@@ -90,23 +94,23 @@ class SerializedPolicyTag(proto.Message):
             Description of the serialized policy tag. At
             most 2000 bytes when encoded in UTF-8. If not
             set, defaults to an empty description.
-        child_policy_tags (Sequence[google.cloud.datacatalog_v1.types.SerializedPolicyTag]):
+        child_policy_tags (MutableSequence[google.cloud.datacatalog_v1.types.SerializedPolicyTag]):
             Children of the policy tag, if any.
     """
 
-    policy_tag = proto.Field(
+    policy_tag: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    child_policy_tags = proto.RepeatedField(
+    child_policy_tags: MutableSequence["SerializedPolicyTag"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="SerializedPolicyTag",
@@ -126,11 +130,11 @@ class ReplaceTaxonomyRequest(proto.Message):
             child policy tags.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    serialized_taxonomy = proto.Field(
+    serialized_taxonomy: "SerializedTaxonomy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="SerializedTaxonomy",
@@ -162,17 +166,17 @@ class ImportTaxonomiesRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    inline_source = proto.Field(
+    inline_source: "InlineSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="InlineSource",
     )
-    cross_regional_source = proto.Field(
+    cross_regional_source: "CrossRegionalSource" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
@@ -184,11 +188,11 @@ class InlineSource(proto.Message):
     r"""Inline source containing taxonomies to import.
 
     Attributes:
-        taxonomies (Sequence[google.cloud.datacatalog_v1.types.SerializedTaxonomy]):
+        taxonomies (MutableSequence[google.cloud.datacatalog_v1.types.SerializedTaxonomy]):
             Required. Taxonomies to import.
     """
 
-    taxonomies = proto.RepeatedField(
+    taxonomies: MutableSequence["SerializedTaxonomy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SerializedTaxonomy",
@@ -205,7 +209,7 @@ class CrossRegionalSource(proto.Message):
             taxonomy to import.
     """
 
-    taxonomy = proto.Field(
+    taxonomy: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -216,11 +220,11 @@ class ImportTaxonomiesResponse(proto.Message):
     [ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies].
 
     Attributes:
-        taxonomies (Sequence[google.cloud.datacatalog_v1.types.Taxonomy]):
+        taxonomies (MutableSequence[google.cloud.datacatalog_v1.types.Taxonomy]):
             Imported taxonomies.
     """
 
-    taxonomies = proto.RepeatedField(
+    taxonomies: MutableSequence[policytagmanager.Taxonomy] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=policytagmanager.Taxonomy,
@@ -238,7 +242,7 @@ class ExportTaxonomiesRequest(proto.Message):
         parent (str):
             Required. Resource name of the project that
             the exported taxonomies belong to.
-        taxonomies (Sequence[str]):
+        taxonomies (MutableSequence[str]):
             Required. Resource names of the taxonomies to
             export.
         serialized_taxonomies (bool):
@@ -248,15 +252,15 @@ class ExportTaxonomiesRequest(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    taxonomies = proto.RepeatedField(
+    taxonomies: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    serialized_taxonomies = proto.Field(
+    serialized_taxonomies: bool = proto.Field(
         proto.BOOL,
         number=3,
         oneof="destination",
@@ -268,12 +272,12 @@ class ExportTaxonomiesResponse(proto.Message):
     [ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies].
 
     Attributes:
-        taxonomies (Sequence[google.cloud.datacatalog_v1.types.SerializedTaxonomy]):
+        taxonomies (MutableSequence[google.cloud.datacatalog_v1.types.SerializedTaxonomy]):
             List of taxonomies and policy tags as nested
             protocol buffers.
     """
 
-    taxonomies = proto.RepeatedField(
+    taxonomies: MutableSequence["SerializedTaxonomy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SerializedTaxonomy",

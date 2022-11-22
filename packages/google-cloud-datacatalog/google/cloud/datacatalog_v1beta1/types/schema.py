@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -28,12 +30,12 @@ class Schema(proto.Message):
     r"""Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
 
     Attributes:
-        columns (Sequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
+        columns (MutableSequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
             Required. Schema of columns. A maximum of
             10,000 columns and sub-columns can be specified.
     """
 
-    columns = proto.RepeatedField(
+    columns: MutableSequence["ColumnSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ColumnSchema",
@@ -57,28 +59,28 @@ class ColumnSchema(proto.Message):
             this column are required, nullable, etc. Only ``NULLABLE``,
             ``REQUIRED`` and ``REPEATED`` are supported. Default mode is
             ``NULLABLE``.
-        subcolumns (Sequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
+        subcolumns (MutableSequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
             Optional. Schema of sub-columns. A column can
             have zero or more sub-columns.
     """
 
-    column = proto.Field(
+    column: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mode = proto.Field(
+    mode: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    subcolumns = proto.RepeatedField(
+    subcolumns: MutableSequence["ColumnSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ColumnSchema",

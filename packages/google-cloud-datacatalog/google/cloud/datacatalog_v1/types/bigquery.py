@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,18 +50,18 @@ class BigQueryConnectionSpec(proto.Message):
         CONNECTION_TYPE_UNSPECIFIED = 0
         CLOUD_SQL = 1
 
-    connection_type = proto.Field(
+    connection_type: ConnectionType = proto.Field(
         proto.ENUM,
         number=1,
         enum=ConnectionType,
     )
-    cloud_sql = proto.Field(
+    cloud_sql: "CloudSqlBigQueryConnectionSpec" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="connection_spec",
         message="CloudSqlBigQueryConnectionSpec",
     )
-    has_credential = proto.Field(
+    has_credential: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -85,15 +87,15 @@ class CloudSqlBigQueryConnectionSpec(proto.Message):
         POSTGRES = 1
         MYSQL = 2
 
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: DatabaseType = proto.Field(
         proto.ENUM,
         number=3,
         enum=DatabaseType,
@@ -104,11 +106,11 @@ class BigQueryRoutineSpec(proto.Message):
     r"""Fields specific for BigQuery routines.
 
     Attributes:
-        imported_libraries (Sequence[str]):
+        imported_libraries (MutableSequence[str]):
             Paths of the imported libraries.
     """
 
-    imported_libraries = proto.RepeatedField(
+    imported_libraries: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

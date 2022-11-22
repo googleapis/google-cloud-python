@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -47,11 +49,11 @@ class PersonalDetails(proto.Message):
             Set if the entry is starred; unset otherwise.
     """
 
-    starred = proto.Field(
+    starred: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    star_time = proto.Field(
+    star_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,

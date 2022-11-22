@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -65,7 +67,7 @@ class Tag(proto.Message):
             with a dot (``.``). Example: ``column.nested_column``.
 
             This field is a member of `oneof`_ ``scope``.
-        fields (Mapping[str, google.cloud.datacatalog_v1.types.TagField]):
+        fields (MutableMapping[str, google.cloud.datacatalog_v1.types.TagField]):
             Required. Maps the ID of a tag field to its
             value and additional information about that
             field.
@@ -74,24 +76,24 @@ class Tag(proto.Message):
             fields.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    template = proto.Field(
+    template: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    template_display_name = proto.Field(
+    template_display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    column = proto.Field(
+    column: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="scope",
     )
-    fields = proto.MapField(
+    fields: MutableMapping[str, "TagField"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
@@ -165,48 +167,48 @@ class TagField(proto.Message):
                 The display name of the enum value.
         """
 
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=2,
         oneof="kind",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="kind",
     )
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=4,
         oneof="kind",
     )
-    timestamp_value = proto.Field(
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="kind",
         message=timestamp_pb2.Timestamp,
     )
-    enum_value = proto.Field(
+    enum_value: EnumValue = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="kind",
         message=EnumValue,
     )
-    richtext_value = proto.Field(
+    richtext_value: str = proto.Field(
         proto.STRING,
         number=8,
         oneof="kind",
     )
-    order = proto.Field(
+    order: int = proto.Field(
         proto.INT32,
         number=7,
     )
@@ -246,7 +248,7 @@ class TagTemplate(proto.Message):
             Additionally, you can search for a public tag by value with
             a simple search query in addition to using a ``tag:``
             predicate.
-        fields (Mapping[str, google.cloud.datacatalog_v1.types.TagTemplateField]):
+        fields (MutableMapping[str, google.cloud.datacatalog_v1.types.TagTemplateField]):
             Required. Map of tag template field IDs to the settings for
             the field. This map is an exhaustive list of the allowed
             fields. The map must contain at least one field and at most
@@ -262,19 +264,19 @@ class TagTemplate(proto.Message):
             -  Must start with a letter or underscore.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    is_publicly_readable = proto.Field(
+    is_publicly_readable: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    fields = proto.MapField(
+    fields: MutableMapping[str, "TagTemplateField"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
@@ -325,28 +327,28 @@ class TagTemplateField(proto.Message):
             sequential.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: "FieldType" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="FieldType",
     )
-    is_required = proto.Field(
+    is_required: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order = proto.Field(
+    order: int = proto.Field(
         proto.INT32,
         number=5,
     )
@@ -387,7 +389,7 @@ class FieldType(proto.Message):
         r"""
 
         Attributes:
-            allowed_values (Sequence[google.cloud.datacatalog_v1.types.FieldType.EnumType.EnumValue]):
+            allowed_values (MutableSequence[google.cloud.datacatalog_v1.types.FieldType.EnumType.EnumValue]):
                 The set of allowed values for this enum.
 
                 This set must not be empty and can include up to 100 allowed
@@ -414,24 +416,26 @@ class FieldType(proto.Message):
                     end with spaces. The maximum length is 200 characters.
             """
 
-            display_name = proto.Field(
+            display_name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        allowed_values = proto.RepeatedField(
+        allowed_values: MutableSequence[
+            "FieldType.EnumType.EnumValue"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="FieldType.EnumType.EnumValue",
         )
 
-    primitive_type = proto.Field(
+    primitive_type: PrimitiveType = proto.Field(
         proto.ENUM,
         number=1,
         oneof="type_decl",
         enum=PrimitiveType,
     )
-    enum_type = proto.Field(
+    enum_type: EnumType = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="type_decl",

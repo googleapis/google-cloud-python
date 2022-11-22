@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -157,13 +159,13 @@ class SearchCatalogRequest(proto.Message):
         matching.
 
         Attributes:
-            include_org_ids (Sequence[str]):
+            include_org_ids (MutableSequence[str]):
                 The list of organization IDs to search within.
 
                 To find your organization ID, follow the steps from
                 [Creating and managing organizations]
                 (/resource-manager/docs/creating-managing-organization).
-            include_project_ids (Sequence[str]):
+            include_project_ids (MutableSequence[str]):
                 The list of project IDs to search within.
 
                 For more information on the distinction between project
@@ -175,7 +177,7 @@ class SearchCatalogRequest(proto.Message):
 
                 See `Google Cloud Public Datasets </public-datasets>`__ for
                 more information.
-            restricted_locations (Sequence[str]):
+            restricted_locations (MutableSequence[str]):
                 Optional. The list of locations to search within. If empty,
                 all locations are searched.
 
@@ -198,49 +200,49 @@ class SearchCatalogRequest(proto.Message):
                 templates is the same.
         """
 
-        include_org_ids = proto.RepeatedField(
+        include_org_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        include_project_ids = proto.RepeatedField(
+        include_project_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        include_gcp_public_datasets = proto.Field(
+        include_gcp_public_datasets: bool = proto.Field(
             proto.BOOL,
             number=7,
         )
-        restricted_locations = proto.RepeatedField(
+        restricted_locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=16,
         )
-        starred_only = proto.Field(
+        starred_only: bool = proto.Field(
             proto.BOOL,
             number=18,
         )
-        include_public_tag_templates = proto.Field(
+        include_public_tag_templates: bool = proto.Field(
             proto.BOOL,
             number=19,
         )
 
-    scope = proto.Field(
+    scope: Scope = proto.Field(
         proto.MESSAGE,
         number=6,
         message=Scope,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -251,13 +253,13 @@ class SearchCatalogResponse(proto.Message):
     [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
 
     Attributes:
-        results (Sequence[google.cloud.datacatalog_v1.types.SearchCatalogResult]):
+        results (MutableSequence[google.cloud.datacatalog_v1.types.SearchCatalogResult]):
             Search results.
         next_page_token (str):
             Pagination token that can be used in
             subsequent calls to retrieve the next page of
             results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Unreachable locations. Search results don't include data
             from those locations.
 
@@ -271,16 +273,16 @@ class SearchCatalogResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[search.SearchCatalogResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=search.SearchCatalogResult,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -307,15 +309,15 @@ class CreateEntryGroupRequest(proto.Message):
             The entry group to create. Defaults to empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entry_group_id = proto.Field(
+    entry_group_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    entry_group = proto.Field(
+    entry_group: "EntryGroup" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EntryGroup",
@@ -339,12 +341,12 @@ class UpdateEntryGroupRequest(proto.Message):
             request body, their values are emptied.
     """
 
-    entry_group = proto.Field(
+    entry_group: "EntryGroup" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="EntryGroup",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -363,11 +365,11 @@ class GetEntryGroupRequest(proto.Message):
             all fields are returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -387,11 +389,11 @@ class DeleteEntryGroupRequest(proto.Message):
             entry group.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -417,15 +419,15 @@ class ListEntryGroupsRequest(proto.Message):
             page.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -436,7 +438,7 @@ class ListEntryGroupsResponse(proto.Message):
     [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
 
     Attributes:
-        entry_groups (Sequence[google.cloud.datacatalog_v1.types.EntryGroup]):
+        entry_groups (MutableSequence[google.cloud.datacatalog_v1.types.EntryGroup]):
             Entry group details.
         next_page_token (str):
             Pagination token to specify in the next call
@@ -448,12 +450,12 @@ class ListEntryGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entry_groups = proto.RepeatedField(
+    entry_groups: MutableSequence["EntryGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EntryGroup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -480,15 +482,15 @@ class CreateEntryRequest(proto.Message):
             Required. The entry to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entry_id = proto.Field(
+    entry_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    entry = proto.Field(
+    entry: "Entry" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Entry",
@@ -535,12 +537,12 @@ class UpdateEntryRequest(proto.Message):
             -  ``source_system_timestamps``
     """
 
-    entry = proto.Field(
+    entry: "Entry" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Entry",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -556,7 +558,7 @@ class DeleteEntryRequest(proto.Message):
             Required. The name of the entry to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -571,7 +573,7 @@ class GetEntryRequest(proto.Message):
             Required. The name of the entry to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -637,17 +639,17 @@ class LookupEntryRequest(proto.Message):
             This field is a member of `oneof`_ ``target_name``.
     """
 
-    linked_resource = proto.Field(
+    linked_resource: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="target_name",
     )
-    sql_resource = proto.Field(
+    sql_resource: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="target_name",
     )
-    fully_qualified_name = proto.Field(
+    fully_qualified_name: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="target_name",
@@ -773,13 +775,13 @@ class Entry(proto.Message):
 
             This field is a member of `oneof`_ ``type_spec``.
         bigquery_table_spec (google.cloud.datacatalog_v1.types.BigQueryTableSpec):
-            Specification that applies to a BigQuery table. Valid only
-            for entries with the ``TABLE`` type.
+            Output only. Specification that applies to a BigQuery table.
+            Valid only for entries with the ``TABLE`` type.
 
             This field is a member of `oneof`_ ``type_spec``.
         bigquery_date_sharded_spec (google.cloud.datacatalog_v1.types.BigQueryDateShardedSpec):
-            Specification for a group of BigQuery tables with the
-            ``[prefix]YYYYMMDD`` name pattern.
+            Output only. Specification for a group of BigQuery tables
+            with the ``[prefix]YYYYMMDD`` name pattern.
 
             For more information, see [Introduction to partitioned
             tables]
@@ -834,13 +836,13 @@ class Entry(proto.Message):
             Timestamps from the underlying resource, not from the Data
             Catalog entry.
 
-            Output only when the entry has a type listed in the
-            ``EntryType`` enum. For entries with
-            ``user_specified_type``, this field is optional and defaults
-            to an empty timestamp.
+            Output only when the entry has a system listed in the
+            ``IntegratedSystem`` enum. For entries with
+            ``user_specified_system``, this field is optional and
+            defaults to an empty timestamp.
         usage_signal (google.cloud.datacatalog_v1.types.UsageSignal):
-            Output only. Resource usage statistics.
-        labels (Mapping[str, str]):
+            Resource usage statistics.
+        labels (MutableMapping[str, str]):
             Cloud labels attached to the entry.
             In Data Catalog, you can create and modify
             labels attached only to custom entries. Synced
@@ -853,121 +855,121 @@ class Entry(proto.Message):
             to the entry. Private to the current user.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    linked_resource = proto.Field(
+    linked_resource: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    fully_qualified_name = proto.Field(
+    fully_qualified_name: str = proto.Field(
         proto.STRING,
         number=29,
     )
-    type_ = proto.Field(
+    type_: "EntryType" = proto.Field(
         proto.ENUM,
         number=2,
         oneof="entry_type",
         enum="EntryType",
     )
-    user_specified_type = proto.Field(
+    user_specified_type: str = proto.Field(
         proto.STRING,
         number=16,
         oneof="entry_type",
     )
-    integrated_system = proto.Field(
+    integrated_system: common.IntegratedSystem = proto.Field(
         proto.ENUM,
         number=17,
         oneof="system",
         enum=common.IntegratedSystem,
     )
-    user_specified_system = proto.Field(
+    user_specified_system: str = proto.Field(
         proto.STRING,
         number=18,
         oneof="system",
     )
-    gcs_fileset_spec = proto.Field(
+    gcs_fileset_spec: gcd_gcs_fileset_spec.GcsFilesetSpec = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="type_spec",
         message=gcd_gcs_fileset_spec.GcsFilesetSpec,
     )
-    bigquery_table_spec = proto.Field(
+    bigquery_table_spec: table_spec.BigQueryTableSpec = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="type_spec",
         message=table_spec.BigQueryTableSpec,
     )
-    bigquery_date_sharded_spec = proto.Field(
+    bigquery_date_sharded_spec: table_spec.BigQueryDateShardedSpec = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="type_spec",
         message=table_spec.BigQueryDateShardedSpec,
     )
-    database_table_spec = proto.Field(
+    database_table_spec: "DatabaseTableSpec" = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="spec",
         message="DatabaseTableSpec",
     )
-    data_source_connection_spec = proto.Field(
+    data_source_connection_spec: "DataSourceConnectionSpec" = proto.Field(
         proto.MESSAGE,
         number=27,
         oneof="spec",
         message="DataSourceConnectionSpec",
     )
-    routine_spec = proto.Field(
+    routine_spec: "RoutineSpec" = proto.Field(
         proto.MESSAGE,
         number=28,
         oneof="spec",
         message="RoutineSpec",
     )
-    fileset_spec = proto.Field(
+    fileset_spec: "FilesetSpec" = proto.Field(
         proto.MESSAGE,
         number=33,
         oneof="spec",
         message="FilesetSpec",
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    business_context = proto.Field(
+    business_context: "BusinessContext" = proto.Field(
         proto.MESSAGE,
         number=37,
         message="BusinessContext",
     )
-    schema = proto.Field(
+    schema: gcd_schema.Schema = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gcd_schema.Schema,
     )
-    source_system_timestamps = proto.Field(
+    source_system_timestamps: timestamps.SystemTimestamps = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamps.SystemTimestamps,
     )
-    usage_signal = proto.Field(
+    usage_signal: usage.UsageSignal = proto.Field(
         proto.MESSAGE,
         number=13,
         message=usage.UsageSignal,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
     )
-    data_source = proto.Field(
+    data_source: gcd_data_source.DataSource = proto.Field(
         proto.MESSAGE,
         number=20,
         message=gcd_data_source.DataSource,
     )
-    personal_details = proto.Field(
+    personal_details: common.PersonalDetails = proto.Field(
         proto.MESSAGE,
         number=26,
         message=common.PersonalDetails,
@@ -982,8 +984,9 @@ class DatabaseTableSpec(proto.Message):
         type_ (google.cloud.datacatalog_v1.types.DatabaseTableSpec.TableType):
             Type of this table.
         dataplex_table (google.cloud.datacatalog_v1.types.DataplexTableSpec):
-            Fields specific to a Dataplex table and
-            present only in the Dataplex table entries.
+            Output only. Fields specific to a Dataplex
+            table and present only in the Dataplex table
+            entries.
     """
 
     class TableType(proto.Enum):
@@ -992,12 +995,12 @@ class DatabaseTableSpec(proto.Message):
         NATIVE = 1
         EXTERNAL = 2
 
-    type_ = proto.Field(
+    type_: TableType = proto.Field(
         proto.ENUM,
         number=1,
         enum=TableType,
     )
-    dataplex_table = proto.Field(
+    dataplex_table: dataplex_spec.DataplexTableSpec = proto.Field(
         proto.MESSAGE,
         number=2,
         message=dataplex_spec.DataplexTableSpec,
@@ -1014,7 +1017,7 @@ class FilesetSpec(proto.Message):
             present only in the Dataplex fileset entries.
     """
 
-    dataplex_fileset = proto.Field(
+    dataplex_fileset: dataplex_spec.DataplexFilesetSpec = proto.Field(
         proto.MESSAGE,
         number=1,
         message=dataplex_spec.DataplexFilesetSpec,
@@ -1023,14 +1026,16 @@ class FilesetSpec(proto.Message):
 
 class DataSourceConnectionSpec(proto.Message):
     r"""Specification that applies to a data source connection. Valid only
-    for entries with the ``DATA_SOURCE_CONNECTION`` type.
+    for entries with the ``DATA_SOURCE_CONNECTION`` type. Only one of
+    internal specs can be set at the time, and cannot be changed later.
 
     Attributes:
         bigquery_connection_spec (google.cloud.datacatalog_v1.types.BigQueryConnectionSpec):
-            Fields specific to BigQuery connections.
+            Output only. Fields specific to BigQuery
+            connections.
     """
 
-    bigquery_connection_spec = proto.Field(
+    bigquery_connection_spec: bigquery.BigQueryConnectionSpec = proto.Field(
         proto.MESSAGE,
         number=1,
         message=bigquery.BigQueryConnectionSpec,
@@ -1054,7 +1059,7 @@ class RoutineSpec(proto.Message):
 
             -  ``SQL``
             -  ``JAVASCRIPT``
-        routine_arguments (Sequence[google.cloud.datacatalog_v1.types.RoutineSpec.Argument]):
+        routine_arguments (MutableSequence[google.cloud.datacatalog_v1.types.RoutineSpec.Argument]):
             Arguments of the routine.
         return_type (str):
             Return type of the argument. The exact value
@@ -1095,43 +1100,43 @@ class RoutineSpec(proto.Message):
             OUT = 2
             INOUT = 3
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        mode = proto.Field(
+        mode: "RoutineSpec.Argument.Mode" = proto.Field(
             proto.ENUM,
             number=2,
             enum="RoutineSpec.Argument.Mode",
         )
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    routine_type = proto.Field(
+    routine_type: RoutineType = proto.Field(
         proto.ENUM,
         number=1,
         enum=RoutineType,
     )
-    language = proto.Field(
+    language: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    routine_arguments = proto.RepeatedField(
+    routine_arguments: MutableSequence[Argument] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Argument,
     )
-    return_type = proto.Field(
+    return_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    definition_body = proto.Field(
+    definition_body: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    bigquery_routine_spec = proto.Field(
+    bigquery_routine_spec: bigquery.BigQueryRoutineSpec = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="system_spec",
@@ -1150,12 +1155,12 @@ class BusinessContext(proto.Message):
             Contact people for the entry.
     """
 
-    entry_overview = proto.Field(
+    entry_overview: "EntryOverview" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="EntryOverview",
     )
-    contacts = proto.Field(
+    contacts: "Contacts" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Contacts",
@@ -1176,7 +1181,7 @@ class EntryOverview(proto.Message):
             KiB.
     """
 
-    overview = proto.Field(
+    overview: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1186,7 +1191,7 @@ class Contacts(proto.Message):
     r"""Contact people for the entry.
 
     Attributes:
-        people (Sequence[google.cloud.datacatalog_v1.types.Contacts.Person]):
+        people (MutableSequence[google.cloud.datacatalog_v1.types.Contacts.Person]):
             The list of contact people for the entry.
     """
 
@@ -1202,16 +1207,16 @@ class Contacts(proto.Message):
                 ``<john.doe@xyz>``, or ``John Doe<john.doe@xyz>``.
         """
 
-        designation = proto.Field(
+        designation: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        email = proto.Field(
+        email: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    people = proto.RepeatedField(
+    people: MutableSequence[Person] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Person,
@@ -1246,19 +1251,19 @@ class EntryGroup(proto.Message):
             Default value is empty.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_catalog_timestamps = proto.Field(
+    data_catalog_timestamps: timestamps.SystemTimestamps = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamps.SystemTimestamps,
@@ -1284,15 +1289,15 @@ class CreateTagTemplateRequest(proto.Message):
             Required. The tag template to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag_template_id = proto.Field(
+    tag_template_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    tag_template = proto.Field(
+    tag_template: gcd_tags.TagTemplate = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_tags.TagTemplate,
@@ -1309,7 +1314,7 @@ class GetTagTemplateRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1336,12 +1341,12 @@ class UpdateTagTemplateRequest(proto.Message):
             require up to 12 hours to take effect in search results.
     """
 
-    tag_template = proto.Field(
+    tag_template: gcd_tags.TagTemplate = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_tags.TagTemplate,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1362,11 +1367,11 @@ class DeleteTagTemplateRequest(proto.Message):
             Currently, ``true`` is the only supported value.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -1389,11 +1394,11 @@ class CreateTagRequest(proto.Message):
             Required. The tag to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag = proto.Field(
+    tag: gcd_tags.Tag = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_tags.Tag,
@@ -1419,12 +1424,12 @@ class UpdateTagRequest(proto.Message):
             are emptied.
     """
 
-    tag = proto.Field(
+    tag: gcd_tags.Tag = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_tags.Tag,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1440,7 +1445,7 @@ class DeleteTagRequest(proto.Message):
             Required. The name of the tag to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1469,15 +1474,15 @@ class CreateTagTemplateFieldRequest(proto.Message):
             Required. The tag template field to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag_template_field_id = proto.Field(
+    tag_template_field_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tag_template_field = proto.Field(
+    tag_template_field: gcd_tags.TagTemplateField = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcd_tags.TagTemplateField,
@@ -1514,16 +1519,16 @@ class UpdateTagTemplateFieldRequest(proto.Message):
             required is *not* allowed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tag_template_field = proto.Field(
+    tag_template_field: gcd_tags.TagTemplateField = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_tags.TagTemplateField,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -1542,11 +1547,11 @@ class RenameTagTemplateFieldRequest(proto.Message):
             example, ``my_new_field``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    new_tag_template_field_id = proto.Field(
+    new_tag_template_field_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1564,11 +1569,11 @@ class RenameTagTemplateFieldEnumValueRequest(proto.Message):
             example, ``my_new_enum_value``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    new_enum_value_display_name = proto.Field(
+    new_enum_value_display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1589,11 +1594,11 @@ class DeleteTagTemplateFieldRequest(proto.Message):
             Currently, ``true`` is the only supported value.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -1620,15 +1625,15 @@ class ListTagsRequest(proto.Message):
             to return. If empty, the first page is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1639,7 +1644,7 @@ class ListTagsResponse(proto.Message):
     [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
 
     Attributes:
-        tags (Sequence[google.cloud.datacatalog_v1.types.Tag]):
+        tags (MutableSequence[google.cloud.datacatalog_v1.types.Tag]):
             [Tag][google.cloud.datacatalog.v1.Tag] details.
         next_page_token (str):
             Pagination token of the next results page.
@@ -1650,12 +1655,12 @@ class ListTagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tags = proto.RepeatedField(
+    tags: MutableSequence[gcd_tags.Tag] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_tags.Tag,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1686,19 +1691,19 @@ class ListEntriesRequest(proto.Message):
             ``name`` value.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -1710,7 +1715,7 @@ class ListEntriesResponse(proto.Message):
     [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
 
     Attributes:
-        entries (Sequence[google.cloud.datacatalog_v1.types.Entry]):
+        entries (MutableSequence[google.cloud.datacatalog_v1.types.Entry]):
             Entry details.
         next_page_token (str):
             Pagination token of the next results page.
@@ -1721,12 +1726,12 @@ class ListEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries = proto.RepeatedField(
+    entries: MutableSequence["Entry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Entry",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1742,7 +1747,7 @@ class StarEntryRequest(proto.Message):
             starred.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1765,7 +1770,7 @@ class UnstarEntryRequest(proto.Message):
             Required. The name of the entry to mark as **not** starred.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1792,11 +1797,11 @@ class ModifyEntryOverviewRequest(proto.Message):
             Overview.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entry_overview = proto.Field(
+    entry_overview: "EntryOverview" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EntryOverview",
@@ -1815,11 +1820,11 @@ class ModifyEntryContactsRequest(proto.Message):
             Required. The new value for the Contacts.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    contacts = proto.Field(
+    contacts: "Contacts" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Contacts",

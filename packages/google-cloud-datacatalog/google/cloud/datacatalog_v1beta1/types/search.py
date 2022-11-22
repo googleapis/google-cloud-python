@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -65,20 +67,20 @@ class SearchCatalogResult(proto.Message):
             -  ``//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId``
     """
 
-    search_result_type = proto.Field(
+    search_result_type: "SearchResultType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="SearchResultType",
     )
-    search_result_subtype = proto.Field(
+    search_result_subtype: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    relative_resource_name = proto.Field(
+    relative_resource_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    linked_resource = proto.Field(
+    linked_resource: str = proto.Field(
         proto.STRING,
         number=4,
     )

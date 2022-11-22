@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import common, physical_schema
@@ -49,20 +51,20 @@ class DataplexSpec(proto.Message):
             lake / zone / asset.
     """
 
-    asset = proto.Field(
+    asset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_format = proto.Field(
+    data_format: physical_schema.PhysicalSchema = proto.Field(
         proto.MESSAGE,
         number=2,
         message=physical_schema.PhysicalSchema,
     )
-    compression_format = proto.Field(
+    compression_format: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -76,7 +78,7 @@ class DataplexFilesetSpec(proto.Message):
             Common Dataplex fields.
     """
 
-    dataplex_spec = proto.Field(
+    dataplex_spec: "DataplexSpec" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="DataplexSpec",
@@ -87,7 +89,7 @@ class DataplexTableSpec(proto.Message):
     r"""Entry specification for a Dataplex table.
 
     Attributes:
-        external_tables (Sequence[google.cloud.datacatalog_v1.types.DataplexExternalTable]):
+        external_tables (MutableSequence[google.cloud.datacatalog_v1.types.DataplexExternalTable]):
             List of external tables registered by
             Dataplex in other systems based on the same
             underlying data.
@@ -100,17 +102,17 @@ class DataplexTableSpec(proto.Message):
             the user or not.
     """
 
-    external_tables = proto.RepeatedField(
+    external_tables: MutableSequence["DataplexExternalTable"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataplexExternalTable",
     )
-    dataplex_spec = proto.Field(
+    dataplex_spec: "DataplexSpec" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DataplexSpec",
     )
-    user_managed = proto.Field(
+    user_managed: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -141,20 +143,20 @@ class DataplexExternalTable(proto.Message):
             the external table.
     """
 
-    system = proto.Field(
+    system: common.IntegratedSystem = proto.Field(
         proto.ENUM,
         number=1,
         enum=common.IntegratedSystem,
     )
-    fully_qualified_name = proto.Field(
+    fully_qualified_name: str = proto.Field(
         proto.STRING,
         number=28,
     )
-    google_cloud_resource = proto.Field(
+    google_cloud_resource: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_catalog_entry = proto.Field(
+    data_catalog_entry: str = proto.Field(
         proto.STRING,
         number=4,
     )

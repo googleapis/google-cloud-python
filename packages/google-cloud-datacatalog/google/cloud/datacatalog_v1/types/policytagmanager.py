@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -93,7 +95,7 @@ class Taxonomy(proto.Message):
         taxonomy_timestamps (google.cloud.datacatalog_v1.types.SystemTimestamps):
             Output only. Creation and modification
             timestamps of this taxonomy.
-        activated_policy_types (Sequence[google.cloud.datacatalog_v1.types.Taxonomy.PolicyType]):
+        activated_policy_types (MutableSequence[google.cloud.datacatalog_v1.types.Taxonomy.PolicyType]):
             Optional. A list of policy types that are
             activated for this taxonomy. If not set,
             defaults to an empty list.
@@ -104,28 +106,28 @@ class Taxonomy(proto.Message):
         POLICY_TYPE_UNSPECIFIED = 0
         FINE_GRAINED_ACCESS_CONTROL = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    policy_tag_count = proto.Field(
+    policy_tag_count: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    taxonomy_timestamps = proto.Field(
+    taxonomy_timestamps: timestamps.SystemTimestamps = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamps.SystemTimestamps,
     )
-    activated_policy_types = proto.RepeatedField(
+    activated_policy_types: MutableSequence[PolicyType] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=PolicyType,
@@ -175,28 +177,28 @@ class PolicyTag(proto.Message):
             example above, this field contains the resource
             name of the "Geolocation" policy tag, and, for
             "Geolocation", this field is empty.
-        child_policy_tags (Sequence[str]):
+        child_policy_tags (MutableSequence[str]):
             Output only. Resource names of child policy
             tags of this policy tag.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    parent_policy_tag = proto.Field(
+    parent_policy_tag: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    child_policy_tags = proto.RepeatedField(
+    child_policy_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -214,11 +216,11 @@ class CreateTaxonomyRequest(proto.Message):
             The taxonomy to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    taxonomy = proto.Field(
+    taxonomy: "Taxonomy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Taxonomy",
@@ -237,7 +239,7 @@ class DeleteTaxonomyRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -260,12 +262,12 @@ class UpdateTaxonomyRequest(proto.Message):
             (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask).
     """
 
-    taxonomy = proto.Field(
+    taxonomy: "Taxonomy" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Taxonomy",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -291,15 +293,15 @@ class ListTaxonomiesRequest(proto.Message):
             previous list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -310,7 +312,7 @@ class ListTaxonomiesResponse(proto.Message):
     [ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies].
 
     Attributes:
-        taxonomies (Sequence[google.cloud.datacatalog_v1.types.Taxonomy]):
+        taxonomies (MutableSequence[google.cloud.datacatalog_v1.types.Taxonomy]):
             Taxonomies that the project contains.
         next_page_token (str):
             Pagination token of the next results page.
@@ -321,12 +323,12 @@ class ListTaxonomiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    taxonomies = proto.RepeatedField(
+    taxonomies: MutableSequence["Taxonomy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Taxonomy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -342,7 +344,7 @@ class GetTaxonomyRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -360,11 +362,11 @@ class CreatePolicyTagRequest(proto.Message):
             The policy tag to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    policy_tag = proto.Field(
+    policy_tag: "PolicyTag" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PolicyTag",
@@ -383,7 +385,7 @@ class DeletePolicyTagRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -407,12 +409,12 @@ class UpdatePolicyTagRequest(proto.Message):
             (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask).
     """
 
-    policy_tag = proto.Field(
+    policy_tag: "PolicyTag" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PolicyTag",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -439,15 +441,15 @@ class ListPolicyTagsRequest(proto.Message):
             previous list request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -458,7 +460,7 @@ class ListPolicyTagsResponse(proto.Message):
     [ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags].
 
     Attributes:
-        policy_tags (Sequence[google.cloud.datacatalog_v1.types.PolicyTag]):
+        policy_tags (MutableSequence[google.cloud.datacatalog_v1.types.PolicyTag]):
             The policy tags that belong to the taxonomy.
         next_page_token (str):
             Pagination token of the next results page.
@@ -469,12 +471,12 @@ class ListPolicyTagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policy_tags = proto.RepeatedField(
+    policy_tags: MutableSequence["PolicyTag"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PolicyTag",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -489,7 +491,7 @@ class GetPolicyTagRequest(proto.Message):
             Required. Resource name of the policy tag.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
