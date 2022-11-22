@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateJobFromTemplate
+# Snippet for LaunchFlexTemplate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_TemplatesService_CreateJobFromTemplate_sync_9e26a4bf]
+# [START dataflow_v1beta3_generated_FlexTemplatesService_LaunchFlexTemplate_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,18 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_create_job_from_template():
+def sample_launch_flex_template():
     # Create a client
-    client = dataflow_v1beta3.TemplatesServiceClient()
+    client = dataflow_v1beta3.FlexTemplatesServiceClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.CreateJobFromTemplateRequest(
-        gcs_path="gcs_path_value",
+    request = dataflow_v1beta3.LaunchFlexTemplateRequest(
     )
 
     # Make the request
-    response = client.create_job_from_template(request=request)
+    response = client.launch_flex_template(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataflow_v1beta3_generated_TemplatesService_CreateJobFromTemplate_sync_9e26a4bf]
+# [END dataflow_v1beta3_generated_FlexTemplatesService_LaunchFlexTemplate_sync]

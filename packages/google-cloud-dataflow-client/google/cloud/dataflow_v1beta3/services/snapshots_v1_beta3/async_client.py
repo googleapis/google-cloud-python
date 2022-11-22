@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -161,9 +171,9 @@ class SnapshotsV1Beta3AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SnapshotsV1Beta3Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the snapshots v1 beta3 client.
@@ -207,10 +217,10 @@ class SnapshotsV1Beta3AsyncClient:
 
     async def get_snapshot(
         self,
-        request: Union[snapshots.GetSnapshotRequest, dict] = None,
+        request: Optional[Union[snapshots.GetSnapshotRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.Snapshot:
         r"""Gets information about a snapshot.
@@ -241,7 +251,7 @@ class SnapshotsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.GetSnapshotRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetSnapshotRequest, dict]]):
                 The request object. Request to get information about a
                 snapshot
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -290,10 +300,10 @@ class SnapshotsV1Beta3AsyncClient:
 
     async def delete_snapshot(
         self,
-        request: Union[snapshots.DeleteSnapshotRequest, dict] = None,
+        request: Optional[Union[snapshots.DeleteSnapshotRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.DeleteSnapshotResponse:
         r"""Deletes a snapshot.
@@ -324,7 +334,7 @@ class SnapshotsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.DeleteSnapshotRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.DeleteSnapshotRequest, dict]]):
                 The request object. Request to delete a snapshot.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -372,10 +382,10 @@ class SnapshotsV1Beta3AsyncClient:
 
     async def list_snapshots(
         self,
-        request: Union[snapshots.ListSnapshotsRequest, dict] = None,
+        request: Optional[Union[snapshots.ListSnapshotsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.ListSnapshotsResponse:
         r"""Lists snapshots.
@@ -406,7 +416,7 @@ class SnapshotsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.ListSnapshotsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.ListSnapshotsRequest, dict]]):
                 The request object. Request to list snapshots.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

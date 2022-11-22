@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -41,13 +43,13 @@ class TopologyConfig(proto.Message):
     computations and their sharded locations.
 
     Attributes:
-        computations (Sequence[google.cloud.dataflow_v1beta3.types.ComputationTopology]):
+        computations (MutableSequence[google.cloud.dataflow_v1beta3.types.ComputationTopology]):
             The computations associated with a streaming
             Dataflow job.
-        data_disk_assignments (Sequence[google.cloud.dataflow_v1beta3.types.DataDiskAssignment]):
+        data_disk_assignments (MutableSequence[google.cloud.dataflow_v1beta3.types.DataDiskAssignment]):
             The disks assigned to a streaming Dataflow
             job.
-        user_stage_to_computation_name_map (Mapping[str, str]):
+        user_stage_to_computation_name_map (MutableMapping[str, str]):
             Maps user stage names to stable computation
             names.
         forwarding_key_bits (int):
@@ -57,26 +59,26 @@ class TopologyConfig(proto.Message):
             Version number for persistent state.
     """
 
-    computations = proto.RepeatedField(
+    computations: MutableSequence["ComputationTopology"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ComputationTopology",
     )
-    data_disk_assignments = proto.RepeatedField(
+    data_disk_assignments: MutableSequence["DataDiskAssignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="DataDiskAssignment",
     )
-    user_stage_to_computation_name_map = proto.MapField(
+    user_stage_to_computation_name_map: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    forwarding_key_bits = proto.Field(
+    forwarding_key_bits: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    persistent_state_version = proto.Field(
+    persistent_state_version: int = proto.Field(
         proto.INT32,
         number=5,
     )
@@ -113,31 +115,31 @@ class PubsubLocation(proto.Message):
             pubsub attributes.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subscription = proto.Field(
+    subscription: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    timestamp_label = proto.Field(
+    timestamp_label: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    id_label = proto.Field(
+    id_label: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    drop_late_data = proto.Field(
+    drop_late_data: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    tracking_subscription = proto.Field(
+    tracking_subscription: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    with_attributes = proto.Field(
+    with_attributes: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
@@ -153,7 +155,7 @@ class StreamingStageLocation(proto.Message):
             streaming Dataflow job.
     """
 
-    stream_id = proto.Field(
+    stream_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -171,11 +173,11 @@ class StreamingSideInputLocation(proto.Message):
             input is stored.
     """
 
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state_family = proto.Field(
+    state_family: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -189,7 +191,7 @@ class CustomSourceLocation(proto.Message):
             Whether this source is stateful.
     """
 
-    stateful = proto.Field(
+    stateful: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -226,25 +228,25 @@ class StreamLocation(proto.Message):
             This field is a member of `oneof`_ ``location``.
     """
 
-    streaming_stage_location = proto.Field(
+    streaming_stage_location: "StreamingStageLocation" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="location",
         message="StreamingStageLocation",
     )
-    pubsub_location = proto.Field(
+    pubsub_location: "PubsubLocation" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="location",
         message="PubsubLocation",
     )
-    side_input_location = proto.Field(
+    side_input_location: "StreamingSideInputLocation" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="location",
         message="StreamingSideInputLocation",
     )
-    custom_source_location = proto.Field(
+    custom_source_location: "CustomSourceLocation" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="location",
@@ -263,11 +265,11 @@ class StateFamilyConfig(proto.Message):
             operation.
     """
 
-    state_family = proto.Field(
+    state_family: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    is_read = proto.Field(
+    is_read: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -281,40 +283,40 @@ class ComputationTopology(proto.Message):
             The system stage name.
         computation_id (str):
             The ID of the computation.
-        key_ranges (Sequence[google.cloud.dataflow_v1beta3.types.KeyRangeLocation]):
+        key_ranges (MutableSequence[google.cloud.dataflow_v1beta3.types.KeyRangeLocation]):
             The key ranges processed by the computation.
-        inputs (Sequence[google.cloud.dataflow_v1beta3.types.StreamLocation]):
+        inputs (MutableSequence[google.cloud.dataflow_v1beta3.types.StreamLocation]):
             The inputs to the computation.
-        outputs (Sequence[google.cloud.dataflow_v1beta3.types.StreamLocation]):
+        outputs (MutableSequence[google.cloud.dataflow_v1beta3.types.StreamLocation]):
             The outputs from the computation.
-        state_families (Sequence[google.cloud.dataflow_v1beta3.types.StateFamilyConfig]):
+        state_families (MutableSequence[google.cloud.dataflow_v1beta3.types.StateFamilyConfig]):
             The state family values.
     """
 
-    system_stage_name = proto.Field(
+    system_stage_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    computation_id = proto.Field(
+    computation_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    key_ranges = proto.RepeatedField(
+    key_ranges: MutableSequence["KeyRangeLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="KeyRangeLocation",
     )
-    inputs = proto.RepeatedField(
+    inputs: MutableSequence["StreamLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="StreamLocation",
     )
-    outputs = proto.RepeatedField(
+    outputs: MutableSequence["StreamLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="StreamLocation",
     )
-    state_families = proto.RepeatedField(
+    state_families: MutableSequence["StateFamilyConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="StateFamilyConfig",
@@ -348,23 +350,23 @@ class KeyRangeLocation(proto.Message):
             in the worker local filesystem.
     """
 
-    start = proto.Field(
+    start: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    end = proto.Field(
+    end: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    delivery_endpoint = proto.Field(
+    delivery_endpoint: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_disk = proto.Field(
+    data_disk: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    deprecated_persistent_directory = proto.Field(
+    deprecated_persistent_directory: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -382,7 +384,7 @@ class MountedDataDisk(proto.Message):
             "myproject-1014-104817-4c2-harness-0-disk-1".
     """
 
-    data_disk = proto.Field(
+    data_disk: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -396,7 +398,7 @@ class DataDiskAssignment(proto.Message):
             VM instance name the data disks mounted to,
             for example
             "myproject-1014-104817-4c2-harness-0".
-        data_disks (Sequence[str]):
+        data_disks (MutableSequence[str]):
             Mounted data disks. The order is important a
             data disk's 0-based index in this list defines
             which persistent directory the disk is mounted
@@ -406,11 +408,11 @@ class DataDiskAssignment(proto.Message):
             }.
     """
 
-    vm_instance = proto.Field(
+    vm_instance: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_disks = proto.RepeatedField(
+    data_disks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -436,15 +438,15 @@ class KeyRangeDataDiskAssignment(proto.Message):
             "myproject-1014-104817-4c2-harness-0-disk-1".
     """
 
-    start = proto.Field(
+    start: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    end = proto.Field(
+    end: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    data_disk = proto.Field(
+    data_disk: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -457,16 +459,18 @@ class StreamingComputationRanges(proto.Message):
     Attributes:
         computation_id (str):
             The ID of the computation.
-        range_assignments (Sequence[google.cloud.dataflow_v1beta3.types.KeyRangeDataDiskAssignment]):
+        range_assignments (MutableSequence[google.cloud.dataflow_v1beta3.types.KeyRangeDataDiskAssignment]):
             Data disk assignments for ranges from this
             computation.
     """
 
-    computation_id = proto.Field(
+    computation_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    range_assignments = proto.RepeatedField(
+    range_assignments: MutableSequence[
+        "KeyRangeDataDiskAssignment"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="KeyRangeDataDiskAssignment",
@@ -485,11 +489,11 @@ class StreamingApplianceSnapshotConfig(proto.Message):
             appliance state.
     """
 
-    snapshot_id = proto.Field(
+    snapshot_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    import_state_endpoint = proto.Field(
+    import_state_endpoint: str = proto.Field(
         proto.STRING,
         number=2,
     )

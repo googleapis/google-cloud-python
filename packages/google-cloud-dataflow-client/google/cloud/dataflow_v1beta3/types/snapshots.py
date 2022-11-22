@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -54,15 +56,15 @@ class PubsubSnapshotMetadata(proto.Message):
             The expire time of the Pubsub snapshot.
     """
 
-    topic_name = proto.Field(
+    topic_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    snapshot_name = proto.Field(
+    snapshot_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -86,7 +88,7 @@ class Snapshot(proto.Message):
             automatically deleted.
         state (google.cloud.dataflow_v1beta3.types.SnapshotState):
             State of the snapshot.
-        pubsub_metadata (Sequence[google.cloud.dataflow_v1beta3.types.PubsubSnapshotMetadata]):
+        pubsub_metadata (MutableSequence[google.cloud.dataflow_v1beta3.types.PubsubSnapshotMetadata]):
             Pub/Sub snapshot metadata.
         description (str):
             User specified description of the snapshot.
@@ -99,47 +101,47 @@ class Snapshot(proto.Message):
             e.g., "us-central1".
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_job_id = proto.Field(
+    source_job_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    creation_time = proto.Field(
+    creation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    ttl = proto.Field(
+    ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    state = proto.Field(
+    state: "SnapshotState" = proto.Field(
         proto.ENUM,
         number=6,
         enum="SnapshotState",
     )
-    pubsub_metadata = proto.RepeatedField(
+    pubsub_metadata: MutableSequence["PubsubSnapshotMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="PubsubSnapshotMetadata",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    disk_size_bytes = proto.Field(
+    disk_size_bytes: int = proto.Field(
         proto.INT64,
         number=9,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -158,15 +160,15 @@ class GetSnapshotRequest(proto.Message):
             The location that contains this snapshot.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    snapshot_id = proto.Field(
+    snapshot_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -185,15 +187,15 @@ class DeleteSnapshotRequest(proto.Message):
             The location that contains this snapshot.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    snapshot_id = proto.Field(
+    snapshot_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -216,15 +218,15 @@ class ListSnapshotsRequest(proto.Message):
             The location to list snapshots in.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -234,11 +236,11 @@ class ListSnapshotsResponse(proto.Message):
     r"""List of snapshots.
 
     Attributes:
-        snapshots (Sequence[google.cloud.dataflow_v1beta3.types.Snapshot]):
+        snapshots (MutableSequence[google.cloud.dataflow_v1beta3.types.Snapshot]):
             Returned snapshots.
     """
 
-    snapshots = proto.RepeatedField(
+    snapshots: MutableSequence["Snapshot"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Snapshot",

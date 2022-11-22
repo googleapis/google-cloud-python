@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for LaunchFlexTemplate
+# Snippet for AggregatedListJobs
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_FlexTemplatesService_LaunchFlexTemplate_sync_a4f75f91]
+# [START dataflow_v1beta3_generated_JobsV1Beta3_AggregatedListJobs_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,19 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_launch_flex_template():
+def sample_aggregated_list_jobs():
     # Create a client
-    client = dataflow_v1beta3.FlexTemplatesServiceClient()
+    client = dataflow_v1beta3.JobsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.LaunchFlexTemplateRequest(
+    request = dataflow_v1beta3.ListJobsRequest(
     )
 
     # Make the request
-    response = client.launch_flex_template(request=request)
+    page_result = client.aggregated_list_jobs(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END dataflow_v1beta3_generated_FlexTemplatesService_LaunchFlexTemplate_sync_a4f75f91]
+# [END dataflow_v1beta3_generated_JobsV1Beta3_AggregatedListJobs_sync]

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -161,9 +171,9 @@ class MetricsV1Beta3AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, MetricsV1Beta3Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the metrics v1 beta3 client.
@@ -207,10 +217,10 @@ class MetricsV1Beta3AsyncClient:
 
     async def get_job_metrics(
         self,
-        request: Union[metrics.GetJobMetricsRequest, dict] = None,
+        request: Optional[Union[metrics.GetJobMetricsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metrics.JobMetrics:
         r"""Request the job status.
@@ -249,7 +259,7 @@ class MetricsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest, dict]]):
                 The request object. Request to get job metrics.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -308,10 +318,10 @@ class MetricsV1Beta3AsyncClient:
 
     async def get_job_execution_details(
         self,
-        request: Union[metrics.GetJobExecutionDetailsRequest, dict] = None,
+        request: Optional[Union[metrics.GetJobExecutionDetailsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetJobExecutionDetailsAsyncPager:
         r"""Request detailed information about the execution
@@ -346,7 +356,7 @@ class MetricsV1Beta3AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest, dict]]):
                 The request object. Request to get job execution
                 details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -409,10 +419,10 @@ class MetricsV1Beta3AsyncClient:
 
     async def get_stage_execution_details(
         self,
-        request: Union[metrics.GetStageExecutionDetailsRequest, dict] = None,
+        request: Optional[Union[metrics.GetStageExecutionDetailsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetStageExecutionDetailsAsyncPager:
         r"""Request detailed information about the execution
@@ -448,7 +458,7 @@ class MetricsV1Beta3AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest, dict]]):
                 The request object. Request to get information about a
                 particular execution stage of a job. Currently only
                 tracked for Batch jobs.

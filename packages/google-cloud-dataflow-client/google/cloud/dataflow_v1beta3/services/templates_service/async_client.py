@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -161,9 +171,9 @@ class TemplatesServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TemplatesServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the templates service client.
@@ -207,10 +217,10 @@ class TemplatesServiceAsyncClient:
 
     async def create_job_from_template(
         self,
-        request: Union[templates.CreateJobFromTemplateRequest, dict] = None,
+        request: Optional[Union[templates.CreateJobFromTemplateRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Creates a Cloud Dataflow job from a template.
@@ -242,7 +252,7 @@ class TemplatesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest, dict]]):
                 The request object. A request to create a Cloud Dataflow
                 job from a template.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -292,10 +302,10 @@ class TemplatesServiceAsyncClient:
 
     async def launch_template(
         self,
-        request: Union[templates.LaunchTemplateRequest, dict] = None,
+        request: Optional[Union[templates.LaunchTemplateRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.LaunchTemplateResponse:
         r"""Launch a template.
@@ -327,7 +337,7 @@ class TemplatesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.LaunchTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.LaunchTemplateRequest, dict]]):
                 The request object. A request to launch a template.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -376,10 +386,10 @@ class TemplatesServiceAsyncClient:
 
     async def get_template(
         self,
-        request: Union[templates.GetTemplateRequest, dict] = None,
+        request: Optional[Union[templates.GetTemplateRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.GetTemplateResponse:
         r"""Get the template associated with a template.
@@ -411,7 +421,7 @@ class TemplatesServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.GetTemplateRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetTemplateRequest, dict]]):
                 The request object. A request to retrieve a Cloud
                 Dataflow job template.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

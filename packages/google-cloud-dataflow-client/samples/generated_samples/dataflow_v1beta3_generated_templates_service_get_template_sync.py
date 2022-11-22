@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListJobMessages
+# Snippet for GetTemplate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync_04dec136]
+# [START dataflow_v1beta3_generated_TemplatesService_GetTemplate_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,19 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_list_job_messages():
+def sample_get_template():
     # Create a client
-    client = dataflow_v1beta3.MessagesV1Beta3Client()
+    client = dataflow_v1beta3.TemplatesServiceClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.ListJobMessagesRequest(
+    request = dataflow_v1beta3.GetTemplateRequest(
+        gcs_path="gcs_path_value",
     )
 
     # Make the request
-    page_result = client.list_job_messages(request=request)
+    response = client.get_template(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync_04dec136]
+# [END dataflow_v1beta3_generated_TemplatesService_GetTemplate_sync]

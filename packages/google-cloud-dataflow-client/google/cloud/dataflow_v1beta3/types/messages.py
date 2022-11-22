@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -54,20 +56,20 @@ class JobMessage(proto.Message):
             Importance level of the message.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    time = proto.Field(
+    time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    message_text = proto.Field(
+    message_text: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    message_importance = proto.Field(
+    message_importance: "JobMessageImportance" = proto.Field(
         proto.ENUM,
         number=4,
         enum="JobMessageImportance",
@@ -86,7 +88,7 @@ class StructuredMessage(proto.Message):
             Identifier for this message type.  Used by
             external systems to internationalize or
             personalize message.
-        parameters (Sequence[google.cloud.dataflow_v1beta3.types.StructuredMessage.Parameter]):
+        parameters (MutableSequence[google.cloud.dataflow_v1beta3.types.StructuredMessage.Parameter]):
             The structured data associated with this
             message.
     """
@@ -101,25 +103,25 @@ class StructuredMessage(proto.Message):
                 Value for this parameter.
         """
 
-        key = proto.Field(
+        key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        value = proto.Field(
+        value: struct_pb2.Value = proto.Field(
             proto.MESSAGE,
             number=2,
             message=struct_pb2.Value,
         )
 
-    message_text = proto.Field(
+    message_text: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    message_key = proto.Field(
+    message_key: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence[Parameter] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Parameter,
@@ -159,30 +161,30 @@ class AutoscalingEvent(proto.Message):
         ACTUATION_FAILURE = 3
         NO_CHANGE = 4
 
-    current_num_workers = proto.Field(
+    current_num_workers: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    target_num_workers = proto.Field(
+    target_num_workers: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    event_type = proto.Field(
+    event_type: AutoscalingEventType = proto.Field(
         proto.ENUM,
         number=3,
         enum=AutoscalingEventType,
     )
-    description = proto.Field(
+    description: "StructuredMessage" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="StructuredMessage",
     )
-    time = proto.Field(
+    time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    worker_pool = proto.Field(
+    worker_pool: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -225,38 +227,38 @@ class ListJobMessagesRequest(proto.Message):
             that contains the job specified by job_id.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    minimum_importance = proto.Field(
+    minimum_importance: "JobMessageImportance" = proto.Field(
         proto.ENUM,
         number=3,
         enum="JobMessageImportance",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -266,12 +268,12 @@ class ListJobMessagesResponse(proto.Message):
     r"""Response to a request to list job messages.
 
     Attributes:
-        job_messages (Sequence[google.cloud.dataflow_v1beta3.types.JobMessage]):
+        job_messages (MutableSequence[google.cloud.dataflow_v1beta3.types.JobMessage]):
             Messages in ascending timestamp order.
         next_page_token (str):
             The token to obtain the next page of results
             if there are more.
-        autoscaling_events (Sequence[google.cloud.dataflow_v1beta3.types.AutoscalingEvent]):
+        autoscaling_events (MutableSequence[google.cloud.dataflow_v1beta3.types.AutoscalingEvent]):
             Autoscaling events in ascending timestamp
             order.
     """
@@ -280,16 +282,16 @@ class ListJobMessagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    job_messages = proto.RepeatedField(
+    job_messages: MutableSequence["JobMessage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="JobMessage",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    autoscaling_events = proto.RepeatedField(
+    autoscaling_events: MutableSequence["AutoscalingEvent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="AutoscalingEvent",

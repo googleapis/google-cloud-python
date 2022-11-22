@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -59,7 +61,7 @@ class MetricStructuredName(proto.Message):
             service or SDK.
         name (str):
             Worker-defined metric name.
-        context (Mapping[str, str]):
+        context (MutableMapping[str, str]):
             Zero or more labeled fields which identify the part of the
             job this metric is associated with, such as the name of a
             step or collection.
@@ -69,15 +71,15 @@ class MetricStructuredName(proto.Message):
             PCollections in the SDK will have context['pcollection'] = .
     """
 
-    origin = proto.Field(
+    origin: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    context = proto.MapField(
+    context: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -146,55 +148,55 @@ class MetricUpdate(proto.Message):
             the metrics API.
     """
 
-    name = proto.Field(
+    name: "MetricStructuredName" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="MetricStructuredName",
     )
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cumulative = proto.Field(
+    cumulative: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    scalar = proto.Field(
+    scalar: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Value,
     )
-    mean_sum = proto.Field(
+    mean_sum: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=5,
         message=struct_pb2.Value,
     )
-    mean_count = proto.Field(
+    mean_count: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Value,
     )
-    set_ = proto.Field(
+    set_: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=7,
         message=struct_pb2.Value,
     )
-    distribution = proto.Field(
+    distribution: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=11,
         message=struct_pb2.Value,
     )
-    gauge = proto.Field(
+    gauge: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=12,
         message=struct_pb2.Value,
     )
-    internal = proto.Field(
+    internal: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=8,
         message=struct_pb2.Value,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
@@ -219,20 +221,20 @@ class GetJobMetricsRequest(proto.Message):
             that contains the job specified by job_id.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -251,16 +253,16 @@ class JobMetrics(proto.Message):
         metric_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp as of which metric values are
             current.
-        metrics (Sequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
+        metrics (MutableSequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
             All metrics for this job.
     """
 
-    metric_time = proto.Field(
+    metric_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence["MetricUpdate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MetricUpdate",
@@ -291,23 +293,23 @@ class GetJobExecutionDetailsRequest(proto.Message):
             of results to be returned.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -320,7 +322,7 @@ class ProgressTimeseries(proto.Message):
     Attributes:
         current_progress (float):
             The current progress of the component, in the range [0,1].
-        data_points (Sequence[google.cloud.dataflow_v1beta3.types.ProgressTimeseries.Point]):
+        data_points (MutableSequence[google.cloud.dataflow_v1beta3.types.ProgressTimeseries.Point]):
             History of progress for the component.
             Points are sorted by time.
     """
@@ -335,21 +337,21 @@ class ProgressTimeseries(proto.Message):
                 The value of the point.
         """
 
-        time = proto.Field(
+        time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        value = proto.Field(
+        value: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
 
-    current_progress = proto.Field(
+    current_progress: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    data_points = proto.RepeatedField(
+    data_points: MutableSequence[Point] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Point,
@@ -374,35 +376,35 @@ class StageSummary(proto.Message):
         progress (google.cloud.dataflow_v1beta3.types.ProgressTimeseries):
             Progress for this stage.
             Only applicable to Batch jobs.
-        metrics (Sequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
+        metrics (MutableSequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
             Metrics for this stage.
     """
 
-    stage_id = proto.Field(
+    stage_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: "ExecutionState" = proto.Field(
         proto.ENUM,
         number=2,
         enum="ExecutionState",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    progress = proto.Field(
+    progress: "ProgressTimeseries" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ProgressTimeseries",
     )
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence["MetricUpdate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="MetricUpdate",
@@ -413,7 +415,7 @@ class JobExecutionDetails(proto.Message):
     r"""Information about the execution of a job.
 
     Attributes:
-        stages (Sequence[google.cloud.dataflow_v1beta3.types.StageSummary]):
+        stages (MutableSequence[google.cloud.dataflow_v1beta3.types.StageSummary]):
             The stages of the job execution.
         next_page_token (str):
             If present, this response does not contain all requested
@@ -425,12 +427,12 @@ class JobExecutionDetails(proto.Message):
     def raw_page(self):
         return self
 
-    stages = proto.RepeatedField(
+    stages: MutableSequence["StageSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="StageSummary",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -469,36 +471,36 @@ class GetStageExecutionDetailsRequest(proto.Message):
             start time.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    stage_id = proto.Field(
+    stage_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
@@ -524,39 +526,39 @@ class WorkItemDetails(proto.Message):
             State of this work item.
         progress (google.cloud.dataflow_v1beta3.types.ProgressTimeseries):
             Progress of this work item.
-        metrics (Sequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
+        metrics (MutableSequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
             Metrics for this work item.
     """
 
-    task_id = proto.Field(
+    task_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    attempt_id = proto.Field(
+    attempt_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: "ExecutionState" = proto.Field(
         proto.ENUM,
         number=5,
         enum="ExecutionState",
     )
-    progress = proto.Field(
+    progress: "ProgressTimeseries" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="ProgressTimeseries",
     )
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence["MetricUpdate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="MetricUpdate",
@@ -569,16 +571,16 @@ class WorkerDetails(proto.Message):
     Attributes:
         worker_name (str):
             Name of this worker
-        work_items (Sequence[google.cloud.dataflow_v1beta3.types.WorkItemDetails]):
+        work_items (MutableSequence[google.cloud.dataflow_v1beta3.types.WorkItemDetails]):
             Work items processed by this worker, sorted
             by time.
     """
 
-    worker_name = proto.Field(
+    worker_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    work_items = proto.RepeatedField(
+    work_items: MutableSequence["WorkItemDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="WorkItemDetails",
@@ -589,7 +591,7 @@ class StageExecutionDetails(proto.Message):
     r"""Information about the workers and work items within a stage.
 
     Attributes:
-        workers (Sequence[google.cloud.dataflow_v1beta3.types.WorkerDetails]):
+        workers (MutableSequence[google.cloud.dataflow_v1beta3.types.WorkerDetails]):
             Workers that have done work on the stage.
         next_page_token (str):
             If present, this response does not contain all requested
@@ -601,12 +603,12 @@ class StageExecutionDetails(proto.Message):
     def raw_page(self):
         return self
 
-    workers = proto.RepeatedField(
+    workers: MutableSequence["WorkerDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="WorkerDetails",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

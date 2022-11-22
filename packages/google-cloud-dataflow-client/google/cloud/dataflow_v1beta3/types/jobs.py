@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -124,7 +126,7 @@ class Job(proto.Message):
             The type of Cloud Dataflow job.
         environment (google.cloud.dataflow_v1beta3.types.Environment):
             The environment for the job.
-        steps (Sequence[google.cloud.dataflow_v1beta3.types.Step]):
+        steps (MutableSequence[google.cloud.dataflow_v1beta3.types.Step]):
             Exactly one of step or steps_location should be specified.
 
             The top-level steps that constitute the entire job. Only
@@ -170,7 +172,7 @@ class Job(proto.Message):
             When sending a ``CreateJobRequest``, you can update a job by
             specifying it here. The job named here is stopped, and its
             intermediate state is transferred to this job.
-        transform_name_mapping (Mapping[str, str]):
+        transform_name_mapping (MutableMapping[str, str]):
             The map of transform name prefixes of the job
             to be replaced to the corresponding name
             prefixes of the new job.
@@ -189,7 +191,7 @@ class Job(proto.Message):
             If another job is an update of this job (and thus, this job
             is in ``JOB_STATE_UPDATED``), this field contains the ID of
             that job.
-        temp_files (Sequence[str]):
+        temp_files (MutableSequence[str]):
             A set of files the system should be aware of
             that are used for temporary storage. These
             temporary files will be removed on job
@@ -203,7 +205,7 @@ class Job(proto.Message):
 
                storage.googleapis.com/{bucket}/{object}
                bucket.storage.googleapis.com/{object}
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined labels for this job.
 
             The labels map can contain no more than 64 entries. Entries
@@ -225,7 +227,7 @@ class Job(proto.Message):
             time. A description of the user pipeline and stages through
             which it is executed. Created by Cloud Dataflow service.
             Only retrieved with JOB_VIEW_DESCRIPTION or JOB_VIEW_ALL.
-        stage_states (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageState]):
+        stage_states (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageState]):
             This field may be mutated by the Cloud
             Dataflow service; callers cannot mutate it.
         job_metadata (google.cloud.dataflow_v1beta3.types.JobMetadata):
@@ -251,117 +253,117 @@ class Job(proto.Message):
             if it is set in any requests.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    type_ = proto.Field(
+    type_: gd_environment.JobType = proto.Field(
         proto.ENUM,
         number=4,
         enum=gd_environment.JobType,
     )
-    environment = proto.Field(
+    environment: gd_environment.Environment = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gd_environment.Environment,
     )
-    steps = proto.RepeatedField(
+    steps: MutableSequence["Step"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="Step",
     )
-    steps_location = proto.Field(
+    steps_location: str = proto.Field(
         proto.STRING,
         number=24,
     )
-    current_state = proto.Field(
+    current_state: "JobState" = proto.Field(
         proto.ENUM,
         number=7,
         enum="JobState",
     )
-    current_state_time = proto.Field(
+    current_state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    requested_state = proto.Field(
+    requested_state: "JobState" = proto.Field(
         proto.ENUM,
         number=9,
         enum="JobState",
     )
-    execution_info = proto.Field(
+    execution_info: "JobExecutionInfo" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="JobExecutionInfo",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    replace_job_id = proto.Field(
+    replace_job_id: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    transform_name_mapping = proto.MapField(
+    transform_name_mapping: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=13,
     )
-    client_request_id = proto.Field(
+    client_request_id: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    replaced_by_job_id = proto.Field(
+    replaced_by_job_id: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    temp_files = proto.RepeatedField(
+    temp_files: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=16,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=17,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    pipeline_description = proto.Field(
+    pipeline_description: "PipelineDescription" = proto.Field(
         proto.MESSAGE,
         number=19,
         message="PipelineDescription",
     )
-    stage_states = proto.RepeatedField(
+    stage_states: MutableSequence["ExecutionStageState"] = proto.RepeatedField(
         proto.MESSAGE,
         number=20,
         message="ExecutionStageState",
     )
-    job_metadata = proto.Field(
+    job_metadata: "JobMetadata" = proto.Field(
         proto.MESSAGE,
         number=21,
         message="JobMetadata",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=22,
         message=timestamp_pb2.Timestamp,
     )
-    created_from_snapshot_id = proto.Field(
+    created_from_snapshot_id: str = proto.Field(
         proto.STRING,
         number=23,
     )
-    satisfies_pzs = proto.Field(
+    satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=25,
     )
@@ -377,11 +379,11 @@ class DatastoreIODetails(proto.Message):
             ProjectId accessed in the connection.
     """
 
-    namespace = proto.Field(
+    namespace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -397,11 +399,11 @@ class PubSubIODetails(proto.Message):
             Subscription used in the connection.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subscription = proto.Field(
+    subscription: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -416,7 +418,7 @@ class FileIODetails(proto.Message):
             connector.
     """
 
-    file_pattern = proto.Field(
+    file_pattern: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -434,15 +436,15 @@ class BigTableIODetails(proto.Message):
             TableId accessed in the connection.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -462,19 +464,19 @@ class BigQueryIODetails(proto.Message):
             Query used to access data in the connection.
     """
 
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -492,15 +494,15 @@ class SpannerIODetails(proto.Message):
             DatabaseId accessed in the connection.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -527,15 +529,15 @@ class SdkVersion(proto.Message):
         DEPRECATED = 3
         UNSUPPORTED = 4
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version_display_name = proto.Field(
+    version_display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    sdk_support_status = proto.Field(
+    sdk_support_status: SdkSupportStatus = proto.Field(
         proto.ENUM,
         number=3,
         enum=SdkSupportStatus,
@@ -549,57 +551,57 @@ class JobMetadata(proto.Message):
     Attributes:
         sdk_version (google.cloud.dataflow_v1beta3.types.SdkVersion):
             The SDK version used to run the job.
-        spanner_details (Sequence[google.cloud.dataflow_v1beta3.types.SpannerIODetails]):
+        spanner_details (MutableSequence[google.cloud.dataflow_v1beta3.types.SpannerIODetails]):
             Identification of a Spanner source used in
             the Dataflow job.
-        bigquery_details (Sequence[google.cloud.dataflow_v1beta3.types.BigQueryIODetails]):
+        bigquery_details (MutableSequence[google.cloud.dataflow_v1beta3.types.BigQueryIODetails]):
             Identification of a BigQuery source used in
             the Dataflow job.
-        big_table_details (Sequence[google.cloud.dataflow_v1beta3.types.BigTableIODetails]):
+        big_table_details (MutableSequence[google.cloud.dataflow_v1beta3.types.BigTableIODetails]):
             Identification of a Cloud Bigtable source
             used in the Dataflow job.
-        pubsub_details (Sequence[google.cloud.dataflow_v1beta3.types.PubSubIODetails]):
+        pubsub_details (MutableSequence[google.cloud.dataflow_v1beta3.types.PubSubIODetails]):
             Identification of a Pub/Sub source used in
             the Dataflow job.
-        file_details (Sequence[google.cloud.dataflow_v1beta3.types.FileIODetails]):
+        file_details (MutableSequence[google.cloud.dataflow_v1beta3.types.FileIODetails]):
             Identification of a File source used in the
             Dataflow job.
-        datastore_details (Sequence[google.cloud.dataflow_v1beta3.types.DatastoreIODetails]):
+        datastore_details (MutableSequence[google.cloud.dataflow_v1beta3.types.DatastoreIODetails]):
             Identification of a Datastore source used in
             the Dataflow job.
     """
 
-    sdk_version = proto.Field(
+    sdk_version: "SdkVersion" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SdkVersion",
     )
-    spanner_details = proto.RepeatedField(
+    spanner_details: MutableSequence["SpannerIODetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="SpannerIODetails",
     )
-    bigquery_details = proto.RepeatedField(
+    bigquery_details: MutableSequence["BigQueryIODetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="BigQueryIODetails",
     )
-    big_table_details = proto.RepeatedField(
+    big_table_details: MutableSequence["BigTableIODetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="BigTableIODetails",
     )
-    pubsub_details = proto.RepeatedField(
+    pubsub_details: MutableSequence["PubSubIODetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="PubSubIODetails",
     )
-    file_details = proto.RepeatedField(
+    file_details: MutableSequence["FileIODetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="FileIODetails",
     )
-    datastore_details = proto.RepeatedField(
+    datastore_details: MutableSequence["DatastoreIODetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="DatastoreIODetails",
@@ -621,16 +623,16 @@ class ExecutionStageState(proto.Message):
             this state.
     """
 
-    execution_stage_name = proto.Field(
+    execution_stage_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    execution_stage_state = proto.Field(
+    execution_stage_state: "JobState" = proto.Field(
         proto.ENUM,
         number=2,
         enum="JobState",
     )
-    current_state_time = proto.Field(
+    current_state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -644,27 +646,31 @@ class PipelineDescription(proto.Message):
     Dataflow provided metrics.
 
     Attributes:
-        original_pipeline_transform (Sequence[google.cloud.dataflow_v1beta3.types.TransformSummary]):
+        original_pipeline_transform (MutableSequence[google.cloud.dataflow_v1beta3.types.TransformSummary]):
             Description of each transform in the pipeline
             and collections between them.
-        execution_pipeline_stage (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary]):
+        execution_pipeline_stage (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary]):
             Description of each stage of execution of the
             pipeline.
-        display_data (Sequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
+        display_data (MutableSequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
             Pipeline level display data.
     """
 
-    original_pipeline_transform = proto.RepeatedField(
+    original_pipeline_transform: MutableSequence[
+        "TransformSummary"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TransformSummary",
     )
-    execution_pipeline_stage = proto.RepeatedField(
+    execution_pipeline_stage: MutableSequence[
+        "ExecutionStageSummary"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ExecutionStageSummary",
     )
-    display_data = proto.RepeatedField(
+    display_data: MutableSequence["DisplayData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="DisplayData",
@@ -683,39 +689,39 @@ class TransformSummary(proto.Message):
         name (str):
             User provided name for this transform
             instance.
-        display_data (Sequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
+        display_data (MutableSequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
             Transform-specific display data.
-        output_collection_name (Sequence[str]):
+        output_collection_name (MutableSequence[str]):
             User  names for all collection outputs to
             this transform.
-        input_collection_name (Sequence[str]):
+        input_collection_name (MutableSequence[str]):
             User names for all collection inputs to this
             transform.
     """
 
-    kind = proto.Field(
+    kind: "KindType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="KindType",
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    display_data = proto.RepeatedField(
+    display_data: MutableSequence["DisplayData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="DisplayData",
     )
-    output_collection_name = proto.RepeatedField(
+    output_collection_name: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    input_collection_name = proto.RepeatedField(
+    input_collection_name: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -735,17 +741,17 @@ class ExecutionStageSummary(proto.Message):
             Dataflow service generated id for this stage.
         kind (google.cloud.dataflow_v1beta3.types.KindType):
             Type of transform this stage is executing.
-        input_source (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.StageSource]):
+        input_source (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.StageSource]):
             Input sources for this stage.
-        output_source (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.StageSource]):
+        output_source (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.StageSource]):
             Output sources for this stage.
-        prerequisite_stage (Sequence[str]):
+        prerequisite_stage (MutableSequence[str]):
             Other stages that must complete before this
             stage can run.
-        component_transform (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.ComponentTransform]):
+        component_transform (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.ComponentTransform]):
             Transforms that comprise this execution
             stage.
-        component_source (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.ComponentSource]):
+        component_source (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.ComponentSource]):
             Collections produced and consumed by
             component transforms of this stage.
     """
@@ -768,19 +774,19 @@ class ExecutionStageSummary(proto.Message):
                 Size of the source, if measurable.
         """
 
-        user_name = proto.Field(
+        user_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        original_transform_or_collection = proto.Field(
+        original_transform_or_collection: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        size_bytes = proto.Field(
+        size_bytes: int = proto.Field(
             proto.INT64,
             number=4,
         )
@@ -802,15 +808,15 @@ class ExecutionStageSummary(proto.Message):
                 associated.
         """
 
-        user_name = proto.Field(
+        user_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        original_transform = proto.Field(
+        original_transform: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -832,52 +838,52 @@ class ExecutionStageSummary(proto.Message):
                 closely associated.
         """
 
-        user_name = proto.Field(
+        user_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        original_transform_or_collection = proto.Field(
+        original_transform_or_collection: str = proto.Field(
             proto.STRING,
             number=3,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    kind = proto.Field(
+    kind: "KindType" = proto.Field(
         proto.ENUM,
         number=3,
         enum="KindType",
     )
-    input_source = proto.RepeatedField(
+    input_source: MutableSequence[StageSource] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=StageSource,
     )
-    output_source = proto.RepeatedField(
+    output_source: MutableSequence[StageSource] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=StageSource,
     )
-    prerequisite_stage = proto.RepeatedField(
+    prerequisite_stage: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    component_transform = proto.RepeatedField(
+    component_transform: MutableSequence[ComponentTransform] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=ComponentTransform,
     )
-    component_source = proto.RepeatedField(
+    component_source: MutableSequence[ComponentSource] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=ComponentSource,
@@ -954,60 +960,60 @@ class DisplayData(proto.Message):
             the element.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    namespace = proto.Field(
+    namespace: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    str_value = proto.Field(
+    str_value: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="Value",
     )
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=5,
         oneof="Value",
     )
-    float_value = proto.Field(
+    float_value: float = proto.Field(
         proto.FLOAT,
         number=6,
         oneof="Value",
     )
-    java_class_value = proto.Field(
+    java_class_value: str = proto.Field(
         proto.STRING,
         number=7,
         oneof="Value",
     )
-    timestamp_value = proto.Field(
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="Value",
         message=timestamp_pb2.Timestamp,
     )
-    duration_value = proto.Field(
+    duration_value: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="Value",
         message=duration_pb2.Duration,
     )
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=10,
         oneof="Value",
     )
-    short_str_value = proto.Field(
+    short_str_value: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -1053,15 +1059,15 @@ class Step(proto.Message):
             be provided on Create. Only retrieved with JOB_VIEW_ALL.
     """
 
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    properties = proto.Field(
+    properties: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Struct,
@@ -1073,12 +1079,12 @@ class JobExecutionInfo(proto.Message):
     executed that isn't contained in the submitted job.
 
     Attributes:
-        stages (Mapping[str, google.cloud.dataflow_v1beta3.types.JobExecutionStageInfo]):
+        stages (MutableMapping[str, google.cloud.dataflow_v1beta3.types.JobExecutionStageInfo]):
             A mapping from each stage to the information
             about that stage.
     """
 
-    stages = proto.MapField(
+    stages: MutableMapping[str, "JobExecutionStageInfo"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -1092,14 +1098,14 @@ class JobExecutionStageInfo(proto.Message):
     executed.
 
     Attributes:
-        step_name (Sequence[str]):
+        step_name (MutableSequence[str]):
             The steps associated with the execution
             stage. Note that stages may have several steps,
             and that a given step might be run by more than
             one stage.
     """
 
-    step_name = proto.RepeatedField(
+    step_name: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -1126,25 +1132,25 @@ class CreateJobRequest(proto.Message):
             that contains this job.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Job",
     )
-    view = proto.Field(
+    view: "JobView" = proto.Field(
         proto.ENUM,
         number=3,
         enum="JobView",
     )
-    replace_job_id = proto.Field(
+    replace_job_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1168,20 +1174,20 @@ class GetJobRequest(proto.Message):
             that contains this job.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    view = proto.Field(
+    view: "JobView" = proto.Field(
         proto.ENUM,
         number=3,
         enum="JobView",
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1206,20 +1212,20 @@ class UpdateJobRequest(proto.Message):
             that contains this job.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    job = proto.Field(
+    job: "Job" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Job",
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1259,29 +1265,29 @@ class ListJobsRequest(proto.Message):
         TERMINATED = 2
         ACTIVE = 3
 
-    filter = proto.Field(
+    filter: Filter = proto.Field(
         proto.ENUM,
         number=5,
         enum=Filter,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "JobView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="JobView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=17,
     )
@@ -1299,7 +1305,7 @@ class FailedLocation(proto.Message):
             that failed to respond.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1313,12 +1319,12 @@ class ListJobsResponse(proto.Message):
     and the requests's response body is empty {}.
 
     Attributes:
-        jobs (Sequence[google.cloud.dataflow_v1beta3.types.Job]):
+        jobs (MutableSequence[google.cloud.dataflow_v1beta3.types.Job]):
             A subset of the requested job information.
         next_page_token (str):
             Set if there may be more results than fit in
             this response.
-        failed_location (Sequence[google.cloud.dataflow_v1beta3.types.FailedLocation]):
+        failed_location (MutableSequence[google.cloud.dataflow_v1beta3.types.FailedLocation]):
             Zero or more messages describing the [regional endpoints]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
             that failed to respond.
@@ -1328,16 +1334,16 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(
+    jobs: MutableSequence["Job"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Job",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    failed_location = proto.RepeatedField(
+    failed_location: MutableSequence["FailedLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="FailedLocation",
@@ -1365,28 +1371,28 @@ class SnapshotJobRequest(proto.Message):
             Maybe empty.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ttl = proto.Field(
+    ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    snapshot_sources = proto.Field(
+    snapshot_sources: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1400,7 +1406,7 @@ class CheckActiveJobsRequest(proto.Message):
             The project which owns the jobs.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1415,7 +1421,7 @@ class CheckActiveJobsResponse(proto.Message):
             False otherwise.
     """
 
-    active_jobs_exist = proto.Field(
+    active_jobs_exist: bool = proto.Field(
         proto.BOOL,
         number=1,
     )

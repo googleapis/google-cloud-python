@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 from pathlib import Path
+import shutil
 
 import synthtool as s
 import synthtool.gcp as gcp
@@ -22,9 +24,18 @@ from synthtool.languages import python
 # Copy the generated client from the owl-bot staging directory
 # ----------------------------------------------------------------------------
 
-default_version = "v1beta3"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+
     # Work around to avoid a breaking change
     # Replace `set` with `set_` 
     s.replace(
@@ -35,10 +46,11 @@ for library in s.get_staging_dirs(default_version):
 
     s.replace(
         library / "google/cloud/dataflow_v1beta3/types/metrics.py",
-        "set = proto.Field",
-        "set_ = proto.Field",
+        "set: struct_pb2.Value = proto.Field",
+        "set_: struct_pb2.Value = proto.Field",
     )
-    s.move(library, excludes=["setup.py"])
+
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -50,11 +62,10 @@ templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 
-
-# run blacken session for all directories which have a noxfile
+# run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
     s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync_f19ed68d]
+# [START dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -49,4 +49,4 @@ def sample_list_job_messages():
     for response in page_result:
         print(response)
 
-# [END dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync_f19ed68d]
+# [END dataflow_v1beta3_generated_MessagesV1Beta3_ListJobMessages_sync]

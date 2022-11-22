@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.dataflow import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.dataflow_v1beta3.services.flex_templates_service.async_client import (
     FlexTemplatesServiceAsyncClient,

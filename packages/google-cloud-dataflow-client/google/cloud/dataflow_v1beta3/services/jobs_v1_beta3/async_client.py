@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -159,9 +169,9 @@ class JobsV1Beta3AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, JobsV1Beta3Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the jobs v1 beta3 client.
@@ -205,10 +215,10 @@ class JobsV1Beta3AsyncClient:
 
     async def create_job(
         self,
-        request: Union[jobs.CreateJobRequest, dict] = None,
+        request: Optional[Union[jobs.CreateJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Creates a Cloud Dataflow job.
@@ -245,7 +255,7 @@ class JobsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.CreateJobRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.CreateJobRequest, dict]]):
                 The request object. Request to create a Cloud Dataflow
                 job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -295,10 +305,10 @@ class JobsV1Beta3AsyncClient:
 
     async def get_job(
         self,
-        request: Union[jobs.GetJobRequest, dict] = None,
+        request: Optional[Union[jobs.GetJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Gets the state of the specified Cloud Dataflow job.
@@ -335,7 +345,7 @@ class JobsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.GetJobRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetJobRequest, dict]]):
                 The request object. Request to get the state of a Cloud
                 Dataflow job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -386,10 +396,10 @@ class JobsV1Beta3AsyncClient:
 
     async def update_job(
         self,
-        request: Union[jobs.UpdateJobRequest, dict] = None,
+        request: Optional[Union[jobs.UpdateJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Updates the state of an existing Cloud Dataflow job.
@@ -427,7 +437,7 @@ class JobsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.UpdateJobRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.UpdateJobRequest, dict]]):
                 The request object. Request to update a Cloud Dataflow
                 job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -478,10 +488,10 @@ class JobsV1Beta3AsyncClient:
 
     async def list_jobs(
         self,
-        request: Union[jobs.ListJobsRequest, dict] = None,
+        request: Optional[Union[jobs.ListJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""List the jobs of a project.
@@ -521,7 +531,7 @@ class JobsV1Beta3AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.ListJobsRequest, dict]]):
                 The request object. Request to list Cloud Dataflow jobs.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -589,10 +599,10 @@ class JobsV1Beta3AsyncClient:
 
     async def aggregated_list_jobs(
         self,
-        request: Union[jobs.ListJobsRequest, dict] = None,
+        request: Optional[Union[jobs.ListJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListJobsAsyncPager:
         r"""List the jobs of a project across all regions.
@@ -624,7 +634,7 @@ class JobsV1Beta3AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.ListJobsRequest, dict]]):
                 The request object. Request to list Cloud Dataflow jobs.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -689,10 +699,10 @@ class JobsV1Beta3AsyncClient:
 
     async def check_active_jobs(
         self,
-        request: Union[jobs.CheckActiveJobsRequest, dict] = None,
+        request: Optional[Union[jobs.CheckActiveJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.CheckActiveJobsResponse:
         r"""Check for existence of active jobs in the given
@@ -724,7 +734,7 @@ class JobsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.CheckActiveJobsRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.CheckActiveJobsRequest, dict]]):
                 The request object. Request to check is active jobs
                 exists for a project
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -761,10 +771,10 @@ class JobsV1Beta3AsyncClient:
 
     async def snapshot_job(
         self,
-        request: Union[jobs.SnapshotJobRequest, dict] = None,
+        request: Optional[Union[jobs.SnapshotJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.Snapshot:
         r"""Snapshot the state of a streaming job.
@@ -795,7 +805,7 @@ class JobsV1Beta3AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.SnapshotJobRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.SnapshotJobRequest, dict]]):
                 The request object. Request to create a snapshot of a
                 job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

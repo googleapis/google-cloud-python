@@ -264,10 +264,10 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
         self,
         *,
         host: str = "dataflow.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -349,7 +349,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.ListJobsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.ListJobsResponse:
             r"""Call the aggregated list jobs method over HTTP.
@@ -432,7 +432,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.CheckActiveJobsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.CheckActiveJobsResponse:
             raise RuntimeError(
@@ -448,7 +448,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.CreateJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.Job:
             r"""Call the create job method over HTTP.
@@ -539,7 +539,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.GetJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.Job:
             r"""Call the get job method over HTTP.
@@ -620,7 +620,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.ListJobsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.ListJobsResponse:
             r"""Call the list jobs method over HTTP.
@@ -705,7 +705,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.SnapshotJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> snapshots.Snapshot:
             r"""Call the snapshot job method over HTTP.
@@ -794,7 +794,7 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             request: jobs.UpdateJobRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> jobs.Job:
             r"""Call the update job method over HTTP.

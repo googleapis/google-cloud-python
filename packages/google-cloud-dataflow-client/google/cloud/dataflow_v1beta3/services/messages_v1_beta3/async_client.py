@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -159,9 +169,9 @@ class MessagesV1Beta3AsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, MessagesV1Beta3Transport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the messages v1 beta3 client.
@@ -205,10 +215,10 @@ class MessagesV1Beta3AsyncClient:
 
     async def list_job_messages(
         self,
-        request: Union[messages.ListJobMessagesRequest, dict] = None,
+        request: Optional[Union[messages.ListJobMessagesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobMessagesAsyncPager:
         r"""Request the job status.
@@ -248,7 +258,7 @@ class MessagesV1Beta3AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest, dict]):
+            request (Optional[Union[google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest, dict]]):
                 The request object. Request to list job messages.
                 Up to max_results messages will be returned in the time
                 range specified starting with the oldest messages first.

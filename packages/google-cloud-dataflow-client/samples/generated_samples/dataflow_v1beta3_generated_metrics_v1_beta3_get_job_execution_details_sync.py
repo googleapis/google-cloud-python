@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateJob
+# Snippet for GetJobExecutionDetails
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_JobsV1Beta3_CreateJob_sync_2a1b0208]
+# [START dataflow_v1beta3_generated_MetricsV1Beta3_GetJobExecutionDetails_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,19 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_create_job():
+def sample_get_job_execution_details():
     # Create a client
-    client = dataflow_v1beta3.JobsV1Beta3Client()
+    client = dataflow_v1beta3.MetricsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.CreateJobRequest(
+    request = dataflow_v1beta3.GetJobExecutionDetailsRequest(
     )
 
     # Make the request
-    response = client.create_job(request=request)
+    page_result = client.get_job_execution_details(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END dataflow_v1beta3_generated_JobsV1Beta3_CreateJob_sync_2a1b0208]
+# [END dataflow_v1beta3_generated_MetricsV1Beta3_GetJobExecutionDetails_sync]

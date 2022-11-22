@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -71,7 +73,7 @@ class LaunchFlexTemplateResponse(proto.Message):
             launched.
     """
 
-    job = proto.Field(
+    job: jobs.Job = proto.Field(
         proto.MESSAGE,
         number=1,
         message=jobs.Job,
@@ -94,21 +96,21 @@ class ContainerSpec(proto.Message):
             Default runtime environment for the job.
     """
 
-    image = proto.Field(
+    image: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metadata = proto.Field(
+    metadata: "TemplateMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TemplateMetadata",
     )
-    sdk_info = proto.Field(
+    sdk_info: "SDKInfo" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="SDKInfo",
     )
-    default_environment = proto.Field(
+    default_environment: "FlexTemplateRuntimeEnvironment" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="FlexTemplateRuntimeEnvironment",
@@ -139,9 +141,9 @@ class LaunchFlexTemplateParameter(proto.Message):
             serialized ContainerSpec as content.
 
             This field is a member of `oneof`_ ``template``.
-        parameters (Mapping[str, str]):
+        parameters (MutableMapping[str, str]):
             The parameters for FlexTemplate. Ex. {"num_workers":"5"}
-        launch_options (Mapping[str, str]):
+        launch_options (MutableMapping[str, str]):
             Launch options for this flex template job.
             This is a common set of options across languages
             and templates. This should not be used to pass
@@ -153,46 +155,46 @@ class LaunchFlexTemplateParameter(proto.Message):
             Set this to true if you are sending a request
             to update a running streaming job. When set, the
             job name should be the same as the running job.
-        transform_name_mappings (Mapping[str, str]):
+        transform_name_mappings (MutableMapping[str, str]):
             Use this to pass transform_name_mappings for streaming
             update jobs. Ex:{"oldTransformName":"newTransformName",...}'
     """
 
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    container_spec = proto.Field(
+    container_spec: "ContainerSpec" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="template",
         message="ContainerSpec",
     )
-    container_spec_gcs_path = proto.Field(
+    container_spec_gcs_path: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="template",
     )
-    parameters = proto.MapField(
+    parameters: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    launch_options = proto.MapField(
+    launch_options: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    environment = proto.Field(
+    environment: "FlexTemplateRuntimeEnvironment" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="FlexTemplateRuntimeEnvironment",
     )
-    update = proto.Field(
+    update: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    transform_name_mappings = proto.MapField(
+    transform_name_mappings: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
@@ -225,7 +227,7 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
         machine_type (str):
             The machine type to use for the job. Defaults
             to the value from the template if not specified.
-        additional_experiments (Sequence[str]):
+        additional_experiments (MutableSequence[str]):
             Additional experiment flags for the job.
         network (str):
             Network to which VMs will be assigned.  If
@@ -239,7 +241,7 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             or "regions/REGION/subnetworks/SUBNETWORK". If the
             subnetwork is located in a Shared VPC network, you must use
             the complete URL.
-        additional_user_labels (Mapping[str, str]):
+        additional_user_labels (MutableMapping[str, str]):
             Additional user labels to be specified for the job. Keys and
             values must follow the restrictions specified in the
             `labeling
@@ -302,99 +304,99 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             job. The default is n1-standard-1.
     """
 
-    num_workers = proto.Field(
+    num_workers: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_workers = proto.Field(
+    max_workers: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    temp_location = proto.Field(
+    temp_location: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    additional_experiments = proto.RepeatedField(
+    additional_experiments: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    additional_user_labels = proto.MapField(
+    additional_user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    ip_configuration = proto.Field(
+    ip_configuration: gd_environment.WorkerIPAddressConfiguration = proto.Field(
         proto.ENUM,
         number=12,
         enum=gd_environment.WorkerIPAddressConfiguration,
     )
-    worker_region = proto.Field(
+    worker_region: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    worker_zone = proto.Field(
+    worker_zone: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    enable_streaming_engine = proto.Field(
+    enable_streaming_engine: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    flexrs_goal = proto.Field(
+    flexrs_goal: gd_environment.FlexResourceSchedulingGoal = proto.Field(
         proto.ENUM,
         number=16,
         enum=gd_environment.FlexResourceSchedulingGoal,
     )
-    staging_location = proto.Field(
+    staging_location: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    sdk_container_image = proto.Field(
+    sdk_container_image: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    disk_size_gb = proto.Field(
+    disk_size_gb: int = proto.Field(
         proto.INT32,
         number=20,
     )
-    autoscaling_algorithm = proto.Field(
+    autoscaling_algorithm: gd_environment.AutoscalingAlgorithm = proto.Field(
         proto.ENUM,
         number=21,
         enum=gd_environment.AutoscalingAlgorithm,
     )
-    dump_heap_on_oom = proto.Field(
+    dump_heap_on_oom: bool = proto.Field(
         proto.BOOL,
         number=22,
     )
-    save_heap_dumps_to_gcs_path = proto.Field(
+    save_heap_dumps_to_gcs_path: str = proto.Field(
         proto.STRING,
         number=23,
     )
-    launcher_machine_type = proto.Field(
+    launcher_machine_type: str = proto.Field(
         proto.STRING,
         number=24,
     )
@@ -419,20 +421,20 @@ class LaunchFlexTemplateRequest(proto.Message):
             actually executed. Defaults to false.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    launch_parameter = proto.Field(
+    launch_parameter: "LaunchFlexTemplateParameter" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="LaunchFlexTemplateParameter",
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -466,7 +468,7 @@ class RuntimeEnvironment(proto.Message):
         machine_type (str):
             The machine type to use for the job. Defaults
             to the value from the template if not specified.
-        additional_experiments (Sequence[str]):
+        additional_experiments (MutableSequence[str]):
             Additional experiment flags for the job, specified with the
             ``--experiments`` option.
         network (str):
@@ -481,7 +483,7 @@ class RuntimeEnvironment(proto.Message):
             or "regions/REGION/subnetworks/SUBNETWORK". If the
             subnetwork is located in a Shared VPC network, you must use
             the complete URL.
-        additional_user_labels (Mapping[str, str]):
+        additional_user_labels (MutableMapping[str, str]):
             Additional user labels to be specified for the job. Keys and
             values should follow the restrictions specified in the
             `labeling
@@ -515,69 +517,69 @@ class RuntimeEnvironment(proto.Message):
             job.
     """
 
-    num_workers = proto.Field(
+    num_workers: int = proto.Field(
         proto.INT32,
         number=11,
     )
-    max_workers = proto.Field(
+    max_workers: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    temp_location = proto.Field(
+    temp_location: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    bypass_temp_dir_validation = proto.Field(
+    bypass_temp_dir_validation: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    additional_experiments = proto.RepeatedField(
+    additional_experiments: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    additional_user_labels = proto.MapField(
+    additional_user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    ip_configuration = proto.Field(
+    ip_configuration: gd_environment.WorkerIPAddressConfiguration = proto.Field(
         proto.ENUM,
         number=14,
         enum=gd_environment.WorkerIPAddressConfiguration,
     )
-    worker_region = proto.Field(
+    worker_region: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    worker_zone = proto.Field(
+    worker_zone: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    enable_streaming_engine = proto.Field(
+    enable_streaming_engine: bool = proto.Field(
         proto.BOOL,
         number=17,
     )
@@ -598,43 +600,43 @@ class ParameterMetadata(proto.Message):
         is_optional (bool):
             Optional. Whether the parameter is optional.
             Defaults to false.
-        regexes (Sequence[str]):
+        regexes (MutableSequence[str]):
             Optional. Regexes that the parameter must
             match.
         param_type (google.cloud.dataflow_v1beta3.types.ParameterType):
             Optional. The type of the parameter.
             Used for selecting input picker.
-        custom_metadata (Mapping[str, str]):
+        custom_metadata (MutableMapping[str, str]):
             Optional. Additional metadata for describing
             this parameter.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    label = proto.Field(
+    label: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    help_text = proto.Field(
+    help_text: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    is_optional = proto.Field(
+    is_optional: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    regexes = proto.RepeatedField(
+    regexes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    param_type = proto.Field(
+    param_type: "ParameterType" = proto.Field(
         proto.ENUM,
         number=6,
         enum="ParameterType",
     )
-    custom_metadata = proto.MapField(
+    custom_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
@@ -649,19 +651,19 @@ class TemplateMetadata(proto.Message):
             Required. The name of the template.
         description (str):
             Optional. A description of the template.
-        parameters (Sequence[google.cloud.dataflow_v1beta3.types.ParameterMetadata]):
+        parameters (MutableSequence[google.cloud.dataflow_v1beta3.types.ParameterMetadata]):
             The parameters for the template.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence["ParameterMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ParameterMetadata",
@@ -684,12 +686,12 @@ class SDKInfo(proto.Message):
         JAVA = 1
         PYTHON = 2
 
-    language = proto.Field(
+    language: Language = proto.Field(
         proto.ENUM,
         number=1,
         enum=Language,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -701,16 +703,16 @@ class RuntimeMetadata(proto.Message):
     Attributes:
         sdk_info (google.cloud.dataflow_v1beta3.types.SDKInfo):
             SDK Info for the template.
-        parameters (Sequence[google.cloud.dataflow_v1beta3.types.ParameterMetadata]):
+        parameters (MutableSequence[google.cloud.dataflow_v1beta3.types.ParameterMetadata]):
             The parameters for the template.
     """
 
-    sdk_info = proto.Field(
+    sdk_info: "SDKInfo" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SDKInfo",
     )
-    parameters = proto.RepeatedField(
+    parameters: MutableSequence["ParameterMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ParameterMetadata",
@@ -735,7 +737,7 @@ class CreateJobFromTemplateRequest(proto.Message):
             with ``gs://``.
 
             This field is a member of `oneof`_ ``template``.
-        parameters (Mapping[str, str]):
+        parameters (MutableMapping[str, str]):
             The runtime parameters to pass to the job.
         environment (google.cloud.dataflow_v1beta3.types.RuntimeEnvironment):
             The runtime environment for the job.
@@ -745,30 +747,30 @@ class CreateJobFromTemplateRequest(proto.Message):
             to which to direct the request.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    gcs_path = proto.Field(
+    gcs_path: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="template",
     )
-    parameters = proto.MapField(
+    parameters: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    environment = proto.Field(
+    environment: "RuntimeEnvironment" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="RuntimeEnvironment",
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -802,21 +804,21 @@ class GetTemplateRequest(proto.Message):
         r"""The various views of a template that may be retrieved."""
         METADATA_ONLY = 0
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_path = proto.Field(
+    gcs_path: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="template",
     )
-    view = proto.Field(
+    view: TemplateView = proto.Field(
         proto.ENUM,
         number=3,
         enum=TemplateView,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -845,22 +847,22 @@ class GetTemplateResponse(proto.Message):
         LEGACY = 1
         FLEX = 2
 
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    metadata = proto.Field(
+    metadata: "TemplateMetadata" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TemplateMetadata",
     )
-    template_type = proto.Field(
+    template_type: TemplateType = proto.Field(
         proto.ENUM,
         number=3,
         enum=TemplateType,
     )
-    runtime_metadata = proto.Field(
+    runtime_metadata: "RuntimeMetadata" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="RuntimeMetadata",
@@ -874,7 +876,7 @@ class LaunchTemplateParameters(proto.Message):
         job_name (str):
             Required. The job name to use for the created
             job.
-        parameters (Mapping[str, str]):
+        parameters (MutableMapping[str, str]):
             The runtime parameters to pass to the job.
         environment (google.cloud.dataflow_v1beta3.types.RuntimeEnvironment):
             The runtime environment for the job.
@@ -882,32 +884,32 @@ class LaunchTemplateParameters(proto.Message):
             If set, replace the existing pipeline with
             the name specified by jobName with this
             pipeline, preserving state.
-        transform_name_mapping (Mapping[str, str]):
+        transform_name_mapping (MutableMapping[str, str]):
             Only applicable when updating a pipeline. Map
             of transform name prefixes of the job to be
             replaced to the corresponding name prefixes of
             the new job.
     """
 
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parameters = proto.MapField(
+    parameters: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    environment = proto.Field(
+    environment: "RuntimeEnvironment" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="RuntimeEnvironment",
     )
-    update = proto.Field(
+    update: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    transform_name_mapping = proto.MapField(
+    transform_name_mapping: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
@@ -952,31 +954,31 @@ class LaunchTemplateRequest(proto.Message):
             to which to direct the request.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    gcs_path = proto.Field(
+    gcs_path: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="template",
     )
-    dynamic_template = proto.Field(
+    dynamic_template: "DynamicTemplateLaunchParams" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="template",
         message="DynamicTemplateLaunchParams",
     )
-    launch_parameters = proto.Field(
+    launch_parameters: "LaunchTemplateParameters" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="LaunchTemplateParameters",
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -992,7 +994,7 @@ class LaunchTemplateResponse(proto.Message):
             launched.
     """
 
-    job = proto.Field(
+    job: jobs.Job = proto.Field(
         proto.MESSAGE,
         number=1,
         message=jobs.Job,
@@ -1004,7 +1006,7 @@ class InvalidTemplateParameters(proto.Message):
     indicates problems with the template parameter.
 
     Attributes:
-        parameter_violations (Sequence[google.cloud.dataflow_v1beta3.types.InvalidTemplateParameters.ParameterViolation]):
+        parameter_violations (MutableSequence[google.cloud.dataflow_v1beta3.types.InvalidTemplateParameters.ParameterViolation]):
             Describes all parameter violations in a
             template request.
     """
@@ -1020,16 +1022,16 @@ class InvalidTemplateParameters(proto.Message):
                 validate.
         """
 
-        parameter = proto.Field(
+        parameter: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    parameter_violations = proto.RepeatedField(
+    parameter_violations: MutableSequence[ParameterViolation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ParameterViolation,
@@ -1050,11 +1052,11 @@ class DynamicTemplateLaunchParams(proto.Message):
             Cloud Storage URL, beginning with ``gs://``.
     """
 
-    gcs_path = proto.Field(
+    gcs_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    staging_location = proto.Field(
+    staging_location: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
@@ -136,12 +138,12 @@ class Environment(proto.Message):
             to choose a reasonable default.  This should be
             in the form of the API service name, e.g.
             "compute.googleapis.com".
-        experiments (Sequence[str]):
+        experiments (MutableSequence[str]):
             The list of experiments to enable. This field should be used
             for SDK related experiments and not for service related
             experiments. The proper field for service related
             experiments is service_options.
-        service_options (Sequence[str]):
+        service_options (MutableSequence[str]):
             The list of service options to enable. This
             field should be used for service related
             experiments only. These experiments, when
@@ -155,7 +157,7 @@ class Environment(proto.Message):
 
             Format:
             projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
-        worker_pools (Sequence[google.cloud.dataflow_v1beta3.types.WorkerPool]):
+        worker_pools (MutableSequence[google.cloud.dataflow_v1beta3.types.WorkerPool]):
             The worker pools. At least one "harness"
             worker pool must be specified in order for the
             job to have workers.
@@ -211,78 +213,78 @@ class Environment(proto.Message):
             job.
     """
 
-    temp_storage_prefix = proto.Field(
+    temp_storage_prefix: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_manager_api_service = proto.Field(
+    cluster_manager_api_service: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    experiments = proto.RepeatedField(
+    experiments: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    service_options = proto.RepeatedField(
+    service_options: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=16,
     )
-    service_kms_key_name = proto.Field(
+    service_kms_key_name: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    worker_pools = proto.RepeatedField(
+    worker_pools: MutableSequence["WorkerPool"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="WorkerPool",
     )
-    user_agent = proto.Field(
+    user_agent: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=5,
         message=struct_pb2.Struct,
     )
-    version = proto.Field(
+    version: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
     )
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    sdk_pipeline_options = proto.Field(
+    sdk_pipeline_options: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=8,
         message=struct_pb2.Struct,
     )
-    internal_experiments = proto.Field(
+    internal_experiments: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=9,
         message=any_pb2.Any,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    flex_resource_scheduling_goal = proto.Field(
+    flex_resource_scheduling_goal: "FlexResourceSchedulingGoal" = proto.Field(
         proto.ENUM,
         number=11,
         enum="FlexResourceSchedulingGoal",
     )
-    worker_region = proto.Field(
+    worker_region: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    worker_zone = proto.Field(
+    worker_zone: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    shuffle_mode = proto.Field(
+    shuffle_mode: "ShuffleMode" = proto.Field(
         proto.ENUM,
         number=15,
         enum="ShuffleMode",
     )
-    debug_options = proto.Field(
+    debug_options: "DebugOptions" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="DebugOptions",
@@ -312,11 +314,11 @@ class Package(proto.Message):
               bucket.storage.googleapis.com/
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -358,15 +360,15 @@ class Disk(proto.Message):
             Directory in a VM where disk is mounted.
     """
 
-    size_gb = proto.Field(
+    size_gb: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    disk_type = proto.Field(
+    disk_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mount_point = proto.Field(
+    mount_point: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -411,27 +413,27 @@ class WorkerSettings(proto.Message):
               bucket.storage.googleapis.com/{object}
     """
 
-    base_url = proto.Field(
+    base_url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reporting_enabled = proto.Field(
+    reporting_enabled: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    service_path = proto.Field(
+    service_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    shuffle_service_path = proto.Field(
+    shuffle_service_path: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    worker_id = proto.Field(
+    worker_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    temp_storage_prefix = proto.Field(
+    temp_storage_prefix: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -447,7 +449,7 @@ class TaskRunnerSettings(proto.Message):
         task_group (str):
             The UNIX group ID on the worker VM to use for
             tasks launched by taskrunner; e.g. "wheel".
-        oauth_scopes (Sequence[str]):
+        oauth_scopes (MutableSequence[str]):
             The OAuth2 scopes to be requested by the
             taskrunner in order to access the Cloud Dataflow
             API.
@@ -514,80 +516,80 @@ class TaskRunnerSettings(proto.Message):
             The streaming worker main class name.
     """
 
-    task_user = proto.Field(
+    task_user: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    task_group = proto.Field(
+    task_group: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    oauth_scopes = proto.RepeatedField(
+    oauth_scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    base_url = proto.Field(
+    base_url: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    dataflow_api_version = proto.Field(
+    dataflow_api_version: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    parallel_worker_settings = proto.Field(
+    parallel_worker_settings: "WorkerSettings" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="WorkerSettings",
     )
-    base_task_dir = proto.Field(
+    base_task_dir: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    continue_on_exception = proto.Field(
+    continue_on_exception: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    log_to_serialconsole = proto.Field(
+    log_to_serialconsole: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    alsologtostderr = proto.Field(
+    alsologtostderr: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    log_upload_location = proto.Field(
+    log_upload_location: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    log_dir = proto.Field(
+    log_dir: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    temp_storage_prefix = proto.Field(
+    temp_storage_prefix: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    harness_command = proto.Field(
+    harness_command: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    workflow_file_name = proto.Field(
+    workflow_file_name: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    commandlines_file_name = proto.Field(
+    commandlines_file_name: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    vm_id = proto.Field(
+    vm_id: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    language_hint = proto.Field(
+    language_hint: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    streaming_worker_main_class = proto.Field(
+    streaming_worker_main_class: str = proto.Field(
         proto.STRING,
         number=19,
     )
@@ -604,12 +606,12 @@ class AutoscalingSettings(proto.Message):
             at.
     """
 
-    algorithm = proto.Field(
+    algorithm: "AutoscalingAlgorithm" = proto.Field(
         proto.ENUM,
         number=1,
         enum="AutoscalingAlgorithm",
     )
-    max_num_workers = proto.Field(
+    max_num_workers: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -635,25 +637,25 @@ class SdkHarnessContainerImage(proto.Message):
             Environment ID for the Beam runner API proto
             Environment that corresponds to the current SDK
             Harness.
-        capabilities (Sequence[str]):
+        capabilities (MutableSequence[str]):
             The set of capabilities enumerated in the above Environment
             proto. See also
             https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/beam_runner_api.proto
     """
 
-    container_image = proto.Field(
+    container_image: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    use_single_core_per_container = proto.Field(
+    use_single_core_per_container: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    environment_id = proto.Field(
+    environment_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    capabilities = proto.RepeatedField(
+    capabilities: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -675,7 +677,7 @@ class WorkerPool(proto.Message):
             this pool needed to execute the job.  If zero or
             unspecified, the service will attempt to choose
             a reasonable default.
-        packages (Sequence[google.cloud.dataflow_v1beta3.types.Package]):
+        packages (MutableSequence[google.cloud.dataflow_v1beta3.types.Package]):
             Packages to be installed on workers.
         default_package_set (google.cloud.dataflow_v1beta3.types.DefaultPackageSet):
             The default package set to install.  This
@@ -726,10 +728,10 @@ class WorkerPool(proto.Message):
         on_host_maintenance (str):
             The action to take on host maintenance, as
             defined by the Google Compute Engine API.
-        data_disks (Sequence[google.cloud.dataflow_v1beta3.types.Disk]):
+        data_disks (MutableSequence[google.cloud.dataflow_v1beta3.types.Disk]):
             Data disks that are used by a VM in this
             workflow.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Metadata to set on the Google Compute Engine
             VMs.
         autoscaling_settings (google.cloud.dataflow_v1beta3.types.AutoscalingSettings):
@@ -759,7 +761,7 @@ class WorkerPool(proto.Message):
             1 by convention for streaming).
         ip_configuration (google.cloud.dataflow_v1beta3.types.WorkerIPAddressConfiguration):
             Configuration for VM IPs.
-        sdk_harness_container_images (Sequence[google.cloud.dataflow_v1beta3.types.SdkHarnessContainerImage]):
+        sdk_harness_container_images (MutableSequence[google.cloud.dataflow_v1beta3.types.SdkHarnessContainerImage]):
             Set of SDK harness containers needed to
             execute this pipeline. This will only be set in
             the Fn API path. For non-cross-language
@@ -768,100 +770,102 @@ class WorkerPool(proto.Message):
             entries.
     """
 
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    num_workers = proto.Field(
+    num_workers: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    packages = proto.RepeatedField(
+    packages: MutableSequence["Package"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Package",
     )
-    default_package_set = proto.Field(
+    default_package_set: "DefaultPackageSet" = proto.Field(
         proto.ENUM,
         number=4,
         enum="DefaultPackageSet",
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    teardown_policy = proto.Field(
+    teardown_policy: "TeardownPolicy" = proto.Field(
         proto.ENUM,
         number=6,
         enum="TeardownPolicy",
     )
-    disk_size_gb = proto.Field(
+    disk_size_gb: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    disk_type = proto.Field(
+    disk_type: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    disk_source_image = proto.Field(
+    disk_source_image: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    taskrunner_settings = proto.Field(
+    taskrunner_settings: "TaskRunnerSettings" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="TaskRunnerSettings",
     )
-    on_host_maintenance = proto.Field(
+    on_host_maintenance: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    data_disks = proto.RepeatedField(
+    data_disks: MutableSequence["Disk"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="Disk",
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=13,
     )
-    autoscaling_settings = proto.Field(
+    autoscaling_settings: "AutoscalingSettings" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="AutoscalingSettings",
     )
-    pool_args = proto.Field(
+    pool_args: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=15,
         message=any_pb2.Any,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    worker_harness_container_image = proto.Field(
+    worker_harness_container_image: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    num_threads_per_worker = proto.Field(
+    num_threads_per_worker: int = proto.Field(
         proto.INT32,
         number=20,
     )
-    ip_configuration = proto.Field(
+    ip_configuration: "WorkerIPAddressConfiguration" = proto.Field(
         proto.ENUM,
         number=21,
         enum="WorkerIPAddressConfiguration",
     )
-    sdk_harness_container_images = proto.RepeatedField(
+    sdk_harness_container_images: MutableSequence[
+        "SdkHarnessContainerImage"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=22,
         message="SdkHarnessContainerImage",
@@ -878,7 +882,7 @@ class DebugOptions(proto.Message):
             hot key to the user's Cloud Logging.
     """
 
-    enable_hot_key_logging = proto.Field(
+    enable_hot_key_logging: bool = proto.Field(
         proto.BOOL,
         number=1,
     )

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateJob
+# Snippet for CreateJobFromTemplate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataflow-client
 
 
-# [START dataflow_v1beta3_generated_JobsV1Beta3_UpdateJob_sync_8db1fd08]
+# [START dataflow_v1beta3_generated_TemplatesService_CreateJobFromTemplate_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,19 @@
 from google.cloud import dataflow_v1beta3
 
 
-def sample_update_job():
+def sample_create_job_from_template():
     # Create a client
-    client = dataflow_v1beta3.JobsV1Beta3Client()
+    client = dataflow_v1beta3.TemplatesServiceClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.UpdateJobRequest(
+    request = dataflow_v1beta3.CreateJobFromTemplateRequest(
+        gcs_path="gcs_path_value",
     )
 
     # Make the request
-    response = client.update_job(request=request)
+    response = client.create_job_from_template(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataflow_v1beta3_generated_JobsV1Beta3_UpdateJob_sync_8db1fd08]
+# [END dataflow_v1beta3_generated_TemplatesService_CreateJobFromTemplate_sync]
