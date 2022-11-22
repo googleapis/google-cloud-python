@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -64,11 +66,11 @@ class NetworkConfig(proto.Message):
             the customer network.
     """
 
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ip_allocation = proto.Field(
+    ip_allocation: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -86,7 +88,7 @@ class Version(proto.Message):
         default_version (bool):
             Whether this is currently the default version
             for Cloud Data Fusion
-        available_features (Sequence[str]):
+        available_features (MutableSequence[str]):
             Represents a list of available feature names
             for a given version.
         type_ (google.cloud.data_fusion_v1.types.Version.Type):
@@ -102,19 +104,19 @@ class Version(proto.Message):
         TYPE_PREVIEW = 1
         TYPE_GENERAL_AVAILABILITY = 2
 
-    version_number = proto.Field(
+    version_number: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    default_version = proto.Field(
+    default_version: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    available_features = proto.RepeatedField(
+    available_features: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=4,
         enum=Type,
@@ -147,12 +149,12 @@ class Accelerator(proto.Message):
         DISABLED = 2
         UNKNOWN = 3
 
-    accelerator_type = proto.Field(
+    accelerator_type: AcceleratorType = proto.Field(
         proto.ENUM,
         number=1,
         enum=AcceleratorType,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
@@ -171,7 +173,7 @@ class CryptoKeyConfig(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
 
-    key_reference = proto.Field(
+    key_reference: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -202,12 +204,12 @@ class Instance(proto.Message):
             Network configuration options. These are
             required when a private Data Fusion instance is
             to be created.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The resource labels for instance to use to
             annotate any related underlying resources such
             as Compute Engine VMs. The character '=' is not
             allowed to be used within the labels.
-        options (Mapping[str, str]):
+        options (MutableMapping[str, str]):
             Map of additional options used to configure
             the behavior of Data Fusion instance.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -238,7 +240,7 @@ class Instance(proto.Message):
             extract the tenant project ID.
         display_name (str):
             Display name for an instance.
-        available_version (Sequence[google.cloud.data_fusion_v1.types.Version]):
+        available_version (MutableSequence[google.cloud.data_fusion_v1.types.Version]):
             Available versions that the instance can be
             upgraded to using UpdateInstanceRequest.
         api_endpoint (str):
@@ -247,7 +249,7 @@ class Instance(proto.Message):
         gcs_bucket (str):
             Output only. Cloud Storage bucket generated
             by Data Fusion in the customer project.
-        accelerators (Sequence[google.cloud.data_fusion_v1.types.Accelerator]):
+        accelerators (MutableSequence[google.cloud.data_fusion_v1.types.Accelerator]):
             List of accelerators enabled for this CDF
             instance.
         p4_service_account (str):
@@ -269,7 +271,7 @@ class Instance(proto.Message):
             The crypto key configuration. This field is
             used by the Customer-Managed Encryption Keys
             (CMEK) feature.
-        disabled_reason (Sequence[google.cloud.data_fusion_v1.types.Instance.DisabledReason]):
+        disabled_reason (MutableSequence[google.cloud.data_fusion_v1.types.Instance.DisabledReason]):
             Output only. If the instance state is
             DISABLED, the reason for disabling the instance.
     """
@@ -304,125 +306,125 @@ class Instance(proto.Message):
         DISABLED_REASON_UNSPECIFIED = 0
         KMS_KEY_ISSUE = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=3,
         enum=Type,
     )
-    enable_stackdriver_logging = proto.Field(
+    enable_stackdriver_logging: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    enable_stackdriver_monitoring = proto.Field(
+    enable_stackdriver_monitoring: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    private_instance = proto.Field(
+    private_instance: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    network_config = proto.Field(
+    network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="NetworkConfig",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    options = proto.MapField(
+    options: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=12,
         enum=State,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    service_endpoint = proto.Field(
+    service_endpoint: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    available_version = proto.RepeatedField(
+    available_version: MutableSequence["Version"] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message="Version",
     )
-    api_endpoint = proto.Field(
+    api_endpoint: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    gcs_bucket = proto.Field(
+    gcs_bucket: str = proto.Field(
         proto.STRING,
         number=21,
     )
-    accelerators = proto.RepeatedField(
+    accelerators: MutableSequence["Accelerator"] = proto.RepeatedField(
         proto.MESSAGE,
         number=22,
         message="Accelerator",
     )
-    p4_service_account = proto.Field(
+    p4_service_account: str = proto.Field(
         proto.STRING,
         number=23,
     )
-    tenant_project_id = proto.Field(
+    tenant_project_id: str = proto.Field(
         proto.STRING,
         number=24,
     )
-    dataproc_service_account = proto.Field(
+    dataproc_service_account: str = proto.Field(
         proto.STRING,
         number=25,
     )
-    enable_rbac = proto.Field(
+    enable_rbac: bool = proto.Field(
         proto.BOOL,
         number=27,
     )
-    crypto_key_config = proto.Field(
+    crypto_key_config: "CryptoKeyConfig" = proto.Field(
         proto.MESSAGE,
         number=28,
         message="CryptoKeyConfig",
     )
-    disabled_reason = proto.RepeatedField(
+    disabled_reason: MutableSequence[DisabledReason] = proto.RepeatedField(
         proto.ENUM,
         number=29,
         enum=DisabledReason,
@@ -452,23 +454,23 @@ class ListInstancesRequest(proto.Message):
             "name desc",  or "" (unsorted).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -478,12 +480,12 @@ class ListInstancesResponse(proto.Message):
     r"""Response message for the list instance request.
 
     Attributes:
-        instances (Sequence[google.cloud.data_fusion_v1.types.Instance]):
+        instances (MutableSequence[google.cloud.data_fusion_v1.types.Instance]):
             Represents a list of Data Fusion instances.
         next_page_token (str):
             Token to retrieve the next page of results or
             empty if there are no more results in the list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -491,16 +493,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -526,19 +528,19 @@ class ListAvailableVersionsRequest(proto.Message):
             then response will be [6.1.2, 6.2.0]
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    latest_patch_only = proto.Field(
+    latest_patch_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -548,7 +550,7 @@ class ListAvailableVersionsResponse(proto.Message):
     r"""Response message for the list available versions request.
 
     Attributes:
-        available_versions (Sequence[google.cloud.data_fusion_v1.types.Version]):
+        available_versions (MutableSequence[google.cloud.data_fusion_v1.types.Version]):
             Represents a list of versions that are
             supported.
         next_page_token (str):
@@ -560,12 +562,12 @@ class ListAvailableVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    available_versions = proto.RepeatedField(
+    available_versions: MutableSequence["Version"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -582,7 +584,7 @@ class GetInstanceRequest(proto.Message):
             projects/{project}/locations/{location}/instances/{instance}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -602,15 +604,15 @@ class CreateInstanceRequest(proto.Message):
             An instance resource.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Instance",
@@ -627,7 +629,7 @@ class DeleteInstanceRequest(proto.Message):
             projects/{project}/locations/{location}/instances/{instance}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -655,12 +657,12 @@ class UpdateInstanceRequest(proto.Message):
             overwritten.
     """
 
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -677,7 +679,7 @@ class RestartInstanceRequest(proto.Message):
             projects/{project}/locations/{location}/instances/{instance}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -707,7 +709,7 @@ class OperationMetadata(proto.Message):
             corresponding to ``Code.CANCELLED``.
         api_version (str):
             API version used to start the operation.
-        additional_status (Mapping[str, str]):
+        additional_status (MutableMapping[str, str]):
             Map to hold any additional status info for
             the operation If there is an accelerator being
             enabled/disabled/deleted, this will be populated
@@ -715,37 +717,37 @@ class OperationMetadata(proto.Message):
             ENABLING, DISABLING or DELETING
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    additional_status = proto.MapField(
+    additional_status: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
