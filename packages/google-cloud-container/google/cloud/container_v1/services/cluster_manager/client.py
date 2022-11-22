@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -61,7 +72,7 @@ class ClusterManagerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ClusterManagerTransport]:
         """Returns an appropriate transport class.
 
@@ -331,8 +342,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ClusterManagerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ClusterManagerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cluster manager client.
@@ -346,7 +357,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             transport (Union[str, ClusterManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -376,6 +387,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -428,13 +440,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def list_clusters(
         self,
-        request: Union[cluster_service.ListClustersRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListClustersRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        parent: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListClustersResponse:
         r"""Lists all clusters owned by a project in either the
@@ -557,14 +569,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def get_cluster(
         self,
-        request: Union[cluster_service.GetClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Cluster:
         r"""Gets the details of a specific cluster.
@@ -694,14 +706,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def create_cluster(
         self,
-        request: Union[cluster_service.CreateClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.CreateClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster: cluster_service.Cluster = None,
-        parent: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster: Optional[cluster_service.Cluster] = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Creates a cluster, consisting of the specified number and type
@@ -845,15 +857,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def update_cluster(
         self,
-        request: Union[cluster_service.UpdateClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.UpdateClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        update: cluster_service.ClusterUpdate = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        update: Optional[cluster_service.ClusterUpdate] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the settings of a specific cluster.
@@ -996,10 +1008,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def update_node_pool(
         self,
-        request: Union[cluster_service.UpdateNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.UpdateNodePoolRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the version and/or image type for the
@@ -1081,10 +1093,12 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_node_pool_autoscaling(
         self,
-        request: Union[cluster_service.SetNodePoolAutoscalingRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetNodePoolAutoscalingRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the autoscaling settings for the specified node
@@ -1166,15 +1180,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_logging_service(
         self,
-        request: Union[cluster_service.SetLoggingServiceRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLoggingServiceRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        logging_service: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        logging_service: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the logging service for a specific cluster.
@@ -1332,15 +1346,17 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_monitoring_service(
         self,
-        request: Union[cluster_service.SetMonitoringServiceRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetMonitoringServiceRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        monitoring_service: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        monitoring_service: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the monitoring service for a specific cluster.
@@ -1500,15 +1516,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_addons_config(
         self,
-        request: Union[cluster_service.SetAddonsConfigRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetAddonsConfigRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        addons_config: cluster_service.AddonsConfig = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        addons_config: Optional[cluster_service.AddonsConfig] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the addons for a specific cluster.
@@ -1652,15 +1668,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_locations(
         self,
-        request: Union[cluster_service.SetLocationsRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLocationsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        locations: Sequence[str] = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        locations: Optional[MutableSequence[str]] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the locations for a specific cluster. Deprecated. Use
@@ -1725,7 +1741,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            locations (Sequence[str]):
+            locations (MutableSequence[str]):
                 Required. The desired list of Google Compute Engine
                 `zones <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster's nodes should be located. Changing
@@ -1817,15 +1833,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def update_master(
         self,
-        request: Union[cluster_service.UpdateMasterRequest, dict] = None,
+        request: Optional[Union[cluster_service.UpdateMasterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        master_version: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        master_version: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the master for a specific cluster.
@@ -1981,10 +1997,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_master_auth(
         self,
-        request: Union[cluster_service.SetMasterAuthRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetMasterAuthRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets master auth materials. Currently supports
@@ -2067,14 +2083,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def delete_cluster(
         self,
-        request: Union[cluster_service.DeleteClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.DeleteClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Deletes the cluster, including the Kubernetes
@@ -2217,12 +2233,12 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def list_operations(
         self,
-        request: Union[cluster_service.ListOperationsRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListOperationsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListOperationsResponse:
         r"""Lists all operations in a project in a specific zone
@@ -2335,14 +2351,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def get_operation(
         self,
-        request: Union[cluster_service.GetOperationRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetOperationRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        operation_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Gets the specified operation.
@@ -2475,14 +2491,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def cancel_operation(
         self,
-        request: Union[cluster_service.CancelOperationRequest, dict] = None,
+        request: Optional[Union[cluster_service.CancelOperationRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        operation_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Cancels the specified operation.
@@ -2601,13 +2617,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def get_server_config(
         self,
-        request: Union[cluster_service.GetServerConfigRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetServerConfigRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ServerConfig:
         r"""Returns configuration info about the Google
@@ -2728,10 +2744,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def get_json_web_keys(
         self,
-        request: Union[cluster_service.GetJSONWebKeysRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetJSONWebKeysRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.GetJSONWebKeysResponse:
         r"""Gets the public component of the cluster signing keys
@@ -2815,14 +2831,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def list_node_pools(
         self,
-        request: Union[cluster_service.ListNodePoolsRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListNodePoolsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        parent: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListNodePoolsResponse:
         r"""Lists the node pools for a cluster.
@@ -2953,15 +2969,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def get_node_pool(
         self,
-        request: Union[cluster_service.GetNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetNodePoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.NodePool:
         r"""Retrieves the requested node pool.
@@ -3110,15 +3126,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def create_node_pool(
         self,
-        request: Union[cluster_service.CreateNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.CreateNodePoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool: cluster_service.NodePool = None,
-        parent: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool: Optional[cluster_service.NodePool] = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Creates a node pool for a cluster.
@@ -3258,15 +3274,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def delete_node_pool(
         self,
-        request: Union[cluster_service.DeleteNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.DeleteNodePoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Deletes a node pool from a cluster.
@@ -3410,10 +3426,12 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def complete_node_pool_upgrade(
         self,
-        request: Union[cluster_service.CompleteNodePoolUpgradeRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.CompleteNodePoolUpgradeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""CompleteNodePoolUpgrade will signal an on-going node
@@ -3481,15 +3499,17 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def rollback_node_pool_upgrade(
         self,
-        request: Union[cluster_service.RollbackNodePoolUpgradeRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.RollbackNodePoolUpgradeRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Rolls back a previously Aborted or Failed NodePool
@@ -3641,10 +3661,12 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_node_pool_management(
         self,
-        request: Union[cluster_service.SetNodePoolManagementRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetNodePoolManagementRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the NodeManagement options for a node pool.
@@ -3723,10 +3745,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_labels(
         self,
-        request: Union[cluster_service.SetLabelsRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLabelsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets labels on a cluster.
@@ -3808,15 +3830,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_legacy_abac(
         self,
-        request: Union[cluster_service.SetLegacyAbacRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLegacyAbacRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        enabled: bool = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        enabled: Optional[bool] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Enables or disables the ABAC authorization mechanism
@@ -3961,14 +3983,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def start_ip_rotation(
         self,
-        request: Union[cluster_service.StartIPRotationRequest, dict] = None,
+        request: Optional[Union[cluster_service.StartIPRotationRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Starts master IP rotation.
@@ -4102,14 +4124,16 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def complete_ip_rotation(
         self,
-        request: Union[cluster_service.CompleteIPRotationRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.CompleteIPRotationRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Completes master IP rotation.
@@ -4242,10 +4266,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_node_pool_size(
         self,
-        request: Union[cluster_service.SetNodePoolSizeRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetNodePoolSizeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the size for a specific node pool. The new size will be
@@ -4328,15 +4352,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_network_policy(
         self,
-        request: Union[cluster_service.SetNetworkPolicyRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetNetworkPolicyRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        network_policy: cluster_service.NetworkPolicy = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        network_policy: Optional[cluster_service.NetworkPolicy] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Enables or disables Network Policy for a cluster.
@@ -4478,15 +4502,17 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def set_maintenance_policy(
         self,
-        request: Union[cluster_service.SetMaintenancePolicyRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetMaintenancePolicyRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        maintenance_policy: cluster_service.MaintenancePolicy = None,
-        name: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        maintenance_policy: Optional[cluster_service.MaintenancePolicy] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the maintenance policy for a cluster.
@@ -4630,10 +4656,12 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     def list_usable_subnetworks(
         self,
-        request: Union[cluster_service.ListUsableSubnetworksRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.ListUsableSubnetworksRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUsableSubnetworksPager:
         r"""Lists subnetworks that are usable for creating

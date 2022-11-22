@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.container import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.container_v1.services.cluster_manager.async_client import (
     ClusterManagerAsyncClient,
@@ -51,6 +55,7 @@ from google.cloud.container_v1.types.cluster_service import (
     DeleteNodePoolRequest,
     DnsCacheConfig,
     DNSConfig,
+    GatewayAPIConfig,
     GcePersistentDiskCsiDriverConfig,
     GcfsConfig,
     GcpFilestoreCsiDriverConfig,
@@ -123,6 +128,7 @@ from google.cloud.container_v1.types.cluster_service import (
     RecurringTimeWindow,
     ReleaseChannel,
     ReservationAffinity,
+    ResourceLabels,
     ResourceLimit,
     ResourceUsageExportConfig,
     RollbackNodePoolUpgradeRequest,
@@ -194,6 +200,7 @@ __all__ = (
     "DeleteNodePoolRequest",
     "DnsCacheConfig",
     "DNSConfig",
+    "GatewayAPIConfig",
     "GcePersistentDiskCsiDriverConfig",
     "GcfsConfig",
     "GcpFilestoreCsiDriverConfig",
@@ -263,6 +270,7 @@ __all__ = (
     "RecurringTimeWindow",
     "ReleaseChannel",
     "ReservationAffinity",
+    "ResourceLabels",
     "ResourceLimit",
     "ResourceUsageExportConfig",
     "RollbackNodePoolUpgradeRequest",

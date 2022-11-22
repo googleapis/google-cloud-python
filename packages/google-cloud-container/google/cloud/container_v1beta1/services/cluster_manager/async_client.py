@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -162,9 +172,9 @@ class ClusterManagerAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ClusterManagerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cluster manager client.
@@ -208,12 +218,12 @@ class ClusterManagerAsyncClient:
 
     async def list_clusters(
         self,
-        request: Union[cluster_service.ListClustersRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListClustersRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListClustersResponse:
         r"""Lists all clusters owned by a project in either the
@@ -247,7 +257,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.ListClustersRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.ListClustersRequest, dict]]):
                 The request object. ListClustersRequest lists clusters.
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
@@ -338,13 +348,13 @@ class ClusterManagerAsyncClient:
 
     async def get_cluster(
         self,
-        request: Union[cluster_service.GetClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Cluster:
         r"""Gets the details for a specific cluster.
@@ -378,7 +388,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.GetClusterRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.GetClusterRequest, dict]]):
                 The request object. GetClusterRequest gets the settings
                 of a cluster.
             project_id (:class:`str`):
@@ -478,13 +488,13 @@ class ClusterManagerAsyncClient:
 
     async def create_cluster(
         self,
-        request: Union[cluster_service.CreateClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.CreateClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster: cluster_service.Cluster = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster: Optional[cluster_service.Cluster] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Creates a cluster, consisting of the specified number and type
@@ -529,7 +539,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.CreateClusterRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.CreateClusterRequest, dict]]):
                 The request object. CreateClusterRequest creates a
                 cluster.
             project_id (:class:`str`):
@@ -621,14 +631,14 @@ class ClusterManagerAsyncClient:
 
     async def update_cluster(
         self,
-        request: Union[cluster_service.UpdateClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.UpdateClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        update: cluster_service.ClusterUpdate = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        update: Optional[cluster_service.ClusterUpdate] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the settings for a specific cluster.
@@ -662,7 +672,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.UpdateClusterRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.UpdateClusterRequest, dict]]):
                 The request object. UpdateClusterRequest updates the
                 settings of a cluster.
             project_id (:class:`str`):
@@ -765,10 +775,10 @@ class ClusterManagerAsyncClient:
 
     async def update_node_pool(
         self,
-        request: Union[cluster_service.UpdateNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.UpdateNodePoolRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the version and/or image type of a specific
@@ -806,7 +816,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.UpdateNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.UpdateNodePoolRequest, dict]]):
                 The request object. SetNodePoolVersionRequest updates
                 the version of a node pool.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -853,10 +863,12 @@ class ClusterManagerAsyncClient:
 
     async def set_node_pool_autoscaling(
         self,
-        request: Union[cluster_service.SetNodePoolAutoscalingRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetNodePoolAutoscalingRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the autoscaling settings of a specific node
@@ -892,7 +904,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetNodePoolAutoscalingRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetNodePoolAutoscalingRequest, dict]]):
                 The request object. SetNodePoolAutoscalingRequest sets
                 the autoscaler settings of a node pool.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -939,14 +951,14 @@ class ClusterManagerAsyncClient:
 
     async def set_logging_service(
         self,
-        request: Union[cluster_service.SetLoggingServiceRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLoggingServiceRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        logging_service: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        logging_service: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the logging service for a specific cluster.
@@ -981,7 +993,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetLoggingServiceRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetLoggingServiceRequest, dict]]):
                 The request object. SetLoggingServiceRequest sets the
                 logging service of a cluster.
             project_id (:class:`str`):
@@ -1096,14 +1108,16 @@ class ClusterManagerAsyncClient:
 
     async def set_monitoring_service(
         self,
-        request: Union[cluster_service.SetMonitoringServiceRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetMonitoringServiceRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        monitoring_service: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        monitoring_service: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the monitoring service for a specific cluster.
@@ -1138,7 +1152,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetMonitoringServiceRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetMonitoringServiceRequest, dict]]):
                 The request object. SetMonitoringServiceRequest sets the
                 monitoring service of a cluster.
             project_id (:class:`str`):
@@ -1255,14 +1269,14 @@ class ClusterManagerAsyncClient:
 
     async def set_addons_config(
         self,
-        request: Union[cluster_service.SetAddonsConfigRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetAddonsConfigRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        addons_config: cluster_service.AddonsConfig = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        addons_config: Optional[cluster_service.AddonsConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the addons for a specific cluster.
@@ -1296,7 +1310,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetAddonsConfigRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetAddonsConfigRequest, dict]]):
                 The request object. SetAddonsRequest sets the addons
                 associated with the cluster.
             project_id (:class:`str`):
@@ -1400,14 +1414,14 @@ class ClusterManagerAsyncClient:
 
     async def set_locations(
         self,
-        request: Union[cluster_service.SetLocationsRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLocationsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        locations: Sequence[str] = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        locations: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the locations for a specific cluster. Deprecated. Use
@@ -1444,7 +1458,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetLocationsRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetLocationsRequest, dict]]):
                 The request object. SetLocationsRequest sets the
                 locations of the cluster.
             project_id (:class:`str`):
@@ -1476,7 +1490,7 @@ class ClusterManagerAsyncClient:
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            locations (:class:`Sequence[str]`):
+            locations (:class:`MutableSequence[str]`):
                 Required. The desired list of Google Compute Engine
                 `zones <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster's nodes should be located. Changing
@@ -1558,14 +1572,14 @@ class ClusterManagerAsyncClient:
 
     async def update_master(
         self,
-        request: Union[cluster_service.UpdateMasterRequest, dict] = None,
+        request: Optional[Union[cluster_service.UpdateMasterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        master_version: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        master_version: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the master for a specific cluster.
@@ -1600,7 +1614,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.UpdateMasterRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.UpdateMasterRequest, dict]]):
                 The request object. UpdateMasterRequest updates the
                 master of the cluster.
             project_id (:class:`str`):
@@ -1715,10 +1729,10 @@ class ClusterManagerAsyncClient:
 
     async def set_master_auth(
         self,
-        request: Union[cluster_service.SetMasterAuthRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetMasterAuthRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets master auth materials. Currently supports
@@ -1756,7 +1770,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetMasterAuthRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetMasterAuthRequest, dict]]):
                 The request object. SetMasterAuthRequest updates the
                 admin password of a cluster.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1803,13 +1817,13 @@ class ClusterManagerAsyncClient:
 
     async def delete_cluster(
         self,
-        request: Union[cluster_service.DeleteClusterRequest, dict] = None,
+        request: Optional[Union[cluster_service.DeleteClusterRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Deletes the cluster, including the Kubernetes
@@ -1852,7 +1866,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.DeleteClusterRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.DeleteClusterRequest, dict]]):
                 The request object. DeleteClusterRequest deletes a
                 cluster.
             project_id (:class:`str`):
@@ -1956,12 +1970,12 @@ class ClusterManagerAsyncClient:
 
     async def list_operations(
         self,
-        request: Union[cluster_service.ListOperationsRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListOperationsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListOperationsResponse:
         r"""Lists all operations in a project in the specified
@@ -1995,7 +2009,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.ListOperationsRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.ListOperationsRequest, dict]]):
                 The request object. ListOperationsRequest lists
                 operations.
             project_id (:class:`str`):
@@ -2087,13 +2101,13 @@ class ClusterManagerAsyncClient:
 
     async def get_operation(
         self,
-        request: Union[cluster_service.GetOperationRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetOperationRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        operation_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Gets the specified operation.
@@ -2127,7 +2141,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.GetOperationRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.GetOperationRequest, dict]]):
                 The request object. GetOperationRequest gets a single
                 operation.
             project_id (:class:`str`):
@@ -2230,13 +2244,13 @@ class ClusterManagerAsyncClient:
 
     async def cancel_operation(
         self,
-        request: Union[cluster_service.CancelOperationRequest, dict] = None,
+        request: Optional[Union[cluster_service.CancelOperationRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        operation_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        operation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Cancels the specified operation.
@@ -2267,7 +2281,7 @@ class ClusterManagerAsyncClient:
                 await client.cancel_operation(request=request)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.CancelOperationRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.CancelOperationRequest, dict]]):
                 The request object. CancelOperationRequest cancels a
                 single operation.
             project_id (:class:`str`):
@@ -2349,12 +2363,12 @@ class ClusterManagerAsyncClient:
 
     async def get_server_config(
         self,
-        request: Union[cluster_service.GetServerConfigRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetServerConfigRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ServerConfig:
         r"""Returns configuration info about the Google
@@ -2388,7 +2402,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.GetServerConfigRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.GetServerConfigRequest, dict]]):
                 The request object. Gets the current Kubernetes Engine
                 service configuration.
             project_id (:class:`str`):
@@ -2479,13 +2493,13 @@ class ClusterManagerAsyncClient:
 
     async def list_node_pools(
         self,
-        request: Union[cluster_service.ListNodePoolsRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListNodePoolsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListNodePoolsResponse:
         r"""Lists the node pools for a cluster.
@@ -2519,7 +2533,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.ListNodePoolsRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.ListNodePoolsRequest, dict]]):
                 The request object. ListNodePoolsRequest lists the node
                 pool(s) for a cluster.
             project_id (:class:`str`):
@@ -2620,10 +2634,10 @@ class ClusterManagerAsyncClient:
 
     async def get_json_web_keys(
         self,
-        request: Union[cluster_service.GetJSONWebKeysRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetJSONWebKeysRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.GetJSONWebKeysResponse:
         r"""Gets the public component of the cluster signing keys
@@ -2657,7 +2671,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]]):
                 The request object. GetJSONWebKeysRequest gets the
                 public component of the keys used by the cluster to sign
                 token requests. This will be the jwks_uri for the
@@ -2706,14 +2720,14 @@ class ClusterManagerAsyncClient:
 
     async def get_node_pool(
         self,
-        request: Union[cluster_service.GetNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.GetNodePoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.NodePool:
         r"""Retrieves the requested node pool.
@@ -2748,7 +2762,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.GetNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.GetNodePoolRequest, dict]]):
                 The request object. GetNodePoolRequest retrieves a node
                 pool for a cluster.
             project_id (:class:`str`):
@@ -2901,14 +2915,14 @@ class ClusterManagerAsyncClient:
 
     async def create_node_pool(
         self,
-        request: Union[cluster_service.CreateNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.CreateNodePoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool: cluster_service.NodePool = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool: Optional[cluster_service.NodePool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Creates a node pool for a cluster.
@@ -2942,7 +2956,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.CreateNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.CreateNodePoolRequest, dict]]):
                 The request object. CreateNodePoolRequest creates a node
                 pool for a cluster.
             project_id (:class:`str`):
@@ -3042,14 +3056,14 @@ class ClusterManagerAsyncClient:
 
     async def delete_node_pool(
         self,
-        request: Union[cluster_service.DeleteNodePoolRequest, dict] = None,
+        request: Optional[Union[cluster_service.DeleteNodePoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Deletes a node pool from a cluster.
@@ -3084,7 +3098,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.DeleteNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.DeleteNodePoolRequest, dict]]):
                 The request object. DeleteNodePoolRequest deletes a node
                 pool for a cluster.
             project_id (:class:`str`):
@@ -3198,10 +3212,12 @@ class ClusterManagerAsyncClient:
 
     async def complete_node_pool_upgrade(
         self,
-        request: Union[cluster_service.CompleteNodePoolUpgradeRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.CompleteNodePoolUpgradeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""CompleteNodePoolUpgrade will signal an on-going node
@@ -3230,7 +3246,7 @@ class ClusterManagerAsyncClient:
                 await client.complete_node_pool_upgrade(request=request)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.CompleteNodePoolUpgradeRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.CompleteNodePoolUpgradeRequest, dict]]):
                 The request object. CompleteNodePoolUpgradeRequest sets
                 the name of target node pool to complete upgrade.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -3266,14 +3282,16 @@ class ClusterManagerAsyncClient:
 
     async def rollback_node_pool_upgrade(
         self,
-        request: Union[cluster_service.RollbackNodePoolUpgradeRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.RollbackNodePoolUpgradeRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Rolls back a previously Aborted or Failed NodePool
@@ -3310,7 +3328,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.RollbackNodePoolUpgradeRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.RollbackNodePoolUpgradeRequest, dict]]):
                 The request object. RollbackNodePoolUpgradeRequest
                 rollbacks the previously Aborted or Failed NodePool
                 upgrade. This will be an no-op if the last upgrade
@@ -3417,15 +3435,17 @@ class ClusterManagerAsyncClient:
 
     async def set_node_pool_management(
         self,
-        request: Union[cluster_service.SetNodePoolManagementRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetNodePoolManagementRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        node_pool_id: str = None,
-        management: cluster_service.NodeManagement = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        node_pool_id: Optional[str] = None,
+        management: Optional[cluster_service.NodeManagement] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the NodeManagement options for a node pool.
@@ -3460,7 +3480,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetNodePoolManagementRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetNodePoolManagementRequest, dict]]):
                 The request object. SetNodePoolManagementRequest sets
                 the node management properties of a node pool.
             project_id (:class:`str`):
@@ -3576,15 +3596,15 @@ class ClusterManagerAsyncClient:
 
     async def set_labels(
         self,
-        request: Union[cluster_service.SetLabelsRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLabelsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        resource_labels: Mapping[str, str] = None,
-        label_fingerprint: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        resource_labels: Optional[MutableMapping[str, str]] = None,
+        label_fingerprint: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets labels on a cluster.
@@ -3619,7 +3639,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetLabelsRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetLabelsRequest, dict]]):
                 The request object. SetLabelsRequest sets the Google
                 Cloud Platform labels on a Google Container Engine
                 cluster, which will in turn set them for Google Compute
@@ -3652,7 +3672,7 @@ class ClusterManagerAsyncClient:
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            resource_labels (:class:`Mapping[str, str]`):
+            resource_labels (:class:`MutableMapping[str, str]`):
                 Required. The labels to set for that
                 cluster.
 
@@ -3741,14 +3761,14 @@ class ClusterManagerAsyncClient:
 
     async def set_legacy_abac(
         self,
-        request: Union[cluster_service.SetLegacyAbacRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetLegacyAbacRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        enabled: bool = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        enabled: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Enables or disables the ABAC authorization mechanism
@@ -3784,7 +3804,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetLegacyAbacRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetLegacyAbacRequest, dict]]):
                 The request object. SetLegacyAbacRequest enables or
                 disables the ABAC authorization mechanism for a cluster.
             project_id (:class:`str`):
@@ -3887,13 +3907,13 @@ class ClusterManagerAsyncClient:
 
     async def start_ip_rotation(
         self,
-        request: Union[cluster_service.StartIPRotationRequest, dict] = None,
+        request: Optional[Union[cluster_service.StartIPRotationRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Starts master IP rotation.
@@ -3927,7 +3947,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.StartIPRotationRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.StartIPRotationRequest, dict]]):
                 The request object. StartIPRotationRequest creates a new
                 IP for the cluster and then performs a node upgrade on
                 each node pool to point to the new IP.
@@ -4021,13 +4041,15 @@ class ClusterManagerAsyncClient:
 
     async def complete_ip_rotation(
         self,
-        request: Union[cluster_service.CompleteIPRotationRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.CompleteIPRotationRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Completes master IP rotation.
@@ -4061,7 +4083,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.CompleteIPRotationRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.CompleteIPRotationRequest, dict]]):
                 The request object. CompleteIPRotationRequest moves the
                 cluster master back into single-IP mode.
             project_id (:class:`str`):
@@ -4154,10 +4176,10 @@ class ClusterManagerAsyncClient:
 
     async def set_node_pool_size(
         self,
-        request: Union[cluster_service.SetNodePoolSizeRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetNodePoolSizeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""SetNodePoolSizeRequest sets the size of a node pool. The new
@@ -4196,7 +4218,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetNodePoolSizeRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetNodePoolSizeRequest, dict]]):
                 The request object. SetNodePoolSizeRequest sets the size
                 of a node pool.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -4243,14 +4265,14 @@ class ClusterManagerAsyncClient:
 
     async def set_network_policy(
         self,
-        request: Union[cluster_service.SetNetworkPolicyRequest, dict] = None,
+        request: Optional[Union[cluster_service.SetNetworkPolicyRequest, dict]] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        network_policy: cluster_service.NetworkPolicy = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        network_policy: Optional[cluster_service.NetworkPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Enables or disables Network Policy for a cluster.
@@ -4284,7 +4306,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetNetworkPolicyRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetNetworkPolicyRequest, dict]]):
                 The request object. SetNetworkPolicyRequest
                 enables/disables network policy for a cluster.
             project_id (:class:`str`):
@@ -4386,14 +4408,16 @@ class ClusterManagerAsyncClient:
 
     async def set_maintenance_policy(
         self,
-        request: Union[cluster_service.SetMaintenancePolicyRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.SetMaintenancePolicyRequest, dict]
+        ] = None,
         *,
-        project_id: str = None,
-        zone: str = None,
-        cluster_id: str = None,
-        maintenance_policy: cluster_service.MaintenancePolicy = None,
+        project_id: Optional[str] = None,
+        zone: Optional[str] = None,
+        cluster_id: Optional[str] = None,
+        maintenance_policy: Optional[cluster_service.MaintenancePolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the maintenance policy for a cluster.
@@ -4427,7 +4451,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.SetMaintenancePolicyRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.SetMaintenancePolicyRequest, dict]]):
                 The request object. SetMaintenancePolicyRequest sets the
                 maintenance policy for a cluster.
             project_id (:class:`str`):
@@ -4525,11 +4549,13 @@ class ClusterManagerAsyncClient:
 
     async def list_usable_subnetworks(
         self,
-        request: Union[cluster_service.ListUsableSubnetworksRequest, dict] = None,
+        request: Optional[
+            Union[cluster_service.ListUsableSubnetworksRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUsableSubnetworksAsyncPager:
         r"""Lists subnetworks that can be used for creating
@@ -4563,7 +4589,7 @@ class ClusterManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest, dict]]):
                 The request object. ListUsableSubnetworksRequest
                 requests the list of usable subnetworks. available to a
                 user for creating clusters.
@@ -4654,11 +4680,11 @@ class ClusterManagerAsyncClient:
 
     async def list_locations(
         self,
-        request: Union[cluster_service.ListLocationsRequest, dict] = None,
+        request: Optional[Union[cluster_service.ListLocationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListLocationsResponse:
         r"""Fetches locations that offer Google Kubernetes
@@ -4691,7 +4717,7 @@ class ClusterManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.container_v1beta1.types.ListLocationsRequest, dict]):
+            request (Optional[Union[google.cloud.container_v1beta1.types.ListLocationsRequest, dict]]):
                 The request object. ListLocationsRequest is used to
                 request the locations that offer GKE.
             parent (:class:`str`):
