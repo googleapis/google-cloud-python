@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -86,11 +88,11 @@ class CreateDatasetRequest(proto.Message):
             Required. The dataset to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dataset = proto.Field(
+    dataset: gcd_dataset.Dataset = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_dataset.Dataset,
@@ -106,7 +108,7 @@ class GetDatasetRequest(proto.Message):
             projects/{project_id}/datasets/{dataset_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -134,19 +136,19 @@ class ListDatasetsRequest(proto.Message):
             Returns the first page if empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -156,7 +158,7 @@ class ListDatasetsResponse(proto.Message):
     r"""Results of listing datasets within a project.
 
     Attributes:
-        datasets (Sequence[google.cloud.datalabeling_v1beta1.types.Dataset]):
+        datasets (MutableSequence[google.cloud.datalabeling_v1beta1.types.Dataset]):
             The list of datasets to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -166,12 +168,12 @@ class ListDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    datasets = proto.RepeatedField(
+    datasets: MutableSequence[gcd_dataset.Dataset] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_dataset.Dataset,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -186,7 +188,7 @@ class DeleteDatasetRequest(proto.Message):
             projects/{project_id}/datasets/{dataset_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -208,16 +210,16 @@ class ImportDataRequest(proto.Message):
             notification will be sent.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: gcd_dataset.InputConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_dataset.InputConfig,
     )
-    user_email_address = proto.Field(
+    user_email_address: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -247,24 +249,24 @@ class ExportDataRequest(proto.Message):
             notification will be sent.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    annotated_dataset = proto.Field(
+    annotated_dataset: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    output_config = proto.Field(
+    output_config: gcd_dataset.OutputConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gcd_dataset.OutputConfig,
     )
-    user_email_address = proto.Field(
+    user_email_address: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -279,7 +281,7 @@ class GetDataItemRequest(proto.Message):
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -307,19 +309,19 @@ class ListDataItemsRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -329,7 +331,7 @@ class ListDataItemsResponse(proto.Message):
     r"""Results of listing data items in a dataset.
 
     Attributes:
-        data_items (Sequence[google.cloud.datalabeling_v1beta1.types.DataItem]):
+        data_items (MutableSequence[google.cloud.datalabeling_v1beta1.types.DataItem]):
             The list of data items to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -339,12 +341,12 @@ class ListDataItemsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_items = proto.RepeatedField(
+    data_items: MutableSequence[gcd_dataset.DataItem] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_dataset.DataItem,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -360,7 +362,7 @@ class GetAnnotatedDatasetRequest(proto.Message):
             {annotated_dataset_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -388,19 +390,19 @@ class ListAnnotatedDatasetsRequest(proto.Message):
             call. Return first page if empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -410,7 +412,7 @@ class ListAnnotatedDatasetsResponse(proto.Message):
     r"""Results of listing annotated datasets for a dataset.
 
     Attributes:
-        annotated_datasets (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotatedDataset]):
+        annotated_datasets (MutableSequence[google.cloud.datalabeling_v1beta1.types.AnnotatedDataset]):
             The list of annotated datasets to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -420,12 +422,14 @@ class ListAnnotatedDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    annotated_datasets = proto.RepeatedField(
+    annotated_datasets: MutableSequence[
+        gcd_dataset.AnnotatedDataset
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_dataset.AnnotatedDataset,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -441,7 +445,7 @@ class DeleteAnnotatedDatasetRequest(proto.Message):
             {annotated_dataset_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -501,40 +505,42 @@ class LabelImageRequest(proto.Message):
         POLYLINE = 4
         SEGMENTATION = 5
 
-    image_classification_config = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        oneof="request_config",
-        message=human_annotation_config.ImageClassificationConfig,
+    image_classification_config: human_annotation_config.ImageClassificationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="request_config",
+            message=human_annotation_config.ImageClassificationConfig,
+        )
     )
-    bounding_poly_config = proto.Field(
+    bounding_poly_config: human_annotation_config.BoundingPolyConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="request_config",
         message=human_annotation_config.BoundingPolyConfig,
     )
-    polyline_config = proto.Field(
+    polyline_config: human_annotation_config.PolylineConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="request_config",
         message=human_annotation_config.PolylineConfig,
     )
-    segmentation_config = proto.Field(
+    segmentation_config: human_annotation_config.SegmentationConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="request_config",
         message=human_annotation_config.SegmentationConfig,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=human_annotation_config.HumanAnnotationConfig,
     )
-    feature = proto.Field(
+    feature: Feature = proto.Field(
         proto.ENUM,
         number=3,
         enum=Feature,
@@ -593,40 +599,44 @@ class LabelVideoRequest(proto.Message):
         OBJECT_TRACKING = 3
         EVENT = 4
 
-    video_classification_config = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        oneof="request_config",
-        message=human_annotation_config.VideoClassificationConfig,
+    video_classification_config: human_annotation_config.VideoClassificationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="request_config",
+            message=human_annotation_config.VideoClassificationConfig,
+        )
     )
-    object_detection_config = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="request_config",
-        message=human_annotation_config.ObjectDetectionConfig,
+    object_detection_config: human_annotation_config.ObjectDetectionConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="request_config",
+            message=human_annotation_config.ObjectDetectionConfig,
+        )
     )
-    object_tracking_config = proto.Field(
+    object_tracking_config: human_annotation_config.ObjectTrackingConfig = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="request_config",
         message=human_annotation_config.ObjectTrackingConfig,
     )
-    event_config = proto.Field(
+    event_config: human_annotation_config.EventConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="request_config",
         message=human_annotation_config.EventConfig,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=human_annotation_config.HumanAnnotationConfig,
     )
-    feature = proto.Field(
+    feature: Feature = proto.Field(
         proto.ENUM,
         number=3,
         enum=Feature,
@@ -671,28 +681,30 @@ class LabelTextRequest(proto.Message):
         TEXT_CLASSIFICATION = 1
         TEXT_ENTITY_EXTRACTION = 2
 
-    text_classification_config = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        oneof="request_config",
-        message=human_annotation_config.TextClassificationConfig,
+    text_classification_config: human_annotation_config.TextClassificationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="request_config",
+            message=human_annotation_config.TextClassificationConfig,
+        )
     )
-    text_entity_extraction_config = proto.Field(
+    text_entity_extraction_config: human_annotation_config.TextEntityExtractionConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="request_config",
         message=human_annotation_config.TextEntityExtractionConfig,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=human_annotation_config.HumanAnnotationConfig,
     )
-    feature = proto.Field(
+    feature: Feature = proto.Field(
         proto.ENUM,
         number=6,
         enum=Feature,
@@ -713,11 +725,11 @@ class GetExampleRequest(proto.Message):
             "annotation_spec.display_name = {display_name}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -746,19 +758,19 @@ class ListExamplesRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -768,7 +780,7 @@ class ListExamplesResponse(proto.Message):
     r"""Results of listing Examples in and annotated dataset.
 
     Attributes:
-        examples (Sequence[google.cloud.datalabeling_v1beta1.types.Example]):
+        examples (MutableSequence[google.cloud.datalabeling_v1beta1.types.Example]):
             The list of examples to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -778,12 +790,12 @@ class ListExamplesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    examples = proto.RepeatedField(
+    examples: MutableSequence[gcd_dataset.Example] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_dataset.Example,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -802,11 +814,11 @@ class CreateAnnotationSpecSetRequest(proto.Message):
             for annotation specs with same display_name.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    annotation_spec_set = proto.Field(
+    annotation_spec_set: gcd_annotation_spec_set.AnnotationSpecSet = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_annotation_spec_set.AnnotationSpecSet,
@@ -822,7 +834,7 @@ class GetAnnotationSpecSetRequest(proto.Message):
             projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -850,19 +862,19 @@ class ListAnnotationSpecSetsRequest(proto.Message):
             call. Return first page if empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -872,7 +884,7 @@ class ListAnnotationSpecSetsResponse(proto.Message):
     r"""Results of listing annotation spec set under a project.
 
     Attributes:
-        annotation_spec_sets (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet]):
+        annotation_spec_sets (MutableSequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet]):
             The list of annotation spec sets.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -882,12 +894,14 @@ class ListAnnotationSpecSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    annotation_spec_sets = proto.RepeatedField(
+    annotation_spec_sets: MutableSequence[
+        gcd_annotation_spec_set.AnnotationSpecSet
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_annotation_spec_set.AnnotationSpecSet,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -902,7 +916,7 @@ class DeleteAnnotationSpecSetRequest(proto.Message):
             ``projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -920,11 +934,11 @@ class CreateInstructionRequest(proto.Message):
             labeling task.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instruction = proto.Field(
+    instruction: gcd_instruction.Instruction = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_instruction.Instruction,
@@ -940,7 +954,7 @@ class GetInstructionRequest(proto.Message):
             projects/{project_id}/instructions/{instruction_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -955,7 +969,7 @@ class DeleteInstructionRequest(proto.Message):
             projects/{project_id}/instructions/{instruction_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -983,19 +997,19 @@ class ListInstructionsRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1005,7 +1019,7 @@ class ListInstructionsResponse(proto.Message):
     r"""Results of listing instructions under a project.
 
     Attributes:
-        instructions (Sequence[google.cloud.datalabeling_v1beta1.types.Instruction]):
+        instructions (MutableSequence[google.cloud.datalabeling_v1beta1.types.Instruction]):
             The list of Instructions to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -1015,12 +1029,12 @@ class ListInstructionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instructions = proto.RepeatedField(
+    instructions: MutableSequence[gcd_instruction.Instruction] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_instruction.Instruction,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1036,7 +1050,7 @@ class GetEvaluationRequest(proto.Message):
             "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1095,19 +1109,19 @@ class SearchEvaluationsRequest(proto.Message):
             first page of the search.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1117,7 +1131,7 @@ class SearchEvaluationsResponse(proto.Message):
     r"""Results of searching evaluations.
 
     Attributes:
-        evaluations (Sequence[google.cloud.datalabeling_v1beta1.types.Evaluation]):
+        evaluations (MutableSequence[google.cloud.datalabeling_v1beta1.types.Evaluation]):
             The list of evaluations matching the search.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -1127,12 +1141,12 @@ class SearchEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    evaluations = proto.RepeatedField(
+    evaluations: MutableSequence[evaluation.Evaluation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=evaluation.Evaluation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1162,15 +1176,15 @@ class SearchExampleComparisonsRequest(proto.Message):
             first page of the search.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1180,7 +1194,7 @@ class SearchExampleComparisonsResponse(proto.Message):
     r"""Results of searching example comparisons.
 
     Attributes:
-        example_comparisons (Sequence[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison]):
+        example_comparisons (MutableSequence[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison]):
             A list of example comparisons matching the
             search criteria.
         next_page_token (str):
@@ -1194,16 +1208,18 @@ class SearchExampleComparisonsResponse(proto.Message):
         Attributes:
             ground_truth_example (google.cloud.datalabeling_v1beta1.types.Example):
                 The ground truth output for the input.
-            model_created_examples (Sequence[google.cloud.datalabeling_v1beta1.types.Example]):
+            model_created_examples (MutableSequence[google.cloud.datalabeling_v1beta1.types.Example]):
                 Predictions by the model for the input.
         """
 
-        ground_truth_example = proto.Field(
+        ground_truth_example: gcd_dataset.Example = proto.Field(
             proto.MESSAGE,
             number=1,
             message=gcd_dataset.Example,
         )
-        model_created_examples = proto.RepeatedField(
+        model_created_examples: MutableSequence[
+            gcd_dataset.Example
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gcd_dataset.Example,
@@ -1213,12 +1229,12 @@ class SearchExampleComparisonsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    example_comparisons = proto.RepeatedField(
+    example_comparisons: MutableSequence[ExampleComparison] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ExampleComparison,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1235,11 +1251,11 @@ class CreateEvaluationJobRequest(proto.Message):
             Required. The evaluation job to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job = proto.Field(
+    job: gcd_evaluation_job.EvaluationJob = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcd_evaluation_job.EvaluationJob,
@@ -1265,12 +1281,12 @@ class UpdateEvaluationJobRequest(proto.Message):
             them with commas.
     """
 
-    evaluation_job = proto.Field(
+    evaluation_job: gcd_evaluation_job.EvaluationJob = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcd_evaluation_job.EvaluationJob,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1287,7 +1303,7 @@ class GetEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1304,7 +1320,7 @@ class PauseEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1321,7 +1337,7 @@ class ResumeEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1338,7 +1354,7 @@ class DeleteEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1374,19 +1390,19 @@ class ListEvaluationJobsRequest(proto.Message):
             the first page if this is empty.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1396,7 +1412,7 @@ class ListEvaluationJobsResponse(proto.Message):
     r"""Results for listing evaluation jobs.
 
     Attributes:
-        evaluation_jobs (Sequence[google.cloud.datalabeling_v1beta1.types.EvaluationJob]):
+        evaluation_jobs (MutableSequence[google.cloud.datalabeling_v1beta1.types.EvaluationJob]):
             The list of evaluation jobs to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -1406,12 +1422,14 @@ class ListEvaluationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    evaluation_jobs = proto.RepeatedField(
+    evaluation_jobs: MutableSequence[
+        gcd_evaluation_job.EvaluationJob
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_evaluation_job.EvaluationJob,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

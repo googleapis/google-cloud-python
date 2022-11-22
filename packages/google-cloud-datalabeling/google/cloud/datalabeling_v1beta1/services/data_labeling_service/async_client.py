@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -207,9 +217,9 @@ class DataLabelingServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DataLabelingServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the data labeling service client.
@@ -253,12 +263,14 @@ class DataLabelingServiceAsyncClient:
 
     async def create_dataset(
         self,
-        request: Union[data_labeling_service.CreateDatasetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.CreateDatasetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        dataset: gcd_dataset.Dataset = None,
+        parent: Optional[str] = None,
+        dataset: Optional[gcd_dataset.Dataset] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_dataset.Dataset:
         r"""Creates dataset. If success return a Dataset
@@ -291,7 +303,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.CreateDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.CreateDatasetRequest, dict]]):
                 The request object. Request message for CreateDataset.
             parent (:class:`str`):
                 Required. Dataset resource parent, format:
@@ -365,11 +377,11 @@ class DataLabelingServiceAsyncClient:
 
     async def get_dataset(
         self,
-        request: Union[data_labeling_service.GetDatasetRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.GetDatasetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
         r"""Gets dataset by resource name.
@@ -401,7 +413,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetDatasetRequest, dict]]):
                 The request object. Request message for GetDataSet.
             name (:class:`str`):
                 Required. Dataset resource name, format:
@@ -478,12 +490,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_datasets(
         self,
-        request: Union[data_labeling_service.ListDatasetsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListDatasetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsAsyncPager:
         r"""Lists datasets under a project. Pagination is
@@ -517,7 +531,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListDatasetsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListDatasetsRequest, dict]]):
                 The request object. Request message for ListDataset.
             parent (:class:`str`):
                 Required. Dataset resource parent, format:
@@ -613,11 +627,13 @@ class DataLabelingServiceAsyncClient:
 
     async def delete_dataset(
         self,
-        request: Union[data_labeling_service.DeleteDatasetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.DeleteDatasetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a dataset by resource name.
@@ -646,7 +662,7 @@ class DataLabelingServiceAsyncClient:
                 await client.delete_dataset(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.DeleteDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.DeleteDatasetRequest, dict]]):
                 The request object. Request message for DeleteDataset.
             name (:class:`str`):
                 Required. Dataset resource name, format:
@@ -712,12 +728,12 @@ class DataLabelingServiceAsyncClient:
 
     async def import_data(
         self,
-        request: Union[data_labeling_service.ImportDataRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.ImportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: dataset.InputConfig = None,
+        name: Optional[str] = None,
+        input_config: Optional[dataset.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports data into dataset based on source locations
@@ -758,7 +774,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ImportDataRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ImportDataRequest, dict]]):
                 The request object. Request message for ImportData API.
             name (:class:`str`):
                 Required. Dataset resource name, format:
@@ -843,14 +859,14 @@ class DataLabelingServiceAsyncClient:
 
     async def export_data(
         self,
-        request: Union[data_labeling_service.ExportDataRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.ExportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        annotated_dataset: str = None,
-        filter: str = None,
-        output_config: dataset.OutputConfig = None,
+        name: Optional[str] = None,
+        annotated_dataset: Optional[str] = None,
+        filter: Optional[str] = None,
+        output_config: Optional[dataset.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports data and annotations from dataset.
@@ -887,7 +903,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ExportDataRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ExportDataRequest, dict]]):
                 The request object. Request message for ExportData API.
             name (:class:`str`):
                 Required. Dataset resource name, format:
@@ -1003,11 +1019,11 @@ class DataLabelingServiceAsyncClient:
 
     async def get_data_item(
         self,
-        request: Union[data_labeling_service.GetDataItemRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.GetDataItemRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.DataItem:
         r"""Gets a data item in a dataset by resource name. This
@@ -1040,7 +1056,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetDataItemRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetDataItemRequest, dict]]):
                 The request object. Request message for GetDataItem.
             name (:class:`str`):
                 Required. The name of the data item to get, format:
@@ -1115,12 +1131,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_data_items(
         self,
-        request: Union[data_labeling_service.ListDataItemsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListDataItemsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataItemsAsyncPager:
         r"""Lists data items in a dataset. This API can be called
@@ -1155,7 +1173,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListDataItemsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListDataItemsRequest, dict]]):
                 The request object. Request message for ListDataItems.
             parent (:class:`str`):
                 Required. Name of the dataset to list data items,
@@ -1251,11 +1269,13 @@ class DataLabelingServiceAsyncClient:
 
     async def get_annotated_dataset(
         self,
-        request: Union[data_labeling_service.GetAnnotatedDatasetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetAnnotatedDatasetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.AnnotatedDataset:
         r"""Gets an annotated dataset by resource name.
@@ -1287,7 +1307,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetAnnotatedDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetAnnotatedDatasetRequest, dict]]):
                 The request object. Request message for
                 GetAnnotatedDataset.
             name (:class:`str`):
@@ -1367,12 +1387,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_annotated_datasets(
         self,
-        request: Union[data_labeling_service.ListAnnotatedDatasetsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListAnnotatedDatasetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnnotatedDatasetsAsyncPager:
         r"""Lists annotated datasets for a dataset. Pagination is
@@ -1406,7 +1428,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsRequest, dict]]):
                 The request object. Request message for
                 ListAnnotatedDatasets.
             parent (:class:`str`):
@@ -1504,12 +1526,12 @@ class DataLabelingServiceAsyncClient:
 
     async def delete_annotated_dataset(
         self,
-        request: Union[
-            data_labeling_service.DeleteAnnotatedDatasetRequest, dict
+        request: Optional[
+            Union[data_labeling_service.DeleteAnnotatedDatasetRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an annotated dataset by resource name.
@@ -1538,7 +1560,7 @@ class DataLabelingServiceAsyncClient:
                 await client.delete_annotated_dataset(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotatedDatasetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotatedDatasetRequest, dict]]):
                 The request object. Request message for
                 DeleteAnnotatedDataset.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1574,13 +1596,13 @@ class DataLabelingServiceAsyncClient:
 
     async def label_image(
         self,
-        request: Union[data_labeling_service.LabelImageRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.LabelImageRequest, dict]] = None,
         *,
-        parent: str = None,
-        basic_config: human_annotation_config.HumanAnnotationConfig = None,
-        feature: data_labeling_service.LabelImageRequest.Feature = None,
+        parent: Optional[str] = None,
+        basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
+        feature: Optional[data_labeling_service.LabelImageRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts a labeling task for image. The type of image
@@ -1627,7 +1649,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.LabelImageRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.LabelImageRequest, dict]]):
                 The request object. Request message for starting an
                 image labeling task.
             parent (:class:`str`):
@@ -1722,13 +1744,13 @@ class DataLabelingServiceAsyncClient:
 
     async def label_video(
         self,
-        request: Union[data_labeling_service.LabelVideoRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.LabelVideoRequest, dict]] = None,
         *,
-        parent: str = None,
-        basic_config: human_annotation_config.HumanAnnotationConfig = None,
-        feature: data_labeling_service.LabelVideoRequest.Feature = None,
+        parent: Optional[str] = None,
+        basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
+        feature: Optional[data_labeling_service.LabelVideoRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts a labeling task for video. The type of video
@@ -1775,7 +1797,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.LabelVideoRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.LabelVideoRequest, dict]]):
                 The request object. Request message for LabelVideo.
             parent (:class:`str`):
                 Required. Name of the dataset to request labeling task,
@@ -1869,13 +1891,13 @@ class DataLabelingServiceAsyncClient:
 
     async def label_text(
         self,
-        request: Union[data_labeling_service.LabelTextRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.LabelTextRequest, dict]] = None,
         *,
-        parent: str = None,
-        basic_config: human_annotation_config.HumanAnnotationConfig = None,
-        feature: data_labeling_service.LabelTextRequest.Feature = None,
+        parent: Optional[str] = None,
+        basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
+        feature: Optional[data_labeling_service.LabelTextRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts a labeling task for text. The type of text
@@ -1922,7 +1944,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.LabelTextRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.LabelTextRequest, dict]]):
                 The request object. Request message for LabelText.
             parent (:class:`str`):
                 Required. Name of the data set to request labeling task,
@@ -2016,12 +2038,12 @@ class DataLabelingServiceAsyncClient:
 
     async def get_example(
         self,
-        request: Union[data_labeling_service.GetExampleRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.GetExampleRequest, dict]] = None,
         *,
-        name: str = None,
-        filter: str = None,
+        name: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Example:
         r"""Gets an example by resource name, including both data
@@ -2054,7 +2076,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetExampleRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetExampleRequest, dict]]):
                 The request object. Request message for GetExample
             name (:class:`str`):
                 Required. Name of example, format:
@@ -2141,12 +2163,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_examples(
         self,
-        request: Union[data_labeling_service.ListExamplesRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListExamplesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExamplesAsyncPager:
         r"""Lists examples in an annotated dataset. Pagination is
@@ -2180,7 +2204,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListExamplesRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListExamplesRequest, dict]]):
                 The request object. Request message for ListExamples.
             parent (:class:`str`):
                 Required. Example resource parent.
@@ -2276,14 +2300,14 @@ class DataLabelingServiceAsyncClient:
 
     async def create_annotation_spec_set(
         self,
-        request: Union[
-            data_labeling_service.CreateAnnotationSpecSetRequest, dict
+        request: Optional[
+            Union[data_labeling_service.CreateAnnotationSpecSetRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        annotation_spec_set: gcd_annotation_spec_set.AnnotationSpecSet = None,
+        parent: Optional[str] = None,
+        annotation_spec_set: Optional[gcd_annotation_spec_set.AnnotationSpecSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_annotation_spec_set.AnnotationSpecSet:
         r"""Creates an annotation spec set by providing a set of
@@ -2316,7 +2340,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.CreateAnnotationSpecSetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.CreateAnnotationSpecSetRequest, dict]]):
                 The request object. Request message for
                 CreateAnnotationSpecSet.
             parent (:class:`str`):
@@ -2396,11 +2420,13 @@ class DataLabelingServiceAsyncClient:
 
     async def get_annotation_spec_set(
         self,
-        request: Union[data_labeling_service.GetAnnotationSpecSetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetAnnotationSpecSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec_set.AnnotationSpecSet:
         r"""Gets an annotation spec set by resource name.
@@ -2432,7 +2458,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetAnnotationSpecSetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetAnnotationSpecSetRequest, dict]]):
                 The request object. Request message for
                 GetAnnotationSpecSet.
             name (:class:`str`):
@@ -2512,14 +2538,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_annotation_spec_sets(
         self,
-        request: Union[
-            data_labeling_service.ListAnnotationSpecSetsRequest, dict
+        request: Optional[
+            Union[data_labeling_service.ListAnnotationSpecSetsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnnotationSpecSetsAsyncPager:
         r"""Lists annotation spec sets for a project. Pagination
@@ -2553,7 +2579,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsRequest, dict]]):
                 The request object. Request message for
                 ListAnnotationSpecSets.
             parent (:class:`str`):
@@ -2650,13 +2676,13 @@ class DataLabelingServiceAsyncClient:
 
     async def delete_annotation_spec_set(
         self,
-        request: Union[
-            data_labeling_service.DeleteAnnotationSpecSetRequest, dict
+        request: Optional[
+            Union[data_labeling_service.DeleteAnnotationSpecSetRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an annotation spec set by resource name.
@@ -2685,7 +2711,7 @@ class DataLabelingServiceAsyncClient:
                 await client.delete_annotation_spec_set(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotationSpecSetRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotationSpecSetRequest, dict]]):
                 The request object. Request message for
                 DeleteAnnotationSpecSet.
             name (:class:`str`):
@@ -2752,12 +2778,14 @@ class DataLabelingServiceAsyncClient:
 
     async def create_instruction(
         self,
-        request: Union[data_labeling_service.CreateInstructionRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.CreateInstructionRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instruction: gcd_instruction.Instruction = None,
+        parent: Optional[str] = None,
+        instruction: Optional[gcd_instruction.Instruction] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an instruction for how data should be
@@ -2794,7 +2822,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.CreateInstructionRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.CreateInstructionRequest, dict]]):
                 The request object. Request message for
                 CreateInstruction.
             parent (:class:`str`):
@@ -2879,11 +2907,13 @@ class DataLabelingServiceAsyncClient:
 
     async def get_instruction(
         self,
-        request: Union[data_labeling_service.GetInstructionRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetInstructionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instruction.Instruction:
         r"""Gets an instruction by resource name.
@@ -2915,7 +2945,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetInstructionRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetInstructionRequest, dict]]):
                 The request object. Request message for GetInstruction.
             name (:class:`str`):
                 Required. Instruction resource name, format:
@@ -2992,12 +3022,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_instructions(
         self,
-        request: Union[data_labeling_service.ListInstructionsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListInstructionsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstructionsAsyncPager:
         r"""Lists instructions for a project. Pagination is
@@ -3031,7 +3063,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest, dict]]):
                 The request object. Request message for
                 ListInstructions.
             parent (:class:`str`):
@@ -3128,11 +3160,13 @@ class DataLabelingServiceAsyncClient:
 
     async def delete_instruction(
         self,
-        request: Union[data_labeling_service.DeleteInstructionRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.DeleteInstructionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an instruction object by resource name.
@@ -3161,7 +3195,7 @@ class DataLabelingServiceAsyncClient:
                 await client.delete_instruction(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.DeleteInstructionRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.DeleteInstructionRequest, dict]]):
                 The request object. Request message for
                 DeleteInstruction.
             name (:class:`str`):
@@ -3228,11 +3262,13 @@ class DataLabelingServiceAsyncClient:
 
     async def get_evaluation(
         self,
-        request: Union[data_labeling_service.GetEvaluationRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetEvaluationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation.Evaluation:
         r"""Gets an evaluation by resource name (to search, use
@@ -3265,7 +3301,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest, dict]]):
                 The request object. Request message for GetEvaluation.
             name (:class:`str`):
                 Required. Name of the evaluation. Format:
@@ -3343,12 +3379,14 @@ class DataLabelingServiceAsyncClient:
 
     async def search_evaluations(
         self,
-        request: Union[data_labeling_service.SearchEvaluationsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.SearchEvaluationsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchEvaluationsAsyncPager:
         r"""Searches
@@ -3383,7 +3421,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest, dict]]):
                 The request object. Request message for
                 SearchEvaluation.
             parent (:class:`str`):
@@ -3510,13 +3548,13 @@ class DataLabelingServiceAsyncClient:
 
     async def search_example_comparisons(
         self,
-        request: Union[
-            data_labeling_service.SearchExampleComparisonsRequest, dict
+        request: Optional[
+            Union[data_labeling_service.SearchExampleComparisonsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchExampleComparisonsAsyncPager:
         r"""Searches example comparisons from an evaluation. The
@@ -3552,7 +3590,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest, dict]]):
                 The request object. Request message of
                 SearchExampleComparisons.
             parent (:class:`str`):
@@ -3633,12 +3671,14 @@ class DataLabelingServiceAsyncClient:
 
     async def create_evaluation_job(
         self,
-        request: Union[data_labeling_service.CreateEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.CreateEvaluationJobRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        job: evaluation_job.EvaluationJob = None,
+        parent: Optional[str] = None,
+        job: Optional[evaluation_job.EvaluationJob] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Creates an evaluation job.
@@ -3670,7 +3710,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest, dict]]):
                 The request object. Request message for
                 CreateEvaluationJob.
             parent (:class:`str`):
@@ -3749,12 +3789,14 @@ class DataLabelingServiceAsyncClient:
 
     async def update_evaluation_job(
         self,
-        request: Union[data_labeling_service.UpdateEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.UpdateEvaluationJobRequest, dict]
+        ] = None,
         *,
-        evaluation_job: gcd_evaluation_job.EvaluationJob = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        evaluation_job: Optional[gcd_evaluation_job.EvaluationJob] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_evaluation_job.EvaluationJob:
         r"""Updates an evaluation job. You can only update certain fields of
@@ -3792,7 +3834,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest, dict]]):
                 The request object. Request message for
                 UpdateEvaluationJob.
             evaluation_job (:class:`google.cloud.datalabeling_v1beta1.types.EvaluationJob`):
@@ -3880,11 +3922,13 @@ class DataLabelingServiceAsyncClient:
 
     async def get_evaluation_job(
         self,
-        request: Union[data_labeling_service.GetEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Gets an evaluation job by resource name.
@@ -3916,7 +3960,7 @@ class DataLabelingServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest, dict]]):
                 The request object. Request message for
                 GetEvaluationJob.
             name (:class:`str`):
@@ -3997,11 +4041,13 @@ class DataLabelingServiceAsyncClient:
 
     async def pause_evaluation_job(
         self,
-        request: Union[data_labeling_service.PauseEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.PauseEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pauses an evaluation job. Pausing an evaluation job that is
@@ -4031,7 +4077,7 @@ class DataLabelingServiceAsyncClient:
                 await client.pause_evaluation_job(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest, dict]]):
                 The request object. Request message for
                 PauseEvaluationJob.
             name (:class:`str`):
@@ -4090,11 +4136,13 @@ class DataLabelingServiceAsyncClient:
 
     async def resume_evaluation_job(
         self,
-        request: Union[data_labeling_service.ResumeEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ResumeEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a paused evaluation job. A deleted evaluation
@@ -4125,7 +4173,7 @@ class DataLabelingServiceAsyncClient:
                 await client.resume_evaluation_job(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest, dict]]):
                 The request object. Request message ResumeEvaluationJob.
             name (:class:`str`):
                 Required. Name of the evaluation job that is going to be
@@ -4183,11 +4231,13 @@ class DataLabelingServiceAsyncClient:
 
     async def delete_evaluation_job(
         self,
-        request: Union[data_labeling_service.DeleteEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.DeleteEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Stops and deletes an evaluation job.
@@ -4216,7 +4266,7 @@ class DataLabelingServiceAsyncClient:
                 await client.delete_evaluation_job(request=request)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest, dict]]):
                 The request object. Request message DeleteEvaluationJob.
             name (:class:`str`):
                 Required. Name of the evaluation job that is going to be
@@ -4284,12 +4334,14 @@ class DataLabelingServiceAsyncClient:
 
     async def list_evaluation_jobs(
         self,
-        request: Union[data_labeling_service.ListEvaluationJobsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListEvaluationJobsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEvaluationJobsAsyncPager:
         r"""Lists all evaluation jobs within a project with
@@ -4323,7 +4375,7 @@ class DataLabelingServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest, dict]):
+            request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest, dict]]):
                 The request object. Request message for
                 ListEvaluationJobs.
             parent (:class:`str`):

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -62,50 +64,50 @@ class Instruction(proto.Message):
         pdf_instruction (google.cloud.datalabeling_v1beta1.types.PdfInstruction):
             Instruction from a PDF document. The PDF
             should be in a Cloud Storage bucket.
-        blocking_resources (Sequence[str]):
+        blocking_resources (MutableSequence[str]):
             Output only. The names of any related
             resources that are blocking changes to the
             instruction.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    data_type = proto.Field(
+    data_type: dataset.DataType = proto.Field(
         proto.ENUM,
         number=6,
         enum=dataset.DataType,
     )
-    csv_instruction = proto.Field(
+    csv_instruction: "CsvInstruction" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="CsvInstruction",
     )
-    pdf_instruction = proto.Field(
+    pdf_instruction: "PdfInstruction" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="PdfInstruction",
     )
-    blocking_resources = proto.RepeatedField(
+    blocking_resources: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
@@ -121,7 +123,7 @@ class CsvInstruction(proto.Message):
             is allowed.
     """
 
-    gcs_file_uri = proto.Field(
+    gcs_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -136,7 +138,7 @@ class PdfInstruction(proto.Message):
             is allowed.
     """
 
-    gcs_file_uri = proto.Field(
+    gcs_file_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )

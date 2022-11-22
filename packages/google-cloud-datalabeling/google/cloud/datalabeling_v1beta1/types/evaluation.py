@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -70,36 +72,36 @@ class Evaluation(proto.Message):
             is for certain AnnotationTypes.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: "EvaluationConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EvaluationConfig",
     )
-    evaluation_job_run_time = proto.Field(
+    evaluation_job_run_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    evaluation_metrics = proto.Field(
+    evaluation_metrics: "EvaluationMetrics" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="EvaluationMetrics",
     )
-    annotation_type = proto.Field(
+    annotation_type: annotation.AnnotationType = proto.Field(
         proto.ENUM,
         number=6,
         enum=annotation.AnnotationType,
     )
-    evaluated_item_count = proto.Field(
+    evaluated_item_count: int = proto.Field(
         proto.INT64,
         number=7,
     )
@@ -122,7 +124,7 @@ class EvaluationConfig(proto.Message):
             This field is a member of `oneof`_ ``vertical_option``.
     """
 
-    bounding_box_evaluation_options = proto.Field(
+    bounding_box_evaluation_options: "BoundingBoxEvaluationOptions" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="vertical_option",
@@ -142,7 +144,7 @@ class BoundingBoxEvaluationOptions(proto.Message):
             must be a number between 0 and 1.
     """
 
-    iou_threshold = proto.Field(
+    iou_threshold: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
@@ -167,13 +169,13 @@ class EvaluationMetrics(proto.Message):
             This field is a member of `oneof`_ ``metrics``.
     """
 
-    classification_metrics = proto.Field(
+    classification_metrics: "ClassificationMetrics" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="metrics",
         message="ClassificationMetrics",
     )
-    object_detection_metrics = proto.Field(
+    object_detection_metrics: "ObjectDetectionMetrics" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="metrics",
@@ -194,12 +196,12 @@ class ClassificationMetrics(proto.Message):
             ground truth labels.
     """
 
-    pr_curve = proto.Field(
+    pr_curve: "PrCurve" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PrCurve",
     )
-    confusion_matrix = proto.Field(
+    confusion_matrix: "ConfusionMatrix" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ConfusionMatrix",
@@ -215,7 +217,7 @@ class ObjectDetectionMetrics(proto.Message):
             Precision-recall curve.
     """
 
-    pr_curve = proto.Field(
+    pr_curve: "PrCurve" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PrCurve",
@@ -235,7 +237,7 @@ class PrCurve(proto.Message):
             Area under the precision-recall curve. Not to
             be confused with area under a receiver operating
             characteristic (ROC) curve.
-        confidence_metrics_entries (Sequence[google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry]):
+        confidence_metrics_entries (MutableSequence[google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry]):
             Entries that make up the precision-recall graph. Each entry
             is a "point" on the graph drawn for a different
             ``confidence_threshold``.
@@ -290,62 +292,64 @@ class PrCurve(proto.Message):
                 [precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5].
         """
 
-        confidence_threshold = proto.Field(
+        confidence_threshold: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        recall = proto.Field(
+        recall: float = proto.Field(
             proto.FLOAT,
             number=2,
         )
-        precision = proto.Field(
+        precision: float = proto.Field(
             proto.FLOAT,
             number=3,
         )
-        f1_score = proto.Field(
+        f1_score: float = proto.Field(
             proto.FLOAT,
             number=4,
         )
-        recall_at1 = proto.Field(
+        recall_at1: float = proto.Field(
             proto.FLOAT,
             number=5,
         )
-        precision_at1 = proto.Field(
+        precision_at1: float = proto.Field(
             proto.FLOAT,
             number=6,
         )
-        f1_score_at1 = proto.Field(
+        f1_score_at1: float = proto.Field(
             proto.FLOAT,
             number=7,
         )
-        recall_at5 = proto.Field(
+        recall_at5: float = proto.Field(
             proto.FLOAT,
             number=8,
         )
-        precision_at5 = proto.Field(
+        precision_at5: float = proto.Field(
             proto.FLOAT,
             number=9,
         )
-        f1_score_at5 = proto.Field(
+        f1_score_at5: float = proto.Field(
             proto.FLOAT,
             number=10,
         )
 
-    annotation_spec = proto.Field(
+    annotation_spec: annotation_spec_set.AnnotationSpec = proto.Field(
         proto.MESSAGE,
         number=1,
         message=annotation_spec_set.AnnotationSpec,
     )
-    area_under_curve = proto.Field(
+    area_under_curve: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    confidence_metrics_entries = proto.RepeatedField(
+    confidence_metrics_entries: MutableSequence[
+        ConfidenceMetricsEntry
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ConfidenceMetricsEntry,
     )
-    mean_average_precision = proto.Field(
+    mean_average_precision: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
@@ -357,7 +361,7 @@ class ConfusionMatrix(proto.Message):
     labels. Not applicable when the entry is for a single label.
 
     Attributes:
-        row (Sequence[google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row]):
+        row (MutableSequence[google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row]):
 
     """
 
@@ -373,12 +377,12 @@ class ConfusionMatrix(proto.Message):
                 this entry's parent.)
         """
 
-        annotation_spec = proto.Field(
+        annotation_spec: annotation_spec_set.AnnotationSpec = proto.Field(
             proto.MESSAGE,
             number=1,
             message=annotation_spec_set.AnnotationSpec,
         )
-        item_count = proto.Field(
+        item_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
@@ -391,23 +395,25 @@ class ConfusionMatrix(proto.Message):
             annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
                 The annotation spec of the ground truth label
                 for this row.
-            entries (Sequence[google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry]):
+            entries (MutableSequence[google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry]):
                 A list of the confusion matrix entries. One
                 entry for each possible predicted label.
         """
 
-        annotation_spec = proto.Field(
+        annotation_spec: annotation_spec_set.AnnotationSpec = proto.Field(
             proto.MESSAGE,
             number=1,
             message=annotation_spec_set.AnnotationSpec,
         )
-        entries = proto.RepeatedField(
+        entries: MutableSequence[
+            "ConfusionMatrix.ConfusionMatrixEntry"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ConfusionMatrix.ConfusionMatrixEntry",
         )
 
-    row = proto.RepeatedField(
+    row: MutableSequence[Row] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Row,

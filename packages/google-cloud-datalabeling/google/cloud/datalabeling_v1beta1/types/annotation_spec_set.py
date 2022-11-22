@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -44,35 +46,35 @@ class AnnotationSpecSet(proto.Message):
             Optional. User-provided description of the
             annotation specification set. The description
             can be up to 10,000 characters long.
-        annotation_specs (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpec]):
+        annotation_specs (MutableSequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpec]):
             Required. The array of AnnotationSpecs that
             you define when you create the
             AnnotationSpecSet. These are the possible labels
             for the labeling task.
-        blocking_resources (Sequence[str]):
+        blocking_resources (MutableSequence[str]):
             Output only. The names of any related
             resources that are blocking changes to the
             annotation spec set.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    annotation_specs = proto.RepeatedField(
+    annotation_specs: MutableSequence["AnnotationSpec"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="AnnotationSpec",
     )
-    blocking_resources = proto.RepeatedField(
+    blocking_resources: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -94,11 +96,11 @@ class AnnotationSpec(proto.Message):
             up to 10,000 characters long.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )

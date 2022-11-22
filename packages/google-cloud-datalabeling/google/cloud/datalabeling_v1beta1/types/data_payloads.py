@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -42,19 +44,19 @@ class ImagePayload(proto.Message):
             bucket.
     """
 
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    image_thumbnail = proto.Field(
+    image_thumbnail: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    signed_uri = proto.Field(
+    signed_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -68,7 +70,7 @@ class TextPayload(proto.Message):
             Text content.
     """
 
-    text_content = proto.Field(
+    text_content: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -86,11 +88,11 @@ class VideoThumbnail(proto.Message):
             the thumbnail has been extracted from.
     """
 
-    thumbnail = proto.Field(
+    thumbnail: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    time_offset = proto.Field(
+    time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -105,7 +107,7 @@ class VideoPayload(proto.Message):
             Video format.
         video_uri (str):
             Video uri from the user bucket.
-        video_thumbnails (Sequence[google.cloud.datalabeling_v1beta1.types.VideoThumbnail]):
+        video_thumbnails (MutableSequence[google.cloud.datalabeling_v1beta1.types.VideoThumbnail]):
             The list of video thumbnails.
         frame_rate (float):
             FPS of the video.
@@ -114,24 +116,24 @@ class VideoPayload(proto.Message):
             bucket.
     """
 
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    video_uri = proto.Field(
+    video_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    video_thumbnails = proto.RepeatedField(
+    video_thumbnails: MutableSequence["VideoThumbnail"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="VideoThumbnail",
     )
-    frame_rate = proto.Field(
+    frame_rate: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    signed_uri = proto.Field(
+    signed_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )

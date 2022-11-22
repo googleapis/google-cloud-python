@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -59,15 +61,15 @@ class ImportDataOperationResponse(proto.Message):
             successfully.
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    total_count = proto.Field(
+    total_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    import_count = proto.Field(
+    import_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -92,24 +94,24 @@ class ExportDataOperationResponse(proto.Message):
             Output only. output_config in the ExportData request.
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    total_count = proto.Field(
+    total_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    export_count = proto.Field(
+    export_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    label_stats = proto.Field(
+    label_stats: gcd_dataset.LabelStats = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gcd_dataset.LabelStats,
     )
-    output_config = proto.Field(
+    output_config: gcd_dataset.OutputConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=gcd_dataset.OutputConfig,
@@ -123,7 +125,7 @@ class ImportDataOperationMetadata(proto.Message):
         dataset (str):
             Output only. The name of imported dataset.
             "projects/*/datasets/*".
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
@@ -133,16 +135,16 @@ class ImportDataOperationMetadata(proto.Message):
             request was created.
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -156,7 +158,7 @@ class ExportDataOperationMetadata(proto.Message):
         dataset (str):
             Output only. The name of dataset to be exported.
             "projects/*/datasets/*".
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
@@ -166,16 +168,16 @@ class ExportDataOperationMetadata(proto.Message):
             request was created.
     """
 
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -254,7 +256,7 @@ class LabelOperationMetadata(proto.Message):
             This field is a member of `oneof`_ ``details``.
         progress_percent (int):
             Output only. Progress of label operation. Range: [0, 100].
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
@@ -264,88 +266,102 @@ class LabelOperationMetadata(proto.Message):
             was created.
     """
 
-    image_classification_details = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        oneof="details",
-        message="LabelImageClassificationOperationMetadata",
+    image_classification_details: "LabelImageClassificationOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="details",
+            message="LabelImageClassificationOperationMetadata",
+        )
     )
-    image_bounding_box_details = proto.Field(
+    image_bounding_box_details: "LabelImageBoundingBoxOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="details",
         message="LabelImageBoundingBoxOperationMetadata",
     )
-    image_bounding_poly_details = proto.Field(
-        proto.MESSAGE,
-        number=11,
-        oneof="details",
-        message="LabelImageBoundingPolyOperationMetadata",
+    image_bounding_poly_details: "LabelImageBoundingPolyOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=11,
+            oneof="details",
+            message="LabelImageBoundingPolyOperationMetadata",
+        )
     )
-    image_oriented_bounding_box_details = proto.Field(
+    image_oriented_bounding_box_details: "LabelImageOrientedBoundingBoxOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="details",
         message="LabelImageOrientedBoundingBoxOperationMetadata",
     )
-    image_polyline_details = proto.Field(
+    image_polyline_details: "LabelImagePolylineOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="details",
         message="LabelImagePolylineOperationMetadata",
     )
-    image_segmentation_details = proto.Field(
+    image_segmentation_details: "LabelImageSegmentationOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="details",
         message="LabelImageSegmentationOperationMetadata",
     )
-    video_classification_details = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="details",
-        message="LabelVideoClassificationOperationMetadata",
+    video_classification_details: "LabelVideoClassificationOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="details",
+            message="LabelVideoClassificationOperationMetadata",
+        )
     )
-    video_object_detection_details = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        oneof="details",
-        message="LabelVideoObjectDetectionOperationMetadata",
+    video_object_detection_details: "LabelVideoObjectDetectionOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="details",
+            message="LabelVideoObjectDetectionOperationMetadata",
+        )
     )
-    video_object_tracking_details = proto.Field(
-        proto.MESSAGE,
-        number=7,
-        oneof="details",
-        message="LabelVideoObjectTrackingOperationMetadata",
+    video_object_tracking_details: "LabelVideoObjectTrackingOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="details",
+            message="LabelVideoObjectTrackingOperationMetadata",
+        )
     )
-    video_event_details = proto.Field(
+    video_event_details: "LabelVideoEventOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="details",
         message="LabelVideoEventOperationMetadata",
     )
-    text_classification_details = proto.Field(
-        proto.MESSAGE,
-        number=9,
-        oneof="details",
-        message="LabelTextClassificationOperationMetadata",
+    text_classification_details: "LabelTextClassificationOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="details",
+            message="LabelTextClassificationOperationMetadata",
+        )
     )
-    text_entity_extraction_details = proto.Field(
-        proto.MESSAGE,
-        number=13,
-        oneof="details",
-        message="LabelTextEntityExtractionOperationMetadata",
+    text_entity_extraction_details: "LabelTextEntityExtractionOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=13,
+            oneof="details",
+            message="LabelTextEntityExtractionOperationMetadata",
+        )
     )
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
         message=timestamp_pb2.Timestamp,
@@ -361,7 +377,7 @@ class LabelImageClassificationOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -377,7 +393,7 @@ class LabelImageBoundingBoxOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -393,7 +409,7 @@ class LabelImageOrientedBoundingBoxOperationMetadata(proto.Message):
             Basic human annotation config.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -409,7 +425,7 @@ class LabelImageBoundingPolyOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -425,7 +441,7 @@ class LabelImagePolylineOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -440,7 +456,7 @@ class LabelImageSegmentationOperationMetadata(proto.Message):
             Basic human annotation config.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -456,7 +472,7 @@ class LabelVideoClassificationOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -472,7 +488,7 @@ class LabelVideoObjectDetectionOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -488,7 +504,7 @@ class LabelVideoObjectTrackingOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -504,7 +520,7 @@ class LabelVideoEventOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -520,7 +536,7 @@ class LabelTextClassificationOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -536,7 +552,7 @@ class LabelTextEntityExtractionOperationMetadata(proto.Message):
             labeling request.
     """
 
-    basic_config = proto.Field(
+    basic_config: human_annotation_config.HumanAnnotationConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=human_annotation_config.HumanAnnotationConfig,
@@ -550,7 +566,7 @@ class CreateInstructionMetadata(proto.Message):
         instruction (str):
             The name of the created Instruction.
             projects/{project_id}/instructions/{instruction_id}
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
@@ -560,16 +576,16 @@ class CreateInstructionMetadata(proto.Message):
             created.
     """
 
-    instruction = proto.Field(
+    instruction: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,

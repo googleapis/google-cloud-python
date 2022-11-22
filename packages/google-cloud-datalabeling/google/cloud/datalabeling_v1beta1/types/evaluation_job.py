@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -94,7 +96,7 @@ class EvaluationJob(proto.Message):
             this to ``true``. If you want to provide your own ground
             truth labels in the evaluation job's BigQuery table, set
             this to ``false``.
-        attempts (Sequence[google.cloud.datalabeling_v1beta1.types.Attempt]):
+        attempts (MutableSequence[google.cloud.datalabeling_v1beta1.types.Attempt]):
             Output only. Every time the evaluation job
             runs and an error occurs, the failed attempt is
             appended to this array.
@@ -111,46 +113,46 @@ class EvaluationJob(proto.Message):
         PAUSED = 3
         STOPPED = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    schedule = proto.Field(
+    schedule: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    model_version = proto.Field(
+    model_version: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    evaluation_job_config = proto.Field(
+    evaluation_job_config: "EvaluationJobConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="EvaluationJobConfig",
     )
-    annotation_spec_set = proto.Field(
+    annotation_spec_set: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    label_missing_ground_truth = proto.Field(
+    label_missing_ground_truth: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    attempts = proto.RepeatedField(
+    attempts: MutableSequence["Attempt"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="Attempt",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
@@ -237,7 +239,7 @@ class EvaluationJobConfig(proto.Message):
             resource before you can specify this field. Provide the name
             of the instruction resource in the ``instruction`` field
             within this configuration.
-        bigquery_import_keys (Mapping[str, str]):
+        bigquery_import_keys (MutableMapping[str, str]):
             Required. Prediction keys that tell Data Labeling Service
             where to find the data for evaluation in your BigQuery
             table. When the service samples prediction input and output
@@ -284,53 +286,57 @@ class EvaluationJobConfig(proto.Message):
             average precision during a run.
     """
 
-    image_classification_config = proto.Field(
+    image_classification_config: gcd_human_annotation_config.ImageClassificationConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="human_annotation_request_config",
         message=gcd_human_annotation_config.ImageClassificationConfig,
     )
-    bounding_poly_config = proto.Field(
+    bounding_poly_config: gcd_human_annotation_config.BoundingPolyConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="human_annotation_request_config",
         message=gcd_human_annotation_config.BoundingPolyConfig,
     )
-    text_classification_config = proto.Field(
-        proto.MESSAGE,
-        number=8,
-        oneof="human_annotation_request_config",
-        message=gcd_human_annotation_config.TextClassificationConfig,
+    text_classification_config: gcd_human_annotation_config.TextClassificationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="human_annotation_request_config",
+            message=gcd_human_annotation_config.TextClassificationConfig,
+        )
     )
-    input_config = proto.Field(
+    input_config: dataset.InputConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=dataset.InputConfig,
     )
-    evaluation_config = proto.Field(
+    evaluation_config: evaluation.EvaluationConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=evaluation.EvaluationConfig,
     )
-    human_annotation_config = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=gcd_human_annotation_config.HumanAnnotationConfig,
+    human_annotation_config: gcd_human_annotation_config.HumanAnnotationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=gcd_human_annotation_config.HumanAnnotationConfig,
+        )
     )
-    bigquery_import_keys = proto.MapField(
+    bigquery_import_keys: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    example_count = proto.Field(
+    example_count: int = proto.Field(
         proto.INT32,
         number=10,
     )
-    example_sample_percentage = proto.Field(
+    example_sample_percentage: float = proto.Field(
         proto.DOUBLE,
         number=11,
     )
-    evaluation_job_alert_config = proto.Field(
+    evaluation_job_alert_config: "EvaluationJobAlertConfig" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="EvaluationJobAlertConfig",
@@ -354,11 +360,11 @@ class EvaluationJobAlertConfig(proto.Message):
             specified email.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    min_acceptable_mean_average_precision = proto.Field(
+    min_acceptable_mean_average_precision: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
@@ -370,16 +376,16 @@ class Attempt(proto.Message):
     Attributes:
         attempt_time (google.protobuf.timestamp_pb2.Timestamp):
 
-        partial_failures (Sequence[google.rpc.status_pb2.Status]):
+        partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Details of errors that occurred.
     """
 
-    attempt_time = proto.Field(
+    attempt_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    partial_failures = proto.RepeatedField(
+    partial_failures: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=status_pb2.Status,

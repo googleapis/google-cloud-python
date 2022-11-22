@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -77,7 +88,7 @@ class DataLabelingServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DataLabelingServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -495,8 +506,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataLabelingServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DataLabelingServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the data labeling service client.
@@ -510,7 +521,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
             transport (Union[str, DataLabelingServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -540,6 +551,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -592,12 +604,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def create_dataset(
         self,
-        request: Union[data_labeling_service.CreateDatasetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.CreateDatasetRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        dataset: gcd_dataset.Dataset = None,
+        parent: Optional[str] = None,
+        dataset: Optional[gcd_dataset.Dataset] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_dataset.Dataset:
         r"""Creates dataset. If success return a Dataset
@@ -704,11 +718,11 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_dataset(
         self,
-        request: Union[data_labeling_service.GetDatasetRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.GetDatasetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
         r"""Gets dataset by resource name.
@@ -807,12 +821,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_datasets(
         self,
-        request: Union[data_labeling_service.ListDatasetsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListDatasetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsPager:
         r"""Lists datasets under a project. Pagination is
@@ -932,11 +948,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def delete_dataset(
         self,
-        request: Union[data_labeling_service.DeleteDatasetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.DeleteDatasetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a dataset by resource name.
@@ -1021,12 +1039,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def import_data(
         self,
-        request: Union[data_labeling_service.ImportDataRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.ImportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: dataset.InputConfig = None,
+        name: Optional[str] = None,
+        input_config: Optional[dataset.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports data into dataset based on source locations
@@ -1152,14 +1170,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def export_data(
         self,
-        request: Union[data_labeling_service.ExportDataRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.ExportDataRequest, dict]] = None,
         *,
-        name: str = None,
-        annotated_dataset: str = None,
-        filter: str = None,
-        output_config: dataset.OutputConfig = None,
+        name: Optional[str] = None,
+        annotated_dataset: Optional[str] = None,
+        filter: Optional[str] = None,
+        output_config: Optional[dataset.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports data and annotations from dataset.
@@ -1302,11 +1320,11 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_data_item(
         self,
-        request: Union[data_labeling_service.GetDataItemRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.GetDataItemRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.DataItem:
         r"""Gets a data item in a dataset by resource name. This
@@ -1404,12 +1422,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_data_items(
         self,
-        request: Union[data_labeling_service.ListDataItemsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListDataItemsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataItemsPager:
         r"""Lists data items in a dataset. This API can be called
@@ -1530,11 +1550,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_annotated_dataset(
         self,
-        request: Union[data_labeling_service.GetAnnotatedDatasetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetAnnotatedDatasetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.AnnotatedDataset:
         r"""Gets an annotated dataset by resource name.
@@ -1636,12 +1658,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_annotated_datasets(
         self,
-        request: Union[data_labeling_service.ListAnnotatedDatasetsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListAnnotatedDatasetsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnnotatedDatasetsPager:
         r"""Lists annotated datasets for a dataset. Pagination is
@@ -1763,12 +1787,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def delete_annotated_dataset(
         self,
-        request: Union[
-            data_labeling_service.DeleteAnnotatedDatasetRequest, dict
+        request: Optional[
+            Union[data_labeling_service.DeleteAnnotatedDatasetRequest, dict]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an annotated dataset by resource name.
@@ -1834,13 +1858,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def label_image(
         self,
-        request: Union[data_labeling_service.LabelImageRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.LabelImageRequest, dict]] = None,
         *,
-        parent: str = None,
-        basic_config: human_annotation_config.HumanAnnotationConfig = None,
-        feature: data_labeling_service.LabelImageRequest.Feature = None,
+        parent: Optional[str] = None,
+        basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
+        feature: Optional[data_labeling_service.LabelImageRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a labeling task for image. The type of image
@@ -1982,13 +2006,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def label_video(
         self,
-        request: Union[data_labeling_service.LabelVideoRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.LabelVideoRequest, dict]] = None,
         *,
-        parent: str = None,
-        basic_config: human_annotation_config.HumanAnnotationConfig = None,
-        feature: data_labeling_service.LabelVideoRequest.Feature = None,
+        parent: Optional[str] = None,
+        basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
+        feature: Optional[data_labeling_service.LabelVideoRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a labeling task for video. The type of video
@@ -2129,13 +2153,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def label_text(
         self,
-        request: Union[data_labeling_service.LabelTextRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.LabelTextRequest, dict]] = None,
         *,
-        parent: str = None,
-        basic_config: human_annotation_config.HumanAnnotationConfig = None,
-        feature: data_labeling_service.LabelTextRequest.Feature = None,
+        parent: Optional[str] = None,
+        basic_config: Optional[human_annotation_config.HumanAnnotationConfig] = None,
+        feature: Optional[data_labeling_service.LabelTextRequest.Feature] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a labeling task for text. The type of text
@@ -2276,12 +2300,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_example(
         self,
-        request: Union[data_labeling_service.GetExampleRequest, dict] = None,
+        request: Optional[Union[data_labeling_service.GetExampleRequest, dict]] = None,
         *,
-        name: str = None,
-        filter: str = None,
+        name: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Example:
         r"""Gets an example by resource name, including both data
@@ -2391,12 +2415,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_examples(
         self,
-        request: Union[data_labeling_service.ListExamplesRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListExamplesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExamplesPager:
         r"""Lists examples in an annotated dataset. Pagination is
@@ -2516,14 +2542,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def create_annotation_spec_set(
         self,
-        request: Union[
-            data_labeling_service.CreateAnnotationSpecSetRequest, dict
+        request: Optional[
+            Union[data_labeling_service.CreateAnnotationSpecSetRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        annotation_spec_set: gcd_annotation_spec_set.AnnotationSpecSet = None,
+        parent: Optional[str] = None,
+        annotation_spec_set: Optional[gcd_annotation_spec_set.AnnotationSpecSet] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_annotation_spec_set.AnnotationSpecSet:
         r"""Creates an annotation spec set by providing a set of
@@ -2640,11 +2666,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_annotation_spec_set(
         self,
-        request: Union[data_labeling_service.GetAnnotationSpecSetRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetAnnotationSpecSetRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec_set.AnnotationSpecSet:
         r"""Gets an annotation spec set by resource name.
@@ -2746,14 +2774,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_annotation_spec_sets(
         self,
-        request: Union[
-            data_labeling_service.ListAnnotationSpecSetsRequest, dict
+        request: Optional[
+            Union[data_labeling_service.ListAnnotationSpecSetsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnnotationSpecSetsPager:
         r"""Lists annotation spec sets for a project. Pagination
@@ -2876,13 +2904,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def delete_annotation_spec_set(
         self,
-        request: Union[
-            data_labeling_service.DeleteAnnotationSpecSetRequest, dict
+        request: Optional[
+            Union[data_labeling_service.DeleteAnnotationSpecSetRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an annotation spec set by resource name.
@@ -2972,12 +3000,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def create_instruction(
         self,
-        request: Union[data_labeling_service.CreateInstructionRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.CreateInstructionRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instruction: gcd_instruction.Instruction = None,
+        parent: Optional[str] = None,
+        instruction: Optional[gcd_instruction.Instruction] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an instruction for how data should be
@@ -3099,11 +3129,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_instruction(
         self,
-        request: Union[data_labeling_service.GetInstructionRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetInstructionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instruction.Instruction:
         r"""Gets an instruction by resource name.
@@ -3202,12 +3234,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_instructions(
         self,
-        request: Union[data_labeling_service.ListInstructionsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListInstructionsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstructionsPager:
         r"""Lists instructions for a project. Pagination is
@@ -3328,11 +3362,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def delete_instruction(
         self,
-        request: Union[data_labeling_service.DeleteInstructionRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.DeleteInstructionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an instruction object by resource name.
@@ -3418,11 +3454,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_evaluation(
         self,
-        request: Union[data_labeling_service.GetEvaluationRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetEvaluationRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation.Evaluation:
         r"""Gets an evaluation by resource name (to search, use
@@ -3523,12 +3561,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def search_evaluations(
         self,
-        request: Union[data_labeling_service.SearchEvaluationsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.SearchEvaluationsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchEvaluationsPager:
         r"""Searches
@@ -3680,13 +3720,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def search_example_comparisons(
         self,
-        request: Union[
-            data_labeling_service.SearchExampleComparisonsRequest, dict
+        request: Optional[
+            Union[data_labeling_service.SearchExampleComparisonsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchExampleComparisonsPager:
         r"""Searches example comparisons from an evaluation. The
@@ -3807,12 +3847,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def create_evaluation_job(
         self,
-        request: Union[data_labeling_service.CreateEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.CreateEvaluationJobRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        job: evaluation_job.EvaluationJob = None,
+        parent: Optional[str] = None,
+        job: Optional[evaluation_job.EvaluationJob] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Creates an evaluation job.
@@ -3923,12 +3965,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def update_evaluation_job(
         self,
-        request: Union[data_labeling_service.UpdateEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.UpdateEvaluationJobRequest, dict]
+        ] = None,
         *,
-        evaluation_job: gcd_evaluation_job.EvaluationJob = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        evaluation_job: Optional[gcd_evaluation_job.EvaluationJob] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_evaluation_job.EvaluationJob:
         r"""Updates an evaluation job. You can only update certain fields of
@@ -4054,11 +4098,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def get_evaluation_job(
         self,
-        request: Union[data_labeling_service.GetEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.GetEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Gets an evaluation job by resource name.
@@ -4161,11 +4207,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def pause_evaluation_job(
         self,
-        request: Union[data_labeling_service.PauseEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.PauseEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pauses an evaluation job. Pausing an evaluation job that is
@@ -4254,11 +4302,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def resume_evaluation_job(
         self,
-        request: Union[data_labeling_service.ResumeEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ResumeEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a paused evaluation job. A deleted evaluation
@@ -4347,11 +4397,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def delete_evaluation_job(
         self,
-        request: Union[data_labeling_service.DeleteEvaluationJobRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.DeleteEvaluationJobRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Stops and deletes an evaluation job.
@@ -4438,12 +4490,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     def list_evaluation_jobs(
         self,
-        request: Union[data_labeling_service.ListEvaluationJobsRequest, dict] = None,
+        request: Optional[
+            Union[data_labeling_service.ListEvaluationJobsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        filter: str = None,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEvaluationJobsPager:
         r"""Lists all evaluation jobs within a project with
