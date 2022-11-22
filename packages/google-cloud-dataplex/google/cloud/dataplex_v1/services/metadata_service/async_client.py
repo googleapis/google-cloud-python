@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -171,9 +181,9 @@ class MetadataServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, MetadataServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the metadata service client.
@@ -217,12 +227,12 @@ class MetadataServiceAsyncClient:
 
     async def create_entity(
         self,
-        request: Union[metadata_.CreateEntityRequest, dict] = None,
+        request: Optional[Union[metadata_.CreateEntityRequest, dict]] = None,
         *,
-        parent: str = None,
-        entity: metadata_.Entity = None,
+        parent: Optional[str] = None,
+        entity: Optional[metadata_.Entity] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metadata_.Entity:
         r"""Create a metadata entity.
@@ -264,7 +274,7 @@ class MetadataServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateEntityRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateEntityRequest, dict]]):
                 The request object. Create a metadata entity request.
             parent (:class:`str`):
                 Required. The resource name of the parent zone:
@@ -336,10 +346,10 @@ class MetadataServiceAsyncClient:
 
     async def update_entity(
         self,
-        request: Union[metadata_.UpdateEntityRequest, dict] = None,
+        request: Optional[Union[metadata_.UpdateEntityRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metadata_.Entity:
         r"""Update a metadata entity. Only supports full resource
@@ -381,7 +391,7 @@ class MetadataServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateEntityRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateEntityRequest, dict]]):
                 The request object. Update a metadata entity request.
                 The exiting entity will be fully replaced by the entity
                 in the request. The entity ID is mutable. To modify the
@@ -431,11 +441,11 @@ class MetadataServiceAsyncClient:
 
     async def delete_entity(
         self,
-        request: Union[metadata_.DeleteEntityRequest, dict] = None,
+        request: Optional[Union[metadata_.DeleteEntityRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a metadata entity.
@@ -465,7 +475,7 @@ class MetadataServiceAsyncClient:
                 await client.delete_entity(request=request)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteEntityRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteEntityRequest, dict]]):
                 The request object. Delete a metadata entity request.
             name (:class:`str`):
                 Required. The resource name of the entity:
@@ -521,11 +531,11 @@ class MetadataServiceAsyncClient:
 
     async def get_entity(
         self,
-        request: Union[metadata_.GetEntityRequest, dict] = None,
+        request: Optional[Union[metadata_.GetEntityRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metadata_.Entity:
         r"""Get a metadata entity.
@@ -557,7 +567,7 @@ class MetadataServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetEntityRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetEntityRequest, dict]]):
                 The request object. Get metadata entity request.
             name (:class:`str`):
                 Required. The resource name of the entity:
@@ -631,11 +641,11 @@ class MetadataServiceAsyncClient:
 
     async def list_entities(
         self,
-        request: Union[metadata_.ListEntitiesRequest, dict] = None,
+        request: Optional[Union[metadata_.ListEntitiesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntitiesAsyncPager:
         r"""List metadata entities in a zone.
@@ -669,7 +679,7 @@ class MetadataServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListEntitiesRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListEntitiesRequest, dict]]):
                 The request object. List metadata entities request.
             parent (:class:`str`):
                 Required. The resource name of the parent zone:
@@ -754,12 +764,12 @@ class MetadataServiceAsyncClient:
 
     async def create_partition(
         self,
-        request: Union[metadata_.CreatePartitionRequest, dict] = None,
+        request: Optional[Union[metadata_.CreatePartitionRequest, dict]] = None,
         *,
-        parent: str = None,
-        partition: metadata_.Partition = None,
+        parent: Optional[str] = None,
+        partition: Optional[metadata_.Partition] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metadata_.Partition:
         r"""Create a metadata partition.
@@ -796,7 +806,7 @@ class MetadataServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreatePartitionRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreatePartitionRequest, dict]]):
                 The request object. Create metadata partition request.
             parent (:class:`str`):
                 Required. The resource name of the parent zone:
@@ -868,11 +878,11 @@ class MetadataServiceAsyncClient:
 
     async def delete_partition(
         self,
-        request: Union[metadata_.DeletePartitionRequest, dict] = None,
+        request: Optional[Union[metadata_.DeletePartitionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a metadata partition.
@@ -901,7 +911,7 @@ class MetadataServiceAsyncClient:
                 await client.delete_partition(request=request)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeletePartitionRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeletePartitionRequest, dict]]):
                 The request object. Delete metadata partition request.
             name (:class:`str`):
                 Required. The resource name of the partition. format:
@@ -960,11 +970,11 @@ class MetadataServiceAsyncClient:
 
     async def get_partition(
         self,
-        request: Union[metadata_.GetPartitionRequest, dict] = None,
+        request: Optional[Union[metadata_.GetPartitionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metadata_.Partition:
         r"""Get a metadata partition of an entity.
@@ -996,7 +1006,7 @@ class MetadataServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetPartitionRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetPartitionRequest, dict]]):
                 The request object. Get metadata partition request.
             name (:class:`str`):
                 Required. The resource name of the partition:
@@ -1073,11 +1083,11 @@ class MetadataServiceAsyncClient:
 
     async def list_partitions(
         self,
-        request: Union[metadata_.ListPartitionsRequest, dict] = None,
+        request: Optional[Union[metadata_.ListPartitionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPartitionsAsyncPager:
         r"""List metadata partitions of an entity.
@@ -1110,7 +1120,7 @@ class MetadataServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListPartitionsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListPartitionsRequest, dict]]):
                 The request object. List metadata partitions request.
             parent (:class:`str`):
                 Required. The resource name of the parent entity:
@@ -1195,10 +1205,10 @@ class MetadataServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1249,10 +1259,10 @@ class MetadataServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1303,10 +1313,10 @@ class MetadataServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1358,10 +1368,10 @@ class MetadataServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1412,10 +1422,10 @@ class MetadataServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1466,10 +1476,10 @@ class MetadataServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

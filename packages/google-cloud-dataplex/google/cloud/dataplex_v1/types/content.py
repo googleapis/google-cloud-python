@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -45,16 +47,16 @@ class CreateContentRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    content = proto.Field(
+    content: analyze.Content = proto.Field(
         proto.MESSAGE,
         number=2,
         message=analyze.Content,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -74,17 +76,17 @@ class UpdateContentRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    content = proto.Field(
+    content: analyze.Content = proto.Field(
         proto.MESSAGE,
         number=2,
         message=analyze.Content,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -99,7 +101,7 @@ class DeleteContentRequest(proto.Message):
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -135,19 +137,19 @@ class ListContentRequest(proto.Message):
             conjunctions.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -157,7 +159,7 @@ class ListContentResponse(proto.Message):
     r"""List content response.
 
     Attributes:
-        content (Sequence[google.cloud.dataplex_v1.types.Content]):
+        content (MutableSequence[google.cloud.dataplex_v1.types.Content]):
             Content under the given parent lake.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -169,12 +171,12 @@ class ListContentResponse(proto.Message):
     def raw_page(self):
         return self
 
-    content = proto.RepeatedField(
+    content: MutableSequence[analyze.Content] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=analyze.Content,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -200,11 +202,11 @@ class GetContentRequest(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: ContentView = proto.Field(
         proto.ENUM,
         number=2,
         enum=ContentView,

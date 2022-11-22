@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -61,7 +63,7 @@ class Task(proto.Message):
             Optional. User friendly display name.
         state (google.cloud.dataplex_v1.types.State):
             Output only. Current state of the task.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User-defined labels for the task.
         trigger_spec (google.cloud.dataplex_v1.types.Task.TriggerSpec):
             Required. Spec related to how often and when
@@ -119,11 +121,11 @@ class Task(proto.Message):
                     Executor Count should be between 2 and 1000. [Default=1000]
             """
 
-            executors_count = proto.Field(
+            executors_count: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            max_executors_count = proto.Field(
+            max_executors_count: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
@@ -135,17 +137,17 @@ class Task(proto.Message):
             Attributes:
                 image (str):
                     Optional. Container image to use.
-                java_jars (Sequence[str]):
+                java_jars (MutableSequence[str]):
                     Optional. A list of Java JARS to add to the
                     classpath. Valid input includes Cloud Storage
                     URIs to Jar binaries. For example,
                     gs://bucket-name/my/path/to/file.jar
-                python_packages (Sequence[str]):
+                python_packages (MutableSequence[str]):
                     Optional. A list of python packages to be
                     installed. Valid formats include Cloud Storage
                     URI to a PIP installable library. For example,
                     gs://bucket-name/my/path/to/lib.tar.gz
-                properties (Mapping[str, str]):
+                properties (MutableMapping[str, str]):
                     Optional. Override to common configuration of open source
                     components installed on the Dataproc cluster. The properties
                     to set on daemon config files. Property keys are specified
@@ -154,19 +156,19 @@ class Task(proto.Message):
                     properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
             """
 
-            image = proto.Field(
+            image: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            java_jars = proto.RepeatedField(
+            java_jars: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=2,
             )
-            python_packages = proto.RepeatedField(
+            python_packages: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=3,
             )
-            properties = proto.MapField(
+            properties: MutableMapping[str, str] = proto.MapField(
                 proto.STRING,
                 proto.STRING,
                 number=4,
@@ -194,39 +196,39 @@ class Task(proto.Message):
                     the job is run.
 
                     This field is a member of `oneof`_ ``network_name``.
-                network_tags (Sequence[str]):
+                network_tags (MutableSequence[str]):
                     Optional. List of network tags to apply to
                     the job.
             """
 
-            network = proto.Field(
+            network: str = proto.Field(
                 proto.STRING,
                 number=1,
                 oneof="network_name",
             )
-            sub_network = proto.Field(
+            sub_network: str = proto.Field(
                 proto.STRING,
                 number=2,
                 oneof="network_name",
             )
-            network_tags = proto.RepeatedField(
+            network_tags: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=3,
             )
 
-        batch = proto.Field(
+        batch: "Task.InfrastructureSpec.BatchComputeResources" = proto.Field(
             proto.MESSAGE,
             number=52,
             oneof="resources",
             message="Task.InfrastructureSpec.BatchComputeResources",
         )
-        container_image = proto.Field(
+        container_image: "Task.InfrastructureSpec.ContainerImageRuntime" = proto.Field(
             proto.MESSAGE,
             number=101,
             oneof="runtime",
             message="Task.InfrastructureSpec.ContainerImageRuntime",
         )
-        vpc_network = proto.Field(
+        vpc_network: "Task.InfrastructureSpec.VpcNetwork" = proto.Field(
             proto.MESSAGE,
             number=150,
             oneof="network",
@@ -275,25 +277,25 @@ class Task(proto.Message):
             ON_DEMAND = 1
             RECURRING = 2
 
-        type_ = proto.Field(
+        type_: "Task.TriggerSpec.Type" = proto.Field(
             proto.ENUM,
             number=5,
             enum="Task.TriggerSpec.Type",
         )
-        start_time = proto.Field(
+        start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=6,
             message=timestamp_pb2.Timestamp,
         )
-        disabled = proto.Field(
+        disabled: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        max_retries = proto.Field(
+        max_retries: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        schedule = proto.Field(
+        schedule: str = proto.Field(
             proto.STRING,
             number=100,
             oneof="trigger",
@@ -303,7 +305,7 @@ class Task(proto.Message):
         r"""Execution related settings, like retry and service_account.
 
         Attributes:
-            args (Mapping[str, str]):
+            args (MutableMapping[str, str]):
                 Optional. The arguments to pass to the task. The args can
                 use placeholders of the format ${placeholder} as part of
                 key/value string. These will be interpolated before passing
@@ -336,25 +338,25 @@ class Task(proto.Message):
                 ``projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}``.
         """
 
-        args = proto.MapField(
+        args: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=4,
         )
-        service_account = proto.Field(
+        service_account: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        project = proto.Field(
+        project: str = proto.Field(
             proto.STRING,
             number=7,
         )
-        max_job_execution_lifetime = proto.Field(
+        max_job_execution_lifetime: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=8,
             message=duration_pb2.Duration,
         )
-        kms_key = proto.Field(
+        kms_key: str = proto.Field(
             proto.STRING,
             number=9,
         )
@@ -402,11 +404,11 @@ class Task(proto.Message):
                 of script variables (``set key="value";``).
 
                 This field is a member of `oneof`_ ``driver``.
-            file_uris (Sequence[str]):
+            file_uris (MutableSequence[str]):
                 Optional. Cloud Storage URIs of files to be
                 placed in the working directory of each
                 executor.
-            archive_uris (Sequence[str]):
+            archive_uris (MutableSequence[str]):
                 Optional. Cloud Storage URIs of archives to
                 be extracted into the working directory of each
                 executor. Supported file types: .jar, .tar,
@@ -416,40 +418,40 @@ class Task(proto.Message):
                 the execution.
         """
 
-        main_jar_file_uri = proto.Field(
+        main_jar_file_uri: str = proto.Field(
             proto.STRING,
             number=100,
             oneof="driver",
         )
-        main_class = proto.Field(
+        main_class: str = proto.Field(
             proto.STRING,
             number=101,
             oneof="driver",
         )
-        python_script_file = proto.Field(
+        python_script_file: str = proto.Field(
             proto.STRING,
             number=102,
             oneof="driver",
         )
-        sql_script_file = proto.Field(
+        sql_script_file: str = proto.Field(
             proto.STRING,
             number=104,
             oneof="driver",
         )
-        sql_script = proto.Field(
+        sql_script: str = proto.Field(
             proto.STRING,
             number=105,
             oneof="driver",
         )
-        file_uris = proto.RepeatedField(
+        file_uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        archive_uris = proto.RepeatedField(
+        archive_uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
-        infrastructure_spec = proto.Field(
+        infrastructure_spec: "Task.InfrastructureSpec" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="Task.InfrastructureSpec",
@@ -467,31 +469,31 @@ class Task(proto.Message):
             infrastructure_spec (google.cloud.dataplex_v1.types.Task.InfrastructureSpec):
                 Optional. Infrastructure specification for
                 the execution.
-            file_uris (Sequence[str]):
+            file_uris (MutableSequence[str]):
                 Optional. Cloud Storage URIs of files to be
                 placed in the working directory of each
                 executor.
-            archive_uris (Sequence[str]):
+            archive_uris (MutableSequence[str]):
                 Optional. Cloud Storage URIs of archives to
                 be extracted into the working directory of each
                 executor. Supported file types: .jar, .tar,
                 .tar.gz, .tgz, and .zip.
         """
 
-        notebook = proto.Field(
+        notebook: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        infrastructure_spec = proto.Field(
+        infrastructure_spec: "Task.InfrastructureSpec" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="Task.InfrastructureSpec",
         )
-        file_uris = proto.RepeatedField(
+        file_uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=5,
         )
-        archive_uris = proto.RepeatedField(
+        archive_uris: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=6,
         )
@@ -506,75 +508,75 @@ class Task(proto.Message):
                 Output only. latest job execution
         """
 
-        update_time = proto.Field(
+        update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
-        latest_job = proto.Field(
+        latest_job: "Job" = proto.Field(
             proto.MESSAGE,
             number=9,
             message="Job",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: resources.State = proto.Field(
         proto.ENUM,
         number=7,
         enum=resources.State,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    trigger_spec = proto.Field(
+    trigger_spec: TriggerSpec = proto.Field(
         proto.MESSAGE,
         number=100,
         message=TriggerSpec,
     )
-    execution_spec = proto.Field(
+    execution_spec: ExecutionSpec = proto.Field(
         proto.MESSAGE,
         number=101,
         message=ExecutionSpec,
     )
-    execution_status = proto.Field(
+    execution_status: ExecutionStatus = proto.Field(
         proto.MESSAGE,
         number=201,
         message=ExecutionStatus,
     )
-    spark = proto.Field(
+    spark: SparkTaskConfig = proto.Field(
         proto.MESSAGE,
         number=300,
         oneof="config",
         message=SparkTaskConfig,
     )
-    notebook = proto.Field(
+    notebook: NotebookTaskConfig = proto.Field(
         proto.MESSAGE,
         number=302,
         oneof="config",
@@ -629,43 +631,43 @@ class Job(proto.Message):
         FAILED = 5
         ABORTED = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    retry_count = proto.Field(
+    retry_count: int = proto.Field(
         proto.UINT32,
         number=6,
     )
-    service = proto.Field(
+    service: Service = proto.Field(
         proto.ENUM,
         number=7,
         enum=Service,
     )
-    service_job = proto.Field(
+    service_job: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=9,
     )

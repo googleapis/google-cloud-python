@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -60,16 +62,16 @@ class CreateEntityRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    entity = proto.Field(
+    entity: "Entity" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Entity",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -90,12 +92,12 @@ class UpdateEntityRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    entity = proto.Field(
+    entity: "Entity" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Entity",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -113,11 +115,11 @@ class DeleteEntityRequest(proto.Message):
             retrieved with a [GetEntity][] request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -163,24 +165,24 @@ class ListEntitiesRequest(proto.Message):
         TABLES = 1
         FILESETS = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: EntityView = proto.Field(
         proto.ENUM,
         number=2,
         enum=EntityView,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -190,7 +192,7 @@ class ListEntitiesResponse(proto.Message):
     r"""List metadata entities response.
 
     Attributes:
-        entities (Sequence[google.cloud.dataplex_v1.types.Entity]):
+        entities (MutableSequence[google.cloud.dataplex_v1.types.Entity]):
             Entities in the specified parent zone.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -202,12 +204,12 @@ class ListEntitiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entities = proto.RepeatedField(
+    entities: MutableSequence["Entity"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Entity",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -232,11 +234,11 @@ class GetEntityRequest(proto.Message):
         SCHEMA = 2
         FULL = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: EntityView = proto.Field(
         proto.ENUM,
         number=2,
         enum=EntityView,
@@ -290,19 +292,19 @@ class ListPartitionsRequest(proto.Message):
                used as a filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -322,16 +324,16 @@ class CreatePartitionRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition = proto.Field(
+    partition: "Partition" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Partition",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -352,11 +354,11 @@ class DeletePartitionRequest(proto.Message):
             partition.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -366,7 +368,7 @@ class ListPartitionsResponse(proto.Message):
     r"""List metadata partitions response.
 
     Attributes:
-        partitions (Sequence[google.cloud.dataplex_v1.types.Partition]):
+        partitions (MutableSequence[google.cloud.dataplex_v1.types.Partition]):
             Partitions under the specified parent entity.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -378,12 +380,12 @@ class ListPartitionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    partitions = proto.RepeatedField(
+    partitions: MutableSequence["Partition"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Partition",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -401,7 +403,7 @@ class GetPartitionRequest(proto.Message):
             must be provided.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -511,93 +513,93 @@ class Entity(proto.Message):
                     store.
             """
 
-            compatible = proto.Field(
+            compatible: bool = proto.Field(
                 proto.BOOL,
                 number=1,
             )
-            reason = proto.Field(
+            reason: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
 
-        hive_metastore = proto.Field(
+        hive_metastore: "Entity.CompatibilityStatus.Compatibility" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Entity.CompatibilityStatus.Compatibility",
         )
-        bigquery = proto.Field(
+        bigquery: "Entity.CompatibilityStatus.Compatibility" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Entity.CompatibilityStatus.Compatibility",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=10,
         enum=Type,
     )
-    asset = proto.Field(
+    asset: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    data_path = proto.Field(
+    data_path: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    data_path_pattern = proto.Field(
+    data_path_pattern: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    catalog_entry = proto.Field(
+    catalog_entry: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    system = proto.Field(
+    system: "StorageSystem" = proto.Field(
         proto.ENUM,
         number=15,
         enum="StorageSystem",
     )
-    format_ = proto.Field(
+    format_: "StorageFormat" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="StorageFormat",
     )
-    compatibility = proto.Field(
+    compatibility: CompatibilityStatus = proto.Field(
         proto.MESSAGE,
         number=19,
         message=CompatibilityStatus,
     )
-    schema = proto.Field(
+    schema: "Schema" = proto.Field(
         proto.MESSAGE,
         number=50,
         message="Schema",
@@ -616,7 +618,7 @@ class Partition(proto.Message):
             "US:CA/CA#Sunnyvale so that the request URL ends with
             "/partitions/US%253ACA/CA%2523Sunnyvale". The name field in
             the response retains the encoded format.
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             Required. Immutable. The set of values
             representing the partition, which correspond to
             the partition schema defined in the parent
@@ -630,19 +632,19 @@ class Partition(proto.Message):
             Optional. The etag for this partition.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -669,10 +671,10 @@ class Schema(proto.Message):
             -  Set to ``true`` to fully manage the entity schema. This
                setting guarantees that Dataplex will not change schema
                fields.
-        fields (Sequence[google.cloud.dataplex_v1.types.Schema.SchemaField]):
+        fields (MutableSequence[google.cloud.dataplex_v1.types.Schema.SchemaField]):
             Optional. The sequence of fields describing data in table
             entities. **Note:** BigQuery SchemaFields are immutable.
-        partition_fields (Sequence[google.cloud.dataplex_v1.types.Schema.PartitionField]):
+        partition_fields (MutableSequence[google.cloud.dataplex_v1.types.Schema.PartitionField]):
             Optional. The sequence of fields describing
             the partition structure in entities. If this
             field is empty, there are no partitions within
@@ -731,29 +733,29 @@ class Schema(proto.Message):
                 Required. The type of field.
             mode (google.cloud.dataplex_v1.types.Schema.Mode):
                 Required. Additional field semantics.
-            fields (Sequence[google.cloud.dataplex_v1.types.Schema.SchemaField]):
+            fields (MutableSequence[google.cloud.dataplex_v1.types.Schema.SchemaField]):
                 Optional. Any nested field for complex types.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        type_ = proto.Field(
+        type_: "Schema.Type" = proto.Field(
             proto.ENUM,
             number=3,
             enum="Schema.Type",
         )
-        mode = proto.Field(
+        mode: "Schema.Mode" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Schema.Mode",
         )
-        fields = proto.RepeatedField(
+        fields: MutableSequence["Schema.SchemaField"] = proto.RepeatedField(
             proto.MESSAGE,
             number=10,
             message="Schema.SchemaField",
@@ -775,31 +777,31 @@ class Schema(proto.Message):
                 Required. Immutable. The type of field.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "Schema.Type" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Schema.Type",
         )
 
-    user_managed = proto.Field(
+    user_managed: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    fields = proto.RepeatedField(
+    fields: MutableSequence[SchemaField] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=SchemaField,
     )
-    partition_fields = proto.RepeatedField(
+    partition_fields: MutableSequence[PartitionField] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=PartitionField,
     )
-    partition_style = proto.Field(
+    partition_style: PartitionStyle = proto.Field(
         proto.ENUM,
         number=4,
         enum=PartitionStyle,
@@ -896,19 +898,19 @@ class StorageFormat(proto.Message):
                 (double quotation mark) if unspecified.
         """
 
-        encoding = proto.Field(
+        encoding: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        header_rows = proto.Field(
+        header_rows: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        delimiter = proto.Field(
+        delimiter: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        quote = proto.Field(
+        quote: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -923,32 +925,32 @@ class StorageFormat(proto.Message):
                 Defaults to UTF-8 if not specified.
         """
 
-        encoding = proto.Field(
+        encoding: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    format_ = proto.Field(
+    format_: Format = proto.Field(
         proto.ENUM,
         number=1,
         enum=Format,
     )
-    compression_format = proto.Field(
+    compression_format: CompressionFormat = proto.Field(
         proto.ENUM,
         number=2,
         enum=CompressionFormat,
     )
-    mime_type = proto.Field(
+    mime_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    csv = proto.Field(
+    csv: CsvOptions = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="options",
         message=CsvOptions,
     )
-    json = proto.Field(
+    json: JsonOptions = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="options",

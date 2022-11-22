@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -69,7 +71,7 @@ class Lake(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the lake was last
             updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User-defined labels for the lake.
         description (str):
             Optional. Description of the lake.
@@ -102,7 +104,7 @@ class Lake(proto.Message):
                 ``projects/{project_id}/locations/{location_id}/services/{service_id}``
         """
 
-        service = proto.Field(
+        service: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -133,76 +135,76 @@ class Lake(proto.Message):
             UPDATING = 3
             ERROR = 4
 
-        state = proto.Field(
+        state: "Lake.MetastoreStatus.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Lake.MetastoreStatus.State",
         )
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        update_time = proto.Field(
+        update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
-        endpoint = proto.Field(
+        endpoint: str = proto.Field(
             proto.STRING,
             number=4,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: "State" = proto.Field(
         proto.ENUM,
         number=8,
         enum="State",
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    metastore = proto.Field(
+    metastore: Metastore = proto.Field(
         proto.MESSAGE,
         number=102,
         message=Metastore,
     )
-    asset_status = proto.Field(
+    asset_status: "AssetStatus" = proto.Field(
         proto.MESSAGE,
         number=103,
         message="AssetStatus",
     )
-    metastore_status = proto.Field(
+    metastore_status: MetastoreStatus = proto.Field(
         proto.MESSAGE,
         number=104,
         message=MetastoreStatus,
@@ -223,16 +225,16 @@ class AssetStatus(proto.Message):
             resources.
     """
 
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    active_assets = proto.Field(
+    active_assets: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    security_policy_applying_assets = proto.Field(
+    security_policy_applying_assets: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -263,7 +265,7 @@ class Zone(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the zone was last
             updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User defined labels for the zone.
         description (str):
             Optional. Description of the zone.
@@ -304,7 +306,7 @@ class Zone(proto.Message):
             SINGLE_REGION = 1
             MULTI_REGION = 2
 
-        location_type = proto.Field(
+        location_type: "Zone.ResourceSpec.LocationType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Zone.ResourceSpec.LocationType",
@@ -320,7 +322,7 @@ class Zone(proto.Message):
         Attributes:
             enabled (bool):
                 Required. Whether discovery is enabled.
-            include_patterns (Sequence[str]):
+            include_patterns (MutableSequence[str]):
                 Optional. The list of patterns to apply for
                 selecting data to include during discovery if
                 only a subset of the data should considered. For
@@ -329,7 +331,7 @@ class Zone(proto.Message):
                 object names. For BigQuery dataset assets, these
                 are interpreted as patterns to match table
                 names.
-            exclude_patterns (Sequence[str]):
+            exclude_patterns (MutableSequence[str]):
                 Optional. The list of patterns to apply for
                 selecting data to exclude during discovery.  For
                 Cloud Storage bucket assets, these are
@@ -376,19 +378,19 @@ class Zone(proto.Message):
                     will be registered as strings.
             """
 
-            header_rows = proto.Field(
+            header_rows: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            delimiter = proto.Field(
+            delimiter: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            encoding = proto.Field(
+            encoding: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            disable_type_inference = proto.Field(
+            disable_type_inference: bool = proto.Field(
                 proto.BOOL,
                 number=4,
             )
@@ -407,95 +409,95 @@ class Zone(proto.Message):
                     (strings, number or boolean).
             """
 
-            encoding = proto.Field(
+            encoding: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            disable_type_inference = proto.Field(
+            disable_type_inference: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
 
-        enabled = proto.Field(
+        enabled: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        include_patterns = proto.RepeatedField(
+        include_patterns: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        exclude_patterns = proto.RepeatedField(
+        exclude_patterns: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        csv_options = proto.Field(
+        csv_options: "Zone.DiscoverySpec.CsvOptions" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Zone.DiscoverySpec.CsvOptions",
         )
-        json_options = proto.Field(
+        json_options: "Zone.DiscoverySpec.JsonOptions" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="Zone.DiscoverySpec.JsonOptions",
         )
-        schedule = proto.Field(
+        schedule: str = proto.Field(
             proto.STRING,
             number=10,
             oneof="trigger",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: "State" = proto.Field(
         proto.ENUM,
         number=8,
         enum="State",
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=9,
         enum=Type,
     )
-    discovery_spec = proto.Field(
+    discovery_spec: DiscoverySpec = proto.Field(
         proto.MESSAGE,
         number=103,
         message=DiscoverySpec,
     )
-    resource_spec = proto.Field(
+    resource_spec: ResourceSpec = proto.Field(
         proto.MESSAGE,
         number=104,
         message=ResourceSpec,
     )
-    asset_status = proto.Field(
+    asset_status: "AssetStatus" = proto.Field(
         proto.MESSAGE,
         number=105,
         message="AssetStatus",
@@ -540,7 +542,7 @@ class Action(proto.Message):
             Output only. The relative resource name of the asset, of the
             form:
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}``.
-        data_locations (Sequence[str]):
+        data_locations (MutableSequence[str]):
             The list of data locations associated with this action.
             Cloud Storage locations are represented as URI paths(E.g.
             ``gs://bucket/table1/year=2020/month=Jan/``). BigQuery
@@ -622,7 +624,7 @@ class Action(proto.Message):
                 for a lake or zone resource only.
         """
 
-        asset = proto.Field(
+        asset: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -632,7 +634,7 @@ class Action(proto.Message):
         by discovery.
 
         Attributes:
-            sampled_data_locations (Sequence[str]):
+            sampled_data_locations (MutableSequence[str]):
                 The list of data locations sampled and used
                 for format/schema inference.
             expected_format (str):
@@ -642,15 +644,15 @@ class Action(proto.Message):
                 entity.
         """
 
-        sampled_data_locations = proto.RepeatedField(
+        sampled_data_locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        expected_format = proto.Field(
+        expected_format: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        new_format = proto.Field(
+        new_format: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -673,7 +675,7 @@ class Action(proto.Message):
                 table. The schema is provided as a JSON
                 formatted structured listing columns and data
                 types.
-            sampled_data_locations (Sequence[str]):
+            sampled_data_locations (MutableSequence[str]):
                 The list of data locations sampled and used
                 for format/schema inference.
             schema_change (google.cloud.dataplex_v1.types.Action.IncompatibleDataSchema.SchemaChange):
@@ -689,23 +691,23 @@ class Action(proto.Message):
             INCOMPATIBLE = 1
             MODIFIED = 2
 
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        existing_schema = proto.Field(
+        existing_schema: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        new_schema = proto.Field(
+        new_schema: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        sampled_data_locations = proto.RepeatedField(
+        sampled_data_locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
-        schema_change = proto.Field(
+        schema_change: "Action.IncompatibleDataSchema.SchemaChange" = proto.Field(
             proto.ENUM,
             number=5,
             enum="Action.IncompatibleDataSchema.SchemaChange",
@@ -726,10 +728,12 @@ class Action(proto.Message):
             CONSISTENT_KEYS = 1
             HIVE_STYLE_KEYS = 2
 
-        expected_structure = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum="Action.InvalidDataPartition.PartitionStructure",
+        expected_structure: "Action.InvalidDataPartition.PartitionStructure" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Action.InvalidDataPartition.PartitionStructure",
+            )
         )
 
     class MissingData(proto.Message):
@@ -738,83 +742,83 @@ class Action(proto.Message):
     class InvalidDataOrganization(proto.Message):
         r"""Action details for invalid data arrangement."""
 
-    category = proto.Field(
+    category: Category = proto.Field(
         proto.ENUM,
         number=1,
         enum=Category,
     )
-    issue = proto.Field(
+    issue: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    detect_time = proto.Field(
+    detect_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    lake = proto.Field(
+    lake: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    asset = proto.Field(
+    asset: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    data_locations = proto.RepeatedField(
+    data_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    invalid_data_format = proto.Field(
+    invalid_data_format: InvalidDataFormat = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="details",
         message=InvalidDataFormat,
     )
-    incompatible_data_schema = proto.Field(
+    incompatible_data_schema: IncompatibleDataSchema = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="details",
         message=IncompatibleDataSchema,
     )
-    invalid_data_partition = proto.Field(
+    invalid_data_partition: InvalidDataPartition = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="details",
         message=InvalidDataPartition,
     )
-    missing_data = proto.Field(
+    missing_data: MissingData = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="details",
         message=MissingData,
     )
-    missing_resource = proto.Field(
+    missing_resource: MissingResource = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="details",
         message=MissingResource,
     )
-    unauthorized_resource = proto.Field(
+    unauthorized_resource: UnauthorizedResource = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="details",
         message=UnauthorizedResource,
     )
-    failed_security_policy_apply = proto.Field(
+    failed_security_policy_apply: FailedSecurityPolicyApply = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="details",
         message=FailedSecurityPolicyApply,
     )
-    invalid_data_organization = proto.Field(
+    invalid_data_organization: InvalidDataOrganization = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="details",
@@ -844,7 +848,7 @@ class Asset(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the asset was last
             updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User defined labels for the asset.
         description (str):
             Optional. Description of the asset.
@@ -892,16 +896,16 @@ class Asset(proto.Message):
             APPLYING = 2
             ERROR = 3
 
-        state = proto.Field(
+        state: "Asset.SecurityStatus.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Asset.SecurityStatus.State",
         )
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        update_time = proto.Field(
+        update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
@@ -917,7 +921,7 @@ class Asset(proto.Message):
         Attributes:
             enabled (bool):
                 Optional. Whether discovery is enabled.
-            include_patterns (Sequence[str]):
+            include_patterns (MutableSequence[str]):
                 Optional. The list of patterns to apply for
                 selecting data to include during discovery if
                 only a subset of the data should considered.
@@ -926,7 +930,7 @@ class Asset(proto.Message):
                 object names. For BigQuery dataset assets, these
                 are interpreted as patterns to match table
                 names.
-            exclude_patterns (Sequence[str]):
+            exclude_patterns (MutableSequence[str]):
                 Optional. The list of patterns to apply for
                 selecting data to exclude during discovery.  For
                 Cloud Storage bucket assets, these are
@@ -973,19 +977,19 @@ class Asset(proto.Message):
                     will be registered as strings.
             """
 
-            header_rows = proto.Field(
+            header_rows: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            delimiter = proto.Field(
+            delimiter: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            encoding = proto.Field(
+            encoding: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            disable_type_inference = proto.Field(
+            disable_type_inference: bool = proto.Field(
                 proto.BOOL,
                 number=4,
             )
@@ -1004,38 +1008,38 @@ class Asset(proto.Message):
                     (strings, number or boolean).
             """
 
-            encoding = proto.Field(
+            encoding: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            disable_type_inference = proto.Field(
+            disable_type_inference: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
 
-        enabled = proto.Field(
+        enabled: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        include_patterns = proto.RepeatedField(
+        include_patterns: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        exclude_patterns = proto.RepeatedField(
+        exclude_patterns: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        csv_options = proto.Field(
+        csv_options: "Asset.DiscoverySpec.CsvOptions" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Asset.DiscoverySpec.CsvOptions",
         )
-        json_options = proto.Field(
+        json_options: "Asset.DiscoverySpec.JsonOptions" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="Asset.DiscoverySpec.JsonOptions",
         )
-        schedule = proto.Field(
+        schedule: str = proto.Field(
             proto.STRING,
             number=10,
             oneof="trigger",
@@ -1061,11 +1065,11 @@ class Asset(proto.Message):
             STORAGE_BUCKET = 1
             BIGQUERY_DATASET = 2
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "Asset.ResourceSpec.Type" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Asset.ResourceSpec.Type",
@@ -1090,16 +1094,16 @@ class Asset(proto.Message):
             READY = 1
             ERROR = 2
 
-        state = proto.Field(
+        state: "Asset.ResourceStatus.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Asset.ResourceStatus.State",
         )
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        update_time = proto.Field(
+        update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
@@ -1152,110 +1156,110 @@ class Asset(proto.Message):
                     referenced resource.
             """
 
-            data_items = proto.Field(
+            data_items: int = proto.Field(
                 proto.INT64,
                 number=1,
             )
-            data_size = proto.Field(
+            data_size: int = proto.Field(
                 proto.INT64,
                 number=2,
             )
-            tables = proto.Field(
+            tables: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
-            filesets = proto.Field(
+            filesets: int = proto.Field(
                 proto.INT64,
                 number=4,
             )
 
-        state = proto.Field(
+        state: "Asset.DiscoveryStatus.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Asset.DiscoveryStatus.State",
         )
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        update_time = proto.Field(
+        update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
         )
-        last_run_time = proto.Field(
+        last_run_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=4,
             message=timestamp_pb2.Timestamp,
         )
-        stats = proto.Field(
+        stats: "Asset.DiscoveryStatus.Stats" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="Asset.DiscoveryStatus.Stats",
         )
-        last_run_duration = proto.Field(
+        last_run_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=7,
             message=duration_pb2.Duration,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: "State" = proto.Field(
         proto.ENUM,
         number=8,
         enum="State",
     )
-    resource_spec = proto.Field(
+    resource_spec: ResourceSpec = proto.Field(
         proto.MESSAGE,
         number=100,
         message=ResourceSpec,
     )
-    resource_status = proto.Field(
+    resource_status: ResourceStatus = proto.Field(
         proto.MESSAGE,
         number=101,
         message=ResourceStatus,
     )
-    security_status = proto.Field(
+    security_status: SecurityStatus = proto.Field(
         proto.MESSAGE,
         number=103,
         message=SecurityStatus,
     )
-    discovery_spec = proto.Field(
+    discovery_spec: DiscoverySpec = proto.Field(
         proto.MESSAGE,
         number=106,
         message=DiscoverySpec,
     )
-    discovery_status = proto.Field(
+    discovery_status: DiscoveryStatus = proto.Field(
         proto.MESSAGE,
         number=107,
         message=DiscoveryStatus,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -50,7 +52,7 @@ class Environment(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the environment
             was last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User defined labels for the
             environment.
         description (str):
@@ -108,15 +110,15 @@ class Environment(proto.Message):
                     node_count, then auto-scaling is enabled.
             """
 
-            disk_size_gb = proto.Field(
+            disk_size_gb: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            node_count = proto.Field(
+            node_count: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
-            max_node_count = proto.Field(
+            max_node_count: int = proto.Field(
                 proto.INT32,
                 number=3,
             )
@@ -127,48 +129,48 @@ class Environment(proto.Message):
             Attributes:
                 image_version (str):
                     Required. Dataplex Image version.
-                java_libraries (Sequence[str]):
+                java_libraries (MutableSequence[str]):
                     Optional. List of Java jars to be included in
                     the runtime environment. Valid input includes
                     Cloud Storage URIs to Jar binaries. For example,
                     gs://bucket-name/my/path/to/file.jar
-                python_packages (Sequence[str]):
+                python_packages (MutableSequence[str]):
                     Optional. A list of python packages to be
                     installed. Valid formats include Cloud Storage
                     URI to a PIP installable library. For example,
                     gs://bucket-name/my/path/to/lib.tar.gz
-                properties (Mapping[str, str]):
+                properties (MutableMapping[str, str]):
                     Optional. Spark properties to provide configuration for use
                     in sessions created for this environment. The properties to
                     set on daemon config files. Property keys are specified in
                     ``prefix:property`` format. The prefix must be "spark".
             """
 
-            image_version = proto.Field(
+            image_version: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            java_libraries = proto.RepeatedField(
+            java_libraries: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=2,
             )
-            python_packages = proto.RepeatedField(
+            python_packages: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=3,
             )
-            properties = proto.MapField(
+            properties: MutableMapping[str, str] = proto.MapField(
                 proto.STRING,
                 proto.STRING,
                 number=4,
             )
 
-        compute = proto.Field(
+        compute: "Environment.InfrastructureSpec.ComputeResources" = proto.Field(
             proto.MESSAGE,
             number=50,
             oneof="resources",
             message="Environment.InfrastructureSpec.ComputeResources",
         )
-        os_image = proto.Field(
+        os_image: "Environment.InfrastructureSpec.OsImageRuntime" = proto.Field(
             proto.MESSAGE,
             number=100,
             oneof="runtime",
@@ -194,12 +196,12 @@ class Environment(proto.Message):
                 default configuration.
         """
 
-        max_idle_duration = proto.Field(
+        max_idle_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=1,
             message=duration_pb2.Duration,
         )
-        enable_fast_startup = proto.Field(
+        enable_fast_startup: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -214,7 +216,7 @@ class Environment(proto.Message):
                 not
         """
 
-        active = proto.Field(
+        active: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
@@ -229,67 +231,67 @@ class Environment(proto.Message):
                 Output only. URI to serve SQL APIs
         """
 
-        notebooks = proto.Field(
+        notebooks: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        sql = proto.Field(
+        sql: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    state = proto.Field(
+    state: resources.State = proto.Field(
         proto.ENUM,
         number=8,
         enum=resources.State,
     )
-    infrastructure_spec = proto.Field(
+    infrastructure_spec: InfrastructureSpec = proto.Field(
         proto.MESSAGE,
         number=100,
         message=InfrastructureSpec,
     )
-    session_spec = proto.Field(
+    session_spec: SessionSpec = proto.Field(
         proto.MESSAGE,
         number=101,
         message=SessionSpec,
     )
-    session_status = proto.Field(
+    session_status: SessionStatus = proto.Field(
         proto.MESSAGE,
         number=102,
         message=SessionStatus,
     )
-    endpoints = proto.Field(
+    endpoints: Endpoints = proto.Field(
         proto.MESSAGE,
         number=200,
         message=Endpoints,
@@ -326,7 +328,7 @@ class Content(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the content was
             last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User defined labels for the
             content.
         description (str):
@@ -359,7 +361,7 @@ class Content(proto.Message):
             QUERY_ENGINE_UNSPECIFIED = 0
             SPARK = 2
 
-        engine = proto.Field(
+        engine: "Content.SqlScript.QueryEngine" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Content.SqlScript.QueryEngine",
@@ -378,55 +380,55 @@ class Content(proto.Message):
             KERNEL_TYPE_UNSPECIFIED = 0
             PYTHON3 = 1
 
-        kernel_type = proto.Field(
+        kernel_type: "Content.Notebook.KernelType" = proto.Field(
             proto.ENUM,
             number=1,
             enum="Content.Notebook.KernelType",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    data_text = proto.Field(
+    data_text: str = proto.Field(
         proto.STRING,
         number=9,
         oneof="data",
     )
-    sql_script = proto.Field(
+    sql_script: SqlScript = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="content",
         message=SqlScript,
     )
-    notebook = proto.Field(
+    notebook: Notebook = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="content",
@@ -451,20 +453,20 @@ class Session(proto.Message):
 
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_id = proto.Field(
+    user_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: resources.State = proto.Field(
         proto.ENUM,
         number=4,
         enum=resources.State,

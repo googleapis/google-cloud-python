@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -68,7 +79,7 @@ class DataplexServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DataplexServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -527,8 +538,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataplexServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DataplexServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the dataplex service client.
@@ -542,7 +553,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             transport (Union[str, DataplexServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -572,6 +583,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -624,13 +636,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def create_lake(
         self,
-        request: Union[service.CreateLakeRequest, dict] = None,
+        request: Optional[Union[service.CreateLakeRequest, dict]] = None,
         *,
-        parent: str = None,
-        lake: resources.Lake = None,
-        lake_id: str = None,
+        parent: Optional[str] = None,
+        lake: Optional[resources.Lake] = None,
+        lake_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a lake resource.
@@ -778,12 +790,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def update_lake(
         self,
-        request: Union[service.UpdateLakeRequest, dict] = None,
+        request: Optional[Union[service.UpdateLakeRequest, dict]] = None,
         *,
-        lake: resources.Lake = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        lake: Optional[resources.Lake] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a lake resource.
@@ -912,11 +924,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def delete_lake(
         self,
-        request: Union[service.DeleteLakeRequest, dict] = None,
+        request: Optional[Union[service.DeleteLakeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a lake resource. All zones within the lake
@@ -1036,11 +1048,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_lakes(
         self,
-        request: Union[service.ListLakesRequest, dict] = None,
+        request: Optional[Union[service.ListLakesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLakesPager:
         r"""Lists lake resources in a project and location.
@@ -1151,11 +1163,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_lake(
         self,
-        request: Union[service.GetLakeRequest, dict] = None,
+        request: Optional[Union[service.GetLakeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Lake:
         r"""Retrieves a lake resource.
@@ -1266,11 +1278,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_lake_actions(
         self,
-        request: Union[service.ListLakeActionsRequest, dict] = None,
+        request: Optional[Union[service.ListLakeActionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLakeActionsPager:
         r"""Lists action resources in a lake.
@@ -1379,13 +1391,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def create_zone(
         self,
-        request: Union[service.CreateZoneRequest, dict] = None,
+        request: Optional[Union[service.CreateZoneRequest, dict]] = None,
         *,
-        parent: str = None,
-        zone: resources.Zone = None,
-        zone_id: str = None,
+        parent: Optional[str] = None,
+        zone: Optional[resources.Zone] = None,
+        zone_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a zone resource within a lake.
@@ -1532,12 +1544,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def update_zone(
         self,
-        request: Union[service.UpdateZoneRequest, dict] = None,
+        request: Optional[Union[service.UpdateZoneRequest, dict]] = None,
         *,
-        zone: resources.Zone = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        zone: Optional[resources.Zone] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a zone resource.
@@ -1664,11 +1676,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def delete_zone(
         self,
-        request: Union[service.DeleteZoneRequest, dict] = None,
+        request: Optional[Union[service.DeleteZoneRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a zone resource. All assets within a zone
@@ -1788,11 +1800,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_zones(
         self,
-        request: Union[service.ListZonesRequest, dict] = None,
+        request: Optional[Union[service.ListZonesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListZonesPager:
         r"""Lists zone resources in a lake.
@@ -1901,11 +1913,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_zone(
         self,
-        request: Union[service.GetZoneRequest, dict] = None,
+        request: Optional[Union[service.GetZoneRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Zone:
         r"""Retrieves a zone resource.
@@ -2008,11 +2020,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_zone_actions(
         self,
-        request: Union[service.ListZoneActionsRequest, dict] = None,
+        request: Optional[Union[service.ListZoneActionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListZoneActionsPager:
         r"""Lists action resources in a zone.
@@ -2121,13 +2133,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def create_asset(
         self,
-        request: Union[service.CreateAssetRequest, dict] = None,
+        request: Optional[Union[service.CreateAssetRequest, dict]] = None,
         *,
-        parent: str = None,
-        asset: resources.Asset = None,
-        asset_id: str = None,
+        parent: Optional[str] = None,
+        asset: Optional[resources.Asset] = None,
+        asset_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an asset resource.
@@ -2267,12 +2279,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def update_asset(
         self,
-        request: Union[service.UpdateAssetRequest, dict] = None,
+        request: Optional[Union[service.UpdateAssetRequest, dict]] = None,
         *,
-        asset: resources.Asset = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        asset: Optional[resources.Asset] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an asset resource.
@@ -2395,11 +2407,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def delete_asset(
         self,
-        request: Union[service.DeleteAssetRequest, dict] = None,
+        request: Optional[Union[service.DeleteAssetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an asset resource. The referenced storage
@@ -2520,11 +2532,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_assets(
         self,
-        request: Union[service.ListAssetsRequest, dict] = None,
+        request: Optional[Union[service.ListAssetsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetsPager:
         r"""Lists asset resources in a zone.
@@ -2633,11 +2645,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_asset(
         self,
-        request: Union[service.GetAssetRequest, dict] = None,
+        request: Optional[Union[service.GetAssetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Asset:
         r"""Retrieves an asset resource.
@@ -2735,11 +2747,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_asset_actions(
         self,
-        request: Union[service.ListAssetActionsRequest, dict] = None,
+        request: Optional[Union[service.ListAssetActionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetActionsPager:
         r"""Lists action resources in an asset.
@@ -2848,13 +2860,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def create_task(
         self,
-        request: Union[service.CreateTaskRequest, dict] = None,
+        request: Optional[Union[service.CreateTaskRequest, dict]] = None,
         *,
-        parent: str = None,
-        task: tasks.Task = None,
-        task_id: str = None,
+        parent: Optional[str] = None,
+        task: Optional[tasks.Task] = None,
+        task_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a task resource within a lake.
@@ -2988,12 +3000,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def update_task(
         self,
-        request: Union[service.UpdateTaskRequest, dict] = None,
+        request: Optional[Union[service.UpdateTaskRequest, dict]] = None,
         *,
-        task: tasks.Task = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        task: Optional[tasks.Task] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update the task resource.
@@ -3120,11 +3132,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def delete_task(
         self,
-        request: Union[service.DeleteTaskRequest, dict] = None,
+        request: Optional[Union[service.DeleteTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Delete the task resource.
@@ -3243,11 +3255,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_tasks(
         self,
-        request: Union[service.ListTasksRequest, dict] = None,
+        request: Optional[Union[service.ListTasksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTasksPager:
         r"""Lists tasks under the given lake.
@@ -3356,11 +3368,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_task(
         self,
-        request: Union[service.GetTaskRequest, dict] = None,
+        request: Optional[Union[service.GetTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tasks.Task:
         r"""Get task resource.
@@ -3455,11 +3467,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_jobs(
         self,
-        request: Union[service.ListJobsRequest, dict] = None,
+        request: Optional[Union[service.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists Jobs under the given task.
@@ -3568,11 +3580,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_job(
         self,
-        request: Union[service.GetJobRequest, dict] = None,
+        request: Optional[Union[service.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tasks.Job:
         r"""Get job resource.
@@ -3669,11 +3681,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def cancel_job(
         self,
-        request: Union[service.CancelJobRequest, dict] = None,
+        request: Optional[Union[service.CancelJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Cancel jobs running for the task resource.
@@ -3758,13 +3770,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def create_environment(
         self,
-        request: Union[service.CreateEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.CreateEnvironmentRequest, dict]] = None,
         *,
-        parent: str = None,
-        environment: analyze.Environment = None,
-        environment_id: str = None,
+        parent: Optional[str] = None,
+        environment: Optional[analyze.Environment] = None,
+        environment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create an environment resource.
@@ -3902,12 +3914,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def update_environment(
         self,
-        request: Union[service.UpdateEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.UpdateEnvironmentRequest, dict]] = None,
         *,
-        environment: analyze.Environment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        environment: Optional[analyze.Environment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update the environment resource.
@@ -4030,11 +4042,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def delete_environment(
         self,
-        request: Union[service.DeleteEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.DeleteEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Delete the environment resource. All the child
@@ -4155,11 +4167,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_environments(
         self,
-        request: Union[service.ListEnvironmentsRequest, dict] = None,
+        request: Optional[Union[service.ListEnvironmentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsPager:
         r"""Lists environments under the given lake.
@@ -4268,11 +4280,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_environment(
         self,
-        request: Union[service.GetEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.GetEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyze.Environment:
         r"""Get environment resource.
@@ -4370,11 +4382,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_sessions(
         self,
-        request: Union[service.ListSessionsRequest, dict] = None,
+        request: Optional[Union[service.ListSessionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSessionsPager:
         r"""Lists session resources in an environment.
@@ -4496,10 +4508,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -4550,10 +4562,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -4604,10 +4616,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -4659,10 +4671,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -4713,10 +4725,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -4767,10 +4779,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

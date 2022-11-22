@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -189,9 +199,9 @@ class DataplexServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DataplexServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the dataplex service client.
@@ -235,13 +245,13 @@ class DataplexServiceAsyncClient:
 
     async def create_lake(
         self,
-        request: Union[service.CreateLakeRequest, dict] = None,
+        request: Optional[Union[service.CreateLakeRequest, dict]] = None,
         *,
-        parent: str = None,
-        lake: resources.Lake = None,
-        lake_id: str = None,
+        parent: Optional[str] = None,
+        lake: Optional[resources.Lake] = None,
+        lake_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a lake resource.
@@ -278,7 +288,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateLakeRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateLakeRequest, dict]]):
                 The request object. Create lake request.
             parent (:class:`str`):
                 Required. The resource name of the lake location, of the
@@ -389,12 +399,12 @@ class DataplexServiceAsyncClient:
 
     async def update_lake(
         self,
-        request: Union[service.UpdateLakeRequest, dict] = None,
+        request: Optional[Union[service.UpdateLakeRequest, dict]] = None,
         *,
-        lake: resources.Lake = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        lake: Optional[resources.Lake] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a lake resource.
@@ -429,7 +439,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateLakeRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateLakeRequest, dict]]):
                 The request object. Update lake request.
             lake (:class:`google.cloud.dataplex_v1.types.Lake`):
                 Required. Update description. Only fields specified in
@@ -523,11 +533,11 @@ class DataplexServiceAsyncClient:
 
     async def delete_lake(
         self,
-        request: Union[service.DeleteLakeRequest, dict] = None,
+        request: Optional[Union[service.DeleteLakeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a lake resource. All zones within the lake
@@ -564,7 +574,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteLakeRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteLakeRequest, dict]]):
                 The request object. Delete lake request.
             name (:class:`str`):
                 Required. The resource name of the lake:
@@ -647,11 +657,11 @@ class DataplexServiceAsyncClient:
 
     async def list_lakes(
         self,
-        request: Union[service.ListLakesRequest, dict] = None,
+        request: Optional[Union[service.ListLakesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLakesAsyncPager:
         r"""Lists lake resources in a project and location.
@@ -684,7 +694,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListLakesRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListLakesRequest, dict]]):
                 The request object. List lakes request.
             parent (:class:`str`):
                 Required. The resource name of the lake location, of the
@@ -771,11 +781,11 @@ class DataplexServiceAsyncClient:
 
     async def get_lake(
         self,
-        request: Union[service.GetLakeRequest, dict] = None,
+        request: Optional[Union[service.GetLakeRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Lake:
         r"""Retrieves a lake resource.
@@ -807,7 +817,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetLakeRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetLakeRequest, dict]]):
                 The request object. Get lake request.
             name (:class:`str`):
                 Required. The resource name of the lake:
@@ -895,11 +905,11 @@ class DataplexServiceAsyncClient:
 
     async def list_lake_actions(
         self,
-        request: Union[service.ListLakeActionsRequest, dict] = None,
+        request: Optional[Union[service.ListLakeActionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLakeActionsAsyncPager:
         r"""Lists action resources in a lake.
@@ -932,7 +942,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListLakeActionsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListLakeActionsRequest, dict]]):
                 The request object. List lake actions request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -1017,13 +1027,13 @@ class DataplexServiceAsyncClient:
 
     async def create_zone(
         self,
-        request: Union[service.CreateZoneRequest, dict] = None,
+        request: Optional[Union[service.CreateZoneRequest, dict]] = None,
         *,
-        parent: str = None,
-        zone: resources.Zone = None,
-        zone_id: str = None,
+        parent: Optional[str] = None,
+        zone: Optional[resources.Zone] = None,
+        zone_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a zone resource within a lake.
@@ -1065,7 +1075,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateZoneRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateZoneRequest, dict]]):
                 The request object. Create zone request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -1170,12 +1180,12 @@ class DataplexServiceAsyncClient:
 
     async def update_zone(
         self,
-        request: Union[service.UpdateZoneRequest, dict] = None,
+        request: Optional[Union[service.UpdateZoneRequest, dict]] = None,
         *,
-        zone: resources.Zone = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        zone: Optional[resources.Zone] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a zone resource.
@@ -1215,7 +1225,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateZoneRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateZoneRequest, dict]]):
                 The request object. Update zone request.
             zone (:class:`google.cloud.dataplex_v1.types.Zone`):
                 Required. Update description. Only fields specified in
@@ -1302,11 +1312,11 @@ class DataplexServiceAsyncClient:
 
     async def delete_zone(
         self,
-        request: Union[service.DeleteZoneRequest, dict] = None,
+        request: Optional[Union[service.DeleteZoneRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a zone resource. All assets within a zone
@@ -1343,7 +1353,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteZoneRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteZoneRequest, dict]]):
                 The request object. Delete zone request.
             name (:class:`str`):
                 Required. The resource name of the zone:
@@ -1426,11 +1436,11 @@ class DataplexServiceAsyncClient:
 
     async def list_zones(
         self,
-        request: Union[service.ListZonesRequest, dict] = None,
+        request: Optional[Union[service.ListZonesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListZonesAsyncPager:
         r"""Lists zone resources in a lake.
@@ -1463,7 +1473,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListZonesRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListZonesRequest, dict]]):
                 The request object. List zones request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -1548,11 +1558,11 @@ class DataplexServiceAsyncClient:
 
     async def get_zone(
         self,
-        request: Union[service.GetZoneRequest, dict] = None,
+        request: Optional[Union[service.GetZoneRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Zone:
         r"""Retrieves a zone resource.
@@ -1584,7 +1594,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetZoneRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetZoneRequest, dict]]):
                 The request object. Get zone request.
             name (:class:`str`):
                 Required. The resource name of the zone:
@@ -1664,11 +1674,11 @@ class DataplexServiceAsyncClient:
 
     async def list_zone_actions(
         self,
-        request: Union[service.ListZoneActionsRequest, dict] = None,
+        request: Optional[Union[service.ListZoneActionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListZoneActionsAsyncPager:
         r"""Lists action resources in a zone.
@@ -1701,7 +1711,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListZoneActionsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListZoneActionsRequest, dict]]):
                 The request object. List zone actions request.
             parent (:class:`str`):
                 Required. The resource name of the parent zone:
@@ -1786,13 +1796,13 @@ class DataplexServiceAsyncClient:
 
     async def create_asset(
         self,
-        request: Union[service.CreateAssetRequest, dict] = None,
+        request: Optional[Union[service.CreateAssetRequest, dict]] = None,
         *,
-        parent: str = None,
-        asset: resources.Asset = None,
-        asset_id: str = None,
+        parent: Optional[str] = None,
+        asset: Optional[resources.Asset] = None,
+        asset_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an asset resource.
@@ -1833,7 +1843,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateAssetRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateAssetRequest, dict]]):
                 The request object. Create asset request.
             parent (:class:`str`):
                 Required. The resource name of the parent zone:
@@ -1932,12 +1942,12 @@ class DataplexServiceAsyncClient:
 
     async def update_asset(
         self,
-        request: Union[service.UpdateAssetRequest, dict] = None,
+        request: Optional[Union[service.UpdateAssetRequest, dict]] = None,
         *,
-        asset: resources.Asset = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        asset: Optional[resources.Asset] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an asset resource.
@@ -1976,7 +1986,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateAssetRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateAssetRequest, dict]]):
                 The request object. Update asset request.
             asset (:class:`google.cloud.dataplex_v1.types.Asset`):
                 Required. Update description. Only fields specified in
@@ -2060,11 +2070,11 @@ class DataplexServiceAsyncClient:
 
     async def delete_asset(
         self,
-        request: Union[service.DeleteAssetRequest, dict] = None,
+        request: Optional[Union[service.DeleteAssetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an asset resource. The referenced storage
@@ -2102,7 +2112,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteAssetRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteAssetRequest, dict]]):
                 The request object. Delete asset request.
             name (:class:`str`):
                 Required. The resource name of the asset:
@@ -2185,11 +2195,11 @@ class DataplexServiceAsyncClient:
 
     async def list_assets(
         self,
-        request: Union[service.ListAssetsRequest, dict] = None,
+        request: Optional[Union[service.ListAssetsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists asset resources in a zone.
@@ -2222,7 +2232,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListAssetsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListAssetsRequest, dict]]):
                 The request object. List assets request.
             parent (:class:`str`):
                 Required. The resource name of the parent zone:
@@ -2307,11 +2317,11 @@ class DataplexServiceAsyncClient:
 
     async def get_asset(
         self,
-        request: Union[service.GetAssetRequest, dict] = None,
+        request: Optional[Union[service.GetAssetRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Asset:
         r"""Retrieves an asset resource.
@@ -2343,7 +2353,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetAssetRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetAssetRequest, dict]]):
                 The request object. Get asset request.
             name (:class:`str`):
                 Required. The resource name of the asset:
@@ -2418,11 +2428,11 @@ class DataplexServiceAsyncClient:
 
     async def list_asset_actions(
         self,
-        request: Union[service.ListAssetActionsRequest, dict] = None,
+        request: Optional[Union[service.ListAssetActionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetActionsAsyncPager:
         r"""Lists action resources in an asset.
@@ -2455,7 +2465,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListAssetActionsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListAssetActionsRequest, dict]]):
                 The request object. List asset actions request.
             parent (:class:`str`):
                 Required. The resource name of the parent asset:
@@ -2540,13 +2550,13 @@ class DataplexServiceAsyncClient:
 
     async def create_task(
         self,
-        request: Union[service.CreateTaskRequest, dict] = None,
+        request: Optional[Union[service.CreateTaskRequest, dict]] = None,
         *,
-        parent: str = None,
-        task: tasks.Task = None,
-        task_id: str = None,
+        parent: Optional[str] = None,
+        task: Optional[tasks.Task] = None,
+        task_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a task resource within a lake.
@@ -2590,7 +2600,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateTaskRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateTaskRequest, dict]]):
                 The request object. Create task request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -2680,12 +2690,12 @@ class DataplexServiceAsyncClient:
 
     async def update_task(
         self,
-        request: Union[service.UpdateTaskRequest, dict] = None,
+        request: Optional[Union[service.UpdateTaskRequest, dict]] = None,
         *,
-        task: tasks.Task = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        task: Optional[tasks.Task] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update the task resource.
@@ -2727,7 +2737,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateTaskRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateTaskRequest, dict]]):
                 The request object. Update task request.
             task (:class:`google.cloud.dataplex_v1.types.Task`):
                 Required. Update description. Only fields specified in
@@ -2812,11 +2822,11 @@ class DataplexServiceAsyncClient:
 
     async def delete_task(
         self,
-        request: Union[service.DeleteTaskRequest, dict] = None,
+        request: Optional[Union[service.DeleteTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete the task resource.
@@ -2852,7 +2862,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteTaskRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteTaskRequest, dict]]):
                 The request object. Delete task request.
             name (:class:`str`):
                 Required. The resource name of the task:
@@ -2935,11 +2945,11 @@ class DataplexServiceAsyncClient:
 
     async def list_tasks(
         self,
-        request: Union[service.ListTasksRequest, dict] = None,
+        request: Optional[Union[service.ListTasksRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTasksAsyncPager:
         r"""Lists tasks under the given lake.
@@ -2972,7 +2982,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListTasksRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListTasksRequest, dict]]):
                 The request object. List tasks request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -3057,11 +3067,11 @@ class DataplexServiceAsyncClient:
 
     async def get_task(
         self,
-        request: Union[service.GetTaskRequest, dict] = None,
+        request: Optional[Union[service.GetTaskRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tasks.Task:
         r"""Get task resource.
@@ -3093,7 +3103,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetTaskRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetTaskRequest, dict]]):
                 The request object. Get task request.
             name (:class:`str`):
                 Required. The resource name of the task:
@@ -3165,11 +3175,11 @@ class DataplexServiceAsyncClient:
 
     async def list_jobs(
         self,
-        request: Union[service.ListJobsRequest, dict] = None,
+        request: Optional[Union[service.ListJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists Jobs under the given task.
@@ -3202,7 +3212,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListJobsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListJobsRequest, dict]]):
                 The request object. List jobs request.
             parent (:class:`str`):
                 Required. The resource name of the parent environment:
@@ -3287,11 +3297,11 @@ class DataplexServiceAsyncClient:
 
     async def get_job(
         self,
-        request: Union[service.GetJobRequest, dict] = None,
+        request: Optional[Union[service.GetJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tasks.Job:
         r"""Get job resource.
@@ -3323,7 +3333,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetJobRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetJobRequest, dict]]):
                 The request object. Get job request.
             name (:class:`str`):
                 Required. The resource name of the job:
@@ -3397,11 +3407,11 @@ class DataplexServiceAsyncClient:
 
     async def cancel_job(
         self,
-        request: Union[service.CancelJobRequest, dict] = None,
+        request: Optional[Union[service.CancelJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Cancel jobs running for the task resource.
@@ -3430,7 +3440,7 @@ class DataplexServiceAsyncClient:
                 await client.cancel_job(request=request)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CancelJobRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CancelJobRequest, dict]]):
                 The request object. Cancel task jobs.
             name (:class:`str`):
                 Required. The resource name of the job:
@@ -3486,13 +3496,13 @@ class DataplexServiceAsyncClient:
 
     async def create_environment(
         self,
-        request: Union[service.CreateEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.CreateEnvironmentRequest, dict]] = None,
         *,
-        parent: str = None,
-        environment: analyze.Environment = None,
-        environment_id: str = None,
+        parent: Optional[str] = None,
+        environment: Optional[analyze.Environment] = None,
+        environment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create an environment resource.
@@ -3533,7 +3543,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateEnvironmentRequest, dict]]):
                 The request object. Create environment request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -3630,12 +3640,12 @@ class DataplexServiceAsyncClient:
 
     async def update_environment(
         self,
-        request: Union[service.UpdateEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.UpdateEnvironmentRequest, dict]] = None,
         *,
-        environment: analyze.Environment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        environment: Optional[analyze.Environment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update the environment resource.
@@ -3674,7 +3684,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateEnvironmentRequest, dict]]):
                 The request object. Update environment request.
             environment (:class:`google.cloud.dataplex_v1.types.Environment`):
                 Required. Update description. Only fields specified in
@@ -3758,11 +3768,11 @@ class DataplexServiceAsyncClient:
 
     async def delete_environment(
         self,
-        request: Union[service.DeleteEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.DeleteEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete the environment resource. All the child
@@ -3800,7 +3810,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteEnvironmentRequest, dict]]):
                 The request object. Delete environment request.
             name (:class:`str`):
                 Required. The resource name of the environment:
@@ -3883,11 +3893,11 @@ class DataplexServiceAsyncClient:
 
     async def list_environments(
         self,
-        request: Union[service.ListEnvironmentsRequest, dict] = None,
+        request: Optional[Union[service.ListEnvironmentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Lists environments under the given lake.
@@ -3920,7 +3930,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListEnvironmentsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListEnvironmentsRequest, dict]]):
                 The request object. List environments request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -4005,11 +4015,11 @@ class DataplexServiceAsyncClient:
 
     async def get_environment(
         self,
-        request: Union[service.GetEnvironmentRequest, dict] = None,
+        request: Optional[Union[service.GetEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyze.Environment:
         r"""Get environment resource.
@@ -4041,7 +4051,7 @@ class DataplexServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetEnvironmentRequest, dict]]):
                 The request object. Get environment request.
             name (:class:`str`):
                 Required. The resource name of the environment:
@@ -4116,11 +4126,11 @@ class DataplexServiceAsyncClient:
 
     async def list_sessions(
         self,
-        request: Union[service.ListSessionsRequest, dict] = None,
+        request: Optional[Union[service.ListSessionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSessionsAsyncPager:
         r"""Lists session resources in an environment.
@@ -4153,7 +4163,7 @@ class DataplexServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListSessionsRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListSessionsRequest, dict]]):
                 The request object. List sessions request.
             parent (:class:`str`):
                 Required. The resource name of the parent environment:
@@ -4229,10 +4239,10 @@ class DataplexServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -4283,10 +4293,10 @@ class DataplexServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -4337,10 +4347,10 @@ class DataplexServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -4392,10 +4402,10 @@ class DataplexServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -4446,10 +4456,10 @@ class DataplexServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -4500,10 +4510,10 @@ class DataplexServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

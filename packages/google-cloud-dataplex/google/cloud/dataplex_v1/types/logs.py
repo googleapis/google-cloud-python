@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -93,7 +95,7 @@ class DiscoveryEvent(proto.Message):
         r"""Details about configuration events.
 
         Attributes:
-            parameters (Mapping[str, str]):
+            parameters (MutableMapping[str, str]):
                 A list of discovery configuration parameters
                 in effect. The keys are the field paths within
                 DiscoverySpec. Eg. includePatterns,
@@ -101,7 +103,7 @@ class DiscoveryEvent(proto.Message):
                 csvOptions.disableTypeInference, etc.
         """
 
-        parameters = proto.MapField(
+        parameters: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=1,
@@ -118,11 +120,11 @@ class DiscoveryEvent(proto.Message):
                 The type of the entity resource.
         """
 
-        entity = proto.Field(
+        entity: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "DiscoveryEvent.EntityType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="DiscoveryEvent.EntityType",
@@ -140,26 +142,26 @@ class DiscoveryEvent(proto.Message):
                 The name is the fully-qualified resource name.
             type_ (google.cloud.dataplex_v1.types.DiscoveryEvent.EntityType):
                 The type of the containing entity resource.
-            sampled_data_locations (Sequence[str]):
+            sampled_data_locations (MutableSequence[str]):
                 The locations of the data items (e.g., a
                 Cloud Storage objects) sampled for metadata
                 inference.
         """
 
-        partition = proto.Field(
+        partition: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        entity = proto.Field(
+        entity: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        type_ = proto.Field(
+        type_: "DiscoveryEvent.EntityType" = proto.Field(
             proto.ENUM,
             number=3,
             enum="DiscoveryEvent.EntityType",
         )
-        sampled_data_locations = proto.RepeatedField(
+        sampled_data_locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
@@ -173,55 +175,55 @@ class DiscoveryEvent(proto.Message):
                 Eg. IncompatibleDataSchema, InvalidDataFormat
         """
 
-        type_ = proto.Field(
+        type_: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    lake_id = proto.Field(
+    lake_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    zone_id = proto.Field(
+    zone_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    asset_id = proto.Field(
+    asset_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    data_location = proto.Field(
+    data_location: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    type_ = proto.Field(
+    type_: EventType = proto.Field(
         proto.ENUM,
         number=10,
         enum=EventType,
     )
-    config = proto.Field(
+    config: ConfigDetails = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="details",
         message=ConfigDetails,
     )
-    entity = proto.Field(
+    entity: EntityDetails = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="details",
         message=EntityDetails,
     )
-    partition = proto.Field(
+    partition: PartitionDetails = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="details",
         message=PartitionDetails,
     )
-    action = proto.Field(
+    action: ActionDetails = proto.Field(
         proto.MESSAGE,
         number=23,
         oneof="details",
@@ -273,44 +275,44 @@ class JobEvent(proto.Message):
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    retries = proto.Field(
+    retries: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=7,
         enum=Type,
     )
-    service = proto.Field(
+    service: Service = proto.Field(
         proto.ENUM,
         number=8,
         enum=Service,
     )
-    service_job = proto.Field(
+    service_job: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -381,65 +383,65 @@ class SessionEvent(proto.Message):
             SPARK_SQL = 1
             BIGQUERY = 2
 
-        query_id = proto.Field(
+        query_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        query_text = proto.Field(
+        query_text: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        engine = proto.Field(
+        engine: "SessionEvent.QueryDetail.Engine" = proto.Field(
             proto.ENUM,
             number=3,
             enum="SessionEvent.QueryDetail.Engine",
         )
-        duration = proto.Field(
+        duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=4,
             message=duration_pb2.Duration,
         )
-        result_size_bytes = proto.Field(
+        result_size_bytes: int = proto.Field(
             proto.INT64,
             number=5,
         )
-        data_processed_bytes = proto.Field(
+        data_processed_bytes: int = proto.Field(
             proto.INT64,
             number=6,
         )
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_id = proto.Field(
+    user_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    session_id = proto.Field(
+    session_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    type_ = proto.Field(
+    type_: EventType = proto.Field(
         proto.ENUM,
         number=4,
         enum=EventType,
     )
-    query = proto.Field(
+    query: QueryDetail = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="detail",
         message=QueryDetail,
     )
-    event_succeeded = proto.Field(
+    event_succeeded: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    fast_startup_enabled = proto.Field(
+    fast_startup_enabled: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    unassigned_duration = proto.Field(
+    unassigned_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,

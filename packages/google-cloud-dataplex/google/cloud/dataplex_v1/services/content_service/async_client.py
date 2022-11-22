@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -170,9 +180,9 @@ class ContentServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ContentServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the content service client.
@@ -216,12 +226,12 @@ class ContentServiceAsyncClient:
 
     async def create_content(
         self,
-        request: Union[gcd_content.CreateContentRequest, dict] = None,
+        request: Optional[Union[gcd_content.CreateContentRequest, dict]] = None,
         *,
-        parent: str = None,
-        content: analyze.Content = None,
+        parent: Optional[str] = None,
+        content: Optional[analyze.Content] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyze.Content:
         r"""Create a content.
@@ -259,7 +269,7 @@ class ContentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateContentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateContentRequest, dict]]):
                 The request object. Create content request.
             parent (:class:`str`):
                 Required. The resource name of the parent lake:
@@ -331,12 +341,12 @@ class ContentServiceAsyncClient:
 
     async def update_content(
         self,
-        request: Union[gcd_content.UpdateContentRequest, dict] = None,
+        request: Optional[Union[gcd_content.UpdateContentRequest, dict]] = None,
         *,
-        content: analyze.Content = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        content: Optional[analyze.Content] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyze.Content:
         r"""Update a content. Only supports full resource update.
@@ -373,7 +383,7 @@ class ContentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateContentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateContentRequest, dict]]):
                 The request object. Update content request.
             content (:class:`google.cloud.dataplex_v1.types.Content`):
                 Required. Update description. Only fields specified in
@@ -447,11 +457,11 @@ class ContentServiceAsyncClient:
 
     async def delete_content(
         self,
-        request: Union[content.DeleteContentRequest, dict] = None,
+        request: Optional[Union[content.DeleteContentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a content.
@@ -480,7 +490,7 @@ class ContentServiceAsyncClient:
                 await client.delete_content(request=request)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteContentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteContentRequest, dict]]):
                 The request object. Delete content request.
             name (:class:`str`):
                 Required. The resource name of the content:
@@ -536,11 +546,11 @@ class ContentServiceAsyncClient:
 
     async def get_content(
         self,
-        request: Union[content.GetContentRequest, dict] = None,
+        request: Optional[Union[content.GetContentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyze.Content:
         r"""Get a content resource.
@@ -572,7 +582,7 @@ class ContentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetContentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetContentRequest, dict]]):
                 The request object. Get content request.
             name (:class:`str`):
                 Required. The resource name of the content:
@@ -646,11 +656,11 @@ class ContentServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a contentitem resource. A
@@ -689,7 +699,7 @@ class ContentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -827,10 +837,10 @@ class ContentServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified contentitem
@@ -867,7 +877,7 @@ class ContentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -974,10 +984,10 @@ class ContentServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the caller's permissions on a resource. If the resource
@@ -1021,7 +1031,7 @@ class ContentServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1076,11 +1086,11 @@ class ContentServiceAsyncClient:
 
     async def list_content(
         self,
-        request: Union[content.ListContentRequest, dict] = None,
+        request: Optional[Union[content.ListContentRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContentAsyncPager:
         r"""List content.
@@ -1113,7 +1123,7 @@ class ContentServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListContentRequest, dict]):
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListContentRequest, dict]]):
                 The request object. List content request. Returns the
                 BASIC Content view.
             parent (:class:`str`):
@@ -1199,10 +1209,10 @@ class ContentServiceAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1253,10 +1263,10 @@ class ContentServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1307,10 +1317,10 @@ class ContentServiceAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1362,10 +1372,10 @@ class ContentServiceAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -1416,10 +1426,10 @@ class ContentServiceAsyncClient:
 
     async def get_location(
         self,
-        request: locations_pb2.GetLocationRequest = None,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
@@ -1470,10 +1480,10 @@ class ContentServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

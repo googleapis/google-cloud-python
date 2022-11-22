@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.dataplex import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.content_service import ContentServiceAsyncClient, ContentServiceClient
 from .services.dataplex_service import DataplexServiceAsyncClient, DataplexServiceClient
