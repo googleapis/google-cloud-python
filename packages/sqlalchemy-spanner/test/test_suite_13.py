@@ -24,6 +24,8 @@ import random
 import time
 from unittest import mock
 
+from google.cloud.spanner_v1 import RequestOptions
+
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
@@ -1644,7 +1646,7 @@ class LimitOffsetTest(fixtures.TestBase):
                 list(connection.execute(self._table.select().offset(offset)).fetchall())
 
 
-class ExecutionOptionsStalenessTest(fixtures.TestBase):
+class ExecutionOptionsTest(fixtures.TestBase):
     """
     Check that `execution_options()` method correctly
     sets parameters on the underlying DB API connection.
@@ -1675,6 +1677,20 @@ class ExecutionOptionsStalenessTest(fixtures.TestBase):
 
         with self._engine.connect() as connection:
             assert connection.connection.staleness == {}
+
+        engine = create_engine("sqlite:///database")
+        with engine.connect() as connection:
+            pass
+
+    def test_request_priority(self):
+        PRIORITY = RequestOptions.Priority.PRIORITY_MEDIUM
+        with self._engine.connect().execution_options(
+            request_priority=PRIORITY
+        ) as connection:
+            connection.execute(select(["*"], from_obj=self._table)).fetchall()
+
+        with self._engine.connect() as connection:
+            assert connection.connection.request_priority is None
 
         engine = create_engine("sqlite:///database")
         with engine.connect() as connection:

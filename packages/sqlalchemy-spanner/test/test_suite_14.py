@@ -21,7 +21,10 @@ import os
 import pkg_resources
 import pytest
 import random
+import time
 from unittest import mock
+
+from google.cloud.spanner_v1 import RequestOptions
 
 import sqlalchemy
 from sqlalchemy import create_engine
@@ -2160,3 +2163,33 @@ class JSONTest(_JSONTest):
     )
     def test_round_trip_none_as_sql_null(self):
         pass
+
+
+class ExecutionOptionsRequestPriorotyTest(fixtures.TestBase):
+    def setUp(self):
+        self._engine = create_engine(get_db_url(), pool_size=1)
+        metadata = MetaData(bind=self._engine)
+
+        self._table = Table(
+            "execution_options2",
+            metadata,
+            Column("opt_id", Integer, primary_key=True),
+            Column("opt_name", String(16), nullable=False),
+        )
+
+        metadata.create_all(self._engine)
+        time.sleep(1)
+
+    def test_request_priority(self):
+        PRIORITY = RequestOptions.Priority.PRIORITY_MEDIUM
+        with self._engine.connect().execution_options(
+            request_priority=PRIORITY
+        ) as connection:
+            connection.execute(select(["*"], from_obj=self._table)).fetchall()
+
+        with self._engine.connect() as connection:
+            assert connection.connection.request_priority is None
+
+        engine = create_engine("sqlite:///database")
+        with engine.connect() as connection:
+            pass

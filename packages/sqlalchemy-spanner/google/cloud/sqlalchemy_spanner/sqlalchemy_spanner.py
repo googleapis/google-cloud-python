@@ -150,13 +150,17 @@ class SpannerExecutionContext(DefaultExecutionContext):
         """
         super(SpannerExecutionContext, self).pre_exec()
 
-        read_only = self.execution_options.get("read_only", None)
+        read_only = self.execution_options.get("read_only")
         if read_only is not None:
             self._dbapi_connection.connection.read_only = read_only
 
-        staleness = self.execution_options.get("staleness", None)
+        staleness = self.execution_options.get("staleness")
         if staleness is not None:
             self._dbapi_connection.connection.staleness = staleness
+
+        priority = self.execution_options.get("request_priority")
+        if priority is not None:
+            self._dbapi_connection.connection.request_priority = priority
 
 
 class SpannerIdentifierPreparer(IdentifierPreparer):

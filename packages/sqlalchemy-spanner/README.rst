@@ -391,6 +391,19 @@ wanted staleness value. For example:
 Note that the set option will be dropped when the connection is returned
 back to the pool.
 
+Request priority
+~~~~~~~~~~~~~~~~~~~~~
+In order to use Request Priorities feature in Cloud Spanner, SQLAlchemy provides an ``execution_options`` parameter:
+
+.. code:: python
+
+   from google.cloud.spanner_v1 import RequestOptions
+
+   with engine.connect().execution_options(
+       request_priority=RequestOptions.Priority.PRIORITY_MEDIUM
+   ) as connection:
+       connection.execute(select(["*"], from_obj=table)).fetchall()
+
 DDL and transactions
 ~~~~~~~~~~~~~~~~~~~~
 
