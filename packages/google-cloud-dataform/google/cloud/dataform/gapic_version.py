@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import DataformAsyncClient
-from .client import DataformClient
-
-__all__ = (
-    "DataformClient",
-    "DataformAsyncClient",
-)
+__version__ = "0.2.3"  # {x-release-please-version}

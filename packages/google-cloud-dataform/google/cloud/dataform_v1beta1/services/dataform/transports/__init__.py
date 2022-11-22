@@ -20,7 +20,6 @@ from .base import DataformTransport
 from .grpc import DataformGrpcTransport
 from .grpc_asyncio import DataformGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataformTransport]]
 _transport_registry["grpc"] = DataformGrpcTransport

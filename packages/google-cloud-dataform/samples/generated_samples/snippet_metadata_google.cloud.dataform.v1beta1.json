@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-dataform"
+    "name": "google-cloud-dataform",
+    "version": "0.1.0"
   },
   "snippets": [
     {

@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dataform.v1beta1",
@@ -124,29 +124,29 @@ class Repository(proto.Message):
             INVALID = 2
             VALID = 3
 
-        url = proto.Field(
+        url: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        default_branch = proto.Field(
+        default_branch: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        authentication_token_secret_version = proto.Field(
+        authentication_token_secret_version: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        token_status = proto.Field(
+        token_status: "Repository.GitRemoteSettings.TokenStatus" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Repository.GitRemoteSettings.TokenStatus",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    git_remote_settings = proto.Field(
+    git_remote_settings: GitRemoteSettings = proto.Field(
         proto.MESSAGE,
         number=2,
         message=GitRemoteSettings,
@@ -182,23 +182,23 @@ class ListRepositoriesRequest(proto.Message):
             Optional. Filter for the returned list.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -208,13 +208,13 @@ class ListRepositoriesResponse(proto.Message):
     r"""``ListRepositories`` response message.
 
     Attributes:
-        repositories (Sequence[google.cloud.dataform_v1beta1.types.Repository]):
+        repositories (MutableSequence[google.cloud.dataform_v1beta1.types.Repository]):
             List of repositories.
         next_page_token (str):
             A token which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations which could not be reached.
     """
 
@@ -222,16 +222,16 @@ class ListRepositoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    repositories = proto.RepeatedField(
+    repositories: MutableSequence["Repository"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Repository",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -245,7 +245,7 @@ class GetRepositoryRequest(proto.Message):
             Required. The repository's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -266,16 +266,16 @@ class CreateRepositoryRequest(proto.Message):
             repository's resource name.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repository = proto.Field(
+    repository: "Repository" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Repository",
     )
-    repository_id = proto.Field(
+    repository_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -293,12 +293,12 @@ class UpdateRepositoryRequest(proto.Message):
             Required. The repository to update.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    repository = proto.Field(
+    repository: "Repository" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Repository",
@@ -318,11 +318,11 @@ class DeleteRepositoryRequest(proto.Message):
             no child resources.)
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -336,7 +336,7 @@ class FetchRemoteBranchesRequest(proto.Message):
             Required. The repository's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -346,11 +346,11 @@ class FetchRemoteBranchesResponse(proto.Message):
     r"""``FetchRemoteBranches`` response message.
 
     Attributes:
-        branches (Sequence[str]):
+        branches (MutableSequence[str]):
             The remote repository's branch names.
     """
 
-    branches = proto.RepeatedField(
+    branches: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -364,7 +364,7 @@ class Workspace(proto.Message):
             Output only. The workspace's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -399,23 +399,23 @@ class ListWorkspacesRequest(proto.Message):
             Optional. Filter for the returned list.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -425,13 +425,13 @@ class ListWorkspacesResponse(proto.Message):
     r"""``ListWorkspaces`` response message.
 
     Attributes:
-        workspaces (Sequence[google.cloud.dataform_v1beta1.types.Workspace]):
+        workspaces (MutableSequence[google.cloud.dataform_v1beta1.types.Workspace]):
             List of workspaces.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations which could not be reached.
     """
 
@@ -439,16 +439,16 @@ class ListWorkspacesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workspaces = proto.RepeatedField(
+    workspaces: MutableSequence["Workspace"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Workspace",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -462,7 +462,7 @@ class GetWorkspaceRequest(proto.Message):
             Required. The workspace's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -484,16 +484,16 @@ class CreateWorkspaceRequest(proto.Message):
             workspace's resource name.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workspace = proto.Field(
+    workspace: "Workspace" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Workspace",
     )
-    workspace_id = proto.Field(
+    workspace_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -507,7 +507,7 @@ class DeleteWorkspaceRequest(proto.Message):
             Required. The workspace resource's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -523,11 +523,11 @@ class CommitAuthor(proto.Message):
             Required. The commit author's email address.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    email_address = proto.Field(
+    email_address: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -550,15 +550,15 @@ class PullGitCommitsRequest(proto.Message):
             fetched Git commits into this workspace.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    remote_branch = proto.Field(
+    remote_branch: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    author = proto.Field(
+    author: "CommitAuthor" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CommitAuthor",
@@ -578,11 +578,11 @@ class PushGitCommitsRequest(proto.Message):
             will be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    remote_branch = proto.Field(
+    remote_branch: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -596,7 +596,7 @@ class FetchFileGitStatusesRequest(proto.Message):
             Required. The workspace's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -606,7 +606,7 @@ class FetchFileGitStatusesResponse(proto.Message):
     r"""``FetchFileGitStatuses`` response message.
 
     Attributes:
-        uncommitted_file_changes (Sequence[google.cloud.dataform_v1beta1.types.FetchFileGitStatusesResponse.UncommittedFileChange]):
+        uncommitted_file_changes (MutableSequence[google.cloud.dataform_v1beta1.types.FetchFileGitStatusesResponse.UncommittedFileChange]):
             A list of all files which have uncommitted
             Git changes. There will only be a single entry
             for any given file.
@@ -631,17 +631,19 @@ class FetchFileGitStatusesResponse(proto.Message):
             MODIFIED = 3
             HAS_CONFLICTS = 4
 
-        path = proto.Field(
+        path: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        state = proto.Field(
+        state: "FetchFileGitStatusesResponse.UncommittedFileChange.State" = proto.Field(
             proto.ENUM,
             number=2,
             enum="FetchFileGitStatusesResponse.UncommittedFileChange.State",
         )
 
-    uncommitted_file_changes = proto.RepeatedField(
+    uncommitted_file_changes: MutableSequence[
+        UncommittedFileChange
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=UncommittedFileChange,
@@ -661,11 +663,11 @@ class FetchGitAheadBehindRequest(proto.Message):
             default branch name will be used.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    remote_branch = proto.Field(
+    remote_branch: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -683,11 +685,11 @@ class FetchGitAheadBehindResponse(proto.Message):
             are not in the remote branch.
     """
 
-    commits_ahead = proto.Field(
+    commits_ahead: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    commits_behind = proto.Field(
+    commits_behind: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -703,26 +705,26 @@ class CommitWorkspaceChangesRequest(proto.Message):
             Required. The commit's author.
         commit_message (str):
             Optional. The commit's message.
-        paths (Sequence[str]):
+        paths (MutableSequence[str]):
             Optional. Full file paths to commit including
             filename, rooted at workspace root. If left
             empty, all files will be committed.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    author = proto.Field(
+    author: "CommitAuthor" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="CommitAuthor",
     )
-    commit_message = proto.Field(
+    commit_message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    paths = proto.RepeatedField(
+    paths: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -734,7 +736,7 @@ class ResetWorkspaceChangesRequest(proto.Message):
     Attributes:
         name (str):
             Required. The workspace's name.
-        paths (Sequence[str]):
+        paths (MutableSequence[str]):
             Optional. Full file paths to reset back to
             their committed state including filename, rooted
             at workspace root. If left empty, all files will
@@ -744,15 +746,15 @@ class ResetWorkspaceChangesRequest(proto.Message):
             will be deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    paths = proto.RepeatedField(
+    paths: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    clean = proto.Field(
+    clean: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -769,11 +771,11 @@ class FetchFileDiffRequest(proto.Message):
             filename, relative to the workspace root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -787,7 +789,7 @@ class FetchFileDiffResponse(proto.Message):
             The raw formatted Git diff for the file.
     """
 
-    formatted_diff = proto.Field(
+    formatted_diff: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -818,19 +820,19 @@ class QueryDirectoryContentsRequest(proto.Message):
             the page token.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -840,7 +842,7 @@ class QueryDirectoryContentsResponse(proto.Message):
     r"""``QueryDirectoryContents`` response message.
 
     Attributes:
-        directory_entries (Sequence[google.cloud.dataform_v1beta1.types.QueryDirectoryContentsResponse.DirectoryEntry]):
+        directory_entries (MutableSequence[google.cloud.dataform_v1beta1.types.QueryDirectoryContentsResponse.DirectoryEntry]):
             List of entries in the directory.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -869,12 +871,12 @@ class QueryDirectoryContentsResponse(proto.Message):
                 This field is a member of `oneof`_ ``entry``.
         """
 
-        file = proto.Field(
+        file: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="entry",
         )
-        directory = proto.Field(
+        directory: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="entry",
@@ -884,12 +886,12 @@ class QueryDirectoryContentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    directory_entries = proto.RepeatedField(
+    directory_entries: MutableSequence[DirectoryEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=DirectoryEntry,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -906,11 +908,11 @@ class MakeDirectoryRequest(proto.Message):
             directory name, relative to the workspace root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -931,11 +933,11 @@ class RemoveDirectoryRequest(proto.Message):
             directory name, relative to the workspace root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -956,15 +958,15 @@ class MoveDirectoryRequest(proto.Message):
             root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    new_path = proto.Field(
+    new_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -985,11 +987,11 @@ class ReadFileRequest(proto.Message):
             filename, relative to the workspace root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1003,7 +1005,7 @@ class ReadFileResponse(proto.Message):
             The file's contents.
     """
 
-    file_contents = proto.Field(
+    file_contents: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -1020,11 +1022,11 @@ class RemoveFileRequest(proto.Message):
             filename, relative to the workspace root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1044,15 +1046,15 @@ class MoveFileRequest(proto.Message):
             filename, relative to the workspace root.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    new_path = proto.Field(
+    new_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1074,15 +1076,15 @@ class WriteFileRequest(proto.Message):
             Required. The file's contents.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    contents = proto.Field(
+    contents: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
@@ -1100,7 +1102,7 @@ class InstallNpmPackagesRequest(proto.Message):
             Required. The workspace's name.
     """
 
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1146,7 +1148,7 @@ class CompilationResult(proto.Message):
         dataform_core_version (str):
             Output only. The version of ``@dataform/core`` that was used
             for compilation.
-        compilation_errors (Sequence[google.cloud.dataform_v1beta1.types.CompilationResult.CompilationError]):
+        compilation_errors (MutableSequence[google.cloud.dataform_v1beta1.types.CompilationResult.CompilationError]):
             Output only. Errors encountered during
             project compilation.
     """
@@ -1169,7 +1171,7 @@ class CompilationResult(proto.Message):
             assertion_schema (str):
                 Optional. The default schema (BigQuery
                 dataset ID) for assertions.
-            vars (Mapping[str, str]):
+            vars (MutableMapping[str, str]):
                 Optional. User-defined variables that are
                 made available to project code during
                 compilation.
@@ -1184,36 +1186,36 @@ class CompilationResult(proto.Message):
                 to all table names.
         """
 
-        default_database = proto.Field(
+        default_database: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        default_schema = proto.Field(
+        default_schema: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        default_location = proto.Field(
+        default_location: str = proto.Field(
             proto.STRING,
             number=8,
         )
-        assertion_schema = proto.Field(
+        assertion_schema: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        vars = proto.MapField(
+        vars: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=4,
         )
-        database_suffix = proto.Field(
+        database_suffix: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        schema_suffix = proto.Field(
+        schema_suffix: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        table_prefix = proto.Field(
+        table_prefix: str = proto.Field(
             proto.STRING,
             number=7,
         )
@@ -1236,48 +1238,48 @@ class CompilationResult(proto.Message):
                 where this error occurred, if available.
         """
 
-        message = proto.Field(
+        message: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        stack = proto.Field(
+        stack: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        path = proto.Field(
+        path: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        action_target = proto.Field(
+        action_target: "Target" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="Target",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    git_commitish = proto.Field(
+    git_commitish: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="source",
     )
-    workspace = proto.Field(
+    workspace: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="source",
     )
-    code_compilation_config = proto.Field(
+    code_compilation_config: CodeCompilationConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=CodeCompilationConfig,
     )
-    dataform_core_version = proto.Field(
+    dataform_core_version: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    compilation_errors = proto.RepeatedField(
+    compilation_errors: MutableSequence[CompilationError] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=CompilationError,
@@ -1307,15 +1309,15 @@ class ListCompilationResultsRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1325,13 +1327,13 @@ class ListCompilationResultsResponse(proto.Message):
     r"""``ListCompilationResults`` response message.
 
     Attributes:
-        compilation_results (Sequence[google.cloud.dataform_v1beta1.types.CompilationResult]):
+        compilation_results (MutableSequence[google.cloud.dataform_v1beta1.types.CompilationResult]):
             List of compilation results.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations which could not be reached.
     """
 
@@ -1339,16 +1341,16 @@ class ListCompilationResultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    compilation_results = proto.RepeatedField(
+    compilation_results: MutableSequence["CompilationResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CompilationResult",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1362,7 +1364,7 @@ class GetCompilationResultRequest(proto.Message):
             Required. The compilation result's name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1380,11 +1382,11 @@ class CreateCompilationResultRequest(proto.Message):
             Required. The compilation result to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    compilation_result = proto.Field(
+    compilation_result: "CompilationResult" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CompilationResult",
@@ -1406,15 +1408,15 @@ class Target(proto.Message):
             The action's name, within ``database`` and ``schema``.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    schema = proto.Field(
+    schema: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1426,10 +1428,10 @@ class RelationDescriptor(proto.Message):
     Attributes:
         description (str):
             A text description of the relation.
-        columns (Sequence[google.cloud.dataform_v1beta1.types.RelationDescriptor.ColumnDescriptor]):
+        columns (MutableSequence[google.cloud.dataform_v1beta1.types.RelationDescriptor.ColumnDescriptor]):
             A list of descriptions of columns within the
             relation.
-        bigquery_labels (Mapping[str, str]):
+        bigquery_labels (MutableMapping[str, str]):
             A set of BigQuery labels that should be
             applied to the relation.
     """
@@ -1438,39 +1440,39 @@ class RelationDescriptor(proto.Message):
         r"""Describes a column.
 
         Attributes:
-            path (Sequence[str]):
+            path (MutableSequence[str]):
                 The identifier for the column. Each entry in ``path``
                 represents one level of nesting.
             description (str):
                 A textual description of the column.
-            bigquery_policy_tags (Sequence[str]):
+            bigquery_policy_tags (MutableSequence[str]):
                 A list of BigQuery policy tags that will be
                 applied to the column.
         """
 
-        path = proto.RepeatedField(
+        path: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        bigquery_policy_tags = proto.RepeatedField(
+        bigquery_policy_tags: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
 
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    columns = proto.RepeatedField(
+    columns: MutableSequence[ColumnDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=ColumnDescriptor,
     )
-    bigquery_labels = proto.MapField(
+    bigquery_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -1523,13 +1525,13 @@ class CompilationResultAction(proto.Message):
         r"""Represents a database relation.
 
         Attributes:
-            dependency_targets (Sequence[google.cloud.dataform_v1beta1.types.Target]):
+            dependency_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
                 A list of actions that this action depends
                 on.
             disabled (bool):
                 Whether this action is disabled (i.e. should
                 not be run).
-            tags (Sequence[str]):
+            tags (MutableSequence[str]):
                 Arbitrary, user-defined tags on this action.
             relation_descriptor (google.cloud.dataform_v1beta1.types.RelationDescriptor):
                 Descriptor for the relation and its columns.
@@ -1538,10 +1540,10 @@ class CompilationResultAction(proto.Message):
             select_query (str):
                 The SELECT query which returns rows which
                 this relation should contain.
-            pre_operations (Sequence[str]):
+            pre_operations (MutableSequence[str]):
                 SQL statements to be executed before creating
                 the relation.
-            post_operations (Sequence[str]):
+            post_operations (MutableSequence[str]):
                 SQL statements to be executed after creating
                 the relation.
             incremental_table_config (google.cloud.dataform_v1beta1.types.CompilationResultAction.Relation.IncrementalTableConfig):
@@ -1550,7 +1552,7 @@ class CompilationResultAction(proto.Message):
             partition_expression (str):
                 The SQL expression used to partition the
                 relation.
-            cluster_expressions (Sequence[str]):
+            cluster_expressions (MutableSequence[str]):
                 A list of columns or SQL expressions used to
                 cluster the table.
             partition_expiration_days (int):
@@ -1559,7 +1561,7 @@ class CompilationResultAction(proto.Message):
                 Specifies whether queries on this table must
                 include a predicate filter that filters on the
                 partitioning column.
-            additional_options (Mapping[str, str]):
+            additional_options (MutableMapping[str, str]):
                 Additional options that will be provided as
                 key/value pairs into the options clause of a
                 create table/view statement. See
@@ -1587,7 +1589,7 @@ class CompilationResultAction(proto.Message):
                 refresh_disabled (bool):
                     Whether this table should be protected from
                     being refreshed.
-                unique_key_parts (Sequence[str]):
+                unique_key_parts (MutableSequence[str]):
                     A set of columns or SQL expressions used to define row
                     uniqueness. If any duplicates are discovered (as defined by
                     ``unique_key_parts``), only the newly selected rows (as
@@ -1597,96 +1599,96 @@ class CompilationResultAction(proto.Message):
                     A SQL expression conditional used to limit the set of
                     existing rows considered for a merge operation (see
                     ``unique_key_parts`` for more information).
-                incremental_pre_operations (Sequence[str]):
+                incremental_pre_operations (MutableSequence[str]):
                     SQL statements to be executed before
                     inserting new rows into the relation.
-                incremental_post_operations (Sequence[str]):
+                incremental_post_operations (MutableSequence[str]):
                     SQL statements to be executed after inserting
                     new rows into the relation.
             """
 
-            incremental_select_query = proto.Field(
+            incremental_select_query: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            refresh_disabled = proto.Field(
+            refresh_disabled: bool = proto.Field(
                 proto.BOOL,
                 number=2,
             )
-            unique_key_parts = proto.RepeatedField(
+            unique_key_parts: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=3,
             )
-            update_partition_filter = proto.Field(
+            update_partition_filter: str = proto.Field(
                 proto.STRING,
                 number=4,
             )
-            incremental_pre_operations = proto.RepeatedField(
+            incremental_pre_operations: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=5,
             )
-            incremental_post_operations = proto.RepeatedField(
+            incremental_post_operations: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=6,
             )
 
-        dependency_targets = proto.RepeatedField(
+        dependency_targets: MutableSequence["Target"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Target",
         )
-        disabled = proto.Field(
+        disabled: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        tags = proto.RepeatedField(
+        tags: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        relation_descriptor = proto.Field(
+        relation_descriptor: "RelationDescriptor" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="RelationDescriptor",
         )
-        relation_type = proto.Field(
+        relation_type: "CompilationResultAction.Relation.RelationType" = proto.Field(
             proto.ENUM,
             number=5,
             enum="CompilationResultAction.Relation.RelationType",
         )
-        select_query = proto.Field(
+        select_query: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        pre_operations = proto.RepeatedField(
+        pre_operations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=7,
         )
-        post_operations = proto.RepeatedField(
+        post_operations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=8,
         )
-        incremental_table_config = proto.Field(
+        incremental_table_config: "CompilationResultAction.Relation.IncrementalTableConfig" = proto.Field(
             proto.MESSAGE,
             number=9,
             message="CompilationResultAction.Relation.IncrementalTableConfig",
         )
-        partition_expression = proto.Field(
+        partition_expression: str = proto.Field(
             proto.STRING,
             number=10,
         )
-        cluster_expressions = proto.RepeatedField(
+        cluster_expressions: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=11,
         )
-        partition_expiration_days = proto.Field(
+        partition_expiration_days: int = proto.Field(
             proto.INT32,
             number=12,
         )
-        require_partition_filter = proto.Field(
+        require_partition_filter: bool = proto.Field(
             proto.BOOL,
             number=13,
         )
-        additional_options = proto.MapField(
+        additional_options: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=14,
@@ -1696,18 +1698,18 @@ class CompilationResultAction(proto.Message):
         r"""Represents a list of arbitrary database operations.
 
         Attributes:
-            dependency_targets (Sequence[google.cloud.dataform_v1beta1.types.Target]):
+            dependency_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
                 A list of actions that this action depends
                 on.
             disabled (bool):
                 Whether this action is disabled (i.e. should
                 not be run).
-            tags (Sequence[str]):
+            tags (MutableSequence[str]):
                 Arbitrary, user-defined tags on this action.
             relation_descriptor (google.cloud.dataform_v1beta1.types.RelationDescriptor):
                 Descriptor for any output relation and its columns. Only set
                 if ``has_output`` is true.
-            queries (Sequence[str]):
+            queries (MutableSequence[str]):
                 A list of arbitrary SQL statements that will
                 be executed without alteration.
             has_output (bool):
@@ -1715,29 +1717,29 @@ class CompilationResultAction(proto.Message):
                 relation.
         """
 
-        dependency_targets = proto.RepeatedField(
+        dependency_targets: MutableSequence["Target"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Target",
         )
-        disabled = proto.Field(
+        disabled: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        tags = proto.RepeatedField(
+        tags: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        relation_descriptor = proto.Field(
+        relation_descriptor: "RelationDescriptor" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="RelationDescriptor",
         )
-        queries = proto.RepeatedField(
+        queries: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
-        has_output = proto.Field(
+        has_output: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
@@ -1747,7 +1749,7 @@ class CompilationResultAction(proto.Message):
         return zero rows.
 
         Attributes:
-            dependency_targets (Sequence[google.cloud.dataform_v1beta1.types.Target]):
+            dependency_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
                 A list of actions that this action depends
                 on.
             parent_action (google.cloud.dataform_v1beta1.types.Target):
@@ -1756,7 +1758,7 @@ class CompilationResultAction(proto.Message):
             disabled (bool):
                 Whether this action is disabled (i.e. should
                 not be run).
-            tags (Sequence[str]):
+            tags (MutableSequence[str]):
                 Arbitrary, user-defined tags on this action.
             select_query (str):
                 The SELECT query which must return zero rows
@@ -1766,29 +1768,29 @@ class CompilationResultAction(proto.Message):
                 automatically-generated view and its columns.
         """
 
-        dependency_targets = proto.RepeatedField(
+        dependency_targets: MutableSequence["Target"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Target",
         )
-        parent_action = proto.Field(
+        parent_action: "Target" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="Target",
         )
-        disabled = proto.Field(
+        disabled: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
-        tags = proto.RepeatedField(
+        tags: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        select_query = proto.Field(
+        select_query: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        relation_descriptor = proto.Field(
+        relation_descriptor: "RelationDescriptor" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="RelationDescriptor",
@@ -1806,45 +1808,45 @@ class CompilationResultAction(proto.Message):
                 metadata.
         """
 
-        relation_descriptor = proto.Field(
+        relation_descriptor: "RelationDescriptor" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="RelationDescriptor",
         )
 
-    target = proto.Field(
+    target: "Target" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Target",
     )
-    canonical_target = proto.Field(
+    canonical_target: "Target" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Target",
     )
-    file_path = proto.Field(
+    file_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    relation = proto.Field(
+    relation: Relation = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="compiled_object",
         message=Relation,
     )
-    operations = proto.Field(
+    operations: Operations = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="compiled_object",
         message=Operations,
     )
-    assertion = proto.Field(
+    assertion: Assertion = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="compiled_object",
         message=Assertion,
     )
-    declaration = proto.Field(
+    declaration: Declaration = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="compiled_object",
@@ -1876,19 +1878,19 @@ class QueryCompilationResultActionsRequest(proto.Message):
             is only currently supported on the ``file_path`` field.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1898,7 +1900,7 @@ class QueryCompilationResultActionsResponse(proto.Message):
     r"""``QueryCompilationResultActions`` response message.
 
     Attributes:
-        compilation_result_actions (Sequence[google.cloud.dataform_v1beta1.types.CompilationResultAction]):
+        compilation_result_actions (MutableSequence[google.cloud.dataform_v1beta1.types.CompilationResultAction]):
             List of compilation result actions.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -1910,12 +1912,14 @@ class QueryCompilationResultActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    compilation_result_actions = proto.RepeatedField(
+    compilation_result_actions: MutableSequence[
+        "CompilationResultAction"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CompilationResultAction",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1957,10 +1961,10 @@ class WorkflowInvocation(proto.Message):
         actions will be included.
 
         Attributes:
-            included_targets (Sequence[google.cloud.dataform_v1beta1.types.Target]):
+            included_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
                 Immutable. The set of action identifiers to
                 include.
-            included_tags (Sequence[str]):
+            included_tags (MutableSequence[str]):
                 Immutable. The set of tags to include.
             transitive_dependencies_included (bool):
                 Immutable. When set to true, transitive
@@ -1974,47 +1978,47 @@ class WorkflowInvocation(proto.Message):
                 tables will be fully refreshed.
         """
 
-        included_targets = proto.RepeatedField(
+        included_targets: MutableSequence["Target"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Target",
         )
-        included_tags = proto.RepeatedField(
+        included_tags: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        transitive_dependencies_included = proto.Field(
+        transitive_dependencies_included: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        transitive_dependents_included = proto.Field(
+        transitive_dependents_included: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        fully_refresh_incremental_tables_enabled = proto.Field(
+        fully_refresh_incremental_tables_enabled: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    compilation_result = proto.Field(
+    compilation_result: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    invocation_config = proto.Field(
+    invocation_config: InvocationConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=InvocationConfig,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    invocation_timing = proto.Field(
+    invocation_timing: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,
         number=5,
         message=interval_pb2.Interval,
@@ -2044,15 +2048,15 @@ class ListWorkflowInvocationsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2062,13 +2066,13 @@ class ListWorkflowInvocationsResponse(proto.Message):
     r"""``ListWorkflowInvocations`` response message.
 
     Attributes:
-        workflow_invocations (Sequence[google.cloud.dataform_v1beta1.types.WorkflowInvocation]):
+        workflow_invocations (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowInvocation]):
             List of workflow invocations.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations which could not be reached.
     """
 
@@ -2076,16 +2080,16 @@ class ListWorkflowInvocationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflow_invocations = proto.RepeatedField(
+    workflow_invocations: MutableSequence["WorkflowInvocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="WorkflowInvocation",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -2100,7 +2104,7 @@ class GetWorkflowInvocationRequest(proto.Message):
             name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2119,11 +2123,11 @@ class CreateWorkflowInvocationRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workflow_invocation = proto.Field(
+    workflow_invocation: "WorkflowInvocation" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="WorkflowInvocation",
@@ -2139,7 +2143,7 @@ class DeleteWorkflowInvocationRequest(proto.Message):
             name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2154,7 +2158,7 @@ class CancelWorkflowInvocationRequest(proto.Message):
             name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2208,36 +2212,36 @@ class WorkflowInvocationAction(proto.Message):
                 script that will be executed.
         """
 
-        sql_script = proto.Field(
+        sql_script: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    target = proto.Field(
+    target: "Target" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Target",
     )
-    canonical_target = proto.Field(
+    canonical_target: "Target" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Target",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    failure_reason = proto.Field(
+    failure_reason: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    invocation_timing = proto.Field(
+    invocation_timing: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,
         number=5,
         message=interval_pb2.Interval,
     )
-    bigquery_action = proto.Field(
+    bigquery_action: BigQueryAction = proto.Field(
         proto.MESSAGE,
         number=6,
         message=BigQueryAction,
@@ -2265,15 +2269,15 @@ class QueryWorkflowInvocationActionsRequest(proto.Message):
             provided the page token.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2283,7 +2287,7 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
     r"""``QueryWorkflowInvocationActions`` response message.
 
     Attributes:
-        workflow_invocation_actions (Sequence[google.cloud.dataform_v1beta1.types.WorkflowInvocationAction]):
+        workflow_invocation_actions (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowInvocationAction]):
             List of workflow invocation actions.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -2295,12 +2299,14 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflow_invocation_actions = proto.RepeatedField(
+    workflow_invocation_actions: MutableSequence[
+        "WorkflowInvocationAction"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="WorkflowInvocationAction",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

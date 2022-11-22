@@ -18,8 +18,11 @@ from google.cloud.dataform import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.dataform import DataformAsyncClient, DataformClient
-from .types.dataform import (
+from google.cloud.dataform_v1beta1.services.dataform.async_client import (
+    DataformAsyncClient,
+)
+from google.cloud.dataform_v1beta1.services.dataform.client import DataformClient
+from google.cloud.dataform_v1beta1.types.dataform import (
     CancelWorkflowInvocationRequest,
     CommitAuthor,
     CommitWorkspaceChangesRequest,
@@ -85,6 +88,7 @@ from .types.dataform import (
 )
 
 __all__ = (
+    "DataformClient",
     "DataformAsyncClient",
     "CancelWorkflowInvocationRequest",
     "CommitAuthor",
@@ -95,7 +99,6 @@ __all__ = (
     "CreateRepositoryRequest",
     "CreateWorkflowInvocationRequest",
     "CreateWorkspaceRequest",
-    "DataformClient",
     "DeleteRepositoryRequest",
     "DeleteWorkflowInvocationRequest",
     "DeleteWorkspaceRequest",
