@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -108,11 +110,11 @@ class DeliveryPipeline(proto.Message):
         description (str):
             Description of the ``DeliveryPipeline``. Max length is 255
             characters.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
             Cloud Deploy.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
             following constraints:
@@ -152,54 +154,54 @@ class DeliveryPipeline(proto.Message):
             complete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    serial_pipeline = proto.Field(
+    serial_pipeline: "SerialPipeline" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="pipeline",
         message="SerialPipeline",
     )
-    condition = proto.Field(
+    condition: "PipelineCondition" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="PipelineCondition",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    suspended = proto.Field(
+    suspended: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
@@ -210,12 +212,12 @@ class SerialPipeline(proto.Message):
     ``DeliveryPipeline``.
 
     Attributes:
-        stages (Sequence[google.cloud.deploy_v1.types.Stage]):
+        stages (MutableSequence[google.cloud.deploy_v1.types.Stage]):
             Each stage specifies configuration for a ``Target``. The
             ordering of this list defines the promotion flow.
     """
 
-    stages = proto.RepeatedField(
+    stages: MutableSequence["Stage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Stage",
@@ -234,7 +236,7 @@ class Stage(proto.Message):
             The location of the ``Target`` is inferred to be the same as
             the location of the ``DeliveryPipeline`` that contains this
             ``Stage``.
-        profiles (Sequence[str]):
+        profiles (MutableSequence[str]):
             Skaffold profiles to use when rendering the manifest for
             this stage's ``Target``.
         strategy (google.cloud.deploy_v1.types.Strategy):
@@ -242,15 +244,15 @@ class Stage(proto.Message):
             stage.
     """
 
-    target_id = proto.Field(
+    target_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    profiles = proto.RepeatedField(
+    profiles: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    strategy = proto.Field(
+    strategy: "Strategy" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Strategy",
@@ -271,7 +273,7 @@ class Strategy(proto.Message):
             This field is a member of `oneof`_ ``deployment_strategy``.
     """
 
-    standard = proto.Field(
+    standard: "Standard" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="deployment_strategy",
@@ -287,7 +289,7 @@ class Standard(proto.Message):
             Whether to verify a deployment.
     """
 
-    verify = proto.Field(
+    verify: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
@@ -308,11 +310,11 @@ class PipelineReadyCondition(proto.Message):
             Last time the condition was updated.
     """
 
-    status = proto.Field(
+    status: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -326,22 +328,22 @@ class TargetsPresentCondition(proto.Message):
     Attributes:
         status (bool):
             True if there aren't any missing Targets.
-        missing_targets (Sequence[str]):
+        missing_targets (MutableSequence[str]):
             The list of Target names that are missing. For example,
             projects/{project_id}/locations/{location_name}/targets/{target_name}.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Last time the condition was updated.
     """
 
-    status = proto.Field(
+    status: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    missing_targets = proto.RepeatedField(
+    missing_targets: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -360,12 +362,12 @@ class PipelineCondition(proto.Message):
             pipeline.
     """
 
-    pipeline_ready_condition = proto.Field(
+    pipeline_ready_condition: "PipelineReadyCondition" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PipelineReadyCondition",
     )
-    targets_present_condition = proto.Field(
+    targets_present_condition: "TargetsPresentCondition" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TargetsPresentCondition",
@@ -402,23 +404,23 @@ class ListDeliveryPipelinesRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -428,13 +430,13 @@ class ListDeliveryPipelinesResponse(proto.Message):
     r"""The response object from ``ListDeliveryPipelines``.
 
     Attributes:
-        delivery_pipelines (Sequence[google.cloud.deploy_v1.types.DeliveryPipeline]):
+        delivery_pipelines (MutableSequence[google.cloud.deploy_v1.types.DeliveryPipeline]):
             The ``DeliveryPipeline`` objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -442,16 +444,16 @@ class ListDeliveryPipelinesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    delivery_pipelines = proto.RepeatedField(
+    delivery_pipelines: MutableSequence["DeliveryPipeline"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DeliveryPipeline",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -466,7 +468,7 @@ class GetDeliveryPipelineRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -508,24 +510,24 @@ class CreateDeliveryPipelineRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    delivery_pipeline_id = proto.Field(
+    delivery_pipeline_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    delivery_pipeline = proto.Field(
+    delivery_pipeline: "DeliveryPipeline" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DeliveryPipeline",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -572,25 +574,25 @@ class UpdateDeliveryPipelineRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    delivery_pipeline = proto.Field(
+    delivery_pipeline: "DeliveryPipeline" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="DeliveryPipeline",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -641,27 +643,27 @@ class DeleteDeliveryPipelineRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -691,13 +693,13 @@ class Target(proto.Message):
         description (str):
             Optional. Description of the ``Target``. Max length is 255
             characters.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. User annotations. These attributes
             can only be set and used by the user, and not by
             Google Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Labels are attributes that can be set and used by
             both the user and by Google Cloud Deploy. Labels must meet
             the following constraints:
@@ -738,7 +740,7 @@ class Target(proto.Message):
             may be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
-        execution_configs (Sequence[google.cloud.deploy_v1.types.ExecutionConfig]):
+        execution_configs (MutableSequence[google.cloud.deploy_v1.types.ExecutionConfig]):
             Configurations for all execution that relates to this
             ``Target``. Each ``ExecutionEnvironmentUsage`` value may
             only be used in a single configuration; using the same value
@@ -749,69 +751,69 @@ class Target(proto.Message):
             specified in ``DefaultPool``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_id = proto.Field(
+    target_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    require_approval = proto.Field(
+    require_approval: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    gke = proto.Field(
+    gke: "GkeCluster" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="deployment_target",
         message="GkeCluster",
     )
-    anthos_cluster = proto.Field(
+    anthos_cluster: "AnthosCluster" = proto.Field(
         proto.MESSAGE,
         number=17,
         oneof="deployment_target",
         message="AnthosCluster",
     )
-    run = proto.Field(
+    run: "CloudRunLocation" = proto.Field(
         proto.MESSAGE,
         number=18,
         oneof="deployment_target",
         message="CloudRunLocation",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    execution_configs = proto.RepeatedField(
+    execution_configs: MutableSequence["ExecutionConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message="ExecutionConfig",
@@ -830,7 +832,7 @@ class ExecutionConfig(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        usages (Sequence[google.cloud.deploy_v1.types.ExecutionConfig.ExecutionEnvironmentUsage]):
+        usages (MutableSequence[google.cloud.deploy_v1.types.ExecutionConfig.ExecutionEnvironmentUsage]):
             Required. Usages when this configuration
             should be applied.
         default_pool (google.cloud.deploy_v1.types.DefaultPool):
@@ -873,36 +875,36 @@ class ExecutionConfig(proto.Message):
         DEPLOY = 2
         VERIFY = 3
 
-    usages = proto.RepeatedField(
+    usages: MutableSequence[ExecutionEnvironmentUsage] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=ExecutionEnvironmentUsage,
     )
-    default_pool = proto.Field(
+    default_pool: "DefaultPool" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="execution_environment",
         message="DefaultPool",
     )
-    private_pool = proto.Field(
+    private_pool: "PrivatePool" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="execution_environment",
         message="PrivatePool",
     )
-    worker_pool = proto.Field(
+    worker_pool: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    artifact_storage = proto.Field(
+    artifact_storage: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    execution_timeout = proto.Field(
+    execution_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -927,11 +929,11 @@ class DefaultPool(proto.Message):
             same region will be used.
     """
 
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    artifact_storage = proto.Field(
+    artifact_storage: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -959,15 +961,15 @@ class PrivatePool(proto.Message):
             same region will be used.
     """
 
-    worker_pool = proto.Field(
+    worker_pool: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    artifact_storage = proto.Field(
+    artifact_storage: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -992,11 +994,11 @@ class GkeCluster(proto.Message):
             cluster <https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept>`__.
     """
 
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    internal_ip = proto.Field(
+    internal_ip: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -1012,7 +1014,7 @@ class AnthosCluster(proto.Message):
             ``projects/{project}/locations/{location}/memberships/{membership_name}``.
     """
 
-    membership = proto.Field(
+    membership: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1027,7 +1029,7 @@ class CloudRunLocation(proto.Message):
             must be ``projects/{project}/locations/{location}``.
     """
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1063,23 +1065,23 @@ class ListTargetsRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1089,13 +1091,13 @@ class ListTargetsResponse(proto.Message):
     r"""The response object from ``ListTargets``.
 
     Attributes:
-        targets (Sequence[google.cloud.deploy_v1.types.Target]):
+        targets (MutableSequence[google.cloud.deploy_v1.types.Target]):
             The ``Target`` objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1103,16 +1105,16 @@ class ListTargetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    targets = proto.RepeatedField(
+    targets: MutableSequence["Target"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Target",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1127,7 +1129,7 @@ class GetTargetRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/targets/{target_name}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1169,24 +1171,24 @@ class CreateTargetRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_id = proto.Field(
+    target_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    target = proto.Field(
+    target: "Target" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Target",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -1232,25 +1234,25 @@ class UpdateTargetRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    target = proto.Field(
+    target: "Target" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Target",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -1297,23 +1299,23 @@ class DeleteTargetRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1336,13 +1338,13 @@ class Release(proto.Message):
         description (str):
             Description of the ``Release``. Max length is 255
             characters.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
             Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
             following constraints:
@@ -1373,13 +1375,13 @@ class Release(proto.Message):
         skaffold_config_path (str):
             Filepath of the Skaffold config inside of the
             config URI.
-        build_artifacts (Sequence[google.cloud.deploy_v1.types.BuildArtifact]):
+        build_artifacts (MutableSequence[google.cloud.deploy_v1.types.BuildArtifact]):
             List of artifacts to pass through to Skaffold
             command.
         delivery_pipeline_snapshot (google.cloud.deploy_v1.types.DeliveryPipeline):
             Output only. Snapshot of the parent pipeline
             taken at release creation time.
-        target_snapshots (Sequence[google.cloud.deploy_v1.types.Target]):
+        target_snapshots (MutableSequence[google.cloud.deploy_v1.types.Target]):
             Output only. Snapshot of the targets taken at
             release creation time.
         render_state (google.cloud.deploy_v1.types.Release.RenderState):
@@ -1398,10 +1400,10 @@ class Release(proto.Message):
 
             If unset, the most recent supported Skaffold
             version will be used.
-        target_artifacts (Mapping[str, google.cloud.deploy_v1.types.TargetArtifact]):
+        target_artifacts (MutableMapping[str, google.cloud.deploy_v1.types.TargetArtifact]):
             Output only. Map from target ID to the target
             artifacts created during the render operation.
-        target_renders (Mapping[str, google.cloud.deploy_v1.types.Release.TargetRender]):
+        target_renders (MutableMapping[str, google.cloud.deploy_v1.types.Release.TargetRender]):
             Output only. Map from target ID to details of
             the render operation for that target.
     """
@@ -1447,109 +1449,109 @@ class Release(proto.Message):
             CLOUD_BUILD_UNAVAILABLE = 1
             EXECUTION_FAILED = 2
 
-        rendering_build = proto.Field(
+        rendering_build: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        rendering_state = proto.Field(
+        rendering_state: "Release.TargetRender.TargetRenderState" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Release.TargetRender.TargetRenderState",
         )
-        failure_cause = proto.Field(
+        failure_cause: "Release.TargetRender.FailureCause" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Release.TargetRender.FailureCause",
         )
-        failure_message = proto.Field(
+        failure_message: str = proto.Field(
             proto.STRING,
             number=5,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    abandoned = proto.Field(
+    abandoned: bool = proto.Field(
         proto.BOOL,
         number=23,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    render_start_time = proto.Field(
+    render_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    render_end_time = proto.Field(
+    render_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    skaffold_config_uri = proto.Field(
+    skaffold_config_uri: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    skaffold_config_path = proto.Field(
+    skaffold_config_path: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    build_artifacts = proto.RepeatedField(
+    build_artifacts: MutableSequence["BuildArtifact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="BuildArtifact",
     )
-    delivery_pipeline_snapshot = proto.Field(
+    delivery_pipeline_snapshot: "DeliveryPipeline" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="DeliveryPipeline",
     )
-    target_snapshots = proto.RepeatedField(
+    target_snapshots: MutableSequence["Target"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="Target",
     )
-    render_state = proto.Field(
+    render_state: RenderState = proto.Field(
         proto.ENUM,
         number=13,
         enum=RenderState,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    skaffold_version = proto.Field(
+    skaffold_version: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    target_artifacts = proto.MapField(
+    target_artifacts: MutableMapping[str, "TargetArtifact"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=20,
         message="TargetArtifact",
     )
-    target_renders = proto.MapField(
+    target_renders: MutableMapping[str, TargetRender] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=22,
@@ -1570,11 +1572,11 @@ class BuildArtifact(proto.Message):
             "gcr.io/my-project/busybox@sha256:abc123".
     """
 
-    image = proto.Field(
+    image: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1601,16 +1603,16 @@ class TargetArtifact(proto.Message):
             manifest relative to the URI.
     """
 
-    artifact_uri = proto.Field(
+    artifact_uri: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="uri",
     )
-    skaffold_config_path = proto.Field(
+    skaffold_config_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    manifest_path = proto.Field(
+    manifest_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1645,23 +1647,23 @@ class ListReleasesRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1671,13 +1673,13 @@ class ListReleasesResponse(proto.Message):
     r"""The response object from ``ListReleases``.
 
     Attributes:
-        releases (Sequence[google.cloud.deploy_v1.types.Release]):
+        releases (MutableSequence[google.cloud.deploy_v1.types.Release]):
             The ``Release`` objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1685,16 +1687,16 @@ class ListReleasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    releases = proto.RepeatedField(
+    releases: MutableSequence["Release"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Release",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1709,7 +1711,7 @@ class GetReleaseRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1751,24 +1753,24 @@ class CreateReleaseRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    release_id = proto.Field(
+    release_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    release = proto.Field(
+    release: "Release" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Release",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -1791,13 +1793,13 @@ class Rollout(proto.Message):
         description (str):
             Description of the ``Rollout`` for user purposes. Max length
             is 255 characters.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
             Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
             following constraints:
@@ -1847,7 +1849,7 @@ class Rollout(proto.Message):
             Output only. The reason this rollout failed.
             This will always be unspecified while the
             rollout is in progress.
-        phases (Sequence[google.cloud.deploy_v1.types.Phase]):
+        phases (MutableSequence[google.cloud.deploy_v1.types.Phase]):
             Output only. The phases that represent the workflows of this
             ``Rollout``.
         metadata (google.cloud.deploy_v1.types.Metadata):
@@ -1884,90 +1886,90 @@ class Rollout(proto.Message):
         RELEASE_ABANDONED = 5
         VERIFICATION_CONFIG_NOT_FOUND = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    approve_time = proto.Field(
+    approve_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    enqueue_time = proto.Field(
+    enqueue_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    deploy_start_time = proto.Field(
+    deploy_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    deploy_end_time = proto.Field(
+    deploy_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    target_id = proto.Field(
+    target_id: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    approval_state = proto.Field(
+    approval_state: ApprovalState = proto.Field(
         proto.ENUM,
         number=12,
         enum=ApprovalState,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=13,
         enum=State,
     )
-    failure_reason = proto.Field(
+    failure_reason: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    deploying_build = proto.Field(
+    deploying_build: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    deploy_failure_cause = proto.Field(
+    deploy_failure_cause: FailureCause = proto.Field(
         proto.ENUM,
         number=19,
         enum=FailureCause,
     )
-    phases = proto.RepeatedField(
+    phases: MutableSequence["Phase"] = proto.RepeatedField(
         proto.MESSAGE,
         number=23,
         message="Phase",
     )
-    metadata = proto.Field(
+    metadata: "Metadata" = proto.Field(
         proto.MESSAGE,
         number=24,
         message="Metadata",
@@ -1983,7 +1985,7 @@ class Metadata(proto.Message):
             associated with a ``Rollout``.
     """
 
-    cloud_run = proto.Field(
+    cloud_run: "CloudRunMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CloudRunMetadata",
@@ -2000,7 +2002,7 @@ class DeployJobRunMetadata(proto.Message):
             associated with a ``DeployJobRun``.
     """
 
-    cloud_run = proto.Field(
+    cloud_run: "CloudRunMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CloudRunMetadata",
@@ -2016,7 +2018,7 @@ class CloudRunMetadata(proto.Message):
             Output only. The name of the Cloud Run Service that is
             associated with a ``Rollout``. Format is
             projects/{project}/locations/{location}/services/{service}.
-        service_urls (Sequence[str]):
+        service_urls (MutableSequence[str]):
             Output only. The Cloud Run Service urls that are associated
             with a ``Rollout``.
         revision (str):
@@ -2024,15 +2026,15 @@ class CloudRunMetadata(proto.Message):
             ``Rollout``.
     """
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_urls = proto.RepeatedField(
+    service_urls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    revision = proto.Field(
+    revision: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2065,16 +2067,16 @@ class Phase(proto.Message):
         FAILED = 4
         ABORTED = 5
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    deployment_jobs = proto.Field(
+    deployment_jobs: "DeploymentJobs" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="jobs",
@@ -2094,12 +2096,12 @@ class DeploymentJobs(proto.Message):
             deploy if the deploy succeeds.
     """
 
-    deploy_job = proto.Field(
+    deploy_job: "Job" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Job",
     )
-    verify_job = proto.Field(
+    verify_job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Job",
@@ -2144,26 +2146,26 @@ class Job(proto.Message):
         FAILED = 5
         ABORTED = 6
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    job_run = proto.Field(
+    job_run: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    deploy_job = proto.Field(
+    deploy_job: "DeployJob" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="job_type",
         message="DeployJob",
     )
-    verify_job = proto.Field(
+    verify_job: "VerifyJob" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="job_type",
@@ -2208,23 +2210,23 @@ class ListRolloutsRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -2235,13 +2237,13 @@ class ListRolloutsResponse(proto.Message):
     ``ListRollouts``.
 
     Attributes:
-        rollouts (Sequence[google.cloud.deploy_v1.types.Rollout]):
+        rollouts (MutableSequence[google.cloud.deploy_v1.types.Rollout]):
             The ``Rollout`` objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -2249,16 +2251,16 @@ class ListRolloutsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rollouts = proto.RepeatedField(
+    rollouts: MutableSequence["Rollout"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Rollout",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -2273,7 +2275,7 @@ class GetRolloutRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2316,24 +2318,24 @@ class CreateRolloutRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    rollout_id = proto.Field(
+    rollout_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    rollout = proto.Field(
+    rollout: "Rollout" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Rollout",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -2369,33 +2371,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -2413,11 +2415,11 @@ class ApproveRolloutRequest(proto.Message):
             Required. True = approve; false = reject
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    approved = proto.Field(
+    approved: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -2442,15 +2444,15 @@ class RetryJobRequest(proto.Message):
             Required. The job ID for the Job to retry.
     """
 
-    rollout = proto.Field(
+    rollout: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    phase_id = proto.Field(
+    phase_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2470,7 +2472,7 @@ class AbandonReleaseRequest(proto.Message):
             releases/{release}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2538,55 +2540,55 @@ class JobRun(proto.Message):
         SUCCEEDED = 2
         FAILED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    phase_id = proto.Field(
+    phase_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    job_id = proto.Field(
+    job_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=8,
         enum=State,
     )
-    deploy_job_run = proto.Field(
+    deploy_job_run: "DeployJobRun" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="job_run",
         message="DeployJobRun",
     )
-    verify_job_run = proto.Field(
+    verify_job_run: "VerifyJobRun" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="job_run",
         message="VerifyJobRun",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=11,
     )
@@ -2619,20 +2621,20 @@ class DeployJobRun(proto.Message):
         EXECUTION_FAILED = 2
         DEADLINE_EXCEEDED = 3
 
-    build = proto.Field(
+    build: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    failure_cause = proto.Field(
+    failure_cause: FailureCause = proto.Field(
         proto.ENUM,
         number=2,
         enum=FailureCause,
     )
-    failure_message = proto.Field(
+    failure_message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    metadata = proto.Field(
+    metadata: "DeployJobRunMetadata" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="DeployJobRunMetadata",
@@ -2671,24 +2673,24 @@ class VerifyJobRun(proto.Message):
         DEADLINE_EXCEEDED = 3
         VERIFICATION_CONFIG_NOT_FOUND = 4
 
-    build = proto.Field(
+    build: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    artifact_uri = proto.Field(
+    artifact_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    event_log_path = proto.Field(
+    event_log_path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    failure_cause = proto.Field(
+    failure_cause: FailureCause = proto.Field(
         proto.ENUM,
         number=4,
         enum=FailureCause,
     )
-    failure_message = proto.Field(
+    failure_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -2723,23 +2725,23 @@ class ListJobRunsRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -2750,13 +2752,13 @@ class ListJobRunsResponse(proto.Message):
     ``ListJobRuns``.
 
     Attributes:
-        job_runs (Sequence[google.cloud.deploy_v1.types.JobRun]):
+        job_runs (MutableSequence[google.cloud.deploy_v1.types.JobRun]):
             The ``JobRun`` objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached
     """
 
@@ -2764,16 +2766,16 @@ class ListJobRunsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    job_runs = proto.RepeatedField(
+    job_runs: MutableSequence["JobRun"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="JobRun",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -2788,7 +2790,7 @@ class GetJobRunRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}/jobRuns/{job_run_name}.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2800,7 +2802,7 @@ class Config(proto.Message):
     Attributes:
         name (str):
             Name of the configuration.
-        supported_versions (Sequence[google.cloud.deploy_v1.types.SkaffoldVersion]):
+        supported_versions (MutableSequence[google.cloud.deploy_v1.types.SkaffoldVersion]):
             Output only. All supported versions of
             Skaffold.
         default_skaffold_version (str):
@@ -2809,16 +2811,16 @@ class Config(proto.Message):
             specifying a Skaffold version.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    supported_versions = proto.RepeatedField(
+    supported_versions: MutableSequence["SkaffoldVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="SkaffoldVersion",
     )
-    default_skaffold_version = proto.Field(
+    default_skaffold_version: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2836,11 +2838,11 @@ class SkaffoldVersion(proto.Message):
             longer be supported.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    support_end_date = proto.Field(
+    support_end_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=2,
         message=date_pb2.Date,
@@ -2855,7 +2857,7 @@ class GetConfigRequest(proto.Message):
             Required. Name of requested configuration.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

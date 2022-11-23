@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
@@ -49,31 +51,31 @@ class JobRunNotificationEvent(proto.Message):
             failure.
     """
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    job_run = proto.Field(
+    job_run: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    pipeline_uid = proto.Field(
+    pipeline_uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    release_uid = proto.Field(
+    release_uid: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    rollout_uid = proto.Field(
+    rollout_uid: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    target_id = proto.Field(
+    target_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    type_ = proto.Field(
+    type_: log_enums.Type = proto.Field(
         proto.ENUM,
         number=7,
         enum=log_enums.Type,

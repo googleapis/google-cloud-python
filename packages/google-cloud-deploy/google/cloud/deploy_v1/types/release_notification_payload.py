@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
@@ -41,15 +43,15 @@ class ReleaseNotificationEvent(proto.Message):
             failure.
     """
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    release = proto.Field(
+    release: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: log_enums.Type = proto.Field(
         proto.ENUM,
         number=3,
         enum=log_enums.Type,

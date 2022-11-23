@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
@@ -47,28 +49,28 @@ class RolloutNotificationEvent(proto.Message):
             ID of the ``Target`` that the rollout is deployed to.
     """
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    pipeline_uid = proto.Field(
+    pipeline_uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    release_uid = proto.Field(
+    release_uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    rollout = proto.Field(
+    rollout: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    type_ = proto.Field(
+    type_: log_enums.Type = proto.Field(
         proto.ENUM,
         number=5,
         enum=log_enums.Type,
     )
-    target_id = proto.Field(
+    target_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
