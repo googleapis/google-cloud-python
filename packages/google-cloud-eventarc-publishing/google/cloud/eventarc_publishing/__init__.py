@@ -13,22 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.eventarc_publishing import gapic_version as package_version
 
-from google.cloud.eventarc_publishing_v1.services.publisher.client import (
-    PublisherClient,
-)
+__version__ = package_version.__version__
+
+
 from google.cloud.eventarc_publishing_v1.services.publisher.async_client import (
     PublisherAsyncClient,
 )
-
+from google.cloud.eventarc_publishing_v1.services.publisher.client import (
+    PublisherClient,
+)
 from google.cloud.eventarc_publishing_v1.types.publisher import (
     PublishChannelConnectionEventsRequest,
-)
-from google.cloud.eventarc_publishing_v1.types.publisher import (
     PublishChannelConnectionEventsResponse,
+    PublishEventsRequest,
+    PublishEventsResponse,
 )
-from google.cloud.eventarc_publishing_v1.types.publisher import PublishEventsRequest
-from google.cloud.eventarc_publishing_v1.types.publisher import PublishEventsResponse
 
 __all__ = (
     "PublisherClient",

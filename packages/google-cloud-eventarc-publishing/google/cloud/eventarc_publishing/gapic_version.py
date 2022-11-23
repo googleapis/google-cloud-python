@@ -13,10 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_client import PublisherAsyncClient
-from .client import PublisherClient
-
-__all__ = (
-    "PublisherClient",
-    "PublisherAsyncClient",
-)
+__version__ = "0.4.2"  # {x-release-please-version}
