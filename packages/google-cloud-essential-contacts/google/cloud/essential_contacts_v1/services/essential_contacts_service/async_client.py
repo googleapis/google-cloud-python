@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -169,9 +179,9 @@ class EssentialContactsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EssentialContactsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the essential contacts service client.
@@ -215,12 +225,12 @@ class EssentialContactsServiceAsyncClient:
 
     async def create_contact(
         self,
-        request: Union[service.CreateContactRequest, dict] = None,
+        request: Optional[Union[service.CreateContactRequest, dict]] = None,
         *,
-        parent: str = None,
-        contact: service.Contact = None,
+        parent: Optional[str] = None,
+        contact: Optional[service.Contact] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
         r"""Adds a new contact for a resource.
@@ -252,7 +262,7 @@ class EssentialContactsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.CreateContactRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.CreateContactRequest, dict]]):
                 The request object. Request message for the
                 CreateContact method.
             parent (:class:`str`):
@@ -329,12 +339,12 @@ class EssentialContactsServiceAsyncClient:
 
     async def update_contact(
         self,
-        request: Union[service.UpdateContactRequest, dict] = None,
+        request: Optional[Union[service.UpdateContactRequest, dict]] = None,
         *,
-        contact: service.Contact = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        contact: Optional[service.Contact] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
         r"""Updates a contact.
@@ -366,7 +376,7 @@ class EssentialContactsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.UpdateContactRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.UpdateContactRequest, dict]]):
                 The request object. Request message for the
                 UpdateContact method.
             contact (:class:`google.cloud.essential_contacts_v1.types.Contact`):
@@ -446,11 +456,11 @@ class EssentialContactsServiceAsyncClient:
 
     async def list_contacts(
         self,
-        request: Union[service.ListContactsRequest, dict] = None,
+        request: Optional[Union[service.ListContactsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContactsAsyncPager:
         r"""Lists the contacts that have been set on a resource.
@@ -483,7 +493,7 @@ class EssentialContactsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.ListContactsRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.ListContactsRequest, dict]]):
                 The request object. Request message for the ListContacts
                 method.
             parent (:class:`str`):
@@ -571,11 +581,11 @@ class EssentialContactsServiceAsyncClient:
 
     async def get_contact(
         self,
-        request: Union[service.GetContactRequest, dict] = None,
+        request: Optional[Union[service.GetContactRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
         r"""Gets a single contact.
@@ -607,7 +617,7 @@ class EssentialContactsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.GetContactRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.GetContactRequest, dict]]):
                 The request object. Request message for the GetContact
                 method.
             name (:class:`str`):
@@ -684,11 +694,11 @@ class EssentialContactsServiceAsyncClient:
 
     async def delete_contact(
         self,
-        request: Union[service.DeleteContactRequest, dict] = None,
+        request: Optional[Union[service.DeleteContactRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a contact.
@@ -717,7 +727,7 @@ class EssentialContactsServiceAsyncClient:
                 await client.delete_contact(request=request)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.DeleteContactRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.DeleteContactRequest, dict]]):
                 The request object. Request message for the
                 DeleteContact method.
             name (:class:`str`):
@@ -776,10 +786,10 @@ class EssentialContactsServiceAsyncClient:
 
     async def compute_contacts(
         self,
-        request: Union[service.ComputeContactsRequest, dict] = None,
+        request: Optional[Union[service.ComputeContactsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ComputeContactsAsyncPager:
         r"""Lists all contacts for the resource that are
@@ -814,7 +824,7 @@ class EssentialContactsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.ComputeContactsRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.ComputeContactsRequest, dict]]):
                 The request object. Request message for the
                 ComputeContacts method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -871,10 +881,10 @@ class EssentialContactsServiceAsyncClient:
 
     async def send_test_message(
         self,
-        request: Union[service.SendTestMessageRequest, dict] = None,
+        request: Optional[Union[service.SendTestMessageRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Allows a contact admin to send a test message to
@@ -906,7 +916,7 @@ class EssentialContactsServiceAsyncClient:
                 await client.send_test_message(request=request)
 
         Args:
-            request (Union[google.cloud.essential_contacts_v1.types.SendTestMessageRequest, dict]):
+            request (Optional[Union[google.cloud.essential_contacts_v1.types.SendTestMessageRequest, dict]]):
                 The request object. Request message for the
                 SendTestMessage method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
