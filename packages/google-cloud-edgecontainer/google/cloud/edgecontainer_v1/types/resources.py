@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -61,7 +63,7 @@ class Cluster(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the cluster was
             last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this resource.
         fleet (google.cloud.edgecontainer_v1.types.Fleet):
             Optional. Fleet configuration.
@@ -88,53 +90,53 @@ class Cluster(proto.Message):
             configuration.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    fleet = proto.Field(
+    fleet: "Fleet" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="Fleet",
     )
-    networking = proto.Field(
+    networking: "ClusterNetworking" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="ClusterNetworking",
     )
-    authorization = proto.Field(
+    authorization: "Authorization" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="Authorization",
     )
-    default_max_pods_per_node = proto.Field(
+    default_max_pods_per_node: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    endpoint = proto.Field(
+    endpoint: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    cluster_ca_certificate = proto.Field(
+    cluster_ca_certificate: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    maintenance_policy = proto.Field(
+    maintenance_policy: "MaintenancePolicy" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="MaintenancePolicy",
@@ -145,23 +147,23 @@ class ClusterNetworking(proto.Message):
     r"""Cluster-wide networking configuration.
 
     Attributes:
-        cluster_ipv4_cidr_blocks (Sequence[str]):
+        cluster_ipv4_cidr_blocks (MutableSequence[str]):
             Required. All pods in the cluster are
             assigned an RFC1918 IPv4 address from these
             blocks. Only a single block is supported. This
             field cannot be changed after creation.
-        services_ipv4_cidr_blocks (Sequence[str]):
+        services_ipv4_cidr_blocks (MutableSequence[str]):
             Required. All services in the cluster are
             assigned an RFC1918 IPv4 address from these
             blocks. Only a single block is supported. This
             field cannot be changed after creation.
     """
 
-    cluster_ipv4_cidr_blocks = proto.RepeatedField(
+    cluster_ipv4_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    services_ipv4_cidr_blocks = proto.RepeatedField(
+    services_ipv4_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -188,11 +190,11 @@ class Fleet(proto.Message):
             ``projects/<project-number>/locations/global/membership/<cluster-id>``.
     """
 
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    membership = proto.Field(
+    membership: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -206,7 +208,7 @@ class ClusterUser(proto.Message):
             Required. An active Google username.
     """
 
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -224,7 +226,7 @@ class Authorization(proto.Message):
             multiple admins in the future.
     """
 
-    admin_users = proto.Field(
+    admin_users: "ClusterUser" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ClusterUser",
@@ -244,7 +246,7 @@ class NodePool(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the node pool was
             last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this resource.
         node_location (str):
             Name of the Google Distributed Cloud Edge zone where this
@@ -291,57 +293,57 @@ class NodePool(proto.Message):
                 Cloud KMS.
         """
 
-        kms_key = proto.Field(
+        kms_key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        kms_key_active_version = proto.Field(
+        kms_key_active_version: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        kms_key_state = proto.Field(
+        kms_key_state: "KmsKeyState" = proto.Field(
             proto.ENUM,
             number=3,
             enum="KmsKeyState",
         )
-        kms_status = proto.Field(
+        kms_status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=4,
             message=status_pb2.Status,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    node_location = proto.Field(
+    node_location: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    machine_filter = proto.Field(
+    machine_filter: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    local_disk_encryption = proto.Field(
+    local_disk_encryption: LocalDiskEncryption = proto.Field(
         proto.MESSAGE,
         number=9,
         message=LocalDiskEncryption,
@@ -361,7 +363,7 @@ class Machine(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the node pool was
             last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this resource.
         hosted_node (str):
             Canonical resource name of the node that this machine is
@@ -378,34 +380,34 @@ class Machine(proto.Message):
             service.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    hosted_node = proto.Field(
+    hosted_node: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    disabled = proto.Field(
+    disabled: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
@@ -423,7 +425,7 @@ class VpnConnection(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the VPN connection
             was last updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this resource.
         nat_gateway_ip (str):
             NAT gateway IP, or WAN IP address. If a
@@ -477,11 +479,11 @@ class VpnConnection(proto.Message):
                 service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
         """
 
-        project_id = proto.Field(
+        project_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        service_account = proto.Field(
+        service_account: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -497,7 +499,7 @@ class VpnConnection(proto.Message):
                 when state=ERROR.
             cloud_router (google.cloud.edgecontainer_v1.types.VpnConnection.Details.CloudRouter):
                 The Cloud Router info.
-            cloud_vpns (Sequence[google.cloud.edgecontainer_v1.types.VpnConnection.Details.CloudVpn]):
+            cloud_vpns (MutableSequence[google.cloud.edgecontainer_v1.types.VpnConnection.Details.CloudVpn]):
                 Each connection has multiple Cloud VPN
                 gateways.
         """
@@ -517,7 +519,7 @@ class VpnConnection(proto.Message):
                     The created Cloud Router name.
             """
 
-            name = proto.Field(
+            name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
@@ -530,77 +532,79 @@ class VpnConnection(proto.Message):
                     The created Cloud VPN gateway name.
             """
 
-            gateway = proto.Field(
+            gateway: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
 
-        state = proto.Field(
+        state: "VpnConnection.Details.State" = proto.Field(
             proto.ENUM,
             number=1,
             enum="VpnConnection.Details.State",
         )
-        error = proto.Field(
+        error: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        cloud_router = proto.Field(
+        cloud_router: "VpnConnection.Details.CloudRouter" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="VpnConnection.Details.CloudRouter",
         )
-        cloud_vpns = proto.RepeatedField(
+        cloud_vpns: MutableSequence[
+            "VpnConnection.Details.CloudVpn"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="VpnConnection.Details.CloudVpn",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    nat_gateway_ip = proto.Field(
+    nat_gateway_ip: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    bgp_routing_mode = proto.Field(
+    bgp_routing_mode: BgpRoutingMode = proto.Field(
         proto.ENUM,
         number=6,
         enum=BgpRoutingMode,
     )
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    vpc = proto.Field(
+    vpc: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    vpc_project = proto.Field(
+    vpc_project: VpcProject = proto.Field(
         proto.MESSAGE,
         number=11,
         message=VpcProject,
     )
-    enable_high_availability = proto.Field(
+    enable_high_availability: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    details = proto.Field(
+    details: Details = proto.Field(
         proto.MESSAGE,
         number=10,
         message=Details,
@@ -612,13 +616,13 @@ class LocationMetadata(proto.Message):
     [google.cloud.location.Location][google.cloud.location.Location].
 
     Attributes:
-        available_zones (Mapping[str, google.cloud.edgecontainer_v1.types.ZoneMetadata]):
+        available_zones (MutableMapping[str, google.cloud.edgecontainer_v1.types.ZoneMetadata]):
             The set of available Google Distributed Cloud
             Edge zones in the location. The map is keyed by
             the lowercase ID of each zone.
     """
 
-    available_zones = proto.MapField(
+    available_zones: MutableMapping[str, "ZoneMetadata"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -631,11 +635,11 @@ class ZoneMetadata(proto.Message):
     located.
 
     Attributes:
-        quota (Sequence[google.cloud.edgecontainer_v1.types.Quota]):
+        quota (MutableSequence[google.cloud.edgecontainer_v1.types.Quota]):
             Quota for resources in this zone.
     """
 
-    quota = proto.RepeatedField(
+    quota: MutableSequence["Quota"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Quota",
@@ -654,15 +658,15 @@ class Quota(proto.Message):
             Current usage of this metric.
     """
 
-    metric = proto.Field(
+    metric: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    limit = proto.Field(
+    limit: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    usage = proto.Field(
+    usage: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )
@@ -677,7 +681,7 @@ class MaintenancePolicy(proto.Message):
             maintenance may be performed.
     """
 
-    window = proto.Field(
+    window: "MaintenanceWindow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="MaintenanceWindow",
@@ -693,7 +697,7 @@ class MaintenanceWindow(proto.Message):
             window.
     """
 
-    recurring_window = proto.Field(
+    recurring_window: "RecurringTimeWindow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RecurringTimeWindow",
@@ -713,12 +717,12 @@ class RecurringTimeWindow(proto.Message):
             span of time between the start and end time.
     """
 
-    window = proto.Field(
+    window: "TimeWindow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TimeWindow",
     )
-    recurrence = proto.Field(
+    recurrence: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -735,12 +739,12 @@ class TimeWindow(proto.Message):
             must take place after the start time.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,

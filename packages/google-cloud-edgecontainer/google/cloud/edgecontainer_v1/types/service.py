@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -76,33 +78,33 @@ class OperationMetadata(proto.Message):
             API version used to start the operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -129,23 +131,23 @@ class ListClustersRequest(proto.Message):
             be listed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -155,11 +157,11 @@ class ListClustersResponse(proto.Message):
     r"""List of clusters in a location.
 
     Attributes:
-        clusters (Sequence[google.cloud.edgecontainer_v1.types.Cluster]):
+        clusters (MutableSequence[google.cloud.edgecontainer_v1.types.Cluster]):
             Clusters in the location.
         next_page_token (str):
             A token to retrieve next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -167,16 +169,16 @@ class ListClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    clusters = proto.RepeatedField(
+    clusters: MutableSequence[resources.Cluster] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Cluster,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -190,7 +192,7 @@ class GetClusterRequest(proto.Message):
             Required. The resource name of the cluster.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -214,20 +216,20 @@ class CreateClusterRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cluster_id = proto.Field(
+    cluster_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster = proto.Field(
+    cluster: resources.Cluster = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.Cluster,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -252,17 +254,17 @@ class UpdateClusterRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    cluster = proto.Field(
+    cluster: resources.Cluster = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.Cluster,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -280,11 +282,11 @@ class DeleteClusterRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -298,7 +300,7 @@ class GenerateAccessTokenRequest(proto.Message):
             Required. The resource name of the cluster.
     """
 
-    cluster = proto.Field(
+    cluster: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -316,11 +318,11 @@ class GenerateAccessTokenResponse(proto.Message):
             will expire.
     """
 
-    access_token = proto.Field(
+    access_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -347,23 +349,23 @@ class ListNodePoolsRequest(proto.Message):
             be listed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -373,11 +375,11 @@ class ListNodePoolsResponse(proto.Message):
     r"""List of node pools in a cluster.
 
     Attributes:
-        node_pools (Sequence[google.cloud.edgecontainer_v1.types.NodePool]):
+        node_pools (MutableSequence[google.cloud.edgecontainer_v1.types.NodePool]):
             Node pools in the cluster.
         next_page_token (str):
             A token to retrieve next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -385,16 +387,16 @@ class ListNodePoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    node_pools = proto.RepeatedField(
+    node_pools: MutableSequence[resources.NodePool] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.NodePool,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -408,7 +410,7 @@ class GetNodePoolRequest(proto.Message):
             Required. The resource name of the node pool.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -432,20 +434,20 @@ class CreateNodePoolRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    node_pool_id = proto.Field(
+    node_pool_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    node_pool = proto.Field(
+    node_pool: resources.NodePool = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.NodePool,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -470,17 +472,17 @@ class UpdateNodePoolRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    node_pool = proto.Field(
+    node_pool: resources.NodePool = proto.Field(
         proto.MESSAGE,
         number=2,
         message=resources.NodePool,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -498,11 +500,11 @@ class DeleteNodePoolRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -528,23 +530,23 @@ class ListMachinesRequest(proto.Message):
             be listed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -554,11 +556,11 @@ class ListMachinesResponse(proto.Message):
     r"""List of machines in a site.
 
     Attributes:
-        machines (Sequence[google.cloud.edgecontainer_v1.types.Machine]):
+        machines (MutableSequence[google.cloud.edgecontainer_v1.types.Machine]):
             Machines in the site.
         next_page_token (str):
             A token to retrieve next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -566,16 +568,16 @@ class ListMachinesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    machines = proto.RepeatedField(
+    machines: MutableSequence[resources.Machine] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Machine,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -589,7 +591,7 @@ class GetMachineRequest(proto.Message):
             Required. The resource name of the machine.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -615,23 +617,23 @@ class ListVpnConnectionsRequest(proto.Message):
             be listed.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -641,11 +643,11 @@ class ListVpnConnectionsResponse(proto.Message):
     r"""List of VPN connections in a location.
 
     Attributes:
-        vpn_connections (Sequence[google.cloud.edgecontainer_v1.types.VpnConnection]):
+        vpn_connections (MutableSequence[google.cloud.edgecontainer_v1.types.VpnConnection]):
             VpnConnections in the location.
         next_page_token (str):
             A token to retrieve next page of results.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -653,16 +655,16 @@ class ListVpnConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vpn_connections = proto.RepeatedField(
+    vpn_connections: MutableSequence[resources.VpnConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.VpnConnection,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -677,7 +679,7 @@ class GetVpnConnectionRequest(proto.Message):
             connection.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -700,20 +702,20 @@ class CreateVpnConnectionRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    vpn_connection_id = proto.Field(
+    vpn_connection_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    vpn_connection = proto.Field(
+    vpn_connection: resources.VpnConnection = proto.Field(
         proto.MESSAGE,
         number=3,
         message=resources.VpnConnection,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -732,11 +734,11 @@ class DeleteVpnConnectionRequest(proto.Message):
             only idempotent if ``request_id`` is provided.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

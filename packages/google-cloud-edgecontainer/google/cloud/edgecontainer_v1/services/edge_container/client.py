@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +73,7 @@ class EdgeContainerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[EdgeContainerTransport]:
         """Returns an appropriate transport class.
 
@@ -457,8 +468,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, EdgeContainerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, EdgeContainerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the edge container client.
@@ -472,7 +483,7 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
             transport (Union[str, EdgeContainerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -502,6 +513,7 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -554,11 +566,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def list_clusters(
         self,
-        request: Union[service.ListClustersRequest, dict] = None,
+        request: Optional[Union[service.ListClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClustersPager:
         r"""Lists Clusters in a given project and location.
@@ -667,11 +679,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def get_cluster(
         self,
-        request: Union[service.GetClusterRequest, dict] = None,
+        request: Optional[Union[service.GetClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Cluster:
         r"""Gets details of a single Cluster.
@@ -768,13 +780,13 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def create_cluster(
         self,
-        request: Union[service.CreateClusterRequest, dict] = None,
+        request: Optional[Union[service.CreateClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        cluster: resources.Cluster = None,
-        cluster_id: str = None,
+        parent: Optional[str] = None,
+        cluster: Optional[resources.Cluster] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Cluster in a given project and
@@ -911,12 +923,12 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def update_cluster(
         self,
-        request: Union[service.UpdateClusterRequest, dict] = None,
+        request: Optional[Union[service.UpdateClusterRequest, dict]] = None,
         *,
-        cluster: resources.Cluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        cluster: Optional[resources.Cluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Cluster.
@@ -1040,11 +1052,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def delete_cluster(
         self,
-        request: Union[service.DeleteClusterRequest, dict] = None,
+        request: Optional[Union[service.DeleteClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Cluster.
@@ -1163,11 +1175,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def generate_access_token(
         self,
-        request: Union[service.GenerateAccessTokenRequest, dict] = None,
+        request: Optional[Union[service.GenerateAccessTokenRequest, dict]] = None,
         *,
-        cluster: str = None,
+        cluster: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GenerateAccessTokenResponse:
         r"""Generates an access token for a Cluster.
@@ -1263,11 +1275,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def list_node_pools(
         self,
-        request: Union[service.ListNodePoolsRequest, dict] = None,
+        request: Optional[Union[service.ListNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNodePoolsPager:
         r"""Lists NodePools in a given project and location.
@@ -1376,11 +1388,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def get_node_pool(
         self,
-        request: Union[service.GetNodePoolRequest, dict] = None,
+        request: Optional[Union[service.GetNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.NodePool:
         r"""Gets details of a single NodePool.
@@ -1478,13 +1490,13 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def create_node_pool(
         self,
-        request: Union[service.CreateNodePoolRequest, dict] = None,
+        request: Optional[Union[service.CreateNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        node_pool: resources.NodePool = None,
-        node_pool_id: str = None,
+        parent: Optional[str] = None,
+        node_pool: Optional[resources.NodePool] = None,
+        node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new NodePool in a given project and
@@ -1618,12 +1630,12 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def update_node_pool(
         self,
-        request: Union[service.UpdateNodePoolRequest, dict] = None,
+        request: Optional[Union[service.UpdateNodePoolRequest, dict]] = None,
         *,
-        node_pool: resources.NodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        node_pool: Optional[resources.NodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single NodePool.
@@ -1746,11 +1758,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def delete_node_pool(
         self,
-        request: Union[service.DeleteNodePoolRequest, dict] = None,
+        request: Optional[Union[service.DeleteNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single NodePool.
@@ -1869,11 +1881,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def list_machines(
         self,
-        request: Union[service.ListMachinesRequest, dict] = None,
+        request: Optional[Union[service.ListMachinesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMachinesPager:
         r"""Lists Machines in a given project and location.
@@ -1982,11 +1994,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def get_machine(
         self,
-        request: Union[service.GetMachineRequest, dict] = None,
+        request: Optional[Union[service.GetMachineRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Machine:
         r"""Gets details of a single Machine.
@@ -2084,11 +2096,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def list_vpn_connections(
         self,
-        request: Union[service.ListVpnConnectionsRequest, dict] = None,
+        request: Optional[Union[service.ListVpnConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVpnConnectionsPager:
         r"""Lists VPN connections in a given project and
@@ -2199,11 +2211,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def get_vpn_connection(
         self,
-        request: Union[service.GetVpnConnectionRequest, dict] = None,
+        request: Optional[Union[service.GetVpnConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.VpnConnection:
         r"""Gets details of a single VPN connection.
@@ -2298,13 +2310,13 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def create_vpn_connection(
         self,
-        request: Union[service.CreateVpnConnectionRequest, dict] = None,
+        request: Optional[Union[service.CreateVpnConnectionRequest, dict]] = None,
         *,
-        parent: str = None,
-        vpn_connection: resources.VpnConnection = None,
-        vpn_connection_id: str = None,
+        parent: Optional[str] = None,
+        vpn_connection: Optional[resources.VpnConnection] = None,
+        vpn_connection_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new VPN connection in a given project and
@@ -2440,11 +2452,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
     def delete_vpn_connection(
         self,
-        request: Union[service.DeleteVpnConnectionRequest, dict] = None,
+        request: Optional[Union[service.DeleteVpnConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single VPN connection.

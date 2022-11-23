@@ -18,8 +18,13 @@ from google.cloud.edgecontainer import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.edge_container import EdgeContainerAsyncClient, EdgeContainerClient
-from .types.resources import (
+from google.cloud.edgecontainer_v1.services.edge_container.async_client import (
+    EdgeContainerAsyncClient,
+)
+from google.cloud.edgecontainer_v1.services.edge_container.client import (
+    EdgeContainerClient,
+)
+from google.cloud.edgecontainer_v1.types.resources import (
     Authorization,
     Cluster,
     ClusterNetworking,
@@ -37,7 +42,7 @@ from .types.resources import (
     VpnConnection,
     ZoneMetadata,
 )
-from .types.service import (
+from google.cloud.edgecontainer_v1.types.service import (
     CreateClusterRequest,
     CreateNodePoolRequest,
     CreateVpnConnectionRequest,
@@ -64,26 +69,36 @@ from .types.service import (
 )
 
 __all__ = (
+    "EdgeContainerClient",
     "EdgeContainerAsyncClient",
     "Authorization",
     "Cluster",
     "ClusterNetworking",
     "ClusterUser",
+    "Fleet",
+    "LocationMetadata",
+    "Machine",
+    "MaintenancePolicy",
+    "MaintenanceWindow",
+    "NodePool",
+    "Quota",
+    "RecurringTimeWindow",
+    "TimeWindow",
+    "VpnConnection",
+    "ZoneMetadata",
+    "KmsKeyState",
     "CreateClusterRequest",
     "CreateNodePoolRequest",
     "CreateVpnConnectionRequest",
     "DeleteClusterRequest",
     "DeleteNodePoolRequest",
     "DeleteVpnConnectionRequest",
-    "EdgeContainerClient",
-    "Fleet",
     "GenerateAccessTokenRequest",
     "GenerateAccessTokenResponse",
     "GetClusterRequest",
     "GetMachineRequest",
     "GetNodePoolRequest",
     "GetVpnConnectionRequest",
-    "KmsKeyState",
     "ListClustersRequest",
     "ListClustersResponse",
     "ListMachinesRequest",
@@ -92,17 +107,7 @@ __all__ = (
     "ListNodePoolsResponse",
     "ListVpnConnectionsRequest",
     "ListVpnConnectionsResponse",
-    "LocationMetadata",
-    "Machine",
-    "MaintenancePolicy",
-    "MaintenanceWindow",
-    "NodePool",
     "OperationMetadata",
-    "Quota",
-    "RecurringTimeWindow",
-    "TimeWindow",
     "UpdateClusterRequest",
     "UpdateNodePoolRequest",
-    "VpnConnection",
-    "ZoneMetadata",
 )

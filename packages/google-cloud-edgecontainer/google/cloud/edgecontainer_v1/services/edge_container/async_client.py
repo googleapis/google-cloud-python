@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -181,9 +191,9 @@ class EdgeContainerAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EdgeContainerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the edge container client.
@@ -227,11 +237,11 @@ class EdgeContainerAsyncClient:
 
     async def list_clusters(
         self,
-        request: Union[service.ListClustersRequest, dict] = None,
+        request: Optional[Union[service.ListClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClustersAsyncPager:
         r"""Lists Clusters in a given project and location.
@@ -264,7 +274,7 @@ class EdgeContainerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.ListClustersRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.ListClustersRequest, dict]]):
                 The request object. Lists clusters in a location.
             parent (:class:`str`):
                 Required. The parent location, which
@@ -349,11 +359,11 @@ class EdgeContainerAsyncClient:
 
     async def get_cluster(
         self,
-        request: Union[service.GetClusterRequest, dict] = None,
+        request: Optional[Union[service.GetClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Cluster:
         r"""Gets details of a single Cluster.
@@ -385,7 +395,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.GetClusterRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GetClusterRequest, dict]]):
                 The request object. Gets a cluster.
             name (:class:`str`):
                 Required. The resource name of the
@@ -459,13 +469,13 @@ class EdgeContainerAsyncClient:
 
     async def create_cluster(
         self,
-        request: Union[service.CreateClusterRequest, dict] = None,
+        request: Optional[Union[service.CreateClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        cluster: resources.Cluster = None,
-        cluster_id: str = None,
+        parent: Optional[str] = None,
+        cluster: Optional[resources.Cluster] = None,
+        cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Cluster in a given project and
@@ -510,7 +520,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.CreateClusterRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.CreateClusterRequest, dict]]):
                 The request object. Creates a cluster.
             parent (:class:`str`):
                 Required. The parent location where
@@ -602,12 +612,12 @@ class EdgeContainerAsyncClient:
 
     async def update_cluster(
         self,
-        request: Union[service.UpdateClusterRequest, dict] = None,
+        request: Optional[Union[service.UpdateClusterRequest, dict]] = None,
         *,
-        cluster: resources.Cluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        cluster: Optional[resources.Cluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Cluster.
@@ -642,7 +652,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.UpdateClusterRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.UpdateClusterRequest, dict]]):
                 The request object. Updates a cluster.
             cluster (:class:`google.cloud.edgecontainer_v1.types.Cluster`):
                 The updated cluster.
@@ -731,11 +741,11 @@ class EdgeContainerAsyncClient:
 
     async def delete_cluster(
         self,
-        request: Union[service.DeleteClusterRequest, dict] = None,
+        request: Optional[Union[service.DeleteClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Cluster.
@@ -771,7 +781,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.DeleteClusterRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.DeleteClusterRequest, dict]]):
                 The request object. Deletes a cluster.
             name (:class:`str`):
                 Required. The resource name of the
@@ -854,11 +864,11 @@ class EdgeContainerAsyncClient:
 
     async def generate_access_token(
         self,
-        request: Union[service.GenerateAccessTokenRequest, dict] = None,
+        request: Optional[Union[service.GenerateAccessTokenRequest, dict]] = None,
         *,
-        cluster: str = None,
+        cluster: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GenerateAccessTokenResponse:
         r"""Generates an access token for a Cluster.
@@ -890,7 +900,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.GenerateAccessTokenRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GenerateAccessTokenRequest, dict]]):
                 The request object. Generates an access token for a
                 cluster.
             cluster (:class:`str`):
@@ -954,11 +964,11 @@ class EdgeContainerAsyncClient:
 
     async def list_node_pools(
         self,
-        request: Union[service.ListNodePoolsRequest, dict] = None,
+        request: Optional[Union[service.ListNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNodePoolsAsyncPager:
         r"""Lists NodePools in a given project and location.
@@ -991,7 +1001,7 @@ class EdgeContainerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.ListNodePoolsRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.ListNodePoolsRequest, dict]]):
                 The request object. Lists node pools in a cluster.
             parent (:class:`str`):
                 Required. The parent cluster, which
@@ -1076,11 +1086,11 @@ class EdgeContainerAsyncClient:
 
     async def get_node_pool(
         self,
-        request: Union[service.GetNodePoolRequest, dict] = None,
+        request: Optional[Union[service.GetNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.NodePool:
         r"""Gets details of a single NodePool.
@@ -1112,7 +1122,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.GetNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GetNodePoolRequest, dict]]):
                 The request object. Gets a node pool.
             name (:class:`str`):
                 Required. The resource name of the
@@ -1187,13 +1197,13 @@ class EdgeContainerAsyncClient:
 
     async def create_node_pool(
         self,
-        request: Union[service.CreateNodePoolRequest, dict] = None,
+        request: Optional[Union[service.CreateNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        node_pool: resources.NodePool = None,
-        node_pool_id: str = None,
+        parent: Optional[str] = None,
+        node_pool: Optional[resources.NodePool] = None,
+        node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new NodePool in a given project and
@@ -1236,7 +1246,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.CreateNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.CreateNodePoolRequest, dict]]):
                 The request object. Creates a node pool.
             parent (:class:`str`):
                 Required. The parent cluster where
@@ -1327,12 +1337,12 @@ class EdgeContainerAsyncClient:
 
     async def update_node_pool(
         self,
-        request: Union[service.UpdateNodePoolRequest, dict] = None,
+        request: Optional[Union[service.UpdateNodePoolRequest, dict]] = None,
         *,
-        node_pool: resources.NodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        node_pool: Optional[resources.NodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single NodePool.
@@ -1367,7 +1377,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.UpdateNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.UpdateNodePoolRequest, dict]]):
                 The request object. Updates a node pool.
             node_pool (:class:`google.cloud.edgecontainer_v1.types.NodePool`):
                 The updated node pool.
@@ -1455,11 +1465,11 @@ class EdgeContainerAsyncClient:
 
     async def delete_node_pool(
         self,
-        request: Union[service.DeleteNodePoolRequest, dict] = None,
+        request: Optional[Union[service.DeleteNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single NodePool.
@@ -1495,7 +1505,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.DeleteNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.DeleteNodePoolRequest, dict]]):
                 The request object. Deletes a node pool.
             name (:class:`str`):
                 Required. The resource name of the
@@ -1578,11 +1588,11 @@ class EdgeContainerAsyncClient:
 
     async def list_machines(
         self,
-        request: Union[service.ListMachinesRequest, dict] = None,
+        request: Optional[Union[service.ListMachinesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMachinesAsyncPager:
         r"""Lists Machines in a given project and location.
@@ -1615,7 +1625,7 @@ class EdgeContainerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.ListMachinesRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.ListMachinesRequest, dict]]):
                 The request object. Lists machines in a site.
             parent (:class:`str`):
                 Required. The parent site, which owns
@@ -1700,11 +1710,11 @@ class EdgeContainerAsyncClient:
 
     async def get_machine(
         self,
-        request: Union[service.GetMachineRequest, dict] = None,
+        request: Optional[Union[service.GetMachineRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Machine:
         r"""Gets details of a single Machine.
@@ -1736,7 +1746,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.GetMachineRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GetMachineRequest, dict]]):
                 The request object. Gets a machine.
             name (:class:`str`):
                 Required. The resource name of the
@@ -1811,11 +1821,11 @@ class EdgeContainerAsyncClient:
 
     async def list_vpn_connections(
         self,
-        request: Union[service.ListVpnConnectionsRequest, dict] = None,
+        request: Optional[Union[service.ListVpnConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVpnConnectionsAsyncPager:
         r"""Lists VPN connections in a given project and
@@ -1849,7 +1859,7 @@ class EdgeContainerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.ListVpnConnectionsRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.ListVpnConnectionsRequest, dict]]):
                 The request object. Lists VPN connections.
             parent (:class:`str`):
                 Required. The parent location, which
@@ -1935,11 +1945,11 @@ class EdgeContainerAsyncClient:
 
     async def get_vpn_connection(
         self,
-        request: Union[service.GetVpnConnectionRequest, dict] = None,
+        request: Optional[Union[service.GetVpnConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.VpnConnection:
         r"""Gets details of a single VPN connection.
@@ -1971,7 +1981,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.GetVpnConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GetVpnConnectionRequest, dict]]):
                 The request object. Gets a VPN connection.
             name (:class:`str`):
                 Required. The resource name of the
@@ -2043,13 +2053,13 @@ class EdgeContainerAsyncClient:
 
     async def create_vpn_connection(
         self,
-        request: Union[service.CreateVpnConnectionRequest, dict] = None,
+        request: Optional[Union[service.CreateVpnConnectionRequest, dict]] = None,
         *,
-        parent: str = None,
-        vpn_connection: resources.VpnConnection = None,
-        vpn_connection_id: str = None,
+        parent: Optional[str] = None,
+        vpn_connection: Optional[resources.VpnConnection] = None,
+        vpn_connection_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new VPN connection in a given project and
@@ -2091,7 +2101,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.CreateVpnConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.CreateVpnConnectionRequest, dict]]):
                 The request object. Creates a VPN connection.
             parent (:class:`str`):
                 Required. The parent location where
@@ -2185,11 +2195,11 @@ class EdgeContainerAsyncClient:
 
     async def delete_vpn_connection(
         self,
-        request: Union[service.DeleteVpnConnectionRequest, dict] = None,
+        request: Optional[Union[service.DeleteVpnConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single VPN connection.
@@ -2225,7 +2235,7 @@ class EdgeContainerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.edgecontainer_v1.types.DeleteVpnConnectionRequest, dict]):
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.DeleteVpnConnectionRequest, dict]]):
                 The request object. Deletes a vpn connection.
             name (:class:`str`):
                 Required. The resource name of the
