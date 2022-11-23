@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -112,44 +114,44 @@ class DiscoverConnectionProfileRequest(proto.Message):
             This field is a member of `oneof`_ ``data_object``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connection_profile = proto.Field(
+    connection_profile: datastream_resources.ConnectionProfile = proto.Field(
         proto.MESSAGE,
         number=200,
         oneof="target",
         message=datastream_resources.ConnectionProfile,
     )
-    connection_profile_name = proto.Field(
+    connection_profile_name: str = proto.Field(
         proto.STRING,
         number=201,
         oneof="target",
     )
-    full_hierarchy = proto.Field(
+    full_hierarchy: bool = proto.Field(
         proto.BOOL,
         number=3,
         oneof="hierarchy",
     )
-    hierarchy_depth = proto.Field(
+    hierarchy_depth: int = proto.Field(
         proto.INT32,
         number=4,
         oneof="hierarchy",
     )
-    oracle_rdbms = proto.Field(
+    oracle_rdbms: datastream_resources.OracleRdbms = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="data_object",
         message=datastream_resources.OracleRdbms,
     )
-    mysql_rdbms = proto.Field(
+    mysql_rdbms: datastream_resources.MysqlRdbms = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="data_object",
         message=datastream_resources.MysqlRdbms,
     )
-    postgresql_rdbms = proto.Field(
+    postgresql_rdbms: datastream_resources.PostgresqlRdbms = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="data_object",
@@ -182,19 +184,19 @@ class DiscoverConnectionProfileResponse(proto.Message):
             This field is a member of `oneof`_ ``data_object``.
     """
 
-    oracle_rdbms = proto.Field(
+    oracle_rdbms: datastream_resources.OracleRdbms = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="data_object",
         message=datastream_resources.OracleRdbms,
     )
-    mysql_rdbms = proto.Field(
+    mysql_rdbms: datastream_resources.MysqlRdbms = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="data_object",
         message=datastream_resources.MysqlRdbms,
     )
-    postgresql_rdbms = proto.Field(
+    postgresql_rdbms: datastream_resources.PostgresqlRdbms = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="data_object",
@@ -218,15 +220,15 @@ class FetchStaticIpsRequest(proto.Message):
             call. will likely not be specified.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -236,7 +238,7 @@ class FetchStaticIpsResponse(proto.Message):
     r"""Response message for a 'FetchStaticIps' response.
 
     Attributes:
-        static_ips (Sequence[str]):
+        static_ips (MutableSequence[str]):
             list of static ips by account
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
@@ -248,11 +250,11 @@ class FetchStaticIpsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    static_ips = proto.RepeatedField(
+    static_ips: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -284,23 +286,23 @@ class ListConnectionProfilesRequest(proto.Message):
             Order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -310,13 +312,13 @@ class ListConnectionProfilesResponse(proto.Message):
     r"""Response message for listing connection profiles.
 
     Attributes:
-        connection_profiles (Sequence[google.cloud.datastream_v1.types.ConnectionProfile]):
+        connection_profiles (MutableSequence[google.cloud.datastream_v1.types.ConnectionProfile]):
             List of connection profiles.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -324,16 +326,18 @@ class ListConnectionProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connection_profiles = proto.RepeatedField(
+    connection_profiles: MutableSequence[
+        datastream_resources.ConnectionProfile
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.ConnectionProfile,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -348,7 +352,7 @@ class GetConnectionProfileRequest(proto.Message):
             resource to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -393,28 +397,28 @@ class CreateConnectionProfileRequest(proto.Message):
             without validating it.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    connection_profile_id = proto.Field(
+    connection_profile_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    connection_profile = proto.Field(
+    connection_profile: datastream_resources.ConnectionProfile = proto.Field(
         proto.MESSAGE,
         number=3,
         message=datastream_resources.ConnectionProfile,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -460,25 +464,25 @@ class UpdateConnectionProfileRequest(proto.Message):
             without validating it.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    connection_profile = proto.Field(
+    connection_profile: datastream_resources.ConnectionProfile = proto.Field(
         proto.MESSAGE,
         number=2,
         message=datastream_resources.ConnectionProfile,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -511,11 +515,11 @@ class DeleteConnectionProfileRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -546,23 +550,23 @@ class ListStreamsRequest(proto.Message):
             Order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -572,13 +576,13 @@ class ListStreamsResponse(proto.Message):
     r"""Response message for listing streams.
 
     Attributes:
-        streams (Sequence[google.cloud.datastream_v1.types.Stream]):
+        streams (MutableSequence[google.cloud.datastream_v1.types.Stream]):
             List of streams
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -586,16 +590,16 @@ class ListStreamsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    streams = proto.RepeatedField(
+    streams: MutableSequence[datastream_resources.Stream] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.Stream,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -610,7 +614,7 @@ class GetStreamRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -653,28 +657,28 @@ class CreateStreamRequest(proto.Message):
             validating it.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    stream_id = proto.Field(
+    stream_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    stream = proto.Field(
+    stream: datastream_resources.Stream = proto.Field(
         proto.MESSAGE,
         number=3,
         message=datastream_resources.Stream,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -720,25 +724,25 @@ class UpdateStreamRequest(proto.Message):
             validating it.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    stream = proto.Field(
+    stream: datastream_resources.Stream = proto.Field(
         proto.MESSAGE,
         number=2,
         message=datastream_resources.Stream,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -771,11 +775,11 @@ class DeleteStreamRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -790,7 +794,7 @@ class GetStreamObjectRequest(proto.Message):
             resource to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -809,11 +813,11 @@ class LookupStreamObjectRequest(proto.Message):
             maps to the stream object.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_object_identifier = proto.Field(
+    source_object_identifier: datastream_resources.SourceObjectIdentifier = proto.Field(
         proto.MESSAGE,
         number=2,
         message=datastream_resources.SourceObjectIdentifier,
@@ -830,7 +834,7 @@ class StartBackfillJobRequest(proto.Message):
             resource to start a backfill job for.
     """
 
-    object_ = proto.Field(
+    object_: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -846,7 +850,7 @@ class StartBackfillJobResponse(proto.Message):
             started for.
     """
 
-    object_ = proto.Field(
+    object_: datastream_resources.StreamObject = proto.Field(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.StreamObject,
@@ -863,7 +867,7 @@ class StopBackfillJobRequest(proto.Message):
             resource to stop the backfill job for.
     """
 
-    object_ = proto.Field(
+    object_: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -879,7 +883,7 @@ class StopBackfillJobResponse(proto.Message):
             was stopped for.
     """
 
-    object_ = proto.Field(
+    object_: datastream_resources.StreamObject = proto.Field(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.StreamObject,
@@ -907,15 +911,15 @@ class ListStreamObjectsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -925,7 +929,7 @@ class ListStreamObjectsResponse(proto.Message):
     r"""Response containing the objects for a stream.
 
     Attributes:
-        stream_objects (Sequence[google.cloud.datastream_v1.types.StreamObject]):
+        stream_objects (MutableSequence[google.cloud.datastream_v1.types.StreamObject]):
             List of stream objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -936,12 +940,14 @@ class ListStreamObjectsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    stream_objects = proto.RepeatedField(
+    stream_objects: MutableSequence[
+        datastream_resources.StreamObject
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.StreamObject,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -980,37 +986,37 @@ class OperationMetadata(proto.Message):
             if there are any.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    validation_result = proto.Field(
+    validation_result: datastream_resources.ValidationResult = proto.Field(
         proto.MESSAGE,
         number=8,
         message=datastream_resources.ValidationResult,
@@ -1050,20 +1056,20 @@ class CreatePrivateConnectionRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    private_connection_id = proto.Field(
+    private_connection_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    private_connection = proto.Field(
+    private_connection: datastream_resources.PrivateConnection = proto.Field(
         proto.MESSAGE,
         number=3,
         message=datastream_resources.PrivateConnection,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1096,23 +1102,23 @@ class ListPrivateConnectionsRequest(proto.Message):
             Order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1123,13 +1129,13 @@ class ListPrivateConnectionsResponse(proto.Message):
     configurations.
 
     Attributes:
-        private_connections (Sequence[google.cloud.datastream_v1.types.PrivateConnection]):
+        private_connections (MutableSequence[google.cloud.datastream_v1.types.PrivateConnection]):
             List of private connectivity configurations.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1137,16 +1143,18 @@ class ListPrivateConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_connections = proto.RepeatedField(
+    private_connections: MutableSequence[
+        datastream_resources.PrivateConnection
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.PrivateConnection,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1183,15 +1191,15 @@ class DeletePrivateConnectionRequest(proto.Message):
             be deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -1206,7 +1214,7 @@ class GetPrivateConnectionRequest(proto.Message):
             connectivity configuration to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1243,20 +1251,20 @@ class CreateRouteRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    route_id = proto.Field(
+    route_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    route = proto.Field(
+    route: datastream_resources.Route = proto.Field(
         proto.MESSAGE,
         number=3,
         message=datastream_resources.Route,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1288,23 +1296,23 @@ class ListRoutesRequest(proto.Message):
             Order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1314,13 +1322,13 @@ class ListRoutesResponse(proto.Message):
     r"""Route list response.
 
     Attributes:
-        routes (Sequence[google.cloud.datastream_v1.types.Route]):
+        routes (MutableSequence[google.cloud.datastream_v1.types.Route]):
             List of Routes.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -1328,16 +1336,16 @@ class ListRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    routes = proto.RepeatedField(
+    routes: MutableSequence[datastream_resources.Route] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=datastream_resources.Route,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1370,11 +1378,11 @@ class DeleteRouteRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1389,7 +1397,7 @@ class GetRouteRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

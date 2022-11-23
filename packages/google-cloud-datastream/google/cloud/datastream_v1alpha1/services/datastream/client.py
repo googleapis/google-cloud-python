@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +73,7 @@ class DatastreamClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DatastreamTransport]:
         """Returns an appropriate transport class.
 
@@ -405,8 +416,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatastreamTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DatastreamTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the datastream client.
@@ -420,7 +431,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             transport (Union[str, DatastreamTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -450,6 +461,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -502,11 +514,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def list_connection_profiles(
         self,
-        request: Union[datastream.ListConnectionProfilesRequest, dict] = None,
+        request: Optional[Union[datastream.ListConnectionProfilesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionProfilesPager:
         r"""Use this method to list connection profiles created
@@ -615,11 +627,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def get_connection_profile(
         self,
-        request: Union[datastream.GetConnectionProfileRequest, dict] = None,
+        request: Optional[Union[datastream.GetConnectionProfileRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.ConnectionProfile:
         r"""Use this method to get details about a connection
@@ -715,13 +727,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def create_connection_profile(
         self,
-        request: Union[datastream.CreateConnectionProfileRequest, dict] = None,
+        request: Optional[
+            Union[datastream.CreateConnectionProfileRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        connection_profile: datastream_resources.ConnectionProfile = None,
-        connection_profile_id: str = None,
+        parent: Optional[str] = None,
+        connection_profile: Optional[datastream_resources.ConnectionProfile] = None,
+        connection_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a connection profile in a
@@ -862,12 +876,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def update_connection_profile(
         self,
-        request: Union[datastream.UpdateConnectionProfileRequest, dict] = None,
+        request: Optional[
+            Union[datastream.UpdateConnectionProfileRequest, dict]
+        ] = None,
         *,
-        connection_profile: datastream_resources.ConnectionProfile = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        connection_profile: Optional[datastream_resources.ConnectionProfile] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to update the parameters of a
@@ -1004,11 +1020,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def delete_connection_profile(
         self,
-        request: Union[datastream.DeleteConnectionProfileRequest, dict] = None,
+        request: Optional[
+            Union[datastream.DeleteConnectionProfileRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a connection profile..
@@ -1129,10 +1147,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def discover_connection_profile(
         self,
-        request: Union[datastream.DiscoverConnectionProfileRequest, dict] = None,
+        request: Optional[
+            Union[datastream.DiscoverConnectionProfileRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream.DiscoverConnectionProfileResponse:
         r"""Use this method to discover a connection profile.
@@ -1223,11 +1243,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def list_streams(
         self,
-        request: Union[datastream.ListStreamsRequest, dict] = None,
+        request: Optional[Union[datastream.ListStreamsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListStreamsPager:
         r"""Use this method to list streams in a project and
@@ -1336,11 +1356,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def get_stream(
         self,
-        request: Union[datastream.GetStreamRequest, dict] = None,
+        request: Optional[Union[datastream.GetStreamRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.Stream:
         r"""Use this method to get details about a stream.
@@ -1435,13 +1455,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def create_stream(
         self,
-        request: Union[datastream.CreateStreamRequest, dict] = None,
+        request: Optional[Union[datastream.CreateStreamRequest, dict]] = None,
         *,
-        parent: str = None,
-        stream: datastream_resources.Stream = None,
-        stream_id: str = None,
+        parent: Optional[str] = None,
+        stream: Optional[datastream_resources.Stream] = None,
+        stream_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a stream.
@@ -1575,12 +1595,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def update_stream(
         self,
-        request: Union[datastream.UpdateStreamRequest, dict] = None,
+        request: Optional[Union[datastream.UpdateStreamRequest, dict]] = None,
         *,
-        stream: datastream_resources.Stream = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        stream: Optional[datastream_resources.Stream] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to update the configuration of a
@@ -1712,11 +1732,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def delete_stream(
         self,
-        request: Union[datastream.DeleteStreamRequest, dict] = None,
+        request: Optional[Union[datastream.DeleteStreamRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a stream.
@@ -1835,10 +1855,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def fetch_errors(
         self,
-        request: Union[datastream.FetchErrorsRequest, dict] = None,
+        request: Optional[Union[datastream.FetchErrorsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to fetch any errors associated with a
@@ -1931,11 +1951,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def fetch_static_ips(
         self,
-        request: Union[datastream.FetchStaticIpsRequest, dict] = None,
+        request: Optional[Union[datastream.FetchStaticIpsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.FetchStaticIpsPager:
         r"""The FetchStaticIps API call exposes the static ips
@@ -2049,13 +2069,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def create_private_connection(
         self,
-        request: Union[datastream.CreatePrivateConnectionRequest, dict] = None,
+        request: Optional[
+            Union[datastream.CreatePrivateConnectionRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        private_connection: datastream_resources.PrivateConnection = None,
-        private_connection_id: str = None,
+        parent: Optional[str] = None,
+        private_connection: Optional[datastream_resources.PrivateConnection] = None,
+        private_connection_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a private connectivity
@@ -2192,11 +2214,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def get_private_connection(
         self,
-        request: Union[datastream.GetPrivateConnectionRequest, dict] = None,
+        request: Optional[Union[datastream.GetPrivateConnectionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.PrivateConnection:
         r"""Use this method to get details about a private
@@ -2296,11 +2318,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def list_private_connections(
         self,
-        request: Union[datastream.ListPrivateConnectionsRequest, dict] = None,
+        request: Optional[Union[datastream.ListPrivateConnectionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPrivateConnectionsPager:
         r"""Use this method to list private connectivity
@@ -2410,11 +2432,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def delete_private_connection(
         self,
-        request: Union[datastream.DeletePrivateConnectionRequest, dict] = None,
+        request: Optional[
+            Union[datastream.DeletePrivateConnectionRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a private connectivity
@@ -2536,13 +2560,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def create_route(
         self,
-        request: Union[datastream.CreateRouteRequest, dict] = None,
+        request: Optional[Union[datastream.CreateRouteRequest, dict]] = None,
         *,
-        parent: str = None,
-        route: datastream_resources.Route = None,
-        route_id: str = None,
+        parent: Optional[str] = None,
+        route: Optional[datastream_resources.Route] = None,
+        route_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a route for a private
@@ -2677,11 +2701,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def get_route(
         self,
-        request: Union[datastream.GetRouteRequest, dict] = None,
+        request: Optional[Union[datastream.GetRouteRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.Route:
         r"""Use this method to get details about a route.
@@ -2780,11 +2804,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def list_routes(
         self,
-        request: Union[datastream.ListRoutesRequest, dict] = None,
+        request: Optional[Union[datastream.ListRoutesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRoutesPager:
         r"""Use this method to list routes created for a private
@@ -2894,11 +2918,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     def delete_route(
         self,
-        request: Union[datastream.DeleteRouteRequest, dict] = None,
+        request: Optional[Union[datastream.DeleteRouteRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a route.

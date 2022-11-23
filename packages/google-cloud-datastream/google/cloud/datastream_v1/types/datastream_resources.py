@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -81,31 +83,31 @@ class OracleProfile(proto.Message):
             Required. Password for the Oracle connection.
         database_service (str):
             Required. Database for the Oracle connection.
-        connection_attributes (Mapping[str, str]):
+        connection_attributes (MutableMapping[str, str]):
             Connection string attributes
     """
 
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    database_service = proto.Field(
+    database_service: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    connection_attributes = proto.MapField(
+    connection_attributes: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
@@ -130,23 +132,23 @@ class MysqlProfile(proto.Message):
             SSL configuration for the MySQL connection.
     """
 
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    ssl_config = proto.Field(
+    ssl_config: "MysqlSslConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="MysqlSslConfig",
@@ -174,23 +176,23 @@ class PostgresqlProfile(proto.Message):
             connection.
     """
 
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -207,11 +209,11 @@ class GcsProfile(proto.Message):
             bucket.
     """
 
-    bucket = proto.Field(
+    bucket: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    root_path = proto.Field(
+    root_path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -252,24 +254,24 @@ class ForwardSshTunnelConnectivity(proto.Message):
             This field is a member of `oneof`_ ``authentication_method``.
     """
 
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=100,
         oneof="authentication_method",
     )
-    private_key = proto.Field(
+    private_key: str = proto.Field(
         proto.STRING,
         number=101,
         oneof="authentication_method",
@@ -290,11 +292,11 @@ class VpcPeeringConfig(proto.Message):
             /29)
     """
 
-    vpc = proto.Field(
+    vpc: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subnet = proto.Field(
+    subnet: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -311,7 +313,7 @@ class PrivateConnection(proto.Message):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time of the resource.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -334,40 +336,40 @@ class PrivateConnection(proto.Message):
         DELETING = 4
         FAILED_TO_DELETE = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    error = proto.Field(
+    error: "Error" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="Error",
     )
-    vpc_peering_config = proto.Field(
+    vpc_peering_config: "VpcPeeringConfig" = proto.Field(
         proto.MESSAGE,
         number=100,
         message="VpcPeeringConfig",
@@ -384,7 +386,7 @@ class PrivateConnectivity(proto.Message):
             ``projects/{project}/locations/{location}/privateConnections/{name}``
     """
 
-    private_connection = proto.Field(
+    private_connection: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -401,7 +403,7 @@ class Route(proto.Message):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time of the resource.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -411,34 +413,34 @@ class Route(proto.Message):
             Destination port for connection
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    destination_address = proto.Field(
+    destination_address: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    destination_port = proto.Field(
+    destination_port: int = proto.Field(
         proto.INT32,
         number=7,
     )
@@ -472,27 +474,27 @@ class MysqlSslConfig(proto.Message):
             set.
     """
 
-    client_key = proto.Field(
+    client_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_key_set = proto.Field(
+    client_key_set: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    client_certificate = proto.Field(
+    client_certificate: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    client_certificate_set = proto.Field(
+    client_certificate_set: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    ca_certificate = proto.Field(
+    ca_certificate: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    ca_certificate_set = proto.Field(
+    ca_certificate_set: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -516,7 +518,7 @@ class ConnectionProfile(proto.Message):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time of the resource.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -555,72 +557,72 @@ class ConnectionProfile(proto.Message):
             This field is a member of `oneof`_ ``connectivity``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    oracle_profile = proto.Field(
+    oracle_profile: "OracleProfile" = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="profile",
         message="OracleProfile",
     )
-    gcs_profile = proto.Field(
+    gcs_profile: "GcsProfile" = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="profile",
         message="GcsProfile",
     )
-    mysql_profile = proto.Field(
+    mysql_profile: "MysqlProfile" = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="profile",
         message="MysqlProfile",
     )
-    bigquery_profile = proto.Field(
+    bigquery_profile: "BigQueryProfile" = proto.Field(
         proto.MESSAGE,
         number=103,
         oneof="profile",
         message="BigQueryProfile",
     )
-    postgresql_profile = proto.Field(
+    postgresql_profile: "PostgresqlProfile" = proto.Field(
         proto.MESSAGE,
         number=104,
         oneof="profile",
         message="PostgresqlProfile",
     )
-    static_service_ip_connectivity = proto.Field(
+    static_service_ip_connectivity: "StaticServiceIpConnectivity" = proto.Field(
         proto.MESSAGE,
         number=200,
         oneof="connectivity",
         message="StaticServiceIpConnectivity",
     )
-    forward_ssh_connectivity = proto.Field(
+    forward_ssh_connectivity: "ForwardSshTunnelConnectivity" = proto.Field(
         proto.MESSAGE,
         number=201,
         oneof="connectivity",
         message="ForwardSshTunnelConnectivity",
     )
-    private_connectivity = proto.Field(
+    private_connectivity: "PrivateConnectivity" = proto.Field(
         proto.MESSAGE,
         number=202,
         oneof="connectivity",
@@ -655,39 +657,39 @@ class OracleColumn(proto.Message):
             table.
     """
 
-    column = proto.Field(
+    column: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_type = proto.Field(
+    data_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    length = proto.Field(
+    length: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    precision = proto.Field(
+    precision: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    scale = proto.Field(
+    scale: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    encoding = proto.Field(
+    encoding: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    primary_key = proto.Field(
+    primary_key: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    nullable = proto.Field(
+    nullable: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    ordinal_position = proto.Field(
+    ordinal_position: int = proto.Field(
         proto.INT32,
         number=9,
     )
@@ -699,17 +701,17 @@ class OracleTable(proto.Message):
     Attributes:
         table (str):
             Table name.
-        oracle_columns (Sequence[google.cloud.datastream_v1.types.OracleColumn]):
+        oracle_columns (MutableSequence[google.cloud.datastream_v1.types.OracleColumn]):
             Oracle columns in the schema.
             When unspecified as part of include/exclude
             objects, includes/excludes everything.
     """
 
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    oracle_columns = proto.RepeatedField(
+    oracle_columns: MutableSequence["OracleColumn"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="OracleColumn",
@@ -722,15 +724,15 @@ class OracleSchema(proto.Message):
     Attributes:
         schema (str):
             Schema name.
-        oracle_tables (Sequence[google.cloud.datastream_v1.types.OracleTable]):
+        oracle_tables (MutableSequence[google.cloud.datastream_v1.types.OracleTable]):
             Tables in the schema.
     """
 
-    schema = proto.Field(
+    schema: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    oracle_tables = proto.RepeatedField(
+    oracle_tables: MutableSequence["OracleTable"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="OracleTable",
@@ -741,12 +743,12 @@ class OracleRdbms(proto.Message):
     r"""Oracle database structure.
 
     Attributes:
-        oracle_schemas (Sequence[google.cloud.datastream_v1.types.OracleSchema]):
+        oracle_schemas (MutableSequence[google.cloud.datastream_v1.types.OracleSchema]):
             Oracle schemas/databases in the database
             server.
     """
 
-    oracle_schemas = proto.RepeatedField(
+    oracle_schemas: MutableSequence["OracleSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OracleSchema",
@@ -789,27 +791,27 @@ class OracleSourceConfig(proto.Message):
     class StreamLargeObjects(proto.Message):
         r"""Configuration to stream large object values."""
 
-    include_objects = proto.Field(
+    include_objects: "OracleRdbms" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="OracleRdbms",
     )
-    exclude_objects = proto.Field(
+    exclude_objects: "OracleRdbms" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="OracleRdbms",
     )
-    max_concurrent_cdc_tasks = proto.Field(
+    max_concurrent_cdc_tasks: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    drop_large_objects = proto.Field(
+    drop_large_objects: DropLargeObjects = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="large_objects_handling",
         message=DropLargeObjects,
     )
-    stream_large_objects = proto.Field(
+    stream_large_objects: StreamLargeObjects = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="large_objects_handling",
@@ -842,35 +844,35 @@ class PostgresqlColumn(proto.Message):
             table.
     """
 
-    column = proto.Field(
+    column: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_type = proto.Field(
+    data_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    length = proto.Field(
+    length: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    precision = proto.Field(
+    precision: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    scale = proto.Field(
+    scale: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    primary_key = proto.Field(
+    primary_key: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
-    nullable = proto.Field(
+    nullable: bool = proto.Field(
         proto.BOOL,
         number=8,
     )
-    ordinal_position = proto.Field(
+    ordinal_position: int = proto.Field(
         proto.INT32,
         number=9,
     )
@@ -882,17 +884,17 @@ class PostgresqlTable(proto.Message):
     Attributes:
         table (str):
             Table name.
-        postgresql_columns (Sequence[google.cloud.datastream_v1.types.PostgresqlColumn]):
+        postgresql_columns (MutableSequence[google.cloud.datastream_v1.types.PostgresqlColumn]):
             PostgreSQL columns in the schema.
             When unspecified as part of include/exclude
             objects, includes/excludes everything.
     """
 
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    postgresql_columns = proto.RepeatedField(
+    postgresql_columns: MutableSequence["PostgresqlColumn"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="PostgresqlColumn",
@@ -905,15 +907,15 @@ class PostgresqlSchema(proto.Message):
     Attributes:
         schema (str):
             Schema name.
-        postgresql_tables (Sequence[google.cloud.datastream_v1.types.PostgresqlTable]):
+        postgresql_tables (MutableSequence[google.cloud.datastream_v1.types.PostgresqlTable]):
             Tables in the schema.
     """
 
-    schema = proto.Field(
+    schema: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    postgresql_tables = proto.RepeatedField(
+    postgresql_tables: MutableSequence["PostgresqlTable"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="PostgresqlTable",
@@ -924,11 +926,11 @@ class PostgresqlRdbms(proto.Message):
     r"""PostgreSQL database structure.
 
     Attributes:
-        postgresql_schemas (Sequence[google.cloud.datastream_v1.types.PostgresqlSchema]):
+        postgresql_schemas (MutableSequence[google.cloud.datastream_v1.types.PostgresqlSchema]):
             PostgreSQL schemas in the database server.
     """
 
-    postgresql_schemas = proto.RepeatedField(
+    postgresql_schemas: MutableSequence["PostgresqlSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PostgresqlSchema",
@@ -953,21 +955,21 @@ class PostgresqlSourceConfig(proto.Message):
             include_objects.
     """
 
-    include_objects = proto.Field(
+    include_objects: "PostgresqlRdbms" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PostgresqlRdbms",
     )
-    exclude_objects = proto.Field(
+    exclude_objects: "PostgresqlRdbms" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PostgresqlRdbms",
     )
-    replication_slot = proto.Field(
+    replication_slot: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    publication = proto.Field(
+    publication: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -998,31 +1000,31 @@ class MysqlColumn(proto.Message):
             table.
     """
 
-    column = proto.Field(
+    column: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_type = proto.Field(
+    data_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    length = proto.Field(
+    length: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    collation = proto.Field(
+    collation: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    primary_key = proto.Field(
+    primary_key: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    nullable = proto.Field(
+    nullable: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    ordinal_position = proto.Field(
+    ordinal_position: int = proto.Field(
         proto.INT32,
         number=7,
     )
@@ -1034,17 +1036,17 @@ class MysqlTable(proto.Message):
     Attributes:
         table (str):
             Table name.
-        mysql_columns (Sequence[google.cloud.datastream_v1.types.MysqlColumn]):
+        mysql_columns (MutableSequence[google.cloud.datastream_v1.types.MysqlColumn]):
             MySQL columns in the database.
             When unspecified as part of include/exclude
             objects, includes/excludes everything.
     """
 
-    table = proto.Field(
+    table: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mysql_columns = proto.RepeatedField(
+    mysql_columns: MutableSequence["MysqlColumn"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MysqlColumn",
@@ -1057,15 +1059,15 @@ class MysqlDatabase(proto.Message):
     Attributes:
         database (str):
             Database name.
-        mysql_tables (Sequence[google.cloud.datastream_v1.types.MysqlTable]):
+        mysql_tables (MutableSequence[google.cloud.datastream_v1.types.MysqlTable]):
             Tables in the database.
     """
 
-    database = proto.Field(
+    database: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mysql_tables = proto.RepeatedField(
+    mysql_tables: MutableSequence["MysqlTable"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MysqlTable",
@@ -1076,11 +1078,11 @@ class MysqlRdbms(proto.Message):
     r"""MySQL database structure
 
     Attributes:
-        mysql_databases (Sequence[google.cloud.datastream_v1.types.MysqlDatabase]):
+        mysql_databases (MutableSequence[google.cloud.datastream_v1.types.MysqlDatabase]):
             Mysql databases on the server
     """
 
-    mysql_databases = proto.RepeatedField(
+    mysql_databases: MutableSequence["MysqlDatabase"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MysqlDatabase",
@@ -1102,17 +1104,17 @@ class MysqlSourceConfig(proto.Message):
             used.
     """
 
-    include_objects = proto.Field(
+    include_objects: "MysqlRdbms" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="MysqlRdbms",
     )
-    exclude_objects = proto.Field(
+    exclude_objects: "MysqlRdbms" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="MysqlRdbms",
     )
-    max_concurrent_cdc_tasks = proto.Field(
+    max_concurrent_cdc_tasks: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -1146,23 +1148,23 @@ class SourceConfig(proto.Message):
             This field is a member of `oneof`_ ``source_stream_config``.
     """
 
-    source_connection_profile = proto.Field(
+    source_connection_profile: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    oracle_source_config = proto.Field(
+    oracle_source_config: "OracleSourceConfig" = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="source_stream_config",
         message="OracleSourceConfig",
     )
-    mysql_source_config = proto.Field(
+    mysql_source_config: "MysqlSourceConfig" = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="source_stream_config",
         message="MysqlSourceConfig",
     )
-    postgresql_source_config = proto.Field(
+    postgresql_source_config: "PostgresqlSourceConfig" = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="source_stream_config",
@@ -1196,12 +1198,12 @@ class JsonFileFormat(proto.Message):
         NO_COMPRESSION = 1
         GZIP = 2
 
-    schema_file_format = proto.Field(
+    schema_file_format: SchemaFileFormat = proto.Field(
         proto.ENUM,
         number=1,
         enum=SchemaFileFormat,
     )
-    compression = proto.Field(
+    compression: JsonCompression = proto.Field(
         proto.ENUM,
         number=2,
         enum=JsonCompression,
@@ -1239,26 +1241,26 @@ class GcsDestinationConfig(proto.Message):
             This field is a member of `oneof`_ ``file_format``.
     """
 
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_rotation_mb = proto.Field(
+    file_rotation_mb: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    file_rotation_interval = proto.Field(
+    file_rotation_interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
     )
-    avro_file_format = proto.Field(
+    avro_file_format: "AvroFileFormat" = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="file_format",
         message="AvroFileFormat",
     )
-    json_file_format = proto.Field(
+    json_file_format: "JsonFileFormat" = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="file_format",
@@ -1303,7 +1305,7 @@ class BigQueryDestinationConfig(proto.Message):
 
         """
 
-        dataset_id = proto.Field(
+        dataset_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -1341,38 +1343,38 @@ class BigQueryDestinationConfig(proto.Message):
                     for more information.
             """
 
-            location = proto.Field(
+            location: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            dataset_id_prefix = proto.Field(
+            dataset_id_prefix: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
-            kms_key_name = proto.Field(
+            kms_key_name: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
 
-        dataset_template = proto.Field(
+        dataset_template: "BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate",
         )
 
-    single_target_dataset = proto.Field(
+    single_target_dataset: SingleTargetDataset = proto.Field(
         proto.MESSAGE,
         number=201,
         oneof="dataset_config",
         message=SingleTargetDataset,
     )
-    source_hierarchy_datasets = proto.Field(
+    source_hierarchy_datasets: SourceHierarchyDatasets = proto.Field(
         proto.MESSAGE,
         number=202,
         oneof="dataset_config",
         message=SourceHierarchyDatasets,
     )
-    data_freshness = proto.Field(
+    data_freshness: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=300,
         message=duration_pb2.Duration,
@@ -1404,17 +1406,17 @@ class DestinationConfig(proto.Message):
             This field is a member of `oneof`_ ``destination_stream_config``.
     """
 
-    destination_connection_profile = proto.Field(
+    destination_connection_profile: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gcs_destination_config = proto.Field(
+    gcs_destination_config: "GcsDestinationConfig" = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="destination_stream_config",
         message="GcsDestinationConfig",
     )
-    bigquery_destination_config = proto.Field(
+    bigquery_destination_config: "BigQueryDestinationConfig" = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="destination_stream_config",
@@ -1441,7 +1443,7 @@ class Stream(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update time of the
             stream.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -1463,7 +1465,7 @@ class Stream(proto.Message):
             Do not automatically backfill any objects.
 
             This field is a member of `oneof`_ ``backfill_strategy``.
-        errors (Sequence[google.cloud.datastream_v1.types.Error]):
+        errors (MutableSequence[google.cloud.datastream_v1.types.Error]):
             Output only. Errors on the Stream.
         customer_managed_encryption_key (str):
             Immutable. A reference to a KMS encryption
@@ -1516,19 +1518,19 @@ class Stream(proto.Message):
                 This field is a member of `oneof`_ ``excluded_objects``.
         """
 
-        oracle_excluded_objects = proto.Field(
+        oracle_excluded_objects: "OracleRdbms" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="excluded_objects",
             message="OracleRdbms",
         )
-        mysql_excluded_objects = proto.Field(
+        mysql_excluded_objects: "MysqlRdbms" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="excluded_objects",
             message="MysqlRdbms",
         )
-        postgresql_excluded_objects = proto.Field(
+        postgresql_excluded_objects: "PostgresqlRdbms" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="excluded_objects",
@@ -1541,62 +1543,62 @@ class Stream(proto.Message):
 
         """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    source_config = proto.Field(
+    source_config: "SourceConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="SourceConfig",
     )
-    destination_config = proto.Field(
+    destination_config: "DestinationConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="DestinationConfig",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=8,
         enum=State,
     )
-    backfill_all = proto.Field(
+    backfill_all: BackfillAllStrategy = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="backfill_strategy",
         message=BackfillAllStrategy,
     )
-    backfill_none = proto.Field(
+    backfill_none: BackfillNoneStrategy = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="backfill_strategy",
         message=BackfillNoneStrategy,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["Error"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="Error",
     )
-    customer_managed_encryption_key = proto.Field(
+    customer_managed_encryption_key: str = proto.Field(
         proto.STRING,
         number=10,
         optional=True,
@@ -1616,7 +1618,7 @@ class StreamObject(proto.Message):
             object.
         display_name (str):
             Required. Display name.
-        errors (Sequence[google.cloud.datastream_v1.types.Error]):
+        errors (MutableSequence[google.cloud.datastream_v1.types.Error]):
             Output only. Active errors on the object.
         backfill_job (google.cloud.datastream_v1.types.BackfillJob):
             The latest backfill job that was initiated
@@ -1625,35 +1627,35 @@ class StreamObject(proto.Message):
             The object identifier in the data source.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["Error"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="Error",
     )
-    backfill_job = proto.Field(
+    backfill_job: "BackfillJob" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="BackfillJob",
     )
-    source_object = proto.Field(
+    source_object: "SourceObjectIdentifier" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="SourceObjectIdentifier",
@@ -1695,11 +1697,11 @@ class SourceObjectIdentifier(proto.Message):
                 Required. The table name.
         """
 
-        schema = proto.Field(
+        schema: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -1714,11 +1716,11 @@ class SourceObjectIdentifier(proto.Message):
                 Required. The table name.
         """
 
-        schema = proto.Field(
+        schema: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -1733,28 +1735,28 @@ class SourceObjectIdentifier(proto.Message):
                 Required. The table name.
         """
 
-        database = proto.Field(
+        database: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        table = proto.Field(
+        table: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    oracle_identifier = proto.Field(
+    oracle_identifier: OracleObjectIdentifier = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source_identifier",
         message=OracleObjectIdentifier,
     )
-    mysql_identifier = proto.Field(
+    mysql_identifier: MysqlObjectIdentifier = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source_identifier",
         message=MysqlObjectIdentifier,
     )
-    postgresql_identifier = proto.Field(
+    postgresql_identifier: PostgresqlObjectIdentifier = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source_identifier",
@@ -1774,7 +1776,7 @@ class BackfillJob(proto.Message):
             Output only. Backfill job's start time.
         last_end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Backfill job's end time.
-        errors (Sequence[google.cloud.datastream_v1.types.Error]):
+        errors (MutableSequence[google.cloud.datastream_v1.types.Error]):
             Output only. Errors which caused the backfill
             job to fail.
     """
@@ -1796,27 +1798,27 @@ class BackfillJob(proto.Message):
         AUTOMATIC = 1
         MANUAL = 2
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    trigger = proto.Field(
+    trigger: Trigger = proto.Field(
         proto.ENUM,
         number=2,
         enum=Trigger,
     )
-    last_start_time = proto.Field(
+    last_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    last_end_time = proto.Field(
+    last_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    errors = proto.RepeatedField(
+    errors: MutableSequence["Error"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Error",
@@ -1839,28 +1841,28 @@ class Error(proto.Message):
             the error that occurred.
         error_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the error occurred.
-        details (Mapping[str, str]):
+        details (MutableMapping[str, str]):
             Additional information about the error.
     """
 
-    reason = proto.Field(
+    reason: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_uuid = proto.Field(
+    error_uuid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    error_time = proto.Field(
+    error_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    details = proto.MapField(
+    details: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
@@ -1871,12 +1873,12 @@ class ValidationResult(proto.Message):
     r"""Contains the current validation results.
 
     Attributes:
-        validations (Sequence[google.cloud.datastream_v1.types.Validation]):
+        validations (MutableSequence[google.cloud.datastream_v1.types.Validation]):
             A list of validations (includes both executed
             as well as not executed validations).
     """
 
-    validations = proto.RepeatedField(
+    validations: MutableSequence["Validation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Validation",
@@ -1891,7 +1893,7 @@ class Validation(proto.Message):
             A short description of the validation.
         state (google.cloud.datastream_v1.types.Validation.State):
             Validation execution status.
-        message (Sequence[google.cloud.datastream_v1.types.ValidationMessage]):
+        message (MutableSequence[google.cloud.datastream_v1.types.ValidationMessage]):
             Messages reflecting the validation results.
         code (str):
             A custom code identifying this validation.
@@ -1904,21 +1906,21 @@ class Validation(proto.Message):
         FAILED = 2
         PASSED = 3
 
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    message = proto.RepeatedField(
+    message: MutableSequence["ValidationMessage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ValidationMessage",
     )
-    code = proto.Field(
+    code: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1932,7 +1934,7 @@ class ValidationMessage(proto.Message):
             The result of the validation.
         level (google.cloud.datastream_v1.types.ValidationMessage.Level):
             Message severity level (warning or error).
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Additional metadata related to the result.
         code (str):
             A custom code identifying this specific
@@ -1945,21 +1947,21 @@ class ValidationMessage(proto.Message):
         WARNING = 1
         ERROR = 2
 
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    level = proto.Field(
+    level: Level = proto.Field(
         proto.ENUM,
         number=2,
         enum=Level,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    code = proto.Field(
+    code: str = proto.Field(
         proto.STRING,
         number=4,
     )
