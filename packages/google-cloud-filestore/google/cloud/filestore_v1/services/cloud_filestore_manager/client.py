@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,14 +47,18 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.common.types import operation_metadata as operation_metadata_pb2  # type: ignore
-from google.cloud.filestore_v1.services.cloud_filestore_manager import pagers
-from google.cloud.filestore_v1.types import cloud_filestore_service
+from google.cloud.common.types import (
+    operation_metadata as operation_metadata_pb2,
+)  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-from .transports.base import CloudFilestoreManagerTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.filestore_v1.services.cloud_filestore_manager import pagers
+from google.cloud.filestore_v1.types import cloud_filestore_service
+
+from .transports.base import DEFAULT_CLIENT_INFO, CloudFilestoreManagerTransport
 from .transports.grpc import CloudFilestoreManagerGrpcTransport
 from .transports.grpc_asyncio import CloudFilestoreManagerGrpcAsyncIOTransport
 
@@ -64,7 +79,7 @@ class CloudFilestoreManagerClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CloudFilestoreManagerTransport]:
         """Returns an appropriate transport class.
 
@@ -384,8 +399,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudFilestoreManagerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CloudFilestoreManagerTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud filestore manager client.
@@ -399,7 +414,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
             transport (Union[str, CloudFilestoreManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -429,6 +444,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -481,11 +497,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def list_instances(
         self,
-        request: Union[cloud_filestore_service.ListInstancesRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.ListInstancesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""Lists all instances in a project for either a
@@ -601,11 +619,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def get_instance(
         self,
-        request: Union[cloud_filestore_service.GetInstanceRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.GetInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_filestore_service.Instance:
         r"""Gets the details of a specific instance.
@@ -701,13 +721,15 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def create_instance(
         self,
-        request: Union[cloud_filestore_service.CreateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.CreateInstanceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        instance: cloud_filestore_service.Instance = None,
-        instance_id: str = None,
+        parent: Optional[str] = None,
+        instance: Optional[cloud_filestore_service.Instance] = None,
+        instance_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an instance.
@@ -846,12 +868,14 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def update_instance(
         self,
-        request: Union[cloud_filestore_service.UpdateInstanceRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.UpdateInstanceRequest, dict]
+        ] = None,
         *,
-        instance: cloud_filestore_service.Instance = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        instance: Optional[cloud_filestore_service.Instance] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the settings of a specific instance.
@@ -977,10 +1001,12 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def restore_instance(
         self,
-        request: Union[cloud_filestore_service.RestoreInstanceRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.RestoreInstanceRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Restores an existing instance's file share from a
@@ -1079,11 +1105,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def delete_instance(
         self,
-        request: Union[cloud_filestore_service.DeleteInstanceRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.DeleteInstanceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an instance.
@@ -1203,11 +1231,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def list_backups(
         self,
-        request: Union[cloud_filestore_service.ListBackupsRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.ListBackupsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
         r"""Lists all backups in a project for either a specified
@@ -1322,11 +1352,11 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def get_backup(
         self,
-        request: Union[cloud_filestore_service.GetBackupRequest, dict] = None,
+        request: Optional[Union[cloud_filestore_service.GetBackupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_filestore_service.Backup:
         r"""Gets the details of a specific backup.
@@ -1422,13 +1452,15 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def create_backup(
         self,
-        request: Union[cloud_filestore_service.CreateBackupRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.CreateBackupRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        backup: cloud_filestore_service.Backup = None,
-        backup_id: str = None,
+        parent: Optional[str] = None,
+        backup: Optional[cloud_filestore_service.Backup] = None,
+        backup_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a backup.
@@ -1568,11 +1600,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def delete_backup(
         self,
-        request: Union[cloud_filestore_service.DeleteBackupRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.DeleteBackupRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a backup.
@@ -1692,12 +1726,14 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def update_backup(
         self,
-        request: Union[cloud_filestore_service.UpdateBackupRequest, dict] = None,
+        request: Optional[
+            Union[cloud_filestore_service.UpdateBackupRequest, dict]
+        ] = None,
         *,
-        backup: cloud_filestore_service.Backup = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        backup: Optional[cloud_filestore_service.Backup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the settings of a specific backup.

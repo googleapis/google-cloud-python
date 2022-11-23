@@ -13,40 +13,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.filestore import gapic_version as package_version
 
-from google.cloud.filestore_v1.services.cloud_filestore_manager.client import (
-    CloudFilestoreManagerClient,
-)
+__version__ = package_version.__version__
+
+
 from google.cloud.filestore_v1.services.cloud_filestore_manager.async_client import (
     CloudFilestoreManagerAsyncClient,
 )
-
-from google.cloud.filestore_v1.types.cloud_filestore_service import Backup
-from google.cloud.filestore_v1.types.cloud_filestore_service import CreateBackupRequest
+from google.cloud.filestore_v1.services.cloud_filestore_manager.client import (
+    CloudFilestoreManagerClient,
+)
 from google.cloud.filestore_v1.types.cloud_filestore_service import (
+    Backup,
+    CreateBackupRequest,
     CreateInstanceRequest,
-)
-from google.cloud.filestore_v1.types.cloud_filestore_service import DeleteBackupRequest
-from google.cloud.filestore_v1.types.cloud_filestore_service import (
+    DeleteBackupRequest,
     DeleteInstanceRequest,
-)
-from google.cloud.filestore_v1.types.cloud_filestore_service import FileShareConfig
-from google.cloud.filestore_v1.types.cloud_filestore_service import GetBackupRequest
-from google.cloud.filestore_v1.types.cloud_filestore_service import GetInstanceRequest
-from google.cloud.filestore_v1.types.cloud_filestore_service import Instance
-from google.cloud.filestore_v1.types.cloud_filestore_service import ListBackupsRequest
-from google.cloud.filestore_v1.types.cloud_filestore_service import ListBackupsResponse
-from google.cloud.filestore_v1.types.cloud_filestore_service import ListInstancesRequest
-from google.cloud.filestore_v1.types.cloud_filestore_service import (
+    FileShareConfig,
+    GetBackupRequest,
+    GetInstanceRequest,
+    Instance,
+    ListBackupsRequest,
+    ListBackupsResponse,
+    ListInstancesRequest,
     ListInstancesResponse,
-)
-from google.cloud.filestore_v1.types.cloud_filestore_service import NetworkConfig
-from google.cloud.filestore_v1.types.cloud_filestore_service import NfsExportOptions
-from google.cloud.filestore_v1.types.cloud_filestore_service import (
+    NetworkConfig,
+    NfsExportOptions,
     RestoreInstanceRequest,
-)
-from google.cloud.filestore_v1.types.cloud_filestore_service import UpdateBackupRequest
-from google.cloud.filestore_v1.types.cloud_filestore_service import (
+    UpdateBackupRequest,
     UpdateInstanceRequest,
 )
 

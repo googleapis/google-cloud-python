@@ -20,7 +20,6 @@ from .base import CloudFilestoreManagerTransport
 from .grpc import CloudFilestoreManagerGrpcTransport
 from .grpc_asyncio import CloudFilestoreManagerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

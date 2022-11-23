@@ -13,28 +13,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.filestore import gapic_version as package_version
 
-from .services.cloud_filestore_manager import CloudFilestoreManagerClient
-from .services.cloud_filestore_manager import CloudFilestoreManagerAsyncClient
+__version__ = package_version.__version__
 
-from .types.cloud_filestore_service import Backup
-from .types.cloud_filestore_service import CreateBackupRequest
-from .types.cloud_filestore_service import CreateInstanceRequest
-from .types.cloud_filestore_service import DeleteBackupRequest
-from .types.cloud_filestore_service import DeleteInstanceRequest
-from .types.cloud_filestore_service import FileShareConfig
-from .types.cloud_filestore_service import GetBackupRequest
-from .types.cloud_filestore_service import GetInstanceRequest
-from .types.cloud_filestore_service import Instance
-from .types.cloud_filestore_service import ListBackupsRequest
-from .types.cloud_filestore_service import ListBackupsResponse
-from .types.cloud_filestore_service import ListInstancesRequest
-from .types.cloud_filestore_service import ListInstancesResponse
-from .types.cloud_filestore_service import NetworkConfig
-from .types.cloud_filestore_service import NfsExportOptions
-from .types.cloud_filestore_service import RestoreInstanceRequest
-from .types.cloud_filestore_service import UpdateBackupRequest
-from .types.cloud_filestore_service import UpdateInstanceRequest
+
+from .services.cloud_filestore_manager import (
+    CloudFilestoreManagerAsyncClient,
+    CloudFilestoreManagerClient,
+)
+from .types.cloud_filestore_service import (
+    Backup,
+    CreateBackupRequest,
+    CreateInstanceRequest,
+    DeleteBackupRequest,
+    DeleteInstanceRequest,
+    FileShareConfig,
+    GetBackupRequest,
+    GetInstanceRequest,
+    Instance,
+    ListBackupsRequest,
+    ListBackupsResponse,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    NetworkConfig,
+    NfsExportOptions,
+    RestoreInstanceRequest,
+    UpdateBackupRequest,
+    UpdateInstanceRequest,
+)
 
 __all__ = (
     "CloudFilestoreManagerAsyncClient",

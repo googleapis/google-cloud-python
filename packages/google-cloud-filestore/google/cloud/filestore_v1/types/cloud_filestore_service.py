@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.filestore.v1",
@@ -53,7 +53,7 @@ class NetworkConfig(proto.Message):
             The name of the Google Compute Engine `VPC
             network <https://cloud.google.com/vpc/docs/vpc>`__ to which
             the instance is connected.
-        modes (Sequence[google.cloud.filestore_v1.types.NetworkConfig.AddressMode]):
+        modes (MutableSequence[google.cloud.filestore_v1.types.NetworkConfig.AddressMode]):
             Internet protocol versions for which the instance has IP
             addresses assigned. For this version, only MODE_IPV4 is
             supported.
@@ -65,7 +65,7 @@ class NetworkConfig(proto.Message):
             range you specify can't overlap with either existing subnets
             or assigned IP address ranges for other Cloud Filestore
             instances in the selected VPC network.
-        ip_addresses (Sequence[str]):
+        ip_addresses (MutableSequence[str]):
             Output only. IPv4 addresses in the format IPv4 addresses in
             the format ``{octet1}.{octet2}.{octet3}.{octet4}`` or IPv6
             addresses in the format
@@ -77,20 +77,20 @@ class NetworkConfig(proto.Message):
         ADDRESS_MODE_UNSPECIFIED = 0
         MODE_IPV4 = 1
 
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    modes = proto.RepeatedField(
+    modes: MutableSequence[AddressMode] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum=AddressMode,
     )
-    reserved_ip_range = proto.Field(
+    reserved_ip_range: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    ip_addresses = proto.RepeatedField(
+    ip_addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -114,26 +114,26 @@ class FileShareConfig(proto.Message):
             that this file share has been restored from.
 
             This field is a member of `oneof`_ ``source``.
-        nfs_export_options (Sequence[google.cloud.filestore_v1.types.NfsExportOptions]):
+        nfs_export_options (MutableSequence[google.cloud.filestore_v1.types.NfsExportOptions]):
             Nfs Export Options.
             There is a limit of 10 export options per file
             share.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    capacity_gb = proto.Field(
+    capacity_gb: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    source_backup = proto.Field(
+    source_backup: str = proto.Field(
         proto.STRING,
         number=8,
         oneof="source",
     )
-    nfs_export_options = proto.RepeatedField(
+    nfs_export_options: MutableSequence["NfsExportOptions"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="NfsExportOptions",
@@ -144,7 +144,7 @@ class NfsExportOptions(proto.Message):
     r"""NFS export options specifications.
 
     Attributes:
-        ip_ranges (Sequence[str]):
+        ip_ranges (MutableSequence[str]):
             List of either an IPv4 addresses in the format
             ``{octet1}.{octet2}.{octet3}.{octet4}`` or CIDR ranges in
             the format
@@ -185,25 +185,25 @@ class NfsExportOptions(proto.Message):
         NO_ROOT_SQUASH = 1
         ROOT_SQUASH = 2
 
-    ip_ranges = proto.RepeatedField(
+    ip_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    access_mode = proto.Field(
+    access_mode: AccessMode = proto.Field(
         proto.ENUM,
         number=2,
         enum=AccessMode,
     )
-    squash_mode = proto.Field(
+    squash_mode: SquashMode = proto.Field(
         proto.ENUM,
         number=3,
         enum=SquashMode,
     )
-    anon_uid = proto.Field(
+    anon_uid: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    anon_gid = proto.Field(
+    anon_gid: int = proto.Field(
         proto.INT64,
         number=5,
     )
@@ -230,14 +230,14 @@ class Instance(proto.Message):
             created.
         tier (google.cloud.filestore_v1.types.Instance.Tier):
             The service tier of the instance.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user provided
             metadata.
-        file_shares (Sequence[google.cloud.filestore_v1.types.FileShareConfig]):
+        file_shares (MutableSequence[google.cloud.filestore_v1.types.FileShareConfig]):
             File system shares on the instance.
             For this version, only a single file share is
             supported.
-        networks (Sequence[google.cloud.filestore_v1.types.NetworkConfig]):
+        networks (MutableSequence[google.cloud.filestore_v1.types.NetworkConfig]):
             VPC networks to which the instance is
             connected. For this version, only a single
             network is supported.
@@ -268,53 +268,53 @@ class Instance(proto.Message):
         BASIC_SSD = 4
         HIGH_SCALE_SSD = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    tier = proto.Field(
+    tier: Tier = proto.Field(
         proto.ENUM,
         number=8,
         enum=Tier,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=9,
     )
-    file_shares = proto.RepeatedField(
+    file_shares: MutableSequence["FileShareConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="FileShareConfig",
     )
-    networks = proto.RepeatedField(
+    networks: MutableSequence["NetworkConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="NetworkConfig",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    satisfies_pzs = proto.Field(
+    satisfies_pzs: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=13,
         message=wrappers_pb2.BoolValue,
@@ -339,15 +339,15 @@ class CreateInstanceRequest(proto.Message):
             resource][google.cloud.filestore.v1.Instance]
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Instance",
@@ -363,7 +363,7 @@ class GetInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -385,12 +385,12 @@ class UpdateInstanceRequest(proto.Message):
             Only fields specified in update_mask are updated.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Instance",
@@ -419,15 +419,15 @@ class RestoreInstanceRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_share = proto.Field(
+    file_share: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_backup = proto.Field(
+    source_backup: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="source",
@@ -443,7 +443,7 @@ class DeleteInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -472,23 +472,23 @@ class ListInstancesRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -498,7 +498,7 @@ class ListInstancesResponse(proto.Message):
     r"""ListInstancesResponse is the result of ListInstancesRequest.
 
     Attributes:
-        instances (Sequence[google.cloud.filestore_v1.types.Instance]):
+        instances (MutableSequence[google.cloud.filestore_v1.types.Instance]):
             A list of instances in the project for the specified
             location.
 
@@ -511,7 +511,7 @@ class ListInstancesResponse(proto.Message):
             The token you can use to retrieve the next
             page of results. Not returned if there are no
             more results in the list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -519,16 +519,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -550,7 +550,7 @@ class Backup(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the backup was
             created.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user provided
             metadata.
         capacity_gb (int):
@@ -592,55 +592,55 @@ class Backup(proto.Message):
         READY = 3
         DELETING = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    capacity_gb = proto.Field(
+    capacity_gb: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    storage_bytes = proto.Field(
+    storage_bytes: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    source_instance = proto.Field(
+    source_instance: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    source_file_share = proto.Field(
+    source_file_share: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    source_instance_tier = proto.Field(
+    source_instance_tier: "Instance.Tier" = proto.Field(
         proto.ENUM,
         number=10,
         enum="Instance.Tier",
     )
-    download_bytes = proto.Field(
+    download_bytes: int = proto.Field(
         proto.INT64,
         number=11,
     )
-    satisfies_pzs = proto.Field(
+    satisfies_pzs: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
         number=12,
         message=wrappers_pb2.BoolValue,
@@ -669,16 +669,16 @@ class CreateBackupRequest(proto.Message):
             trigger an INVALID_ARGUMENT error.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    backup = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Backup",
     )
-    backup_id = proto.Field(
+    backup_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -693,7 +693,7 @@ class DeleteBackupRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/backups/{backup_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -712,12 +712,12 @@ class UpdateBackupRequest(proto.Message):
             one path must be supplied in this field.
     """
 
-    backup = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Backup",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -733,7 +733,7 @@ class GetBackupRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/backups/{backup_id}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -762,23 +762,23 @@ class ListBackupsRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -788,7 +788,7 @@ class ListBackupsResponse(proto.Message):
     r"""ListBackupsResponse is the result of ListBackupsRequest.
 
     Attributes:
-        backups (Sequence[google.cloud.filestore_v1.types.Backup]):
+        backups (MutableSequence[google.cloud.filestore_v1.types.Backup]):
             A list of backups in the project for the specified location.
 
             If the ``{location}`` value in the request is "-", the
@@ -800,7 +800,7 @@ class ListBackupsResponse(proto.Message):
             The token you can use to retrieve the next
             page of results. Not returned if there are no
             more results in the list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -808,16 +808,16 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups = proto.RepeatedField(
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Backup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
