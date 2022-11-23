@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -182,9 +192,9 @@ class CloudFunctionsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudFunctionsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud functions service client.
@@ -228,10 +238,10 @@ class CloudFunctionsServiceAsyncClient:
 
     async def list_functions(
         self,
-        request: Union[functions.ListFunctionsRequest, dict] = None,
+        request: Optional[Union[functions.ListFunctionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFunctionsAsyncPager:
         r"""Returns a list of functions that belong to the
@@ -264,7 +274,7 @@ class CloudFunctionsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.ListFunctionsRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.ListFunctionsRequest, dict]]):
                 The request object. Request for the `ListFunctions`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -330,11 +340,11 @@ class CloudFunctionsServiceAsyncClient:
 
     async def get_function(
         self,
-        request: Union[functions.GetFunctionRequest, dict] = None,
+        request: Optional[Union[functions.GetFunctionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.CloudFunction:
         r"""Returns a function with the given name from the
@@ -367,7 +377,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.GetFunctionRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.GetFunctionRequest, dict]]):
                 The request object. Request for the `GetFunction`
                 method.
             name (:class:`str`):
@@ -445,12 +455,12 @@ class CloudFunctionsServiceAsyncClient:
 
     async def create_function(
         self,
-        request: Union[functions.CreateFunctionRequest, dict] = None,
+        request: Optional[Union[functions.CreateFunctionRequest, dict]] = None,
         *,
-        location: str = None,
-        function: functions.CloudFunction = None,
+        location: Optional[str] = None,
+        function: Optional[functions.CloudFunction] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new function. If a function with the given name
@@ -492,7 +502,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.CreateFunctionRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.CreateFunctionRequest, dict]]):
                 The request object. Request for the `CreateFunction`
                 method.
             location (:class:`str`):
@@ -577,11 +587,11 @@ class CloudFunctionsServiceAsyncClient:
 
     async def update_function(
         self,
-        request: Union[functions.UpdateFunctionRequest, dict] = None,
+        request: Optional[Union[functions.UpdateFunctionRequest, dict]] = None,
         *,
-        function: functions.CloudFunction = None,
+        function: Optional[functions.CloudFunction] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates existing function.
@@ -620,7 +630,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.UpdateFunctionRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.UpdateFunctionRequest, dict]]):
                 The request object. Request for the `UpdateFunction`
                 method.
             function (:class:`google.cloud.functions_v1.types.CloudFunction`):
@@ -709,11 +719,11 @@ class CloudFunctionsServiceAsyncClient:
 
     async def delete_function(
         self,
-        request: Union[functions.DeleteFunctionRequest, dict] = None,
+        request: Optional[Union[functions.DeleteFunctionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a function with the given name from the
@@ -752,7 +762,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.DeleteFunctionRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.DeleteFunctionRequest, dict]]):
                 The request object. Request for the `DeleteFunction`
                 method.
             name (:class:`str`):
@@ -846,12 +856,12 @@ class CloudFunctionsServiceAsyncClient:
 
     async def call_function(
         self,
-        request: Union[functions.CallFunctionRequest, dict] = None,
+        request: Optional[Union[functions.CallFunctionRequest, dict]] = None,
         *,
-        name: str = None,
-        data: str = None,
+        name: Optional[str] = None,
+        data: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.CallFunctionResponse:
         r"""Synchronously invokes a deployed Cloud Function. To be used for
@@ -887,7 +897,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.CallFunctionRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.CallFunctionRequest, dict]]):
                 The request object. Request for the `CallFunction`
                 method.
             name (:class:`str`):
@@ -960,10 +970,10 @@ class CloudFunctionsServiceAsyncClient:
 
     async def generate_upload_url(
         self,
-        request: Union[functions.GenerateUploadUrlRequest, dict] = None,
+        request: Optional[Union[functions.GenerateUploadUrlRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.GenerateUploadUrlResponse:
         r"""Returns a signed URL for uploading a function source code. For
@@ -1021,7 +1031,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.GenerateUploadUrlRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.GenerateUploadUrlRequest, dict]]):
                 The request object. Request of `GenerateSourceUploadUrl`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1064,10 +1074,10 @@ class CloudFunctionsServiceAsyncClient:
 
     async def generate_download_url(
         self,
-        request: Union[functions.GenerateDownloadUrlRequest, dict] = None,
+        request: Optional[Union[functions.GenerateDownloadUrlRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.GenerateDownloadUrlResponse:
         r"""Returns a signed URL for downloading deployed
@@ -1103,7 +1113,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]):
+            request (Optional[Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]]):
                 The request object. Request of `GenerateDownloadUrl`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1146,10 +1156,10 @@ class CloudFunctionsServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified
@@ -1183,7 +1193,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1290,10 +1300,10 @@ class CloudFunctionsServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1328,7 +1338,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1435,10 +1445,10 @@ class CloudFunctionsServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
@@ -1474,7 +1484,7 @@ class CloudFunctionsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

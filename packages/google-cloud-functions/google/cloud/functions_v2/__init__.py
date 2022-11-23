@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.functions import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.function_service import FunctionServiceAsyncClient, FunctionServiceClient
 from .types.functions import (

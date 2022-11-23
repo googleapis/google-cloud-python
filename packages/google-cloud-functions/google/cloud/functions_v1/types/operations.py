@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -66,38 +68,38 @@ class OperationMetadataV1(proto.Message):
             ``projects/<project-number>/locations/<region>/builds/<build-id>``.
     """
 
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: "OperationType" = proto.Field(
         proto.ENUM,
         number=2,
         enum="OperationType",
     )
-    request = proto.Field(
+    request: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=3,
         message=any_pb2.Any,
     )
-    version_id = proto.Field(
+    version_id: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    build_id = proto.Field(
+    build_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    source_token = proto.Field(
+    source_token: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    build_name = proto.Field(
+    build_name: str = proto.Field(
         proto.STRING,
         number=8,
     )

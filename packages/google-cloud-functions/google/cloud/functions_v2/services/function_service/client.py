@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -68,7 +79,7 @@ class FunctionServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[FunctionServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -524,8 +535,8 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, FunctionServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, FunctionServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the function service client.
@@ -539,7 +550,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
             transport (Union[str, FunctionServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -569,6 +580,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -621,11 +633,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def get_function(
         self,
-        request: Union[functions.GetFunctionRequest, dict] = None,
+        request: Optional[Union[functions.GetFunctionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.Function:
         r"""Returns a function with the given name from the
@@ -726,11 +738,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def list_functions(
         self,
-        request: Union[functions.ListFunctionsRequest, dict] = None,
+        request: Optional[Union[functions.ListFunctionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFunctionsPager:
         r"""Returns a list of functions that belong to the
@@ -847,13 +859,13 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def create_function(
         self,
-        request: Union[functions.CreateFunctionRequest, dict] = None,
+        request: Optional[Union[functions.CreateFunctionRequest, dict]] = None,
         *,
-        parent: str = None,
-        function: functions.Function = None,
-        function_id: str = None,
+        parent: Optional[str] = None,
+        function: Optional[functions.Function] = None,
+        function_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new function. If a function with the given name
@@ -988,12 +1000,12 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def update_function(
         self,
-        request: Union[functions.UpdateFunctionRequest, dict] = None,
+        request: Optional[Union[functions.UpdateFunctionRequest, dict]] = None,
         *,
-        function: functions.Function = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        function: Optional[functions.Function] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates existing function.
@@ -1118,11 +1130,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def delete_function(
         self,
-        request: Union[functions.DeleteFunctionRequest, dict] = None,
+        request: Optional[Union[functions.DeleteFunctionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a function with the given name from the
@@ -1245,10 +1257,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def generate_upload_url(
         self,
-        request: Union[functions.GenerateUploadUrlRequest, dict] = None,
+        request: Optional[Union[functions.GenerateUploadUrlRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.GenerateUploadUrlResponse:
         r"""Returns a signed URL for uploading a function source code. For
@@ -1349,10 +1361,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def generate_download_url(
         self,
-        request: Union[functions.GenerateDownloadUrlRequest, dict] = None,
+        request: Optional[Union[functions.GenerateDownloadUrlRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.GenerateDownloadUrlResponse:
         r"""Returns a signed URL for downloading deployed
@@ -1433,11 +1445,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def list_runtimes(
         self,
-        request: Union[functions.ListRuntimesRequest, dict] = None,
+        request: Optional[Union[functions.ListRuntimesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> functions.ListRuntimesResponse:
         r"""Returns a list of runtimes that are supported for the
@@ -1548,10 +1560,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1602,10 +1614,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1656,10 +1668,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
@@ -1776,10 +1788,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1897,10 +1909,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
@@ -1956,10 +1968,10 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
     def list_locations(
         self,
-        request: locations_pb2.ListLocationsRequest = None,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.

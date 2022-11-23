@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -90,9 +92,9 @@ class Function(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             Cloud Function.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this Cloud Function.
-        state_messages (Sequence[google.cloud.functions_v2.types.StateMessage]):
+        state_messages (MutableSequence[google.cloud.functions_v2.types.StateMessage]):
             Output only. State Messages for this Cloud
             Function.
     """
@@ -106,50 +108,50 @@ class Function(proto.Message):
         DELETING = 4
         UNKNOWN = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.ENUM,
         number=10,
         enum="Environment",
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    build_config = proto.Field(
+    build_config: "BuildConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="BuildConfig",
     )
-    service_config = proto.Field(
+    service_config: "ServiceConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ServiceConfig",
     )
-    event_trigger = proto.Field(
+    event_trigger: "EventTrigger" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="EventTrigger",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    state_messages = proto.RepeatedField(
+    state_messages: MutableSequence["StateMessage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="StateMessage",
@@ -176,16 +178,16 @@ class StateMessage(proto.Message):
         WARNING = 2
         INFO = 3
 
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=1,
         enum=Severity,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -211,15 +213,15 @@ class StorageSource(proto.Message):
             generation will be used.
     """
 
-    bucket = proto.Field(
+    bucket: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    object_ = proto.Field(
+    object_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    generation = proto.Field(
+    generation: int = proto.Field(
         proto.INT64,
         number=3,
     )
@@ -273,34 +275,34 @@ class RepoSource(proto.Message):
             does NOT match the revision regex.
     """
 
-    branch_name = proto.Field(
+    branch_name: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="revision",
     )
-    tag_name = proto.Field(
+    tag_name: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="revision",
     )
-    commit_sha = proto.Field(
+    commit_sha: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="revision",
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repo_name = proto.Field(
+    repo_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dir_ = proto.Field(
+    dir_: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    invert_regex = proto.Field(
+    invert_regex: bool = proto.Field(
         proto.BOOL,
         number=7,
     )
@@ -329,13 +331,13 @@ class Source(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    storage_source = proto.Field(
+    storage_source: "StorageSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="StorageSource",
     )
-    repo_source = proto.Field(
+    repo_source: "RepoSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
@@ -356,12 +358,12 @@ class SourceProvenance(proto.Message):
             with any revisions resolved.
     """
 
-    resolved_storage_source = proto.Field(
+    resolved_storage_source: "StorageSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="StorageSource",
     )
-    resolved_repo_source = proto.Field(
+    resolved_repo_source: "RepoSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RepoSource",
@@ -408,7 +410,7 @@ class BuildConfig(proto.Message):
             (service-<project_number>@gcf-admin-robot.iam.gserviceaccount.com)
             must be granted the role Cloud Build Custom Workers Builder
             (roles/cloudbuild.customworkers.builder) in the project.
-        environment_variables (Mapping[str, str]):
+        environment_variables (MutableMapping[str, str]):
             User-provided build-time environment
             variables for the function
         docker_repository (str):
@@ -427,38 +429,38 @@ class BuildConfig(proto.Message):
             'DOCKER'.
     """
 
-    build = proto.Field(
+    build: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    runtime = proto.Field(
+    runtime: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    entry_point = proto.Field(
+    entry_point: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    source = proto.Field(
+    source: "Source" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Source",
     )
-    source_provenance = proto.Field(
+    source_provenance: "SourceProvenance" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="SourceProvenance",
     )
-    worker_pool = proto.Field(
+    worker_pool: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    environment_variables = proto.MapField(
+    environment_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    docker_repository = proto.Field(
+    docker_repository: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -486,7 +488,7 @@ class ServiceConfig(proto.Message):
             See
             https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go
             a full description.
-        environment_variables (Mapping[str, str]):
+        environment_variables (MutableMapping[str, str]):
             Environment variables that shall be available
             during function execution.
         max_instance_count (int):
@@ -540,9 +542,9 @@ class ServiceConfig(proto.Message):
             ignoring any traffic split settings, if any. On
             GetFunction, true will be returned if the latest
             revision is serving 100% of traffic.
-        secret_environment_variables (Sequence[google.cloud.functions_v2.types.SecretEnvVar]):
+        secret_environment_variables (MutableSequence[google.cloud.functions_v2.types.SecretEnvVar]):
             Secret environment variables configuration.
-        secret_volumes (Sequence[google.cloud.functions_v2.types.SecretVolume]):
+        secret_volumes (MutableSequence[google.cloud.functions_v2.types.SecretVolume]):
             Secret volumes configuration.
         revision (str):
             Output only. The name of service revision.
@@ -570,68 +572,68 @@ class ServiceConfig(proto.Message):
         ALLOW_INTERNAL_ONLY = 2
         ALLOW_INTERNAL_AND_GCLB = 3
 
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    timeout_seconds = proto.Field(
+    timeout_seconds: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    available_memory = proto.Field(
+    available_memory: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    environment_variables = proto.MapField(
+    environment_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    max_instance_count = proto.Field(
+    max_instance_count: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    min_instance_count = proto.Field(
+    min_instance_count: int = proto.Field(
         proto.INT32,
         number=12,
     )
-    vpc_connector = proto.Field(
+    vpc_connector: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    vpc_connector_egress_settings = proto.Field(
+    vpc_connector_egress_settings: VpcConnectorEgressSettings = proto.Field(
         proto.ENUM,
         number=7,
         enum=VpcConnectorEgressSettings,
     )
-    ingress_settings = proto.Field(
+    ingress_settings: IngressSettings = proto.Field(
         proto.ENUM,
         number=8,
         enum=IngressSettings,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    all_traffic_on_latest_revision = proto.Field(
+    all_traffic_on_latest_revision: bool = proto.Field(
         proto.BOOL,
         number=16,
     )
-    secret_environment_variables = proto.RepeatedField(
+    secret_environment_variables: MutableSequence["SecretEnvVar"] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
         message="SecretEnvVar",
     )
-    secret_volumes = proto.RepeatedField(
+    secret_volumes: MutableSequence["SecretVolume"] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message="SecretVolume",
     )
-    revision = proto.Field(
+    revision: str = proto.Field(
         proto.STRING,
         number=18,
     )
@@ -662,19 +664,19 @@ class SecretEnvVar(proto.Message):
             reflected until new instances start.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    secret = proto.Field(
+    secret: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -703,7 +705,7 @@ class SecretVolume(proto.Message):
         secret (str):
             Name of the secret in secret manager (not the
             full resource name).
-        versions (Sequence[google.cloud.functions_v2.types.SecretVolume.SecretVersion]):
+        versions (MutableSequence[google.cloud.functions_v2.types.SecretVolume.SecretVersion]):
             List of secret versions to mount for this secret. If empty,
             the ``latest`` version of the secret will be made available
             in a file named after the secret under the mount point.
@@ -726,28 +728,28 @@ class SecretVolume(proto.Message):
                 secret value file at ``/etc/secrets/secret_foo``.
         """
 
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        path = proto.Field(
+        path: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    mount_path = proto.Field(
+    mount_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    secret = proto.Field(
+    secret: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    versions = proto.RepeatedField(
+    versions: MutableSequence[SecretVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=SecretVersion,
@@ -774,7 +776,7 @@ class EventTrigger(proto.Message):
             Required. The type of event to observe. For example:
             ``google.cloud.audit.log.v1.written`` or
             ``google.cloud.pubsub.topic.v1.messagePublished``.
-        event_filters (Sequence[google.cloud.functions_v2.types.EventFilter]):
+        event_filters (MutableSequence[google.cloud.functions_v2.types.EventFilter]):
             Criteria used to filter events.
         pubsub_topic (str):
             Optional. The name of a Pub/Sub topic in the same project
@@ -809,37 +811,37 @@ class EventTrigger(proto.Message):
         RETRY_POLICY_DO_NOT_RETRY = 1
         RETRY_POLICY_RETRY = 2
 
-    trigger = proto.Field(
+    trigger: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    trigger_region = proto.Field(
+    trigger_region: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    event_type = proto.Field(
+    event_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    event_filters = proto.RepeatedField(
+    event_filters: MutableSequence["EventFilter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="EventFilter",
     )
-    pubsub_topic = proto.Field(
+    pubsub_topic: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    service_account_email = proto.Field(
+    service_account_email: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    retry_policy = proto.Field(
+    retry_policy: RetryPolicy = proto.Field(
         proto.ENUM,
         number=7,
         enum=RetryPolicy,
     )
-    channel = proto.Field(
+    channel: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -862,15 +864,15 @@ class EventFilter(proto.Message):
             The only allowed value is ``match-path-pattern``.
     """
 
-    attribute = proto.Field(
+    attribute: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    operator = proto.Field(
+    operator: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -885,7 +887,7 @@ class GetFunctionRequest(proto.Message):
             details should be obtained.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -923,23 +925,23 @@ class ListFunctionsRequest(proto.Message):
             See https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -949,13 +951,13 @@ class ListFunctionsResponse(proto.Message):
     r"""Response for the ``ListFunctions`` method.
 
     Attributes:
-        functions (Sequence[google.cloud.functions_v2.types.Function]):
+        functions (MutableSequence[google.cloud.functions_v2.types.Function]):
             The functions that match the request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached. The
             response does not include any functions from
             these locations.
@@ -965,16 +967,16 @@ class ListFunctionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    functions = proto.RepeatedField(
+    functions: MutableSequence["Function"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Function",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -998,16 +1000,16 @@ class CreateFunctionRequest(proto.Message):
             are /[a-z][0-9]-/.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    function = proto.Field(
+    function: "Function" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Function",
     )
-    function_id = proto.Field(
+    function_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1025,12 +1027,12 @@ class UpdateFunctionRequest(proto.Message):
             fields in the request will be updated.
     """
 
-    function = proto.Field(
+    function: "Function" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Function",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -1046,7 +1048,7 @@ class DeleteFunctionRequest(proto.Message):
             should be deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1062,7 +1064,7 @@ class GenerateUploadUrlRequest(proto.Message):
             format ``projects/*/locations/*``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1090,11 +1092,11 @@ class GenerateUploadUrlResponse(proto.Message):
             object.
     """
 
-    upload_url = proto.Field(
+    upload_url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    storage_source = proto.Field(
+    storage_source: "StorageSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StorageSource",
@@ -1111,7 +1113,7 @@ class GenerateDownloadUrlRequest(proto.Message):
             should be generated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1127,7 +1129,7 @@ class GenerateDownloadUrlResponse(proto.Message):
             download.
     """
 
-    download_url = proto.Field(
+    download_url: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1147,11 +1149,11 @@ class ListRuntimesRequest(proto.Message):
             https://google.aip.dev/160.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1161,7 +1163,7 @@ class ListRuntimesResponse(proto.Message):
     r"""Response for the ``ListRuntimes`` method.
 
     Attributes:
-        runtimes (Sequence[google.cloud.functions_v2.types.ListRuntimesResponse.Runtime]):
+        runtimes (MutableSequence[google.cloud.functions_v2.types.ListRuntimesResponse.Runtime]):
             The runtimes that match the request.
     """
 
@@ -1189,37 +1191,37 @@ class ListRuntimesResponse(proto.Message):
             stage (google.cloud.functions_v2.types.ListRuntimesResponse.RuntimeStage):
                 The stage of life this runtime is in, e.g.,
                 BETA, GA, etc.
-            warnings (Sequence[str]):
+            warnings (MutableSequence[str]):
                 Warning messages, e.g., a deprecation
                 warning.
             environment (google.cloud.functions_v2.types.Environment):
                 The environment for the runtime.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        stage = proto.Field(
+        stage: "ListRuntimesResponse.RuntimeStage" = proto.Field(
             proto.ENUM,
             number=2,
             enum="ListRuntimesResponse.RuntimeStage",
         )
-        warnings = proto.RepeatedField(
+        warnings: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        environment = proto.Field(
+        environment: "Environment" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Environment",
         )
 
-    runtimes = proto.RepeatedField(
+    runtimes: MutableSequence[Runtime] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=Runtime,
@@ -1253,46 +1255,46 @@ class OperationMetadata(proto.Message):
         request_resource (google.protobuf.any_pb2.Any):
             The original request that started the
             operation.
-        stages (Sequence[google.cloud.functions_v2.types.Stage]):
+        stages (MutableSequence[google.cloud.functions_v2.types.Stage]):
             Mechanism for reporting in-progress stages
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cancel_requested = proto.Field(
+    cancel_requested: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    request_resource = proto.Field(
+    request_resource: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=8,
         message=any_pb2.Any,
     )
-    stages = proto.RepeatedField(
+    stages: MutableSequence["Stage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="Stage",
@@ -1314,7 +1316,7 @@ class Stage(proto.Message):
             Resource of the Stage
         resource_uri (str):
             Link to the current Stage resource
-        state_messages (Sequence[google.cloud.functions_v2.types.StateMessage]):
+        state_messages (MutableSequence[google.cloud.functions_v2.types.StateMessage]):
             State messages from the current Stage.
     """
 
@@ -1335,29 +1337,29 @@ class Stage(proto.Message):
         IN_PROGRESS = 2
         COMPLETE = 3
 
-    name = proto.Field(
+    name: Name = proto.Field(
         proto.ENUM,
         number=1,
         enum=Name,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    resource_uri = proto.Field(
+    resource_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    state_messages = proto.RepeatedField(
+    state_messages: MutableSequence["StateMessage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="StateMessage",
