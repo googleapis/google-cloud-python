@@ -23,6 +23,9 @@ from typing import Callable, Dict, List, Optional
 
 from google.oauth2 import service_account
 
+from google.api_core import retry as retries
+from google.api_core import exceptions as core_exceptions
+
 from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
 from google.api_core.exceptions import InvalidArgument
@@ -40,6 +43,20 @@ from tests.system.test__helpers import (
     EMULATOR_CREDS,
     FIRESTORE_EMULATOR,
 )
+
+
+RETRIES = retries.Retry(
+    initial=0.1,
+    maximum=60.0,
+    multiplier=1.3,
+    predicate=retries.if_exception_type(
+        core_exceptions.DeadlineExceeded,
+        core_exceptions.InternalServerError,
+        core_exceptions.ServiceUnavailable,
+    ),
+    deadline=60.0,
+)
+
 
 pytestmark = pytest.mark.asyncio
 
@@ -81,7 +98,7 @@ def event_loop():
 
 
 async def test_collections(client):
-    collections = [x async for x in client.collections()]
+    collections = [x async for x in client.collections(retry=RETRIES)]
     assert isinstance(collections, list)
 
 
@@ -90,7 +107,7 @@ async def test_collections_w_import():
 
     credentials, project = _get_credentials_and_project()
     client = firestore.AsyncClient(project=project, credentials=credentials)
-    collections = [x async for x in client.collections()]
+    collections = [x async for x in client.collections(retry=RETRIES)]
 
     assert isinstance(collections, list)
 
