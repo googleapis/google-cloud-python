@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.lifesciences import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.lifesciences_v2beta.services.workflows_service_v2_beta.async_client import (
     WorkflowsServiceV2BetaAsyncClient,

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-life-sciences
 
 
-# [START lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync_77cc9e21]
+# [START lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -52,4 +52,4 @@ def sample_run_pipeline():
     # Handle the response
     print(response)
 
-# [END lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync_77cc9e21]
+# [END lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync]

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
@@ -65,7 +67,7 @@ class RunPipelineRequest(proto.Message):
         pipeline (google.cloud.lifesciences_v2beta.types.Pipeline):
             Required. The description of the pipeline to
             run.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             User-defined labels to associate with the returned
             operation. These labels are not propagated to any Google
             Cloud Platform resources used by the operation, and can be
@@ -83,21 +85,21 @@ class RunPipelineRequest(proto.Message):
             topic or notifications will not be sent.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    pipeline = proto.Field(
+    pipeline: "Pipeline" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Pipeline",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    pub_sub_topic = proto.Field(
+    pub_sub_topic: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -115,17 +117,25 @@ class Pipeline(proto.Message):
     containers.
 
     Attributes:
-        actions (Sequence[google.cloud.lifesciences_v2beta.types.Action]):
+        actions (MutableSequence[google.cloud.lifesciences_v2beta.types.Action]):
             The list of actions to execute, in the order
             they are specified.
         resources (google.cloud.lifesciences_v2beta.types.Resources):
             The resources required for execution.
-        environment (Mapping[str, str]):
+        environment (MutableMapping[str, str]):
             The environment to pass into every action.
             Each action can also specify additional
             environment variables but cannot delete an entry
             from this map (though they can overwrite it with
             a different value).
+        encrypted_environment (google.cloud.lifesciences_v2beta.types.Secret):
+            The encrypted environment to pass into every action. Each
+            action can also specify its own encrypted environment.
+
+            The secret must decrypt to a JSON-encoded dictionary where
+            key-value pairs serve as environment variable names and
+            their values. The decoded environment variables can
+            overwrite the values specified by the ``environment`` field.
         timeout (google.protobuf.duration_pb2.Duration):
             The maximum amount of time to give the pipeline to complete.
             This includes the time spent waiting for a worker to be
@@ -136,22 +146,27 @@ class Pipeline(proto.Message):
             If unspecified, it will default to 7 days.
     """
 
-    actions = proto.RepeatedField(
+    actions: MutableSequence["Action"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Action",
     )
-    resources = proto.Field(
+    resources: "Resources" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Resources",
     )
-    environment = proto.MapField(
+    environment: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    timeout = proto.Field(
+    encrypted_environment: "Secret" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Secret",
+    )
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=4,
         message=duration_pb2.Duration,
@@ -189,7 +204,7 @@ class Action(proto.Message):
             specified in the
             [google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials]
             field.
-        commands (Sequence[str]):
+        commands (MutableSequence[str]):
             If specified, overrides the ``CMD`` specified in the
             container. If the container also has an ``ENTRYPOINT`` the
             values are used as entrypoint arguments. Otherwise, they are
@@ -197,7 +212,7 @@ class Action(proto.Message):
         entrypoint (str):
             If specified, overrides the ``ENTRYPOINT`` specified in the
             container.
-        environment (Mapping[str, str]):
+        environment (MutableMapping[str, str]):
             The environment to pass into the container. This environment
             is merged with values specified in the
             [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
@@ -217,13 +232,23 @@ class Action(proto.Message):
             of the last non-background action that executed. This can be
             used by workflow engine authors to determine whether an
             individual action has succeeded or failed.
+        encrypted_environment (google.cloud.lifesciences_v2beta.types.Secret):
+            The encrypted environment to pass into the container. This
+            environment is merged with values specified in the
+            [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
+            message, overwriting any duplicate values.
+
+            The secret must decrypt to a JSON-encoded dictionary where
+            key-value pairs serve as environment variable names and
+            their values. The decoded environment variables can
+            overwrite the values specified by the ``environment`` field.
         pid_namespace (str):
             An optional identifier for a PID namespace to
             run the action inside. Multiple actions should
             use the same string to share a namespace.  If
             unspecified, a separate isolated namespace is
             used.
-        port_mappings (Mapping[int, int]):
+        port_mappings (MutableMapping[int, int]):
             A map of containers to host port mappings for this
             container. If the container already specifies exposed ports,
             use the ``PUBLISH_EXPOSED_PORTS`` flag instead.
@@ -232,7 +257,7 @@ class Action(proto.Message):
             an unused random port is assigned. To determine the
             resulting port number, consult the ``ContainerStartedEvent``
             in the operation metadata.
-        mounts (Sequence[google.cloud.lifesciences_v2beta.types.Mount]):
+        mounts (MutableSequence[google.cloud.lifesciences_v2beta.types.Mount]):
             A list of mounts to make available to the action.
 
             In addition to the values specified here, every action has a
@@ -252,7 +277,7 @@ class Action(proto.Message):
                   <li><code>/google/logs/action/*/stderr</code> The complete contents of
                   each individual action's standard error output.</li>
                 </ul>
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels to associate with the action. This
             field is provided to assist workflow engine
             authors in identifying actions (for example, to
@@ -325,85 +350,90 @@ class Action(proto.Message):
             external network.
     """
 
-    container_name = proto.Field(
+    container_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    commands = proto.RepeatedField(
+    commands: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    entrypoint = proto.Field(
+    entrypoint: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    environment = proto.MapField(
+    environment: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    pid_namespace = proto.Field(
+    encrypted_environment: "Secret" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="Secret",
+    )
+    pid_namespace: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    port_mappings = proto.MapField(
+    port_mappings: MutableMapping[int, int] = proto.MapField(
         proto.INT32,
         proto.INT32,
         number=8,
     )
-    mounts = proto.RepeatedField(
+    mounts: MutableSequence["Mount"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
         message="Mount",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    credentials = proto.Field(
+    credentials: "Secret" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="Secret",
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=12,
         message=duration_pb2.Duration,
     )
-    ignore_exit_status = proto.Field(
+    ignore_exit_status: bool = proto.Field(
         proto.BOOL,
         number=13,
     )
-    run_in_background = proto.Field(
+    run_in_background: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    always_run = proto.Field(
+    always_run: bool = proto.Field(
         proto.BOOL,
         number=15,
     )
-    enable_fuse = proto.Field(
+    enable_fuse: bool = proto.Field(
         proto.BOOL,
         number=16,
     )
-    publish_exposed_ports = proto.Field(
+    publish_exposed_ports: bool = proto.Field(
         proto.BOOL,
         number=17,
     )
-    disable_image_prefetch = proto.Field(
+    disable_image_prefetch: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    disable_standard_error_capture = proto.Field(
+    disable_standard_error_capture: bool = proto.Field(
         proto.BOOL,
         number=19,
     )
-    block_external_network = proto.Field(
+    block_external_network: bool = proto.Field(
         proto.BOOL,
         number=20,
     )
@@ -424,11 +454,11 @@ class Secret(proto.Message):
             method. This field is intentionally unaudited.
     """
 
-    key_name = proto.Field(
+    key_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cipher_text = proto.Field(
+    cipher_text: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -450,15 +480,15 @@ class Mount(proto.Message):
             the container.
     """
 
-    disk = proto.Field(
+    disk: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    read_only = proto.Field(
+    read_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -470,25 +500,25 @@ class Resources(proto.Message):
     run will fail.
 
     Attributes:
-        regions (Sequence[str]):
+        regions (MutableSequence[str]):
             The list of regions allowed for VM allocation. If set, the
             ``zones`` field must not be set.
-        zones (Sequence[str]):
+        zones (MutableSequence[str]):
             The list of zones allowed for VM allocation. If set, the
             ``regions`` field must not be set.
         virtual_machine (google.cloud.lifesciences_v2beta.types.VirtualMachine):
             The virtual machine specification.
     """
 
-    regions = proto.RepeatedField(
+    regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    zones = proto.RepeatedField(
+    zones: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    virtual_machine = proto.Field(
+    virtual_machine: "VirtualMachine" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="VirtualMachine",
@@ -510,7 +540,7 @@ class VirtualMachine(proto.Message):
             for more specifications on creating a custom machine type.
         preemptible (bool):
             If true, allocate a preemptible VM.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional set of labels to apply to the VM and any attached
             disk resources. These labels must adhere to the `name and
             value
@@ -523,14 +553,14 @@ class VirtualMachine(proto.Message):
             Labels applied at creation time to the VM. Applied on a
             best-effort basis to attached disk resources shortly after
             VM creation.
-        disks (Sequence[google.cloud.lifesciences_v2beta.types.Disk]):
+        disks (MutableSequence[google.cloud.lifesciences_v2beta.types.Disk]):
             The list of disks to create and attach to the VM.
 
             Specify either the ``volumes[]`` field or the ``disks[]``
             field, but not both.
         network (google.cloud.lifesciences_v2beta.types.Network):
             The VM network configuration.
-        accelerators (Sequence[google.cloud.lifesciences_v2beta.types.Accelerator]):
+        accelerators (MutableSequence[google.cloud.lifesciences_v2beta.types.Accelerator]):
             The list of accelerators to attach to the VM.
         service_account (google.cloud.lifesciences_v2beta.types.ServiceAccount):
             The service account to install on the VM.
@@ -581,7 +611,7 @@ class VirtualMachine(proto.Message):
         enable_stackdriver_monitoring (bool):
             Whether Stackdriver monitoring should be
             enabled on the VM.
-        docker_cache_images (Sequence[str]):
+        docker_cache_images (MutableSequence[str]):
             The Compute Engine Disk Images to use as a Docker cache. The
             disks will be mounted into the Docker folder in a way that
             the images present in the cache will not need to be pulled.
@@ -593,75 +623,83 @@ class VirtualMachine(proto.Message):
             pulled. Any images pulled that are not cached will be stored
             on the first cache disk instead of the boot disk. Only a
             single image is supported.
-        volumes (Sequence[google.cloud.lifesciences_v2beta.types.Volume]):
+        volumes (MutableSequence[google.cloud.lifesciences_v2beta.types.Volume]):
             The list of disks and other storage to create or attach to
             the VM.
 
             Specify either the ``volumes[]`` field or the ``disks[]``
             field, but not both.
+        reservation (str):
+            If specified, the VM will only be allocated
+            inside the matching reservation. It will fail if
+            the VM parameters don't match the reservation.
     """
 
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    preemptible = proto.Field(
+    preemptible: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    disks = proto.RepeatedField(
+    disks: MutableSequence["Disk"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="Disk",
     )
-    network = proto.Field(
+    network: "Network" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Network",
     )
-    accelerators = proto.RepeatedField(
+    accelerators: MutableSequence["Accelerator"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="Accelerator",
     )
-    service_account = proto.Field(
+    service_account: "ServiceAccount" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="ServiceAccount",
     )
-    boot_disk_size_gb = proto.Field(
+    boot_disk_size_gb: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    cpu_platform = proto.Field(
+    cpu_platform: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    boot_image = proto.Field(
+    boot_image: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    nvidia_driver_version = proto.Field(
+    nvidia_driver_version: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    enable_stackdriver_monitoring = proto.Field(
+    enable_stackdriver_monitoring: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    docker_cache_images = proto.RepeatedField(
+    docker_cache_images: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
-    volumes = proto.RepeatedField(
+    volumes: MutableSequence["Volume"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="Volume",
+    )
+    reservation: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
 
 
@@ -673,18 +711,18 @@ class ServiceAccount(proto.Message):
             Email address of the service account. If not
             specified, the default Compute Engine service
             account for the project will be used.
-        scopes (Sequence[str]):
+        scopes (MutableSequence[str]):
             List of scopes to be enabled for this service
             account on the VM, in addition to the
             cloud-platform API scope that will be added by
             default.
     """
 
-    email = proto.Field(
+    email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    scopes = proto.RepeatedField(
+    scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -710,11 +748,11 @@ class Accelerator(proto.Message):
             How many accelerators of this type to attach.
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -754,15 +792,15 @@ class Network(proto.Message):
             in.
     """
 
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    use_private_address = proto.Field(
+    use_private_address: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -802,19 +840,19 @@ class Disk(proto.Message):
             attaching it to the VM.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    size_gb = proto.Field(
+    size_gb: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    source_image = proto.Field(
+    source_image: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -854,23 +892,23 @@ class Volume(proto.Message):
             This field is a member of `oneof`_ ``storage``.
     """
 
-    volume = proto.Field(
+    volume: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    persistent_disk = proto.Field(
+    persistent_disk: "PersistentDisk" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="storage",
         message="PersistentDisk",
     )
-    existing_disk = proto.Field(
+    existing_disk: "ExistingDisk" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="storage",
         message="ExistingDisk",
     )
-    nfs_mount = proto.Field(
+    nfs_mount: "NFSMount" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="storage",
@@ -903,15 +941,15 @@ class PersistentDisk(proto.Message):
             it to the VM.
     """
 
-    size_gb = proto.Field(
+    size_gb: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_image = proto.Field(
+    source_image: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -937,7 +975,7 @@ class ExistingDisk(proto.Message):
             be shared.
     """
 
-    disk = proto.Field(
+    disk: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -952,7 +990,7 @@ class NFSMount(proto.Message):
             \`address:/mount".
     """
 
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -965,10 +1003,10 @@ class Metadata(proto.Message):
     Attributes:
         pipeline (google.cloud.lifesciences_v2beta.types.Pipeline):
             The pipeline this operation represents.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The user-defined labels associated with this
             operation.
-        events (Sequence[google.cloud.lifesciences_v2beta.types.Event]):
+        events (MutableSequence[google.cloud.lifesciences_v2beta.types.Event]):
             The list of events that have happened so far
             during the execution of this operation.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -986,37 +1024,37 @@ class Metadata(proto.Message):
             sent.
     """
 
-    pipeline = proto.Field(
+    pipeline: "Pipeline" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Pipeline",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    events = proto.RepeatedField(
+    events: MutableSequence["Event"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="Event",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    pub_sub_topic = proto.Field(
+    pub_sub_topic: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -1093,70 +1131,70 @@ class Event(proto.Message):
             This field is a member of `oneof`_ ``details``.
     """
 
-    timestamp = proto.Field(
+    timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    delayed = proto.Field(
+    delayed: "DelayedEvent" = proto.Field(
         proto.MESSAGE,
         number=17,
         oneof="details",
         message="DelayedEvent",
     )
-    worker_assigned = proto.Field(
+    worker_assigned: "WorkerAssignedEvent" = proto.Field(
         proto.MESSAGE,
         number=18,
         oneof="details",
         message="WorkerAssignedEvent",
     )
-    worker_released = proto.Field(
+    worker_released: "WorkerReleasedEvent" = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="details",
         message="WorkerReleasedEvent",
     )
-    pull_started = proto.Field(
+    pull_started: "PullStartedEvent" = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="details",
         message="PullStartedEvent",
     )
-    pull_stopped = proto.Field(
+    pull_stopped: "PullStoppedEvent" = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="details",
         message="PullStoppedEvent",
     )
-    container_started = proto.Field(
+    container_started: "ContainerStartedEvent" = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="details",
         message="ContainerStartedEvent",
     )
-    container_stopped = proto.Field(
+    container_stopped: "ContainerStoppedEvent" = proto.Field(
         proto.MESSAGE,
         number=23,
         oneof="details",
         message="ContainerStoppedEvent",
     )
-    container_killed = proto.Field(
+    container_killed: "ContainerKilledEvent" = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="details",
         message="ContainerKilledEvent",
     )
-    unexpected_exit_status = proto.Field(
+    unexpected_exit_status: "UnexpectedExitStatusEvent" = proto.Field(
         proto.MESSAGE,
         number=25,
         oneof="details",
         message="UnexpectedExitStatusEvent",
     )
-    failed = proto.Field(
+    failed: "FailedEvent" = proto.Field(
         proto.MESSAGE,
         number=26,
         oneof="details",
@@ -1175,7 +1213,7 @@ class DelayedEvent(proto.Message):
             delay. The string can change without notice
             because it is often generated by another service
             (such as Compute Engine).
-        metrics (Sequence[str]):
+        metrics (MutableSequence[str]):
             If the delay was caused by a resource shortage, this field
             lists the Compute Engine metrics that are preventing this
             operation from running (for example, ``CPUS`` or
@@ -1183,11 +1221,11 @@ class DelayedEvent(proto.Message):
             single ``UNKNOWN`` metric will be present.
     """
 
-    cause = proto.Field(
+    cause: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -1207,15 +1245,15 @@ class WorkerAssignedEvent(proto.Message):
             worker.
     """
 
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1232,11 +1270,11 @@ class WorkerReleasedEvent(proto.Message):
             The worker's instance name.
     """
 
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1250,7 +1288,7 @@ class PullStartedEvent(proto.Message):
             The URI of the image that was pulled.
     """
 
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1264,7 +1302,7 @@ class PullStoppedEvent(proto.Message):
             The URI of the image that was pulled.
     """
 
-    image_uri = proto.Field(
+    image_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1277,7 +1315,7 @@ class ContainerStartedEvent(proto.Message):
         action_id (int):
             The numeric ID of the action that started
             this container.
-        port_mappings (Mapping[int, int]):
+        port_mappings (MutableMapping[int, int]):
             The container-to-host port mappings installed for this
             container. This set will contain any ports exposed using the
             ``PUBLISH_EXPOSED_PORTS`` flag as well as any specified in
@@ -1291,16 +1329,16 @@ class ContainerStartedEvent(proto.Message):
             if port mappings exist.
     """
 
-    action_id = proto.Field(
+    action_id: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    port_mappings = proto.MapField(
+    port_mappings: MutableMapping[int, int] = proto.MapField(
         proto.INT32,
         proto.INT32,
         number=2,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1328,15 +1366,15 @@ class ContainerStoppedEvent(proto.Message):
             be copied off the machine as described elsewhere.
     """
 
-    action_id = proto.Field(
+    action_id: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    exit_status = proto.Field(
+    exit_status: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    stderr = proto.Field(
+    stderr: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1356,11 +1394,11 @@ class UnexpectedExitStatusEvent(proto.Message):
             The exit status of the container.
     """
 
-    action_id = proto.Field(
+    action_id: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    exit_status = proto.Field(
+    exit_status: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -1377,7 +1415,7 @@ class ContainerKilledEvent(proto.Message):
             container.
     """
 
-    action_id = proto.Field(
+    action_id: int = proto.Field(
         proto.INT32,
         number=1,
     )
@@ -1397,12 +1435,12 @@ class FailedEvent(proto.Message):
             of the failure.
     """
 
-    code = proto.Field(
+    code: code_pb2.Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=code_pb2.Code,
     )
-    cause = proto.Field(
+    cause: str = proto.Field(
         proto.STRING,
         number=2,
     )
