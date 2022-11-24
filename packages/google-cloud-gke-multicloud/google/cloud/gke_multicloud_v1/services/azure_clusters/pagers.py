@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.gke_multicloud_v1.types import azure_resources
-from google.cloud.gke_multicloud_v1.types import azure_service
+from google.cloud.gke_multicloud_v1.types import azure_resources, azure_service
 
 
 class ListAzureClientsPager:

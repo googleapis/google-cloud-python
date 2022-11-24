@@ -14,25 +14,27 @@
 # limitations under the License.
 #
 
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from google.api_core import operations_v1
-from requests import __version__ as requests_version
 import dataclasses
+import json  # type: ignore
 import re
 from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import json_format
+import grpc  # type: ignore
+from requests import __version__ as requests_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -40,12 +42,12 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.cloud.gke_multicloud_v1.types import aws_resources
-from google.cloud.gke_multicloud_v1.types import aws_service
 from google.longrunning import operations_pb2  # type: ignore
 
-from .base import AwsClustersTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
 
+from .base import AwsClustersTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -465,10 +467,10 @@ class AwsClustersRestTransport(AwsClustersTransport):
         self,
         *,
         host: str = "gkemulticloud.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -615,7 +617,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.CreateAwsClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create aws cluster method over HTTP.
@@ -715,7 +717,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.CreateAwsNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create aws node pool method over HTTP.
@@ -813,7 +815,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.DeleteAwsClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete aws cluster method over HTTP.
@@ -902,7 +904,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.DeleteAwsNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete aws node pool method over HTTP.
@@ -991,7 +993,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.GenerateAwsAccessTokenRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> aws_service.GenerateAwsAccessTokenResponse:
             r"""Call the generate aws access token method over HTTP.
@@ -1081,7 +1083,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.GetAwsClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> aws_resources.AwsCluster:
             r"""Call the get aws cluster method over HTTP.
@@ -1167,7 +1169,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.GetAwsNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> aws_resources.AwsNodePool:
             r"""Call the get aws node pool method over HTTP.
@@ -1255,7 +1257,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.GetAwsServerConfigRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> aws_resources.AwsServerConfig:
             r"""Call the get aws server config method over HTTP.
@@ -1345,7 +1347,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.ListAwsClustersRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> aws_service.ListAwsClustersResponse:
             r"""Call the list aws clusters method over HTTP.
@@ -1435,7 +1437,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.ListAwsNodePoolsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> aws_service.ListAwsNodePoolsResponse:
             r"""Call the list aws node pools method over HTTP.
@@ -1527,7 +1529,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.UpdateAwsClusterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update aws cluster method over HTTP.
@@ -1627,7 +1629,7 @@ class AwsClustersRestTransport(AwsClustersTransport):
             request: aws_service.UpdateAwsNodePoolRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update aws node pool method over HTTP.

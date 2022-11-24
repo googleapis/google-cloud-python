@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,16 +43,20 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.gke_multicloud_v1.services.aws_clusters import pagers
-from google.cloud.gke_multicloud_v1.types import aws_resources
-from google.cloud.gke_multicloud_v1.types import aws_service
-from google.cloud.gke_multicloud_v1.types import common_resources
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import AwsClustersTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import AwsClustersGrpcAsyncIOTransport
+
+from google.cloud.gke_multicloud_v1.services.aws_clusters import pagers
+from google.cloud.gke_multicloud_v1.types import (
+    aws_resources,
+    aws_service,
+    common_resources,
+)
+
 from .client import AwsClustersClient
+from .transports.base import DEFAULT_CLIENT_INFO, AwsClustersTransport
+from .transports.grpc_asyncio import AwsClustersGrpcAsyncIOTransport
 
 
 class AwsClustersAsyncClient:
@@ -170,9 +184,9 @@ class AwsClustersAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AwsClustersTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the aws clusters client.
@@ -216,13 +230,13 @@ class AwsClustersAsyncClient:
 
     async def create_aws_cluster(
         self,
-        request: Union[aws_service.CreateAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.CreateAwsClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        aws_cluster: aws_resources.AwsCluster = None,
-        aws_cluster_id: str = None,
+        parent: Optional[str] = None,
+        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        aws_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new
@@ -279,7 +293,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAwsClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.CreateAwsClusterRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.CreateAwsCluster` method.
             parent (:class:`str`):
@@ -391,12 +405,12 @@ class AwsClustersAsyncClient:
 
     async def update_aws_cluster(
         self,
-        request: Union[aws_service.UpdateAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.UpdateAwsClusterRequest, dict]] = None,
         *,
-        aws_cluster: aws_resources.AwsCluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an
@@ -446,7 +460,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAwsClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.UpdateAwsClusterRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.UpdateAwsCluster` method.
             aws_cluster (:class:`google.cloud.gke_multicloud_v1.types.AwsCluster`):
@@ -558,11 +572,11 @@ class AwsClustersAsyncClient:
 
     async def get_aws_cluster(
         self,
-        request: Union[aws_service.GetAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsCluster:
         r"""Describes a specific
@@ -595,7 +609,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAwsClusterRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.GetAwsCluster` method.
             name (:class:`str`):
@@ -676,11 +690,11 @@ class AwsClustersAsyncClient:
 
     async def list_aws_clusters(
         self,
-        request: Union[aws_service.ListAwsClustersRequest, dict] = None,
+        request: Optional[Union[aws_service.ListAwsClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAwsClustersAsyncPager:
         r"""Lists all [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -714,7 +728,7 @@ class AwsClustersAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAwsClustersRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.ListAwsClustersRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.ListAwsClusters` method.
             parent (:class:`str`):
@@ -809,11 +823,11 @@ class AwsClustersAsyncClient:
 
     async def delete_aws_cluster(
         self,
-        request: Union[aws_service.DeleteAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.DeleteAwsClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific
@@ -858,7 +872,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAwsClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAwsClusterRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.DeleteAwsCluster` method.
             name (:class:`str`):
@@ -950,10 +964,12 @@ class AwsClustersAsyncClient:
 
     async def generate_aws_access_token(
         self,
-        request: Union[aws_service.GenerateAwsAccessTokenRequest, dict] = None,
+        request: Optional[
+            Union[aws_service.GenerateAwsAccessTokenRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_service.GenerateAwsAccessTokenResponse:
         r"""Generates a short-lived access token to authenticate to a given
@@ -986,7 +1002,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GenerateAwsAccessTokenRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GenerateAwsAccessTokenRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.GenerateAwsAccessToken` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1042,13 +1058,13 @@ class AwsClustersAsyncClient:
 
     async def create_aws_node_pool(
         self,
-        request: Union[aws_service.CreateAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.CreateAwsNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        aws_node_pool: aws_resources.AwsNodePool = None,
-        aws_node_pool_id: str = None,
+        parent: Optional[str] = None,
+        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
+        aws_node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new
@@ -1102,7 +1118,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAwsNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.CreateAwsNodePoolRequest, dict]]):
                 The request object. Response message for
                 `AwsClusters.CreateAwsNodePool` method.
             parent (:class:`str`):
@@ -1214,12 +1230,12 @@ class AwsClustersAsyncClient:
 
     async def update_aws_node_pool(
         self,
-        request: Union[aws_service.UpdateAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.UpdateAwsNodePoolRequest, dict]] = None,
         *,
-        aws_node_pool: aws_resources.AwsNodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an
@@ -1265,7 +1281,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAwsNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.UpdateAwsNodePoolRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.UpdateAwsNodePool` method.
             aws_node_pool (:class:`google.cloud.gke_multicloud_v1.types.AwsNodePool`):
@@ -1372,11 +1388,11 @@ class AwsClustersAsyncClient:
 
     async def get_aws_node_pool(
         self,
-        request: Union[aws_service.GetAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsNodePool:
         r"""Describes a specific
@@ -1410,7 +1426,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAwsNodePoolRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.GetAwsNodePool` method.
             name (:class:`str`):
@@ -1491,11 +1507,11 @@ class AwsClustersAsyncClient:
 
     async def list_aws_node_pools(
         self,
-        request: Union[aws_service.ListAwsNodePoolsRequest, dict] = None,
+        request: Optional[Union[aws_service.ListAwsNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAwsNodePoolsAsyncPager:
         r"""Lists all
@@ -1531,7 +1547,7 @@ class AwsClustersAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAwsNodePoolsRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.ListAwsNodePoolsRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.ListAwsNodePools` method.
             parent (:class:`str`):
@@ -1627,11 +1643,11 @@ class AwsClustersAsyncClient:
 
     async def delete_aws_node_pool(
         self,
-        request: Union[aws_service.DeleteAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.DeleteAwsNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific
@@ -1673,7 +1689,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAwsNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAwsNodePoolRequest, dict]]):
                 The request object. Request message for
                 `AwsClusters.DeleteNodePool` method.
             name (:class:`str`):
@@ -1765,11 +1781,11 @@ class AwsClustersAsyncClient:
 
     async def get_aws_server_config(
         self,
-        request: Union[aws_service.GetAwsServerConfigRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsServerConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsServerConfig:
         r"""Returns information, such as supported AWS regions
@@ -1803,7 +1819,7 @@ class AwsClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsServerConfigRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAwsServerConfigRequest, dict]]):
                 The request object. GetAwsServerConfigRequest gets the
                 server config of GKE cluster on AWS.
             name (:class:`str`):

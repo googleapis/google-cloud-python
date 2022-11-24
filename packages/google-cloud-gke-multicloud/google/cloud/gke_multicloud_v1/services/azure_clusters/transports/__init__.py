@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import AzureClustersTransport
 from .grpc import AzureClustersGrpcTransport
 from .grpc_asyncio import AzureClustersGrpcAsyncIOTransport
-from .rest import AzureClustersRestTransport
-from .rest import AzureClustersRestInterceptor
-
+from .rest import AzureClustersRestInterceptor, AzureClustersRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[AzureClustersTransport]]

@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.gke_multicloud_v1.types import aws_resources
-from google.cloud.gke_multicloud_v1.types import aws_service
+from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
 
 
 class ListAwsClustersPager:

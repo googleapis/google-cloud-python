@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,16 +43,20 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.gke_multicloud_v1.services.azure_clusters import pagers
-from google.cloud.gke_multicloud_v1.types import azure_resources
-from google.cloud.gke_multicloud_v1.types import azure_service
-from google.cloud.gke_multicloud_v1.types import common_resources
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import AzureClustersTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import AzureClustersGrpcAsyncIOTransport
+
+from google.cloud.gke_multicloud_v1.services.azure_clusters import pagers
+from google.cloud.gke_multicloud_v1.types import (
+    azure_resources,
+    azure_service,
+    common_resources,
+)
+
 from .client import AzureClustersClient
+from .transports.base import DEFAULT_CLIENT_INFO, AzureClustersTransport
+from .transports.grpc_asyncio import AzureClustersGrpcAsyncIOTransport
 
 
 class AzureClustersAsyncClient:
@@ -182,9 +196,9 @@ class AzureClustersAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AzureClustersTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the azure clusters client.
@@ -228,13 +242,13 @@ class AzureClustersAsyncClient:
 
     async def create_azure_client(
         self,
-        request: Union[azure_service.CreateAzureClientRequest, dict] = None,
+        request: Optional[Union[azure_service.CreateAzureClientRequest, dict]] = None,
         *,
-        parent: str = None,
-        azure_client: azure_resources.AzureClient = None,
-        azure_client_id: str = None,
+        parent: Optional[str] = None,
+        azure_client: Optional[azure_resources.AzureClient] = None,
+        azure_client_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new
@@ -286,7 +300,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAzureClientRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.CreateAzureClientRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.CreateAzureClient` method.
             parent (:class:`str`):
@@ -411,11 +425,11 @@ class AzureClustersAsyncClient:
 
     async def get_azure_client(
         self,
-        request: Union[azure_service.GetAzureClientRequest, dict] = None,
+        request: Optional[Union[azure_service.GetAzureClientRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureClient:
         r"""Describes a specific
@@ -449,7 +463,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAzureClientRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureClientRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.GetAzureClient` method.
             name (:class:`str`):
@@ -547,11 +561,11 @@ class AzureClustersAsyncClient:
 
     async def list_azure_clients(
         self,
-        request: Union[azure_service.ListAzureClientsRequest, dict] = None,
+        request: Optional[Union[azure_service.ListAzureClientsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAzureClientsAsyncPager:
         r"""Lists all
@@ -586,7 +600,7 @@ class AzureClustersAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAzureClientsRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.ListAzureClientsRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.ListAzureClients` method.
             parent (:class:`str`):
@@ -682,11 +696,11 @@ class AzureClustersAsyncClient:
 
     async def delete_azure_client(
         self,
-        request: Union[azure_service.DeleteAzureClientRequest, dict] = None,
+        request: Optional[Union[azure_service.DeleteAzureClientRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific
@@ -731,7 +745,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClientRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClientRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.DeleteAzureClient` method.
             name (:class:`str`):
@@ -824,13 +838,13 @@ class AzureClustersAsyncClient:
 
     async def create_azure_cluster(
         self,
-        request: Union[azure_service.CreateAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.CreateAzureClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        azure_cluster: azure_resources.AzureCluster = None,
-        azure_cluster_id: str = None,
+        parent: Optional[str] = None,
+        azure_cluster: Optional[azure_resources.AzureCluster] = None,
+        azure_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new
@@ -885,7 +899,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAzureClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.CreateAzureClusterRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.CreateAzureCluster` method.
             parent (:class:`str`):
@@ -997,12 +1011,12 @@ class AzureClustersAsyncClient:
 
     async def update_azure_cluster(
         self,
-        request: Union[azure_service.UpdateAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.UpdateAzureClusterRequest, dict]] = None,
         *,
-        azure_cluster: azure_resources.AzureCluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        azure_cluster: Optional[azure_resources.AzureCluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an
@@ -1050,7 +1064,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAzureClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.UpdateAzureClusterRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.UpdateAzureCluster` method.
             azure_cluster (:class:`google.cloud.gke_multicloud_v1.types.AzureCluster`):
@@ -1150,11 +1164,11 @@ class AzureClustersAsyncClient:
 
     async def get_azure_cluster(
         self,
-        request: Union[azure_service.GetAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.GetAzureClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureCluster:
         r"""Describes a specific
@@ -1188,7 +1202,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAzureClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureClusterRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.GetAzureCluster` method.
             name (:class:`str`):
@@ -1269,11 +1283,11 @@ class AzureClustersAsyncClient:
 
     async def list_azure_clusters(
         self,
-        request: Union[azure_service.ListAzureClustersRequest, dict] = None,
+        request: Optional[Union[azure_service.ListAzureClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAzureClustersAsyncPager:
         r"""Lists all
@@ -1308,7 +1322,7 @@ class AzureClustersAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAzureClustersRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.ListAzureClustersRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.ListAzureClusters` method.
             parent (:class:`str`):
@@ -1404,11 +1418,11 @@ class AzureClustersAsyncClient:
 
     async def delete_azure_cluster(
         self,
-        request: Union[azure_service.DeleteAzureClusterRequest, dict] = None,
+        request: Optional[Union[azure_service.DeleteAzureClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific
@@ -1454,7 +1468,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClusterRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClusterRequest, dict]]):
                 The request object. Request message for
                 `Clusters.DeleteAzureCluster` method.
             name (:class:`str`):
@@ -1546,10 +1560,12 @@ class AzureClustersAsyncClient:
 
     async def generate_azure_access_token(
         self,
-        request: Union[azure_service.GenerateAzureAccessTokenRequest, dict] = None,
+        request: Optional[
+            Union[azure_service.GenerateAzureAccessTokenRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_service.GenerateAzureAccessTokenResponse:
         r"""Generates a short-lived access token to authenticate to a given
@@ -1583,7 +1599,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GenerateAzureAccessTokenRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GenerateAzureAccessTokenRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.GenerateAzureAccessToken` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1639,13 +1655,13 @@ class AzureClustersAsyncClient:
 
     async def create_azure_node_pool(
         self,
-        request: Union[azure_service.CreateAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.CreateAzureNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        azure_node_pool: azure_resources.AzureNodePool = None,
-        azure_node_pool_id: str = None,
+        parent: Optional[str] = None,
+        azure_node_pool: Optional[azure_resources.AzureNodePool] = None,
+        azure_node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new
@@ -1698,7 +1714,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.CreateAzureNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.CreateAzureNodePoolRequest, dict]]):
                 The request object. Response message for
                 `AzureClusters.CreateAzureNodePool` method.
             parent (:class:`str`):
@@ -1810,12 +1826,12 @@ class AzureClustersAsyncClient:
 
     async def update_azure_node_pool(
         self,
-        request: Union[azure_service.UpdateAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.UpdateAzureNodePoolRequest, dict]] = None,
         *,
-        azure_node_pool: azure_resources.AzureNodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        azure_node_pool: Optional[azure_resources.AzureNodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an
@@ -1860,7 +1876,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.UpdateAzureNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.UpdateAzureNodePoolRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.UpdateAzureNodePool` method.
             azure_node_pool (:class:`google.cloud.gke_multicloud_v1.types.AzureNodePool`):
@@ -1958,11 +1974,11 @@ class AzureClustersAsyncClient:
 
     async def get_azure_node_pool(
         self,
-        request: Union[azure_service.GetAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.GetAzureNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureNodePool:
         r"""Describes a specific
@@ -1996,7 +2012,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAzureNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureNodePoolRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.GetAzureNodePool` method.
             name (:class:`str`):
@@ -2077,11 +2093,11 @@ class AzureClustersAsyncClient:
 
     async def list_azure_node_pools(
         self,
-        request: Union[azure_service.ListAzureNodePoolsRequest, dict] = None,
+        request: Optional[Union[azure_service.ListAzureNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAzureNodePoolsAsyncPager:
         r"""Lists all
@@ -2117,7 +2133,7 @@ class AzureClustersAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.ListAzureNodePoolsRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.ListAzureNodePoolsRequest, dict]]):
                 The request object. Request message for
                 `AzureClusters.ListAzureNodePools` method.
             parent (:class:`str`):
@@ -2213,11 +2229,11 @@ class AzureClustersAsyncClient:
 
     async def delete_azure_node_pool(
         self,
-        request: Union[azure_service.DeleteAzureNodePoolRequest, dict] = None,
+        request: Optional[Union[azure_service.DeleteAzureNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific
@@ -2259,7 +2275,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.DeleteAzureNodePoolRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAzureNodePoolRequest, dict]]):
                 The request object. Delete message for
                 `AzureClusters.DeleteNodePool` method.
             name (:class:`str`):
@@ -2351,11 +2367,13 @@ class AzureClustersAsyncClient:
 
     async def get_azure_server_config(
         self,
-        request: Union[azure_service.GetAzureServerConfigRequest, dict] = None,
+        request: Optional[
+            Union[azure_service.GetAzureServerConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> azure_resources.AzureServerConfig:
         r"""Returns information, such as supported Azure regions
@@ -2389,7 +2407,7 @@ class AzureClustersAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.gke_multicloud_v1.types.GetAzureServerConfigRequest, dict]):
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureServerConfigRequest, dict]]):
                 The request object. GetAzureServerConfigRequest gets the
                 server config of GKE cluster on Azure.
             name (:class:`str`):

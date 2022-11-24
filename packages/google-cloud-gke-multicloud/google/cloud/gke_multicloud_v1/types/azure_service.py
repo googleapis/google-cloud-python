@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import azure_resources
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkemulticloud.v1",
@@ -82,20 +83,20 @@ class CreateAzureClusterRequest(proto.Message):
             actually create the cluster.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    azure_cluster = proto.Field(
+    azure_cluster: azure_resources.AzureCluster = proto.Field(
         proto.MESSAGE,
         number=2,
         message=azure_resources.AzureCluster,
     )
-    azure_cluster_id = proto.Field(
+    azure_cluster_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -128,16 +129,16 @@ class UpdateAzureClusterRequest(proto.Message):
             -  ``logging_config``
     """
 
-    azure_cluster = proto.Field(
+    azure_cluster: azure_resources.AzureCluster = proto.Field(
         proto.MESSAGE,
         number=1,
         message=azure_resources.AzureCluster,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -161,7 +162,7 @@ class GetAzureClusterRequest(proto.Message):
             for more details on GCP resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -197,15 +198,15 @@ class ListAzureClustersRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -215,7 +216,7 @@ class ListAzureClustersResponse(proto.Message):
     r"""Response message for ``AzureClusters.ListAzureClusters`` method.
 
     Attributes:
-        azure_clusters (Sequence[google.cloud.gke_multicloud_v1.types.AzureCluster]):
+        azure_clusters (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureCluster]):
             A list of
             [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
             resources in the specified GCP project and region region.
@@ -229,12 +230,12 @@ class ListAzureClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    azure_clusters = proto.RepeatedField(
+    azure_clusters: MutableSequence[azure_resources.AzureCluster] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=azure_resources.AzureCluster,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -278,19 +279,19 @@ class DeleteAzureClusterRequest(proto.Message):
             returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -331,20 +332,20 @@ class CreateAzureNodePoolRequest(proto.Message):
             actually create the node pool.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    azure_node_pool = proto.Field(
+    azure_node_pool: azure_resources.AzureNodePool = proto.Field(
         proto.MESSAGE,
         number=2,
         message=azure_resources.AzureNodePool,
     )
-    azure_node_pool_id = proto.Field(
+    azure_node_pool_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -375,16 +376,16 @@ class UpdateAzureNodePoolRequest(proto.Message):
             -  ``config.vm_size``.
     """
 
-    azure_node_pool = proto.Field(
+    azure_node_pool: azure_resources.AzureNodePool = proto.Field(
         proto.MESSAGE,
         number=1,
         message=azure_resources.AzureNodePool,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -408,7 +409,7 @@ class GetAzureNodePoolRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -445,15 +446,15 @@ class ListAzureNodePoolsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -463,7 +464,7 @@ class ListAzureNodePoolsResponse(proto.Message):
     r"""Response message for ``AzureClusters.ListAzureNodePools`` method.
 
     Attributes:
-        azure_node_pools (Sequence[google.cloud.gke_multicloud_v1.types.AzureNodePool]):
+        azure_node_pools (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureNodePool]):
             A list of
             [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
             resources in the specified ``AzureCluster``.
@@ -477,12 +478,14 @@ class ListAzureNodePoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    azure_node_pools = proto.RepeatedField(
+    azure_node_pools: MutableSequence[
+        azure_resources.AzureNodePool
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=azure_resources.AzureNodePool,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -526,19 +529,19 @@ class DeleteAzureNodePoolRequest(proto.Message):
             be returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -562,7 +565,7 @@ class GetAzureServerConfigRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -603,20 +606,20 @@ class CreateAzureClientRequest(proto.Message):
             actually create the client.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    azure_client = proto.Field(
+    azure_client: azure_resources.AzureClient = proto.Field(
         proto.MESSAGE,
         number=2,
         message=azure_resources.AzureClient,
     )
-    azure_client_id = proto.Field(
+    azure_client_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -640,7 +643,7 @@ class GetAzureClientRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -676,15 +679,15 @@ class ListAzureClientsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -694,7 +697,7 @@ class ListAzureClientsResponse(proto.Message):
     r"""Response message for ``AzureClusters.ListAzureClients`` method.
 
     Attributes:
-        azure_clients (Sequence[google.cloud.gke_multicloud_v1.types.AzureClient]):
+        azure_clients (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureClient]):
             A list of
             [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
             resources in the specified Google Cloud project and region
@@ -709,12 +712,12 @@ class ListAzureClientsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    azure_clients = proto.RepeatedField(
+    azure_clients: MutableSequence[azure_resources.AzureClient] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=azure_resources.AzureClient,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -749,15 +752,15 @@ class DeleteAzureClientRequest(proto.Message):
             actually delete the resource.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -781,7 +784,7 @@ class GenerateAzureAccessTokenRequest(proto.Message):
             for more details on Google Cloud resource names.
     """
 
-    azure_cluster = proto.Field(
+    azure_cluster: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -800,11 +803,11 @@ class GenerateAzureAccessTokenResponse(proto.Message):
             will expire.
     """
 
-    access_token = proto.Field(
+    access_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    expiration_time = proto.Field(
+    expiration_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,

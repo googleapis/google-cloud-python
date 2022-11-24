@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,14 +47,18 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.gke_multicloud_v1.services.aws_clusters import pagers
-from google.cloud.gke_multicloud_v1.types import aws_resources
-from google.cloud.gke_multicloud_v1.types import aws_service
-from google.cloud.gke_multicloud_v1.types import common_resources
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import AwsClustersTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.gke_multicloud_v1.services.aws_clusters import pagers
+from google.cloud.gke_multicloud_v1.types import (
+    aws_resources,
+    aws_service,
+    common_resources,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, AwsClustersTransport
 from .transports.grpc import AwsClustersGrpcTransport
 from .transports.grpc_asyncio import AwsClustersGrpcAsyncIOTransport
 from .transports.rest import AwsClustersRestTransport
@@ -64,7 +79,7 @@ class AwsClustersClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AwsClustersTransport]:
         """Returns an appropriate transport class.
 
@@ -388,8 +403,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AwsClustersTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, AwsClustersTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the aws clusters client.
@@ -406,7 +421,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -436,6 +451,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -488,13 +504,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def create_aws_cluster(
         self,
-        request: Union[aws_service.CreateAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.CreateAwsClusterRequest, dict]] = None,
         *,
-        parent: str = None,
-        aws_cluster: aws_resources.AwsCluster = None,
-        aws_cluster_id: str = None,
+        parent: Optional[str] = None,
+        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        aws_cluster_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -663,12 +679,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def update_aws_cluster(
         self,
-        request: Union[aws_service.UpdateAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.UpdateAwsClusterRequest, dict]] = None,
         *,
-        aws_cluster: aws_resources.AwsCluster = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        aws_cluster: Optional[aws_resources.AwsCluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
@@ -830,11 +846,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def get_aws_cluster(
         self,
-        request: Union[aws_service.GetAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsCluster:
         r"""Describes a specific
@@ -939,11 +955,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def list_aws_clusters(
         self,
-        request: Union[aws_service.ListAwsClustersRequest, dict] = None,
+        request: Optional[Union[aws_service.ListAwsClustersRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAwsClustersPager:
         r"""Lists all [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
@@ -1063,11 +1079,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def delete_aws_cluster(
         self,
-        request: Union[aws_service.DeleteAwsClusterRequest, dict] = None,
+        request: Optional[Union[aws_service.DeleteAwsClusterRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -1204,10 +1220,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def generate_aws_access_token(
         self,
-        request: Union[aws_service.GenerateAwsAccessTokenRequest, dict] = None,
+        request: Optional[
+            Union[aws_service.GenerateAwsAccessTokenRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_service.GenerateAwsAccessTokenResponse:
         r"""Generates a short-lived access token to authenticate to a given
@@ -1290,13 +1308,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def create_aws_node_pool(
         self,
-        request: Union[aws_service.CreateAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.CreateAwsNodePoolRequest, dict]] = None,
         *,
-        parent: str = None,
-        aws_node_pool: aws_resources.AwsNodePool = None,
-        aws_node_pool_id: str = None,
+        parent: Optional[str] = None,
+        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
+        aws_node_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new
@@ -1462,12 +1480,12 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def update_aws_node_pool(
         self,
-        request: Union[aws_service.UpdateAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.UpdateAwsNodePoolRequest, dict]] = None,
         *,
-        aws_node_pool: aws_resources.AwsNodePool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        aws_node_pool: Optional[aws_resources.AwsNodePool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an
@@ -1620,11 +1638,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def get_aws_node_pool(
         self,
-        request: Union[aws_service.GetAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsNodePool:
         r"""Describes a specific
@@ -1730,11 +1748,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def list_aws_node_pools(
         self,
-        request: Union[aws_service.ListAwsNodePoolsRequest, dict] = None,
+        request: Optional[Union[aws_service.ListAwsNodePoolsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAwsNodePoolsPager:
         r"""Lists all
@@ -1857,11 +1875,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def delete_aws_node_pool(
         self,
-        request: Union[aws_service.DeleteAwsNodePoolRequest, dict] = None,
+        request: Optional[Union[aws_service.DeleteAwsNodePoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific
@@ -1995,11 +2013,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
     def get_aws_server_config(
         self,
-        request: Union[aws_service.GetAwsServerConfigRequest, dict] = None,
+        request: Optional[Union[aws_service.GetAwsServerConfigRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> aws_resources.AwsServerConfig:
         r"""Returns information, such as supported AWS regions

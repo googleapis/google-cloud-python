@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkemulticloud.v1",
@@ -46,15 +46,15 @@ class WorkloadIdentityConfig(proto.Message):
             associated to the Workload Identity Pool.
     """
 
-    issuer_uri = proto.Field(
+    issuer_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    workload_pool = proto.Field(
+    workload_pool: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    identity_provider = proto.Field(
+    identity_provider: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -69,7 +69,7 @@ class MaxPodsConstraint(proto.Message):
             schedule on a single node.
     """
 
-    max_pods_per_node = proto.Field(
+    max_pods_per_node: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -96,25 +96,25 @@ class OperationMetadata(proto.Message):
             error that occurred during the operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    error_detail = proto.Field(
+    error_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -139,15 +139,15 @@ class NodeTaint(proto.Message):
         PREFER_NO_SCHEDULE = 2
         NO_EXECUTE = 3
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    value = proto.Field(
+    value: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    effect = proto.Field(
+    effect: Effect = proto.Field(
         proto.ENUM,
         number=3,
         enum=Effect,
@@ -180,11 +180,11 @@ class Fleet(proto.Message):
             ``projects/<project-number>/locations/global/membership/<cluster-id>``.
     """
 
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    membership = proto.Field(
+    membership: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -199,7 +199,7 @@ class LoggingConfig(proto.Message):
             The configuration of the logging components;
     """
 
-    component_config = proto.Field(
+    component_config: "LoggingComponentConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="LoggingComponentConfig",
@@ -211,7 +211,7 @@ class LoggingComponentConfig(proto.Message):
     in a cluster.
 
     Attributes:
-        enable_components (Sequence[google.cloud.gke_multicloud_v1.types.LoggingComponentConfig.Component]):
+        enable_components (MutableSequence[google.cloud.gke_multicloud_v1.types.LoggingComponentConfig.Component]):
             The components to be enabled.
     """
 
@@ -221,7 +221,7 @@ class LoggingComponentConfig(proto.Message):
         SYSTEM_COMPONENTS = 1
         WORKLOADS = 2
 
-    enable_components = proto.RepeatedField(
+    enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=Component,

@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkemulticloud.v1",
@@ -122,7 +123,7 @@ class AzureCluster(proto.Message):
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations on the cluster.
 
             This field has the same restrictions as Kubernetes
@@ -157,97 +158,97 @@ class AzureCluster(proto.Message):
         ERROR = 5
         DEGRADED = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    azure_region = proto.Field(
+    azure_region: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_group_id = proto.Field(
+    resource_group_id: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    azure_client = proto.Field(
+    azure_client: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    networking = proto.Field(
+    networking: "AzureClusterNetworking" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AzureClusterNetworking",
     )
-    control_plane = proto.Field(
+    control_plane: "AzureControlPlane" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="AzureControlPlane",
     )
-    authorization = proto.Field(
+    authorization: "AzureAuthorization" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="AzureAuthorization",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    endpoint = proto.Field(
+    endpoint: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
     )
-    workload_identity_config = proto.Field(
+    workload_identity_config: common_resources.WorkloadIdentityConfig = proto.Field(
         proto.MESSAGE,
         number=18,
         message=common_resources.WorkloadIdentityConfig,
     )
-    cluster_ca_certificate = proto.Field(
+    cluster_ca_certificate: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    fleet = proto.Field(
+    fleet: common_resources.Fleet = proto.Field(
         proto.MESSAGE,
         number=20,
         message=common_resources.Fleet,
     )
-    managed_resources = proto.Field(
+    managed_resources: "AzureClusterResources" = proto.Field(
         proto.MESSAGE,
         number=21,
         message="AzureClusterResources",
     )
-    logging_config = proto.Field(
+    logging_config: common_resources.LoggingConfig = proto.Field(
         proto.MESSAGE,
         number=23,
         message=common_resources.LoggingConfig,
@@ -270,7 +271,7 @@ class AzureClusterNetworking(proto.Message):
             ``/subscriptions/<subscription-id>/resourceGroups/<resource-group-id>/providers/Microsoft.Network/virtualNetworks/<vnet-id>``
 
             This field cannot be changed after creation.
-        pod_address_cidr_blocks (Sequence[str]):
+        pod_address_cidr_blocks (MutableSequence[str]):
             Required. The IP address range of the pods in this cluster,
             in CIDR notation (e.g. ``10.96.0.0/14``).
 
@@ -278,7 +279,7 @@ class AzureClusterNetworking(proto.Message):
             from these ranges. Only a single range is supported.
 
             This field cannot be changed after creation.
-        service_address_cidr_blocks (Sequence[str]):
+        service_address_cidr_blocks (MutableSequence[str]):
             Required. The IP address range for services in this cluster,
             in CIDR notation (e.g. ``10.96.0.0/14``).
 
@@ -295,19 +296,19 @@ class AzureClusterNetworking(proto.Message):
             "/subscriptions/d00494d6-6f3c-4280-bbb2-899e163d1d30/resourceGroups/anthos_cluster_gkeust4/providers/Microsoft.Network/virtualNetworks/gke-vnet-gkeust4/subnets/subnetid456".
     """
 
-    virtual_network_id = proto.Field(
+    virtual_network_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    pod_address_cidr_blocks = proto.RepeatedField(
+    pod_address_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    service_address_cidr_blocks = proto.RepeatedField(
+    service_address_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    service_load_balancer_subnet_id = proto.Field(
+    service_load_balancer_subnet_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -370,10 +371,10 @@ class AzureControlPlane(proto.Message):
         config_encryption (google.cloud.gke_multicloud_v1.types.AzureConfigEncryption):
             Optional. Configuration related to vm config
             encryption.
-        tags (Mapping[str, str]):
+        tags (MutableMapping[str, str]):
             Optional. A set of tags to apply to all
             underlying control plane Azure resources.
-        replica_placements (Sequence[google.cloud.gke_multicloud_v1.types.ReplicaPlacement]):
+        replica_placements (MutableSequence[google.cloud.gke_multicloud_v1.types.ReplicaPlacement]):
             Optional. Configuration for where to place the control plane
             replicas.
 
@@ -390,59 +391,59 @@ class AzureControlPlane(proto.Message):
             "/subscriptions/d00494d6-6f3c-4280-bbb2-899e163d1d30/resourceGroups/anthos_cluster_gkeust4/providers/Microsoft.Network/virtualNetworks/gke-vnet-gkeust4/subnets/subnetid123".
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subnet_id = proto.Field(
+    subnet_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    vm_size = proto.Field(
+    vm_size: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ssh_config = proto.Field(
+    ssh_config: "AzureSshConfig" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="AzureSshConfig",
     )
-    root_volume = proto.Field(
+    root_volume: "AzureDiskTemplate" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AzureDiskTemplate",
     )
-    main_volume = proto.Field(
+    main_volume: "AzureDiskTemplate" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="AzureDiskTemplate",
     )
-    database_encryption = proto.Field(
+    database_encryption: "AzureDatabaseEncryption" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="AzureDatabaseEncryption",
     )
-    proxy_config = proto.Field(
+    proxy_config: "AzureProxyConfig" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AzureProxyConfig",
     )
-    config_encryption = proto.Field(
+    config_encryption: "AzureConfigEncryption" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="AzureConfigEncryption",
     )
-    tags = proto.MapField(
+    tags: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    replica_placements = proto.RepeatedField(
+    replica_placements: MutableSequence["ReplicaPlacement"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="ReplicaPlacement",
     )
-    endpoint_subnet_id = proto.Field(
+    endpoint_subnet_id: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -463,11 +464,11 @@ class ReplicaPlacement(proto.Message):
             plane VM and the ETCD disk.
     """
 
-    subnet_id = proto.Field(
+    subnet_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    azure_availability_zone = proto.Field(
+    azure_availability_zone: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -490,11 +491,11 @@ class AzureProxyConfig(proto.Message):
             ``https://<key-vault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>``.
     """
 
-    resource_group_id = proto.Field(
+    resource_group_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    secret_id = proto.Field(
+    secret_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -517,7 +518,7 @@ class AzureDatabaseEncryption(proto.Message):
             and hence specific version is not supported.
     """
 
-    key_id = proto.Field(
+    key_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -544,11 +545,11 @@ class AzureConfigEncryption(proto.Message):
             PEM block of type "PUBLIC KEY".
     """
 
-    key_id = proto.Field(
+    key_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    public_key = proto.Field(
+    public_key: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -565,7 +566,7 @@ class AzureDiskTemplate(proto.Message):
             resource.
     """
 
-    size_gib = proto.Field(
+    size_gib: int = proto.Field(
         proto.INT32,
         number=1,
     )
@@ -603,7 +604,7 @@ class AzureClient(proto.Message):
         application_id (str):
             Required. The Azure Active Directory
             Application ID.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations on the resource.
 
             This field has the same restrictions as Kubernetes
@@ -624,32 +625,32 @@ class AzureClient(proto.Message):
             was created.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tenant_id = proto.Field(
+    tenant_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    application_id = proto.Field(
+    application_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    pem_certificate = proto.Field(
+    pem_certificate: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -660,7 +661,7 @@ class AzureAuthorization(proto.Message):
     r"""Configuration related to the cluster RBAC settings.
 
     Attributes:
-        admin_users (Sequence[google.cloud.gke_multicloud_v1.types.AzureClusterUser]):
+        admin_users (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureClusterUser]):
             Required. Users that can perform operations as a cluster
             admin. A managed ClusterRoleBinding will be created to grant
             the ``cluster-admin`` ClusterRole to the users. Up to ten
@@ -670,7 +671,7 @@ class AzureAuthorization(proto.Message):
             https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
     """
 
-    admin_users = proto.RepeatedField(
+    admin_users: MutableSequence["AzureClusterUser"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AzureClusterUser",
@@ -686,7 +687,7 @@ class AzureClusterUser(proto.Message):
             ``my-gcp-id@gmail.com``.
     """
 
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -741,7 +742,7 @@ class AzureNodePool(proto.Message):
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations on the node pool.
 
             This field has the same restrictions as Kubernetes
@@ -772,66 +773,66 @@ class AzureNodePool(proto.Message):
         ERROR = 5
         DEGRADED = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    config = proto.Field(
+    config: "AzureNodeConfig" = proto.Field(
         proto.MESSAGE,
         number=22,
         message="AzureNodeConfig",
     )
-    subnet_id = proto.Field(
+    subnet_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    autoscaling = proto.Field(
+    autoscaling: "AzureNodePoolAutoscaling" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AzureNodePoolAutoscaling",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=6,
         enum=State,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=13,
     )
-    max_pods_constraint = proto.Field(
+    max_pods_constraint: common_resources.MaxPodsConstraint = proto.Field(
         proto.MESSAGE,
         number=21,
         message=common_resources.MaxPodsConstraint,
     )
-    azure_availability_zone = proto.Field(
+    azure_availability_zone: str = proto.Field(
         proto.STRING,
         number=23,
     )
@@ -856,7 +857,7 @@ class AzureNodeConfig(proto.Message):
             volume provisioned for each node pool machine.
             When unspecified, it defaults to a 32-GiB Azure
             Disk.
-        tags (Mapping[str, str]):
+        tags (MutableMapping[str, str]):
             Optional. A set of tags to apply to all underlying Azure
             resources for this node pool. This currently only includes
             Virtual Machine Scale Sets.
@@ -879,55 +880,55 @@ class AzureNodeConfig(proto.Message):
         config_encryption (google.cloud.gke_multicloud_v1.types.AzureConfigEncryption):
             Optional. Configuration related to vm config
             encryption.
-        taints (Sequence[google.cloud.gke_multicloud_v1.types.NodeTaint]):
+        taints (MutableSequence[google.cloud.gke_multicloud_v1.types.NodeTaint]):
             Optional. The initial taints assigned to
             nodes of this node pool.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The initial labels assigned to
             nodes of this node pool. An object containing a
             list of "key": value pairs. Example: { "name":
             "wrench", "mass": "1.3kg", "count": "3" }.
     """
 
-    vm_size = proto.Field(
+    vm_size: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    root_volume = proto.Field(
+    root_volume: "AzureDiskTemplate" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AzureDiskTemplate",
     )
-    tags = proto.MapField(
+    tags: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    image_type = proto.Field(
+    image_type: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    ssh_config = proto.Field(
+    ssh_config: "AzureSshConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="AzureSshConfig",
     )
-    proxy_config = proto.Field(
+    proxy_config: "AzureProxyConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="AzureProxyConfig",
     )
-    config_encryption = proto.Field(
+    config_encryption: "AzureConfigEncryption" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AzureConfigEncryption",
     )
-    taints = proto.RepeatedField(
+    taints: MutableSequence[common_resources.NodeTaint] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=common_resources.NodeTaint,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=11,
@@ -950,11 +951,11 @@ class AzureNodePoolAutoscaling(proto.Message):
             equal to 50.
     """
 
-    min_node_count = proto.Field(
+    min_node_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_node_count = proto.Field(
+    max_node_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -975,22 +976,22 @@ class AzureServerConfig(proto.Message):
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
             for more details on GCP resource names.
-        valid_versions (Sequence[google.cloud.gke_multicloud_v1.types.AzureK8sVersionInfo]):
+        valid_versions (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureK8sVersionInfo]):
             List of valid Kubernetes versions.
-        supported_azure_regions (Sequence[str]):
+        supported_azure_regions (MutableSequence[str]):
             The list of supported Azure regions.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    valid_versions = proto.RepeatedField(
+    valid_versions: MutableSequence["AzureK8sVersionInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AzureK8sVersionInfo",
     )
-    supported_azure_regions = proto.RepeatedField(
+    supported_azure_regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1005,7 +1006,7 @@ class AzureK8sVersionInfo(proto.Message):
             ``1.19.10-gke.1000``)
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1021,7 +1022,7 @@ class AzureSshConfig(proto.Message):
             according to the sshd(8) manual page.
     """
 
-    authorized_key = proto.Field(
+    authorized_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1041,11 +1042,11 @@ class AzureClusterResources(proto.Message):
             application security group.
     """
 
-    network_security_group_id = proto.Field(
+    network_security_group_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    control_plane_application_security_group_id = proto.Field(
+    control_plane_application_security_group_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

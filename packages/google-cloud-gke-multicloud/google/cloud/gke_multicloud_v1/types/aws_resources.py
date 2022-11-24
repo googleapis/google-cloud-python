@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.gkemulticloud.v1",
@@ -102,7 +103,7 @@ class AwsCluster(proto.Message):
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations on the cluster.
 
             This field has the same restrictions as Kubernetes
@@ -134,84 +135,84 @@ class AwsCluster(proto.Message):
         ERROR = 5
         DEGRADED = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    networking = proto.Field(
+    networking: "AwsClusterNetworking" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AwsClusterNetworking",
     )
-    aws_region = proto.Field(
+    aws_region: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    control_plane = proto.Field(
+    control_plane: "AwsControlPlane" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="AwsControlPlane",
     )
-    authorization = proto.Field(
+    authorization: "AwsAuthorization" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="AwsAuthorization",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    endpoint = proto.Field(
+    endpoint: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=14,
     )
-    workload_identity_config = proto.Field(
+    workload_identity_config: common_resources.WorkloadIdentityConfig = proto.Field(
         proto.MESSAGE,
         number=16,
         message=common_resources.WorkloadIdentityConfig,
     )
-    cluster_ca_certificate = proto.Field(
+    cluster_ca_certificate: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    fleet = proto.Field(
+    fleet: common_resources.Fleet = proto.Field(
         proto.MESSAGE,
         number=18,
         message=common_resources.Fleet,
     )
-    logging_config = proto.Field(
+    logging_config: common_resources.LoggingConfig = proto.Field(
         proto.MESSAGE,
         number=19,
         message=common_resources.LoggingConfig,
@@ -237,14 +238,14 @@ class AwsControlPlane(proto.Message):
         ssh_config (google.cloud.gke_multicloud_v1.types.AwsSshConfig):
             Optional. SSH configuration for how to access
             the underlying control plane machines.
-        subnet_ids (Sequence[str]):
+        subnet_ids (MutableSequence[str]):
             Required. The list of subnets where control
             plane replicas will run. A replica will be
             provisioned on each subnet and up to three
             values can be provided.
             Each subnet must be in a different AWS
             Availability Zone (AZ).
-        security_group_ids (Sequence[str]):
+        security_group_ids (MutableSequence[str]):
             Optional. The IDs of additional security
             groups to add to control plane replicas. The
             Anthos Multi-Cloud API will automatically create
@@ -276,7 +277,7 @@ class AwsControlPlane(proto.Message):
         database_encryption (google.cloud.gke_multicloud_v1.types.AwsDatabaseEncryption):
             Required. The ARN of the AWS KMS key used to
             encrypt cluster secrets.
-        tags (Mapping[str, str]):
+        tags (MutableMapping[str, str]):
             Optional. A set of AWS resource tags to propagate to all
             underlying managed AWS resources.
 
@@ -297,67 +298,67 @@ class AwsControlPlane(proto.Message):
             default tenancy will be used.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_type = proto.Field(
+    instance_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ssh_config = proto.Field(
+    ssh_config: "AwsSshConfig" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="AwsSshConfig",
     )
-    subnet_ids = proto.RepeatedField(
+    subnet_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    security_group_ids = proto.RepeatedField(
+    security_group_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    iam_instance_profile = proto.Field(
+    iam_instance_profile: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    root_volume = proto.Field(
+    root_volume: "AwsVolumeTemplate" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="AwsVolumeTemplate",
     )
-    main_volume = proto.Field(
+    main_volume: "AwsVolumeTemplate" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="AwsVolumeTemplate",
     )
-    database_encryption = proto.Field(
+    database_encryption: "AwsDatabaseEncryption" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="AwsDatabaseEncryption",
     )
-    tags = proto.MapField(
+    tags: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=11,
     )
-    aws_services_authentication = proto.Field(
+    aws_services_authentication: "AwsServicesAuthentication" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AwsServicesAuthentication",
     )
-    proxy_config = proto.Field(
+    proxy_config: "AwsProxyConfig" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="AwsProxyConfig",
     )
-    config_encryption = proto.Field(
+    config_encryption: "AwsConfigEncryption" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="AwsConfigEncryption",
     )
-    instance_placement = proto.Field(
+    instance_placement: "AwsInstancePlacement" = proto.Field(
         proto.MESSAGE,
         number=18,
         message="AwsInstancePlacement",
@@ -381,11 +382,11 @@ class AwsServicesAuthentication(proto.Message):
             ``multicloud-service-agent``.
     """
 
-    role_arn = proto.Field(
+    role_arn: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    role_session_name = proto.Field(
+    role_session_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -395,7 +396,7 @@ class AwsAuthorization(proto.Message):
     r"""Configuration related to the cluster RBAC settings.
 
     Attributes:
-        admin_users (Sequence[google.cloud.gke_multicloud_v1.types.AwsClusterUser]):
+        admin_users (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsClusterUser]):
             Required. Users that can perform operations as a cluster
             admin. A managed ClusterRoleBinding will be created to grant
             the ``cluster-admin`` ClusterRole to the users. Up to ten
@@ -405,7 +406,7 @@ class AwsAuthorization(proto.Message):
             https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
     """
 
-    admin_users = proto.RepeatedField(
+    admin_users: MutableSequence["AwsClusterUser"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AwsClusterUser",
@@ -421,7 +422,7 @@ class AwsClusterUser(proto.Message):
             ``my-gcp-id@gmail.com``.
     """
 
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -437,7 +438,7 @@ class AwsDatabaseEncryption(proto.Message):
             encrypt cluster secrets.
     """
 
-    kms_key_arn = proto.Field(
+    kms_key_arn: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -478,20 +479,20 @@ class AwsVolumeTemplate(proto.Message):
         GP2 = 1
         GP3 = 2
 
-    size_gib = proto.Field(
+    size_gib: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    volume_type = proto.Field(
+    volume_type: VolumeType = proto.Field(
         proto.ENUM,
         number=2,
         enum=VolumeType,
     )
-    iops = proto.Field(
+    iops: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    kms_key_arn = proto.Field(
+    kms_key_arn: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -509,27 +510,27 @@ class AwsClusterNetworking(proto.Message):
             cluster. All component clusters (i.e. control
             plane and node pools) run on a single VPC.
             This field cannot be changed after creation.
-        pod_address_cidr_blocks (Sequence[str]):
+        pod_address_cidr_blocks (MutableSequence[str]):
             Required. All pods in the cluster are
             assigned an IPv4 address from these ranges. Only
             a single range is supported. This field cannot
             be changed after creation.
-        service_address_cidr_blocks (Sequence[str]):
+        service_address_cidr_blocks (MutableSequence[str]):
             Required. All services in the cluster are
             assigned an IPv4 address from these ranges. Only
             a single range is supported. This field cannot
             be changed after creation.
     """
 
-    vpc_id = proto.Field(
+    vpc_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    pod_address_cidr_blocks = proto.RepeatedField(
+    pod_address_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    service_address_cidr_blocks = proto.RepeatedField(
+    service_address_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -585,7 +586,7 @@ class AwsNodePool(proto.Message):
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations on the node pool.
 
             This field has the same restrictions as Kubernetes
@@ -611,61 +612,61 @@ class AwsNodePool(proto.Message):
         ERROR = 5
         DEGRADED = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    config = proto.Field(
+    config: "AwsNodeConfig" = proto.Field(
         proto.MESSAGE,
         number=28,
         message="AwsNodeConfig",
     )
-    autoscaling = proto.Field(
+    autoscaling: "AwsNodePoolAutoscaling" = proto.Field(
         proto.MESSAGE,
         number=25,
         message="AwsNodePoolAutoscaling",
     )
-    subnet_id = proto.Field(
+    subnet_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=16,
         enum=State,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=18,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=19,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=20,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=21,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=22,
     )
-    max_pods_constraint = proto.Field(
+    max_pods_constraint: common_resources.MaxPodsConstraint = proto.Field(
         proto.MESSAGE,
         number=27,
         message=common_resources.MaxPodsConstraint,
@@ -688,15 +689,15 @@ class AwsNodeConfig(proto.Message):
 
             When unspecified, it defaults to 32 GiB with the
             GP2 volume type.
-        taints (Sequence[google.cloud.gke_multicloud_v1.types.NodeTaint]):
+        taints (MutableSequence[google.cloud.gke_multicloud_v1.types.NodeTaint]):
             Optional. The initial taints assigned to
             nodes of this node pool.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. The initial labels assigned to
             nodes of this node pool. An object containing a
             list of "key": value pairs. Example: { "name":
             "wrench", "mass": "1.3kg", "count": "3" }.
-        tags (Mapping[str, str]):
+        tags (MutableMapping[str, str]):
             Optional. Key/value metadata to assign to each underlying
             AWS resource. Specify at most 50 pairs containing
             alphanumerics, spaces, and symbols (.+-=_:@/). Keys can be
@@ -713,7 +714,7 @@ class AwsNodeConfig(proto.Message):
             When unspecified, it defaults to ``ubuntu``.
         ssh_config (google.cloud.gke_multicloud_v1.types.AwsSshConfig):
             Optional. The SSH configuration.
-        security_group_ids (Sequence[str]):
+        security_group_ids (MutableSequence[str]):
             Optional. The IDs of additional security
             groups to add to nodes in this pool. The manager
             will automatically create security groups with
@@ -729,58 +730,58 @@ class AwsNodeConfig(proto.Message):
             tenancy will be used.
     """
 
-    instance_type = proto.Field(
+    instance_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    root_volume = proto.Field(
+    root_volume: "AwsVolumeTemplate" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AwsVolumeTemplate",
     )
-    taints = proto.RepeatedField(
+    taints: MutableSequence[common_resources.NodeTaint] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=common_resources.NodeTaint,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    tags = proto.MapField(
+    tags: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    iam_instance_profile = proto.Field(
+    iam_instance_profile: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    image_type = proto.Field(
+    image_type: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    ssh_config = proto.Field(
+    ssh_config: "AwsSshConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="AwsSshConfig",
     )
-    security_group_ids = proto.RepeatedField(
+    security_group_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
-    proxy_config = proto.Field(
+    proxy_config: "AwsProxyConfig" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AwsProxyConfig",
     )
-    config_encryption = proto.Field(
+    config_encryption: "AwsConfigEncryption" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="AwsConfigEncryption",
     )
-    instance_placement = proto.Field(
+    instance_placement: "AwsInstancePlacement" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="AwsInstancePlacement",
@@ -803,11 +804,11 @@ class AwsNodePoolAutoscaling(proto.Message):
             equal to 50.
     """
 
-    min_node_count = proto.Field(
+    min_node_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_node_count = proto.Field(
+    max_node_count: int = proto.Field(
         proto.INT32,
         number=2,
     )
@@ -819,22 +820,22 @@ class AwsServerConfig(proto.Message):
     Attributes:
         name (str):
             The resource name of the config.
-        valid_versions (Sequence[google.cloud.gke_multicloud_v1.types.AwsK8sVersionInfo]):
+        valid_versions (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsK8sVersionInfo]):
             List of valid Kubernetes versions.
-        supported_aws_regions (Sequence[str]):
+        supported_aws_regions (MutableSequence[str]):
             The list of supported AWS regions.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    valid_versions = proto.RepeatedField(
+    valid_versions: MutableSequence["AwsK8sVersionInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="AwsK8sVersionInfo",
     )
-    supported_aws_regions = proto.RepeatedField(
+    supported_aws_regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -848,7 +849,7 @@ class AwsK8sVersionInfo(proto.Message):
             Kubernetes version name.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -863,7 +864,7 @@ class AwsSshConfig(proto.Message):
             to login into cluster machines.
     """
 
-    ec2_key_pair = proto.Field(
+    ec2_key_pair: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -882,11 +883,11 @@ class AwsProxyConfig(proto.Message):
             configuration.
     """
 
-    secret_arn = proto.Field(
+    secret_arn: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    secret_version = proto.Field(
+    secret_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -901,7 +902,7 @@ class AwsConfigEncryption(proto.Message):
             encrypt user data.
     """
 
-    kms_key_arn = proto.Field(
+    kms_key_arn: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -928,7 +929,7 @@ class AwsInstancePlacement(proto.Message):
         DEDICATED = 2
         HOST = 3
 
-    tenancy = proto.Field(
+    tenancy: Tenancy = proto.Field(
         proto.ENUM,
         number=1,
         enum=Tenancy,

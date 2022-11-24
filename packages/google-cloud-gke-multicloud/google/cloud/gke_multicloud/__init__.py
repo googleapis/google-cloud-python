@@ -18,9 +18,19 @@ from google.cloud.gke_multicloud import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.aws_clusters import AwsClustersAsyncClient, AwsClustersClient
-from .services.azure_clusters import AzureClustersAsyncClient, AzureClustersClient
-from .types.aws_resources import (
+from google.cloud.gke_multicloud_v1.services.aws_clusters.async_client import (
+    AwsClustersAsyncClient,
+)
+from google.cloud.gke_multicloud_v1.services.aws_clusters.client import (
+    AwsClustersClient,
+)
+from google.cloud.gke_multicloud_v1.services.azure_clusters.async_client import (
+    AzureClustersAsyncClient,
+)
+from google.cloud.gke_multicloud_v1.services.azure_clusters.client import (
+    AzureClustersClient,
+)
+from google.cloud.gke_multicloud_v1.types.aws_resources import (
     AwsAuthorization,
     AwsCluster,
     AwsClusterNetworking,
@@ -39,7 +49,7 @@ from .types.aws_resources import (
     AwsSshConfig,
     AwsVolumeTemplate,
 )
-from .types.aws_service import (
+from google.cloud.gke_multicloud_v1.types.aws_service import (
     CreateAwsClusterRequest,
     CreateAwsNodePoolRequest,
     DeleteAwsClusterRequest,
@@ -56,7 +66,7 @@ from .types.aws_service import (
     UpdateAwsClusterRequest,
     UpdateAwsNodePoolRequest,
 )
-from .types.azure_resources import (
+from google.cloud.gke_multicloud_v1.types.azure_resources import (
     AzureAuthorization,
     AzureClient,
     AzureCluster,
@@ -76,7 +86,7 @@ from .types.azure_resources import (
     AzureSshConfig,
     ReplicaPlacement,
 )
-from .types.azure_service import (
+from google.cloud.gke_multicloud_v1.types.azure_service import (
     CreateAzureClientRequest,
     CreateAzureClusterRequest,
     CreateAzureNodePoolRequest,
@@ -98,7 +108,7 @@ from .types.azure_service import (
     UpdateAzureClusterRequest,
     UpdateAzureNodePoolRequest,
 )
-from .types.common_resources import (
+from google.cloud.gke_multicloud_v1.types.common_resources import (
     Fleet,
     LoggingComponentConfig,
     LoggingConfig,
@@ -109,13 +119,14 @@ from .types.common_resources import (
 )
 
 __all__ = (
+    "AwsClustersClient",
     "AwsClustersAsyncClient",
+    "AzureClustersClient",
     "AzureClustersAsyncClient",
     "AwsAuthorization",
     "AwsCluster",
     "AwsClusterNetworking",
     "AwsClusterUser",
-    "AwsClustersClient",
     "AwsConfigEncryption",
     "AwsControlPlane",
     "AwsDatabaseEncryption",
@@ -129,13 +140,27 @@ __all__ = (
     "AwsServicesAuthentication",
     "AwsSshConfig",
     "AwsVolumeTemplate",
+    "CreateAwsClusterRequest",
+    "CreateAwsNodePoolRequest",
+    "DeleteAwsClusterRequest",
+    "DeleteAwsNodePoolRequest",
+    "GenerateAwsAccessTokenRequest",
+    "GenerateAwsAccessTokenResponse",
+    "GetAwsClusterRequest",
+    "GetAwsNodePoolRequest",
+    "GetAwsServerConfigRequest",
+    "ListAwsClustersRequest",
+    "ListAwsClustersResponse",
+    "ListAwsNodePoolsRequest",
+    "ListAwsNodePoolsResponse",
+    "UpdateAwsClusterRequest",
+    "UpdateAwsNodePoolRequest",
     "AzureAuthorization",
     "AzureClient",
     "AzureCluster",
     "AzureClusterNetworking",
     "AzureClusterResources",
     "AzureClusterUser",
-    "AzureClustersClient",
     "AzureConfigEncryption",
     "AzureControlPlane",
     "AzureDatabaseEncryption",
@@ -147,47 +172,32 @@ __all__ = (
     "AzureProxyConfig",
     "AzureServerConfig",
     "AzureSshConfig",
-    "CreateAwsClusterRequest",
-    "CreateAwsNodePoolRequest",
+    "ReplicaPlacement",
     "CreateAzureClientRequest",
     "CreateAzureClusterRequest",
     "CreateAzureNodePoolRequest",
-    "DeleteAwsClusterRequest",
-    "DeleteAwsNodePoolRequest",
     "DeleteAzureClientRequest",
     "DeleteAzureClusterRequest",
     "DeleteAzureNodePoolRequest",
-    "Fleet",
-    "GenerateAwsAccessTokenRequest",
-    "GenerateAwsAccessTokenResponse",
     "GenerateAzureAccessTokenRequest",
     "GenerateAzureAccessTokenResponse",
-    "GetAwsClusterRequest",
-    "GetAwsNodePoolRequest",
-    "GetAwsServerConfigRequest",
     "GetAzureClientRequest",
     "GetAzureClusterRequest",
     "GetAzureNodePoolRequest",
     "GetAzureServerConfigRequest",
-    "ListAwsClustersRequest",
-    "ListAwsClustersResponse",
-    "ListAwsNodePoolsRequest",
-    "ListAwsNodePoolsResponse",
     "ListAzureClientsRequest",
     "ListAzureClientsResponse",
     "ListAzureClustersRequest",
     "ListAzureClustersResponse",
     "ListAzureNodePoolsRequest",
     "ListAzureNodePoolsResponse",
+    "UpdateAzureClusterRequest",
+    "UpdateAzureNodePoolRequest",
+    "Fleet",
     "LoggingComponentConfig",
     "LoggingConfig",
     "MaxPodsConstraint",
     "NodeTaint",
     "OperationMetadata",
-    "ReplicaPlacement",
-    "UpdateAwsClusterRequest",
-    "UpdateAwsNodePoolRequest",
-    "UpdateAzureClusterRequest",
-    "UpdateAzureNodePoolRequest",
     "WorkloadIdentityConfig",
 )
