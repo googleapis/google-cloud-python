@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.9...v0.18.0) (2022-11-19)
+
+
+### Features
+
+* Map "if_exists" value to LoadJobConfig.WriteDisposition ([#583](https://github.com/googleapis/python-bigquery-pandas/issues/583)) ([7389cd2](https://github.com/googleapis/python-bigquery-pandas/commit/7389cd2a363ebf403b66905ca845ca842a754922))
+
 ## [0.17.9](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.8...v0.17.9) (2022-09-27)
 
 
