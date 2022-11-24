@@ -54,14 +54,18 @@ class Table:
                 The DataFrame of the table.
 
         """
-        rows = self.body_rows if self.body_rows != [] else self.header_rows
+        dataframe = None
 
-        rows.append("\n")
-        rows.append("\n")
+        if not self.body_rows:
+            dataframe = pd.DataFrame(columns=self.header_rows)
+        else:
+            if self.header_rows != []:
+                dataframe = pd.DataFrame(self.body_rows)
+                dataframe.columns = self.header_rows
+            else:
 
-        dataframe = pd.DataFrame(rows)
-        if self.body_rows != [] and self.header_rows != []:
-            dataframe.columns = self.header_rows
+                dataframe = pd.DataFrame(self.body_rows)
+                dataframe.columns = [None] * len(self.body_rows[0])
 
         return dataframe
 
