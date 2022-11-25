@@ -6,7 +6,7 @@
     "issue_tracker": "http://github.com/googleapis/python-source-context/issues",
     "release_level": "stable",
     "language": "python",
-    "library_type": "GAPIC_AUTO",
+    "library_type": "OTHER",
     "repo": "googleapis/python-source-context",
     "distribution_name": "google-cloud-source-context",
     "api_id": "source.googleapis.com",

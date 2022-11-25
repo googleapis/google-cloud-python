@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -67,25 +69,25 @@ class SourceContext(proto.Message):
             This field is a member of `oneof`_ ``context``.
     """
 
-    cloud_repo = proto.Field(
+    cloud_repo: "CloudRepoSourceContext" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="context",
         message="CloudRepoSourceContext",
     )
-    cloud_workspace = proto.Field(
+    cloud_workspace: "CloudWorkspaceSourceContext" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="context",
         message="CloudWorkspaceSourceContext",
     )
-    gerrit = proto.Field(
+    gerrit: "GerritSourceContext" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="context",
         message="GerritSourceContext",
     )
-    git = proto.Field(
+    git: "GitSourceContext" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="context",
@@ -100,16 +102,16 @@ class ExtendedSourceContext(proto.Message):
     Attributes:
         context (google.cloud.source_context_v1.types.SourceContext):
             Any source context.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels with user defined metadata.
     """
 
-    context = proto.Field(
+    context: "SourceContext" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SourceContext",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -133,12 +135,12 @@ class AliasContext(proto.Message):
         MOVABLE = 2
         OTHER = 4
 
-    kind = proto.Field(
+    kind: Kind = proto.Field(
         proto.ENUM,
         number=1,
         enum=Kind,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -172,22 +174,22 @@ class CloudRepoSourceContext(proto.Message):
             This field is a member of `oneof`_ ``revision``.
     """
 
-    repo_id = proto.Field(
+    repo_id: "RepoId" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RepoId",
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="revision",
     )
-    alias_name = proto.Field(
+    alias_name: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="revision",
     )
-    alias_context = proto.Field(
+    alias_context: "AliasContext" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="revision",
@@ -207,12 +209,12 @@ class CloudWorkspaceSourceContext(proto.Message):
             most recent snapshot.
     """
 
-    workspace_id = proto.Field(
+    workspace_id: "CloudWorkspaceId" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CloudWorkspaceId",
     )
-    snapshot_id = proto.Field(
+    snapshot_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -250,25 +252,25 @@ class GerritSourceContext(proto.Message):
             This field is a member of `oneof`_ ``revision``.
     """
 
-    host_uri = proto.Field(
+    host_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gerrit_project = proto.Field(
+    gerrit_project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="revision",
     )
-    alias_name = proto.Field(
+    alias_name: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="revision",
     )
-    alias_context = proto.Field(
+    alias_context: "AliasContext" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="revision",
@@ -288,11 +290,11 @@ class GitSourceContext(proto.Message):
             required.
     """
 
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -321,13 +323,13 @@ class RepoId(proto.Message):
             This field is a member of `oneof`_ ``id``.
     """
 
-    project_repo_id = proto.Field(
+    project_repo_id: "ProjectRepoId" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="id",
         message="ProjectRepoId",
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="id",
@@ -346,11 +348,11 @@ class ProjectRepoId(proto.Message):
             default repo.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    repo_name = proto.Field(
+    repo_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -370,12 +372,12 @@ class CloudWorkspaceId(proto.Message):
             the Source API's CreateWorkspace method.
     """
 
-    repo_id = proto.Field(
+    repo_id: "RepoId" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="RepoId",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
