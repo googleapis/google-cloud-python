@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -173,9 +183,9 @@ class StorageTransferServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, StorageTransferServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the storage transfer service client.
@@ -219,10 +229,10 @@ class StorageTransferServiceAsyncClient:
 
     async def get_google_service_account(
         self,
-        request: Union[transfer.GetGoogleServiceAccountRequest, dict] = None,
+        request: Optional[Union[transfer.GetGoogleServiceAccountRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.GoogleServiceAccount:
         r"""Returns the Google service account that is used by
@@ -263,7 +273,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest, dict]]):
                 The request object. Request passed to
                 GetGoogleServiceAccount.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -308,10 +318,10 @@ class StorageTransferServiceAsyncClient:
 
     async def create_transfer_job(
         self,
-        request: Union[transfer.CreateTransferJobRequest, dict] = None,
+        request: Optional[Union[transfer.CreateTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Creates a transfer job that runs periodically.
@@ -342,7 +352,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.CreateTransferJobRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.CreateTransferJobRequest, dict]]):
                 The request object. Request passed to CreateTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -381,10 +391,10 @@ class StorageTransferServiceAsyncClient:
 
     async def update_transfer_job(
         self,
-        request: Union[transfer.UpdateTransferJobRequest, dict] = None,
+        request: Optional[Union[transfer.UpdateTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Updates a transfer job. Updating a job's transfer spec does not
@@ -427,7 +437,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest, dict]]):
                 The request object. Request passed to UpdateTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -472,10 +482,10 @@ class StorageTransferServiceAsyncClient:
 
     async def get_transfer_job(
         self,
-        request: Union[transfer.GetTransferJobRequest, dict] = None,
+        request: Optional[Union[transfer.GetTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Gets a transfer job.
@@ -508,7 +518,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.GetTransferJobRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.GetTransferJobRequest, dict]]):
                 The request object. Request passed to GetTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -553,10 +563,10 @@ class StorageTransferServiceAsyncClient:
 
     async def list_transfer_jobs(
         self,
-        request: Union[transfer.ListTransferJobsRequest, dict] = None,
+        request: Optional[Union[transfer.ListTransferJobsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferJobsAsyncPager:
         r"""Lists transfer jobs.
@@ -589,7 +599,7 @@ class StorageTransferServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.ListTransferJobsRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.ListTransferJobsRequest, dict]]):
                 The request object. `projectId`, `jobNames`, and
                 `jobStatuses` are query parameters that can be specified
                 when listing transfer jobs.
@@ -640,10 +650,10 @@ class StorageTransferServiceAsyncClient:
 
     async def pause_transfer_operation(
         self,
-        request: Union[transfer.PauseTransferOperationRequest, dict] = None,
+        request: Optional[Union[transfer.PauseTransferOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pauses a transfer operation.
@@ -672,7 +682,7 @@ class StorageTransferServiceAsyncClient:
                 await client.pause_transfer_operation(request=request)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest, dict]]):
                 The request object. Request passed to
                 PauseTransferOperation.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -708,10 +718,10 @@ class StorageTransferServiceAsyncClient:
 
     async def resume_transfer_operation(
         self,
-        request: Union[transfer.ResumeTransferOperationRequest, dict] = None,
+        request: Optional[Union[transfer.ResumeTransferOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a transfer operation that is paused.
@@ -740,7 +750,7 @@ class StorageTransferServiceAsyncClient:
                 await client.resume_transfer_operation(request=request)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest, dict]]):
                 The request object. Request passed to
                 ResumeTransferOperation.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -776,10 +786,10 @@ class StorageTransferServiceAsyncClient:
 
     async def run_transfer_job(
         self,
-        request: Union[transfer.RunTransferJobRequest, dict] = None,
+        request: Optional[Union[transfer.RunTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Attempts to start a new TransferOperation for the
@@ -820,7 +830,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.RunTransferJobRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.RunTransferJobRequest, dict]]):
                 The request object. Request passed to RunTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -882,10 +892,10 @@ class StorageTransferServiceAsyncClient:
 
     async def delete_transfer_job(
         self,
-        request: Union[transfer.DeleteTransferJobRequest, dict] = None,
+        request: Optional[Union[transfer.DeleteTransferJobRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a transfer job. Deleting a transfer job sets its status
@@ -917,7 +927,7 @@ class StorageTransferServiceAsyncClient:
                 await client.delete_transfer_job(request=request)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.DeleteTransferJobRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.DeleteTransferJobRequest, dict]]):
                 The request object. Request passed to DeleteTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -952,13 +962,13 @@ class StorageTransferServiceAsyncClient:
 
     async def create_agent_pool(
         self,
-        request: Union[transfer.CreateAgentPoolRequest, dict] = None,
+        request: Optional[Union[transfer.CreateAgentPoolRequest, dict]] = None,
         *,
-        project_id: str = None,
-        agent_pool: transfer_types.AgentPool = None,
-        agent_pool_id: str = None,
+        project_id: Optional[str] = None,
+        agent_pool: Optional[transfer_types.AgentPool] = None,
+        agent_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.AgentPool:
         r"""Creates an agent pool resource.
@@ -995,7 +1005,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.CreateAgentPoolRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.CreateAgentPoolRequest, dict]]):
                 The request object. Specifies the request passed to
                 CreateAgentPool.
             project_id (:class:`str`):
@@ -1092,12 +1102,12 @@ class StorageTransferServiceAsyncClient:
 
     async def update_agent_pool(
         self,
-        request: Union[transfer.UpdateAgentPoolRequest, dict] = None,
+        request: Optional[Union[transfer.UpdateAgentPoolRequest, dict]] = None,
         *,
-        agent_pool: transfer_types.AgentPool = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        agent_pool: Optional[transfer_types.AgentPool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.AgentPool:
         r"""Updates an existing agent pool resource.
@@ -1132,7 +1142,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.UpdateAgentPoolRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.UpdateAgentPoolRequest, dict]]):
                 The request object. Specifies the request passed to
                 UpdateAgentPool.
             agent_pool (:class:`google.cloud.storage_transfer_v1.types.AgentPool`):
@@ -1223,11 +1233,11 @@ class StorageTransferServiceAsyncClient:
 
     async def get_agent_pool(
         self,
-        request: Union[transfer.GetAgentPoolRequest, dict] = None,
+        request: Optional[Union[transfer.GetAgentPoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.AgentPool:
         r"""Gets an agent pool.
@@ -1259,7 +1269,7 @@ class StorageTransferServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.GetAgentPoolRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.GetAgentPoolRequest, dict]]):
                 The request object. Specifies the request passed to
                 GetAgentPool.
             name (:class:`str`):
@@ -1323,11 +1333,11 @@ class StorageTransferServiceAsyncClient:
 
     async def list_agent_pools(
         self,
-        request: Union[transfer.ListAgentPoolsRequest, dict] = None,
+        request: Optional[Union[transfer.ListAgentPoolsRequest, dict]] = None,
         *,
-        project_id: str = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAgentPoolsAsyncPager:
         r"""Lists agent pools.
@@ -1360,7 +1370,7 @@ class StorageTransferServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.ListAgentPoolsRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.ListAgentPoolsRequest, dict]]):
                 The request object. The request passed to
                 ListAgentPools.
             project_id (:class:`str`):
@@ -1439,11 +1449,11 @@ class StorageTransferServiceAsyncClient:
 
     async def delete_agent_pool(
         self,
-        request: Union[transfer.DeleteAgentPoolRequest, dict] = None,
+        request: Optional[Union[transfer.DeleteAgentPoolRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an agent pool.
@@ -1472,7 +1482,7 @@ class StorageTransferServiceAsyncClient:
                 await client.delete_agent_pool(request=request)
 
         Args:
-            request (Union[google.cloud.storage_transfer_v1.types.DeleteAgentPoolRequest, dict]):
+            request (Optional[Union[google.cloud.storage_transfer_v1.types.DeleteAgentPoolRequest, dict]]):
                 The request object. Specifies the request passed to
                 DeleteAgentPool.
             name (:class:`str`):

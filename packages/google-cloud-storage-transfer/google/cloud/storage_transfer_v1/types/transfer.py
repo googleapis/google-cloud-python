@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -51,7 +53,7 @@ class GetGoogleServiceAccountRequest(proto.Message):
             with.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -65,7 +67,7 @@ class CreateTransferJobRequest(proto.Message):
             Required. The job to create.
     """
 
-    transfer_job = proto.Field(
+    transfer_job: transfer_types.TransferJob = proto.Field(
         proto.MESSAGE,
         number=1,
         message=transfer_types.TransferJob,
@@ -111,20 +113,20 @@ class UpdateTransferJobRequest(proto.Message):
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
     """
 
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    transfer_job = proto.Field(
+    transfer_job: transfer_types.TransferJob = proto.Field(
         proto.MESSAGE,
         number=3,
         message=transfer_types.TransferJob,
     )
-    update_transfer_job_field_mask = proto.Field(
+    update_transfer_job_field_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
@@ -142,11 +144,11 @@ class GetTransferJobRequest(proto.Message):
             that owns the job.
     """
 
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -163,11 +165,11 @@ class DeleteTransferJobRequest(proto.Message):
             that owns the job.
     """
 
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -199,15 +201,15 @@ class ListTransferJobsRequest(proto.Message):
             The list page token.
     """
 
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -217,7 +219,7 @@ class ListTransferJobsResponse(proto.Message):
     r"""Response from ListTransferJobs.
 
     Attributes:
-        transfer_jobs (Sequence[google.cloud.storage_transfer_v1.types.TransferJob]):
+        transfer_jobs (MutableSequence[google.cloud.storage_transfer_v1.types.TransferJob]):
             A list of transfer jobs.
         next_page_token (str):
             The list next page token.
@@ -227,12 +229,12 @@ class ListTransferJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    transfer_jobs = proto.RepeatedField(
+    transfer_jobs: MutableSequence[transfer_types.TransferJob] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=transfer_types.TransferJob,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -246,7 +248,7 @@ class PauseTransferOperationRequest(proto.Message):
             Required. The name of the transfer operation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -260,7 +262,7 @@ class ResumeTransferOperationRequest(proto.Message):
             Required. The name of the transfer operation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -277,11 +279,11 @@ class RunTransferJobRequest(proto.Message):
             that owns the transfer job.
     """
 
-    job_name = proto.Field(
+    job_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -314,16 +316,16 @@ class CreateAgentPoolRequest(proto.Message):
             ``^(?!goog)[a-z]([a-z0-9-._~]*[a-z0-9])?$``.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    agent_pool = proto.Field(
+    agent_pool: transfer_types.AgentPool = proto.Field(
         proto.MESSAGE,
         number=2,
         message=transfer_types.AgentPool,
     )
-    agent_pool_id = proto.Field(
+    agent_pool_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -356,12 +358,12 @@ class UpdateAgentPoolRequest(proto.Message):
             -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
     """
 
-    agent_pool = proto.Field(
+    agent_pool: transfer_types.AgentPool = proto.Field(
         proto.MESSAGE,
         number=1,
         message=transfer_types.AgentPool,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -376,7 +378,7 @@ class GetAgentPoolRequest(proto.Message):
             Required. The name of the agent pool to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -391,7 +393,7 @@ class DeleteAgentPoolRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -420,19 +422,19 @@ class ListAgentPoolsRequest(proto.Message):
             The list page token.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -442,7 +444,7 @@ class ListAgentPoolsResponse(proto.Message):
     r"""Response from ListAgentPools.
 
     Attributes:
-        agent_pools (Sequence[google.cloud.storage_transfer_v1.types.AgentPool]):
+        agent_pools (MutableSequence[google.cloud.storage_transfer_v1.types.AgentPool]):
             A list of agent pools.
         next_page_token (str):
             The list next page token.
@@ -452,12 +454,12 @@ class ListAgentPoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    agent_pools = proto.RepeatedField(
+    agent_pools: MutableSequence[transfer_types.AgentPool] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=transfer_types.AgentPool,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.storage_transfer import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.storage_transfer_v1.services.storage_transfer_service.async_client import (
     StorageTransferServiceAsyncClient,

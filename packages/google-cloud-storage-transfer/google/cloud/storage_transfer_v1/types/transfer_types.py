@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
@@ -61,11 +63,11 @@ class GoogleServiceAccount(proto.Message):
             Unique identifier for the service account.
     """
 
-    account_email = proto.Field(
+    account_email: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subject_id = proto.Field(
+    subject_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -87,11 +89,11 @@ class AwsAccessKey(proto.Message):
             is not returned in RPC responses.
     """
 
-    access_key_id = proto.Field(
+    access_key_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    secret_access_key = proto.Field(
+    secret_access_key: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -113,7 +115,7 @@ class AzureCredentials(proto.Message):
             (SAS) <https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview>`__.
     """
 
-    sas_token = proto.Field(
+    sas_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -158,7 +160,7 @@ class ObjectConditions(proto.Message):
             time" of the object is less than the value of
             max_time_elapsed_since_last_modification`. Objects that do
             not have a "last modification time" are also transferred.
-        include_prefixes (Sequence[str]):
+        include_prefixes (MutableSequence[str]):
             If you specify ``include_prefixes``, Storage Transfer
             Service uses the items in the ``include_prefixes`` array to
             determine which objects to include in a transfer. Objects
@@ -193,7 +195,7 @@ class ObjectConditions(proto.Message):
 
             For more information, see `Filtering objects from
             transfers </storage-transfer/docs/filtering-objects-from-transfers>`__.
-        exclude_prefixes (Sequence[str]):
+        exclude_prefixes (MutableSequence[str]):
             If you specify ``exclude_prefixes``, Storage Transfer
             Service uses the items in the ``exclude_prefixes`` array to
             determine which objects to exclude from a transfer. Objects
@@ -251,30 +253,30 @@ class ObjectConditions(proto.Message):
             time" are transferred.
     """
 
-    min_time_elapsed_since_last_modification = proto.Field(
+    min_time_elapsed_since_last_modification: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    max_time_elapsed_since_last_modification = proto.Field(
+    max_time_elapsed_since_last_modification: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
     )
-    include_prefixes = proto.RepeatedField(
+    include_prefixes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    exclude_prefixes = proto.RepeatedField(
+    exclude_prefixes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    last_modified_since = proto.Field(
+    last_modified_since: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    last_modified_before = proto.Field(
+    last_modified_before: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -302,11 +304,11 @@ class GcsData(proto.Message):
             Requirements </storage/docs/naming#objectnames>`__.
     """
 
-    bucket_name = proto.Field(
+    bucket_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -349,20 +351,20 @@ class AwsS3Data(proto.Message):
             for this project.
     """
 
-    bucket_name = proto.Field(
+    bucket_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    aws_access_key = proto.Field(
+    aws_access_key: "AwsAccessKey" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AwsAccessKey",
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    role_arn = proto.Field(
+    role_arn: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -399,20 +401,20 @@ class AzureBlobStorageData(proto.Message):
             begin with a '/'.
     """
 
-    storage_account = proto.Field(
+    storage_account: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    azure_credentials = proto.Field(
+    azure_credentials: "AzureCredentials" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="AzureCredentials",
     )
-    container = proto.Field(
+    container: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -468,7 +470,7 @@ class HttpData(proto.Message):
             with HTTP and HTTPS schemes are supported.
     """
 
-    list_url = proto.Field(
+    list_url: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -482,7 +484,7 @@ class PosixFilesystem(proto.Message):
             Root directory path to the filesystem.
     """
 
-    root_directory = proto.Field(
+    root_directory: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -515,23 +517,23 @@ class AwsS3CompatibleData(proto.Message):
             This field is a member of `oneof`_ ``data_provider``.
     """
 
-    bucket_name = proto.Field(
+    bucket_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    endpoint = proto.Field(
+    endpoint: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    s3_metadata = proto.Field(
+    s3_metadata: "S3CompatibleMetadata" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="data_provider",
@@ -590,22 +592,22 @@ class S3CompatibleMetadata(proto.Message):
         LIST_OBJECTS_V2 = 1
         LIST_OBJECTS = 2
 
-    auth_method = proto.Field(
+    auth_method: AuthMethod = proto.Field(
         proto.ENUM,
         number=1,
         enum=AuthMethod,
     )
-    request_model = proto.Field(
+    request_model: RequestModel = proto.Field(
         proto.ENUM,
         number=2,
         enum=RequestModel,
     )
-    protocol = proto.Field(
+    protocol: NetworkProtocol = proto.Field(
         proto.ENUM,
         number=3,
         enum=NetworkProtocol,
     )
-    list_api = proto.Field(
+    list_api: ListApi = proto.Field(
         proto.ENUM,
         number=4,
         enum=ListApi,
@@ -649,25 +651,25 @@ class AgentPool(proto.Message):
                 distributed across all the agents in the pool.
         """
 
-        limit_mbps = proto.Field(
+        limit_mbps: int = proto.Field(
             proto.INT64,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    bandwidth_limit = proto.Field(
+    bandwidth_limit: BandwidthLimit = proto.Field(
         proto.MESSAGE,
         number=5,
         message=BandwidthLimit,
@@ -718,24 +720,24 @@ class TransferOptions(proto.Message):
         NEVER = 2
         ALWAYS = 3
 
-    overwrite_objects_already_existing_in_sink = proto.Field(
+    overwrite_objects_already_existing_in_sink: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    delete_objects_unique_in_sink = proto.Field(
+    delete_objects_unique_in_sink: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    delete_objects_from_source_after_transfer = proto.Field(
+    delete_objects_from_source_after_transfer: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    overwrite_when = proto.Field(
+    overwrite_when: OverwriteWhen = proto.Field(
         proto.ENUM,
         number=4,
         enum=OverwriteWhen,
     )
-    metadata_options = proto.Field(
+    metadata_options: "MetadataOptions" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="MetadataOptions",
@@ -817,80 +819,80 @@ class TransferSpec(proto.Message):
             default name is used.
     """
 
-    gcs_data_sink = proto.Field(
+    gcs_data_sink: "GcsData" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="data_sink",
         message="GcsData",
     )
-    posix_data_sink = proto.Field(
+    posix_data_sink: "PosixFilesystem" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="data_sink",
         message="PosixFilesystem",
     )
-    gcs_data_source = proto.Field(
+    gcs_data_source: "GcsData" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="data_source",
         message="GcsData",
     )
-    aws_s3_data_source = proto.Field(
+    aws_s3_data_source: "AwsS3Data" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="data_source",
         message="AwsS3Data",
     )
-    http_data_source = proto.Field(
+    http_data_source: "HttpData" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="data_source",
         message="HttpData",
     )
-    posix_data_source = proto.Field(
+    posix_data_source: "PosixFilesystem" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="data_source",
         message="PosixFilesystem",
     )
-    azure_blob_storage_data_source = proto.Field(
+    azure_blob_storage_data_source: "AzureBlobStorageData" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="data_source",
         message="AzureBlobStorageData",
     )
-    aws_s3_compatible_data_source = proto.Field(
+    aws_s3_compatible_data_source: "AwsS3CompatibleData" = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="data_source",
         message="AwsS3CompatibleData",
     )
-    gcs_intermediate_data_location = proto.Field(
+    gcs_intermediate_data_location: "GcsData" = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="intermediate_data_location",
         message="GcsData",
     )
-    object_conditions = proto.Field(
+    object_conditions: "ObjectConditions" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="ObjectConditions",
     )
-    transfer_options = proto.Field(
+    transfer_options: "TransferOptions" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="TransferOptions",
     )
-    transfer_manifest = proto.Field(
+    transfer_manifest: "TransferManifest" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="TransferManifest",
     )
-    source_agent_pool_name = proto.Field(
+    source_agent_pool_name: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    sink_agent_pool_name = proto.Field(
+    sink_agent_pool_name: str = proto.Field(
         proto.STRING,
         number=18,
     )
@@ -1020,47 +1022,47 @@ class MetadataOptions(proto.Message):
         TIME_CREATED_SKIP = 1
         TIME_CREATED_PRESERVE_AS_CUSTOM_TIME = 2
 
-    symlink = proto.Field(
+    symlink: Symlink = proto.Field(
         proto.ENUM,
         number=1,
         enum=Symlink,
     )
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=2,
         enum=Mode,
     )
-    gid = proto.Field(
+    gid: GID = proto.Field(
         proto.ENUM,
         number=3,
         enum=GID,
     )
-    uid = proto.Field(
+    uid: UID = proto.Field(
         proto.ENUM,
         number=4,
         enum=UID,
     )
-    acl = proto.Field(
+    acl: Acl = proto.Field(
         proto.ENUM,
         number=5,
         enum=Acl,
     )
-    storage_class = proto.Field(
+    storage_class: StorageClass = proto.Field(
         proto.ENUM,
         number=6,
         enum=StorageClass,
     )
-    temporary_hold = proto.Field(
+    temporary_hold: TemporaryHold = proto.Field(
         proto.ENUM,
         number=7,
         enum=TemporaryHold,
     )
-    kms_key = proto.Field(
+    kms_key: KmsKey = proto.Field(
         proto.ENUM,
         number=8,
         enum=KmsKey,
     )
-    time_created = proto.Field(
+    time_created: TimeCreated = proto.Field(
         proto.ENUM,
         number=9,
         enum=TimeCreated,
@@ -1078,7 +1080,7 @@ class TransferManifest(proto.Message):
             example path is ``gs://bucket_name/path/manifest.csv``.
     """
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1165,27 +1167,27 @@ class Schedule(proto.Message):
             than 1 hour.
     """
 
-    schedule_start_date = proto.Field(
+    schedule_start_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=1,
         message=date_pb2.Date,
     )
-    schedule_end_date = proto.Field(
+    schedule_end_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=2,
         message=date_pb2.Date,
     )
-    start_time_of_day = proto.Field(
+    start_time_of_day: timeofday_pb2.TimeOfDay = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timeofday_pb2.TimeOfDay,
     )
-    end_time_of_day = proto.Field(
+    end_time_of_day: timeofday_pb2.TimeOfDay = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timeofday_pb2.TimeOfDay,
     )
-    repeat_interval = proto.Field(
+    repeat_interval: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
@@ -1282,59 +1284,59 @@ class TransferJob(proto.Message):
         DISABLED = 2
         DELETED = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    transfer_spec = proto.Field(
+    transfer_spec: "TransferSpec" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TransferSpec",
     )
-    notification_config = proto.Field(
+    notification_config: "NotificationConfig" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="NotificationConfig",
     )
-    logging_config = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=14,
         message="LoggingConfig",
     )
-    schedule = proto.Field(
+    schedule: "Schedule" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Schedule",
     )
-    status = proto.Field(
+    status: Status = proto.Field(
         proto.ENUM,
         number=6,
         enum=Status,
     )
-    creation_time = proto.Field(
+    creation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    last_modification_time = proto.Field(
+    last_modification_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    deletion_time = proto.Field(
+    deletion_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    latest_operation_name = proto.Field(
+    latest_operation_name: str = proto.Field(
         proto.STRING,
         number=12,
     )
@@ -1348,16 +1350,16 @@ class ErrorLogEntry(proto.Message):
             Required. A URL that refers to the target (a
             data source, a data sink, or an object) with
             which the error is associated.
-        error_details (Sequence[str]):
+        error_details (MutableSequence[str]):
             A list of messages that carry the error
             details.
     """
 
-    url = proto.Field(
+    url: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    error_details = proto.RepeatedField(
+    error_details: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1372,23 +1374,23 @@ class ErrorSummary(proto.Message):
             Required.
         error_count (int):
             Required. Count of this type of error.
-        error_log_entries (Sequence[google.cloud.storage_transfer_v1.types.ErrorLogEntry]):
+        error_log_entries (MutableSequence[google.cloud.storage_transfer_v1.types.ErrorLogEntry]):
             Error samples.
             At most 5 error log entries are recorded for a
             given error code for a single transfer
             operation.
     """
 
-    error_code = proto.Field(
+    error_code: code_pb2.Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=code_pb2.Code,
     )
-    error_count = proto.Field(
+    error_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    error_log_entries = proto.RepeatedField(
+    error_log_entries: MutableSequence["ErrorLogEntry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ErrorLogEntry",
@@ -1478,87 +1480,87 @@ class TransferCounters(proto.Message):
             up.
     """
 
-    objects_found_from_source = proto.Field(
+    objects_found_from_source: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    bytes_found_from_source = proto.Field(
+    bytes_found_from_source: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    objects_found_only_from_sink = proto.Field(
+    objects_found_only_from_sink: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    bytes_found_only_from_sink = proto.Field(
+    bytes_found_only_from_sink: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    objects_from_source_skipped_by_sync = proto.Field(
+    objects_from_source_skipped_by_sync: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    bytes_from_source_skipped_by_sync = proto.Field(
+    bytes_from_source_skipped_by_sync: int = proto.Field(
         proto.INT64,
         number=6,
     )
-    objects_copied_to_sink = proto.Field(
+    objects_copied_to_sink: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    bytes_copied_to_sink = proto.Field(
+    bytes_copied_to_sink: int = proto.Field(
         proto.INT64,
         number=8,
     )
-    objects_deleted_from_source = proto.Field(
+    objects_deleted_from_source: int = proto.Field(
         proto.INT64,
         number=9,
     )
-    bytes_deleted_from_source = proto.Field(
+    bytes_deleted_from_source: int = proto.Field(
         proto.INT64,
         number=10,
     )
-    objects_deleted_from_sink = proto.Field(
+    objects_deleted_from_sink: int = proto.Field(
         proto.INT64,
         number=11,
     )
-    bytes_deleted_from_sink = proto.Field(
+    bytes_deleted_from_sink: int = proto.Field(
         proto.INT64,
         number=12,
     )
-    objects_from_source_failed = proto.Field(
+    objects_from_source_failed: int = proto.Field(
         proto.INT64,
         number=13,
     )
-    bytes_from_source_failed = proto.Field(
+    bytes_from_source_failed: int = proto.Field(
         proto.INT64,
         number=14,
     )
-    objects_failed_to_delete_from_sink = proto.Field(
+    objects_failed_to_delete_from_sink: int = proto.Field(
         proto.INT64,
         number=15,
     )
-    bytes_failed_to_delete_from_sink = proto.Field(
+    bytes_failed_to_delete_from_sink: int = proto.Field(
         proto.INT64,
         number=16,
     )
-    directories_found_from_source = proto.Field(
+    directories_found_from_source: int = proto.Field(
         proto.INT64,
         number=17,
     )
-    directories_failed_to_list_from_source = proto.Field(
+    directories_failed_to_list_from_source: int = proto.Field(
         proto.INT64,
         number=18,
     )
-    directories_successfully_listed_from_source = proto.Field(
+    directories_successfully_listed_from_source: int = proto.Field(
         proto.INT64,
         number=19,
     )
-    intermediate_objects_cleaned_up = proto.Field(
+    intermediate_objects_cleaned_up: int = proto.Field(
         proto.INT64,
         number=22,
     )
-    intermediate_objects_failed_cleaned_up = proto.Field(
+    intermediate_objects_failed_cleaned_up: int = proto.Field(
         proto.INT64,
         number=23,
     )
@@ -1596,7 +1598,7 @@ class NotificationConfig(proto.Message):
             ``projects/{project}/topics/{topic}``. Not matching this
             format results in an
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.
-        event_types (Sequence[google.cloud.storage_transfer_v1.types.NotificationConfig.EventType]):
+        event_types (MutableSequence[google.cloud.storage_transfer_v1.types.NotificationConfig.EventType]):
             Event types for which a notification is
             desired. If empty, send notifications for all
             event types.
@@ -1627,16 +1629,16 @@ class NotificationConfig(proto.Message):
         NONE = 1
         JSON = 2
 
-    pubsub_topic = proto.Field(
+    pubsub_topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event_types = proto.RepeatedField(
+    event_types: MutableSequence[EventType] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=EventType,
     )
-    payload_format = proto.Field(
+    payload_format: PayloadFormat = proto.Field(
         proto.ENUM,
         number=3,
         enum=PayloadFormat,
@@ -1658,13 +1660,13 @@ class LoggingConfig(proto.Message):
     for details.
 
     Attributes:
-        log_actions (Sequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableAction]):
+        log_actions (MutableSequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableAction]):
             Specifies the actions to be logged. If empty, no logs are
             generated. Not supported for transfers with PosixFilesystem
             data sources; use
             [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
             instead.
-        log_action_states (Sequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableActionState]):
+        log_action_states (MutableSequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableActionState]):
             States in which ``log_actions`` are logged. If empty, no
             logs are generated. Not supported for transfers with
             PosixFilesystem data sources; use
@@ -1689,17 +1691,17 @@ class LoggingConfig(proto.Message):
         SUCCEEDED = 1
         FAILED = 2
 
-    log_actions = proto.RepeatedField(
+    log_actions: MutableSequence[LoggableAction] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=LoggableAction,
     )
-    log_action_states = proto.RepeatedField(
+    log_action_states: MutableSequence[LoggableActionState] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=LoggableActionState,
     )
-    enable_onprem_gcs_transfer_logs = proto.Field(
+    enable_onprem_gcs_transfer_logs: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -1727,7 +1729,7 @@ class TransferOperation(proto.Message):
         counters (google.cloud.storage_transfer_v1.types.TransferCounters):
             Information about the progress of the
             transfer operation.
-        error_breakdowns (Sequence[google.cloud.storage_transfer_v1.types.ErrorSummary]):
+        error_breakdowns (MutableSequence[google.cloud.storage_transfer_v1.types.ErrorSummary]):
             Summarizes errors encountered with sample
             error log entries.
         transfer_job_name (str):
@@ -1745,50 +1747,50 @@ class TransferOperation(proto.Message):
         ABORTED = 5
         QUEUED = 6
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    transfer_spec = proto.Field(
+    transfer_spec: "TransferSpec" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TransferSpec",
     )
-    notification_config = proto.Field(
+    notification_config: "NotificationConfig" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="NotificationConfig",
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    status = proto.Field(
+    status: Status = proto.Field(
         proto.ENUM,
         number=6,
         enum=Status,
     )
-    counters = proto.Field(
+    counters: "TransferCounters" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="TransferCounters",
     )
-    error_breakdowns = proto.RepeatedField(
+    error_breakdowns: MutableSequence["ErrorSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="ErrorSummary",
     )
-    transfer_job_name = proto.Field(
+    transfer_job_name: str = proto.Field(
         proto.STRING,
         number=9,
     )
