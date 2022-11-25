@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -67,7 +69,7 @@ class Recommendation(proto.Message):
             The primary impact that this recommendation
             can have while trying to optimize for one
             category.
-        additional_impact (Sequence[google.cloud.recommender_v1beta1.types.Impact]):
+        additional_impact (MutableSequence[google.cloud.recommender_v1beta1.types.Impact]):
             Optional set of additional impact that this
             recommendation may have when trying to optimize
             for the primary category. These may be positive
@@ -83,7 +85,7 @@ class Recommendation(proto.Message):
         etag (str):
             Fingerprint of the Recommendation. Provides
             optimistic locking when updating states.
-        associated_insights (Sequence[google.cloud.recommender_v1beta1.types.Recommendation.InsightReference]):
+        associated_insights (MutableSequence[google.cloud.recommender_v1beta1.types.Recommendation.InsightReference]):
             Insights that led to this recommendation.
         xor_group_id (str):
             Corresponds to a mutually exclusive group ID
@@ -111,63 +113,63 @@ class Recommendation(proto.Message):
                 projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID]
         """
 
-        insight = proto.Field(
+        insight: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    recommender_subtype = proto.Field(
+    recommender_subtype: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    last_refresh_time = proto.Field(
+    last_refresh_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    primary_impact = proto.Field(
+    primary_impact: "Impact" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Impact",
     )
-    additional_impact = proto.RepeatedField(
+    additional_impact: MutableSequence["Impact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="Impact",
     )
-    priority = proto.Field(
+    priority: Priority = proto.Field(
         proto.ENUM,
         number=17,
         enum=Priority,
     )
-    content = proto.Field(
+    content: "RecommendationContent" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="RecommendationContent",
     )
-    state_info = proto.Field(
+    state_info: "RecommendationStateInfo" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="RecommendationStateInfo",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    associated_insights = proto.RepeatedField(
+    associated_insights: MutableSequence[InsightReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=InsightReference,
     )
-    xor_group_id = proto.Field(
+    xor_group_id: str = proto.Field(
         proto.STRING,
         number=18,
     )
@@ -178,7 +180,7 @@ class RecommendationContent(proto.Message):
     changing.
 
     Attributes:
-        operation_groups (Sequence[google.cloud.recommender_v1beta1.types.OperationGroup]):
+        operation_groups (MutableSequence[google.cloud.recommender_v1beta1.types.OperationGroup]):
             Operations to one or more Google Cloud
             resources grouped in such a way that, all
             operations within one group are expected to be
@@ -188,12 +190,12 @@ class RecommendationContent(proto.Message):
             recommendation.
     """
 
-    operation_groups = proto.RepeatedField(
+    operation_groups: MutableSequence["OperationGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="OperationGroup",
     )
-    overview = proto.Field(
+    overview: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Struct,
@@ -204,14 +206,14 @@ class OperationGroup(proto.Message):
     r"""Group of operations that need to be performed atomically.
 
     Attributes:
-        operations (Sequence[google.cloud.recommender_v1beta1.types.Operation]):
+        operations (MutableSequence[google.cloud.recommender_v1beta1.types.Operation]):
             List of operations across one or more
             resources that belong to this group. Loosely
             based on RFC6902 and should be performed in the
             order they appear.
     """
 
-    operations = proto.RepeatedField(
+    operations: MutableSequence["Operation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Operation",
@@ -280,7 +282,7 @@ class Operation(proto.Message):
             for 'test' operation.
 
             This field is a member of `oneof`_ ``path_value``.
-        path_filters (Mapping[str, google.protobuf.struct_pb2.Value]):
+        path_filters (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Set of filters to apply if ``path`` refers to array elements
             or nested array elements in order to narrow down to a single
             unique element that is being tested/modified. This is
@@ -316,7 +318,7 @@ class Operation(proto.Message):
 
             When both path_filters and path_value_matchers are set, an
             implicit AND must be performed.
-        path_value_matchers (Mapping[str, google.cloud.recommender_v1beta1.types.ValueMatcher]):
+        path_value_matchers (MutableMapping[str, google.cloud.recommender_v1beta1.types.ValueMatcher]):
             Similar to path_filters, this contains set of filters to
             apply if ``path`` field refers to array elements. This is
             meant to support value matching beyond exact match. To
@@ -325,49 +327,49 @@ class Operation(proto.Message):
             AND must be performed.
     """
 
-    action = proto.Field(
+    action: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource_type = proto.Field(
+    resource_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    path = proto.Field(
+    path: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    source_resource = proto.Field(
+    source_resource: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    source_path = proto.Field(
+    source_path: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    value = proto.Field(
+    value: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="path_value",
         message=struct_pb2.Value,
     )
-    value_matcher = proto.Field(
+    value_matcher: "ValueMatcher" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="path_value",
         message="ValueMatcher",
     )
-    path_filters = proto.MapField(
+    path_filters: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=8,
         message=struct_pb2.Value,
     )
-    path_value_matchers = proto.MapField(
+    path_value_matchers: MutableMapping[str, "ValueMatcher"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=11,
@@ -393,7 +395,7 @@ class ValueMatcher(proto.Message):
             This field is a member of `oneof`_ ``match_variant``.
     """
 
-    matches_pattern = proto.Field(
+    matches_pattern: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="match_variant",
@@ -418,12 +420,12 @@ class CostProjection(proto.Message):
             Duration for which this cost applies.
     """
 
-    cost = proto.Field(
+    cost: money_pb2.Money = proto.Field(
         proto.MESSAGE,
         number=1,
         message=money_pb2.Money,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -439,7 +441,7 @@ class SecurityProjection(proto.Message):
             define details specific to security impact.
     """
 
-    details = proto.Field(
+    details: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
@@ -460,11 +462,11 @@ class SustainabilityProjection(proto.Message):
             applies.
     """
 
-    kg_c_o2e = proto.Field(
+    kg_c_o2e: float = proto.Field(
         proto.DOUBLE,
         number=1,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
@@ -508,24 +510,24 @@ class Impact(proto.Message):
         MANAGEABILITY = 4
         SUSTAINABILITY = 5
 
-    category = proto.Field(
+    category: Category = proto.Field(
         proto.ENUM,
         number=1,
         enum=Category,
     )
-    cost_projection = proto.Field(
+    cost_projection: "CostProjection" = proto.Field(
         proto.MESSAGE,
         number=100,
         oneof="projection",
         message="CostProjection",
     )
-    security_projection = proto.Field(
+    security_projection: "SecurityProjection" = proto.Field(
         proto.MESSAGE,
         number=101,
         oneof="projection",
         message="SecurityProjection",
     )
-    sustainability_projection = proto.Field(
+    sustainability_projection: "SustainabilityProjection" = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="projection",
@@ -540,7 +542,7 @@ class RecommendationStateInfo(proto.Message):
         state (google.cloud.recommender_v1beta1.types.RecommendationStateInfo.State):
             The state of the recommendation, Eg ACTIVE,
             SUCCEEDED, FAILED.
-        state_metadata (Mapping[str, str]):
+        state_metadata (MutableMapping[str, str]):
             A map of metadata for the state, provided by
             user or automations systems.
     """
@@ -554,12 +556,12 @@ class RecommendationStateInfo(proto.Message):
         FAILED = 4
         DISMISSED = 5
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_metadata = proto.MapField(
+    state_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,

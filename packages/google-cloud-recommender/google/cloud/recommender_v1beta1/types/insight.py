@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -37,7 +39,7 @@ class Insight(proto.Message):
         description (str):
             Free-form human readable summary in English.
             The maximum length is 500 characters.
-        target_resources (Sequence[str]):
+        target_resources (MutableSequence[str]):
             Fully qualified resource names that this
             insight is targeting.
         insight_subtype (str):
@@ -63,7 +65,7 @@ class Insight(proto.Message):
         etag (str):
             Fingerprint of the Insight. Provides
             optimistic locking when updating states.
-        associated_recommendations (Sequence[google.cloud.recommender_v1beta1.types.Insight.RecommendationReference]):
+        associated_recommendations (MutableSequence[google.cloud.recommender_v1beta1.types.Insight.RecommendationReference]):
             Recommendations derived from this insight.
     """
 
@@ -92,62 +94,64 @@ class Insight(proto.Message):
                 projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
         """
 
-        recommendation = proto.Field(
+        recommendation: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    target_resources = proto.RepeatedField(
+    target_resources: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    insight_subtype = proto.Field(
+    insight_subtype: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    content = proto.Field(
+    content: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Struct,
     )
-    last_refresh_time = proto.Field(
+    last_refresh_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    observation_period = proto.Field(
+    observation_period: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    state_info = proto.Field(
+    state_info: "InsightStateInfo" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="InsightStateInfo",
     )
-    category = proto.Field(
+    category: Category = proto.Field(
         proto.ENUM,
         number=7,
         enum=Category,
     )
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=15,
         enum=Severity,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    associated_recommendations = proto.RepeatedField(
+    associated_recommendations: MutableSequence[
+        RecommendationReference
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=RecommendationReference,
@@ -160,7 +164,7 @@ class InsightStateInfo(proto.Message):
     Attributes:
         state (google.cloud.recommender_v1beta1.types.InsightStateInfo.State):
             Insight state.
-        state_metadata (Mapping[str, str]):
+        state_metadata (MutableMapping[str, str]):
             A map of metadata for the state, provided by
             user or automations systems.
     """
@@ -172,12 +176,12 @@ class InsightStateInfo(proto.Message):
         ACCEPTED = 2
         DISMISSED = 3
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    state_metadata = proto.MapField(
+    state_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,

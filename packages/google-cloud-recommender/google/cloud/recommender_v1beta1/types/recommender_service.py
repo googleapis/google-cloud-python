@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -103,19 +105,19 @@ class ListInsightsRequest(proto.Message):
             described at https://google.aip.dev/160)
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -125,7 +127,7 @@ class ListInsightsResponse(proto.Message):
     r"""Response to the ``ListInsights`` method.
 
     Attributes:
-        insights (Sequence[google.cloud.recommender_v1beta1.types.Insight]):
+        insights (MutableSequence[google.cloud.recommender_v1beta1.types.Insight]):
             The set of insights for the ``parent`` resource.
         next_page_token (str):
             A token that can be used to request the next
@@ -137,12 +139,12 @@ class ListInsightsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    insights = proto.RepeatedField(
+    insights: MutableSequence[insight.Insight] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=insight.Insight,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -156,7 +158,7 @@ class GetInsightRequest(proto.Message):
             Required. Name of the insight.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -168,7 +170,7 @@ class MarkInsightAcceptedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the insight.
-        state_metadata (Mapping[str, str]):
+        state_metadata (MutableMapping[str, str]):
             Optional. State properties user wish to include with this
             state. Full replace of the current state_metadata.
         etag (str):
@@ -176,16 +178,16 @@ class MarkInsightAcceptedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state_metadata = proto.MapField(
+    state_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -248,19 +250,19 @@ class ListRecommendationsRequest(proto.Message):
             described at https://google.aip.dev/160)
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -270,7 +272,7 @@ class ListRecommendationsResponse(proto.Message):
     r"""Response to the ``ListRecommendations`` method.
 
     Attributes:
-        recommendations (Sequence[google.cloud.recommender_v1beta1.types.Recommendation]):
+        recommendations (MutableSequence[google.cloud.recommender_v1beta1.types.Recommendation]):
             The set of recommendations for the ``parent`` resource.
         next_page_token (str):
             A token that can be used to request the next
@@ -282,12 +284,14 @@ class ListRecommendationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recommendations = proto.RepeatedField(
+    recommendations: MutableSequence[
+        recommendation.Recommendation
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=recommendation.Recommendation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -301,7 +305,7 @@ class GetRecommendationRequest(proto.Message):
             Required. Name of the recommendation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -313,7 +317,7 @@ class MarkRecommendationClaimedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Mapping[str, str]):
+        state_metadata (MutableMapping[str, str]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the
@@ -323,16 +327,16 @@ class MarkRecommendationClaimedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state_metadata = proto.MapField(
+    state_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -344,7 +348,7 @@ class MarkRecommendationSucceededRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Mapping[str, str]):
+        state_metadata (MutableMapping[str, str]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the
@@ -354,16 +358,16 @@ class MarkRecommendationSucceededRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state_metadata = proto.MapField(
+    state_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -375,7 +379,7 @@ class MarkRecommendationFailedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Mapping[str, str]):
+        state_metadata (MutableMapping[str, str]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the
@@ -385,16 +389,16 @@ class MarkRecommendationFailedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state_metadata = proto.MapField(
+    state_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -416,7 +420,7 @@ class GetRecommenderConfigRequest(proto.Message):
             -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -435,17 +439,17 @@ class UpdateRecommenderConfigRequest(proto.Message):
             change, but do not actually update it.
     """
 
-    recommender_config = proto.Field(
+    recommender_config: gcr_recommender_config.RecommenderConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_recommender_config.RecommenderConfig,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -467,7 +471,7 @@ class GetInsightTypeConfigRequest(proto.Message):
             -  ``organizations/[ORGANIZATION_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -486,17 +490,17 @@ class UpdateInsightTypeConfigRequest(proto.Message):
             change, but do not actually update it.
     """
 
-    insight_type_config = proto.Field(
+    insight_type_config: gcr_insight_type_config.InsightTypeConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_insight_type_config.InsightTypeConfig,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )

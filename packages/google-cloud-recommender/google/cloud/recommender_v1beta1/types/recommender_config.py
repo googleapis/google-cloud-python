@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -47,7 +49,7 @@ class RecommenderConfig(proto.Message):
             the config. A new revision is committed whenever
             the config is changed in any way. The format is
             an 8-character hexadecimal string.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Allows clients to store small amounts of arbitrary data.
             Annotations must follow the Kubernetes syntax. The total
             size of all keys and values combined is limited to 256k. Key
@@ -62,34 +64,34 @@ class RecommenderConfig(proto.Message):
             interfaces.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    recommender_generation_config = proto.Field(
+    recommender_generation_config: "RecommenderGenerationConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="RecommenderGenerationConfig",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -107,7 +109,7 @@ class RecommenderGenerationConfig(proto.Message):
             be used by or are applied to all subtypes.
     """
 
-    params = proto.Field(
+    params: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Struct,
