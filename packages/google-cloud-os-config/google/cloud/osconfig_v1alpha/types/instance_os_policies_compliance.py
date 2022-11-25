@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -78,7 +80,7 @@ class InstanceOSPoliciesCompliance(proto.Message):
         detailed_state_reason (str):
             Output only. The reason for the ``detailed_state`` of the VM
             (if any).
-        os_policy_compliances (Sequence[google.cloud.osconfig_v1alpha.types.InstanceOSPoliciesCompliance.OSPolicyCompliance]):
+        os_policy_compliances (MutableSequence[google.cloud.osconfig_v1alpha.types.InstanceOSPoliciesCompliance.OSPolicyCompliance]):
             Output only. Compliance data for each ``OSPolicy`` that is
             applied to the VM.
         last_compliance_check_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -105,62 +107,64 @@ class InstanceOSPoliciesCompliance(proto.Message):
                 ``projects/{project_number}/locations/{location}/osPolicyAssignments/{os_policy_assignment_id@revision_id}``
             state (google.cloud.osconfig_v1alpha.types.OSPolicyComplianceState):
                 Compliance state of the OS policy.
-            os_policy_resource_compliances (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicyResourceCompliance]):
+            os_policy_resource_compliances (MutableSequence[google.cloud.osconfig_v1alpha.types.OSPolicyResourceCompliance]):
                 Compliance data for each ``OSPolicyResource`` that is
                 applied to the VM.
         """
 
-        os_policy_id = proto.Field(
+        os_policy_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        os_policy_assignment = proto.Field(
+        os_policy_assignment: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        state = proto.Field(
+        state: config_common.OSPolicyComplianceState = proto.Field(
             proto.ENUM,
             number=4,
             enum=config_common.OSPolicyComplianceState,
         )
-        os_policy_resource_compliances = proto.RepeatedField(
+        os_policy_resource_compliances: MutableSequence[
+            config_common.OSPolicyResourceCompliance
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=config_common.OSPolicyResourceCompliance,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: config_common.OSPolicyComplianceState = proto.Field(
         proto.ENUM,
         number=3,
         enum=config_common.OSPolicyComplianceState,
     )
-    detailed_state = proto.Field(
+    detailed_state: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    detailed_state_reason = proto.Field(
+    detailed_state_reason: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    os_policy_compliances = proto.RepeatedField(
+    os_policy_compliances: MutableSequence[OSPolicyCompliance] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=OSPolicyCompliance,
     )
-    last_compliance_check_time = proto.Field(
+    last_compliance_check_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    last_compliance_run_id = proto.Field(
+    last_compliance_run_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -184,7 +188,7 @@ class GetInstanceOSPoliciesComplianceRequest(proto.Message):
             provided.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -214,19 +218,19 @@ class ListInstanceOSPoliciesCompliancesRequest(proto.Message):
             included in the response.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -237,7 +241,7 @@ class ListInstanceOSPoliciesCompliancesResponse(proto.Message):
     for all Compute Engine VMs in the given location.
 
     Attributes:
-        instance_os_policies_compliances (Sequence[google.cloud.osconfig_v1alpha.types.InstanceOSPoliciesCompliance]):
+        instance_os_policies_compliances (MutableSequence[google.cloud.osconfig_v1alpha.types.InstanceOSPoliciesCompliance]):
             List of instance OS policies compliance
             objects.
         next_page_token (str):
@@ -249,12 +253,14 @@ class ListInstanceOSPoliciesCompliancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instance_os_policies_compliances = proto.RepeatedField(
+    instance_os_policies_compliances: MutableSequence[
+        "InstanceOSPoliciesCompliance"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InstanceOSPoliciesCompliance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

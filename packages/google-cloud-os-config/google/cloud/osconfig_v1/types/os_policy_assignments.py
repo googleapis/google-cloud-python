@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -63,7 +65,7 @@ class OSPolicyAssignment(proto.Message):
             OS policy assignment description.
             Length of the description is limited to 1024
             characters.
-        os_policies (Sequence[google.cloud.osconfig_v1.types.OSPolicy]):
+        os_policies (MutableSequence[google.cloud.osconfig_v1.types.OSPolicy]):
             Required. List of OS policies to be applied
             to the VMs.
         instance_filter (google.cloud.osconfig_v1.types.OSPolicyAssignment.InstanceFilter):
@@ -137,13 +139,13 @@ class OSPolicyAssignment(proto.Message):
            both labels present.
 
         Attributes:
-            labels (Mapping[str, str]):
+            labels (MutableMapping[str, str]):
                 Labels are identified by key/value pairs in
                 this map. A VM should contain all the key/value
                 pairs specified in this map to be selected.
         """
 
-        labels = proto.MapField(
+        labels: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=1,
@@ -158,17 +160,17 @@ class OSPolicyAssignment(proto.Message):
             all_ (bool):
                 Target all VMs in the project. If true, no
                 other criteria is permitted.
-            inclusion_labels (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.LabelSet]):
+            inclusion_labels (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.LabelSet]):
                 List of label sets used for VM inclusion.
 
                 If the list has more than one ``LabelSet``, the VM is
                 included if any of the label sets are applicable for the VM.
-            exclusion_labels (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.LabelSet]):
+            exclusion_labels (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.LabelSet]):
                 List of label sets used for VM exclusion.
                 If the list has more than one label set, the VM
                 is excluded if any of the label sets are
                 applicable for the VM.
-            inventories (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.InstanceFilter.Inventory]):
+            inventories (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.InstanceFilter.Inventory]):
                 List of inventories to select VMs.
                 A VM is selected if its inventory data matches
                 at least one of the following inventories.
@@ -191,30 +193,36 @@ class OSPolicyAssignment(proto.Message):
                     An empty string matches all OS versions.
             """
 
-            os_short_name = proto.Field(
+            os_short_name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            os_version = proto.Field(
+            os_version: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
 
-        all_ = proto.Field(
+        all_: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        inclusion_labels = proto.RepeatedField(
+        inclusion_labels: MutableSequence[
+            "OSPolicyAssignment.LabelSet"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="OSPolicyAssignment.LabelSet",
         )
-        exclusion_labels = proto.RepeatedField(
+        exclusion_labels: MutableSequence[
+            "OSPolicyAssignment.LabelSet"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="OSPolicyAssignment.LabelSet",
         )
-        inventories = proto.RepeatedField(
+        inventories: MutableSequence[
+            "OSPolicyAssignment.InstanceFilter.Inventory"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="OSPolicyAssignment.InstanceFilter.Inventory",
@@ -236,71 +244,71 @@ class OSPolicyAssignment(proto.Message):
                 has passed after configuration changes are applied.
         """
 
-        disruption_budget = proto.Field(
+        disruption_budget: osconfig_common.FixedOrPercent = proto.Field(
             proto.MESSAGE,
             number=1,
             message=osconfig_common.FixedOrPercent,
         )
-        min_wait_duration = proto.Field(
+        min_wait_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    os_policies = proto.RepeatedField(
+    os_policies: MutableSequence[os_policy.OSPolicy] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=os_policy.OSPolicy,
     )
-    instance_filter = proto.Field(
+    instance_filter: InstanceFilter = proto.Field(
         proto.MESSAGE,
         number=4,
         message=InstanceFilter,
     )
-    rollout = proto.Field(
+    rollout: Rollout = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Rollout,
     )
-    revision_id = proto.Field(
+    revision_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    revision_create_time = proto.Field(
+    revision_create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    rollout_state = proto.Field(
+    rollout_state: RolloutState = proto.Field(
         proto.ENUM,
         number=9,
         enum=RolloutState,
     )
-    baseline = proto.Field(
+    baseline: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    deleted = proto.Field(
+    deleted: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=12,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -341,26 +349,26 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
         CANCELLED = 3
         SUCCEEDED = 4
 
-    os_policy_assignment = proto.Field(
+    os_policy_assignment: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    api_method = proto.Field(
+    api_method: APIMethod = proto.Field(
         proto.ENUM,
         number=2,
         enum=APIMethod,
     )
-    rollout_state = proto.Field(
+    rollout_state: RolloutState = proto.Field(
         proto.ENUM,
         number=3,
         enum=RolloutState,
     )
-    rollout_start_time = proto.Field(
+    rollout_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    rollout_update_time = proto.Field(
+    rollout_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -389,16 +397,16 @@ class CreateOSPolicyAssignmentRequest(proto.Message):
             -  Must be unique within the project.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    os_policy_assignment = proto.Field(
+    os_policy_assignment: "OSPolicyAssignment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="OSPolicyAssignment",
     )
-    os_policy_assignment_id = proto.Field(
+    os_policy_assignment_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -415,12 +423,12 @@ class UpdateOSPolicyAssignmentRequest(proto.Message):
             fields of the assignment should be updated.
     """
 
-    os_policy_assignment = proto.Field(
+    os_policy_assignment: "OSPolicyAssignment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="OSPolicyAssignment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -438,7 +446,7 @@ class GetOSPolicyAssignmentRequest(proto.Message):
             ``projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}@{revisionId}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -459,15 +467,15 @@ class ListOSPolicyAssignmentsRequest(proto.Message):
             listing should continue from.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -478,7 +486,7 @@ class ListOSPolicyAssignmentsResponse(proto.Message):
     parent.
 
     Attributes:
-        os_policy_assignments (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignment]):
+        os_policy_assignments (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment]):
             The list of assignments
         next_page_token (str):
             The pagination token to retrieve the next
@@ -489,12 +497,12 @@ class ListOSPolicyAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    os_policy_assignments = proto.RepeatedField(
+    os_policy_assignments: MutableSequence["OSPolicyAssignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OSPolicyAssignment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -516,15 +524,15 @@ class ListOSPolicyAssignmentRevisionsRequest(proto.Message):
             this listing should continue from.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -535,7 +543,7 @@ class ListOSPolicyAssignmentRevisionsResponse(proto.Message):
     assignment.
 
     Attributes:
-        os_policy_assignments (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignment]):
+        os_policy_assignments (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment]):
             The OS policy assignment revisions
         next_page_token (str):
             The pagination token to retrieve the next
@@ -546,12 +554,12 @@ class ListOSPolicyAssignmentRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    os_policy_assignments = proto.RepeatedField(
+    os_policy_assignments: MutableSequence["OSPolicyAssignment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OSPolicyAssignment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -566,7 +574,7 @@ class DeleteOSPolicyAssignmentRequest(proto.Message):
             assignment to be deleted
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

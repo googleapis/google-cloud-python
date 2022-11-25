@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
@@ -56,7 +58,7 @@ class Inventory(proto.Message):
         os_info (google.cloud.osconfig_v1.types.Inventory.OsInfo):
             Base level operating system information for
             the VM.
-        items (Mapping[str, google.cloud.osconfig_v1.types.Inventory.Item]):
+        items (MutableMapping[str, google.cloud.osconfig_v1.types.Inventory.Item]):
             Inventory items related to the VM keyed by an
             opaque unique identifier for each inventory
             item.  The identifier is unique to each distinct
@@ -94,35 +96,35 @@ class Inventory(proto.Message):
                 running on the VM.
         """
 
-        hostname = proto.Field(
+        hostname: str = proto.Field(
             proto.STRING,
             number=9,
         )
-        long_name = proto.Field(
+        long_name: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        short_name = proto.Field(
+        short_name: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        architecture = proto.Field(
+        architecture: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        kernel_version = proto.Field(
+        kernel_version: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        kernel_release = proto.Field(
+        kernel_release: str = proto.Field(
             proto.STRING,
             number=7,
         )
-        osconfig_agent_version = proto.Field(
+        osconfig_agent_version: str = proto.Field(
             proto.STRING,
             number=8,
         )
@@ -172,37 +174,37 @@ class Inventory(proto.Message):
             INSTALLED_PACKAGE = 1
             AVAILABLE_PACKAGE = 2
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        origin_type = proto.Field(
+        origin_type: "Inventory.Item.OriginType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Inventory.Item.OriginType",
         )
-        create_time = proto.Field(
+        create_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=8,
             message=timestamp_pb2.Timestamp,
         )
-        update_time = proto.Field(
+        update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=9,
             message=timestamp_pb2.Timestamp,
         )
-        type_ = proto.Field(
+        type_: "Inventory.Item.Type" = proto.Field(
             proto.ENUM,
             number=5,
             enum="Inventory.Item.Type",
         )
-        installed_package = proto.Field(
+        installed_package: "Inventory.SoftwarePackage" = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="details",
             message="Inventory.SoftwarePackage",
         )
-        available_package = proto.Field(
+        available_package: "Inventory.SoftwarePackage" = proto.Field(
             proto.MESSAGE,
             number=7,
             oneof="details",
@@ -273,55 +275,55 @@ class Inventory(proto.Message):
                 This field is a member of `oneof`_ ``details``.
         """
 
-        yum_package = proto.Field(
+        yum_package: "Inventory.VersionedPackage" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="details",
             message="Inventory.VersionedPackage",
         )
-        apt_package = proto.Field(
+        apt_package: "Inventory.VersionedPackage" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="details",
             message="Inventory.VersionedPackage",
         )
-        zypper_package = proto.Field(
+        zypper_package: "Inventory.VersionedPackage" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="details",
             message="Inventory.VersionedPackage",
         )
-        googet_package = proto.Field(
+        googet_package: "Inventory.VersionedPackage" = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="details",
             message="Inventory.VersionedPackage",
         )
-        zypper_patch = proto.Field(
+        zypper_patch: "Inventory.ZypperPatch" = proto.Field(
             proto.MESSAGE,
             number=5,
             oneof="details",
             message="Inventory.ZypperPatch",
         )
-        wua_package = proto.Field(
+        wua_package: "Inventory.WindowsUpdatePackage" = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="details",
             message="Inventory.WindowsUpdatePackage",
         )
-        qfe_package = proto.Field(
+        qfe_package: "Inventory.WindowsQuickFixEngineeringPackage" = proto.Field(
             proto.MESSAGE,
             number=7,
             oneof="details",
             message="Inventory.WindowsQuickFixEngineeringPackage",
         )
-        cos_package = proto.Field(
+        cos_package: "Inventory.VersionedPackage" = proto.Field(
             proto.MESSAGE,
             number=8,
             oneof="details",
             message="Inventory.VersionedPackage",
         )
-        windows_application = proto.Field(
+        windows_application: "Inventory.WindowsApplication" = proto.Field(
             proto.MESSAGE,
             number=9,
             oneof="details",
@@ -343,15 +345,15 @@ class Inventory(proto.Message):
                 The version of the package.
         """
 
-        package_name = proto.Field(
+        package_name: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        architecture = proto.Field(
+        architecture: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        version = proto.Field(
+        version: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -371,19 +373,19 @@ class Inventory(proto.Message):
                 patch.
         """
 
-        patch_name = proto.Field(
+        patch_name: str = proto.Field(
             proto.STRING,
             number=5,
         )
-        category = proto.Field(
+        category: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        severity = proto.Field(
+        severity: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        summary = proto.Field(
+        summary: str = proto.Field(
             proto.STRING,
             number=4,
         )
@@ -401,17 +403,17 @@ class Inventory(proto.Message):
             description (str):
                 The localized description of the update
                 package.
-            categories (Sequence[google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage.WindowsUpdateCategory]):
+            categories (MutableSequence[google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage.WindowsUpdateCategory]):
                 The categories that are associated with this
                 update package.
-            kb_article_ids (Sequence[str]):
+            kb_article_ids (MutableSequence[str]):
                 A collection of Microsoft Knowledge Base
                 article IDs that are associated with the update
                 package.
             support_url (str):
                 A hyperlink to the language-specific support
                 information for the update.
-            more_info_urls (Sequence[str]):
+            more_info_urls (MutableSequence[str]):
                 A collection of URLs that provide more
                 information about the update package.
             update_id (str):
@@ -435,49 +437,51 @@ class Inventory(proto.Message):
                     The name of the windows update category.
             """
 
-            id = proto.Field(
+            id: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            name = proto.Field(
+            name: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
 
-        title = proto.Field(
+        title: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        categories = proto.RepeatedField(
+        categories: MutableSequence[
+            "Inventory.WindowsUpdatePackage.WindowsUpdateCategory"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="Inventory.WindowsUpdatePackage.WindowsUpdateCategory",
         )
-        kb_article_ids = proto.RepeatedField(
+        kb_article_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
-        support_url = proto.Field(
+        support_url: str = proto.Field(
             proto.STRING,
             number=11,
         )
-        more_info_urls = proto.RepeatedField(
+        more_info_urls: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=5,
         )
-        update_id = proto.Field(
+        update_id: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        revision_number = proto.Field(
+        revision_number: int = proto.Field(
             proto.INT32,
             number=7,
         )
-        last_deployment_change_time = proto.Field(
+        last_deployment_change_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=10,
             message=timestamp_pb2.Timestamp,
@@ -503,19 +507,19 @@ class Inventory(proto.Message):
                 installed_on field.
         """
 
-        caption = proto.Field(
+        caption: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        hot_fix_id = proto.Field(
+        hot_fix_id: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        install_time = proto.Field(
+        install_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=5,
             message=timestamp_pb2.Timestamp,
@@ -546,44 +550,44 @@ class Inventory(proto.Message):
                 The internet address for technical support.
         """
 
-        display_name = proto.Field(
+        display_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        display_version = proto.Field(
+        display_version: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        publisher = proto.Field(
+        publisher: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        install_date = proto.Field(
+        install_date: date_pb2.Date = proto.Field(
             proto.MESSAGE,
             number=4,
             message=date_pb2.Date,
         )
-        help_link = proto.Field(
+        help_link: str = proto.Field(
             proto.STRING,
             number=5,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    os_info = proto.Field(
+    os_info: OsInfo = proto.Field(
         proto.MESSAGE,
         number=1,
         message=OsInfo,
     )
-    items = proto.MapField(
+    items: MutableMapping[str, Item] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message=Item,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -611,11 +615,11 @@ class GetInventoryRequest(proto.Message):
             unspecified, the default view is BASIC.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "InventoryView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="InventoryView",
@@ -651,24 +655,24 @@ class ListInventoriesRequest(proto.Message):
             response.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "InventoryView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="InventoryView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -679,7 +683,7 @@ class ListInventoriesResponse(proto.Message):
     a specified location.
 
     Attributes:
-        inventories (Sequence[google.cloud.osconfig_v1.types.Inventory]):
+        inventories (MutableSequence[google.cloud.osconfig_v1.types.Inventory]):
             List of inventory objects.
         next_page_token (str):
             The pagination token to retrieve the next
@@ -690,12 +694,12 @@ class ListInventoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    inventories = proto.RepeatedField(
+    inventories: MutableSequence["Inventory"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Inventory",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

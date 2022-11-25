@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -79,38 +81,38 @@ class ExecutePatchJobRequest(proto.Message):
             Rollout strategy of the patch job.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance_filter = proto.Field(
+    instance_filter: "PatchInstanceFilter" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="PatchInstanceFilter",
     )
-    patch_config = proto.Field(
+    patch_config: "PatchConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="PatchConfig",
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=5,
         message=duration_pb2.Duration,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    rollout = proto.Field(
+    rollout: "PatchRollout" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="PatchRollout",
@@ -126,7 +128,7 @@ class GetPatchJobRequest(proto.Message):
             ``projects/*/patchJobs/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -153,19 +155,19 @@ class ListPatchJobInstanceDetailsRequest(proto.Message):
             zone, name, state, or ``failure_reason``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -176,7 +178,7 @@ class ListPatchJobInstanceDetailsResponse(proto.Message):
     patch job.
 
     Attributes:
-        patch_job_instance_details (Sequence[google.cloud.osconfig_v1.types.PatchJobInstanceDetails]):
+        patch_job_instance_details (MutableSequence[google.cloud.osconfig_v1.types.PatchJobInstanceDetails]):
             A list of instance status.
         next_page_token (str):
             A pagination token that can be used to get
@@ -187,12 +189,14 @@ class ListPatchJobInstanceDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    patch_job_instance_details = proto.RepeatedField(
+    patch_job_instance_details: MutableSequence[
+        "PatchJobInstanceDetails"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PatchJobInstanceDetails",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -221,24 +225,24 @@ class PatchJobInstanceDetails(proto.Message):
             attempts to apply the patch.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_system_id = proto.Field(
+    instance_system_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: "Instance.PatchState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="Instance.PatchState",
     )
-    failure_reason = proto.Field(
+    failure_reason: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    attempt_count = proto.Field(
+    attempt_count: int = proto.Field(
         proto.INT64,
         number=5,
     )
@@ -263,19 +267,19 @@ class ListPatchJobsRequest(proto.Message):
             filtering is only available on the patch_deployment field.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -285,7 +289,7 @@ class ListPatchJobsResponse(proto.Message):
     r"""A response message for listing patch jobs.
 
     Attributes:
-        patch_jobs (Sequence[google.cloud.osconfig_v1.types.PatchJob]):
+        patch_jobs (MutableSequence[google.cloud.osconfig_v1.types.PatchJob]):
             The list of patch jobs.
         next_page_token (str):
             A pagination token that can be used to get
@@ -296,12 +300,12 @@ class ListPatchJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    patch_jobs = proto.RepeatedField(
+    patch_jobs: MutableSequence["PatchJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PatchJob",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -422,131 +426,131 @@ class PatchJob(proto.Message):
                 communicate with the service.
         """
 
-        pending_instance_count = proto.Field(
+        pending_instance_count: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        inactive_instance_count = proto.Field(
+        inactive_instance_count: int = proto.Field(
             proto.INT64,
             number=2,
         )
-        notified_instance_count = proto.Field(
+        notified_instance_count: int = proto.Field(
             proto.INT64,
             number=3,
         )
-        started_instance_count = proto.Field(
+        started_instance_count: int = proto.Field(
             proto.INT64,
             number=4,
         )
-        downloading_patches_instance_count = proto.Field(
+        downloading_patches_instance_count: int = proto.Field(
             proto.INT64,
             number=5,
         )
-        applying_patches_instance_count = proto.Field(
+        applying_patches_instance_count: int = proto.Field(
             proto.INT64,
             number=6,
         )
-        rebooting_instance_count = proto.Field(
+        rebooting_instance_count: int = proto.Field(
             proto.INT64,
             number=7,
         )
-        succeeded_instance_count = proto.Field(
+        succeeded_instance_count: int = proto.Field(
             proto.INT64,
             number=8,
         )
-        succeeded_reboot_required_instance_count = proto.Field(
+        succeeded_reboot_required_instance_count: int = proto.Field(
             proto.INT64,
             number=9,
         )
-        failed_instance_count = proto.Field(
+        failed_instance_count: int = proto.Field(
             proto.INT64,
             number=10,
         )
-        acked_instance_count = proto.Field(
+        acked_instance_count: int = proto.Field(
             proto.INT64,
             number=11,
         )
-        timed_out_instance_count = proto.Field(
+        timed_out_instance_count: int = proto.Field(
             proto.INT64,
             number=12,
         )
-        pre_patch_step_instance_count = proto.Field(
+        pre_patch_step_instance_count: int = proto.Field(
             proto.INT64,
             number=13,
         )
-        post_patch_step_instance_count = proto.Field(
+        post_patch_step_instance_count: int = proto.Field(
             proto.INT64,
             number=14,
         )
-        no_agent_detected_instance_count = proto.Field(
+        no_agent_detected_instance_count: int = proto.Field(
             proto.INT64,
             number=15,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    instance_filter = proto.Field(
+    instance_filter: "PatchInstanceFilter" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="PatchInstanceFilter",
     )
-    patch_config = proto.Field(
+    patch_config: "PatchConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="PatchConfig",
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
     )
-    instance_details_summary = proto.Field(
+    instance_details_summary: InstanceDetailsSummary = proto.Field(
         proto.MESSAGE,
         number=9,
         message=InstanceDetailsSummary,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    percent_complete = proto.Field(
+    percent_complete: float = proto.Field(
         proto.DOUBLE,
         number=12,
     )
-    patch_deployment = proto.Field(
+    patch_deployment: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    rollout = proto.Field(
+    rollout: "PatchRollout" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="PatchRollout",
@@ -591,47 +595,47 @@ class PatchConfig(proto.Message):
         ALWAYS = 2
         NEVER = 3
 
-    reboot_config = proto.Field(
+    reboot_config: RebootConfig = proto.Field(
         proto.ENUM,
         number=1,
         enum=RebootConfig,
     )
-    apt = proto.Field(
+    apt: "AptSettings" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AptSettings",
     )
-    yum = proto.Field(
+    yum: "YumSettings" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="YumSettings",
     )
-    goo = proto.Field(
+    goo: "GooSettings" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="GooSettings",
     )
-    zypper = proto.Field(
+    zypper: "ZypperSettings" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="ZypperSettings",
     )
-    windows_update = proto.Field(
+    windows_update: "WindowsUpdateSettings" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="WindowsUpdateSettings",
     )
-    pre_step = proto.Field(
+    pre_step: "ExecStep" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="ExecStep",
     )
-    post_step = proto.Field(
+    post_step: "ExecStep" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="ExecStep",
     )
-    mig_instances_allowed = proto.Field(
+    mig_instances_allowed: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
@@ -669,7 +673,7 @@ class CancelPatchJobRequest(proto.Message):
             ``projects/*/patchJobs/*``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -684,10 +688,10 @@ class AptSettings(proto.Message):
         type_ (google.cloud.osconfig_v1.types.AptSettings.Type):
             By changing the type to DIST, the patching is performed
             using ``apt-get dist-upgrade`` instead.
-        excludes (Sequence[str]):
+        excludes (MutableSequence[str]):
             List of packages to exclude from update.
             These packages will be excluded
-        exclusive_packages (Sequence[str]):
+        exclusive_packages (MutableSequence[str]):
             An exclusive list of packages to be updated.
             These are the only packages that will be
             updated. If these packages are not installed,
@@ -702,16 +706,16 @@ class AptSettings(proto.Message):
         DIST = 1
         UPGRADE = 2
 
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    excludes = proto.RepeatedField(
+    excludes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    exclusive_packages = proto.RepeatedField(
+    exclusive_packages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -729,10 +733,10 @@ class YumSettings(proto.Message):
             supported on all platforms.
         minimal (bool):
             Will cause patch to run ``yum update-minimal`` instead.
-        excludes (Sequence[str]):
+        excludes (MutableSequence[str]):
             List of packages to exclude from update. These packages are
             excluded by using the yum ``--exclude`` flag.
-        exclusive_packages (Sequence[str]):
+        exclusive_packages (MutableSequence[str]):
             An exclusive list of packages to be updated.
             These are the only packages that will be
             updated. If these packages are not installed,
@@ -741,19 +745,19 @@ class YumSettings(proto.Message):
             fields.
     """
 
-    security = proto.Field(
+    security: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    minimal = proto.Field(
+    minimal: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    excludes = proto.RepeatedField(
+    excludes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    exclusive_packages = proto.RepeatedField(
+    exclusive_packages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -772,44 +776,44 @@ class ZypperSettings(proto.Message):
             Adds the ``--with-optional`` flag to ``zypper patch``.
         with_update (bool):
             Adds the ``--with-update`` flag, to ``zypper patch``.
-        categories (Sequence[str]):
+        categories (MutableSequence[str]):
             Install only patches with these categories.
             Common categories include security, recommended,
             and feature.
-        severities (Sequence[str]):
+        severities (MutableSequence[str]):
             Install only patches with these severities.
             Common severities include critical, important,
             moderate, and low.
-        excludes (Sequence[str]):
+        excludes (MutableSequence[str]):
             List of patches to exclude from update.
-        exclusive_patches (Sequence[str]):
+        exclusive_patches (MutableSequence[str]):
             An exclusive list of patches to be updated. These are the
             only patches that will be installed using 'zypper patch
             patch:<patch_name>' command. This field must not be used
             with any other patch configuration fields.
     """
 
-    with_optional = proto.Field(
+    with_optional: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    with_update = proto.Field(
+    with_update: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    categories = proto.RepeatedField(
+    categories: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    severities = proto.RepeatedField(
+    severities: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    excludes = proto.RepeatedField(
+    excludes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    exclusive_patches = proto.RepeatedField(
+    exclusive_patches: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -819,13 +823,13 @@ class WindowsUpdateSettings(proto.Message):
     r"""Windows patching is performed using the Windows Update Agent.
 
     Attributes:
-        classifications (Sequence[google.cloud.osconfig_v1.types.WindowsUpdateSettings.Classification]):
+        classifications (MutableSequence[google.cloud.osconfig_v1.types.WindowsUpdateSettings.Classification]):
             Only apply updates of these windows update
             classifications. If empty, all updates are
             applied.
-        excludes (Sequence[str]):
+        excludes (MutableSequence[str]):
             List of KBs to exclude from update.
-        exclusive_patches (Sequence[str]):
+        exclusive_patches (MutableSequence[str]):
             An exclusive list of kbs to be updated. These
             are the only patches that will be updated. This
             field must not be used with other patch
@@ -847,16 +851,16 @@ class WindowsUpdateSettings(proto.Message):
         UPDATE_ROLLUP = 8
         UPDATE = 9
 
-    classifications = proto.RepeatedField(
+    classifications: MutableSequence[Classification] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=Classification,
     )
-    excludes = proto.RepeatedField(
+    excludes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    exclusive_patches = proto.RepeatedField(
+    exclusive_patches: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -874,12 +878,12 @@ class ExecStep(proto.Message):
             targeted by the PatchJob.
     """
 
-    linux_exec_step_config = proto.Field(
+    linux_exec_step_config: "ExecStepConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ExecStepConfig",
     )
-    windows_exec_step_config = proto.Field(
+    windows_exec_step_config: "ExecStepConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ExecStepConfig",
@@ -906,7 +910,7 @@ class ExecStepConfig(proto.Message):
             executable.
 
             This field is a member of `oneof`_ ``executable``.
-        allowed_success_codes (Sequence[int]):
+        allowed_success_codes (MutableSequence[int]):
             Defaults to [0]. A list of possible return values that the
             execution can return to indicate a success.
         interpreter (google.cloud.osconfig_v1.types.ExecStepConfig.Interpreter):
@@ -923,22 +927,22 @@ class ExecStepConfig(proto.Message):
         SHELL = 1
         POWERSHELL = 2
 
-    local_path = proto.Field(
+    local_path: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="executable",
     )
-    gcs_object = proto.Field(
+    gcs_object: "GcsObject" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="executable",
         message="GcsObject",
     )
-    allowed_success_codes = proto.RepeatedField(
+    allowed_success_codes: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=3,
     )
-    interpreter = proto.Field(
+    interpreter: Interpreter = proto.Field(
         proto.ENUM,
         number=4,
         enum=Interpreter,
@@ -960,15 +964,15 @@ class GcsObject(proto.Message):
             change.
     """
 
-    bucket = proto.Field(
+    bucket: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    object_ = proto.Field(
+    object_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    generation_number = proto.Field(
+    generation_number: int = proto.Field(
         proto.INT64,
         number=3,
     )
@@ -984,21 +988,21 @@ class PatchInstanceFilter(proto.Message):
         all_ (bool):
             Target all VM instances in the project. If
             true, no other criteria is permitted.
-        group_labels (Sequence[google.cloud.osconfig_v1.types.PatchInstanceFilter.GroupLabel]):
+        group_labels (MutableSequence[google.cloud.osconfig_v1.types.PatchInstanceFilter.GroupLabel]):
             Targets VM instances matching ANY of these
             GroupLabels. This allows targeting of disparate
             groups of VM instances.
-        zones (Sequence[str]):
+        zones (MutableSequence[str]):
             Targets VM instances in ANY of these zones.
             Leave empty to target VM instances in any zone.
-        instances (Sequence[str]):
+        instances (MutableSequence[str]):
             Targets any of the VM instances specified. Instances are
             specified by their URI in the form
             ``zones/[ZONE]/instances/[INSTANCE_NAME]``,
             ``projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]``,
             or
             ``https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]``
-        instance_name_prefixes (Sequence[str]):
+        instance_name_prefixes (MutableSequence[str]):
             Targets VMs whose name starts with one of
             these prefixes. Similar to labels, this is
             another way to group VMs when targeting configs,
@@ -1017,36 +1021,36 @@ class PatchInstanceFilter(proto.Message):
         and ``app=web``.
 
         Attributes:
-            labels (Mapping[str, str]):
+            labels (MutableMapping[str, str]):
                 Compute Engine instance labels that must be
                 present for a VM instance to be targeted by this
                 filter.
         """
 
-        labels = proto.MapField(
+        labels: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=1,
         )
 
-    all_ = proto.Field(
+    all_: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    group_labels = proto.RepeatedField(
+    group_labels: MutableSequence[GroupLabel] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=GroupLabel,
     )
-    zones = proto.RepeatedField(
+    zones: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    instances = proto.RepeatedField(
+    instances: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    instance_name_prefixes = proto.RepeatedField(
+    instance_name_prefixes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -1097,12 +1101,12 @@ class PatchRollout(proto.Message):
         ZONE_BY_ZONE = 1
         CONCURRENT_ZONES = 2
 
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=1,
         enum=Mode,
     )
-    disruption_budget = proto.Field(
+    disruption_budget: osconfig_common.FixedOrPercent = proto.Field(
         proto.MESSAGE,
         number=2,
         message=osconfig_common.FixedOrPercent,

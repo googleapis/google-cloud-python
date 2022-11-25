@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.osconfig import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.osconfig_v1.services.os_config_service.async_client import (
     OsConfigServiceAsyncClient,

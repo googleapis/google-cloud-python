@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,7 +46,7 @@ class GetOSPolicyAssignmentReportRequest(proto.Message):
             OSPolicyAssignment id must be provided.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -93,19 +95,19 @@ class ListOSPolicyAssignmentReportsRequest(proto.Message):
             where this listing should continue from.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -116,7 +118,7 @@ class ListOSPolicyAssignmentReportsResponse(proto.Message):
     including the page of results and page token.
 
     Attributes:
-        os_policy_assignment_reports (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport]):
+        os_policy_assignment_reports (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport]):
             List of OS policy assignment reports.
         next_page_token (str):
             The pagination token to retrieve the next
@@ -127,12 +129,14 @@ class ListOSPolicyAssignmentReportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    os_policy_assignment_reports = proto.RepeatedField(
+    os_policy_assignment_reports: MutableSequence[
+        "OSPolicyAssignmentReport"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OSPolicyAssignmentReport",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -156,7 +160,7 @@ class OSPolicyAssignmentReport(proto.Message):
 
             Format:
             ``projects/{project_number}/locations/{location}/osPolicyAssignments/{os_policy_assignment_id@revision_id}``
-        os_policy_compliances (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance]):
+        os_policy_compliances (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance]):
             Compliance data for each ``OSPolicy`` that is applied to the
             VM.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -210,7 +214,7 @@ class OSPolicyAssignmentReport(proto.Message):
                    policies.
                 -  ``internal-service-errors``: Internal service errors were
                    encountered while attempting to apply the policy.
-            os_policy_resource_compliances (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance]):
+            os_policy_resource_compliances (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance]):
                 Compliance data for each resource within the
                 policy that is applied to the VM.
         """
@@ -229,7 +233,7 @@ class OSPolicyAssignmentReport(proto.Message):
             Attributes:
                 os_policy_resource_id (str):
                     The ID of the OS policy resource.
-                config_steps (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep]):
+                config_steps (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep]):
                     Ordered list of configuration completed by
                     the agent for the OS policy resource.
                 compliance_state (google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ComplianceState):
@@ -284,12 +288,12 @@ class OSPolicyAssignmentReport(proto.Message):
                     DESIRED_STATE_ENFORCEMENT = 3
                     DESIRED_STATE_CHECK_POST_ENFORCEMENT = 4
 
-                type_ = proto.Field(
+                type_: "OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep.Type" = proto.Field(
                     proto.ENUM,
                     number=1,
                     enum="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep.Type",
                 )
-                error_message = proto.Field(
+                error_message: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
@@ -303,78 +307,82 @@ class OSPolicyAssignmentReport(proto.Message):
                         run). Output size is limited to 100K bytes.
                 """
 
-                enforcement_output = proto.Field(
+                enforcement_output: bytes = proto.Field(
                     proto.BYTES,
                     number=2,
                 )
 
-            os_policy_resource_id = proto.Field(
+            os_policy_resource_id: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            config_steps = proto.RepeatedField(
+            config_steps: MutableSequence[
+                "OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep"
+            ] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep",
             )
-            compliance_state = proto.Field(
+            compliance_state: "OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ComplianceState" = proto.Field(
                 proto.ENUM,
                 number=3,
                 enum="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ComplianceState",
             )
-            compliance_state_reason = proto.Field(
+            compliance_state_reason: str = proto.Field(
                 proto.STRING,
                 number=4,
             )
-            exec_resource_output = proto.Field(
+            exec_resource_output: "OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ExecResourceOutput" = proto.Field(
                 proto.MESSAGE,
                 number=5,
                 oneof="output",
                 message="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ExecResourceOutput",
             )
 
-        os_policy_id = proto.Field(
+        os_policy_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        compliance_state = proto.Field(
+        compliance_state: "OSPolicyAssignmentReport.OSPolicyCompliance.ComplianceState" = proto.Field(
             proto.ENUM,
             number=2,
             enum="OSPolicyAssignmentReport.OSPolicyCompliance.ComplianceState",
         )
-        compliance_state_reason = proto.Field(
+        compliance_state_reason: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        os_policy_resource_compliances = proto.RepeatedField(
+        os_policy_resource_compliances: MutableSequence[
+            "OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    os_policy_assignment = proto.Field(
+    os_policy_assignment: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    os_policy_compliances = proto.RepeatedField(
+    os_policy_compliances: MutableSequence[OSPolicyCompliance] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=OSPolicyCompliance,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    last_run_id = proto.Field(
+    last_run_id: str = proto.Field(
         proto.STRING,
         number=6,
     )

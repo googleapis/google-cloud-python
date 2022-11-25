@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -66,17 +68,17 @@ class OSPolicyResourceConfigStep(proto.Message):
         SUCCEEDED = 1
         FAILED = 2
 
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    outcome = proto.Field(
+    outcome: Outcome = proto.Field(
         proto.ENUM,
         number=2,
         enum=Outcome,
     )
-    error_message = proto.Field(
+    error_message: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -90,7 +92,7 @@ class OSPolicyResourceCompliance(proto.Message):
     Attributes:
         os_policy_resource_id (str):
             The id of the OS policy resource.
-        config_steps (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicyResourceConfigStep]):
+        config_steps (MutableSequence[google.cloud.osconfig_v1alpha.types.OSPolicyResourceConfigStep]):
             Ordered list of configuration steps taken by
             the agent for the OS policy resource.
         state (google.cloud.osconfig_v1alpha.types.OSPolicyComplianceState):
@@ -110,26 +112,26 @@ class OSPolicyResourceCompliance(proto.Message):
                 run). Output size is limited to 100K bytes.
         """
 
-        enforcement_output = proto.Field(
+        enforcement_output: bytes = proto.Field(
             proto.BYTES,
             number=2,
         )
 
-    os_policy_resource_id = proto.Field(
+    os_policy_resource_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config_steps = proto.RepeatedField(
+    config_steps: MutableSequence["OSPolicyResourceConfigStep"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="OSPolicyResourceConfigStep",
     )
-    state = proto.Field(
+    state: "OSPolicyComplianceState" = proto.Field(
         proto.ENUM,
         number=3,
         enum="OSPolicyComplianceState",
     )
-    exec_resource_output = proto.Field(
+    exec_resource_output: ExecResourceOutput = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="output",

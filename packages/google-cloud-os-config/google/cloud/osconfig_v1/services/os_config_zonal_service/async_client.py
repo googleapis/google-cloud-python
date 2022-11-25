@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -202,9 +212,9 @@ class OsConfigZonalServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, OsConfigZonalServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the os config zonal service client.
@@ -248,15 +258,15 @@ class OsConfigZonalServiceAsyncClient:
 
     async def create_os_policy_assignment(
         self,
-        request: Union[
-            os_policy_assignments.CreateOSPolicyAssignmentRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.CreateOSPolicyAssignmentRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
-        os_policy_assignment_id: str = None,
+        parent: Optional[str] = None,
+        os_policy_assignment: Optional[os_policy_assignments.OSPolicyAssignment] = None,
+        os_policy_assignment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create an OS policy assignment.
@@ -312,7 +322,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.CreateOSPolicyAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.CreateOSPolicyAssignmentRequest, dict]]):
                 The request object. A request message to create an OS
                 policy assignment
             parent (:class:`str`):
@@ -426,14 +436,14 @@ class OsConfigZonalServiceAsyncClient:
 
     async def update_os_policy_assignment(
         self,
-        request: Union[
-            os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict]
         ] = None,
         *,
-        os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        os_policy_assignment: Optional[os_policy_assignments.OSPolicyAssignment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update an existing OS policy assignment.
@@ -486,7 +496,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.UpdateOSPolicyAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.UpdateOSPolicyAssignmentRequest, dict]]):
                 The request object. A request message to update an OS
                 policy assignment
             os_policy_assignment (:class:`google.cloud.osconfig_v1.types.OSPolicyAssignment`):
@@ -584,11 +594,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def get_os_policy_assignment(
         self,
-        request: Union[os_policy_assignments.GetOSPolicyAssignmentRequest, dict] = None,
+        request: Optional[
+            Union[os_policy_assignments.GetOSPolicyAssignmentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> os_policy_assignments.OSPolicyAssignment:
         r"""Retrieve an existing OS policy assignment.
@@ -624,7 +636,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentRequest, dict]]):
                 The request object. A request message to get an OS
                 policy assignment
             name (:class:`str`):
@@ -702,13 +714,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_os_policy_assignments(
         self,
-        request: Union[
-            os_policy_assignments.ListOSPolicyAssignmentsRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.ListOSPolicyAssignmentsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOSPolicyAssignmentsAsyncPager:
         r"""List the OS policy assignments under the parent
@@ -744,7 +756,7 @@ class OsConfigZonalServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsRequest, dict]]):
                 The request object. A request message to list OS policy
                 assignments for a parent resource
             parent (:class:`str`):
@@ -820,13 +832,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_os_policy_assignment_revisions(
         self,
-        request: Union[
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOSPolicyAssignmentRevisionsAsyncPager:
         r"""List the OS policy assignment revisions for a given
@@ -860,7 +872,7 @@ class OsConfigZonalServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsRequest, dict]]):
                 The request object. A request message to list revisions
                 for a OS policy assignment
             name (:class:`str`):
@@ -938,13 +950,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def delete_os_policy_assignment(
         self,
-        request: Union[
-            os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete the OS policy assignment.
@@ -992,7 +1004,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.DeleteOSPolicyAssignmentRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.DeleteOSPolicyAssignmentRequest, dict]]):
                 The request object. A request message for deleting a OS
                 policy assignment.
             name (:class:`str`):
@@ -1076,13 +1088,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def get_os_policy_assignment_report(
         self,
-        request: Union[
-            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict
+        request: Optional[
+            Union[os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> os_policy_assignment_reports.OSPolicyAssignmentReport:
         r"""Get the OS policy asssignment report for the
@@ -1115,7 +1127,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentReportRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentReportRequest, dict]]):
                 The request object. Get a report of the OS policy
                 assignment for a VM instance.
             name (:class:`str`):
@@ -1193,13 +1205,15 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_os_policy_assignment_reports(
         self,
-        request: Union[
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict
+        request: Optional[
+            Union[
+                os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOSPolicyAssignmentReportsAsyncPager:
         r"""List OS policy asssignment reports for all Compute
@@ -1233,7 +1247,7 @@ class OsConfigZonalServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsRequest, dict]]):
                 The request object. List the OS policy assignment
                 reports for VM instances.
             parent (:class:`str`):
@@ -1338,11 +1352,11 @@ class OsConfigZonalServiceAsyncClient:
 
     async def get_inventory(
         self,
-        request: Union[inventory.GetInventoryRequest, dict] = None,
+        request: Optional[Union[inventory.GetInventoryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> inventory.Inventory:
         r"""Get inventory data for the specified VM instance. If the VM has
@@ -1375,7 +1389,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.GetInventoryRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.GetInventoryRequest, dict]]):
                 The request object. A request message for getting
                 inventory data for the specified VM.
             name (:class:`str`):
@@ -1456,11 +1470,11 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_inventories(
         self,
-        request: Union[inventory.ListInventoriesRequest, dict] = None,
+        request: Optional[Union[inventory.ListInventoriesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInventoriesAsyncPager:
         r"""List inventory data for all VM instances in the
@@ -1494,7 +1508,7 @@ class OsConfigZonalServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.ListInventoriesRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.ListInventoriesRequest, dict]]):
                 The request object. A request message for listing
                 inventory data for all VMs in the specified location.
             parent (:class:`str`):
@@ -1578,11 +1592,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def get_vulnerability_report(
         self,
-        request: Union[vulnerability.GetVulnerabilityReportRequest, dict] = None,
+        request: Optional[
+            Union[vulnerability.GetVulnerabilityReportRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vulnerability.VulnerabilityReport:
         r"""Gets the vulnerability report for the specified VM
@@ -1616,7 +1632,7 @@ class OsConfigZonalServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest, dict]]):
                 The request object. A request message for getting the
                 vulnerability report for the specified VM.
             name (:class:`str`):
@@ -1693,11 +1709,13 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_vulnerability_reports(
         self,
-        request: Union[vulnerability.ListVulnerabilityReportsRequest, dict] = None,
+        request: Optional[
+            Union[vulnerability.ListVulnerabilityReportsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVulnerabilityReportsAsyncPager:
         r"""List vulnerability reports for all VM instances in
@@ -1731,7 +1749,7 @@ class OsConfigZonalServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest, dict]):
+            request (Optional[Union[google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest, dict]]):
                 The request object. A request message for listing
                 vulnerability reports for all VM instances in the
                 specified location.

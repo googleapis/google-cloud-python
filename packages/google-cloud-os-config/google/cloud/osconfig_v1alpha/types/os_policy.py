@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -44,7 +46,7 @@ class OSPolicy(proto.Message):
             characters.
         mode (google.cloud.osconfig_v1alpha.types.OSPolicy.Mode):
             Required. Policy mode
-        resource_groups (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicy.ResourceGroup]):
+        resource_groups (MutableSequence[google.cloud.osconfig_v1alpha.types.OSPolicy.ResourceGroup]):
             Required. List of resource groups for the policy. For a
             particular VM, resource groups are evaluated in the order
             specified and the first resource group that is applicable is
@@ -84,11 +86,11 @@ class OSPolicy(proto.Message):
                 following value for this field ``7.*``
         """
 
-        os_short_name = proto.Field(
+        os_short_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        os_version = proto.Field(
+        os_version: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -110,11 +112,11 @@ class OSPolicy(proto.Message):
                 An empty string matches all OS versions.
         """
 
-        os_short_name = proto.Field(
+        os_short_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        os_version = proto.Field(
+        os_version: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -207,11 +209,11 @@ class OSPolicy(proto.Message):
                         SHA256 checksum of the remote file.
                 """
 
-                uri = proto.Field(
+                uri: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                sha256_checksum = proto.Field(
+                sha256_checksum: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
@@ -229,37 +231,37 @@ class OSPolicy(proto.Message):
                         object.
                 """
 
-                bucket = proto.Field(
+                bucket: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                object_ = proto.Field(
+                object_: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                generation = proto.Field(
+                generation: int = proto.Field(
                     proto.INT64,
                     number=3,
                 )
 
-            remote = proto.Field(
+            remote: "OSPolicy.Resource.File.Remote" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 oneof="type",
                 message="OSPolicy.Resource.File.Remote",
             )
-            gcs = proto.Field(
+            gcs: "OSPolicy.Resource.File.Gcs" = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 oneof="type",
                 message="OSPolicy.Resource.File.Gcs",
             )
-            local_path = proto.Field(
+            local_path: str = proto.Field(
                 proto.STRING,
                 number=3,
                 oneof="type",
             )
-            allow_insecure = proto.Field(
+            allow_insecure: bool = proto.Field(
                 proto.BOOL,
                 number=4,
             )
@@ -331,12 +333,12 @@ class OSPolicy(proto.Message):
                            ``apt-get update && apt-get -y install package.deb``
                 """
 
-                source = proto.Field(
+                source: "OSPolicy.Resource.File" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message="OSPolicy.Resource.File",
                 )
-                pull_deps = proto.Field(
+                pull_deps: bool = proto.Field(
                     proto.BOOL,
                     number=2,
                 )
@@ -352,7 +354,7 @@ class OSPolicy(proto.Message):
                         Required. Package name.
                 """
 
-                name = proto.Field(
+                name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
@@ -373,12 +375,12 @@ class OSPolicy(proto.Message):
                            ``zypper -y install package.rpm``
                 """
 
-                source = proto.Field(
+                source: "OSPolicy.Resource.File" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message="OSPolicy.Resource.File",
                 )
-                pull_deps = proto.Field(
+                pull_deps: bool = proto.Field(
                     proto.BOOL,
                     number=2,
                 )
@@ -394,7 +396,7 @@ class OSPolicy(proto.Message):
                         Required. Package name.
                 """
 
-                name = proto.Field(
+                name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
@@ -410,7 +412,7 @@ class OSPolicy(proto.Message):
                         Required. Package name.
                 """
 
-                name = proto.Field(
+                name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
@@ -426,7 +428,7 @@ class OSPolicy(proto.Message):
                         Required. Package name.
                 """
 
-                name = proto.Field(
+                name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
@@ -437,64 +439,66 @@ class OSPolicy(proto.Message):
                 Attributes:
                     source (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File):
                         Required. The MSI package.
-                    properties (Sequence[str]):
+                    properties (MutableSequence[str]):
                         Additional properties to use during installation. This
                         should be in the format of Property=Setting. Appended to the
                         defaults of ``ACTION=INSTALL REBOOT=ReallySuppress``.
                 """
 
-                source = proto.Field(
+                source: "OSPolicy.Resource.File" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     message="OSPolicy.Resource.File",
                 )
-                properties = proto.RepeatedField(
+                properties: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=2,
                 )
 
-            desired_state = proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="OSPolicy.Resource.PackageResource.DesiredState",
+            desired_state: "OSPolicy.Resource.PackageResource.DesiredState" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    enum="OSPolicy.Resource.PackageResource.DesiredState",
+                )
             )
-            apt = proto.Field(
+            apt: "OSPolicy.Resource.PackageResource.APT" = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 oneof="system_package",
                 message="OSPolicy.Resource.PackageResource.APT",
             )
-            deb = proto.Field(
+            deb: "OSPolicy.Resource.PackageResource.Deb" = proto.Field(
                 proto.MESSAGE,
                 number=3,
                 oneof="system_package",
                 message="OSPolicy.Resource.PackageResource.Deb",
             )
-            yum = proto.Field(
+            yum: "OSPolicy.Resource.PackageResource.YUM" = proto.Field(
                 proto.MESSAGE,
                 number=4,
                 oneof="system_package",
                 message="OSPolicy.Resource.PackageResource.YUM",
             )
-            zypper = proto.Field(
+            zypper: "OSPolicy.Resource.PackageResource.Zypper" = proto.Field(
                 proto.MESSAGE,
                 number=5,
                 oneof="system_package",
                 message="OSPolicy.Resource.PackageResource.Zypper",
             )
-            rpm = proto.Field(
+            rpm: "OSPolicy.Resource.PackageResource.RPM" = proto.Field(
                 proto.MESSAGE,
                 number=6,
                 oneof="system_package",
                 message="OSPolicy.Resource.PackageResource.RPM",
             )
-            googet = proto.Field(
+            googet: "OSPolicy.Resource.PackageResource.GooGet" = proto.Field(
                 proto.MESSAGE,
                 number=7,
                 oneof="system_package",
                 message="OSPolicy.Resource.PackageResource.GooGet",
             )
-            msi = proto.Field(
+            msi: "OSPolicy.Resource.PackageResource.MSI" = proto.Field(
                 proto.MESSAGE,
                 number=8,
                 oneof="system_package",
@@ -543,7 +547,7 @@ class OSPolicy(proto.Message):
                         Required. URI for this repository.
                     distribution (str):
                         Required. Distribution of this repository.
-                    components (Sequence[str]):
+                    components (MutableSequence[str]):
                         Required. List of components for this
                         repository. Must contain at least one item.
                     gpg_key (str):
@@ -558,24 +562,24 @@ class OSPolicy(proto.Message):
                     DEB = 1
                     DEB_SRC = 2
 
-                archive_type = proto.Field(
+                archive_type: "OSPolicy.Resource.RepositoryResource.AptRepository.ArchiveType" = proto.Field(
                     proto.ENUM,
                     number=1,
                     enum="OSPolicy.Resource.RepositoryResource.AptRepository.ArchiveType",
                 )
-                uri = proto.Field(
+                uri: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                distribution = proto.Field(
+                distribution: str = proto.Field(
                     proto.STRING,
                     number=3,
                 )
-                components = proto.RepeatedField(
+                components: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=4,
                 )
-                gpg_key = proto.Field(
+                gpg_key: str = proto.Field(
                     proto.STRING,
                     number=5,
                 )
@@ -597,23 +601,23 @@ class OSPolicy(proto.Message):
                     base_url (str):
                         Required. The location of the repository
                         directory.
-                    gpg_keys (Sequence[str]):
+                    gpg_keys (MutableSequence[str]):
                         URIs of GPG keys.
                 """
 
-                id = proto.Field(
+                id: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                display_name = proto.Field(
+                display_name: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                base_url = proto.Field(
+                base_url: str = proto.Field(
                     proto.STRING,
                     number=3,
                 )
-                gpg_keys = proto.RepeatedField(
+                gpg_keys: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=4,
                 )
@@ -635,23 +639,23 @@ class OSPolicy(proto.Message):
                     base_url (str):
                         Required. The location of the repository
                         directory.
-                    gpg_keys (Sequence[str]):
+                    gpg_keys (MutableSequence[str]):
                         URIs of GPG keys.
                 """
 
-                id = proto.Field(
+                id: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                display_name = proto.Field(
+                display_name: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
-                base_url = proto.Field(
+                base_url: str = proto.Field(
                     proto.STRING,
                     number=3,
                 )
-                gpg_keys = proto.RepeatedField(
+                gpg_keys: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=4,
                 )
@@ -668,34 +672,36 @@ class OSPolicy(proto.Message):
                         Required. The url of the repository.
                 """
 
-                name = proto.Field(
+                name: str = proto.Field(
                     proto.STRING,
                     number=1,
                 )
-                url = proto.Field(
+                url: str = proto.Field(
                     proto.STRING,
                     number=2,
                 )
 
-            apt = proto.Field(
+            apt: "OSPolicy.Resource.RepositoryResource.AptRepository" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 oneof="repository",
                 message="OSPolicy.Resource.RepositoryResource.AptRepository",
             )
-            yum = proto.Field(
+            yum: "OSPolicy.Resource.RepositoryResource.YumRepository" = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 oneof="repository",
                 message="OSPolicy.Resource.RepositoryResource.YumRepository",
             )
-            zypper = proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="repository",
-                message="OSPolicy.Resource.RepositoryResource.ZypperRepository",
+            zypper: "OSPolicy.Resource.RepositoryResource.ZypperRepository" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    oneof="repository",
+                    message="OSPolicy.Resource.RepositoryResource.ZypperRepository",
+                )
             )
-            goo = proto.Field(
+            goo: "OSPolicy.Resource.RepositoryResource.GooRepository" = proto.Field(
                 proto.MESSAGE,
                 number=4,
                 oneof="repository",
@@ -767,7 +773,7 @@ class OSPolicy(proto.Message):
                         characters.
 
                         This field is a member of `oneof`_ ``source``.
-                    args (Sequence[str]):
+                    args (MutableSequence[str]):
                         Optional arguments to pass to the source
                         during execution.
                     interpreter (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.ExecResource.Exec.Interpreter):
@@ -789,37 +795,39 @@ class OSPolicy(proto.Message):
                     SHELL = 2
                     POWERSHELL = 3
 
-                file = proto.Field(
+                file: "OSPolicy.Resource.File" = proto.Field(
                     proto.MESSAGE,
                     number=1,
                     oneof="source",
                     message="OSPolicy.Resource.File",
                 )
-                script = proto.Field(
+                script: str = proto.Field(
                     proto.STRING,
                     number=2,
                     oneof="source",
                 )
-                args = proto.RepeatedField(
+                args: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=3,
                 )
-                interpreter = proto.Field(
-                    proto.ENUM,
-                    number=4,
-                    enum="OSPolicy.Resource.ExecResource.Exec.Interpreter",
+                interpreter: "OSPolicy.Resource.ExecResource.Exec.Interpreter" = (
+                    proto.Field(
+                        proto.ENUM,
+                        number=4,
+                        enum="OSPolicy.Resource.ExecResource.Exec.Interpreter",
+                    )
                 )
-                output_file_path = proto.Field(
+                output_file_path: str = proto.Field(
                     proto.STRING,
                     number=5,
                 )
 
-            validate = proto.Field(
+            validate: "OSPolicy.Resource.ExecResource.Exec" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message="OSPolicy.Resource.ExecResource.Exec",
             )
-            enforce = proto.Field(
+            enforce: "OSPolicy.Resource.ExecResource.Exec" = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 message="OSPolicy.Resource.ExecResource.Exec",
@@ -876,54 +884,54 @@ class OSPolicy(proto.Message):
                 ABSENT = 2
                 CONTENTS_MATCH = 3
 
-            file = proto.Field(
+            file: "OSPolicy.Resource.File" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 oneof="source",
                 message="OSPolicy.Resource.File",
             )
-            content = proto.Field(
+            content: str = proto.Field(
                 proto.STRING,
                 number=2,
                 oneof="source",
             )
-            path = proto.Field(
+            path: str = proto.Field(
                 proto.STRING,
                 number=3,
             )
-            state = proto.Field(
+            state: "OSPolicy.Resource.FileResource.DesiredState" = proto.Field(
                 proto.ENUM,
                 number=4,
                 enum="OSPolicy.Resource.FileResource.DesiredState",
             )
-            permissions = proto.Field(
+            permissions: str = proto.Field(
                 proto.STRING,
                 number=5,
             )
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        pkg = proto.Field(
+        pkg: "OSPolicy.Resource.PackageResource" = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="resource_type",
             message="OSPolicy.Resource.PackageResource",
         )
-        repository = proto.Field(
+        repository: "OSPolicy.Resource.RepositoryResource" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="resource_type",
             message="OSPolicy.Resource.RepositoryResource",
         )
-        exec_ = proto.Field(
+        exec_: "OSPolicy.Resource.ExecResource" = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="resource_type",
             message="OSPolicy.Resource.ExecResource",
         )
-        file = proto.Field(
+        file: "OSPolicy.Resource.FileResource" = proto.Field(
             proto.MESSAGE,
             number=5,
             oneof="resource_type",
@@ -944,7 +952,7 @@ class OSPolicy(proto.Message):
             os_filter (google.cloud.osconfig_v1alpha.types.OSPolicy.OSFilter):
                 Deprecated. Use the ``inventory_filters`` field instead.
                 Used to specify the OS filter for a resource group
-            inventory_filters (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicy.InventoryFilter]):
+            inventory_filters (MutableSequence[google.cloud.osconfig_v1alpha.types.OSPolicy.InventoryFilter]):
                 List of inventory filters for the resource group.
 
                 The resources in this resource group are applied to the
@@ -959,47 +967,49 @@ class OSPolicy(proto.Message):
 
                 If the list is empty, this resource group will be applied to
                 the target VM unconditionally.
-            resources (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicy.Resource]):
+            resources (MutableSequence[google.cloud.osconfig_v1alpha.types.OSPolicy.Resource]):
                 Required. List of resources configured for
                 this resource group. The resources are executed
                 in the exact order specified here.
         """
 
-        os_filter = proto.Field(
+        os_filter: "OSPolicy.OSFilter" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="OSPolicy.OSFilter",
         )
-        inventory_filters = proto.RepeatedField(
+        inventory_filters: MutableSequence[
+            "OSPolicy.InventoryFilter"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="OSPolicy.InventoryFilter",
         )
-        resources = proto.RepeatedField(
+        resources: MutableSequence["OSPolicy.Resource"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="OSPolicy.Resource",
         )
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=3,
         enum=Mode,
     )
-    resource_groups = proto.RepeatedField(
+    resource_groups: MutableSequence[ResourceGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=ResourceGroup,
     )
-    allow_no_resource_group_match = proto.Field(
+    allow_no_resource_group_match: bool = proto.Field(
         proto.BOOL,
         number=5,
     )

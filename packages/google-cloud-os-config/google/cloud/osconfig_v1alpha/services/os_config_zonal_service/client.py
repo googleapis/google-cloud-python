@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -73,7 +84,7 @@ class OsConfigZonalServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[OsConfigZonalServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -488,8 +499,8 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, OsConfigZonalServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, OsConfigZonalServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the os config zonal service client.
@@ -503,7 +514,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             transport (Union[str, OsConfigZonalServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -533,6 +544,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -585,15 +597,15 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def create_os_policy_assignment(
         self,
-        request: Union[
-            os_policy_assignments.CreateOSPolicyAssignmentRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.CreateOSPolicyAssignmentRequest, dict]
         ] = None,
         *,
-        parent: str = None,
-        os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
-        os_policy_assignment_id: str = None,
+        parent: Optional[str] = None,
+        os_policy_assignment: Optional[os_policy_assignments.OSPolicyAssignment] = None,
+        os_policy_assignment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create an OS policy assignment.
@@ -767,14 +779,14 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def update_os_policy_assignment(
         self,
-        request: Union[
-            os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict]
         ] = None,
         *,
-        os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        os_policy_assignment: Optional[os_policy_assignments.OSPolicyAssignment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update an existing OS policy assignment.
@@ -929,11 +941,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_os_policy_assignment(
         self,
-        request: Union[os_policy_assignments.GetOSPolicyAssignmentRequest, dict] = None,
+        request: Optional[
+            Union[os_policy_assignments.GetOSPolicyAssignmentRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> os_policy_assignments.OSPolicyAssignment:
         r"""Retrieve an existing OS policy assignment.
@@ -1047,13 +1061,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_os_policy_assignments(
         self,
-        request: Union[
-            os_policy_assignments.ListOSPolicyAssignmentsRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.ListOSPolicyAssignmentsRequest, dict]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOSPolicyAssignmentsPager:
         r"""List the OS policy assignments under the parent
@@ -1169,13 +1183,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_os_policy_assignment_revisions(
         self,
-        request: Union[
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOSPolicyAssignmentRevisionsPager:
         r"""List the OS policy assignment revisions for a given
@@ -1293,13 +1307,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def delete_os_policy_assignment(
         self,
-        request: Union[
-            os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict
+        request: Optional[
+            Union[os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Delete the OS policy assignment.
@@ -1435,13 +1449,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_instance_os_policies_compliance(
         self,
-        request: Union[
-            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest, dict
+        request: Optional[
+            Union[
+                instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
+                dict,
+            ]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance_os_policies_compliance.InstanceOSPoliciesCompliance:
         r"""Get OS policies compliance data for the specified
@@ -1576,14 +1593,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_instance_os_policies_compliances(
         self,
-        request: Union[
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
-            dict,
+        request: Optional[
+            Union[
+                instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+                dict,
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstanceOSPoliciesCompliancesPager:
         r"""List OS policies compliance data for all Compute
@@ -1713,13 +1732,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_os_policy_assignment_report(
         self,
-        request: Union[
-            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict
+        request: Optional[
+            Union[os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict]
         ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> os_policy_assignment_reports.OSPolicyAssignmentReport:
         r"""Get the OS policy asssignment report for the
@@ -1834,13 +1853,15 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_os_policy_assignment_reports(
         self,
-        request: Union[
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict
+        request: Optional[
+            Union[
+                os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict
+            ]
         ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOSPolicyAssignmentReportsPager:
         r"""List OS policy asssignment reports for all Compute
@@ -1983,11 +2004,11 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_inventory(
         self,
-        request: Union[inventory.GetInventoryRequest, dict] = None,
+        request: Optional[Union[inventory.GetInventoryRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> inventory.Inventory:
         r"""Get inventory data for the specified VM instance. If the VM has
@@ -2101,11 +2122,11 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_inventories(
         self,
-        request: Union[inventory.ListInventoriesRequest, dict] = None,
+        request: Optional[Union[inventory.ListInventoriesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInventoriesPager:
         r"""List inventory data for all VM instances in the
@@ -2223,11 +2244,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_vulnerability_report(
         self,
-        request: Union[vulnerability.GetVulnerabilityReportRequest, dict] = None,
+        request: Optional[
+            Union[vulnerability.GetVulnerabilityReportRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vulnerability.VulnerabilityReport:
         r"""Gets the vulnerability report for the specified VM
@@ -2338,11 +2361,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_vulnerability_reports(
         self,
-        request: Union[vulnerability.ListVulnerabilityReportsRequest, dict] = None,
+        request: Optional[
+            Union[vulnerability.ListVulnerabilityReportsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVulnerabilityReportsPager:
         r"""List vulnerability reports for all VM instances in
