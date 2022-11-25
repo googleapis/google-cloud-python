@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -64,11 +66,11 @@ class NodeInfo(proto.Message):
             Output only. Location of the node.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -95,7 +97,7 @@ class Instance(proto.Message):
         display_name (str):
             An arbitrary and optional user-provided name
             for the instance.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user provided
             metadata
         location_id (str):
@@ -161,7 +163,7 @@ class Instance(proto.Message):
         status_message (str):
             Output only. Additional information about the
             current status of this instance, if available.
-        redis_configs (Mapping[str, str]):
+        redis_configs (MutableMapping[str, str]):
             Optional. Redis configuration parameters, according to
             http://redis.io/topics/config. Currently, the only supported
             parameters are:
@@ -205,7 +207,7 @@ class Instance(proto.Message):
             enabled for the instance. If set to "true" AUTH
             is enabled on the instance. Default value is
             "false" meaning AUTH is disabled.
-        server_ca_certs (Sequence[google.cloud.redis_v1beta1.types.TlsCertificate]):
+        server_ca_certs (MutableSequence[google.cloud.redis_v1beta1.types.TlsCertificate]):
             Output only. List of server CA certificates
             for the instance.
         transit_encryption_mode (google.cloud.redis_v1beta1.types.Instance.TransitEncryptionMode):
@@ -226,7 +228,7 @@ class Instance(proto.Message):
             Standard Tier instance, the only valid value is 1 and the
             default is 1. The valid value for basic tier is 0 and the
             default is also 0.
-        nodes (Sequence[google.cloud.redis_v1beta1.types.NodeInfo]):
+        nodes (MutableSequence[google.cloud.redis_v1beta1.types.NodeInfo]):
             Output only. Info per node.
         read_endpoint (str):
             Output only. Hostname or IP address of the
@@ -283,139 +285,139 @@ class Instance(proto.Message):
         READ_REPLICAS_DISABLED = 1
         READ_REPLICAS_ENABLED = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    location_id = proto.Field(
+    location_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    alternative_location_id = proto.Field(
+    alternative_location_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    redis_version = proto.Field(
+    redis_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    reserved_ip_range = proto.Field(
+    reserved_ip_range: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    secondary_ip_range = proto.Field(
+    secondary_ip_range: str = proto.Field(
         proto.STRING,
         number=30,
     )
-    host = proto.Field(
+    host: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=11,
     )
-    current_location_id = proto.Field(
+    current_location_id: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=14,
         enum=State,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    redis_configs = proto.MapField(
+    redis_configs: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    tier = proto.Field(
+    tier: Tier = proto.Field(
         proto.ENUM,
         number=17,
         enum=Tier,
     )
-    memory_size_gb = proto.Field(
+    memory_size_gb: int = proto.Field(
         proto.INT32,
         number=18,
     )
-    authorized_network = proto.Field(
+    authorized_network: str = proto.Field(
         proto.STRING,
         number=20,
     )
-    persistence_iam_identity = proto.Field(
+    persistence_iam_identity: str = proto.Field(
         proto.STRING,
         number=21,
     )
-    connect_mode = proto.Field(
+    connect_mode: ConnectMode = proto.Field(
         proto.ENUM,
         number=22,
         enum=ConnectMode,
     )
-    auth_enabled = proto.Field(
+    auth_enabled: bool = proto.Field(
         proto.BOOL,
         number=23,
     )
-    server_ca_certs = proto.RepeatedField(
+    server_ca_certs: MutableSequence["TlsCertificate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=25,
         message="TlsCertificate",
     )
-    transit_encryption_mode = proto.Field(
+    transit_encryption_mode: TransitEncryptionMode = proto.Field(
         proto.ENUM,
         number=26,
         enum=TransitEncryptionMode,
     )
-    maintenance_policy = proto.Field(
+    maintenance_policy: "MaintenancePolicy" = proto.Field(
         proto.MESSAGE,
         number=27,
         message="MaintenancePolicy",
     )
-    maintenance_schedule = proto.Field(
+    maintenance_schedule: "MaintenanceSchedule" = proto.Field(
         proto.MESSAGE,
         number=28,
         message="MaintenanceSchedule",
     )
-    replica_count = proto.Field(
+    replica_count: int = proto.Field(
         proto.INT32,
         number=31,
     )
-    nodes = proto.RepeatedField(
+    nodes: MutableSequence["NodeInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=32,
         message="NodeInfo",
     )
-    read_endpoint = proto.Field(
+    read_endpoint: str = proto.Field(
         proto.STRING,
         number=33,
     )
-    read_endpoint_port = proto.Field(
+    read_endpoint_port: int = proto.Field(
         proto.INT32,
         number=34,
     )
-    read_replicas_mode = proto.Field(
+    read_replicas_mode: ReadReplicasMode = proto.Field(
         proto.ENUM,
         number=35,
         enum=ReadReplicasMode,
     )
-    persistence_config = proto.Field(
+    persistence_config: "PersistenceConfig" = proto.Field(
         proto.MESSAGE,
         number=37,
         message="PersistenceConfig",
@@ -462,22 +464,22 @@ class PersistenceConfig(proto.Message):
         TWELVE_HOURS = 5
         TWENTY_FOUR_HOURS = 6
 
-    persistence_mode = proto.Field(
+    persistence_mode: PersistenceMode = proto.Field(
         proto.ENUM,
         number=1,
         enum=PersistenceMode,
     )
-    rdb_snapshot_period = proto.Field(
+    rdb_snapshot_period: SnapshotPeriod = proto.Field(
         proto.ENUM,
         number=2,
         enum=SnapshotPeriod,
     )
-    rdb_next_snapshot_time = proto.Field(
+    rdb_next_snapshot_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    rdb_snapshot_start_time = proto.Field(
+    rdb_snapshot_start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -509,16 +511,16 @@ class RescheduleMaintenanceRequest(proto.Message):
         NEXT_AVAILABLE_WINDOW = 2
         SPECIFIC_TIME = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reschedule_type = proto.Field(
+    reschedule_type: RescheduleType = proto.Field(
         proto.ENUM,
         number=2,
         enum=RescheduleType,
     )
-    schedule_time = proto.Field(
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -539,27 +541,29 @@ class MaintenancePolicy(proto.Message):
             Optional. Description of what this policy is for.
             Create/Update methods return INVALID_ARGUMENT if the length
             is greater than 512.
-        weekly_maintenance_window (Sequence[google.cloud.redis_v1beta1.types.WeeklyMaintenanceWindow]):
+        weekly_maintenance_window (MutableSequence[google.cloud.redis_v1beta1.types.WeeklyMaintenanceWindow]):
             Optional. Maintenance window that is applied to resources
             covered by this policy. Minimum 1. For the current version,
             the maximum number of weekly_window is expected to be one.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    weekly_maintenance_window = proto.RepeatedField(
+    weekly_maintenance_window: MutableSequence[
+        "WeeklyMaintenanceWindow"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="WeeklyMaintenanceWindow",
@@ -582,17 +586,17 @@ class WeeklyMaintenanceWindow(proto.Message):
             window. The current window is fixed at 1 hour.
     """
 
-    day = proto.Field(
+    day: dayofweek_pb2.DayOfWeek = proto.Field(
         proto.ENUM,
         number=1,
         enum=dayofweek_pb2.DayOfWeek,
     )
-    start_time = proto.Field(
+    start_time: timeofday_pb2.TimeOfDay = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timeofday_pb2.TimeOfDay,
     )
-    duration = proto.Field(
+    duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
@@ -619,21 +623,21 @@ class MaintenanceSchedule(proto.Message):
             beyond, including reschedule.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    can_reschedule = proto.Field(
+    can_reschedule: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    schedule_deadline_time = proto.Field(
+    schedule_deadline_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -664,15 +668,15 @@ class ListInstancesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -683,7 +687,7 @@ class ListInstancesResponse(proto.Message):
     [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].
 
     Attributes:
-        instances (Sequence[google.cloud.redis_v1beta1.types.Instance]):
+        instances (MutableSequence[google.cloud.redis_v1beta1.types.Instance]):
             A list of Redis instances in the project in the specified
             location, or across all locations.
 
@@ -700,7 +704,7 @@ class ListInstancesResponse(proto.Message):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -708,16 +712,16 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances: MutableSequence["Instance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Instance",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -734,7 +738,7 @@ class GetInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -751,7 +755,7 @@ class GetInstanceAuthStringRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -765,7 +769,7 @@ class InstanceAuthString(proto.Message):
             AUTH string set on the instance.
     """
 
-    auth_string = proto.Field(
+    auth_string: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -794,15 +798,15 @@ class CreateInstanceRequest(proto.Message):
             Required. A Redis [Instance] resource
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    instance_id = proto.Field(
+    instance_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Instance",
@@ -830,12 +834,12 @@ class UpdateInstanceRequest(proto.Message):
             update_mask are updated.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    instance = proto.Field(
+    instance: "Instance" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Instance",
@@ -856,11 +860,11 @@ class UpgradeInstanceRequest(proto.Message):
             Redis software to upgrade to.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    redis_version = proto.Field(
+    redis_version: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -877,7 +881,7 @@ class DeleteInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -892,7 +896,7 @@ class GcsSource(proto.Message):
             'gs://my_bucket/my_object').
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -911,7 +915,7 @@ class InputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
@@ -932,11 +936,11 @@ class ImportInstanceRequest(proto.Message):
             Required. Specify data to be imported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="InputConfig",
@@ -953,7 +957,7 @@ class GcsDestination(proto.Message):
             overwritten.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -972,7 +976,7 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="destination",
@@ -993,11 +997,11 @@ class ExportInstanceRequest(proto.Message):
             Required. Specify data to be exported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    output_config = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OutputConfig",
@@ -1027,11 +1031,11 @@ class FailoverInstanceRequest(proto.Message):
         LIMITED_DATA_LOSS = 1
         FORCE_DATA_LOSS = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    data_protection_mode = proto.Field(
+    data_protection_mode: DataProtectionMode = proto.Field(
         proto.ENUM,
         number=2,
         enum=DataProtectionMode,
@@ -1045,7 +1049,7 @@ class LocationMetadata(proto.Message):
     ``google.cloud.location.Location.metadata`` field.
 
     Attributes:
-        available_zones (Mapping[str, google.cloud.redis_v1beta1.types.ZoneMetadata]):
+        available_zones (MutableMapping[str, google.cloud.redis_v1beta1.types.ZoneMetadata]):
             Output only. The set of available zones in the location. The
             map is keyed by the lowercase ID of each zone, as defined by
             GCE. These keys can be specified in ``location_id`` or
@@ -1053,7 +1057,7 @@ class LocationMetadata(proto.Message):
             instance.
     """
 
-    available_zones = proto.MapField(
+    available_zones: MutableMapping[str, "ZoneMetadata"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -1089,25 +1093,25 @@ class TlsCertificate(proto.Message):
             Sha1 Fingerprint of the certificate.
     """
 
-    serial_number = proto.Field(
+    serial_number: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cert = proto.Field(
+    cert: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    sha1_fingerprint = proto.Field(
+    sha1_fingerprint: str = proto.Field(
         proto.STRING,
         number=5,
     )

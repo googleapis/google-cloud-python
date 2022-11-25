@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -62,7 +73,7 @@ class CloudRedisClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CloudRedisTransport]:
         """Returns an appropriate transport class.
 
@@ -358,8 +369,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudRedisTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CloudRedisTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud redis client.
@@ -373,7 +384,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             transport (Union[str, CloudRedisTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -403,6 +414,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -455,11 +467,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def list_instances(
         self,
-        request: Union[cloud_redis.ListInstancesRequest, dict] = None,
+        request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
         r"""Lists all Redis instances owned by a project in either the
@@ -581,11 +593,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def get_instance(
         self,
-        request: Union[cloud_redis.GetInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.GetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
@@ -682,11 +694,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def get_instance_auth_string(
         self,
-        request: Union[cloud_redis.GetInstanceAuthStringRequest, dict] = None,
+        request: Optional[Union[cloud_redis.GetInstanceAuthStringRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
@@ -786,13 +798,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def create_instance(
         self,
-        request: Union[cloud_redis.CreateInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.CreateInstanceRequest, dict]] = None,
         *,
-        parent: str = None,
-        instance_id: str = None,
-        instance: cloud_redis.Instance = None,
+        parent: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        instance: Optional[cloud_redis.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a Redis instance based on the specified tier and memory
@@ -950,12 +962,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def update_instance(
         self,
-        request: Union[cloud_redis.UpdateInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.UpdateInstanceRequest, dict]] = None,
         *,
-        update_mask: field_mask_pb2.FieldMask = None,
-        instance: cloud_redis.Instance = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        instance: Optional[cloud_redis.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the metadata and configuration of a specific
@@ -1097,12 +1109,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def upgrade_instance(
         self,
-        request: Union[cloud_redis.UpgradeInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.UpgradeInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        redis_version: str = None,
+        name: Optional[str] = None,
+        redis_version: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Upgrades Redis instance to the newer Redis version
@@ -1227,12 +1239,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def import_instance(
         self,
-        request: Union[cloud_redis.ImportInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.ImportInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: cloud_redis.InputConfig = None,
+        name: Optional[str] = None,
+        input_config: Optional[cloud_redis.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
@@ -1367,12 +1379,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def export_instance(
         self,
-        request: Union[cloud_redis.ExportInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.ExportInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        output_config: cloud_redis.OutputConfig = None,
+        name: Optional[str] = None,
+        output_config: Optional[cloud_redis.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Export Redis instance data into a Redis RDB format
@@ -1503,12 +1515,14 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def failover_instance(
         self,
-        request: Union[cloud_redis.FailoverInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.FailoverInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        data_protection_mode: cloud_redis.FailoverInstanceRequest.DataProtectionMode = None,
+        name: Optional[str] = None,
+        data_protection_mode: Optional[
+            cloud_redis.FailoverInstanceRequest.DataProtectionMode
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a failover of the primary node to current
@@ -1634,11 +1648,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def delete_instance(
         self,
-        request: Union[cloud_redis.DeleteInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.DeleteInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops
@@ -1760,13 +1774,15 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def reschedule_maintenance(
         self,
-        request: Union[cloud_redis.RescheduleMaintenanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.RescheduleMaintenanceRequest, dict]] = None,
         *,
-        name: str = None,
-        reschedule_type: cloud_redis.RescheduleMaintenanceRequest.RescheduleType = None,
-        schedule_time: timestamp_pb2.Timestamp = None,
+        name: Optional[str] = None,
+        reschedule_type: Optional[
+            cloud_redis.RescheduleMaintenanceRequest.RescheduleType
+        ] = None,
+        schedule_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Reschedule maintenance for a given instance in a

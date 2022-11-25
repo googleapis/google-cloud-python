@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -180,9 +190,9 @@ class CloudRedisAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudRedisTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud redis client.
@@ -226,11 +236,11 @@ class CloudRedisAsyncClient:
 
     async def list_instances(
         self,
-        request: Union[cloud_redis.ListInstancesRequest, dict] = None,
+        request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists all Redis instances owned by a project in either the
@@ -272,7 +282,7 @@ class CloudRedisAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]]):
                 The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
             parent (:class:`str`):
@@ -352,11 +362,11 @@ class CloudRedisAsyncClient:
 
     async def get_instance(
         self,
-        request: Union[cloud_redis.GetInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.GetInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
@@ -388,7 +398,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]]):
                 The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
             name (:class:`str`):
@@ -453,11 +463,11 @@ class CloudRedisAsyncClient:
 
     async def get_instance_auth_string(
         self,
-        request: Union[cloud_redis.GetInstanceAuthStringRequest, dict] = None,
+        request: Optional[Union[cloud_redis.GetInstanceAuthStringRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
@@ -492,7 +502,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.GetInstanceAuthStringRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.GetInstanceAuthStringRequest, dict]]):
                 The request object. Request for
                 [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
             name (:class:`str`):
@@ -557,13 +567,13 @@ class CloudRedisAsyncClient:
 
     async def create_instance(
         self,
-        request: Union[cloud_redis.CreateInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.CreateInstanceRequest, dict]] = None,
         *,
-        parent: str = None,
-        instance_id: str = None,
-        instance: cloud_redis.Instance = None,
+        parent: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        instance: Optional[cloud_redis.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Redis instance based on the specified tier and memory
@@ -619,7 +629,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]]):
                 The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
             parent (:class:`str`):
@@ -721,12 +731,12 @@ class CloudRedisAsyncClient:
 
     async def update_instance(
         self,
-        request: Union[cloud_redis.UpdateInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.UpdateInstanceRequest, dict]] = None,
         *,
-        update_mask: field_mask_pb2.FieldMask = None,
-        instance: cloud_redis.Instance = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        instance: Optional[cloud_redis.Instance] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the metadata and configuration of a specific
@@ -772,7 +782,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]]):
                 The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
@@ -868,12 +878,12 @@ class CloudRedisAsyncClient:
 
     async def upgrade_instance(
         self,
-        request: Union[cloud_redis.UpgradeInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.UpgradeInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        redis_version: str = None,
+        name: Optional[str] = None,
+        redis_version: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Upgrades Redis instance to the newer Redis version
@@ -911,7 +921,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]]):
                 The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
             name (:class:`str`):
@@ -998,12 +1008,12 @@ class CloudRedisAsyncClient:
 
     async def import_instance(
         self,
-        request: Union[cloud_redis.ImportInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.ImportInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        input_config: cloud_redis.InputConfig = None,
+        name: Optional[str] = None,
+        input_config: Optional[cloud_redis.InputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
@@ -1051,7 +1061,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]]):
                 The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
             name (:class:`str`):
@@ -1138,12 +1148,12 @@ class CloudRedisAsyncClient:
 
     async def export_instance(
         self,
-        request: Union[cloud_redis.ExportInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.ExportInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        output_config: cloud_redis.OutputConfig = None,
+        name: Optional[str] = None,
+        output_config: Optional[cloud_redis.OutputConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Export Redis instance data into a Redis RDB format
@@ -1187,7 +1197,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]]):
                 The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
             name (:class:`str`):
@@ -1274,12 +1284,14 @@ class CloudRedisAsyncClient:
 
     async def failover_instance(
         self,
-        request: Union[cloud_redis.FailoverInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.FailoverInstanceRequest, dict]] = None,
         *,
-        name: str = None,
-        data_protection_mode: cloud_redis.FailoverInstanceRequest.DataProtectionMode = None,
+        name: Optional[str] = None,
+        data_protection_mode: Optional[
+            cloud_redis.FailoverInstanceRequest.DataProtectionMode
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initiates a failover of the primary node to current
@@ -1317,7 +1329,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]]):
                 The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
             name (:class:`str`):
@@ -1405,11 +1417,11 @@ class CloudRedisAsyncClient:
 
     async def delete_instance(
         self,
-        request: Union[cloud_redis.DeleteInstanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.DeleteInstanceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific Redis instance.  Instance stops
@@ -1446,7 +1458,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]]):
                 The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
             name (:class:`str`):
@@ -1531,13 +1543,15 @@ class CloudRedisAsyncClient:
 
     async def reschedule_maintenance(
         self,
-        request: Union[cloud_redis.RescheduleMaintenanceRequest, dict] = None,
+        request: Optional[Union[cloud_redis.RescheduleMaintenanceRequest, dict]] = None,
         *,
-        name: str = None,
-        reschedule_type: cloud_redis.RescheduleMaintenanceRequest.RescheduleType = None,
-        schedule_time: timestamp_pb2.Timestamp = None,
+        name: Optional[str] = None,
+        reschedule_type: Optional[
+            cloud_redis.RescheduleMaintenanceRequest.RescheduleType
+        ] = None,
+        schedule_time: Optional[timestamp_pb2.Timestamp] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Reschedule maintenance for a given instance in a
@@ -1575,7 +1589,7 @@ class CloudRedisAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.RescheduleMaintenanceRequest, dict]):
+            request (Optional[Union[google.cloud.redis_v1.types.RescheduleMaintenanceRequest, dict]]):
                 The request object. Request for
                 [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
             name (:class:`str`):

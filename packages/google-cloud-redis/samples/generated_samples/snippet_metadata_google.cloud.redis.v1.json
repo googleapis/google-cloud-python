@@ -2,12 +2,13 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.redis.v1beta1",
-        "version": "v1beta1"
+        "id": "google.cloud.redis.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-redis"
+    "name": "google-cloud-redis",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.create_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.create_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.CreateInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.CreateInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "CreateInstance"
@@ -30,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.CreateInstanceRequest"
+            "type": "google.cloud.redis_v1.types.CreateInstanceRequest"
           },
           {
             "name": "parent",
@@ -42,7 +43,7 @@
           },
           {
             "name": "instance",
-            "type": "google.cloud.redis_v1beta1.types.Instance"
+            "type": "google.cloud.redis_v1.types.Instance"
           },
           {
             "name": "retry",
@@ -61,10 +62,10 @@
         "shortName": "create_instance"
       },
       "description": "Sample for CreateInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_create_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_create_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_CreateInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_CreateInstance_async",
       "segments": [
         {
           "end": 62,
@@ -97,20 +98,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_create_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_create_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.create_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.create_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.CreateInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.CreateInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "CreateInstance"
@@ -118,7 +119,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.CreateInstanceRequest"
+            "type": "google.cloud.redis_v1.types.CreateInstanceRequest"
           },
           {
             "name": "parent",
@@ -130,7 +131,7 @@
           },
           {
             "name": "instance",
-            "type": "google.cloud.redis_v1beta1.types.Instance"
+            "type": "google.cloud.redis_v1.types.Instance"
           },
           {
             "name": "retry",
@@ -149,10 +150,10 @@
         "shortName": "create_instance"
       },
       "description": "Sample for CreateInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_create_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_create_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_CreateInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_CreateInstance_sync",
       "segments": [
         {
           "end": 62,
@@ -185,21 +186,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_create_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_create_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.delete_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.delete_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.DeleteInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.DeleteInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "DeleteInstance"
@@ -207,7 +208,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.DeleteInstanceRequest"
+            "type": "google.cloud.redis_v1.types.DeleteInstanceRequest"
           },
           {
             "name": "name",
@@ -230,10 +231,10 @@
         "shortName": "delete_instance"
       },
       "description": "Sample for DeleteInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_delete_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_delete_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_DeleteInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_DeleteInstance_async",
       "segments": [
         {
           "end": 55,
@@ -266,20 +267,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_delete_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_delete_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.delete_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.delete_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.DeleteInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.DeleteInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "DeleteInstance"
@@ -287,7 +288,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.DeleteInstanceRequest"
+            "type": "google.cloud.redis_v1.types.DeleteInstanceRequest"
           },
           {
             "name": "name",
@@ -310,10 +311,10 @@
         "shortName": "delete_instance"
       },
       "description": "Sample for DeleteInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_delete_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_delete_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_DeleteInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_DeleteInstance_sync",
       "segments": [
         {
           "end": 55,
@@ -346,21 +347,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_delete_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_delete_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.export_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.export_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.ExportInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.ExportInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "ExportInstance"
@@ -368,7 +369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.ExportInstanceRequest"
+            "type": "google.cloud.redis_v1.types.ExportInstanceRequest"
           },
           {
             "name": "name",
@@ -376,7 +377,7 @@
           },
           {
             "name": "output_config",
-            "type": "google.cloud.redis_v1beta1.types.OutputConfig"
+            "type": "google.cloud.redis_v1.types.OutputConfig"
           },
           {
             "name": "retry",
@@ -395,10 +396,10 @@
         "shortName": "export_instance"
       },
       "description": "Sample for ExportInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_export_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_export_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_ExportInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_ExportInstance_async",
       "segments": [
         {
           "end": 59,
@@ -431,20 +432,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_export_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_export_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.export_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.export_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.ExportInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.ExportInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "ExportInstance"
@@ -452,7 +453,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.ExportInstanceRequest"
+            "type": "google.cloud.redis_v1.types.ExportInstanceRequest"
           },
           {
             "name": "name",
@@ -460,7 +461,7 @@
           },
           {
             "name": "output_config",
-            "type": "google.cloud.redis_v1beta1.types.OutputConfig"
+            "type": "google.cloud.redis_v1.types.OutputConfig"
           },
           {
             "name": "retry",
@@ -479,10 +480,10 @@
         "shortName": "export_instance"
       },
       "description": "Sample for ExportInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_export_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_export_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_ExportInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_ExportInstance_sync",
       "segments": [
         {
           "end": 59,
@@ -515,21 +516,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_export_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_export_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.failover_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.failover_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.FailoverInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.FailoverInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "FailoverInstance"
@@ -537,7 +538,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.FailoverInstanceRequest"
+            "type": "google.cloud.redis_v1.types.FailoverInstanceRequest"
           },
           {
             "name": "name",
@@ -545,7 +546,7 @@
           },
           {
             "name": "data_protection_mode",
-            "type": "google.cloud.redis_v1beta1.types.FailoverInstanceRequest.DataProtectionMode"
+            "type": "google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode"
           },
           {
             "name": "retry",
@@ -564,10 +565,10 @@
         "shortName": "failover_instance"
       },
       "description": "Sample for FailoverInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_failover_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_failover_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_FailoverInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_FailoverInstance_async",
       "segments": [
         {
           "end": 55,
@@ -600,20 +601,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_failover_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_failover_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.failover_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.failover_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.FailoverInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.FailoverInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "FailoverInstance"
@@ -621,7 +622,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.FailoverInstanceRequest"
+            "type": "google.cloud.redis_v1.types.FailoverInstanceRequest"
           },
           {
             "name": "name",
@@ -629,7 +630,7 @@
           },
           {
             "name": "data_protection_mode",
-            "type": "google.cloud.redis_v1beta1.types.FailoverInstanceRequest.DataProtectionMode"
+            "type": "google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode"
           },
           {
             "name": "retry",
@@ -648,10 +649,10 @@
         "shortName": "failover_instance"
       },
       "description": "Sample for FailoverInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_failover_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_failover_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_FailoverInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_FailoverInstance_sync",
       "segments": [
         {
           "end": 55,
@@ -684,21 +685,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_failover_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_failover_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.get_instance_auth_string",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.get_instance_auth_string",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.GetInstanceAuthString",
+          "fullName": "google.cloud.redis.v1.CloudRedis.GetInstanceAuthString",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "GetInstanceAuthString"
@@ -706,7 +707,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.GetInstanceAuthStringRequest"
+            "type": "google.cloud.redis_v1.types.GetInstanceAuthStringRequest"
           },
           {
             "name": "name",
@@ -725,14 +726,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.redis_v1beta1.types.InstanceAuthString",
+        "resultType": "google.cloud.redis_v1.types.InstanceAuthString",
         "shortName": "get_instance_auth_string"
       },
       "description": "Sample for GetInstanceAuthString",
-      "file": "redis_v1beta1_generated_cloud_redis_get_instance_auth_string_async.py",
+      "file": "redis_v1_generated_cloud_redis_get_instance_auth_string_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_GetInstanceAuthString_async",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstanceAuthString_async",
       "segments": [
         {
           "end": 51,
@@ -765,20 +766,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_get_instance_auth_string_async.py"
+      "title": "redis_v1_generated_cloud_redis_get_instance_auth_string_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.get_instance_auth_string",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.get_instance_auth_string",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.GetInstanceAuthString",
+          "fullName": "google.cloud.redis.v1.CloudRedis.GetInstanceAuthString",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "GetInstanceAuthString"
@@ -786,7 +787,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.GetInstanceAuthStringRequest"
+            "type": "google.cloud.redis_v1.types.GetInstanceAuthStringRequest"
           },
           {
             "name": "name",
@@ -805,14 +806,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.redis_v1beta1.types.InstanceAuthString",
+        "resultType": "google.cloud.redis_v1.types.InstanceAuthString",
         "shortName": "get_instance_auth_string"
       },
       "description": "Sample for GetInstanceAuthString",
-      "file": "redis_v1beta1_generated_cloud_redis_get_instance_auth_string_sync.py",
+      "file": "redis_v1_generated_cloud_redis_get_instance_auth_string_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_GetInstanceAuthString_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstanceAuthString_sync",
       "segments": [
         {
           "end": 51,
@@ -845,21 +846,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_get_instance_auth_string_sync.py"
+      "title": "redis_v1_generated_cloud_redis_get_instance_auth_string_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.get_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.get_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.GetInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.GetInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "GetInstance"
@@ -867,7 +868,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.GetInstanceRequest"
+            "type": "google.cloud.redis_v1.types.GetInstanceRequest"
           },
           {
             "name": "name",
@@ -886,14 +887,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.redis_v1beta1.types.Instance",
+        "resultType": "google.cloud.redis_v1.types.Instance",
         "shortName": "get_instance"
       },
       "description": "Sample for GetInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_get_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_get_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_GetInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstance_async",
       "segments": [
         {
           "end": 51,
@@ -926,20 +927,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_get_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_get_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.get_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.get_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.GetInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.GetInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "GetInstance"
@@ -947,7 +948,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.GetInstanceRequest"
+            "type": "google.cloud.redis_v1.types.GetInstanceRequest"
           },
           {
             "name": "name",
@@ -966,14 +967,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.redis_v1beta1.types.Instance",
+        "resultType": "google.cloud.redis_v1.types.Instance",
         "shortName": "get_instance"
       },
       "description": "Sample for GetInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_get_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_get_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_GetInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstance_sync",
       "segments": [
         {
           "end": 51,
@@ -1006,21 +1007,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_get_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_get_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.import_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.import_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.ImportInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.ImportInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "ImportInstance"
@@ -1028,7 +1029,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.ImportInstanceRequest"
+            "type": "google.cloud.redis_v1.types.ImportInstanceRequest"
           },
           {
             "name": "name",
@@ -1036,7 +1037,7 @@
           },
           {
             "name": "input_config",
-            "type": "google.cloud.redis_v1beta1.types.InputConfig"
+            "type": "google.cloud.redis_v1.types.InputConfig"
           },
           {
             "name": "retry",
@@ -1055,10 +1056,10 @@
         "shortName": "import_instance"
       },
       "description": "Sample for ImportInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_import_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_import_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_ImportInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_ImportInstance_async",
       "segments": [
         {
           "end": 59,
@@ -1091,20 +1092,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_import_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_import_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.import_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.import_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.ImportInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.ImportInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "ImportInstance"
@@ -1112,7 +1113,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.ImportInstanceRequest"
+            "type": "google.cloud.redis_v1.types.ImportInstanceRequest"
           },
           {
             "name": "name",
@@ -1120,7 +1121,7 @@
           },
           {
             "name": "input_config",
-            "type": "google.cloud.redis_v1beta1.types.InputConfig"
+            "type": "google.cloud.redis_v1.types.InputConfig"
           },
           {
             "name": "retry",
@@ -1139,10 +1140,10 @@
         "shortName": "import_instance"
       },
       "description": "Sample for ImportInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_import_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_import_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_ImportInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_ImportInstance_sync",
       "segments": [
         {
           "end": 59,
@@ -1175,21 +1176,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_import_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_import_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.list_instances",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.list_instances",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.ListInstances",
+          "fullName": "google.cloud.redis.v1.CloudRedis.ListInstances",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "ListInstances"
@@ -1197,7 +1198,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.ListInstancesRequest"
+            "type": "google.cloud.redis_v1.types.ListInstancesRequest"
           },
           {
             "name": "parent",
@@ -1216,14 +1217,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.redis_v1beta1.services.cloud_redis.pagers.ListInstancesAsyncPager",
+        "resultType": "google.cloud.redis_v1.services.cloud_redis.pagers.ListInstancesAsyncPager",
         "shortName": "list_instances"
       },
       "description": "Sample for ListInstances",
-      "file": "redis_v1beta1_generated_cloud_redis_list_instances_async.py",
+      "file": "redis_v1_generated_cloud_redis_list_instances_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_ListInstances_async",
+      "regionTag": "redis_v1_generated_CloudRedis_ListInstances_async",
       "segments": [
         {
           "end": 52,
@@ -1256,20 +1257,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_list_instances_async.py"
+      "title": "redis_v1_generated_cloud_redis_list_instances_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.list_instances",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.list_instances",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.ListInstances",
+          "fullName": "google.cloud.redis.v1.CloudRedis.ListInstances",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "ListInstances"
@@ -1277,7 +1278,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.ListInstancesRequest"
+            "type": "google.cloud.redis_v1.types.ListInstancesRequest"
           },
           {
             "name": "parent",
@@ -1296,14 +1297,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.redis_v1beta1.services.cloud_redis.pagers.ListInstancesPager",
+        "resultType": "google.cloud.redis_v1.services.cloud_redis.pagers.ListInstancesPager",
         "shortName": "list_instances"
       },
       "description": "Sample for ListInstances",
-      "file": "redis_v1beta1_generated_cloud_redis_list_instances_sync.py",
+      "file": "redis_v1_generated_cloud_redis_list_instances_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_ListInstances_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_ListInstances_sync",
       "segments": [
         {
           "end": 52,
@@ -1336,21 +1337,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_list_instances_sync.py"
+      "title": "redis_v1_generated_cloud_redis_list_instances_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.reschedule_maintenance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.reschedule_maintenance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.RescheduleMaintenance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.RescheduleMaintenance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "RescheduleMaintenance"
@@ -1358,7 +1359,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.RescheduleMaintenanceRequest"
+            "type": "google.cloud.redis_v1.types.RescheduleMaintenanceRequest"
           },
           {
             "name": "name",
@@ -1366,7 +1367,7 @@
           },
           {
             "name": "reschedule_type",
-            "type": "google.cloud.redis_v1beta1.types.RescheduleMaintenanceRequest.RescheduleType"
+            "type": "google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType"
           },
           {
             "name": "schedule_time",
@@ -1389,10 +1390,10 @@
         "shortName": "reschedule_maintenance"
       },
       "description": "Sample for RescheduleMaintenance",
-      "file": "redis_v1beta1_generated_cloud_redis_reschedule_maintenance_async.py",
+      "file": "redis_v1_generated_cloud_redis_reschedule_maintenance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_RescheduleMaintenance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_RescheduleMaintenance_async",
       "segments": [
         {
           "end": 56,
@@ -1425,20 +1426,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_reschedule_maintenance_async.py"
+      "title": "redis_v1_generated_cloud_redis_reschedule_maintenance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.reschedule_maintenance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.reschedule_maintenance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.RescheduleMaintenance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.RescheduleMaintenance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "RescheduleMaintenance"
@@ -1446,7 +1447,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.RescheduleMaintenanceRequest"
+            "type": "google.cloud.redis_v1.types.RescheduleMaintenanceRequest"
           },
           {
             "name": "name",
@@ -1454,7 +1455,7 @@
           },
           {
             "name": "reschedule_type",
-            "type": "google.cloud.redis_v1beta1.types.RescheduleMaintenanceRequest.RescheduleType"
+            "type": "google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType"
           },
           {
             "name": "schedule_time",
@@ -1477,10 +1478,10 @@
         "shortName": "reschedule_maintenance"
       },
       "description": "Sample for RescheduleMaintenance",
-      "file": "redis_v1beta1_generated_cloud_redis_reschedule_maintenance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_reschedule_maintenance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_RescheduleMaintenance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_RescheduleMaintenance_sync",
       "segments": [
         {
           "end": 56,
@@ -1513,21 +1514,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_reschedule_maintenance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_reschedule_maintenance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.update_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.update_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.UpdateInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.UpdateInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "UpdateInstance"
@@ -1535,7 +1536,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.UpdateInstanceRequest"
+            "type": "google.cloud.redis_v1.types.UpdateInstanceRequest"
           },
           {
             "name": "update_mask",
@@ -1543,7 +1544,7 @@
           },
           {
             "name": "instance",
-            "type": "google.cloud.redis_v1beta1.types.Instance"
+            "type": "google.cloud.redis_v1.types.Instance"
           },
           {
             "name": "retry",
@@ -1562,10 +1563,10 @@
         "shortName": "update_instance"
       },
       "description": "Sample for UpdateInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_update_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_update_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_UpdateInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_UpdateInstance_async",
       "segments": [
         {
           "end": 60,
@@ -1598,20 +1599,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_update_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_update_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.update_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.update_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.UpdateInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.UpdateInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "UpdateInstance"
@@ -1619,7 +1620,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.UpdateInstanceRequest"
+            "type": "google.cloud.redis_v1.types.UpdateInstanceRequest"
           },
           {
             "name": "update_mask",
@@ -1627,7 +1628,7 @@
           },
           {
             "name": "instance",
-            "type": "google.cloud.redis_v1beta1.types.Instance"
+            "type": "google.cloud.redis_v1.types.Instance"
           },
           {
             "name": "retry",
@@ -1646,10 +1647,10 @@
         "shortName": "update_instance"
       },
       "description": "Sample for UpdateInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_update_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_update_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_UpdateInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_UpdateInstance_sync",
       "segments": [
         {
           "end": 60,
@@ -1682,21 +1683,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_update_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_update_instance_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient",
           "shortName": "CloudRedisAsyncClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisAsyncClient.upgrade_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisAsyncClient.upgrade_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.UpgradeInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.UpgradeInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "UpgradeInstance"
@@ -1704,7 +1705,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.UpgradeInstanceRequest"
+            "type": "google.cloud.redis_v1.types.UpgradeInstanceRequest"
           },
           {
             "name": "name",
@@ -1731,10 +1732,10 @@
         "shortName": "upgrade_instance"
       },
       "description": "Sample for UpgradeInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_upgrade_instance_async.py",
+      "file": "redis_v1_generated_cloud_redis_upgrade_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_UpgradeInstance_async",
+      "regionTag": "redis_v1_generated_CloudRedis_UpgradeInstance_async",
       "segments": [
         {
           "end": 56,
@@ -1767,20 +1768,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_upgrade_instance_async.py"
+      "title": "redis_v1_generated_cloud_redis_upgrade_instance_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.redis_v1beta1.CloudRedisClient",
+          "fullName": "google.cloud.redis_v1.CloudRedisClient",
           "shortName": "CloudRedisClient"
         },
-        "fullName": "google.cloud.redis_v1beta1.CloudRedisClient.upgrade_instance",
+        "fullName": "google.cloud.redis_v1.CloudRedisClient.upgrade_instance",
         "method": {
-          "fullName": "google.cloud.redis.v1beta1.CloudRedis.UpgradeInstance",
+          "fullName": "google.cloud.redis.v1.CloudRedis.UpgradeInstance",
           "service": {
-            "fullName": "google.cloud.redis.v1beta1.CloudRedis",
+            "fullName": "google.cloud.redis.v1.CloudRedis",
             "shortName": "CloudRedis"
           },
           "shortName": "UpgradeInstance"
@@ -1788,7 +1789,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.redis_v1beta1.types.UpgradeInstanceRequest"
+            "type": "google.cloud.redis_v1.types.UpgradeInstanceRequest"
           },
           {
             "name": "name",
@@ -1815,10 +1816,10 @@
         "shortName": "upgrade_instance"
       },
       "description": "Sample for UpgradeInstance",
-      "file": "redis_v1beta1_generated_cloud_redis_upgrade_instance_sync.py",
+      "file": "redis_v1_generated_cloud_redis_upgrade_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "redis_v1beta1_generated_CloudRedis_UpgradeInstance_sync",
+      "regionTag": "redis_v1_generated_CloudRedis_UpgradeInstance_sync",
       "segments": [
         {
           "end": 56,
@@ -1851,7 +1852,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "redis_v1beta1_generated_cloud_redis_upgrade_instance_sync.py"
+      "title": "redis_v1_generated_cloud_redis_upgrade_instance_sync.py"
     }
   ]
 }
