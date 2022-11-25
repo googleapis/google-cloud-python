@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -166,9 +176,9 @@ class EnvironmentsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EnvironmentsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the environments client.
@@ -212,12 +222,12 @@ class EnvironmentsAsyncClient:
 
     async def create_environment(
         self,
-        request: Union[environments.CreateEnvironmentRequest, dict] = None,
+        request: Optional[Union[environments.CreateEnvironmentRequest, dict]] = None,
         *,
-        parent: str = None,
-        environment: environments.Environment = None,
+        parent: Optional[str] = None,
+        environment: Optional[environments.Environment] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a new environment.
@@ -252,7 +262,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.CreateEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.CreateEnvironmentRequest, dict]]):
                 The request object. Create a new environment.
             parent (:class:`str`):
                 The parent must be of the form
@@ -335,11 +345,11 @@ class EnvironmentsAsyncClient:
 
     async def get_environment(
         self,
-        request: Union[environments.GetEnvironmentRequest, dict] = None,
+        request: Optional[Union[environments.GetEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environments.Environment:
         r"""Get an existing environment.
@@ -370,7 +380,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.GetEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.GetEnvironmentRequest, dict]]):
                 The request object. Get an environment.
             name (:class:`str`):
                 The resource name of the environment
@@ -436,11 +446,11 @@ class EnvironmentsAsyncClient:
 
     async def list_environments(
         self,
-        request: Union[environments.ListEnvironmentsRequest, dict] = None,
+        request: Optional[Union[environments.ListEnvironmentsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""List environments.
@@ -472,7 +482,7 @@ class EnvironmentsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListEnvironmentsRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListEnvironmentsRequest, dict]]):
                 The request object. List environments in a project and
                 location.
             parent (:class:`str`):
@@ -551,13 +561,13 @@ class EnvironmentsAsyncClient:
 
     async def update_environment(
         self,
-        request: Union[environments.UpdateEnvironmentRequest, dict] = None,
+        request: Optional[Union[environments.UpdateEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
-        environment: environments.Environment = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        name: Optional[str] = None,
+        environment: Optional[environments.Environment] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update an environment.
@@ -592,7 +602,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.UpdateEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.UpdateEnvironmentRequest, dict]]):
                 The request object. Update an environment.
             name (:class:`str`):
                 The relative resource name of the
@@ -868,11 +878,11 @@ class EnvironmentsAsyncClient:
 
     async def delete_environment(
         self,
-        request: Union[environments.DeleteEnvironmentRequest, dict] = None,
+        request: Optional[Union[environments.DeleteEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete an environment.
@@ -907,7 +917,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.DeleteEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.DeleteEnvironmentRequest, dict]]):
                 The request object. Delete an environment.
             name (:class:`str`):
                 The environment to delete, in the
@@ -991,10 +1001,10 @@ class EnvironmentsAsyncClient:
 
     async def restart_web_server(
         self,
-        request: Union[environments.RestartWebServerRequest, dict] = None,
+        request: Optional[Union[environments.RestartWebServerRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Restart Airflow web server.
@@ -1029,7 +1039,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.RestartWebServerRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.RestartWebServerRequest, dict]]):
                 The request object. Restart Airflow web server.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1084,10 +1094,10 @@ class EnvironmentsAsyncClient:
 
     async def check_upgrade(
         self,
-        request: Union[environments.CheckUpgradeRequest, dict] = None,
+        request: Optional[Union[environments.CheckUpgradeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Check if an upgrade operation on the environment will
@@ -1125,7 +1135,7 @@ class EnvironmentsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.CheckUpgradeRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.CheckUpgradeRequest, dict]]):
                 The request object. Request to check whether image
                 upgrade will succeed.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

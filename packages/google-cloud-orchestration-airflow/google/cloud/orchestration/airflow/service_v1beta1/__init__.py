@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.orchestration.airflow.service import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.environments import EnvironmentsAsyncClient, EnvironmentsClient
 from .services.image_versions import ImageVersionsAsyncClient, ImageVersionsClient

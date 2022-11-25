@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -44,19 +46,19 @@ class ListImageVersionsRequest(proto.Message):
             releases should be included.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    include_past_releases = proto.Field(
+    include_past_releases: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -66,7 +68,7 @@ class ListImageVersionsResponse(proto.Message):
     r"""The ImageVersions in a project and location.
 
     Attributes:
-        image_versions (Sequence[google.cloud.orchestration.airflow.service_v1beta1.types.ImageVersion]):
+        image_versions (MutableSequence[google.cloud.orchestration.airflow.service_v1beta1.types.ImageVersion]):
             The list of supported ImageVersions in a
             location.
         next_page_token (str):
@@ -78,12 +80,12 @@ class ListImageVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    image_versions = proto.RepeatedField(
+    image_versions: MutableSequence["ImageVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ImageVersion",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -100,7 +102,7 @@ class ImageVersion(proto.Message):
             Whether this is the default ImageVersion used
             by Composer during environment creation if no
             input ImageVersion is specified.
-        supported_python_versions (Sequence[str]):
+        supported_python_versions (MutableSequence[str]):
             supported python versions
         release_date (google.type.date_pb2.Date):
             The date of the version release.
@@ -112,28 +114,28 @@ class ImageVersion(proto.Message):
             environment running with the image version.
     """
 
-    image_version_id = proto.Field(
+    image_version_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    is_default = proto.Field(
+    is_default: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    supported_python_versions = proto.RepeatedField(
+    supported_python_versions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    release_date = proto.Field(
+    release_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=4,
         message=date_pb2.Date,
     )
-    creation_disabled = proto.Field(
+    creation_disabled: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    upgrade_disabled = proto.Field(
+    upgrade_disabled: bool = proto.Field(
         proto.BOOL,
         number=6,
     )

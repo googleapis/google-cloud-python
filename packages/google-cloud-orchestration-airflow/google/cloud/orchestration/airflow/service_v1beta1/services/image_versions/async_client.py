@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -159,9 +169,9 @@ class ImageVersionsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ImageVersionsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the image versions client.
@@ -205,11 +215,11 @@ class ImageVersionsAsyncClient:
 
     async def list_image_versions(
         self,
-        request: Union[image_versions.ListImageVersionsRequest, dict] = None,
+        request: Optional[Union[image_versions.ListImageVersionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListImageVersionsAsyncPager:
         r"""List ImageVersions for provided location.
@@ -241,7 +251,7 @@ class ImageVersionsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListImageVersionsRequest, dict]):
+            request (Optional[Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListImageVersionsRequest, dict]]):
                 The request object. List ImageVersions in a project and
                 location.
             parent (:class:`str`):

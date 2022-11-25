@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -68,30 +70,30 @@ class OperationMetadata(proto.Message):
         UPDATE = 3
         CHECK = 4
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    operation_type = proto.Field(
+    operation_type: Type = proto.Field(
         proto.ENUM,
         number=2,
         enum=Type,
     )
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_uuid = proto.Field(
+    resource_uuid: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,

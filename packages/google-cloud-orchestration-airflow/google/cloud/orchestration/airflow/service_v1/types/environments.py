@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -53,11 +55,11 @@ class CreateEnvironmentRequest(proto.Message):
             The environment to create.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Environment",
@@ -74,7 +76,7 @@ class GetEnvironmentRequest(proto.Message):
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -95,15 +97,15 @@ class ListEnvironmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -113,7 +115,7 @@ class ListEnvironmentsResponse(proto.Message):
     r"""The environments in a project and location.
 
     Attributes:
-        environments (Sequence[google.cloud.orchestration.airflow.service_v1.types.Environment]):
+        environments (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.Environment]):
             The list of environments returned by a
             ListEnvironmentsRequest.
         next_page_token (str):
@@ -125,12 +127,12 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(
+    environments: MutableSequence["Environment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -145,7 +147,7 @@ class DeleteEnvironmentRequest(proto.Message):
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -317,16 +319,16 @@ class UpdateEnvironmentRequest(proto.Message):
                   variables.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Environment",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -383,54 +385,54 @@ class EnvironmentConfig(proto.Message):
             interface </composer/docs/how-to/accessing/airflow-web-interface>`__).
     """
 
-    gke_cluster = proto.Field(
+    gke_cluster: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dag_gcs_prefix = proto.Field(
+    dag_gcs_prefix: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    node_count = proto.Field(
+    node_count: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    software_config = proto.Field(
+    software_config: "SoftwareConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="SoftwareConfig",
     )
-    node_config = proto.Field(
+    node_config: "NodeConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="NodeConfig",
     )
-    private_environment_config = proto.Field(
+    private_environment_config: "PrivateEnvironmentConfig" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="PrivateEnvironmentConfig",
     )
-    web_server_network_access_control = proto.Field(
+    web_server_network_access_control: "WebServerNetworkAccessControl" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="WebServerNetworkAccessControl",
     )
-    database_config = proto.Field(
+    database_config: "DatabaseConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="DatabaseConfig",
     )
-    web_server_config = proto.Field(
+    web_server_config: "WebServerConfig" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="WebServerConfig",
     )
-    encryption_config = proto.Field(
+    encryption_config: "EncryptionConfig" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="EncryptionConfig",
     )
-    airflow_uri = proto.Field(
+    airflow_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -441,7 +443,7 @@ class WebServerNetworkAccessControl(proto.Message):
     server.
 
     Attributes:
-        allowed_ip_ranges (Sequence[google.cloud.orchestration.airflow.service_v1.types.WebServerNetworkAccessControl.AllowedIpRange]):
+        allowed_ip_ranges (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.WebServerNetworkAccessControl.AllowedIpRange]):
             A collection of allowed IP ranges with
             descriptions.
     """
@@ -465,16 +467,16 @@ class WebServerNetworkAccessControl(proto.Message):
                 contain at most 300 characters.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    allowed_ip_ranges = proto.RepeatedField(
+    allowed_ip_ranges: MutableSequence[AllowedIpRange] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=AllowedIpRange,
@@ -494,7 +496,7 @@ class DatabaseConfig(proto.Message):
             specified, db-n1-standard-2 will be used.
     """
 
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -516,7 +518,7 @@ class WebServerConfig(proto.Message):
             manually changed to a non-standard values.
     """
 
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -534,7 +536,7 @@ class EncryptionConfig(proto.Message):
             Google-managed key will be used.
     """
 
-    kms_key_name = proto.Field(
+    kms_key_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -569,7 +571,7 @@ class SoftwareConfig(proto.Message):
 
             See also `Version
             List </composer/docs/concepts/versioning/composer-versions>`__.
-        airflow_config_overrides (Mapping[str, str]):
+        airflow_config_overrides (MutableMapping[str, str]):
             Optional. Apache Airflow configuration properties to
             override.
 
@@ -589,7 +591,7 @@ class SoftwareConfig(proto.Message):
             Certain Apache Airflow configuration property values are
             `blocked </composer/docs/concepts/airflow-configurations>`__,
             and cannot be overridden.
-        pypi_packages (Mapping[str, str]):
+        pypi_packages (MutableMapping[str, str]):
             Optional. Custom Python Package Index (PyPI) packages to be
             installed in the environment.
 
@@ -598,7 +600,7 @@ class SoftwareConfig(proto.Message):
             as "==1.12.0", "[devel,gcp_api]", or "[devel]>=1.8.2,
             <1.9.2". To specify a package without pinning it to a
             version specifier, use the empty string as the value.
-        env_variables (Mapping[str, str]):
+        env_variables (MutableMapping[str, str]):
             Optional. Additional environment variables to provide to the
             Apache Airflow scheduler, worker, and webserver processes.
 
@@ -629,26 +631,26 @@ class SoftwareConfig(proto.Message):
             default is '3'. Cannot be updated.
     """
 
-    image_version = proto.Field(
+    image_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    airflow_config_overrides = proto.MapField(
+    airflow_config_overrides: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    pypi_packages = proto.MapField(
+    pypi_packages: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    env_variables = proto.MapField(
+    env_variables: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    python_version = proto.Field(
+    python_version: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -727,26 +729,26 @@ class IPAllocationPolicy(proto.Message):
             This field is a member of `oneof`_ ``services_ip_allocation``.
     """
 
-    use_ip_aliases = proto.Field(
+    use_ip_aliases: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    cluster_secondary_range_name = proto.Field(
+    cluster_secondary_range_name: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="cluster_ip_allocation",
     )
-    cluster_ipv4_cidr_block = proto.Field(
+    cluster_ipv4_cidr_block: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="cluster_ip_allocation",
     )
-    services_secondary_range_name = proto.Field(
+    services_secondary_range_name: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="services_ip_allocation",
     )
-    services_ipv4_cidr_block = proto.Field(
+    services_ipv4_cidr_block: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="services_ip_allocation",
@@ -827,7 +829,7 @@ class NodeConfig(proto.Message):
             Optional. The disk size in GB used for node
             VMs. Minimum size is 20GB. If unspecified,
             defaults to 100GB. Cannot be updated.
-        oauth_scopes (Sequence[str]):
+        oauth_scopes (MutableSequence[str]):
             Optional. The set of Google API scopes to be made available
             on all node VMs. If ``oauth_scopes`` is empty, defaults to
             ["https://www.googleapis.com/auth/cloud-platform"]. Cannot
@@ -838,7 +840,7 @@ class NodeConfig(proto.Message):
             account is not specified, the "default" Compute
             Engine service account is used. Cannot be
             updated.
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Optional. The list of instance tags applied to all node VMs.
             Tags are used to identify valid sources or targets for
             network firewalls. Each tag within the list must comply with
@@ -849,39 +851,39 @@ class NodeConfig(proto.Message):
             how IPs are allocated in the GKE cluster.
     """
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    disk_size_gb = proto.Field(
+    disk_size_gb: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    oauth_scopes = proto.RepeatedField(
+    oauth_scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    ip_allocation_policy = proto.Field(
+    ip_allocation_policy: "IPAllocationPolicy" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="IPAllocationPolicy",
@@ -911,15 +913,15 @@ class PrivateClusterConfig(proto.Message):
             within the cluster's network.
     """
 
-    enable_private_endpoint = proto.Field(
+    enable_private_endpoint: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    master_ipv4_cidr_block = proto.Field(
+    master_ipv4_cidr_block: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    master_ipv4_reserved_range = proto.Field(
+    master_ipv4_reserved_range: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -952,24 +954,24 @@ class PrivateEnvironmentConfig(proto.Message):
             tenant project's App Engine VMs.
     """
 
-    enable_private_environment = proto.Field(
+    enable_private_environment: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    private_cluster_config = proto.Field(
+    private_cluster_config: "PrivateClusterConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PrivateClusterConfig",
     )
-    web_server_ipv4_cidr_block = proto.Field(
+    web_server_ipv4_cidr_block: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    cloud_sql_ipv4_cidr_block = proto.Field(
+    cloud_sql_ipv4_cidr_block: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    web_server_ipv4_reserved_range = proto.Field(
+    web_server_ipv4_reserved_range: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1002,7 +1004,7 @@ class Environment(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             environment was last modified.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User-defined labels for this environment. The
             labels map can contain no more than 64 entries. Entries of
             the labels map are UTF8 strings that comply with the
@@ -1025,35 +1027,35 @@ class Environment(proto.Message):
         DELETING = 4
         ERROR = 5
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    config = proto.Field(
+    config: "EnvironmentConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EnvironmentConfig",
     )
-    uuid = proto.Field(
+    uuid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
@@ -1078,7 +1080,7 @@ class CheckUpgradeResponse(proto.Message):
         image_version (str):
             Composer image for which the build was
             happening.
-        pypi_dependencies (Mapping[str, str]):
+        pypi_dependencies (MutableMapping[str, str]):
             Pypi dependencies specified in the
             environment configuration, at the time when the
             build was triggered.
@@ -1092,24 +1094,24 @@ class CheckUpgradeResponse(proto.Message):
         CONFLICT = 1
         NO_CONFLICT = 2
 
-    build_log_uri = proto.Field(
+    build_log_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    contains_pypi_modules_conflict = proto.Field(
+    contains_pypi_modules_conflict: ConflictResult = proto.Field(
         proto.ENUM,
         number=4,
         enum=ConflictResult,
     )
-    pypi_conflict_build_log_extract = proto.Field(
+    pypi_conflict_build_log_extract: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    image_version = proto.Field(
+    image_version: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    pypi_dependencies = proto.MapField(
+    pypi_dependencies: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
