@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.recaptchaenterprise import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.async_client import (
     RecaptchaEnterpriseServiceAsyncClient,

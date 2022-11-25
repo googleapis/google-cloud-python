@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -73,11 +75,11 @@ class CreateAssessmentRequest(proto.Message):
             Required. The assessment details.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    assessment = proto.Field(
+    assessment: "Assessment" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Assessment",
@@ -98,7 +100,7 @@ class AnnotateAssessmentRequest(proto.Message):
             empty to provide reasons that apply to an event
             without concluding whether the event is
             legitimate or fraudulent.
-        reasons (Sequence[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Reason]):
+        reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Reason]):
             Optional. Optional reasons for the annotation
             that will be assigned to the Event.
         hashed_account_id (bytes):
@@ -138,21 +140,21 @@ class AnnotateAssessmentRequest(proto.Message):
         INCORRECT_PASSWORD = 6
         SOCIAL_SPAM = 14
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    annotation = proto.Field(
+    annotation: Annotation = proto.Field(
         proto.ENUM,
         number=2,
         enum=Annotation,
     )
-    reasons = proto.RepeatedField(
+    reasons: MutableSequence[Reason] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum=Reason,
     )
-    hashed_account_id = proto.Field(
+    hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
@@ -175,7 +177,7 @@ class PrivatePasswordLeakVerification(proto.Message):
             Optional. Encrypted Scrypt hash of the canonicalized
             username+password. It is re-encrypted by the server and
             returned through ``reencrypted_user_credentials_hash``.
-        encrypted_leak_match_prefixes (Sequence[bytes]):
+        encrypted_leak_match_prefixes (MutableSequence[bytes]):
             Output only. List of prefixes of the encrypted potential
             password leaks that matched the given parameters. They must
             be compared with the client-side decryption prefix of
@@ -187,19 +189,19 @@ class PrivatePasswordLeakVerification(proto.Message):
             ``encrypted_leak_match_prefixes``.
     """
 
-    lookup_hash_prefix = proto.Field(
+    lookup_hash_prefix: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    encrypted_user_credentials_hash = proto.Field(
+    encrypted_user_credentials_hash: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    encrypted_leak_match_prefixes = proto.RepeatedField(
+    encrypted_leak_match_prefixes: MutableSequence[bytes] = proto.RepeatedField(
         proto.BYTES,
         number=3,
     )
-    reencrypted_user_credentials_hash = proto.Field(
+    reencrypted_user_credentials_hash: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
@@ -231,31 +233,31 @@ class Assessment(proto.Message):
             credentials.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    event = proto.Field(
+    event: "Event" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Event",
     )
-    risk_analysis = proto.Field(
+    risk_analysis: "RiskAnalysis" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="RiskAnalysis",
     )
-    token_properties = proto.Field(
+    token_properties: "TokenProperties" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TokenProperties",
     )
-    account_defender_assessment = proto.Field(
+    account_defender_assessment: "AccountDefenderAssessment" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="AccountDefenderAssessment",
     )
-    private_password_leak_verification = proto.Field(
+    private_password_leak_verification: "PrivatePasswordLeakVerification" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="PrivatePasswordLeakVerification",
@@ -293,27 +295,27 @@ class Event(proto.Message):
             be hashed using hmac-sha256 with stable secret.
     """
 
-    token = proto.Field(
+    token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    site_key = proto.Field(
+    site_key: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    user_ip_address = proto.Field(
+    user_ip_address: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    expected_action = proto.Field(
+    expected_action: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    hashed_account_id = proto.Field(
+    hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=6,
     )
@@ -327,7 +329,7 @@ class RiskAnalysis(proto.Message):
             Legitimate event score from 0.0 to 1.0.
             (1.0 means very likely legitimate traffic while
             0.0 means very likely non-legitimate traffic).
-        reasons (Sequence[google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.ClassificationReason]):
+        reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.ClassificationReason]):
             Reasons contributing to the risk analysis
             verdict.
     """
@@ -341,11 +343,11 @@ class RiskAnalysis(proto.Message):
         UNEXPECTED_USAGE_PATTERNS = 4
         LOW_CONFIDENCE_SCORE = 5
 
-    score = proto.Field(
+    score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    reasons = proto.RepeatedField(
+    reasons: MutableSequence[ClassificationReason] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=ClassificationReason,
@@ -386,25 +388,25 @@ class TokenProperties(proto.Message):
         MISSING = 5
         BROWSER_ERROR = 6
 
-    valid = proto.Field(
+    valid: bool = proto.Field(
         proto.BOOL,
         number=1,
     )
-    invalid_reason = proto.Field(
+    invalid_reason: InvalidReason = proto.Field(
         proto.ENUM,
         number=2,
         enum=InvalidReason,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    action = proto.Field(
+    action: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -414,7 +416,7 @@ class AccountDefenderAssessment(proto.Message):
     r"""Account defender risk assessment.
 
     Attributes:
-        labels (Sequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountDefenderLabel]):
+        labels (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountDefenderLabel]):
             Labels for this request.
     """
 
@@ -426,7 +428,7 @@ class AccountDefenderAssessment(proto.Message):
         SUSPICIOUS_ACCOUNT_CREATION = 3
         RELATED_ACCOUNTS_NUMBER_HIGH = 4
 
-    labels = proto.RepeatedField(
+    labels: MutableSequence[AccountDefenderLabel] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=AccountDefenderLabel,
@@ -446,11 +448,11 @@ class CreateKeyRequest(proto.Message):
             Enterprise key.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key = proto.Field(
+    key: "Key" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Key",
@@ -473,15 +475,15 @@ class ListKeysRequest(proto.Message):
             previous. ListKeysRequest, if any.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -491,7 +493,7 @@ class ListKeysResponse(proto.Message):
     r"""Response to request to list keys in a project.
 
     Attributes:
-        keys (Sequence[google.cloud.recaptchaenterprise_v1.types.Key]):
+        keys (MutableSequence[google.cloud.recaptchaenterprise_v1.types.Key]):
             Key details.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -502,12 +504,12 @@ class ListKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    keys = proto.RepeatedField(
+    keys: MutableSequence["Key"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Key",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -523,7 +525,7 @@ class RetrieveLegacySecretKeyRequest(proto.Message):
             "projects/{project}/keys/{key}".
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -538,7 +540,7 @@ class GetKeyRequest(proto.Message):
             the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -556,12 +558,12 @@ class UpdateKeyRequest(proto.Message):
             all fields will be updated.
     """
 
-    key = proto.Field(
+    key: "Key" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Key",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -577,7 +579,7 @@ class DeleteKeyRequest(proto.Message):
             in the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -592,7 +594,7 @@ class MigrateKeyRequest(proto.Message):
             in the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -608,7 +610,7 @@ class GetMetricsRequest(proto.Message):
             "projects/{project}/keys/{key}/metrics".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -623,32 +625,32 @@ class Metrics(proto.Message):
             format "projects/{project}/keys/{key}/metrics".
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Inclusive start time aligned to a day (UTC).
-        score_metrics (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
+        score_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
             Metrics will be continuous and in order by
             dates, and in the granularity of day. All Key
             types should have score-based data.
-        challenge_metrics (Sequence[google.cloud.recaptchaenterprise_v1.types.ChallengeMetrics]):
+        challenge_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ChallengeMetrics]):
             Metrics will be continuous and in order by
             dates, and in the granularity of day. Only
             challenge-based keys (CHECKBOX, INVISIBLE), will
             have challenge-based data.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    score_metrics = proto.RepeatedField(
+    score_metrics: MutableSequence["ScoreMetrics"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ScoreMetrics",
     )
-    challenge_metrics = proto.RepeatedField(
+    challenge_metrics: MutableSequence["ChallengeMetrics"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ChallengeMetrics",
@@ -669,7 +671,7 @@ class RetrieveLegacySecretKeyResponse(proto.Message):
             security purposes.
     """
 
-    legacy_secret_key = proto.Field(
+    legacy_secret_key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -708,7 +710,7 @@ class Key(proto.Message):
             apps.
 
             This field is a member of `oneof`_ ``platform_settings``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             See <a
             href="https://cloud.google.com/recaptcha-enterprise/docs/labels">
             Creating and managing labels</a>.
@@ -721,48 +723,48 @@ class Key(proto.Message):
             Settings for WAF
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    web_settings = proto.Field(
+    web_settings: "WebKeySettings" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="platform_settings",
         message="WebKeySettings",
     )
-    android_settings = proto.Field(
+    android_settings: "AndroidKeySettings" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="platform_settings",
         message="AndroidKeySettings",
     )
-    ios_settings = proto.Field(
+    ios_settings: "IOSKeySettings" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="platform_settings",
         message="IOSKeySettings",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    testing_options = proto.Field(
+    testing_options: "TestingOptions" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="TestingOptions",
     )
-    waf_settings = proto.Field(
+    waf_settings: "WafSettings" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="WafSettings",
@@ -792,11 +794,11 @@ class TestingOptions(proto.Message):
         NOCAPTCHA = 1
         UNSOLVABLE_CHALLENGE = 2
 
-    testing_score = proto.Field(
+    testing_score: float = proto.Field(
         proto.FLOAT,
         number=1,
     )
-    testing_challenge = proto.Field(
+    testing_challenge: TestingChallenge = proto.Field(
         proto.ENUM,
         number=2,
         enum=TestingChallenge,
@@ -810,7 +812,7 @@ class WebKeySettings(proto.Message):
         allow_all_domains (bool):
             If set to true, it means allowed_domains will not be
             enforced.
-        allowed_domains (Sequence[str]):
+        allowed_domains (MutableSequence[str]):
             Domains or subdomains of websites allowed to
             use the key. All subdomains of an allowed domain
             are automatically allowed. A valid domain
@@ -847,24 +849,24 @@ class WebKeySettings(proto.Message):
         BALANCE = 2
         SECURITY = 3
 
-    allow_all_domains = proto.Field(
+    allow_all_domains: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    allowed_domains = proto.RepeatedField(
+    allowed_domains: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    allow_amp_traffic = proto.Field(
+    allow_amp_traffic: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    integration_type = proto.Field(
+    integration_type: IntegrationType = proto.Field(
         proto.ENUM,
         number=4,
         enum=IntegrationType,
     )
-    challenge_security_preference = proto.Field(
+    challenge_security_preference: ChallengeSecurityPreference = proto.Field(
         proto.ENUM,
         number=5,
         enum=ChallengeSecurityPreference,
@@ -877,16 +879,16 @@ class AndroidKeySettings(proto.Message):
     Attributes:
         allow_all_package_names (bool):
             If set to true, allowed_package_names are not enforced.
-        allowed_package_names (Sequence[str]):
+        allowed_package_names (MutableSequence[str]):
             Android package names of apps allowed to use
             the key. Example: 'com.companyname.appname'
     """
 
-    allow_all_package_names = proto.Field(
+    allow_all_package_names: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allowed_package_names = proto.RepeatedField(
+    allowed_package_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -898,17 +900,17 @@ class IOSKeySettings(proto.Message):
     Attributes:
         allow_all_bundle_ids (bool):
             If set to true, allowed_bundle_ids are not enforced.
-        allowed_bundle_ids (Sequence[str]):
+        allowed_bundle_ids (MutableSequence[str]):
             iOS bundle ids of apps allowed to use the
             key. Example:
             'com.companyname.productname.appname'
     """
 
-    allow_all_bundle_ids = proto.Field(
+    allow_all_bundle_ids: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    allowed_bundle_ids = proto.RepeatedField(
+    allowed_bundle_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -918,14 +920,14 @@ class ScoreDistribution(proto.Message):
     r"""Score distribution.
 
     Attributes:
-        score_buckets (Mapping[int, int]):
+        score_buckets (MutableMapping[int, int]):
             Map key is score value multiplied by 100. The scores are
             discrete values between [0, 1]. The maximum number of
             buckets is on order of a few dozen, but typically much lower
             (ie. 10).
     """
 
-    score_buckets = proto.MapField(
+    score_buckets: MutableMapping[int, int] = proto.MapField(
         proto.INT32,
         proto.INT64,
         number=1,
@@ -938,19 +940,19 @@ class ScoreMetrics(proto.Message):
     Attributes:
         overall_metrics (google.cloud.recaptchaenterprise_v1.types.ScoreDistribution):
             Aggregated score metrics for all traffic.
-        action_metrics (Mapping[str, google.cloud.recaptchaenterprise_v1.types.ScoreDistribution]):
+        action_metrics (MutableMapping[str, google.cloud.recaptchaenterprise_v1.types.ScoreDistribution]):
             Action-based metrics. The map key is the
             action name which specified by the site owners
             at time of the "execute" client-side call.
             Populated only for SCORE keys.
     """
 
-    overall_metrics = proto.Field(
+    overall_metrics: "ScoreDistribution" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ScoreDistribution",
     )
-    action_metrics = proto.MapField(
+    action_metrics: MutableMapping[str, "ScoreDistribution"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
@@ -980,19 +982,19 @@ class ChallengeMetrics(proto.Message):
             verification.
     """
 
-    pageload_count = proto.Field(
+    pageload_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    nocaptcha_count = proto.Field(
+    nocaptcha_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    failed_count = proto.Field(
+    failed_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    passed_count = proto.Field(
+    passed_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -1022,15 +1024,15 @@ class ListRelatedAccountGroupMembershipsRequest(proto.Message):
             that provided the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1040,7 +1042,7 @@ class ListRelatedAccountGroupMembershipsResponse(proto.Message):
     r"""The response to a ``ListRelatedAccountGroupMemberships`` call.
 
     Attributes:
-        related_account_group_memberships (Sequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroupMembership]):
+        related_account_group_memberships (MutableSequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroupMembership]):
             The memberships listed by the query.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -1052,12 +1054,14 @@ class ListRelatedAccountGroupMembershipsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_group_memberships = proto.RepeatedField(
+    related_account_group_memberships: MutableSequence[
+        "RelatedAccountGroupMembership"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RelatedAccountGroupMembership",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1087,15 +1091,15 @@ class ListRelatedAccountGroupsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1105,7 +1109,7 @@ class ListRelatedAccountGroupsResponse(proto.Message):
     r"""The response to a ``ListRelatedAccountGroups`` call.
 
     Attributes:
-        related_account_groups (Sequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroup]):
+        related_account_groups (MutableSequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroup]):
             The groups of related accounts listed by the
             query.
         next_page_token (str):
@@ -1118,12 +1122,14 @@ class ListRelatedAccountGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_groups = proto.RepeatedField(
+    related_account_groups: MutableSequence[
+        "RelatedAccountGroup"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RelatedAccountGroup",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1160,19 +1166,19 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
             that provided the page token.
     """
 
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    hashed_account_id = proto.Field(
+    hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1182,7 +1188,7 @@ class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
     r"""The response to a ``SearchRelatedAccountGroupMemberships`` call.
 
     Attributes:
-        related_account_group_memberships (Sequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroupMembership]):
+        related_account_group_memberships (MutableSequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroupMembership]):
             The queried memberships.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -1194,12 +1200,14 @@ class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_group_memberships = proto.RepeatedField(
+    related_account_group_memberships: MutableSequence[
+        "RelatedAccountGroupMembership"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RelatedAccountGroupMembership",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1220,11 +1228,11 @@ class RelatedAccountGroupMembership(proto.Message):
             call.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    hashed_account_id = proto.Field(
+    hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
@@ -1240,7 +1248,7 @@ class RelatedAccountGroup(proto.Message):
             ``projects/{project}/relatedaccountgroups/{related_account_group}``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1272,12 +1280,12 @@ class WafSettings(proto.Message):
         WAF_SERVICE_UNSPECIFIED = 0
         CA = 1
 
-    waf_service = proto.Field(
+    waf_service: WafService = proto.Field(
         proto.ENUM,
         number=1,
         enum=WafService,
     )
-    waf_feature = proto.Field(
+    waf_feature: WafFeature = proto.Field(
         proto.ENUM,
         number=2,
         enum=WafFeature,
