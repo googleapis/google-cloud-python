@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -52,7 +52,7 @@ class Mesh(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the Mesh resource.
         description (str):
@@ -70,34 +70,34 @@ class Mesh(proto.Message):
             deployments.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    self_link = proto.Field(
+    self_link: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    interception_port = proto.Field(
+    interception_port: int = proto.Field(
         proto.INT32,
         number=8,
     )
@@ -120,15 +120,15 @@ class ListMeshesRequest(proto.Message):
             next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -138,7 +138,7 @@ class ListMeshesResponse(proto.Message):
     r"""Response returned by the ListMeshes method.
 
     Attributes:
-        meshes (Sequence[google.cloud.network_services_v1.types.Mesh]):
+        meshes (MutableSequence[google.cloud.network_services_v1.types.Mesh]):
             List of Mesh resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -151,12 +151,12 @@ class ListMeshesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    meshes = proto.RepeatedField(
+    meshes: MutableSequence["Mesh"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Mesh",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -171,7 +171,7 @@ class GetMeshRequest(proto.Message):
             ``projects/*/locations/global/meshes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -191,15 +191,15 @@ class CreateMeshRequest(proto.Message):
             Required. Mesh resource to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    mesh_id = proto.Field(
+    mesh_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    mesh = proto.Field(
+    mesh: "Mesh" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Mesh",
@@ -221,12 +221,12 @@ class UpdateMeshRequest(proto.Message):
             Required. Updated Mesh resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    mesh = proto.Field(
+    mesh: "Mesh" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Mesh",
@@ -242,7 +242,7 @@ class DeleteMeshRequest(proto.Message):
             format ``projects/*/locations/global/meshes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

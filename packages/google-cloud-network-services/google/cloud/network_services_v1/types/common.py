@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -58,33 +58,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -94,14 +94,14 @@ class TrafficPortSelector(proto.Message):
     r"""Specification of a port-based selector.
 
     Attributes:
-        ports (Sequence[str]):
+        ports (MutableSequence[str]):
             Optional. A list of ports. Can be port numbers or port range
             (example, [80-90] specifies all ports from 80 to 90,
             including 80 and 90) or named ports or \* to specify all
             ports. If the list is empty, all ports are selected.
     """
 
-    ports = proto.RepeatedField(
+    ports: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -153,7 +153,7 @@ class EndpointMatcher(proto.Message):
                 If there is more than one best match, (for example, if a
                 config P4 with selector <A:1,D:1> exists and if a client
                 with label <A:1,B:1,D:1> connects), an error will be thrown.
-            metadata_labels (Sequence[google.cloud.network_services_v1.types.EndpointMatcher.MetadataLabelMatcher.MetadataLabels]):
+            metadata_labels (MutableSequence[google.cloud.network_services_v1.types.EndpointMatcher.MetadataLabelMatcher.MetadataLabels]):
                 The list of label value pairs that must match labels in the
                 provided metadata based on filterMatchCriteria This list can
                 have at most 64 entries. The list can be empty if the match
@@ -182,27 +182,29 @@ class EndpointMatcher(proto.Message):
                     Metadata.
             """
 
-            label_name = proto.Field(
+            label_name: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            label_value = proto.Field(
+            label_value: str = proto.Field(
                 proto.STRING,
                 number=2,
             )
 
-        metadata_label_match_criteria = proto.Field(
+        metadata_label_match_criteria: "EndpointMatcher.MetadataLabelMatcher.MetadataLabelMatchCriteria" = proto.Field(
             proto.ENUM,
             number=1,
             enum="EndpointMatcher.MetadataLabelMatcher.MetadataLabelMatchCriteria",
         )
-        metadata_labels = proto.RepeatedField(
+        metadata_labels: MutableSequence[
+            "EndpointMatcher.MetadataLabelMatcher.MetadataLabels"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="EndpointMatcher.MetadataLabelMatcher.MetadataLabels",
         )
 
-    metadata_label_matcher = proto.Field(
+    metadata_label_matcher: MetadataLabelMatcher = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="matcher_type",

@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -53,7 +53,7 @@ class Gateway(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the Gateway resource.
         description (str):
@@ -63,7 +63,7 @@ class Gateway(proto.Message):
             Immutable. The type of the customer managed
             gateway. This field is required. If unspecified,
             an error is returned.
-        ports (Sequence[int]):
+        ports (MutableSequence[int]):
             Required. One or more ports that the Gateway
             must receive traffic on. The proxy binds to the
             ports specified. Gateway listen on 0.0.0.0 on
@@ -96,47 +96,47 @@ class Gateway(proto.Message):
         OPEN_MESH = 1
         SECURE_WEB_GATEWAY = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    self_link = proto.Field(
+    self_link: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=6,
         enum=Type,
     )
-    ports = proto.RepeatedField(
+    ports: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=11,
     )
-    scope = proto.Field(
+    scope: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    server_tls_policy = proto.Field(
+    server_tls_policy: str = proto.Field(
         proto.STRING,
         number=9,
     )
@@ -160,15 +160,15 @@ class ListGatewaysRequest(proto.Message):
             next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -178,7 +178,7 @@ class ListGatewaysResponse(proto.Message):
     r"""Response returned by the ListGateways method.
 
     Attributes:
-        gateways (Sequence[google.cloud.network_services_v1.types.Gateway]):
+        gateways (MutableSequence[google.cloud.network_services_v1.types.Gateway]):
             List of Gateway resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -191,12 +191,12 @@ class ListGatewaysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateways = proto.RepeatedField(
+    gateways: MutableSequence["Gateway"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Gateway",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -211,7 +211,7 @@ class GetGatewayRequest(proto.Message):
             format ``projects/*/locations/*/gateways/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -231,15 +231,15 @@ class CreateGatewayRequest(proto.Message):
             Required. Gateway resource to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    gateway_id = proto.Field(
+    gateway_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    gateway = proto.Field(
+    gateway: "Gateway" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Gateway",
@@ -261,12 +261,12 @@ class UpdateGatewayRequest(proto.Message):
             Required. Updated Gateway resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    gateway = proto.Field(
+    gateway: "Gateway" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Gateway",
@@ -282,7 +282,7 @@ class DeleteGatewayRequest(proto.Message):
             format ``projects/*/locations/*/gateways/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

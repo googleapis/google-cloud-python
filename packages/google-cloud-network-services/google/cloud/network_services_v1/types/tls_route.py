@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -53,13 +53,13 @@ class TlsRoute(proto.Message):
         description (str):
             Optional. A free-text description of the
             resource. Max length 1024 characters.
-        rules (Sequence[google.cloud.network_services_v1.types.TlsRoute.RouteRule]):
+        rules (MutableSequence[google.cloud.network_services_v1.types.TlsRoute.RouteRule]):
             Required. Rules that define how traffic is
             routed and handled. At least one RouteRule must
             be supplied. If there are multiple rules then
             the action taken will be the first rule to
             match.
-        meshes (Sequence[str]):
+        meshes (MutableSequence[str]):
             Optional. Meshes defines a list of meshes this TlsRoute is
             attached to, as one of the routing rules to route the
             requests served by the mesh.
@@ -68,7 +68,7 @@ class TlsRoute(proto.Message):
             ``projects/*/locations/global/meshes/<mesh_name>``
 
             The attached Mesh should be of a type SIDECAR
-        gateways (Sequence[str]):
+        gateways (MutableSequence[str]):
             Optional. Gateways defines a list of gateways this TlsRoute
             is attached to, as one of the routing rules to route the
             requests served by the gateway.
@@ -82,7 +82,7 @@ class TlsRoute(proto.Message):
         traffic is matched.
 
         Attributes:
-            matches (Sequence[google.cloud.network_services_v1.types.TlsRoute.RouteMatch]):
+            matches (MutableSequence[google.cloud.network_services_v1.types.TlsRoute.RouteMatch]):
                 Required. RouteMatch defines the predicate
                 used to match requests to a given action.
                 Multiple match types are "OR"ed for evaluation.
@@ -91,12 +91,12 @@ class TlsRoute(proto.Message):
                 route matched traffic.
         """
 
-        matches = proto.RepeatedField(
+        matches: MutableSequence["TlsRoute.RouteMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TlsRoute.RouteMatch",
         )
-        action = proto.Field(
+        action: "TlsRoute.RouteAction" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TlsRoute.RouteAction",
@@ -109,7 +109,7 @@ class TlsRoute(proto.Message):
         unconditionally match traffic.
 
         Attributes:
-            sni_host (Sequence[str]):
+            sni_host (MutableSequence[str]):
                 Optional. SNI (server name indicator) to match against. SNI
                 will be matched against all wildcard domains, i.e.
                 www.example.com will be first matched against
@@ -117,18 +117,18 @@ class TlsRoute(proto.Message):
                 wildcards are not supported, and values like \*w.example.com
                 are invalid. At least one of sni_host and alpn is required.
                 Up to 5 sni hosts across all matches can be set.
-            alpn (Sequence[str]):
+            alpn (MutableSequence[str]):
                 Optional. ALPN (Application-Layer Protocol Negotiation) to
                 match against. Examples: "http/1.1", "h2". At least one of
                 sni_host and alpn is required. Up to 5 alpns across all
                 matches can be set.
         """
 
-        sni_host = proto.RepeatedField(
+        sni_host: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        alpn = proto.RepeatedField(
+        alpn: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -138,13 +138,15 @@ class TlsRoute(proto.Message):
         associated policies.
 
         Attributes:
-            destinations (Sequence[google.cloud.network_services_v1.types.TlsRoute.RouteDestination]):
+            destinations (MutableSequence[google.cloud.network_services_v1.types.TlsRoute.RouteDestination]):
                 Required. The destination services to which
                 traffic should be forwarded. At least one
                 destination service is required.
         """
 
-        destinations = proto.RepeatedField(
+        destinations: MutableSequence[
+            "TlsRoute.RouteDestination"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TlsRoute.RouteDestination",
@@ -164,47 +166,47 @@ class TlsRoute(proto.Message):
                 all destinations does not need to sum up to 100.
         """
 
-        service_name = proto.Field(
+        service_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        weight = proto.Field(
+        weight: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    self_link = proto.Field(
+    self_link: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[RouteRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=RouteRule,
     )
-    meshes = proto.RepeatedField(
+    meshes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    gateways = proto.RepeatedField(
+    gateways: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -228,15 +230,15 @@ class ListTlsRoutesRequest(proto.Message):
             the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -246,7 +248,7 @@ class ListTlsRoutesResponse(proto.Message):
     r"""Response returned by the ListTlsRoutes method.
 
     Attributes:
-        tls_routes (Sequence[google.cloud.network_services_v1.types.TlsRoute]):
+        tls_routes (MutableSequence[google.cloud.network_services_v1.types.TlsRoute]):
             List of TlsRoute resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -259,12 +261,12 @@ class ListTlsRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tls_routes = proto.RepeatedField(
+    tls_routes: MutableSequence["TlsRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TlsRoute",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -279,7 +281,7 @@ class GetTlsRouteRequest(proto.Message):
             format ``projects/*/locations/global/tlsRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -299,15 +301,15 @@ class CreateTlsRouteRequest(proto.Message):
             Required. TlsRoute resource to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tls_route_id = proto.Field(
+    tls_route_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tls_route = proto.Field(
+    tls_route: "TlsRoute" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TlsRoute",
@@ -329,12 +331,12 @@ class UpdateTlsRouteRequest(proto.Message):
             Required. Updated TlsRoute resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    tls_route = proto.Field(
+    tls_route: "TlsRoute" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TlsRoute",
@@ -350,7 +352,7 @@ class DeleteTlsRouteRequest(proto.Message):
             format ``projects/*/locations/global/tlsRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

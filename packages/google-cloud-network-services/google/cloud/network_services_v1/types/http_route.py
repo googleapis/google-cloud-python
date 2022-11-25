@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -54,7 +54,7 @@ class HttpRoute(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        hostnames (Sequence[str]):
+        hostnames (MutableSequence[str]):
             Required. Hostnames define a set of hosts that should match
             against the HTTP host header to select a HttpRoute to
             process the request. Hostname is the fully qualified domain
@@ -86,7 +86,7 @@ class HttpRoute(proto.Message):
             with the same Mesh (or Gateways under the same scope), it is
             not possible to associate two routes both with "\*.bar.com"
             or both with "bar.com".
-        meshes (Sequence[str]):
+        meshes (MutableSequence[str]):
             Optional. Meshes defines a list of meshes this HttpRoute is
             attached to, as one of the routing rules to route the
             requests served by the mesh.
@@ -95,17 +95,17 @@ class HttpRoute(proto.Message):
             ``projects/*/locations/global/meshes/<mesh_name>``
 
             The attached Mesh should be of a type SIDECAR
-        gateways (Sequence[str]):
+        gateways (MutableSequence[str]):
             Optional. Gateways defines a list of gateways this HttpRoute
             is attached to, as one of the routing rules to route the
             requests served by the gateway.
 
             Each gateway reference should match the pattern:
             ``projects/*/locations/global/gateways/<gateway_name>``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the HttpRoute resource.
-        rules (Sequence[google.cloud.network_services_v1.types.HttpRoute.RouteRule]):
+        rules (MutableSequence[google.cloud.network_services_v1.types.HttpRoute.RouteRule]):
             Required. Rules that define how traffic is
             routed and handled. Rules will be matched
             sequentially based on the RouteMatch specified
@@ -173,51 +173,51 @@ class HttpRoute(proto.Message):
                     End of the range (exclusive)
             """
 
-            start = proto.Field(
+            start: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            end = proto.Field(
+            end: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
 
-        exact_match = proto.Field(
+        exact_match: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="MatchType",
         )
-        regex_match = proto.Field(
+        regex_match: str = proto.Field(
             proto.STRING,
             number=3,
             oneof="MatchType",
         )
-        prefix_match = proto.Field(
+        prefix_match: str = proto.Field(
             proto.STRING,
             number=4,
             oneof="MatchType",
         )
-        present_match = proto.Field(
+        present_match: bool = proto.Field(
             proto.BOOL,
             number=5,
             oneof="MatchType",
         )
-        suffix_match = proto.Field(
+        suffix_match: str = proto.Field(
             proto.STRING,
             number=6,
             oneof="MatchType",
         )
-        range_match = proto.Field(
+        range_match: "HttpRoute.HeaderMatch.IntegerRange" = proto.Field(
             proto.MESSAGE,
             number=7,
             oneof="MatchType",
             message="HttpRoute.HeaderMatch.IntegerRange",
         )
-        header = proto.Field(
+        header: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        invert_match = proto.Field(
+        invert_match: bool = proto.Field(
             proto.BOOL,
             number=8,
         )
@@ -264,22 +264,22 @@ class HttpRoute(proto.Message):
                 The name of the query parameter to match.
         """
 
-        exact_match = proto.Field(
+        exact_match: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="MatchType",
         )
-        regex_match = proto.Field(
+        regex_match: str = proto.Field(
             proto.STRING,
             number=3,
             oneof="MatchType",
         )
-        present_match = proto.Field(
+        present_match: bool = proto.Field(
             proto.BOOL,
             number=4,
             oneof="MatchType",
         )
-        query_parameter = proto.Field(
+        query_parameter: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -326,41 +326,43 @@ class HttpRoute(proto.Message):
             ignore_case (bool):
                 Specifies if prefix_match and full_path_match matches are
                 case sensitive. The default value is false.
-            headers (Sequence[google.cloud.network_services_v1.types.HttpRoute.HeaderMatch]):
+            headers (MutableSequence[google.cloud.network_services_v1.types.HttpRoute.HeaderMatch]):
                 Specifies a list of HTTP request headers to
                 match against. ALL of the supplied headers must
                 be matched.
-            query_parameters (Sequence[google.cloud.network_services_v1.types.HttpRoute.QueryParameterMatch]):
+            query_parameters (MutableSequence[google.cloud.network_services_v1.types.HttpRoute.QueryParameterMatch]):
                 Specifies a list of query parameters to match
                 against. ALL of the query parameters must be
                 matched.
         """
 
-        full_path_match = proto.Field(
+        full_path_match: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="PathMatch",
         )
-        prefix_match = proto.Field(
+        prefix_match: str = proto.Field(
             proto.STRING,
             number=2,
             oneof="PathMatch",
         )
-        regex_match = proto.Field(
+        regex_match: str = proto.Field(
             proto.STRING,
             number=3,
             oneof="PathMatch",
         )
-        ignore_case = proto.Field(
+        ignore_case: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
-        headers = proto.RepeatedField(
+        headers: MutableSequence["HttpRoute.HeaderMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="HttpRoute.HeaderMatch",
         )
-        query_parameters = proto.RepeatedField(
+        query_parameters: MutableSequence[
+            "HttpRoute.QueryParameterMatch"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="HttpRoute.QueryParameterMatch",
@@ -393,11 +395,11 @@ class HttpRoute(proto.Message):
                 proportions to all of them.
         """
 
-        service_name = proto.Field(
+        service_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        weight = proto.Field(
+        weight: int = proto.Field(
             proto.INT32,
             number=2,
         )
@@ -452,32 +454,32 @@ class HttpRoute(proto.Message):
             TEMPORARY_REDIRECT = 4
             PERMANENT_REDIRECT = 5
 
-        host_redirect = proto.Field(
+        host_redirect: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        path_redirect = proto.Field(
+        path_redirect: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        prefix_rewrite = proto.Field(
+        prefix_rewrite: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        response_code = proto.Field(
+        response_code: "HttpRoute.Redirect.ResponseCode" = proto.Field(
             proto.ENUM,
             number=4,
             enum="HttpRoute.Redirect.ResponseCode",
         )
-        https_redirect = proto.Field(
+        https_redirect: bool = proto.Field(
             proto.BOOL,
             number=5,
         )
-        strip_query = proto.Field(
+        strip_query: bool = proto.Field(
             proto.BOOL,
             number=6,
         )
-        port_redirect = proto.Field(
+        port_redirect: int = proto.Field(
             proto.INT32,
             number=7,
         )
@@ -514,12 +516,12 @@ class HttpRoute(proto.Message):
                     The value must be between [0, 100]
             """
 
-            fixed_delay = proto.Field(
+            fixed_delay: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=duration_pb2.Duration,
             )
-            percentage = proto.Field(
+            percentage: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
@@ -539,21 +541,21 @@ class HttpRoute(proto.Message):
                     The value must be between [0, 100]
             """
 
-            http_status = proto.Field(
+            http_status: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            percentage = proto.Field(
+            percentage: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
 
-        delay = proto.Field(
+        delay: "HttpRoute.FaultInjectionPolicy.Delay" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="HttpRoute.FaultInjectionPolicy.Delay",
         )
-        abort = proto.Field(
+        abort: "HttpRoute.FaultInjectionPolicy.Abort" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="HttpRoute.FaultInjectionPolicy.Abort",
@@ -564,30 +566,30 @@ class HttpRoute(proto.Message):
         and HTTP response.
 
         Attributes:
-            set (Mapping[str, str]):
+            set (MutableMapping[str, str]):
                 Completely overwrite/replace the headers with
                 given map where key is the name of the header,
                 value is the value of the header.
-            add (Mapping[str, str]):
+            add (MutableMapping[str, str]):
                 Add the headers with given map where key is
                 the name of the header, value is the value of
                 the header.
-            remove (Sequence[str]):
+            remove (MutableSequence[str]):
                 Remove headers (matching by header names)
                 specified in the list.
         """
 
-        set = proto.MapField(
+        set: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=1,
         )
-        add = proto.MapField(
+        add: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=2,
         )
-        remove = proto.RepeatedField(
+        remove: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
@@ -607,11 +609,11 @@ class HttpRoute(proto.Message):
                 is replaced by this value.
         """
 
-        path_prefix_rewrite = proto.Field(
+        path_prefix_rewrite: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        host_rewrite = proto.Field(
+        host_rewrite: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -620,7 +622,7 @@ class HttpRoute(proto.Message):
         r"""The specifications for retries.
 
         Attributes:
-            retry_conditions (Sequence[str]):
+            retry_conditions (MutableSequence[str]):
                 Specifies one or more conditions when this retry policy
                 applies. Valid values are: 5xx: Proxy will attempt a retry
                 if the destination service responds with any 5xx response
@@ -652,15 +654,15 @@ class HttpRoute(proto.Message):
                 attempt.
         """
 
-        retry_conditions = proto.RepeatedField(
+        retry_conditions: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        num_retries = proto.Field(
+        num_retries: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        per_try_timeout = proto.Field(
+        per_try_timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
@@ -680,7 +682,7 @@ class HttpRoute(proto.Message):
                 ignored.
         """
 
-        destination = proto.Field(
+        destination: "HttpRoute.Destination" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="HttpRoute.Destination",
@@ -691,22 +693,22 @@ class HttpRoute(proto.Message):
         requests.
 
         Attributes:
-            allow_origins (Sequence[str]):
+            allow_origins (MutableSequence[str]):
                 Specifies the list of origins that will be allowed to do
                 CORS requests. An origin is allowed if it matches either an
                 item in allow_origins or an item in allow_origin_regexes.
-            allow_origin_regexes (Sequence[str]):
+            allow_origin_regexes (MutableSequence[str]):
                 Specifies the regular expression patterns
                 that match allowed origins. For regular
                 expression grammar, please see
                 https://github.com/google/re2/wiki/Syntax.
-            allow_methods (Sequence[str]):
+            allow_methods (MutableSequence[str]):
                 Specifies the content for
                 Access-Control-Allow-Methods header.
-            allow_headers (Sequence[str]):
+            allow_headers (MutableSequence[str]):
                 Specifies the content for
                 Access-Control-Allow-Headers header.
-            expose_headers (Sequence[str]):
+            expose_headers (MutableSequence[str]):
                 Specifies the content for
                 Access-Control-Expose-Headers header.
             max_age (str):
@@ -726,35 +728,35 @@ class HttpRoute(proto.Message):
                 CORS policy is in effect.
         """
 
-        allow_origins = proto.RepeatedField(
+        allow_origins: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        allow_origin_regexes = proto.RepeatedField(
+        allow_origin_regexes: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        allow_methods = proto.RepeatedField(
+        allow_methods: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        allow_headers = proto.RepeatedField(
+        allow_headers: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
-        expose_headers = proto.RepeatedField(
+        expose_headers: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=5,
         )
-        max_age = proto.Field(
+        max_age: str = proto.Field(
             proto.STRING,
             number=6,
         )
-        allow_credentials = proto.Field(
+        allow_credentials: bool = proto.Field(
             proto.BOOL,
             number=7,
         )
-        disabled = proto.Field(
+        disabled: bool = proto.Field(
             proto.BOOL,
             number=8,
         )
@@ -764,7 +766,7 @@ class HttpRoute(proto.Message):
         associated policies.
 
         Attributes:
-            destinations (Sequence[google.cloud.network_services_v1.types.HttpRoute.Destination]):
+            destinations (MutableSequence[google.cloud.network_services_v1.types.HttpRoute.Destination]):
                 The destination to which traffic should be
                 forwarded.
             redirect (google.cloud.network_services_v1.types.HttpRoute.Redirect):
@@ -814,52 +816,52 @@ class HttpRoute(proto.Message):
                 cross-origin requests.
         """
 
-        destinations = proto.RepeatedField(
+        destinations: MutableSequence["HttpRoute.Destination"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="HttpRoute.Destination",
         )
-        redirect = proto.Field(
+        redirect: "HttpRoute.Redirect" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="HttpRoute.Redirect",
         )
-        fault_injection_policy = proto.Field(
+        fault_injection_policy: "HttpRoute.FaultInjectionPolicy" = proto.Field(
             proto.MESSAGE,
             number=4,
             message="HttpRoute.FaultInjectionPolicy",
         )
-        request_header_modifier = proto.Field(
+        request_header_modifier: "HttpRoute.HeaderModifier" = proto.Field(
             proto.MESSAGE,
             number=5,
             message="HttpRoute.HeaderModifier",
         )
-        response_header_modifier = proto.Field(
+        response_header_modifier: "HttpRoute.HeaderModifier" = proto.Field(
             proto.MESSAGE,
             number=6,
             message="HttpRoute.HeaderModifier",
         )
-        url_rewrite = proto.Field(
+        url_rewrite: "HttpRoute.URLRewrite" = proto.Field(
             proto.MESSAGE,
             number=7,
             message="HttpRoute.URLRewrite",
         )
-        timeout = proto.Field(
+        timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=8,
             message=duration_pb2.Duration,
         )
-        retry_policy = proto.Field(
+        retry_policy: "HttpRoute.RetryPolicy" = proto.Field(
             proto.MESSAGE,
             number=9,
             message="HttpRoute.RetryPolicy",
         )
-        request_mirror_policy = proto.Field(
+        request_mirror_policy: "HttpRoute.RequestMirrorPolicy" = proto.Field(
             proto.MESSAGE,
             number=10,
             message="HttpRoute.RequestMirrorPolicy",
         )
-        cors_policy = proto.Field(
+        cors_policy: "HttpRoute.CorsPolicy" = proto.Field(
             proto.MESSAGE,
             number=11,
             message="HttpRoute.CorsPolicy",
@@ -870,7 +872,7 @@ class HttpRoute(proto.Message):
         traffic is matched.
 
         Attributes:
-            matches (Sequence[google.cloud.network_services_v1.types.HttpRoute.RouteMatch]):
+            matches (MutableSequence[google.cloud.network_services_v1.types.HttpRoute.RouteMatch]):
                 A list of matches define conditions used for
                 matching the rule against incoming HTTP
                 requests. Each match is independent, i.e. this
@@ -887,57 +889,57 @@ class HttpRoute(proto.Message):
                 matched traffic.
         """
 
-        matches = proto.RepeatedField(
+        matches: MutableSequence["HttpRoute.RouteMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="HttpRoute.RouteMatch",
         )
-        action = proto.Field(
+        action: "HttpRoute.RouteAction" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="HttpRoute.RouteAction",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    self_link = proto.Field(
+    self_link: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    hostnames = proto.RepeatedField(
+    hostnames: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    meshes = proto.RepeatedField(
+    meshes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    gateways = proto.RepeatedField(
+    gateways: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[RouteRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=RouteRule,
@@ -962,15 +964,15 @@ class ListHttpRoutesRequest(proto.Message):
             the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -980,7 +982,7 @@ class ListHttpRoutesResponse(proto.Message):
     r"""Response returned by the ListHttpRoutes method.
 
     Attributes:
-        http_routes (Sequence[google.cloud.network_services_v1.types.HttpRoute]):
+        http_routes (MutableSequence[google.cloud.network_services_v1.types.HttpRoute]):
             List of HttpRoute resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -993,12 +995,12 @@ class ListHttpRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    http_routes = proto.RepeatedField(
+    http_routes: MutableSequence["HttpRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="HttpRoute",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1013,7 +1015,7 @@ class GetHttpRouteRequest(proto.Message):
             format ``projects/*/locations/global/httpRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1033,15 +1035,15 @@ class CreateHttpRouteRequest(proto.Message):
             Required. HttpRoute resource to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    http_route_id = proto.Field(
+    http_route_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    http_route = proto.Field(
+    http_route: "HttpRoute" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="HttpRoute",
@@ -1063,12 +1065,12 @@ class UpdateHttpRouteRequest(proto.Message):
             Required. Updated HttpRoute resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    http_route = proto.Field(
+    http_route: "HttpRoute" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="HttpRoute",
@@ -1084,7 +1086,7 @@ class DeleteHttpRouteRequest(proto.Message):
             format ``projects/*/locations/global/httpRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

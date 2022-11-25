@@ -18,9 +18,18 @@ from google.cloud.network_services import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.network_services import NetworkServicesAsyncClient, NetworkServicesClient
-from .types.common import EndpointMatcher, OperationMetadata, TrafficPortSelector
-from .types.endpoint_policy import (
+from google.cloud.network_services_v1.services.network_services.async_client import (
+    NetworkServicesAsyncClient,
+)
+from google.cloud.network_services_v1.services.network_services.client import (
+    NetworkServicesClient,
+)
+from google.cloud.network_services_v1.types.common import (
+    EndpointMatcher,
+    OperationMetadata,
+    TrafficPortSelector,
+)
+from google.cloud.network_services_v1.types.endpoint_policy import (
     CreateEndpointPolicyRequest,
     DeleteEndpointPolicyRequest,
     EndpointPolicy,
@@ -29,7 +38,7 @@ from .types.endpoint_policy import (
     ListEndpointPoliciesResponse,
     UpdateEndpointPolicyRequest,
 )
-from .types.gateway import (
+from google.cloud.network_services_v1.types.gateway import (
     CreateGatewayRequest,
     DeleteGatewayRequest,
     Gateway,
@@ -38,7 +47,7 @@ from .types.gateway import (
     ListGatewaysResponse,
     UpdateGatewayRequest,
 )
-from .types.grpc_route import (
+from google.cloud.network_services_v1.types.grpc_route import (
     CreateGrpcRouteRequest,
     DeleteGrpcRouteRequest,
     GetGrpcRouteRequest,
@@ -47,7 +56,7 @@ from .types.grpc_route import (
     ListGrpcRoutesResponse,
     UpdateGrpcRouteRequest,
 )
-from .types.http_route import (
+from google.cloud.network_services_v1.types.http_route import (
     CreateHttpRouteRequest,
     DeleteHttpRouteRequest,
     GetHttpRouteRequest,
@@ -56,7 +65,7 @@ from .types.http_route import (
     ListHttpRoutesResponse,
     UpdateHttpRouteRequest,
 )
-from .types.mesh import (
+from google.cloud.network_services_v1.types.mesh import (
     CreateMeshRequest,
     DeleteMeshRequest,
     GetMeshRequest,
@@ -65,7 +74,7 @@ from .types.mesh import (
     Mesh,
     UpdateMeshRequest,
 )
-from .types.service_binding import (
+from google.cloud.network_services_v1.types.service_binding import (
     CreateServiceBindingRequest,
     DeleteServiceBindingRequest,
     GetServiceBindingRequest,
@@ -73,7 +82,7 @@ from .types.service_binding import (
     ListServiceBindingsResponse,
     ServiceBinding,
 )
-from .types.tcp_route import (
+from google.cloud.network_services_v1.types.tcp_route import (
     CreateTcpRouteRequest,
     DeleteTcpRouteRequest,
     GetTcpRouteRequest,
@@ -82,7 +91,7 @@ from .types.tcp_route import (
     TcpRoute,
     UpdateTcpRouteRequest,
 )
-from .types.tls_route import (
+from google.cloud.network_services_v1.types.tls_route import (
     CreateTlsRouteRequest,
     DeleteTlsRouteRequest,
     GetTlsRouteRequest,
@@ -93,64 +102,64 @@ from .types.tls_route import (
 )
 
 __all__ = (
+    "NetworkServicesClient",
     "NetworkServicesAsyncClient",
-    "CreateEndpointPolicyRequest",
-    "CreateGatewayRequest",
-    "CreateGrpcRouteRequest",
-    "CreateHttpRouteRequest",
-    "CreateMeshRequest",
-    "CreateServiceBindingRequest",
-    "CreateTcpRouteRequest",
-    "CreateTlsRouteRequest",
-    "DeleteEndpointPolicyRequest",
-    "DeleteGatewayRequest",
-    "DeleteGrpcRouteRequest",
-    "DeleteHttpRouteRequest",
-    "DeleteMeshRequest",
-    "DeleteServiceBindingRequest",
-    "DeleteTcpRouteRequest",
-    "DeleteTlsRouteRequest",
     "EndpointMatcher",
+    "OperationMetadata",
+    "TrafficPortSelector",
+    "CreateEndpointPolicyRequest",
+    "DeleteEndpointPolicyRequest",
     "EndpointPolicy",
-    "Gateway",
     "GetEndpointPolicyRequest",
-    "GetGatewayRequest",
-    "GetGrpcRouteRequest",
-    "GetHttpRouteRequest",
-    "GetMeshRequest",
-    "GetServiceBindingRequest",
-    "GetTcpRouteRequest",
-    "GetTlsRouteRequest",
-    "GrpcRoute",
-    "HttpRoute",
     "ListEndpointPoliciesRequest",
     "ListEndpointPoliciesResponse",
+    "UpdateEndpointPolicyRequest",
+    "CreateGatewayRequest",
+    "DeleteGatewayRequest",
+    "Gateway",
+    "GetGatewayRequest",
     "ListGatewaysRequest",
     "ListGatewaysResponse",
+    "UpdateGatewayRequest",
+    "CreateGrpcRouteRequest",
+    "DeleteGrpcRouteRequest",
+    "GetGrpcRouteRequest",
+    "GrpcRoute",
     "ListGrpcRoutesRequest",
     "ListGrpcRoutesResponse",
+    "UpdateGrpcRouteRequest",
+    "CreateHttpRouteRequest",
+    "DeleteHttpRouteRequest",
+    "GetHttpRouteRequest",
+    "HttpRoute",
     "ListHttpRoutesRequest",
     "ListHttpRoutesResponse",
+    "UpdateHttpRouteRequest",
+    "CreateMeshRequest",
+    "DeleteMeshRequest",
+    "GetMeshRequest",
     "ListMeshesRequest",
     "ListMeshesResponse",
+    "Mesh",
+    "UpdateMeshRequest",
+    "CreateServiceBindingRequest",
+    "DeleteServiceBindingRequest",
+    "GetServiceBindingRequest",
     "ListServiceBindingsRequest",
     "ListServiceBindingsResponse",
+    "ServiceBinding",
+    "CreateTcpRouteRequest",
+    "DeleteTcpRouteRequest",
+    "GetTcpRouteRequest",
     "ListTcpRoutesRequest",
     "ListTcpRoutesResponse",
+    "TcpRoute",
+    "UpdateTcpRouteRequest",
+    "CreateTlsRouteRequest",
+    "DeleteTlsRouteRequest",
+    "GetTlsRouteRequest",
     "ListTlsRoutesRequest",
     "ListTlsRoutesResponse",
-    "Mesh",
-    "NetworkServicesClient",
-    "OperationMetadata",
-    "ServiceBinding",
-    "TcpRoute",
     "TlsRoute",
-    "TrafficPortSelector",
-    "UpdateEndpointPolicyRequest",
-    "UpdateGatewayRequest",
-    "UpdateGrpcRouteRequest",
-    "UpdateHttpRouteRequest",
-    "UpdateMeshRequest",
-    "UpdateTcpRouteRequest",
     "UpdateTlsRouteRequest",
 )

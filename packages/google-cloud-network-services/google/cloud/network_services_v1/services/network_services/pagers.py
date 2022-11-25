@@ -18,20 +18,22 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.network_services_v1.types import endpoint_policy
-from google.cloud.network_services_v1.types import gateway
-from google.cloud.network_services_v1.types import grpc_route
-from google.cloud.network_services_v1.types import http_route
-from google.cloud.network_services_v1.types import mesh
-from google.cloud.network_services_v1.types import service_binding
-from google.cloud.network_services_v1.types import tcp_route
-from google.cloud.network_services_v1.types import tls_route
+from google.cloud.network_services_v1.types import (
+    endpoint_policy,
+    gateway,
+    grpc_route,
+    http_route,
+    mesh,
+    service_binding,
+    tcp_route,
+    tls_route,
+)
 
 
 class ListEndpointPoliciesPager:

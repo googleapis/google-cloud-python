@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -51,13 +51,13 @@ class GrpcRoute(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the GrpcRoute resource.
         description (str):
             Optional. A free-text description of the
             resource. Max length 1024 characters.
-        hostnames (Sequence[str]):
+        hostnames (MutableSequence[str]):
             Required. Service hostnames with an optional port for which
             this route describes traffic.
 
@@ -96,21 +96,21 @@ class GrpcRoute(proto.Message):
             channel URI with the port to match this rule (i.e.
             "xds:///service:123"), otherwise they must supply the URI
             without a port (i.e. "xds:///service").
-        meshes (Sequence[str]):
+        meshes (MutableSequence[str]):
             Optional. Meshes defines a list of meshes this GrpcRoute is
             attached to, as one of the routing rules to route the
             requests served by the mesh.
 
             Each mesh reference should match the pattern:
             ``projects/*/locations/global/meshes/<mesh_name>``
-        gateways (Sequence[str]):
+        gateways (MutableSequence[str]):
             Optional. Gateways defines a list of gateways this GrpcRoute
             is attached to, as one of the routing rules to route the
             requests served by the gateway.
 
             Each gateway reference should match the pattern:
             ``projects/*/locations/global/gateways/<gateway_name>``
-        rules (Sequence[google.cloud.network_services_v1.types.GrpcRoute.RouteRule]):
+        rules (MutableSequence[google.cloud.network_services_v1.types.GrpcRoute.RouteRule]):
             Required. A list of detailed rules defining
             how to route traffic.
             Within a single GrpcRoute, the
@@ -148,20 +148,20 @@ class GrpcRoute(proto.Message):
             EXACT = 1
             REGULAR_EXPRESSION = 2
 
-        type_ = proto.Field(
+        type_: "GrpcRoute.MethodMatch.Type" = proto.Field(
             proto.ENUM,
             number=1,
             enum="GrpcRoute.MethodMatch.Type",
         )
-        grpc_service = proto.Field(
+        grpc_service: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        grpc_method = proto.Field(
+        grpc_method: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        case_sensitive = proto.Field(
+        case_sensitive: bool = proto.Field(
             proto.BOOL,
             number=4,
             optional=True,
@@ -187,16 +187,16 @@ class GrpcRoute(proto.Message):
             EXACT = 1
             REGULAR_EXPRESSION = 2
 
-        type_ = proto.Field(
+        type_: "GrpcRoute.HeaderMatch.Type" = proto.Field(
             proto.ENUM,
             number=1,
             enum="GrpcRoute.HeaderMatch.Type",
         )
-        key = proto.Field(
+        key: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=3,
         )
@@ -212,18 +212,18 @@ class GrpcRoute(proto.Message):
                 methods.
 
                 This field is a member of `oneof`_ ``_method``.
-            headers (Sequence[google.cloud.network_services_v1.types.GrpcRoute.HeaderMatch]):
+            headers (MutableSequence[google.cloud.network_services_v1.types.GrpcRoute.HeaderMatch]):
                 Optional. Specifies a collection of headers
                 to match.
         """
 
-        method = proto.Field(
+        method: "GrpcRoute.MethodMatch" = proto.Field(
             proto.MESSAGE,
             number=1,
             optional=True,
             message="GrpcRoute.MethodMatch",
         )
-        headers = proto.RepeatedField(
+        headers: MutableSequence["GrpcRoute.HeaderMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="GrpcRoute.HeaderMatch",
@@ -262,12 +262,12 @@ class GrpcRoute(proto.Message):
                 This field is a member of `oneof`_ ``_weight``.
         """
 
-        service_name = proto.Field(
+        service_name: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="destination_type",
         )
-        weight = proto.Field(
+        weight: int = proto.Field(
             proto.INT32,
             number=2,
             optional=True,
@@ -313,13 +313,13 @@ class GrpcRoute(proto.Message):
                     This field is a member of `oneof`_ ``_percentage``.
             """
 
-            fixed_delay = proto.Field(
+            fixed_delay: duration_pb2.Duration = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 optional=True,
                 message=duration_pb2.Duration,
             )
-            percentage = proto.Field(
+            percentage: int = proto.Field(
                 proto.INT32,
                 number=2,
                 optional=True,
@@ -344,24 +344,24 @@ class GrpcRoute(proto.Message):
                     This field is a member of `oneof`_ ``_percentage``.
             """
 
-            http_status = proto.Field(
+            http_status: int = proto.Field(
                 proto.INT32,
                 number=1,
                 optional=True,
             )
-            percentage = proto.Field(
+            percentage: int = proto.Field(
                 proto.INT32,
                 number=2,
                 optional=True,
             )
 
-        delay = proto.Field(
+        delay: "GrpcRoute.FaultInjectionPolicy.Delay" = proto.Field(
             proto.MESSAGE,
             number=1,
             optional=True,
             message="GrpcRoute.FaultInjectionPolicy.Delay",
         )
-        abort = proto.Field(
+        abort: "GrpcRoute.FaultInjectionPolicy.Abort" = proto.Field(
             proto.MESSAGE,
             number=2,
             optional=True,
@@ -372,7 +372,7 @@ class GrpcRoute(proto.Message):
         r"""The specifications for retries.
 
         Attributes:
-            retry_conditions (Sequence[str]):
+            retry_conditions (MutableSequence[str]):
                 -  connect-failure: Router will retry on failures connecting
                    to Backend Services, for example due to connection
                    timeouts.
@@ -393,11 +393,11 @@ class GrpcRoute(proto.Message):
                 1.
         """
 
-        retry_conditions = proto.RepeatedField(
+        retry_conditions: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        num_retries = proto.Field(
+        num_retries: int = proto.Field(
             proto.UINT32,
             number=2,
         )
@@ -406,7 +406,7 @@ class GrpcRoute(proto.Message):
         r"""Specifies how to route matched traffic.
 
         Attributes:
-            destinations (Sequence[google.cloud.network_services_v1.types.GrpcRoute.Destination]):
+            destinations (MutableSequence[google.cloud.network_services_v1.types.GrpcRoute.Destination]):
                 Optional. The destination services to which
                 traffic should be forwarded. If multiple
                 destinations are specified, traffic will be
@@ -435,22 +435,22 @@ class GrpcRoute(proto.Message):
                 associated with this route.
         """
 
-        destinations = proto.RepeatedField(
+        destinations: MutableSequence["GrpcRoute.Destination"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="GrpcRoute.Destination",
         )
-        fault_injection_policy = proto.Field(
+        fault_injection_policy: "GrpcRoute.FaultInjectionPolicy" = proto.Field(
             proto.MESSAGE,
             number=3,
             message="GrpcRoute.FaultInjectionPolicy",
         )
-        timeout = proto.Field(
+        timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=7,
             message=duration_pb2.Duration,
         )
-        retry_policy = proto.Field(
+        retry_policy: "GrpcRoute.RetryPolicy" = proto.Field(
             proto.MESSAGE,
             number=8,
             message="GrpcRoute.RetryPolicy",
@@ -460,7 +460,7 @@ class GrpcRoute(proto.Message):
         r"""Describes how to route traffic.
 
         Attributes:
-            matches (Sequence[google.cloud.network_services_v1.types.GrpcRoute.RouteMatch]):
+            matches (MutableSequence[google.cloud.network_services_v1.types.GrpcRoute.RouteMatch]):
                 Optional. Matches define conditions used for
                 matching the rule against incoming gRPC
                 requests. Each match is independent, i.e. this
@@ -472,57 +472,57 @@ class GrpcRoute(proto.Message):
                 route traffic. This field is required.
         """
 
-        matches = proto.RepeatedField(
+        matches: MutableSequence["GrpcRoute.RouteMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="GrpcRoute.RouteMatch",
         )
-        action = proto.Field(
+        action: "GrpcRoute.RouteAction" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="GrpcRoute.RouteAction",
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    self_link = proto.Field(
+    self_link: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    hostnames = proto.RepeatedField(
+    hostnames: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    meshes = proto.RepeatedField(
+    meshes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    gateways = proto.RepeatedField(
+    gateways: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[RouteRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=RouteRule,
@@ -547,15 +547,15 @@ class ListGrpcRoutesRequest(proto.Message):
             the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -565,7 +565,7 @@ class ListGrpcRoutesResponse(proto.Message):
     r"""Response returned by the ListGrpcRoutes method.
 
     Attributes:
-        grpc_routes (Sequence[google.cloud.network_services_v1.types.GrpcRoute]):
+        grpc_routes (MutableSequence[google.cloud.network_services_v1.types.GrpcRoute]):
             List of GrpcRoute resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -578,12 +578,12 @@ class ListGrpcRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    grpc_routes = proto.RepeatedField(
+    grpc_routes: MutableSequence["GrpcRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="GrpcRoute",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -598,7 +598,7 @@ class GetGrpcRouteRequest(proto.Message):
             format ``projects/*/locations/global/grpcRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -618,15 +618,15 @@ class CreateGrpcRouteRequest(proto.Message):
             Required. GrpcRoute resource to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    grpc_route_id = proto.Field(
+    grpc_route_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    grpc_route = proto.Field(
+    grpc_route: "GrpcRoute" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="GrpcRoute",
@@ -648,12 +648,12 @@ class UpdateGrpcRouteRequest(proto.Message):
             Required. Updated GrpcRoute resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    grpc_route = proto.Field(
+    grpc_route: "GrpcRoute" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="GrpcRoute",
@@ -669,7 +669,7 @@ class DeleteGrpcRouteRequest(proto.Message):
             format ``projects/*/locations/global/grpcRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

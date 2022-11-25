@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import (
-    EndpointMatcher,
-    OperationMetadata,
-    TrafficPortSelector,
-)
+from .common import EndpointMatcher, OperationMetadata, TrafficPortSelector
 from .endpoint_policy import (
     CreateEndpointPolicyRequest,
     DeleteEndpointPolicyRequest,

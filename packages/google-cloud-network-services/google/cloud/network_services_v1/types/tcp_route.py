@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -53,13 +53,13 @@ class TcpRoute(proto.Message):
         description (str):
             Optional. A free-text description of the
             resource. Max length 1024 characters.
-        rules (Sequence[google.cloud.network_services_v1.types.TcpRoute.RouteRule]):
+        rules (MutableSequence[google.cloud.network_services_v1.types.TcpRoute.RouteRule]):
             Required. Rules that define how traffic is
             routed and handled. At least one RouteRule must
             be supplied. If there are multiple rules then
             the action taken will be the first rule to
             match.
-        meshes (Sequence[str]):
+        meshes (MutableSequence[str]):
             Optional. Meshes defines a list of meshes this TcpRoute is
             attached to, as one of the routing rules to route the
             requests served by the mesh.
@@ -68,14 +68,14 @@ class TcpRoute(proto.Message):
             ``projects/*/locations/global/meshes/<mesh_name>``
 
             The attached Mesh should be of a type SIDECAR
-        gateways (Sequence[str]):
+        gateways (MutableSequence[str]):
             Optional. Gateways defines a list of gateways this TcpRoute
             is attached to, as one of the routing rules to route the
             requests served by the gateway.
 
             Each gateway reference should match the pattern:
             ``projects/*/locations/global/gateways/<gateway_name>``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the TcpRoute resource.
     """
@@ -85,7 +85,7 @@ class TcpRoute(proto.Message):
         traffic is matched.
 
         Attributes:
-            matches (Sequence[google.cloud.network_services_v1.types.TcpRoute.RouteMatch]):
+            matches (MutableSequence[google.cloud.network_services_v1.types.TcpRoute.RouteMatch]):
                 Optional. RouteMatch defines the predicate
                 used to match requests to a given action.
                 Multiple match types are "OR"ed for evaluation.
@@ -96,12 +96,12 @@ class TcpRoute(proto.Message):
                 route matched traffic.
         """
 
-        matches = proto.RepeatedField(
+        matches: MutableSequence["TcpRoute.RouteMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TcpRoute.RouteMatch",
         )
-        action = proto.Field(
+        action: "TcpRoute.RouteAction" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="TcpRoute.RouteAction",
@@ -132,11 +132,11 @@ class TcpRoute(proto.Message):
                 match against.
         """
 
-        address = proto.Field(
+        address: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        port = proto.Field(
+        port: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -146,7 +146,7 @@ class TcpRoute(proto.Message):
         associated policies.
 
         Attributes:
-            destinations (Sequence[google.cloud.network_services_v1.types.TcpRoute.RouteDestination]):
+            destinations (MutableSequence[google.cloud.network_services_v1.types.TcpRoute.RouteDestination]):
                 Optional. The destination services to which
                 traffic should be forwarded. At least one
                 destination service is required.
@@ -157,12 +157,14 @@ class TcpRoute(proto.Message):
                 Default is false.
         """
 
-        destinations = proto.RepeatedField(
+        destinations: MutableSequence[
+            "TcpRoute.RouteDestination"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TcpRoute.RouteDestination",
         )
-        original_destination = proto.Field(
+        original_destination: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -193,51 +195,51 @@ class TcpRoute(proto.Message):
                 proportions to all of them.
         """
 
-        service_name = proto.Field(
+        service_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        weight = proto.Field(
+        weight: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    self_link = proto.Field(
+    self_link: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    rules = proto.RepeatedField(
+    rules: MutableSequence[RouteRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=RouteRule,
     )
-    meshes = proto.RepeatedField(
+    meshes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    gateways = proto.RepeatedField(
+    gateways: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
@@ -262,15 +264,15 @@ class ListTcpRoutesRequest(proto.Message):
             the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -280,7 +282,7 @@ class ListTcpRoutesResponse(proto.Message):
     r"""Response returned by the ListTcpRoutes method.
 
     Attributes:
-        tcp_routes (Sequence[google.cloud.network_services_v1.types.TcpRoute]):
+        tcp_routes (MutableSequence[google.cloud.network_services_v1.types.TcpRoute]):
             List of TcpRoute resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -293,12 +295,12 @@ class ListTcpRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tcp_routes = proto.RepeatedField(
+    tcp_routes: MutableSequence["TcpRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TcpRoute",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -313,7 +315,7 @@ class GetTcpRouteRequest(proto.Message):
             format ``projects/*/locations/global/tcpRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -333,15 +335,15 @@ class CreateTcpRouteRequest(proto.Message):
             Required. TcpRoute resource to be created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    tcp_route_id = proto.Field(
+    tcp_route_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    tcp_route = proto.Field(
+    tcp_route: "TcpRoute" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TcpRoute",
@@ -363,12 +365,12 @@ class UpdateTcpRouteRequest(proto.Message):
             Required. Updated TcpRoute resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    tcp_route = proto.Field(
+    tcp_route: "TcpRoute" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TcpRoute",
@@ -384,7 +386,7 @@ class DeleteTcpRouteRequest(proto.Message):
             format ``projects/*/locations/global/tcpRoutes/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )

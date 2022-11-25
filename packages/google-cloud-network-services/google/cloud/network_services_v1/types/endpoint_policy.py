@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_services_v1.types import common
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
@@ -51,7 +52,7 @@ class EndpointPolicy(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the EndpointPolicy resource.
         type_ (google.cloud.network_services_v1.types.EndpointPolicy.EndpointPolicyType):
@@ -101,53 +102,53 @@ class EndpointPolicy(proto.Message):
         SIDECAR_PROXY = 1
         GRPC_SERVER = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    type_ = proto.Field(
+    type_: EndpointPolicyType = proto.Field(
         proto.ENUM,
         number=5,
         enum=EndpointPolicyType,
     )
-    authorization_policy = proto.Field(
+    authorization_policy: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    endpoint_matcher = proto.Field(
+    endpoint_matcher: common.EndpointMatcher = proto.Field(
         proto.MESSAGE,
         number=9,
         message=common.EndpointMatcher,
     )
-    traffic_port_selector = proto.Field(
+    traffic_port_selector: common.TrafficPortSelector = proto.Field(
         proto.MESSAGE,
         number=10,
         message=common.TrafficPortSelector,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    server_tls_policy = proto.Field(
+    server_tls_policy: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    client_tls_policy = proto.Field(
+    client_tls_policy: str = proto.Field(
         proto.STRING,
         number=13,
     )
@@ -171,15 +172,15 @@ class ListEndpointPoliciesRequest(proto.Message):
             that the system should return the next page of data.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -189,7 +190,7 @@ class ListEndpointPoliciesResponse(proto.Message):
     r"""Response returned by the ListEndpointPolicies method.
 
     Attributes:
-        endpoint_policies (Sequence[google.cloud.network_services_v1.types.EndpointPolicy]):
+        endpoint_policies (MutableSequence[google.cloud.network_services_v1.types.EndpointPolicy]):
             List of EndpointPolicy resources.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -202,12 +203,12 @@ class ListEndpointPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    endpoint_policies = proto.RepeatedField(
+    endpoint_policies: MutableSequence["EndpointPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EndpointPolicy",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -223,7 +224,7 @@ class GetEndpointPolicyRequest(proto.Message):
             ``projects/*/locations/global/endpointPolicies/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -244,15 +245,15 @@ class CreateEndpointPolicyRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    endpoint_policy_id = proto.Field(
+    endpoint_policy_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    endpoint_policy = proto.Field(
+    endpoint_policy: "EndpointPolicy" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="EndpointPolicy",
@@ -274,12 +275,12 @@ class UpdateEndpointPolicyRequest(proto.Message):
             Required. Updated EndpointPolicy resource.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    endpoint_policy = proto.Field(
+    endpoint_policy: "EndpointPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="EndpointPolicy",
@@ -296,7 +297,7 @@ class DeleteEndpointPolicyRequest(proto.Message):
             ``projects/*/locations/global/endpointPolicies/*``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
