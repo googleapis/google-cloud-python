@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -38,7 +40,7 @@ class MetricValue(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels describing the metric value. See comments on
             [google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels]
             for the overriding relationship. Note that this map must not
@@ -78,42 +80,42 @@ class MetricValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=1,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    bool_value = proto.Field(
+    bool_value: bool = proto.Field(
         proto.BOOL,
         number=4,
         oneof="value",
     )
-    int64_value = proto.Field(
+    int64_value: int = proto.Field(
         proto.INT64,
         number=5,
         oneof="value",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=6,
         oneof="value",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=7,
         oneof="value",
     )
-    distribution_value = proto.Field(
+    distribution_value: gas_distribution.Distribution = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="value",
@@ -130,15 +132,15 @@ class MetricValueSet(proto.Message):
         metric_name (str):
             The metric name defined in the service
             configuration.
-        metric_values (Sequence[google.cloud.servicecontrol_v1.types.MetricValue]):
+        metric_values (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValue]):
             The values in this metric.
     """
 
-    metric_name = proto.Field(
+    metric_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metric_values = proto.RepeatedField(
+    metric_values: MutableSequence["MetricValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MetricValue",

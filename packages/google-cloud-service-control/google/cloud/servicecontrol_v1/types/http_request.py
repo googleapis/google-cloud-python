@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -84,64 +86,64 @@ class HttpRequest(proto.Message):
             "HTTP/1.1", "HTTP/2", "websocket".
     """
 
-    request_method = proto.Field(
+    request_method: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_url = proto.Field(
+    request_url: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    request_size = proto.Field(
+    request_size: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    status = proto.Field(
+    status: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    response_size = proto.Field(
+    response_size: int = proto.Field(
         proto.INT64,
         number=5,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    remote_ip = proto.Field(
+    remote_ip: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    server_ip = proto.Field(
+    server_ip: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    referer = proto.Field(
+    referer: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    latency = proto.Field(
+    latency: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=14,
         message=duration_pb2.Duration,
     )
-    cache_lookup = proto.Field(
+    cache_lookup: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    cache_hit = proto.Field(
+    cache_hit: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    cache_validated_with_origin_server = proto.Field(
+    cache_validated_with_origin_server: bool = proto.Field(
         proto.BOOL,
         number=10,
     )
-    cache_fill_bytes = proto.Field(
+    cache_fill_bytes: int = proto.Field(
         proto.INT64,
         number=12,
     )
-    protocol = proto.Field(
+    protocol: str = proto.Field(
         proto.STRING,
         number=15,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.api import distribution_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -60,7 +62,7 @@ class Distribution(proto.Message):
             Sum[i=1..count]((x_i - mean)^2) where each x_i is a sample
             values. If ``count`` is zero then this field must be zero,
             otherwise validation of the request fails.
-        bucket_counts (Sequence[int]):
+        bucket_counts (MutableSequence[int]):
             The number of samples in each histogram bucket.
             ``bucket_counts`` are optional. If present, they must sum to
             the ``count`` value.
@@ -86,7 +88,7 @@ class Distribution(proto.Message):
             Buckets with arbitrary user-provided width.
 
             This field is a member of `oneof`_ ``bucket_option``.
-        exemplars (Sequence[google.api.distribution_pb2.Exemplar]):
+        exemplars (MutableSequence[google.api.distribution_pb2.Exemplar]):
             Example points. Must be in increasing order of ``value``
             field.
     """
@@ -110,15 +112,15 @@ class Distribution(proto.Message):
                 num_finite_buckets, inclusive.
         """
 
-        num_finite_buckets = proto.Field(
+        num_finite_buckets: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        width = proto.Field(
+        width: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
-        offset = proto.Field(
+        offset: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
@@ -143,15 +145,15 @@ class Distribution(proto.Message):
                 ranges from 1 to num_finite_buckets inclusive. Must be > 0.
         """
 
-        num_finite_buckets = proto.Field(
+        num_finite_buckets: int = proto.Field(
             proto.INT32,
             number=1,
         )
-        growth_factor = proto.Field(
+        growth_factor: float = proto.Field(
             proto.DOUBLE,
             number=2,
         )
-        scale = proto.Field(
+        scale: float = proto.Field(
             proto.DOUBLE,
             number=3,
         )
@@ -160,7 +162,7 @@ class Distribution(proto.Message):
         r"""Describing buckets with arbitrary user-provided width.
 
         Attributes:
-            bounds (Sequence[float]):
+            bounds (MutableSequence[float]):
                 'bound' is a list of strictly increasing boundaries between
                 buckets. Note that a list of length N-1 defines N buckets
                 because of fenceposting. See comments on ``bucket_options``
@@ -178,54 +180,56 @@ class Distribution(proto.Message):
                 bound_size() (overflow) bound[i-1] +inf
         """
 
-        bounds = proto.RepeatedField(
+        bounds: MutableSequence[float] = proto.RepeatedField(
             proto.DOUBLE,
             number=1,
         )
 
-    count = proto.Field(
+    count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    mean = proto.Field(
+    mean: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    minimum = proto.Field(
+    minimum: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )
-    maximum = proto.Field(
+    maximum: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
-    sum_of_squared_deviation = proto.Field(
+    sum_of_squared_deviation: float = proto.Field(
         proto.DOUBLE,
         number=5,
     )
-    bucket_counts = proto.RepeatedField(
+    bucket_counts: MutableSequence[int] = proto.RepeatedField(
         proto.INT64,
         number=6,
     )
-    linear_buckets = proto.Field(
+    linear_buckets: LinearBuckets = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="bucket_option",
         message=LinearBuckets,
     )
-    exponential_buckets = proto.Field(
+    exponential_buckets: ExponentialBuckets = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="bucket_option",
         message=ExponentialBuckets,
     )
-    explicit_buckets = proto.Field(
+    explicit_buckets: ExplicitBuckets = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="bucket_option",
         message=ExplicitBuckets,
     )
-    exemplars = proto.RepeatedField(
+    exemplars: MutableSequence[
+        distribution_pb2.Distribution.Exemplar
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=distribution_pb2.Distribution.Exemplar,

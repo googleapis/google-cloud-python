@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -49,16 +51,16 @@ class AllocateQuotaRequest(proto.Message):
             can be found, the latest one will be used.
     """
 
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allocate_operation = proto.Field(
+    allocate_operation: "QuotaOperation" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="QuotaOperation",
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -98,9 +100,9 @@ class QuotaOperation(proto.Message):
             This can be in one of the following formats:
             project:<project_id>, project_number:<project_number>,
             api_key:<api_key>.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels describing the operation.
-        quota_metrics (Sequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
+        quota_metrics (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
             Represents information about this operation. Each
             MetricValueSet corresponds to a metric defined in the
             service configuration. The data type used in the
@@ -127,29 +129,29 @@ class QuotaOperation(proto.Message):
         QUERY_ONLY = 4
         ADJUST_ONLY = 5
 
-    operation_id = proto.Field(
+    operation_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    method_name = proto.Field(
+    method_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    consumer_id = proto.Field(
+    consumer_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    quota_metrics = proto.RepeatedField(
+    quota_metrics: MutableSequence[metric_value.MetricValueSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=metric_value.MetricValueSet,
     )
-    quota_mode = proto.Field(
+    quota_mode: QuotaMode = proto.Field(
         proto.ENUM,
         number=6,
         enum=QuotaMode,
@@ -164,9 +166,9 @@ class AllocateQuotaResponse(proto.Message):
             The same operation_id value used in the
             AllocateQuotaRequest. Used for logging and diagnostics
             purposes.
-        allocate_errors (Sequence[google.cloud.servicecontrol_v1.types.QuotaError]):
+        allocate_errors (MutableSequence[google.cloud.servicecontrol_v1.types.QuotaError]):
             Indicates the decision of the allocate.
-        quota_metrics (Sequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
+        quota_metrics (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
             Quota metrics to indicate the result of allocation.
             Depending on the request, one or more of the following
             metrics will be included:
@@ -183,21 +185,21 @@ class AllocateQuotaResponse(proto.Message):
             request.
     """
 
-    operation_id = proto.Field(
+    operation_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allocate_errors = proto.RepeatedField(
+    allocate_errors: MutableSequence["QuotaError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="QuotaError",
     )
-    quota_metrics = proto.RepeatedField(
+    quota_metrics: MutableSequence[metric_value.MetricValueSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=metric_value.MetricValueSet,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -238,20 +240,20 @@ class QuotaError(proto.Message):
         API_KEY_INVALID = 105
         API_KEY_EXPIRED = 112
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,
     )
-    subject = proto.Field(
+    subject: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=4,
         message=status_pb2.Status,

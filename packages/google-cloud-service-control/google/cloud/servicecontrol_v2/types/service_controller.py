@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 from google.rpc.context import attribute_context_pb2  # type: ignore
 import proto  # type: ignore
@@ -49,7 +51,7 @@ class CheckRequest(proto.Message):
         attributes (google.rpc.context.attribute_context_pb2.AttributeContext):
             Describes attributes about the operation
             being executed by the service.
-        resources (Sequence[google.cloud.servicecontrol_v2.types.ResourceInfo]):
+        resources (MutableSequence[google.cloud.servicecontrol_v2.types.ResourceInfo]):
             Describes the resources and the policies
             applied to each resource.
         flags (str):
@@ -57,25 +59,25 @@ class CheckRequest(proto.Message):
             flags.
     """
 
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    attributes = proto.Field(
+    attributes: attribute_context_pb2.AttributeContext = proto.Field(
         proto.MESSAGE,
         number=3,
         message=attribute_context_pb2.AttributeContext,
     )
-    resources = proto.RepeatedField(
+    resources: MutableSequence["ResourceInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="ResourceInfo",
     )
-    flags = proto.Field(
+    flags: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -112,23 +114,23 @@ class ResourceInfo(proto.Message):
             "northamerica-northeast1-a".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    permission = proto.Field(
+    permission: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    container = proto.Field(
+    container: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -143,17 +145,17 @@ class CheckResponse(proto.Message):
             non-'OK' status indicates a denial;
             [google.rpc.Status.details][google.rpc.Status.details] would
             contain additional details about the denial.
-        headers (Mapping[str, str]):
+        headers (MutableMapping[str, str]):
             Returns a set of request contexts generated from the
             ``CheckRequest``.
     """
 
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    headers = proto.MapField(
+    headers: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
@@ -177,22 +179,24 @@ class ReportRequest(proto.Message):
             request. Must not be empty. Set this field to
             'latest' to specify using the latest
             configuration.
-        operations (Sequence[google.rpc.context.attribute_context_pb2.AttributeContext]):
+        operations (MutableSequence[google.rpc.context.attribute_context_pb2.AttributeContext]):
             Describes the list of operations to be
             reported. Each operation is represented as an
             AttributeContext, and contains all attributes
             around an API access.
     """
 
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    operations = proto.RepeatedField(
+    operations: MutableSequence[
+        attribute_context_pb2.AttributeContext
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=attribute_context_pb2.AttributeContext,

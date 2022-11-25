@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -71,20 +73,20 @@ class CheckError(proto.Message):
         BILLING_STATUS_UNAVAILABLE = 302
         CLOUD_RESOURCE_MANAGER_BACKEND_UNAVAILABLE = 305
 
-    code = proto.Field(
+    code: Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=Code,
     )
-    subject = proto.Field(
+    subject: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    detail = proto.Field(
+    detail: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    status = proto.Field(
+    status: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,

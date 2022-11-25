@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -51,16 +53,16 @@ class CheckRequest(proto.Message):
             found, the latest one will be used.
     """
 
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    operation = proto.Field(
+    operation: gas_operation.Operation = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gas_operation.Operation,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -74,7 +76,7 @@ class CheckResponse(proto.Message):
             The same operation_id value used in the
             [CheckRequest][google.api.servicecontrol.v1.CheckRequest].
             Used for logging and diagnostics purposes.
-        check_errors (Sequence[google.cloud.servicecontrol_v1.types.CheckError]):
+        check_errors (MutableSequence[google.cloud.servicecontrol_v1.types.CheckError]):
             Indicate the decision of the check.
             If no check errors are present, the service
             should process the operation. Otherwise the
@@ -95,7 +97,7 @@ class CheckResponse(proto.Message):
         r"""Contains additional information about the check operation.
 
         Attributes:
-            unused_arguments (Sequence[str]):
+            unused_arguments (MutableSequence[str]):
                 A list of fields and label keys that are
                 ignored by the server. The client doesn't need
                 to send them for following requests to improve
@@ -104,11 +106,11 @@ class CheckResponse(proto.Message):
                 Consumer info of this check.
         """
 
-        unused_arguments = proto.RepeatedField(
+        unused_arguments: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        consumer_info = proto.Field(
+        consumer_info: "CheckResponse.ConsumerInfo" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="CheckResponse.ConsumerInfo",
@@ -146,38 +148,38 @@ class CheckResponse(proto.Message):
             ORGANIZATION = 3
             SERVICE_SPECIFIC = 4
 
-        project_number = proto.Field(
+        project_number: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        type_ = proto.Field(
+        type_: "CheckResponse.ConsumerInfo.ConsumerType" = proto.Field(
             proto.ENUM,
             number=2,
             enum="CheckResponse.ConsumerInfo.ConsumerType",
         )
-        consumer_number = proto.Field(
+        consumer_number: int = proto.Field(
             proto.INT64,
             number=3,
         )
 
-    operation_id = proto.Field(
+    operation_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    check_errors = proto.RepeatedField(
+    check_errors: MutableSequence[check_error.CheckError] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=check_error.CheckError,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    service_rollout_id = proto.Field(
+    service_rollout_id: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    check_info = proto.Field(
+    check_info: CheckInfo = proto.Field(
         proto.MESSAGE,
         number=6,
         message=CheckInfo,
@@ -195,7 +197,7 @@ class ReportRequest(proto.Message):
             See
             `google.api.Service <https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>`__
             for the definition of a service name.
-        operations (Sequence[google.cloud.servicecontrol_v1.types.Operation]):
+        operations (MutableSequence[google.cloud.servicecontrol_v1.types.Operation]):
             Operations to be reported.
 
             Typically the service should report one operation per
@@ -216,16 +218,16 @@ class ReportRequest(proto.Message):
             found, the latest one will be used.
     """
 
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    operations = proto.RepeatedField(
+    operations: MutableSequence[gas_operation.Operation] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gas_operation.Operation,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -235,7 +237,7 @@ class ReportResponse(proto.Message):
     r"""Response message for the Report method.
 
     Attributes:
-        report_errors (Sequence[google.cloud.servicecontrol_v1.types.ReportResponse.ReportError]):
+        report_errors (MutableSequence[google.cloud.servicecontrol_v1.types.ReportResponse.ReportError]):
             Partial failures, one for each ``Operation`` in the request
             that failed processing. There are three possible
             combinations of the RPC status:
@@ -274,26 +276,26 @@ class ReportResponse(proto.Message):
                 [Operation][google.api.servicecontrol.v1.Operation].
         """
 
-        operation_id = proto.Field(
+        operation_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        status = proto.Field(
+        status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
         )
 
-    report_errors = proto.RepeatedField(
+    report_errors: MutableSequence[ReportError] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ReportError,
     )
-    service_config_id = proto.Field(
+    service_config_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service_rollout_id = proto.Field(
+    service_rollout_id: str = proto.Field(
         proto.STRING,
         number=4,
     )

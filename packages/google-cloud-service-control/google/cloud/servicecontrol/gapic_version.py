@@ -13,29 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.servicecontrol import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from .services.service_controller import (
-    ServiceControllerAsyncClient,
-    ServiceControllerClient,
-)
-from .types.service_controller import (
-    CheckRequest,
-    CheckResponse,
-    ReportRequest,
-    ReportResponse,
-    ResourceInfo,
-)
-
-__all__ = (
-    "ServiceControllerAsyncClient",
-    "CheckRequest",
-    "CheckResponse",
-    "ReportRequest",
-    "ReportResponse",
-    "ResourceInfo",
-    "ServiceControllerClient",
-)
+__version__ = "1.5.3"  # {x-release-please-version}

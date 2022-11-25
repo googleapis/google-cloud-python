@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.logging.type import log_severity_pb2  # type: ignore
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
@@ -65,7 +67,7 @@ class LogEntry(proto.Message):
             A unique ID for the log entry used for deduplication. If
             omitted, the implementation will generate one based on
             operation_id.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A set of user-defined (key, value) data that
             provides additional information about the log
             entry.
@@ -93,61 +95,61 @@ class LogEntry(proto.Message):
             associated with the log entry, if any.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    timestamp = proto.Field(
+    timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: log_severity_pb2.LogSeverity = proto.Field(
         proto.ENUM,
         number=12,
         enum=log_severity_pb2.LogSeverity,
     )
-    http_request = proto.Field(
+    http_request: gas_http_request.HttpRequest = proto.Field(
         proto.MESSAGE,
         number=14,
         message=gas_http_request.HttpRequest,
     )
-    trace = proto.Field(
+    trace: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    insert_id = proto.Field(
+    insert_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=13,
     )
-    proto_payload = proto.Field(
+    proto_payload: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="payload",
         message=any_pb2.Any,
     )
-    text_payload = proto.Field(
+    text_payload: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="payload",
     )
-    struct_payload = proto.Field(
+    struct_payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="payload",
         message=struct_pb2.Struct,
     )
-    operation = proto.Field(
+    operation: "LogEntryOperation" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="LogEntryOperation",
     )
-    source_location = proto.Field(
+    source_location: "LogEntrySourceLocation" = proto.Field(
         proto.MESSAGE,
         number=17,
         message="LogEntrySourceLocation",
@@ -176,19 +178,19 @@ class LogEntryOperation(proto.Message):
             last log entry in the operation.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    producer = proto.Field(
+    producer: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    first = proto.Field(
+    first: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    last = proto.Field(
+    last: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -216,15 +218,15 @@ class LogEntrySourceLocation(proto.Message):
             (Go), ``function`` (Python).
     """
 
-    file = proto.Field(
+    file: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    line = proto.Field(
+    line: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    function = proto.Field(
+    function: str = proto.Field(
         proto.STRING,
         number=3,
     )

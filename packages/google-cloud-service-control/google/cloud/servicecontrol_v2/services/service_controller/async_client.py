@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -167,9 +177,9 @@ class ServiceControllerAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ServiceControllerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the service controller client.
@@ -213,10 +223,10 @@ class ServiceControllerAsyncClient:
 
     async def check(
         self,
-        request: Union[service_controller.CheckRequest, dict] = None,
+        request: Optional[Union[service_controller.CheckRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_controller.CheckResponse:
         r"""Private Preview. This feature is only available for approved
@@ -270,7 +280,7 @@ class ServiceControllerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicecontrol_v2.types.CheckRequest, dict]):
+            request (Optional[Union[google.cloud.servicecontrol_v2.types.CheckRequest, dict]]):
                 The request object. Request message for the Check
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -326,10 +336,10 @@ class ServiceControllerAsyncClient:
 
     async def report(
         self,
-        request: Union[service_controller.ReportRequest, dict] = None,
+        request: Optional[Union[service_controller.ReportRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_controller.ReportResponse:
         r"""Private Preview. This feature is only available for approved
@@ -378,7 +388,7 @@ class ServiceControllerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicecontrol_v2.types.ReportRequest, dict]):
+            request (Optional[Union[google.cloud.servicecontrol_v2.types.ReportRequest, dict]]):
                 The request object. Request message for the Report
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

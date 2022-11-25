@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -69,7 +71,7 @@ class Operation(proto.Message):
             [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
             but optional when the operation is used in
             [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels describing the operation. Only the following labels
             are allowed:
 
@@ -89,7 +91,7 @@ class Operation(proto.Message):
                -  ``servicecontrol.googleapis.com/platform`` describing
                   the platform where the API is served, such as App
                   Engine, Compute Engine, or Kubernetes Engine.
-        metric_value_sets (Sequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
+        metric_value_sets (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
             Represents information about this operation.
             Each MetricValueSet corresponds to a metric
             defined in the service configuration. The data
@@ -103,11 +105,11 @@ class Operation(proto.Message):
             duplicated MetricValue instances, the entire
             request is rejected with an invalid argument
             error.
-        log_entries (Sequence[google.cloud.servicecontrol_v1.types.LogEntry]):
+        log_entries (MutableSequence[google.cloud.servicecontrol_v1.types.LogEntry]):
             Represents information to be logged.
         importance (google.cloud.servicecontrol_v1.types.Operation.Importance):
             DO NOT USE. This is an experimental field.
-        extensions (Sequence[google.protobuf.any_pb2.Any]):
+        extensions (MutableSequence[google.protobuf.any_pb2.Any]):
             Unimplemented.
     """
 
@@ -118,49 +120,51 @@ class Operation(proto.Message):
         LOW = 0
         HIGH = 1
 
-    operation_id = proto.Field(
+    operation_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    operation_name = proto.Field(
+    operation_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    consumer_id = proto.Field(
+    consumer_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    metric_value_sets = proto.RepeatedField(
+    metric_value_sets: MutableSequence[
+        metric_value.MetricValueSet
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=metric_value.MetricValueSet,
     )
-    log_entries = proto.RepeatedField(
+    log_entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=log_entry.LogEntry,
     )
-    importance = proto.Field(
+    importance: Importance = proto.Field(
         proto.ENUM,
         number=11,
         enum=Importance,
     )
-    extensions = proto.RepeatedField(
+    extensions: MutableSequence[any_pb2.Any] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message=any_pb2.Any,
