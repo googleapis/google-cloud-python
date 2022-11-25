@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -60,7 +71,7 @@ class PrivateCatalogClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[PrivateCatalogTransport]:
         """Returns an appropriate transport class.
 
@@ -387,8 +398,8 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PrivateCatalogTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, PrivateCatalogTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the private catalog client.
@@ -405,7 +416,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -435,6 +446,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -487,10 +499,10 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
 
     def search_catalogs(
         self,
-        request: Union[private_catalog.SearchCatalogsRequest, dict] = None,
+        request: Optional[Union[private_catalog.SearchCatalogsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchCatalogsPager:
         r"""Search [Catalog][google.cloud.privatecatalog.v1beta1.Catalog]
@@ -583,10 +595,10 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
 
     def search_products(
         self,
-        request: Union[private_catalog.SearchProductsRequest, dict] = None,
+        request: Optional[Union[private_catalog.SearchProductsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchProductsPager:
         r"""Search [Product][google.cloud.privatecatalog.v1beta1.Product]
@@ -679,10 +691,10 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
 
     def search_versions(
         self,
-        request: Union[private_catalog.SearchVersionsRequest, dict] = None,
+        request: Optional[Union[private_catalog.SearchVersionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchVersionsPager:
         r"""Search [Version][google.cloud.privatecatalog.v1beta1.Version]

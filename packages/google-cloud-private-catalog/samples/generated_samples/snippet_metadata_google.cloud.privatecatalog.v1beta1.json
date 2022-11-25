@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-private-catalog"
+    "name": "google-cloud-private-catalog",
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -125,7 +126,7 @@
         "shortName": "search_catalogs"
       },
       "description": "Sample for SearchCatalogs",
-      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync_f4c0c8c0.py",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync",
@@ -161,83 +162,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync_f4c0c8c0.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.privatecatalog_v1beta1.PrivateCatalogClient",
-          "shortName": "PrivateCatalogClient"
-        },
-        "fullName": "google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.search_catalogs",
-        "method": {
-          "fullName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs",
-          "service": {
-            "fullName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
-            "shortName": "PrivateCatalog"
-          },
-          "shortName": "SearchCatalogs"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.privatecatalog_v1beta1.services.private_catalog.pagers.SearchCatalogsPager",
-        "shortName": "search_catalogs"
-      },
-      "description": "Sample for SearchCatalogs",
-      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync_92c68945.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync",
-      "segments": [
-        {
-          "end": 52,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 52,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 53,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync_92c68945.py"
+      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync.py"
     },
     {
       "canonical": true,
@@ -354,7 +279,7 @@
         "shortName": "search_products"
       },
       "description": "Sample for SearchProducts",
-      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync_c80cb678.py",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchProducts_sync",
@@ -390,83 +315,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync_c80cb678.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.privatecatalog_v1beta1.PrivateCatalogClient",
-          "shortName": "PrivateCatalogClient"
-        },
-        "fullName": "google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.search_products",
-        "method": {
-          "fullName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts",
-          "service": {
-            "fullName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
-            "shortName": "PrivateCatalog"
-          },
-          "shortName": "SearchProducts"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.privatecatalog_v1beta1.services.private_catalog.pagers.SearchProductsPager",
-        "shortName": "search_products"
-      },
-      "description": "Sample for SearchProducts",
-      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync_91f2d094.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchProducts_sync",
-      "segments": [
-        {
-          "end": 52,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 52,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 48,
-          "start": 46,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 53,
-          "start": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync_91f2d094.py"
+      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync.py"
     },
     {
       "canonical": true,
@@ -583,7 +432,7 @@
         "shortName": "search_versions"
       },
       "description": "Sample for SearchVersions",
-      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync_ae777daf.py",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
       "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchVersions_sync",
@@ -619,83 +468,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync_ae777daf.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.privatecatalog_v1beta1.PrivateCatalogClient",
-          "shortName": "PrivateCatalogClient"
-        },
-        "fullName": "google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.search_versions",
-        "method": {
-          "fullName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions",
-          "service": {
-            "fullName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
-            "shortName": "PrivateCatalog"
-          },
-          "shortName": "SearchVersions"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.privatecatalog_v1beta1.services.private_catalog.pagers.SearchVersionsPager",
-        "shortName": "search_versions"
-      },
-      "description": "Sample for SearchVersions",
-      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync_9f509ae3.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchVersions_sync",
-      "segments": [
-        {
-          "end": 53,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 53,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 40,
-          "start": 38,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 46,
-          "start": 41,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 49,
-          "start": 47,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 54,
-          "start": 50,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync_9f509ae3.py"
+      "title": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync.py"
     }
   ]
 }

@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.privatecatalog import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.private_catalog import PrivateCatalogAsyncClient, PrivateCatalogClient
 from .types.private_catalog import (

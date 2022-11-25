@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -185,9 +195,9 @@ class PrivateCatalogAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PrivateCatalogTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the private catalog client.
@@ -231,10 +241,10 @@ class PrivateCatalogAsyncClient:
 
     async def search_catalogs(
         self,
-        request: Union[private_catalog.SearchCatalogsRequest, dict] = None,
+        request: Optional[Union[private_catalog.SearchCatalogsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchCatalogsAsyncPager:
         r"""Search [Catalog][google.cloud.privatecatalog.v1beta1.Catalog]
@@ -269,7 +279,7 @@ class PrivateCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest, dict]):
+            request (Optional[Union[google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest, dict]]):
                 The request object. Request message for
                 [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -326,10 +336,10 @@ class PrivateCatalogAsyncClient:
 
     async def search_products(
         self,
-        request: Union[private_catalog.SearchProductsRequest, dict] = None,
+        request: Optional[Union[private_catalog.SearchProductsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchProductsAsyncPager:
         r"""Search [Product][google.cloud.privatecatalog.v1beta1.Product]
@@ -364,7 +374,7 @@ class PrivateCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest, dict]):
+            request (Optional[Union[google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest, dict]]):
                 The request object. Request message for
                 [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -421,10 +431,10 @@ class PrivateCatalogAsyncClient:
 
     async def search_versions(
         self,
-        request: Union[private_catalog.SearchVersionsRequest, dict] = None,
+        request: Optional[Union[private_catalog.SearchVersionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchVersionsAsyncPager:
         r"""Search [Version][google.cloud.privatecatalog.v1beta1.Version]
@@ -460,7 +470,7 @@ class PrivateCatalogAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest, dict]):
+            request (Optional[Union[google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest, dict]]):
                 The request object. Request message for
                 [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

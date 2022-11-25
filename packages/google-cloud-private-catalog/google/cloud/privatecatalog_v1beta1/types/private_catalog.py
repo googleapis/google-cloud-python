@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -63,19 +65,19 @@ class SearchCatalogsRequest(proto.Message):
             listing should continue from.
     """
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -86,7 +88,7 @@ class SearchCatalogsResponse(proto.Message):
     [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
 
     Attributes:
-        catalogs (Sequence[google.cloud.privatecatalog_v1beta1.types.Catalog]):
+        catalogs (MutableSequence[google.cloud.privatecatalog_v1beta1.types.Catalog]):
             The ``Catalog``\ s computed from the resource context.
         next_page_token (str):
             A pagination token returned from a previous
@@ -98,12 +100,12 @@ class SearchCatalogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    catalogs = proto.RepeatedField(
+    catalogs: MutableSequence["Catalog"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Catalog",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -137,19 +139,19 @@ class SearchProductsRequest(proto.Message):
             listing should continue from.
     """
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -160,7 +162,7 @@ class SearchProductsResponse(proto.Message):
     [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
 
     Attributes:
-        products (Sequence[google.cloud.privatecatalog_v1beta1.types.Product]):
+        products (MutableSequence[google.cloud.privatecatalog_v1beta1.types.Product]):
             The ``Product`` resources computed from the resource
             context.
         next_page_token (str):
@@ -173,12 +175,12 @@ class SearchProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(
+    products: MutableSequence["Product"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Product",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -211,19 +213,19 @@ class SearchVersionsRequest(proto.Message):
             listing should continue from.
     """
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -234,7 +236,7 @@ class SearchVersionsResponse(proto.Message):
     [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
 
     Attributes:
-        versions (Sequence[google.cloud.privatecatalog_v1beta1.types.Version]):
+        versions (MutableSequence[google.cloud.privatecatalog_v1beta1.types.Version]):
             The ``Version`` resources computed from the resource
             context.
         next_page_token (str):
@@ -247,12 +249,12 @@ class SearchVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(
+    versions: MutableSequence["Version"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Version",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -279,24 +281,24 @@ class Catalog(proto.Message):
             last updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -482,7 +484,7 @@ class Product(proto.Message):
                additionalProperties: true
         icon_uri (str):
             Output only. The icon URI of the product.
-        asset_references (Sequence[google.cloud.privatecatalog_v1beta1.types.AssetReference]):
+        asset_references (MutableSequence[google.cloud.privatecatalog_v1beta1.types.AssetReference]):
             Output only. A collection of assets referred
             by a product. This field is set for Terraform
             Products only.
@@ -494,34 +496,34 @@ class Product(proto.Message):
             last updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_metadata = proto.Field(
+    display_metadata: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Struct,
     )
-    icon_uri = proto.Field(
+    icon_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    asset_references = proto.RepeatedField(
+    asset_references: MutableSequence["AssetReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="AssetReference",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
@@ -587,61 +589,61 @@ class AssetReference(proto.Message):
         VALID = 2
         INVALID = 3
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    inputs = proto.Field(
+    inputs: "Inputs" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="Inputs",
     )
-    validation_status = proto.Field(
+    validation_status: AssetValidationState = proto.Field(
         proto.ENUM,
         number=7,
         enum=AssetValidationState,
     )
-    validation_operation = proto.Field(
+    validation_operation: operations_pb2.Operation = proto.Field(
         proto.MESSAGE,
         number=8,
         message=operations_pb2.Operation,
     )
-    asset = proto.Field(
+    asset: str = proto.Field(
         proto.STRING,
         number=10,
         oneof="source",
     )
-    gcs_path = proto.Field(
+    gcs_path: str = proto.Field(
         proto.STRING,
         number=11,
         oneof="source",
     )
-    git_source = proto.Field(
+    git_source: "GitSource" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="source",
         message="GitSource",
     )
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="GcsSource",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=14,
     )
@@ -656,7 +658,7 @@ class Inputs(proto.Message):
             inputs and their formats.
     """
 
-    parameters = proto.Field(
+    parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=1,
         message=struct_pb2.Struct,
@@ -678,15 +680,15 @@ class GcsSource(proto.Message):
             metadata was last changed.
     """
 
-    gcs_path = proto.Field(
+    gcs_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    generation = proto.Field(
+    generation: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -727,25 +729,25 @@ class GitSource(proto.Message):
             This field is a member of `oneof`_ ``ref``.
     """
 
-    repo = proto.Field(
+    repo: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    dir_ = proto.Field(
+    dir_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    commit = proto.Field(
+    commit: str = proto.Field(
         proto.STRING,
         number=3,
         oneof="ref",
     )
-    branch = proto.Field(
+    branch: str = proto.Field(
         proto.STRING,
         number=4,
         oneof="ref",
     )
-    tag = proto.Field(
+    tag: str = proto.Field(
         proto.STRING,
         number=5,
         oneof="ref",
@@ -778,25 +780,25 @@ class Version(proto.Message):
             last updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    asset = proto.Field(
+    asset: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=3,
         message=struct_pb2.Struct,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,

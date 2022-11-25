@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-private-catalog
 
 
-# [START cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync_92c68945]
+# [START cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -50,4 +50,4 @@ def sample_search_catalogs():
     for response in page_result:
         print(response)
 
-# [END cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync_92c68945]
+# [END cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync]
