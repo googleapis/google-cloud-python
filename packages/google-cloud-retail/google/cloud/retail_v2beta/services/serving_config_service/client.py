@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class ServingConfigServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ServingConfigServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -362,8 +373,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ServingConfigServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ServingConfigServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the serving config service client.
@@ -377,7 +388,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             transport (Union[str, ServingConfigServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -407,6 +418,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -459,13 +471,15 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def create_serving_config(
         self,
-        request: Union[serving_config_service.CreateServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.CreateServingConfigRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        serving_config: gcr_serving_config.ServingConfig = None,
-        serving_config_id: str = None,
+        parent: Optional[str] = None,
+        serving_config: Optional[gcr_serving_config.ServingConfig] = None,
+        serving_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Creates a ServingConfig.
@@ -493,7 +507,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 # Initialize request argument(s)
                 serving_config = retail_v2beta.ServingConfig()
                 serving_config.display_name = "display_name_value"
-                serving_config.solution_types = "SOLUTION_TYPE_SEARCH"
+                serving_config.solution_types = ['SOLUTION_TYPE_SEARCH']
 
                 request = retail_v2beta.CreateServingConfigRequest(
                     parent="parent_value",
@@ -598,11 +612,13 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def delete_serving_config(
         self,
-        request: Union[serving_config_service.DeleteServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.DeleteServingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ServingConfig.
@@ -691,12 +707,14 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def update_serving_config(
         self,
-        request: Union[serving_config_service.UpdateServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.UpdateServingConfigRequest, dict]
+        ] = None,
         *,
-        serving_config: gcr_serving_config.ServingConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        serving_config: Optional[gcr_serving_config.ServingConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
@@ -719,7 +737,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 # Initialize request argument(s)
                 serving_config = retail_v2beta.ServingConfig()
                 serving_config.display_name = "display_name_value"
-                serving_config.solution_types = "SOLUTION_TYPE_SEARCH"
+                serving_config.solution_types = ['SOLUTION_TYPE_SEARCH']
 
                 request = retail_v2beta.UpdateServingConfigRequest(
                     serving_config=serving_config,
@@ -816,11 +834,13 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def get_serving_config(
         self,
-        request: Union[serving_config_service.GetServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.GetServingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> serving_config.ServingConfig:
         r"""Gets a ServingConfig.
@@ -922,11 +942,13 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def list_serving_configs(
         self,
-        request: Union[serving_config_service.ListServingConfigsRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.ListServingConfigsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServingConfigsPager:
         r"""Lists all ServingConfigs linked to this catalog.
@@ -1037,11 +1059,11 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def add_control(
         self,
-        request: Union[serving_config_service.AddControlRequest, dict] = None,
+        request: Optional[Union[serving_config_service.AddControlRequest, dict]] = None,
         *,
-        serving_config: str = None,
+        serving_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Enables a Control on the specified ServingConfig. The control is
@@ -1150,11 +1172,13 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
     def remove_control(
         self,
-        request: Union[serving_config_service.RemoveControlRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.RemoveControlRequest, dict]
+        ] = None,
         *,
-        serving_config: str = None,
+        serving_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Disables a Control on the specified ServingConfig. The control

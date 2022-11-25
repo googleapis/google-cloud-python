@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -51,16 +53,16 @@ class CreateServingConfigRequest(proto.Message):
             are /[a-z][0-9]-_/.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    serving_config = proto.Field(
+    serving_config: gcr_serving_config.ServingConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_serving_config.ServingConfig,
     )
-    serving_config_id = proto.Field(
+    serving_config_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -82,12 +84,12 @@ class UpdateServingConfigRequest(proto.Message):
             If not set, all supported fields are updated.
     """
 
-    serving_config = proto.Field(
+    serving_config: gcr_serving_config.ServingConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_serving_config.ServingConfig,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -104,7 +106,7 @@ class DeleteServingConfigRequest(proto.Message):
             projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -120,7 +122,7 @@ class GetServingConfigRequest(proto.Message):
             projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -144,15 +146,15 @@ class ListServingConfigsRequest(proto.Message):
             subsequent page.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -162,7 +164,7 @@ class ListServingConfigsResponse(proto.Message):
     r"""Response for ListServingConfigs method.
 
     Attributes:
-        serving_configs (Sequence[google.cloud.retail_v2alpha.types.ServingConfig]):
+        serving_configs (MutableSequence[google.cloud.retail_v2alpha.types.ServingConfig]):
             All the ServingConfigs for a given catalog.
         next_page_token (str):
             Pagination token, if not returned indicates
@@ -173,12 +175,14 @@ class ListServingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    serving_configs = proto.RepeatedField(
+    serving_configs: MutableSequence[
+        gcr_serving_config.ServingConfig
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcr_serving_config.ServingConfig,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -197,11 +201,11 @@ class AddControlRequest(proto.Message):
             a NOT_FOUND error is returned.
     """
 
-    serving_config = proto.Field(
+    serving_config: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    control_id = proto.Field(
+    control_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -220,11 +224,11 @@ class RemoveControlRequest(proto.Message):
             config.
     """
 
-    serving_config = proto.Field(
+    serving_config: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    control_id = proto.Field(
+    control_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

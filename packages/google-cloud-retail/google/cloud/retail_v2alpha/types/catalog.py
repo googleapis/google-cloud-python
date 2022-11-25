@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import common, import_config
@@ -93,11 +95,11 @@ class ProductLevelConfig(proto.Message):
             for more details.
     """
 
-    ingestion_product_type = proto.Field(
+    ingestion_product_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    merchant_center_product_id_field = proto.Field(
+    merchant_center_product_id_field: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -211,38 +213,40 @@ class CatalogAttribute(proto.Message):
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    in_use = proto.Field(
+    in_use: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    type_ = proto.Field(
+    type_: AttributeType = proto.Field(
         proto.ENUM,
         number=10,
         enum=AttributeType,
     )
-    indexable_option = proto.Field(
+    indexable_option: IndexableOption = proto.Field(
         proto.ENUM,
         number=5,
         enum=IndexableOption,
     )
-    dynamic_facetable_option = proto.Field(
+    dynamic_facetable_option: DynamicFacetableOption = proto.Field(
         proto.ENUM,
         number=6,
         enum=DynamicFacetableOption,
     )
-    searchable_option = proto.Field(
+    searchable_option: SearchableOption = proto.Field(
         proto.ENUM,
         number=7,
         enum=SearchableOption,
     )
-    recommendations_filtering_option = proto.Field(
-        proto.ENUM,
-        number=8,
-        enum=common.RecommendationsFilteringOption,
+    recommendations_filtering_option: common.RecommendationsFilteringOption = (
+        proto.Field(
+            proto.ENUM,
+            number=8,
+            enum=common.RecommendationsFilteringOption,
+        )
     )
 
 
@@ -254,7 +258,7 @@ class AttributesConfig(proto.Message):
             Required. Immutable. The fully qualified resource name of
             the attribute config. Format:
             ``projects/*/locations/*/catalogs/*/attributesConfig``
-        catalog_attributes (Mapping[str, google.cloud.retail_v2alpha.types.CatalogAttribute]):
+        catalog_attributes (MutableMapping[str, google.cloud.retail_v2alpha.types.CatalogAttribute]):
             Enable attribute(s) config at catalog level. For example,
             indexable, dynamic_facetable, or searchable for each
             attribute.
@@ -271,17 +275,17 @@ class AttributesConfig(proto.Message):
             used for this catalog.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    catalog_attributes = proto.MapField(
+    catalog_attributes: MutableMapping[str, "CatalogAttribute"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message="CatalogAttribute",
     )
-    attribute_config_level = proto.Field(
+    attribute_config_level: common.AttributeConfigLevel = proto.Field(
         proto.ENUM,
         number=3,
         enum=common.AttributeConfigLevel,
@@ -362,50 +366,50 @@ class CompletionConfig(proto.Message):
             Operation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    matching_order = proto.Field(
+    matching_order: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    max_suggestions = proto.Field(
+    max_suggestions: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    min_prefix_length = proto.Field(
+    min_prefix_length: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    auto_learning = proto.Field(
+    auto_learning: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    suggestions_input_config = proto.Field(
+    suggestions_input_config: import_config.CompletionDataInputConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=import_config.CompletionDataInputConfig,
     )
-    last_suggestions_import_operation = proto.Field(
+    last_suggestions_import_operation: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    denylist_input_config = proto.Field(
+    denylist_input_config: import_config.CompletionDataInputConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         message=import_config.CompletionDataInputConfig,
     )
-    last_denylist_import_operation = proto.Field(
+    last_denylist_import_operation: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    allowlist_input_config = proto.Field(
+    allowlist_input_config: import_config.CompletionDataInputConfig = proto.Field(
         proto.MESSAGE,
         number=9,
         message=import_config.CompletionDataInputConfig,
     )
-    last_allowlist_import_operation = proto.Field(
+    last_allowlist_import_operation: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -431,7 +435,7 @@ class MerchantCenterLink(proto.Message):
 
             A single branch id can only have one linked merchant center
             account id.
-        destinations (Sequence[str]):
+        destinations (MutableSequence[str]):
             String representing the destination to import for, all if
             left empty. List of possible values can be found here.
             [https://support.google.com/merchants/answer/7501026] List
@@ -460,23 +464,23 @@ class MerchantCenterLink(proto.Message):
             Example value: ``en``.
     """
 
-    merchant_center_account_id = proto.Field(
+    merchant_center_account_id: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    branch_id = proto.Field(
+    branch_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    destinations = proto.RepeatedField(
+    destinations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    region_code = proto.Field(
+    region_code: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -488,12 +492,12 @@ class MerchantCenterLinkingConfig(proto.Message):
     Merchant Center account to a Cloud Retail branch.
 
     Attributes:
-        links (Sequence[google.cloud.retail_v2alpha.types.MerchantCenterLink]):
+        links (MutableSequence[google.cloud.retail_v2alpha.types.MerchantCenterLink]):
             Links between Merchant Center accounts and
             branches.
     """
 
-    links = proto.RepeatedField(
+    links: MutableSequence["MerchantCenterLink"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MerchantCenterLink",
@@ -524,20 +528,20 @@ class Catalog(proto.Message):
             changes to this field.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    product_level_config = proto.Field(
+    product_level_config: "ProductLevelConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ProductLevelConfig",
     )
-    merchant_center_linking_config = proto.Field(
+    merchant_center_linking_config: "MerchantCenterLinkingConfig" = proto.Field(
         proto.MESSAGE,
         number=6,
         message="MerchantCenterLinkingConfig",

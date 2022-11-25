@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -158,9 +168,9 @@ class PredictionServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PredictionServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the prediction service client.
@@ -204,10 +214,10 @@ class PredictionServiceAsyncClient:
 
     async def predict(
         self,
-        request: Union[prediction_service.PredictRequest, dict] = None,
+        request: Optional[Union[prediction_service.PredictRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> prediction_service.PredictResponse:
         r"""Makes a recommendation prediction.
@@ -244,7 +254,7 @@ class PredictionServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.PredictRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.PredictRequest, dict]]):
                 The request object. Request message for Predict method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

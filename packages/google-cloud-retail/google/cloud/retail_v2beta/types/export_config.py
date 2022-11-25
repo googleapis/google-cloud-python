@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -45,7 +47,7 @@ class ExportErrorsConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_prefix = proto.Field(
+    gcs_prefix: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="destination",
@@ -65,12 +67,12 @@ class ExportMetadata(proto.Message):
             is done, this is also the finish time.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -84,7 +86,7 @@ class ExportProductsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.retail_v2beta.types.ExportErrorsConfig):
@@ -94,17 +96,17 @@ class ExportProductsResponse(proto.Message):
             exported to.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    errors_config = proto.Field(
+    errors_config: "ExportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ExportErrorsConfig",
     )
-    output_result = proto.Field(
+    output_result: "OutputResult" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OutputResult",
@@ -118,7 +120,7 @@ class ExportUserEventsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.retail_v2beta.types.ExportErrorsConfig):
@@ -128,17 +130,17 @@ class ExportUserEventsResponse(proto.Message):
             exported to.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    errors_config = proto.Field(
+    errors_config: "ExportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ExportErrorsConfig",
     )
-    output_result = proto.Field(
+    output_result: "OutputResult" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="OutputResult",
@@ -149,11 +151,11 @@ class OutputResult(proto.Message):
     r"""Output result.
 
     Attributes:
-        bigquery_result (Sequence[google.cloud.retail_v2beta.types.BigQueryOutputResult]):
+        bigquery_result (MutableSequence[google.cloud.retail_v2beta.types.BigQueryOutputResult]):
             Export result in BigQuery.
     """
 
-    bigquery_result = proto.RepeatedField(
+    bigquery_result: MutableSequence["BigQueryOutputResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BigQueryOutputResult",
@@ -170,11 +172,11 @@ class BigQueryOutputResult(proto.Message):
             The ID of a BigQuery Table.
     """
 
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

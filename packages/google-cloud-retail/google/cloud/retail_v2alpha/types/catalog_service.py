@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -73,15 +75,15 @@ class ListCatalogsRequest(proto.Message):
             an INVALID_ARGUMENT error is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -93,7 +95,7 @@ class ListCatalogsResponse(proto.Message):
     method.
 
     Attributes:
-        catalogs (Sequence[google.cloud.retail_v2alpha.types.Catalog]):
+        catalogs (MutableSequence[google.cloud.retail_v2alpha.types.Catalog]):
             All the customer's
             [Catalog][google.cloud.retail.v2alpha.Catalog]s.
         next_page_token (str):
@@ -107,12 +109,12 @@ class ListCatalogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    catalogs = proto.RepeatedField(
+    catalogs: MutableSequence[gcr_catalog.Catalog] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcr_catalog.Catalog,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -143,12 +145,12 @@ class UpdateCatalogRequest(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    catalog = proto.Field(
+    catalog: gcr_catalog.Catalog = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_catalog.Catalog,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -186,19 +188,19 @@ class SetDefaultBranchRequest(proto.Message):
             even if it has no sufficient active products.
     """
 
-    catalog = proto.Field(
+    catalog: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    branch_id = proto.Field(
+    branch_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    note = proto.Field(
+    note: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -214,7 +216,7 @@ class GetDefaultBranchRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog``.
     """
 
-    catalog = proto.Field(
+    catalog: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -236,16 +238,16 @@ class GetDefaultBranchResponse(proto.Message):
             field, when this branch was set as default.
     """
 
-    branch = proto.Field(
+    branch: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    set_time = proto.Field(
+    set_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    note = proto.Field(
+    note: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -262,7 +264,7 @@ class GetCompletionConfigRequest(proto.Message):
             projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -299,12 +301,12 @@ class UpdateCompletionConfigRequest(proto.Message):
             If not set, all supported fields are updated.
     """
 
-    completion_config = proto.Field(
+    completion_config: gcr_catalog.CompletionConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_catalog.CompletionConfig,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -322,7 +324,7 @@ class GetAttributesConfigRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -348,12 +350,12 @@ class UpdateAttributesConfigRequest(proto.Message):
             If not set, all supported fields are updated.
     """
 
-    attributes_config = proto.Field(
+    attributes_config: gcr_catalog.AttributesConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_catalog.AttributesConfig,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -375,11 +377,11 @@ class AddCatalogAttributeRequest(proto.Message):
             to add.
     """
 
-    attributes_config = proto.Field(
+    attributes_config: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    catalog_attribute = proto.Field(
+    catalog_attribute: gcr_catalog.CatalogAttribute = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_catalog.CatalogAttribute,
@@ -401,11 +403,11 @@ class RemoveCatalogAttributeRequest(proto.Message):
             to remove.
     """
 
-    attributes_config = proto.Field(
+    attributes_config: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -433,16 +435,16 @@ class ReplaceCatalogAttributeRequest(proto.Message):
             If not set, all supported fields are updated.
     """
 
-    attributes_config = proto.Field(
+    attributes_config: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    catalog_attribute = proto.Field(
+    catalog_attribute: gcr_catalog.CatalogAttribute = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_catalog.CatalogAttribute,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,

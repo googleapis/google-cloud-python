@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -173,9 +183,9 @@ class ProductServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ProductServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the product service client.
@@ -219,13 +229,13 @@ class ProductServiceAsyncClient:
 
     async def create_product(
         self,
-        request: Union[product_service.CreateProductRequest, dict] = None,
+        request: Optional[Union[product_service.CreateProductRequest, dict]] = None,
         *,
-        parent: str = None,
-        product: gcr_product.Product = None,
-        product_id: str = None,
+        parent: Optional[str] = None,
+        product: Optional[gcr_product.Product] = None,
+        product_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_product.Product:
         r"""Creates a [Product][google.cloud.retail.v2.Product].
@@ -262,7 +272,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.CreateProductRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.CreateProductRequest, dict]]):
                 The request object. Request message for
                 [ProductService.CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
                 method.
@@ -364,11 +374,11 @@ class ProductServiceAsyncClient:
 
     async def get_product(
         self,
-        request: Union[product_service.GetProductRequest, dict] = None,
+        request: Optional[Union[product_service.GetProductRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product.Product:
         r"""Gets a [Product][google.cloud.retail.v2.Product].
@@ -400,7 +410,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.GetProductRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.GetProductRequest, dict]]):
                 The request object. Request message for
                 [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
                 method.
@@ -478,11 +488,11 @@ class ProductServiceAsyncClient:
 
     async def list_products(
         self,
-        request: Union[product_service.ListProductsRequest, dict] = None,
+        request: Optional[Union[product_service.ListProductsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProductsAsyncPager:
         r"""Gets a list of [Product][google.cloud.retail.v2.Product]s.
@@ -515,7 +525,7 @@ class ProductServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.ListProductsRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.ListProductsRequest, dict]]):
                 The request object. Request message for
                 [ProductService.ListProducts][google.cloud.retail.v2.ProductService.ListProducts]
                 method.
@@ -602,12 +612,12 @@ class ProductServiceAsyncClient:
 
     async def update_product(
         self,
-        request: Union[product_service.UpdateProductRequest, dict] = None,
+        request: Optional[Union[product_service.UpdateProductRequest, dict]] = None,
         *,
-        product: gcr_product.Product = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        product: Optional[gcr_product.Product] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_product.Product:
         r"""Updates a [Product][google.cloud.retail.v2.Product].
@@ -642,7 +652,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.UpdateProductRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.UpdateProductRequest, dict]]):
                 The request object. Request message for
                 [ProductService.UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct]
                 method.
@@ -741,11 +751,11 @@ class ProductServiceAsyncClient:
 
     async def delete_product(
         self,
-        request: Union[product_service.DeleteProductRequest, dict] = None,
+        request: Optional[Union[product_service.DeleteProductRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a [Product][google.cloud.retail.v2.Product].
@@ -774,7 +784,7 @@ class ProductServiceAsyncClient:
                 await client.delete_product(request=request)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.DeleteProductRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.DeleteProductRequest, dict]]):
                 The request object. Request message for
                 [ProductService.DeleteProduct][google.cloud.retail.v2.ProductService.DeleteProduct]
                 method.
@@ -855,10 +865,10 @@ class ProductServiceAsyncClient:
 
     async def import_products(
         self,
-        request: Union[import_config.ImportProductsRequest, dict] = None,
+        request: Optional[Union[import_config.ImportProductsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Bulk import of multiple
@@ -906,7 +916,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.ImportProductsRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.ImportProductsRequest, dict]]):
                 The request object. Request message for Import methods.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -974,12 +984,12 @@ class ProductServiceAsyncClient:
 
     async def set_inventory(
         self,
-        request: Union[product_service.SetInventoryRequest, dict] = None,
+        request: Optional[Union[product_service.SetInventoryRequest, dict]] = None,
         *,
-        inventory: product.Product = None,
-        set_mask: field_mask_pb2.FieldMask = None,
+        inventory: Optional[product.Product] = None,
+        set_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates inventory information for a
@@ -1070,7 +1080,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.SetInventoryRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.SetInventoryRequest, dict]]):
                 The request object. Request message for
                 [ProductService.SetInventory][google.cloud.retail.v2.ProductService.SetInventory]
                 method.
@@ -1229,11 +1239,13 @@ class ProductServiceAsyncClient:
 
     async def add_fulfillment_places(
         self,
-        request: Union[product_service.AddFulfillmentPlacesRequest, dict] = None,
+        request: Optional[
+            Union[product_service.AddFulfillmentPlacesRequest, dict]
+        ] = None,
         *,
-        product: str = None,
+        product: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Incrementally adds place IDs to
@@ -1294,7 +1306,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.AddFulfillmentPlacesRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.AddFulfillmentPlacesRequest, dict]]):
                 The request object. Request message for
                 [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces]
                 method.
@@ -1379,11 +1391,13 @@ class ProductServiceAsyncClient:
 
     async def remove_fulfillment_places(
         self,
-        request: Union[product_service.RemoveFulfillmentPlacesRequest, dict] = None,
+        request: Optional[
+            Union[product_service.RemoveFulfillmentPlacesRequest, dict]
+        ] = None,
         *,
-        product: str = None,
+        product: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Incrementally removes place IDs from a
@@ -1444,7 +1458,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.RemoveFulfillmentPlacesRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.RemoveFulfillmentPlacesRequest, dict]]):
                 The request object. Request message for
                 [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2.ProductService.RemoveFulfillmentPlaces]
                 method.
@@ -1529,11 +1543,13 @@ class ProductServiceAsyncClient:
 
     async def add_local_inventories(
         self,
-        request: Union[product_service.AddLocalInventoriesRequest, dict] = None,
+        request: Optional[
+            Union[product_service.AddLocalInventoriesRequest, dict]
+        ] = None,
         *,
-        product: str = None,
+        product: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates local inventory information for a
@@ -1601,7 +1617,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.AddLocalInventoriesRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.AddLocalInventoriesRequest, dict]]):
                 The request object. Request message for
                 [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
                 method.
@@ -1688,11 +1704,13 @@ class ProductServiceAsyncClient:
 
     async def remove_local_inventories(
         self,
-        request: Union[product_service.RemoveLocalInventoriesRequest, dict] = None,
+        request: Optional[
+            Union[product_service.RemoveLocalInventoriesRequest, dict]
+        ] = None,
         *,
-        product: str = None,
+        product: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Remove local inventory information for a
@@ -1758,7 +1776,7 @@ class ProductServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.RemoveLocalInventoriesRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.RemoveLocalInventoriesRequest, dict]]):
                 The request object. Request message for
                 [ProductService.RemoveLocalInventories][google.cloud.retail.v2.ProductService.RemoveLocalInventories]
                 method.

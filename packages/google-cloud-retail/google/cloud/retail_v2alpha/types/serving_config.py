@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import common, search_service
@@ -72,7 +74,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-        facet_control_ids (Sequence[str]):
+        facet_control_ids (MutableSequence[str]):
             Facet specifications for faceted search. If empty, no facets
             are returned. The ids refer to the ids of
             [Control][google.cloud.retail.v2alpha.Control] resources
@@ -95,7 +97,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        boost_control_ids (Sequence[str]):
+        boost_control_ids (MutableSequence[str]):
             Condition boost specifications. If a product matches
             multiple conditions in the specifications, boost scores from
             these specifications are all applied and combined in a
@@ -114,7 +116,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        filter_control_ids (Sequence[str]):
+        filter_control_ids (MutableSequence[str]):
             Condition filter specifications. If a product matches
             multiple conditions in the specifications, filters from
             these specifications are all applied and combined via the
@@ -124,7 +126,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        redirect_control_ids (Sequence[str]):
+        redirect_control_ids (MutableSequence[str]):
             Condition redirect specifications. Only the first triggered
             redirect action is applied, even if multiple apply. Maximum
             number of specifications is 1000.
@@ -133,7 +135,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        twoway_synonyms_control_ids (Sequence[str]):
+        twoway_synonyms_control_ids (MutableSequence[str]):
             Condition synonyms specifications. If multiple syonyms
             conditions match, all matching synonyms control in the list
             will execute. Order of controls in the list will not matter.
@@ -143,7 +145,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        oneway_synonyms_control_ids (Sequence[str]):
+        oneway_synonyms_control_ids (MutableSequence[str]):
             Condition oneway synonyms specifications. If multiple oneway
             synonyms conditions match, all matching oneway synonyms
             controls in the list will execute. Order of controls in the
@@ -154,7 +156,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        do_not_associate_control_ids (Sequence[str]):
+        do_not_associate_control_ids (MutableSequence[str]):
             Condition do not associate specifications. If multiple do
             not associate conditions match, all matching do not
             associate controls in the list will execute.
@@ -166,7 +168,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        replacement_control_ids (Sequence[str]):
+        replacement_control_ids (MutableSequence[str]):
             Condition replacement specifications.
 
             -  Applied according to the order in the list.
@@ -177,7 +179,7 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-        ignore_control_ids (Sequence[str]):
+        ignore_control_ids (MutableSequence[str]):
             Condition ignore specifications. If multiple ignore
             conditions match, all matching ignore controls in the list
             will execute.
@@ -226,79 +228,79 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-        solution_types (Sequence[google.cloud.retail_v2alpha.types.SolutionType]):
+        solution_types (MutableSequence[google.cloud.retail_v2alpha.types.SolutionType]):
             Required. Immutable. Specifies the solution
             types that a serving config can be associated
             with. Currently we support setting only one type
             of solution.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    model_id = proto.Field(
+    model_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    price_reranking_level = proto.Field(
+    price_reranking_level: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    facet_control_ids = proto.RepeatedField(
+    facet_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    dynamic_facet_spec = proto.Field(
+    dynamic_facet_spec: search_service.SearchRequest.DynamicFacetSpec = proto.Field(
         proto.MESSAGE,
         number=6,
         message=search_service.SearchRequest.DynamicFacetSpec,
     )
-    boost_control_ids = proto.RepeatedField(
+    boost_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    filter_control_ids = proto.RepeatedField(
+    filter_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    redirect_control_ids = proto.RepeatedField(
+    redirect_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
-    twoway_synonyms_control_ids = proto.RepeatedField(
+    twoway_synonyms_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=18,
     )
-    oneway_synonyms_control_ids = proto.RepeatedField(
+    oneway_synonyms_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
     )
-    do_not_associate_control_ids = proto.RepeatedField(
+    do_not_associate_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
-    replacement_control_ids = proto.RepeatedField(
+    replacement_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
     )
-    ignore_control_ids = proto.RepeatedField(
+    ignore_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=15,
     )
-    diversity_level = proto.Field(
+    diversity_level: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    enable_category_filter_level = proto.Field(
+    enable_category_filter_level: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    solution_types = proto.RepeatedField(
+    solution_types: MutableSequence[common.SolutionType] = proto.RepeatedField(
         proto.ENUM,
         number=19,
         enum=common.SolutionType,

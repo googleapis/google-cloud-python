@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -140,7 +142,7 @@ class Model(proto.Message):
             Optional. If ``RECOMMENDATIONS_FILTERING_ENABLED``,
             recommendation filtering by attributes is enabled for the
             model.
-        serving_config_lists (Sequence[google.cloud.retail_v2beta.types.Model.ServingConfigList]):
+        serving_config_lists (MutableSequence[google.cloud.retail_v2beta.types.Model.ServingConfigList]):
             Output only. The list of valid serving
             configs associated with the
             PageOptimizationConfig.
@@ -185,77 +187,77 @@ class Model(proto.Message):
         can be used for ``PAGE_OPTIMIZATION`` recommendations.
 
         Attributes:
-            serving_config_ids (Sequence[str]):
+            serving_config_ids (MutableSequence[str]):
                 Optional. A set of valid serving configs that may be used
                 for ``PAGE_OPTIMIZATION``.
         """
 
-        serving_config_ids = proto.RepeatedField(
+        serving_config_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    training_state = proto.Field(
+    training_state: TrainingState = proto.Field(
         proto.ENUM,
         number=3,
         enum=TrainingState,
     )
-    serving_state = proto.Field(
+    serving_state: ServingState = proto.Field(
         proto.ENUM,
         number=4,
         enum=ServingState,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    optimization_objective = proto.Field(
+    optimization_objective: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    periodic_tuning_state = proto.Field(
+    periodic_tuning_state: PeriodicTuningState = proto.Field(
         proto.ENUM,
         number=11,
         enum=PeriodicTuningState,
     )
-    last_tune_time = proto.Field(
+    last_tune_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    tuning_operation = proto.Field(
+    tuning_operation: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    data_state = proto.Field(
+    data_state: DataState = proto.Field(
         proto.ENUM,
         number=16,
         enum=DataState,
     )
-    filtering_option = proto.Field(
+    filtering_option: common.RecommendationsFilteringOption = proto.Field(
         proto.ENUM,
         number=18,
         enum=common.RecommendationsFilteringOption,
     )
-    serving_config_lists = proto.RepeatedField(
+    serving_config_lists: MutableSequence[ServingConfigList] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message=ServingConfigList,

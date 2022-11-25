@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -169,9 +179,9 @@ class ServingConfigServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ServingConfigServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the serving config service client.
@@ -215,13 +225,15 @@ class ServingConfigServiceAsyncClient:
 
     async def create_serving_config(
         self,
-        request: Union[serving_config_service.CreateServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.CreateServingConfigRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        serving_config: gcr_serving_config.ServingConfig = None,
-        serving_config_id: str = None,
+        parent: Optional[str] = None,
+        serving_config: Optional[gcr_serving_config.ServingConfig] = None,
+        serving_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Creates a ServingConfig.
@@ -249,7 +261,7 @@ class ServingConfigServiceAsyncClient:
                 # Initialize request argument(s)
                 serving_config = retail_v2.ServingConfig()
                 serving_config.display_name = "display_name_value"
-                serving_config.solution_types = "SOLUTION_TYPE_SEARCH"
+                serving_config.solution_types = ['SOLUTION_TYPE_SEARCH']
 
                 request = retail_v2.CreateServingConfigRequest(
                     parent="parent_value",
@@ -264,7 +276,7 @@ class ServingConfigServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.CreateServingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.CreateServingConfigRequest, dict]]):
                 The request object. Request for CreateServingConfig
                 method.
             parent (:class:`str`):
@@ -354,11 +366,13 @@ class ServingConfigServiceAsyncClient:
 
     async def delete_serving_config(
         self,
-        request: Union[serving_config_service.DeleteServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.DeleteServingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ServingConfig.
@@ -389,7 +403,7 @@ class ServingConfigServiceAsyncClient:
                 await client.delete_serving_config(request=request)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.DeleteServingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.DeleteServingConfigRequest, dict]]):
                 The request object. Request for DeleteServingConfig
                 method.
             name (:class:`str`):
@@ -447,12 +461,14 @@ class ServingConfigServiceAsyncClient:
 
     async def update_serving_config(
         self,
-        request: Union[serving_config_service.UpdateServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.UpdateServingConfigRequest, dict]
+        ] = None,
         *,
-        serving_config: gcr_serving_config.ServingConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        serving_config: Optional[gcr_serving_config.ServingConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
@@ -475,7 +491,7 @@ class ServingConfigServiceAsyncClient:
                 # Initialize request argument(s)
                 serving_config = retail_v2.ServingConfig()
                 serving_config.display_name = "display_name_value"
-                serving_config.solution_types = "SOLUTION_TYPE_SEARCH"
+                serving_config.solution_types = ['SOLUTION_TYPE_SEARCH']
 
                 request = retail_v2.UpdateServingConfigRequest(
                     serving_config=serving_config,
@@ -488,7 +504,7 @@ class ServingConfigServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.UpdateServingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.UpdateServingConfigRequest, dict]]):
                 The request object. Request for UpdateServingConfig
                 method.
             serving_config (:class:`google.cloud.retail_v2.types.ServingConfig`):
@@ -572,11 +588,13 @@ class ServingConfigServiceAsyncClient:
 
     async def get_serving_config(
         self,
-        request: Union[serving_config_service.GetServingConfigRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.GetServingConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> serving_config.ServingConfig:
         r"""Gets a ServingConfig.
@@ -610,7 +628,7 @@ class ServingConfigServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.GetServingConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.GetServingConfigRequest, dict]]):
                 The request object. Request for GetServingConfig method.
             name (:class:`str`):
                 Required. The resource name of the ServingConfig to get.
@@ -678,11 +696,13 @@ class ServingConfigServiceAsyncClient:
 
     async def list_serving_configs(
         self,
-        request: Union[serving_config_service.ListServingConfigsRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.ListServingConfigsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServingConfigsAsyncPager:
         r"""Lists all ServingConfigs linked to this catalog.
@@ -715,7 +735,7 @@ class ServingConfigServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.ListServingConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.ListServingConfigsRequest, dict]]):
                 The request object. Request for ListServingConfigs
                 method.
             parent (:class:`str`):
@@ -793,11 +813,11 @@ class ServingConfigServiceAsyncClient:
 
     async def add_control(
         self,
-        request: Union[serving_config_service.AddControlRequest, dict] = None,
+        request: Optional[Union[serving_config_service.AddControlRequest, dict]] = None,
         *,
-        serving_config: str = None,
+        serving_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Enables a Control on the specified ServingConfig. The control is
@@ -836,7 +856,7 @@ class ServingConfigServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.AddControlRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.AddControlRequest, dict]]):
                 The request object. Request for AddControl method.
             serving_config (:class:`str`):
                 Required. The source ServingConfig resource name .
@@ -906,11 +926,13 @@ class ServingConfigServiceAsyncClient:
 
     async def remove_control(
         self,
-        request: Union[serving_config_service.RemoveControlRequest, dict] = None,
+        request: Optional[
+            Union[serving_config_service.RemoveControlRequest, dict]
+        ] = None,
         *,
-        serving_config: str = None,
+        serving_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_serving_config.ServingConfig:
         r"""Disables a Control on the specified ServingConfig. The control
@@ -945,7 +967,7 @@ class ServingConfigServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.RemoveControlRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.RemoveControlRequest, dict]]):
                 The request object. Request for RemoveControl method.
             serving_config (:class:`str`):
                 Required. The source ServingConfig resource name .

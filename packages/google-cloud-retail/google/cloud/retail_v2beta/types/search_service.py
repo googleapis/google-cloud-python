@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
@@ -137,7 +139,7 @@ class SearchRequest(proto.Message):
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
-        facet_specs (Sequence[google.cloud.retail_v2beta.types.SearchRequest.FacetSpec]):
+        facet_specs (MutableSequence[google.cloud.retail_v2beta.types.SearchRequest.FacetSpec]):
             Facet specifications for faceted search. If empty, no facets
             are returned.
 
@@ -168,7 +170,7 @@ class SearchRequest(proto.Message):
             conditions under which query expansion will occur. See more
             details at this `user
             guide <https://cloud.google.com/retail/docs/result-size#query_expansion>`__.
-        variant_rollup_keys (Sequence[str]):
+        variant_rollup_keys (MutableSequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2beta.Product.Type.VARIANT]
             [Product][google.cloud.retail.v2beta.Product]s attributes,
@@ -254,7 +256,7 @@ class SearchRequest(proto.Message):
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
-        page_categories (Sequence[str]):
+        page_categories (MutableSequence[str]):
             The categories associated with a category page. Required for
             category navigation queries to achieve good search quality.
             The format should be the same as
@@ -283,7 +285,7 @@ class SearchRequest(proto.Message):
             [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
             will override
             [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec].
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
 
@@ -331,7 +333,7 @@ class SearchRequest(proto.Message):
                 value is 300. Values above 300 will be coerced to 300.
 
                 If this field is negative, an INVALID_ARGUMENT is returned.
-            excluded_filter_keys (Sequence[str]):
+            excluded_filter_keys (MutableSequence[str]):
                 List of keys to exclude when faceting.
 
                 By default,
@@ -449,12 +451,12 @@ class SearchRequest(proto.Message):
                        -  "inventory(place_id,price)"
                        -  "inventory(place_id,original_price)"
                        -  "inventory(place_id,attributes.key)".
-                intervals (Sequence[google.cloud.retail_v2beta.types.Interval]):
+                intervals (MutableSequence[google.cloud.retail_v2beta.types.Interval]):
                     Set only if values should be bucketized into
                     intervals. Must be set for facets with numerical
                     values. Must not be set for facet with text
                     values. Maximum number of intervals is 30.
-                restricted_values (Sequence[str]):
+                restricted_values (MutableSequence[str]):
                     Only get facet for the given restricted values. For example,
                     when using "pickupInStore" as key and set restricted values
                     to ["store123", "store456"], only facets for "store123" and
@@ -481,7 +483,7 @@ class SearchRequest(proto.Message):
                     -  customFulfillment4
 
                     -  customFulfillment5
-                prefixes (Sequence[str]):
+                prefixes (MutableSequence[str]):
                     Only get facet values that start with the
                     given string prefix. For example, suppose
                     "categories" has three values "Women > Shoe",
@@ -490,7 +492,7 @@ class SearchRequest(proto.Message):
                     will give only "Women > Shoe" and "Women >
                     Dress". Only supported on textual fields.
                     Maximum is 10.
-                contains (Sequence[str]):
+                contains (MutableSequence[str]):
                     Only get facet values that contains the given
                     strings. For example, suppose "categories" has
                     three values "Women > Shoe", "Women > Dress" and
@@ -555,58 +557,58 @@ class SearchRequest(proto.Message):
                     facets.
             """
 
-            key = proto.Field(
+            key: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            intervals = proto.RepeatedField(
+            intervals: MutableSequence[common.Interval] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message=common.Interval,
             )
-            restricted_values = proto.RepeatedField(
+            restricted_values: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=3,
             )
-            prefixes = proto.RepeatedField(
+            prefixes: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=8,
             )
-            contains = proto.RepeatedField(
+            contains: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=9,
             )
-            case_insensitive = proto.Field(
+            case_insensitive: bool = proto.Field(
                 proto.BOOL,
                 number=10,
             )
-            order_by = proto.Field(
+            order_by: str = proto.Field(
                 proto.STRING,
                 number=4,
             )
-            query = proto.Field(
+            query: str = proto.Field(
                 proto.STRING,
                 number=5,
             )
-            return_min_max = proto.Field(
+            return_min_max: bool = proto.Field(
                 proto.BOOL,
                 number=11,
             )
 
-        facet_key = proto.Field(
+        facet_key: "SearchRequest.FacetSpec.FacetKey" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.FacetSpec.FacetKey",
         )
-        limit = proto.Field(
+        limit: int = proto.Field(
             proto.INT32,
             number=2,
         )
-        excluded_filter_keys = proto.RepeatedField(
+        excluded_filter_keys: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        enable_dynamic_position = proto.Field(
+        enable_dynamic_position: bool = proto.Field(
             proto.BOOL,
             number=4,
         )
@@ -627,7 +629,7 @@ class SearchRequest(proto.Message):
             DISABLED = 1
             ENABLED = 2
 
-        mode = proto.Field(
+        mode: "SearchRequest.DynamicFacetSpec.Mode" = proto.Field(
             proto.ENUM,
             number=1,
             enum="SearchRequest.DynamicFacetSpec.Mode",
@@ -637,7 +639,7 @@ class SearchRequest(proto.Message):
         r"""Boost specification to boost certain items.
 
         Attributes:
-            condition_boost_specs (Sequence[google.cloud.retail_v2beta.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
+            condition_boost_specs (MutableSequence[google.cloud.retail_v2beta.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
                 Condition boost specifications. If a product
                 matches multiple conditions in the
                 specifictions, boost scores from these
@@ -694,21 +696,23 @@ class SearchRequest(proto.Message):
                     condition is ignored.
             """
 
-            condition = proto.Field(
+            condition: str = proto.Field(
                 proto.STRING,
                 number=1,
             )
-            boost = proto.Field(
+            boost: float = proto.Field(
                 proto.FLOAT,
                 number=2,
             )
 
-        condition_boost_specs = proto.RepeatedField(
+        condition_boost_specs: MutableSequence[
+            "SearchRequest.BoostSpec.ConditionBoostSpec"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.BoostSpec.ConditionBoostSpec",
         )
-        skip_boost_spec_validation = proto.Field(
+        skip_boost_spec_validation: bool = proto.Field(
             proto.BOOL,
             number=2,
             optional=True,
@@ -738,12 +742,12 @@ class SearchRequest(proto.Message):
             DISABLED = 1
             AUTO = 3
 
-        condition = proto.Field(
+        condition: "SearchRequest.QueryExpansionSpec.Condition" = proto.Field(
             proto.ENUM,
             number=1,
             enum="SearchRequest.QueryExpansionSpec.Condition",
         )
-        pin_unexpanded_results = proto.Field(
+        pin_unexpanded_results: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -763,7 +767,7 @@ class SearchRequest(proto.Message):
             AUTO = 1
             DISABLED = 2
 
-        mode = proto.Field(
+        mode: "SearchRequest.PersonalizationSpec.Mode" = proto.Field(
             proto.ENUM,
             number=1,
             enum="SearchRequest.PersonalizationSpec.Mode",
@@ -787,101 +791,101 @@ class SearchRequest(proto.Message):
             SUGGESTION_ONLY = 1
             AUTO = 2
 
-        mode = proto.Field(
+        mode: "SearchRequest.SpellCorrectionSpec.Mode" = proto.Field(
             proto.ENUM,
             number=1,
             enum="SearchRequest.SpellCorrectionSpec.Mode",
         )
 
-    placement = proto.Field(
+    placement: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    branch = proto.Field(
+    branch: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    visitor_id = proto.Field(
+    visitor_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    user_info = proto.Field(
+    user_info: common.UserInfo = proto.Field(
         proto.MESSAGE,
         number=5,
         message=common.UserInfo,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    canonical_filter = proto.Field(
+    canonical_filter: str = proto.Field(
         proto.STRING,
         number=28,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    facet_specs = proto.RepeatedField(
+    facet_specs: MutableSequence[FacetSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=FacetSpec,
     )
-    dynamic_facet_spec = proto.Field(
+    dynamic_facet_spec: DynamicFacetSpec = proto.Field(
         proto.MESSAGE,
         number=21,
         message=DynamicFacetSpec,
     )
-    boost_spec = proto.Field(
+    boost_spec: BoostSpec = proto.Field(
         proto.MESSAGE,
         number=13,
         message=BoostSpec,
     )
-    query_expansion_spec = proto.Field(
+    query_expansion_spec: QueryExpansionSpec = proto.Field(
         proto.MESSAGE,
         number=14,
         message=QueryExpansionSpec,
     )
-    variant_rollup_keys = proto.RepeatedField(
+    variant_rollup_keys: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
-    page_categories = proto.RepeatedField(
+    page_categories: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=23,
     )
-    search_mode = proto.Field(
+    search_mode: SearchMode = proto.Field(
         proto.ENUM,
         number=31,
         enum=SearchMode,
     )
-    personalization_spec = proto.Field(
+    personalization_spec: PersonalizationSpec = proto.Field(
         proto.MESSAGE,
         number=32,
         message=PersonalizationSpec,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=34,
     )
-    spell_correction_spec = proto.Field(
+    spell_correction_spec: SpellCorrectionSpec = proto.Field(
         proto.MESSAGE,
         number=35,
         optional=True,
@@ -895,10 +899,10 @@ class SearchResponse(proto.Message):
     method.
 
     Attributes:
-        results (Sequence[google.cloud.retail_v2beta.types.SearchResponse.SearchResult]):
+        results (MutableSequence[google.cloud.retail_v2beta.types.SearchResponse.SearchResult]):
             A list of matched items. The order represents
             the ranking.
-        facets (Sequence[google.cloud.retail_v2beta.types.SearchResponse.Facet]):
+        facets (MutableSequence[google.cloud.retail_v2beta.types.SearchResponse.Facet]):
             Results of facets requested by user.
         total_size (int):
             The estimated total count of matched items irrespective of
@@ -932,10 +936,10 @@ class SearchResponse(proto.Message):
             and
             [attribution_token][google.cloud.retail.v2beta.SearchResponse.attribution_token]
             are set in the response.
-        applied_controls (Sequence[str]):
+        applied_controls (MutableSequence[str]):
             The fully qualified resource name of applied
             `controls <https://cloud.google.com/retail/docs/serving-control-rules>`__.
-        invalid_condition_boost_specs (Sequence[google.cloud.retail_v2beta.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
+        invalid_condition_boost_specs (MutableSequence[google.cloud.retail_v2beta.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
             The invalid
             [SearchRequest.BoostSpec.condition_boost_specs][google.cloud.retail.v2beta.SearchRequest.BoostSpec.condition_boost_specs]
             that are not applied during serving.
@@ -969,7 +973,7 @@ class SearchResponse(proto.Message):
                 The count of matched
                 [variant][google.cloud.retail.v2beta.Product.Type.VARIANT]
                 [Product][google.cloud.retail.v2beta.Product]s.
-            matching_variant_fields (Mapping[str, google.protobuf.field_mask_pb2.FieldMask]):
+            matching_variant_fields (MutableMapping[str, google.protobuf.field_mask_pb2.FieldMask]):
                 If a
                 [variant][google.cloud.retail.v2beta.Product.Type.VARIANT]
                 [Product][google.cloud.retail.v2beta.Product] matches the
@@ -986,7 +990,7 @@ class SearchResponse(proto.Message):
                 "products.color_info" indicates there is a match between
                 "sku1" [ColorInfo][google.cloud.retail.v2beta.ColorInfo] and
                 the query.
-            variant_rollup_values (Mapping[str, google.protobuf.struct_pb2.Value]):
+            variant_rollup_values (MutableMapping[str, google.protobuf.struct_pb2.Value]):
                 The rollup matching
                 [variant][google.cloud.retail.v2beta.Product.Type.VARIANT]
                 [Product][google.cloud.retail.v2beta.Product] attributes.
@@ -1022,7 +1026,7 @@ class SearchResponse(proto.Message):
                 ``{key: "pickupInStore.store1" value { number_value: 10 }}``
                 means a there are 10 variants in this product are available
                 in the store "store1".
-            personal_labels (Sequence[str]):
+            personal_labels (MutableSequence[str]):
                 Specifies previous events related to this product for this
                 user based on
                 [UserEvent][google.cloud.retail.v2beta.UserEvent] with same
@@ -1041,32 +1045,34 @@ class SearchResponse(proto.Message):
                    purchased before.
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        product = proto.Field(
+        product: gcr_product.Product = proto.Field(
             proto.MESSAGE,
             number=2,
             message=gcr_product.Product,
         )
-        matching_variant_count = proto.Field(
+        matching_variant_count: int = proto.Field(
             proto.INT32,
             number=3,
         )
-        matching_variant_fields = proto.MapField(
+        matching_variant_fields: MutableMapping[
+            str, field_mask_pb2.FieldMask
+        ] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=4,
             message=field_mask_pb2.FieldMask,
         )
-        variant_rollup_values = proto.MapField(
+        variant_rollup_values: MutableMapping[str, struct_pb2.Value] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=5,
             message=struct_pb2.Value,
         )
-        personal_labels = proto.RepeatedField(
+        personal_labels: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=7,
         )
@@ -1078,7 +1084,7 @@ class SearchResponse(proto.Message):
             key (str):
                 The key for this facet. E.g., "colorFamilies"
                 or "price" or "attributes.attr1".
-            values (Sequence[google.cloud.retail_v2beta.types.SearchResponse.Facet.FacetValue]):
+            values (MutableSequence[google.cloud.retail_v2beta.types.SearchResponse.Facet.FacetValue]):
                 The facet values for this field.
             dynamic_facet (bool):
                 Whether the facet is dynamically generated.
@@ -1121,40 +1127,42 @@ class SearchResponse(proto.Message):
                     is true.
             """
 
-            value = proto.Field(
+            value: str = proto.Field(
                 proto.STRING,
                 number=1,
                 oneof="facet_value",
             )
-            interval = proto.Field(
+            interval: common.Interval = proto.Field(
                 proto.MESSAGE,
                 number=2,
                 oneof="facet_value",
                 message=common.Interval,
             )
-            count = proto.Field(
+            count: int = proto.Field(
                 proto.INT64,
                 number=3,
             )
-            min_value = proto.Field(
+            min_value: float = proto.Field(
                 proto.DOUBLE,
                 number=5,
             )
-            max_value = proto.Field(
+            max_value: float = proto.Field(
                 proto.DOUBLE,
                 number=6,
             )
 
-        key = proto.Field(
+        key: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        values = proto.RepeatedField(
+        values: MutableSequence[
+            "SearchResponse.Facet.FacetValue"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SearchResponse.Facet.FacetValue",
         )
-        dynamic_facet = proto.Field(
+        dynamic_facet: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
@@ -1174,11 +1182,11 @@ class SearchResponse(proto.Message):
                 is set to true.
         """
 
-        expanded_query = proto.Field(
+        expanded_query: bool = proto.Field(
             proto.BOOL,
             number=1,
         )
-        pinned_result_count = proto.Field(
+        pinned_result_count: int = proto.Field(
             proto.INT64,
             number=2,
         )
@@ -1187,46 +1195,48 @@ class SearchResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(
+    results: MutableSequence[SearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=SearchResult,
     )
-    facets = proto.RepeatedField(
+    facets: MutableSequence[Facet] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Facet,
     )
-    total_size = proto.Field(
+    total_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    corrected_query = proto.Field(
+    corrected_query: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    attribution_token = proto.Field(
+    attribution_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    query_expansion_info = proto.Field(
+    query_expansion_info: QueryExpansionInfo = proto.Field(
         proto.MESSAGE,
         number=7,
         message=QueryExpansionInfo,
     )
-    redirect_uri = proto.Field(
+    redirect_uri: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    applied_controls = proto.RepeatedField(
+    applied_controls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
     )
-    invalid_condition_boost_specs = proto.RepeatedField(
+    invalid_condition_boost_specs: MutableSequence[
+        "SearchRequest.BoostSpec.ConditionBoostSpec"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="SearchRequest.BoostSpec.ConditionBoostSpec",

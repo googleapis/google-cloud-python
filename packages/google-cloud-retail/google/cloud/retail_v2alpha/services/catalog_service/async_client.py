@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -174,9 +184,9 @@ class CatalogServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CatalogServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the catalog service client.
@@ -220,11 +230,11 @@ class CatalogServiceAsyncClient:
 
     async def list_catalogs(
         self,
-        request: Union[catalog_service.ListCatalogsRequest, dict] = None,
+        request: Optional[Union[catalog_service.ListCatalogsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogsAsyncPager:
         r"""Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s
@@ -258,7 +268,7 @@ class CatalogServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.ListCatalogsRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.ListCatalogsRequest, dict]]):
                 The request object. Request for
                 [CatalogService.ListCatalogs][google.cloud.retail.v2alpha.CatalogService.ListCatalogs]
                 method.
@@ -343,12 +353,12 @@ class CatalogServiceAsyncClient:
 
     async def update_catalog(
         self,
-        request: Union[catalog_service.UpdateCatalogRequest, dict] = None,
+        request: Optional[Union[catalog_service.UpdateCatalogRequest, dict]] = None,
         *,
-        catalog: gcr_catalog.Catalog = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        catalog: Optional[gcr_catalog.Catalog] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_catalog.Catalog:
         r"""Updates the [Catalog][google.cloud.retail.v2alpha.Catalog]s.
@@ -384,7 +394,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.UpdateCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.UpdateCatalogRequest, dict]]):
                 The request object. Request for
                 [CatalogService.UpdateCatalog][google.cloud.retail.v2alpha.CatalogService.UpdateCatalog]
                 method.
@@ -473,11 +483,11 @@ class CatalogServiceAsyncClient:
 
     async def set_default_branch(
         self,
-        request: Union[catalog_service.SetDefaultBranchRequest, dict] = None,
+        request: Optional[Union[catalog_service.SetDefaultBranchRequest, dict]] = None,
         *,
-        catalog: str = None,
+        catalog: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Set a specified branch id as default branch. API methods such as
@@ -539,7 +549,7 @@ class CatalogServiceAsyncClient:
                 await client.set_default_branch(request=request)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.SetDefaultBranchRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.SetDefaultBranchRequest, dict]]):
                 The request object. Request message to set a specified
                 branch as new default_branch.
             catalog (:class:`str`):
@@ -596,11 +606,11 @@ class CatalogServiceAsyncClient:
 
     async def get_default_branch(
         self,
-        request: Union[catalog_service.GetDefaultBranchRequest, dict] = None,
+        request: Optional[Union[catalog_service.GetDefaultBranchRequest, dict]] = None,
         *,
-        catalog: str = None,
+        catalog: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog_service.GetDefaultBranchResponse:
         r"""Get which branch is currently default branch set by
@@ -633,7 +643,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.GetDefaultBranchRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.GetDefaultBranchRequest, dict]]):
                 The request object. Request message to show which branch
                 is currently the default branch.
             catalog (:class:`str`):
@@ -699,11 +709,13 @@ class CatalogServiceAsyncClient:
 
     async def get_completion_config(
         self,
-        request: Union[catalog_service.GetCompletionConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.GetCompletionConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CompletionConfig:
         r"""Gets a
@@ -736,7 +748,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.GetCompletionConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.GetCompletionConfigRequest, dict]]):
                 The request object. Request for
                 [CatalogService.GetCompletionConfig][google.cloud.retail.v2alpha.CatalogService.GetCompletionConfig]
                 method.
@@ -804,12 +816,14 @@ class CatalogServiceAsyncClient:
 
     async def update_completion_config(
         self,
-        request: Union[catalog_service.UpdateCompletionConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.UpdateCompletionConfigRequest, dict]
+        ] = None,
         *,
-        completion_config: catalog.CompletionConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        completion_config: Optional[catalog.CompletionConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CompletionConfig:
         r"""Updates the
@@ -845,7 +859,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.UpdateCompletionConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.UpdateCompletionConfigRequest, dict]]):
                 The request object. Request for
                 [CatalogService.UpdateCompletionConfig][google.cloud.retail.v2alpha.CatalogService.UpdateCompletionConfig]
                 method.
@@ -941,11 +955,13 @@ class CatalogServiceAsyncClient:
 
     async def get_attributes_config(
         self,
-        request: Union[catalog_service.GetAttributesConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.GetAttributesConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Gets an
@@ -978,7 +994,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.GetAttributesConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.GetAttributesConfigRequest, dict]]):
                 The request object. Request for
                 [CatalogService.GetAttributesConfig][google.cloud.retail.v2alpha.CatalogService.GetAttributesConfig]
                 method.
@@ -1043,12 +1059,14 @@ class CatalogServiceAsyncClient:
 
     async def update_attributes_config(
         self,
-        request: Union[catalog_service.UpdateAttributesConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.UpdateAttributesConfigRequest, dict]
+        ] = None,
         *,
-        attributes_config: catalog.AttributesConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        attributes_config: Optional[catalog.AttributesConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Updates the
@@ -1093,7 +1111,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.UpdateAttributesConfigRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.UpdateAttributesConfigRequest, dict]]):
                 The request object. Request for
                 [CatalogService.UpdateAttributesConfig][google.cloud.retail.v2alpha.CatalogService.UpdateAttributesConfig]
                 method.
@@ -1175,10 +1193,12 @@ class CatalogServiceAsyncClient:
 
     async def add_catalog_attribute(
         self,
-        request: Union[catalog_service.AddCatalogAttributeRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.AddCatalogAttributeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Adds the specified
@@ -1221,7 +1241,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.AddCatalogAttributeRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.AddCatalogAttributeRequest, dict]]):
                 The request object. Request for
                 [CatalogService.AddCatalogAttribute][google.cloud.retail.v2alpha.CatalogService.AddCatalogAttribute]
                 method.
@@ -1267,10 +1287,12 @@ class CatalogServiceAsyncClient:
 
     async def remove_catalog_attribute(
         self,
-        request: Union[catalog_service.RemoveCatalogAttributeRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.RemoveCatalogAttributeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Removes the specified
@@ -1310,7 +1332,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.RemoveCatalogAttributeRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.RemoveCatalogAttributeRequest, dict]]):
                 The request object. Request for
                 [CatalogService.RemoveCatalogAttribute][google.cloud.retail.v2alpha.CatalogService.RemoveCatalogAttribute]
                 method.
@@ -1356,10 +1378,12 @@ class CatalogServiceAsyncClient:
 
     async def replace_catalog_attribute(
         self,
-        request: Union[catalog_service.ReplaceCatalogAttributeRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.ReplaceCatalogAttributeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Replaces the specified
@@ -1404,7 +1428,7 @@ class CatalogServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.ReplaceCatalogAttributeRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.ReplaceCatalogAttributeRequest, dict]]):
                 The request object. Request for
                 [CatalogService.ReplaceCatalogAttribute][google.cloud.retail.v2alpha.CatalogService.ReplaceCatalogAttribute]
                 method.

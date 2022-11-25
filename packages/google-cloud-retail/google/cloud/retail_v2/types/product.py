@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -134,7 +136,7 @@ class Product(proto.Message):
             `item_group_id <https://support.google.com/merchants/answer/6324507>`__.
             Schema.org property
             `Product.inProductGroupWithID <https://schema.org/inProductGroupWithID>`__.
-        collection_member_ids (Sequence[str]):
+        collection_member_ids (MutableSequence[str]):
             The [id][google.cloud.retail.v2.Product.id] of the
             collection members when
             [type][google.cloud.retail.v2.Product.type] is
@@ -170,7 +172,7 @@ class Product(proto.Message):
 
             If the value is not a valid GTIN, an INVALID_ARGUMENT error
             is returned.
-        categories (Sequence[str]):
+        categories (MutableSequence[str]):
             Product categories. This field is repeated for supporting
             one product belonging to several parallel categories.
             Strongly recommended using the full path for better search /
@@ -217,7 +219,7 @@ class Product(proto.Message):
             `title <https://support.google.com/merchants/answer/6324415>`__.
             Schema.org property
             `Product.name <https://schema.org/name>`__.
-        brands (Sequence[str]):
+        brands (MutableSequence[str]):
             The brands of the product.
 
             A maximum of 30 brands are allowed. Each brand must be a
@@ -255,7 +257,7 @@ class Product(proto.Message):
 
             For product search this field is in use. It defaults to
             "en-US" if unset.
-        attributes (Mapping[str, google.cloud.retail_v2.types.CustomAttribute]):
+        attributes (MutableMapping[str, google.cloud.retail_v2.types.CustomAttribute]):
             Highly encouraged. Extra product attributes to be included.
             For example, for products, this could include the store
             name, vendor, style, color, etc. These are very strong
@@ -287,7 +289,7 @@ class Product(proto.Message):
                non-empty UTF-8 encoded string with a length limit of 256
                characters.
             -  For number attributes, at most 400 values are allowed.
-        tags (Sequence[str]):
+        tags (MutableSequence[str]):
             Custom tags associated with the product.
 
             At most 250 values are allowed per
@@ -325,7 +327,7 @@ class Product(proto.Message):
             `Offer.availability <https://schema.org/availability>`__.
         available_quantity (google.protobuf.wrappers_pb2.Int32Value):
             The available quantity of the item.
-        fulfillment_info (Sequence[google.cloud.retail_v2.types.FulfillmentInfo]):
+        fulfillment_info (MutableSequence[google.cloud.retail_v2.types.FulfillmentInfo]):
             Fulfillment information, such as the store IDs for in-store
             pickup or region IDs for different shipping methods.
 
@@ -346,7 +348,7 @@ class Product(proto.Message):
             Corresponding properties: Google Merchant Center property
             `link <https://support.google.com/merchants/answer/6324416>`__.
             Schema.org property `Offer.url <https://schema.org/url>`__.
-        images (Sequence[google.cloud.retail_v2.types.Image]):
+        images (MutableSequence[google.cloud.retail_v2.types.Image]):
             Product images for the product. We highly recommend putting
             the main image first.
 
@@ -367,7 +369,7 @@ class Product(proto.Message):
             `color <https://support.google.com/merchants/answer/6324487>`__.
             Schema.org property
             `Product.color <https://schema.org/color>`__.
-        sizes (Sequence[str]):
+        sizes (MutableSequence[str]):
             The size of the product. To represent different size systems
             or size types, consider using this format:
             [[[size_system:]size_type:]size_value].
@@ -392,7 +394,7 @@ class Product(proto.Message):
             `size_system <https://support.google.com/merchants/answer/6324502>`__.
             Schema.org property
             `Product.size <https://schema.org/size>`__.
-        materials (Sequence[str]):
+        materials (MutableSequence[str]):
             The material of the product. For example, "leather",
             "wooden".
 
@@ -404,7 +406,7 @@ class Product(proto.Message):
             `material <https://support.google.com/merchants/answer/6324410>`__.
             Schema.org property
             `Product.material <https://schema.org/material>`__.
-        patterns (Sequence[str]):
+        patterns (MutableSequence[str]):
             The pattern or graphic print of the product. For example,
             "striped", "polka dot", "paisley".
 
@@ -418,7 +420,7 @@ class Product(proto.Message):
             `pattern <https://support.google.com/merchants/answer/6324483>`__.
             Schema.org property
             `Product.pattern <https://schema.org/pattern>`__.
-        conditions (Sequence[str]):
+        conditions (MutableSequence[str]):
             The condition of the product. Strongly encouraged to use the
             standard values: "new", "refurbished", "used".
 
@@ -432,7 +434,7 @@ class Product(proto.Message):
             `condition <https://support.google.com/merchants/answer/6324469>`__.
             Schema.org property
             `Offer.itemCondition <https://schema.org/itemCondition>`__.
-        promotions (Sequence[google.cloud.retail_v2.types.Promotion]):
+        promotions (MutableSequence[google.cloud.retail_v2.types.Promotion]):
             The promotions applied to the product. A maximum of 10
             values are allowed per
             [Product][google.cloud.retail.v2.Product]. Only
@@ -512,7 +514,7 @@ class Product(proto.Message):
             Note: Returning more fields in
             [SearchResponse][google.cloud.retail.v2.SearchResponse] can
             increase response payload size and serving latency.
-        variants (Sequence[google.cloud.retail_v2.types.Product]):
+        variants (MutableSequence[google.cloud.retail_v2.types.Product]):
             Output only. Product variants grouped together on primary
             product which share similar product attributes. It's
             automatically grouped by
@@ -524,7 +526,7 @@ class Product(proto.Message):
             Note: This field is OUTPUT_ONLY for
             [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct].
             Do not set this field in API requests.
-        local_inventories (Sequence[google.cloud.retail_v2.types.LocalInventory]):
+        local_inventories (MutableSequence[google.cloud.retail_v2.types.LocalInventory]):
             Output only. A list of local inventories specific to
             different places.
 
@@ -550,159 +552,159 @@ class Product(proto.Message):
         PREORDER = 3
         BACKORDER = 4
 
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="expiration",
         message=timestamp_pb2.Timestamp,
     )
-    ttl = proto.Field(
+    ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=17,
         oneof="expiration",
         message=duration_pb2.Duration,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=3,
         enum=Type,
     )
-    primary_product_id = proto.Field(
+    primary_product_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    collection_member_ids = proto.RepeatedField(
+    collection_member_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    gtin = proto.Field(
+    gtin: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    categories = proto.RepeatedField(
+    categories: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    brands = proto.RepeatedField(
+    brands: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    attributes = proto.MapField(
+    attributes: MutableMapping[str, common.CustomAttribute] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=12,
         message=common.CustomAttribute,
     )
-    tags = proto.RepeatedField(
+    tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=13,
     )
-    price_info = proto.Field(
+    price_info: common.PriceInfo = proto.Field(
         proto.MESSAGE,
         number=14,
         message=common.PriceInfo,
     )
-    rating = proto.Field(
+    rating: common.Rating = proto.Field(
         proto.MESSAGE,
         number=15,
         message=common.Rating,
     )
-    available_time = proto.Field(
+    available_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=18,
         message=timestamp_pb2.Timestamp,
     )
-    availability = proto.Field(
+    availability: Availability = proto.Field(
         proto.ENUM,
         number=19,
         enum=Availability,
     )
-    available_quantity = proto.Field(
+    available_quantity: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=20,
         message=wrappers_pb2.Int32Value,
     )
-    fulfillment_info = proto.RepeatedField(
+    fulfillment_info: MutableSequence[common.FulfillmentInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=21,
         message=common.FulfillmentInfo,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=22,
     )
-    images = proto.RepeatedField(
+    images: MutableSequence[common.Image] = proto.RepeatedField(
         proto.MESSAGE,
         number=23,
         message=common.Image,
     )
-    audience = proto.Field(
+    audience: common.Audience = proto.Field(
         proto.MESSAGE,
         number=24,
         message=common.Audience,
     )
-    color_info = proto.Field(
+    color_info: common.ColorInfo = proto.Field(
         proto.MESSAGE,
         number=25,
         message=common.ColorInfo,
     )
-    sizes = proto.RepeatedField(
+    sizes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=26,
     )
-    materials = proto.RepeatedField(
+    materials: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=27,
     )
-    patterns = proto.RepeatedField(
+    patterns: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=28,
     )
-    conditions = proto.RepeatedField(
+    conditions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=29,
     )
-    promotions = proto.RepeatedField(
+    promotions: MutableSequence[promotion.Promotion] = proto.RepeatedField(
         proto.MESSAGE,
         number=34,
         message=promotion.Promotion,
     )
-    publish_time = proto.Field(
+    publish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=33,
         message=timestamp_pb2.Timestamp,
     )
-    retrievable_fields = proto.Field(
+    retrievable_fields: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=30,
         message=field_mask_pb2.FieldMask,
     )
-    variants = proto.RepeatedField(
+    variants: MutableSequence["Product"] = proto.RepeatedField(
         proto.MESSAGE,
         number=31,
         message="Product",
     )
-    local_inventories = proto.RepeatedField(
+    local_inventories: MutableSequence[common.LocalInventory] = proto.RepeatedField(
         proto.MESSAGE,
         number=35,
         message=common.LocalInventory,

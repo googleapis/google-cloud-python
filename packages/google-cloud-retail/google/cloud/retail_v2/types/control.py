@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import common
@@ -51,7 +53,7 @@ class Control(proto.Message):
             This field must be a UTF-8 encoded string with a length
             limit of 128 characters. Otherwise, an INVALID_ARGUMENT
             error is thrown.
-        associated_serving_config_ids (Sequence[str]):
+        associated_serving_config_ids (MutableSequence[str]):
             Output only. List of [serving
             configuration][google.cloud.retail.v2.ServingConfig] ids
             that are associated with this control in the same
@@ -60,7 +62,7 @@ class Control(proto.Message):
             Note the association is managed via the
             [ServingConfig][google.cloud.retail.v2.ServingConfig], this
             is an output only denormalized view.
-        solution_types (Sequence[google.cloud.retail_v2.types.SolutionType]):
+        solution_types (MutableSequence[google.cloud.retail_v2.types.SolutionType]):
             Required. Immutable. The solution types that the control is
             used for. Currently we support setting only one type of
             solution at creation time.
@@ -69,7 +71,7 @@ class Control(proto.Message):
             moment. If no solution type is provided at creation time,
             will default to
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2.SolutionType.SOLUTION_TYPE_SEARCH].
-        search_solution_use_case (Sequence[google.cloud.retail_v2.types.SearchSolutionUseCase]):
+        search_solution_use_case (MutableSequence[google.cloud.retail_v2.types.SearchSolutionUseCase]):
             Specifies the use case for the control. Affects what
             condition fields can be set. Only settable by search
             controls. Will default to
@@ -78,30 +80,32 @@ class Control(proto.Message):
             search_solution_use_case per control.
     """
 
-    rule = proto.Field(
+    rule: common.Rule = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="control",
         message=common.Rule,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    associated_serving_config_ids = proto.RepeatedField(
+    associated_serving_config_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
-    solution_types = proto.RepeatedField(
+    solution_types: MutableSequence[common.SolutionType] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=common.SolutionType,
     )
-    search_solution_use_case = proto.RepeatedField(
+    search_solution_use_case: MutableSequence[
+        common.SearchSolutionUseCase
+    ] = proto.RepeatedField(
         proto.ENUM,
         number=7,
         enum=common.SearchSolutionUseCase,

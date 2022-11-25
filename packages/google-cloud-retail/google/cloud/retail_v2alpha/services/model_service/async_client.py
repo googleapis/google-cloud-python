@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -177,9 +187,9 @@ class ModelServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ModelServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the model service client.
@@ -223,12 +233,12 @@ class ModelServiceAsyncClient:
 
     async def create_model(
         self,
-        request: Union[model_service.CreateModelRequest, dict] = None,
+        request: Optional[Union[model_service.CreateModelRequest, dict]] = None,
         *,
-        parent: str = None,
-        model: gcr_model.Model = None,
+        parent: Optional[str] = None,
+        model: Optional[gcr_model.Model] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new model.
@@ -273,7 +283,7 @@ class ModelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.CreateModelRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.CreateModelRequest, dict]]):
                 The request object. Request for creating a model.
             parent (:class:`str`):
                 Required. The parent resource under which to create the
@@ -360,11 +370,11 @@ class ModelServiceAsyncClient:
 
     async def pause_model(
         self,
-        request: Union[model_service.PauseModelRequest, dict] = None,
+        request: Optional[Union[model_service.PauseModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model.Model:
         r"""Pauses the training of an existing model.
@@ -396,7 +406,7 @@ class ModelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.PauseModelRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.PauseModelRequest, dict]]):
                 The request object. Request for pausing training of a
                 model.
             name (:class:`str`):
@@ -466,11 +476,11 @@ class ModelServiceAsyncClient:
 
     async def resume_model(
         self,
-        request: Union[model_service.ResumeModelRequest, dict] = None,
+        request: Optional[Union[model_service.ResumeModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model.Model:
         r"""Resumes the training of an existing model.
@@ -502,7 +512,7 @@ class ModelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.ResumeModelRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.ResumeModelRequest, dict]]):
                 The request object. Request for resuming training of a
                 model.
             name (:class:`str`):
@@ -572,11 +582,11 @@ class ModelServiceAsyncClient:
 
     async def delete_model(
         self,
-        request: Union[model_service.DeleteModelRequest, dict] = None,
+        request: Optional[Union[model_service.DeleteModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing model.
@@ -605,7 +615,7 @@ class ModelServiceAsyncClient:
                 await client.delete_model(request=request)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.DeleteModelRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.DeleteModelRequest, dict]]):
                 The request object. Request for deleting a model.
             name (:class:`str`):
                 Required. The resource name of the [Model] to delete.
@@ -662,11 +672,11 @@ class ModelServiceAsyncClient:
 
     async def list_models(
         self,
-        request: Union[model_service.ListModelsRequest, dict] = None,
+        request: Optional[Union[model_service.ListModelsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelsAsyncPager:
         r"""Lists all the models linked to this event store.
@@ -699,7 +709,7 @@ class ModelServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.ListModelsRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.ListModelsRequest, dict]]):
                 The request object. Request for listing models
                 associated with a resource.
             parent (:class:`str`):
@@ -776,12 +786,12 @@ class ModelServiceAsyncClient:
 
     async def update_model(
         self,
-        request: Union[model_service.UpdateModelRequest, dict] = None,
+        request: Optional[Union[model_service.UpdateModelRequest, dict]] = None,
         *,
-        model: gcr_model.Model = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        model: Optional[gcr_model.Model] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_model.Model:
         r"""Update of model metadata. Only fields that currently can be
@@ -823,7 +833,7 @@ class ModelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.UpdateModelRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.UpdateModelRequest, dict]]):
                 The request object. Request for updating an existing
                 model.
             model (:class:`google.cloud.retail_v2alpha.types.Model`):
@@ -903,11 +913,11 @@ class ModelServiceAsyncClient:
 
     async def tune_model(
         self,
-        request: Union[model_service.TuneModelRequest, dict] = None,
+        request: Optional[Union[model_service.TuneModelRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Tunes an existing model.
@@ -943,7 +953,7 @@ class ModelServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.TuneModelRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2alpha.types.TuneModelRequest, dict]]):
                 The request object. Request to manually start a tuning
                 process now (instead of waiting for the periodically
                 scheduled tuning to happen).

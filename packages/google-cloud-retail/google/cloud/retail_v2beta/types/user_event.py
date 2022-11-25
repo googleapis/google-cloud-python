@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
@@ -86,7 +88,7 @@ class UserEvent(proto.Message):
             Only required for
             [UserEventService.ImportUserEvents][google.cloud.retail.v2beta.UserEventService.ImportUserEvents]
             method. Timestamp of when the user event happened.
-        experiment_ids (Sequence[str]):
+        experiment_ids (MutableSequence[str]):
             A list of identifiers for the independent
             experiment groups this user event belongs to.
             This is used to distinguish between user events
@@ -117,7 +119,7 @@ class UserEvent(proto.Message):
             events on product K's page, log the
             [PredictResponse.attribution_token][google.cloud.retail.v2beta.PredictResponse.attribution_token]
             to this field.
-        product_details (Sequence[google.cloud.retail_v2beta.types.ProductDetail]):
+        product_details (MutableSequence[google.cloud.retail_v2beta.types.ProductDetail]):
             The main product details related to the event.
 
             This field is optional except for the following event types:
@@ -141,7 +143,7 @@ class UserEvent(proto.Message):
             This field should be set for ``search`` event when
             autocomplete function is enabled and the user clicks a
             suggestion for search.
-        attributes (Mapping[str, google.cloud.retail_v2beta.types.CustomAttribute]):
+        attributes (MutableMapping[str, google.cloud.retail_v2beta.types.CustomAttribute]):
             Extra user event features to include in the recommendation
             model.
 
@@ -240,7 +242,7 @@ class UserEvent(proto.Message):
             This can only be set for ``search`` events. Other event
             types should not set this field. Otherwise, an
             INVALID_ARGUMENT error is returned.
-        page_categories (Sequence[str]):
+        page_categories (MutableSequence[str]):
             The categories associated with a category page.
 
             To represent full path of category, use '>' sign to separate
@@ -288,90 +290,90 @@ class UserEvent(proto.Message):
             automatically.
     """
 
-    event_type = proto.Field(
+    event_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    visitor_id = proto.Field(
+    visitor_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    session_id = proto.Field(
+    session_id: str = proto.Field(
         proto.STRING,
         number=21,
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    experiment_ids = proto.RepeatedField(
+    experiment_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    attribution_token = proto.Field(
+    attribution_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    product_details = proto.RepeatedField(
+    product_details: MutableSequence["ProductDetail"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="ProductDetail",
     )
-    completion_detail = proto.Field(
+    completion_detail: "CompletionDetail" = proto.Field(
         proto.MESSAGE,
         number=22,
         message="CompletionDetail",
     )
-    attributes = proto.MapField(
+    attributes: MutableMapping[str, common.CustomAttribute] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
         message=common.CustomAttribute,
     )
-    cart_id = proto.Field(
+    cart_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    purchase_transaction = proto.Field(
+    purchase_transaction: "PurchaseTransaction" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="PurchaseTransaction",
     )
-    search_query = proto.Field(
+    search_query: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=17,
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=18,
     )
-    page_categories = proto.RepeatedField(
+    page_categories: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
     )
-    user_info = proto.Field(
+    user_info: common.UserInfo = proto.Field(
         proto.MESSAGE,
         number=12,
         message=common.UserInfo,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    referrer_uri = proto.Field(
+    referrer_uri: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    page_view_id = proto.Field(
+    page_view_id: str = proto.Field(
         proto.STRING,
         number=15,
     )
@@ -409,12 +411,12 @@ class ProductDetail(proto.Message):
             types.
     """
 
-    product = proto.Field(
+    product: gcr_product.Product = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_product.Product,
     )
-    quantity = proto.Field(
+    quantity: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.Int32Value,
@@ -438,15 +440,15 @@ class CompletionDetail(proto.Message):
             position, starting from 0.
     """
 
-    completion_attribution_token = proto.Field(
+    completion_attribution_token: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    selected_suggestion = proto.Field(
+    selected_suggestion: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    selected_position = proto.Field(
+    selected_position: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -484,23 +486,23 @@ class PurchaseTransaction(proto.Message):
             ISO-4217 code.
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    revenue = proto.Field(
+    revenue: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    tax = proto.Field(
+    tax: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    cost = proto.Field(
+    cost: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=5,
     )

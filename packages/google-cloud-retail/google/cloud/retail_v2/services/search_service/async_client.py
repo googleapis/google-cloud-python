@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -165,9 +175,9 @@ class SearchServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SearchServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the search service client.
@@ -211,10 +221,10 @@ class SearchServiceAsyncClient:
 
     async def search(
         self,
-        request: Union[search_service.SearchRequest, dict] = None,
+        request: Optional[Union[search_service.SearchRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAsyncPager:
         r"""Performs a search.
@@ -251,7 +261,7 @@ class SearchServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2.types.SearchRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2.types.SearchRequest, dict]]):
                 The request object. Request message for
                 [SearchService.Search][google.cloud.retail.v2.SearchService.Search]
                 method.

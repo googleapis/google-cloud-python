@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -77,13 +79,13 @@ class Condition(proto.Message):
     wil get boosted.
 
     Attributes:
-        query_terms (Sequence[google.cloud.retail_v2alpha.types.Condition.QueryTerm]):
+        query_terms (MutableSequence[google.cloud.retail_v2alpha.types.Condition.QueryTerm]):
             A list (up to 10 entries) of terms to match
             the query on. If not specified, match all
             queries. If many query terms are specified, the
             condition is matched if any of the terms is a
             match (i.e. using the OR operator).
-        active_time_range (Sequence[google.cloud.retail_v2alpha.types.Condition.TimeRange]):
+        active_time_range (MutableSequence[google.cloud.retail_v2alpha.types.Condition.TimeRange]):
             Range of time(s) specifying when Condition is
             active. Condition true if any time range
             matches.
@@ -106,11 +108,11 @@ class Condition(proto.Message):
                 partial match.
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        full_match = proto.Field(
+        full_match: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
@@ -126,23 +128,23 @@ class Condition(proto.Message):
                 End of time range. Range is inclusive.
         """
 
-        start_time = proto.Field(
+        start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        end_time = proto.Field(
+        end_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
         )
 
-    query_terms = proto.RepeatedField(
+    query_terms: MutableSequence[QueryTerm] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=QueryTerm,
     )
-    active_time_range = proto.RepeatedField(
+    active_time_range: MutableSequence[TimeRange] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=TimeRange,
@@ -248,11 +250,11 @@ class Rule(proto.Message):
                    ANY("Red", "Blue"))*
         """
 
-        boost = proto.Field(
+        boost: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
-        products_filter = proto.Field(
+        products_filter: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -292,7 +294,7 @@ class Rule(proto.Message):
                    ANY("Red", "Blue"))*
         """
 
-        filter = proto.Field(
+        filter: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -314,7 +316,7 @@ class Rule(proto.Message):
                 characters.
         """
 
-        redirect_uri = proto.Field(
+        redirect_uri: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -327,13 +329,13 @@ class Rule(proto.Message):
         -  "shoes" will use a synonym of "sneakers".
 
         Attributes:
-            synonyms (Sequence[str]):
+            synonyms (MutableSequence[str]):
                 Defines a set of synonyms.
                 Can specify up to 100 synonyms.
                 Must specify at least 2 synonyms.
         """
 
-        synonyms = proto.RepeatedField(
+        synonyms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
@@ -346,28 +348,28 @@ class Rule(proto.Message):
         "sneakers".
 
         Attributes:
-            query_terms (Sequence[str]):
+            query_terms (MutableSequence[str]):
                 Terms from the search query.
                 Will treat synonyms as their synonyms.
                 Not themselves synonyms of the synonyms.
                 Can specify up to 100 terms.
-            synonyms (Sequence[str]):
+            synonyms (MutableSequence[str]):
                 Defines a set of synonyms.
                 Cannot contain duplicates.
                 Can specify up to 100 synonyms.
-            oneway_terms (Sequence[str]):
+            oneway_terms (MutableSequence[str]):
                 Will be [deprecated = true] post migration;
         """
 
-        query_terms = proto.RepeatedField(
+        query_terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        synonyms = proto.RepeatedField(
+        synonyms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
-        oneway_terms = proto.RepeatedField(
+        oneway_terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -377,26 +379,26 @@ class Rule(proto.Message):
         during search. Example: Don't associate "gShoe" and "cheap".
 
         Attributes:
-            query_terms (Sequence[str]):
+            query_terms (MutableSequence[str]):
                 Terms from the search query. Will not consider
                 do_not_associate_terms for search if in search query. Can
                 specify up to 100 terms.
-            do_not_associate_terms (Sequence[str]):
+            do_not_associate_terms (MutableSequence[str]):
                 Cannot contain duplicates or the query term.
                 Can specify up to 100 terms.
-            terms (Sequence[str]):
+            terms (MutableSequence[str]):
                 Will be [deprecated = true] post migration;
         """
 
-        query_terms = proto.RepeatedField(
+        query_terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        do_not_associate_terms = proto.RepeatedField(
+        do_not_associate_terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
         )
-        terms = proto.RepeatedField(
+        terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
@@ -407,7 +409,7 @@ class Rule(proto.Message):
         term. Example: Replace "gShoe" with "google shoe".
 
         Attributes:
-            query_terms (Sequence[str]):
+            query_terms (MutableSequence[str]):
                 Terms from the search query.
                 Will be replaced by replacement term.
                 Can specify up to 100 terms.
@@ -417,15 +419,15 @@ class Rule(proto.Message):
                 Will be [deprecated = true] post migration;
         """
 
-        query_terms = proto.RepeatedField(
+        query_terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
-        replacement_term = proto.Field(
+        replacement_term: str = proto.Field(
             proto.STRING,
             number=3,
         )
-        term = proto.Field(
+        term: str = proto.Field(
             proto.STRING,
             number=1,
         )
@@ -435,64 +437,64 @@ class Rule(proto.Message):
         Example: Don't search for "shoddy".
 
         Attributes:
-            ignore_terms (Sequence[str]):
+            ignore_terms (MutableSequence[str]):
                 Terms to ignore in the search query.
         """
 
-        ignore_terms = proto.RepeatedField(
+        ignore_terms: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
 
-    boost_action = proto.Field(
+    boost_action: BoostAction = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="action",
         message=BoostAction,
     )
-    redirect_action = proto.Field(
+    redirect_action: RedirectAction = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="action",
         message=RedirectAction,
     )
-    oneway_synonyms_action = proto.Field(
+    oneway_synonyms_action: OnewaySynonymsAction = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="action",
         message=OnewaySynonymsAction,
     )
-    do_not_associate_action = proto.Field(
+    do_not_associate_action: DoNotAssociateAction = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="action",
         message=DoNotAssociateAction,
     )
-    replacement_action = proto.Field(
+    replacement_action: ReplacementAction = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="action",
         message=ReplacementAction,
     )
-    ignore_action = proto.Field(
+    ignore_action: IgnoreAction = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="action",
         message=IgnoreAction,
     )
-    filter_action = proto.Field(
+    filter_action: FilterAction = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="action",
         message=FilterAction,
     )
-    twoway_synonyms_action = proto.Field(
+    twoway_synonyms_action: TwowaySynonymsAction = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="action",
         message=TwowaySynonymsAction,
     )
-    condition = proto.Field(
+    condition: "Condition" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Condition",
@@ -504,7 +506,7 @@ class Audience(proto.Message):
     [Product][google.cloud.retail.v2alpha.Product] for whom it's sold.
 
     Attributes:
-        genders (Sequence[str]):
+        genders (MutableSequence[str]):
             The genders of the audience. Strongly encouraged to use the
             standard values: "male", "female", "unisex".
 
@@ -516,7 +518,7 @@ class Audience(proto.Message):
             `gender <https://support.google.com/merchants/answer/6324479>`__.
             Schema.org property
             `Product.audience.suggestedGender <https://schema.org/suggestedGender>`__.
-        age_groups (Sequence[str]):
+        age_groups (MutableSequence[str]):
             The age groups of the audience. Strongly encouraged to use
             the standard values: "newborn" (up to 3 months old),
             "infant" (3–12 months old), "toddler" (1–5 years old),
@@ -534,11 +536,11 @@ class Audience(proto.Message):
             `Product.audience.suggestedMaxAge <https://schema.org/suggestedMaxAge>`__.
     """
 
-    genders = proto.RepeatedField(
+    genders: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    age_groups = proto.RepeatedField(
+    age_groups: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -549,7 +551,7 @@ class ColorInfo(proto.Message):
     [Product][google.cloud.retail.v2alpha.Product].
 
     Attributes:
-        color_families (Sequence[str]):
+        color_families (MutableSequence[str]):
             The standard color families. Strongly recommended to use the
             following standard color groups: "Red", "Pink", "Orange",
             "Yellow", "Purple", "Green", "Cyan", "Blue", "Brown",
@@ -565,7 +567,7 @@ class ColorInfo(proto.Message):
             `color <https://support.google.com/merchants/answer/6324487>`__.
             Schema.org property
             `Product.color <https://schema.org/color>`__.
-        colors (Sequence[str]):
+        colors (MutableSequence[str]):
             The color display names, which may be different from
             standard color family names, such as the color aliases used
             in the website frontend. Normally it is expected to have
@@ -582,11 +584,11 @@ class ColorInfo(proto.Message):
             `Product.color <https://schema.org/color>`__.
     """
 
-    color_families = proto.RepeatedField(
+    color_families: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    colors = proto.RepeatedField(
+    colors: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -597,7 +599,7 @@ class CustomAttribute(proto.Message):
     [Product][google.cloud.retail.v2alpha.Product].
 
     Attributes:
-        text (Sequence[str]):
+        text (MutableSequence[str]):
             The textual values of this custom attribute. For example,
             ``["yellow", "green"]`` when the key is "color".
 
@@ -609,7 +611,7 @@ class CustomAttribute(proto.Message):
             [numbers][google.cloud.retail.v2alpha.CustomAttribute.numbers]
             should be set. Otherwise, an INVALID_ARGUMENT error is
             returned.
-        numbers (Sequence[float]):
+        numbers (MutableSequence[float]):
             The numerical values of this custom attribute. For example,
             ``[2.3, 15.4]`` when the key is "lengths_cm".
 
@@ -663,20 +665,20 @@ class CustomAttribute(proto.Message):
             This field is a member of `oneof`_ ``_indexable``.
     """
 
-    text = proto.RepeatedField(
+    text: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    numbers = proto.RepeatedField(
+    numbers: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=2,
     )
-    searchable = proto.Field(
+    searchable: bool = proto.Field(
         proto.BOOL,
         number=3,
         optional=True,
     )
-    indexable = proto.Field(
+    indexable: bool = proto.Field(
         proto.BOOL,
         number=4,
         optional=True,
@@ -708,7 +710,7 @@ class FulfillmentInfo(proto.Message):
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
-        place_ids (Sequence[str]):
+        place_ids (MutableSequence[str]):
             The IDs for this
             [type][google.cloud.retail.v2alpha.FulfillmentInfo.type],
             such as the store IDs for
@@ -722,11 +724,11 @@ class FulfillmentInfo(proto.Message):
             Otherwise, an INVALID_ARGUMENT error is returned.
     """
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    place_ids = proto.RepeatedField(
+    place_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -763,15 +765,15 @@ class Image(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    height = proto.Field(
+    height: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    width = proto.Field(
+    width: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -806,22 +808,22 @@ class Interval(proto.Message):
             This field is a member of `oneof`_ ``max``.
     """
 
-    minimum = proto.Field(
+    minimum: float = proto.Field(
         proto.DOUBLE,
         number=1,
         oneof="min",
     )
-    exclusive_minimum = proto.Field(
+    exclusive_minimum: float = proto.Field(
         proto.DOUBLE,
         number=2,
         oneof="min",
     )
-    maximum = proto.Field(
+    maximum: float = proto.Field(
         proto.DOUBLE,
         number=3,
         oneof="max",
     )
-    exclusive_maximum = proto.Field(
+    exclusive_maximum: float = proto.Field(
         proto.DOUBLE,
         number=4,
         oneof="max",
@@ -951,44 +953,44 @@ class PriceInfo(proto.Message):
                 [Product.primary_product_id][google.cloud.retail.v2alpha.Product.primary_product_id].
         """
 
-        price = proto.Field(
+        price: "Interval" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Interval",
         )
-        original_price = proto.Field(
+        original_price: "Interval" = proto.Field(
             proto.MESSAGE,
             number=2,
             message="Interval",
         )
 
-    currency_code = proto.Field(
+    currency_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    price = proto.Field(
+    price: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    original_price = proto.Field(
+    original_price: float = proto.Field(
         proto.FLOAT,
         number=3,
     )
-    cost = proto.Field(
+    cost: float = proto.Field(
         proto.FLOAT,
         number=4,
     )
-    price_effective_time = proto.Field(
+    price_effective_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    price_expire_time = proto.Field(
+    price_expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    price_range = proto.Field(
+    price_range: PriceRange = proto.Field(
         proto.MESSAGE,
         number=7,
         message=PriceRange,
@@ -1012,7 +1014,7 @@ class Rating(proto.Message):
 
             The rating is scaled at 1-5. Otherwise, an INVALID_ARGUMENT
             error is returned.
-        rating_histogram (Sequence[int]):
+        rating_histogram (MutableSequence[int]):
             List of rating counts per rating value (index = rating - 1).
             The list is empty if there is no rating. If the list is
             non-empty, its size is always 5. Otherwise, an
@@ -1023,15 +1025,15 @@ class Rating(proto.Message):
             ratings with 1 star, 14 ratings with 2 star, and so on.
     """
 
-    rating_count = proto.Field(
+    rating_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    average_rating = proto.Field(
+    average_rating: float = proto.Field(
         proto.FLOAT,
         number=2,
     )
-    rating_histogram = proto.RepeatedField(
+    rating_histogram: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=3,
     )
@@ -1103,19 +1105,19 @@ class UserInfo(proto.Message):
             [UserEventService.CollectUserEvent][google.cloud.retail.v2alpha.UserEventService.CollectUserEvent].
     """
 
-    user_id = proto.Field(
+    user_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    user_agent = proto.Field(
+    user_agent: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    direct_user_request = proto.Field(
+    direct_user_request: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -1134,7 +1136,7 @@ class LocalInventory(proto.Message):
 
             Google Merchant Center property
             `price <https://support.google.com/merchants/answer/6324371>`__.
-        attributes (Mapping[str, google.cloud.retail_v2alpha.types.CustomAttribute]):
+        attributes (MutableMapping[str, google.cloud.retail_v2alpha.types.CustomAttribute]):
             Additional local inventory attributes, for example, store
             name, promotion tags, etc.
 
@@ -1156,7 +1158,7 @@ class LocalInventory(proto.Message):
                field should be unset or set to false.
             -  The max summed total bytes of custom attribute keys and
                values per product is 5MiB.
-        fulfillment_types (Sequence[str]):
+        fulfillment_types (MutableSequence[str]):
             Input only. Supported fulfillment types. Valid fulfillment
             type values include commonly used types (such as pickup in
             store and same day delivery), and custom types. Customers
@@ -1182,22 +1184,22 @@ class LocalInventory(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    place_id = proto.Field(
+    place_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    price_info = proto.Field(
+    price_info: "PriceInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="PriceInfo",
     )
-    attributes = proto.MapField(
+    attributes: MutableMapping[str, "CustomAttribute"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
         message="CustomAttribute",
     )
-    fulfillment_types = proto.RepeatedField(
+    fulfillment_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -53,16 +55,16 @@ class CreateModelRequest(proto.Message):
             the model).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    model = proto.Field(
+    model: gcr_model.Model = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_model.Model,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -81,12 +83,12 @@ class UpdateModelRequest(proto.Message):
             default updates all fields.
     """
 
-    model = proto.Field(
+    model: gcr_model.Model = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_model.Model,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -102,7 +104,7 @@ class PauseModelRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -117,7 +119,7 @@ class ResumeModelRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -140,15 +142,15 @@ class ListModelsRequest(proto.Message):
             page.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -164,7 +166,7 @@ class DeleteModelRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -174,7 +176,7 @@ class ListModelsResponse(proto.Message):
     r"""Response to a ListModelRequest.
 
     Attributes:
-        models (Sequence[google.cloud.retail_v2beta.types.Model]):
+        models (MutableSequence[google.cloud.retail_v2beta.types.Model]):
             List of Models.
         next_page_token (str):
             Pagination token, if not returned indicates
@@ -185,12 +187,12 @@ class ListModelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    models = proto.RepeatedField(
+    models: MutableSequence[gcr_model.Model] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcr_model.Model,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -206,7 +208,7 @@ class TuneModelRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -222,7 +224,7 @@ class CreateModelMetadata(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -238,7 +240,7 @@ class TuneModelMetadata(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}``
     """
 
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=1,
     )

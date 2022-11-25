@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -48,7 +50,7 @@ class GcsSource(proto.Message):
     r"""Google Cloud Storage location for input content.
 
     Attributes:
-        input_uris (Sequence[str]):
+        input_uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs to input files. URI can
             be up to 2000 characters long. URIs can match the full
             object path (for example,
@@ -91,11 +93,11 @@ class GcsSource(proto.Message):
                per line.
     """
 
-    input_uris = proto.RepeatedField(
+    input_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    data_schema = proto.Field(
+    data_schema: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -164,29 +166,29 @@ class BigQuerySource(proto.Message):
             -  ``allowlist``: One JSON allow suggestion per line.
     """
 
-    partition_date = proto.Field(
+    partition_date: date_pb2.Date = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="partition",
         message=date_pb2.Date,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    dataset_id = proto.Field(
+    dataset_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    table_id = proto.Field(
+    table_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    gcs_staging_dir = proto.Field(
+    gcs_staging_dir: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    data_schema = proto.Field(
+    data_schema: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -197,14 +199,14 @@ class ProductInlineSource(proto.Message):
     method.
 
     Attributes:
-        products (Sequence[google.cloud.retail_v2beta.types.Product]):
+        products (MutableSequence[google.cloud.retail_v2beta.types.Product]):
             Required. A list of products to update/create. Each product
             must have a valid
             [Product.id][google.cloud.retail.v2beta.Product.id].
             Recommended max of 100 items.
     """
 
-    products = proto.RepeatedField(
+    products: MutableSequence[product.Product] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=product.Product,
@@ -216,12 +218,12 @@ class UserEventInlineSource(proto.Message):
     method.
 
     Attributes:
-        user_events (Sequence[google.cloud.retail_v2beta.types.UserEvent]):
+        user_events (MutableSequence[google.cloud.retail_v2beta.types.UserEvent]):
             Required. A list of user events to import.
             Recommended max of 10k items.
     """
 
-    user_events = proto.RepeatedField(
+    user_events: MutableSequence[user_event.UserEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=user_event.UserEvent,
@@ -243,7 +245,7 @@ class ImportErrorsConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_prefix = proto.Field(
+    gcs_prefix: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="destination",
@@ -300,35 +302,35 @@ class ImportProductsRequest(proto.Message):
         INCREMENTAL = 1
         FULL = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    input_config = proto.Field(
+    input_config: "ProductInputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ProductInputConfig",
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ImportErrorsConfig",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
     )
-    reconciliation_mode = proto.Field(
+    reconciliation_mode: ReconciliationMode = proto.Field(
         proto.ENUM,
         number=5,
         enum=ReconciliationMode,
     )
-    notification_pubsub_topic = proto.Field(
+    notification_pubsub_topic: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -350,16 +352,16 @@ class ImportUserEventsRequest(proto.Message):
             event imports.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: "UserEventInputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="UserEventInputConfig",
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="ImportErrorsConfig",
@@ -387,16 +389,16 @@ class ImportCompletionDataRequest(proto.Message):
             Pub/Sub topic is ``projects/{project}/topics/{topic}``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    input_config = proto.Field(
+    input_config: "CompletionDataInputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="CompletionDataInputConfig",
     )
-    notification_pubsub_topic = proto.Field(
+    notification_pubsub_topic: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -429,19 +431,19 @@ class ProductInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    product_inline_source = proto.Field(
+    product_inline_source: "ProductInlineSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="ProductInlineSource",
     )
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="GcsSource",
     )
-    big_query_source = proto.Field(
+    big_query_source: "BigQuerySource" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
@@ -476,19 +478,19 @@ class UserEventInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    user_event_inline_source = proto.Field(
+    user_event_inline_source: "UserEventInlineSource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
         message="UserEventInlineSource",
     )
-    gcs_source = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="source",
         message="GcsSource",
     )
-    big_query_source = proto.Field(
+    big_query_source: "BigQuerySource" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="source",
@@ -513,7 +515,7 @@ class CompletionDataInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    big_query_source = proto.Field(
+    big_query_source: "BigQuerySource" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="source",
@@ -548,29 +550,29 @@ class ImportMetadata(proto.Message):
             Pub/Sub topic is ``projects/{project}/topics/{topic}``.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    success_count = proto.Field(
+    success_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    failure_count = proto.Field(
+    failure_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    notification_pubsub_topic = proto.Field(
+    notification_pubsub_topic: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -584,7 +586,7 @@ class ImportProductsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.retail_v2beta.types.ImportErrorsConfig):
@@ -592,12 +594,12 @@ class ImportProductsResponse(proto.Message):
             errors in the request if set.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportErrorsConfig",
@@ -611,7 +613,7 @@ class ImportUserEventsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.retail_v2beta.types.ImportErrorsConfig):
@@ -622,17 +624,17 @@ class ImportUserEventsResponse(proto.Message):
             status.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    errors_config = proto.Field(
+    errors_config: "ImportErrorsConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ImportErrorsConfig",
     )
-    import_summary = proto.Field(
+    import_summary: "UserEventImportSummary" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="UserEventImportSummary",
@@ -653,11 +655,11 @@ class UserEventImportSummary(proto.Message):
             catalog.
     """
 
-    joined_events_count = proto.Field(
+    joined_events_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    unjoined_events_count = proto.Field(
+    unjoined_events_count: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -671,12 +673,12 @@ class ImportCompletionDataResponse(proto.Message):
     successful.
 
     Attributes:
-        error_samples (Sequence[google.rpc.status_pb2.Status]):
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
     """
 
-    error_samples = proto.RepeatedField(
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,

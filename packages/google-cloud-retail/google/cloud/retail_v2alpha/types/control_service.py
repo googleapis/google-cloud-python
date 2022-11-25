@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -48,16 +50,16 @@ class CreateControlRequest(proto.Message):
             are /[a-z][0-9]-_/.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    control = proto.Field(
+    control: gcr_control.Control = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_control.Control,
     )
-    control_id = proto.Field(
+    control_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -79,12 +81,12 @@ class UpdateControlRequest(proto.Message):
             If not set or empty, all supported fields are updated.
     """
 
-    control = proto.Field(
+    control: gcr_control.Control = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_control.Control,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -101,7 +103,7 @@ class DeleteControlRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -117,7 +119,7 @@ class GetControlRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -149,19 +151,19 @@ class ListControlsRequest(proto.Message):
                'serving_config = "boosted_home_page_cvr"'
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -171,7 +173,7 @@ class ListControlsResponse(proto.Message):
     r"""Response for ListControls method.
 
     Attributes:
-        controls (Sequence[google.cloud.retail_v2alpha.types.Control]):
+        controls (MutableSequence[google.cloud.retail_v2alpha.types.Control]):
             All the Controls for a given catalog.
         next_page_token (str):
             Pagination token, if not returned indicates
@@ -182,12 +184,12 @@ class ListControlsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    controls = proto.RepeatedField(
+    controls: MutableSequence[gcr_control.Control] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcr_control.Control,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

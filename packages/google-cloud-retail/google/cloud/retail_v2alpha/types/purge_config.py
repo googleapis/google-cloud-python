@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -56,21 +58,21 @@ class PurgeProductsMetadata(proto.Message):
             while processing.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    success_count = proto.Field(
+    success_count: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    failure_count = proto.Field(
+    failure_count: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -137,15 +139,15 @@ class PurgeProductsRequest(proto.Message):
             deleting any products.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -160,17 +162,17 @@ class PurgeProductsResponse(proto.Message):
         purge_count (int):
             The total count of products purged as a
             result of the operation.
-        purge_sample (Sequence[str]):
+        purge_sample (MutableSequence[str]):
             A sample of the product names that will be deleted. Only
             populated if ``force`` is set to false. A max of 100 names
             will be returned and the names are chosen at random.
     """
 
-    purge_count = proto.Field(
+    purge_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    purge_sample = proto.RepeatedField(
+    purge_sample: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -215,15 +217,15 @@ class PurgeUserEventsRequest(proto.Message):
             deleting any user events.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -240,7 +242,7 @@ class PurgeUserEventsResponse(proto.Message):
             of the operation.
     """
 
-    purged_events_count = proto.Field(
+    purged_events_count: int = proto.Field(
         proto.INT64,
         number=1,
     )

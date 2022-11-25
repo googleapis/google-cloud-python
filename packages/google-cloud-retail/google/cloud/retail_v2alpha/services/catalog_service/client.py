@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class CatalogServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CatalogServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -406,8 +417,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CatalogServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, CatalogServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the catalog service client.
@@ -421,7 +432,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             transport (Union[str, CatalogServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -451,6 +462,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -503,11 +515,11 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def list_catalogs(
         self,
-        request: Union[catalog_service.ListCatalogsRequest, dict] = None,
+        request: Optional[Union[catalog_service.ListCatalogsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogsPager:
         r"""Lists all the [Catalog][google.cloud.retail.v2alpha.Catalog]s
@@ -626,12 +638,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def update_catalog(
         self,
-        request: Union[catalog_service.UpdateCatalogRequest, dict] = None,
+        request: Optional[Union[catalog_service.UpdateCatalogRequest, dict]] = None,
         *,
-        catalog: gcr_catalog.Catalog = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        catalog: Optional[gcr_catalog.Catalog] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_catalog.Catalog:
         r"""Updates the [Catalog][google.cloud.retail.v2alpha.Catalog]s.
@@ -756,11 +768,11 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def set_default_branch(
         self,
-        request: Union[catalog_service.SetDefaultBranchRequest, dict] = None,
+        request: Optional[Union[catalog_service.SetDefaultBranchRequest, dict]] = None,
         *,
-        catalog: str = None,
+        catalog: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Set a specified branch id as default branch. API methods such as
@@ -879,11 +891,11 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def get_default_branch(
         self,
-        request: Union[catalog_service.GetDefaultBranchRequest, dict] = None,
+        request: Optional[Union[catalog_service.GetDefaultBranchRequest, dict]] = None,
         *,
-        catalog: str = None,
+        catalog: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog_service.GetDefaultBranchResponse:
         r"""Get which branch is currently default branch set by
@@ -982,11 +994,13 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def get_completion_config(
         self,
-        request: Union[catalog_service.GetCompletionConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.GetCompletionConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CompletionConfig:
         r"""Gets a
@@ -1087,12 +1101,14 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def update_completion_config(
         self,
-        request: Union[catalog_service.UpdateCompletionConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.UpdateCompletionConfigRequest, dict]
+        ] = None,
         *,
-        completion_config: catalog.CompletionConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        completion_config: Optional[catalog.CompletionConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CompletionConfig:
         r"""Updates the
@@ -1224,11 +1240,13 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def get_attributes_config(
         self,
-        request: Union[catalog_service.GetAttributesConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.GetAttributesConfigRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Gets an
@@ -1326,12 +1344,14 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def update_attributes_config(
         self,
-        request: Union[catalog_service.UpdateAttributesConfigRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.UpdateAttributesConfigRequest, dict]
+        ] = None,
         *,
-        attributes_config: catalog.AttributesConfig = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        attributes_config: Optional[catalog.AttributesConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Updates the
@@ -1458,10 +1478,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def add_catalog_attribute(
         self,
-        request: Union[catalog_service.AddCatalogAttributeRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.AddCatalogAttributeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Adds the specified
@@ -1551,10 +1573,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def remove_catalog_attribute(
         self,
-        request: Union[catalog_service.RemoveCatalogAttributeRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.RemoveCatalogAttributeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Removes the specified
@@ -1641,10 +1665,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def replace_catalog_attribute(
         self,
-        request: Union[catalog_service.ReplaceCatalogAttributeRequest, dict] = None,
+        request: Optional[
+            Union[catalog_service.ReplaceCatalogAttributeRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AttributesConfig:
         r"""Replaces the specified

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -166,9 +176,9 @@ class ControlServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ControlServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the control service client.
@@ -212,13 +222,13 @@ class ControlServiceAsyncClient:
 
     async def create_control(
         self,
-        request: Union[control_service.CreateControlRequest, dict] = None,
+        request: Optional[Union[control_service.CreateControlRequest, dict]] = None,
         *,
-        parent: str = None,
-        control: gcr_control.Control = None,
-        control_id: str = None,
+        parent: Optional[str] = None,
+        control: Optional[gcr_control.Control] = None,
+        control_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_control.Control:
         r"""Creates a Control.
@@ -245,7 +255,7 @@ class ControlServiceAsyncClient:
                 control = retail_v2beta.Control()
                 control.facet_spec.facet_key.key = "key_value"
                 control.display_name = "display_name_value"
-                control.solution_types = "SOLUTION_TYPE_SEARCH"
+                control.solution_types = ['SOLUTION_TYPE_SEARCH']
 
                 request = retail_v2beta.CreateControlRequest(
                     parent="parent_value",
@@ -260,7 +270,7 @@ class ControlServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.CreateControlRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2beta.types.CreateControlRequest, dict]]):
                 The request object. Request for CreateControl method.
             parent (:class:`str`):
                 Required. Full resource name of parent catalog. Format:
@@ -347,11 +357,11 @@ class ControlServiceAsyncClient:
 
     async def delete_control(
         self,
-        request: Union[control_service.DeleteControlRequest, dict] = None,
+        request: Optional[Union[control_service.DeleteControlRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a Control.
@@ -383,7 +393,7 @@ class ControlServiceAsyncClient:
                 await client.delete_control(request=request)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.DeleteControlRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2beta.types.DeleteControlRequest, dict]]):
                 The request object. Request for DeleteControl method.
             name (:class:`str`):
                 Required. The resource name of the Control to delete.
@@ -440,12 +450,12 @@ class ControlServiceAsyncClient:
 
     async def update_control(
         self,
-        request: Union[control_service.UpdateControlRequest, dict] = None,
+        request: Optional[Union[control_service.UpdateControlRequest, dict]] = None,
         *,
-        control: gcr_control.Control = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        control: Optional[gcr_control.Control] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_control.Control:
         r"""Updates a Control.
@@ -474,7 +484,7 @@ class ControlServiceAsyncClient:
                 control = retail_v2beta.Control()
                 control.facet_spec.facet_key.key = "key_value"
                 control.display_name = "display_name_value"
-                control.solution_types = "SOLUTION_TYPE_SEARCH"
+                control.solution_types = ['SOLUTION_TYPE_SEARCH']
 
                 request = retail_v2beta.UpdateControlRequest(
                     control=control,
@@ -487,7 +497,7 @@ class ControlServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.UpdateControlRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2beta.types.UpdateControlRequest, dict]]):
                 The request object. Request for UpdateControl method.
             control (:class:`google.cloud.retail_v2beta.types.Control`):
                 Required. The Control to update.
@@ -568,11 +578,11 @@ class ControlServiceAsyncClient:
 
     async def get_control(
         self,
-        request: Union[control_service.GetControlRequest, dict] = None,
+        request: Optional[Union[control_service.GetControlRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> control.Control:
         r"""Gets a Control.
@@ -604,7 +614,7 @@ class ControlServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.GetControlRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2beta.types.GetControlRequest, dict]]):
                 The request object. Request for GetControl method.
             name (:class:`str`):
                 Required. The resource name of the Control to get.
@@ -672,11 +682,11 @@ class ControlServiceAsyncClient:
 
     async def list_controls(
         self,
-        request: Union[control_service.ListControlsRequest, dict] = None,
+        request: Optional[Union[control_service.ListControlsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListControlsAsyncPager:
         r"""Lists all Controls by their parent
@@ -710,7 +720,7 @@ class ControlServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2beta.types.ListControlsRequest, dict]):
+            request (Optional[Union[google.cloud.retail_v2beta.types.ListControlsRequest, dict]]):
                 The request object. Request for ListControls method.
             parent (:class:`str`):
                 Required. The catalog resource name. Format:

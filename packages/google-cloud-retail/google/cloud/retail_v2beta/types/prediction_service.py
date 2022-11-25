@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -122,7 +124,7 @@ class PredictRequest(proto.Message):
             used that returns arbitrary products. Note that
             the validate only mode should only be used for
             testing the API, or if the model is not ready.
-        params (Mapping[str, google.protobuf.struct_pb2.Value]):
+        params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional domain specific parameters for the predictions.
 
             Allowed values:
@@ -154,7 +156,7 @@ class PredictRequest(proto.Message):
             -  ``filterSyntaxV2``: Boolean. False by default. If set to
                true, the ``filter`` field is interpreteted according to
                the new, attribute-based syntax.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
 
@@ -178,38 +180,38 @@ class PredictRequest(proto.Message):
             for more details.
     """
 
-    placement = proto.Field(
+    placement: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event = proto.Field(
+    user_event: gcr_user_event.UserEvent = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_user_event.UserEvent,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    params = proto.MapField(
+    params: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
         message=struct_pb2.Value,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
@@ -220,7 +222,7 @@ class PredictResponse(proto.Message):
     r"""Response message for predict method.
 
     Attributes:
-        results (Sequence[google.cloud.retail_v2beta.types.PredictResponse.PredictionResult]):
+        results (MutableSequence[google.cloud.retail_v2beta.types.PredictResponse.PredictionResult]):
             A list of recommended products. The order
             represents the ranking (from the most relevant
             product to the least).
@@ -229,7 +231,7 @@ class PredictResponse(proto.Message):
             [UserEvent][google.cloud.retail.v2beta.UserEvent] logs
             resulting from this recommendation, which enables accurate
             attribution of recommendation model performance.
-        missing_ids (Sequence[str]):
+        missing_ids (MutableSequence[str]):
             IDs of products in the request that were
             missing from the inventory.
         validate_only (bool):
@@ -244,7 +246,7 @@ class PredictResponse(proto.Message):
         Attributes:
             id (str):
                 ID of the recommended product
-            metadata (Mapping[str, google.protobuf.struct_pb2.Value]):
+            metadata (MutableMapping[str, google.protobuf.struct_pb2.Value]):
                 Additional product metadata / annotations.
 
                 Possible values:
@@ -257,31 +259,31 @@ class PredictResponse(proto.Message):
                    ``PredictRequest.params``.
         """
 
-        id = proto.Field(
+        id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        metadata = proto.MapField(
+        metadata: MutableMapping[str, struct_pb2.Value] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
             message=struct_pb2.Value,
         )
 
-    results = proto.RepeatedField(
+    results: MutableSequence[PredictionResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=PredictionResult,
     )
-    attribution_token = proto.Field(
+    attribution_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    missing_ids = proto.RepeatedField(
+    missing_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )

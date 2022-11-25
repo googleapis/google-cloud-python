@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.retail_v2beta.types import user_event as gcr_user_event
@@ -40,11 +42,11 @@ class WriteUserEventRequest(proto.Message):
             Required. User event to write.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event = proto.Field(
+    user_event: gcr_user_event.UserEvent = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_user_event.UserEvent,
@@ -74,19 +76,19 @@ class CollectUserEventRequest(proto.Message):
             the payload bytes.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event = proto.Field(
+    user_event: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ets = proto.Field(
+    ets: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -120,11 +122,11 @@ class RejoinUserEventsRequest(proto.Message):
         JOINED_EVENTS = 1
         UNJOINED_EVENTS = 2
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    user_event_rejoin_scope = proto.Field(
+    user_event_rejoin_scope: UserEventRejoinScope = proto.Field(
         proto.ENUM,
         number=2,
         enum=UserEventRejoinScope,
@@ -140,7 +142,7 @@ class RejoinUserEventsResponse(proto.Message):
             latest product catalog.
     """
 
-    rejoined_user_events_count = proto.Field(
+    rejoined_user_events_count: int = proto.Field(
         proto.INT64,
         number=1,
     )

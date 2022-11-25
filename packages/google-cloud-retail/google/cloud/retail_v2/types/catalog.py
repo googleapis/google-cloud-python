@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import common, import_config
@@ -90,11 +92,11 @@ class ProductLevelConfig(proto.Message):
             for more details.
     """
 
-    ingestion_product_type = proto.Field(
+    ingestion_product_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    merchant_center_product_id_field = proto.Field(
+    merchant_center_product_id_field: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -199,30 +201,30 @@ class CatalogAttribute(proto.Message):
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    in_use = proto.Field(
+    in_use: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
-    type_ = proto.Field(
+    type_: AttributeType = proto.Field(
         proto.ENUM,
         number=10,
         enum=AttributeType,
     )
-    indexable_option = proto.Field(
+    indexable_option: IndexableOption = proto.Field(
         proto.ENUM,
         number=5,
         enum=IndexableOption,
     )
-    dynamic_facetable_option = proto.Field(
+    dynamic_facetable_option: DynamicFacetableOption = proto.Field(
         proto.ENUM,
         number=6,
         enum=DynamicFacetableOption,
     )
-    searchable_option = proto.Field(
+    searchable_option: SearchableOption = proto.Field(
         proto.ENUM,
         number=7,
         enum=SearchableOption,
@@ -237,7 +239,7 @@ class AttributesConfig(proto.Message):
             Required. Immutable. The fully qualified resource name of
             the attribute config. Format:
             ``projects/*/locations/*/catalogs/*/attributesConfig``
-        catalog_attributes (Mapping[str, google.cloud.retail_v2.types.CatalogAttribute]):
+        catalog_attributes (MutableMapping[str, google.cloud.retail_v2.types.CatalogAttribute]):
             Enable attribute(s) config at catalog level. For example,
             indexable, dynamic_facetable, or searchable for each
             attribute.
@@ -254,17 +256,17 @@ class AttributesConfig(proto.Message):
             used for this catalog.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    catalog_attributes = proto.MapField(
+    catalog_attributes: MutableMapping[str, "CatalogAttribute"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
         message="CatalogAttribute",
     )
-    attribute_config_level = proto.Field(
+    attribute_config_level: common.AttributeConfigLevel = proto.Field(
         proto.ENUM,
         number=3,
         enum=common.AttributeConfigLevel,
@@ -345,50 +347,50 @@ class CompletionConfig(proto.Message):
             Operation.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    matching_order = proto.Field(
+    matching_order: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    max_suggestions = proto.Field(
+    max_suggestions: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    min_prefix_length = proto.Field(
+    min_prefix_length: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    auto_learning = proto.Field(
+    auto_learning: bool = proto.Field(
         proto.BOOL,
         number=11,
     )
-    suggestions_input_config = proto.Field(
+    suggestions_input_config: import_config.CompletionDataInputConfig = proto.Field(
         proto.MESSAGE,
         number=5,
         message=import_config.CompletionDataInputConfig,
     )
-    last_suggestions_import_operation = proto.Field(
+    last_suggestions_import_operation: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    denylist_input_config = proto.Field(
+    denylist_input_config: import_config.CompletionDataInputConfig = proto.Field(
         proto.MESSAGE,
         number=7,
         message=import_config.CompletionDataInputConfig,
     )
-    last_denylist_import_operation = proto.Field(
+    last_denylist_import_operation: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    allowlist_input_config = proto.Field(
+    allowlist_input_config: import_config.CompletionDataInputConfig = proto.Field(
         proto.MESSAGE,
         number=9,
         message=import_config.CompletionDataInputConfig,
     )
-    last_allowlist_import_operation = proto.Field(
+    last_allowlist_import_operation: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -411,15 +413,15 @@ class Catalog(proto.Message):
             Required. The product level configuration.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    product_level_config = proto.Field(
+    product_level_config: "ProductLevelConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ProductLevelConfig",

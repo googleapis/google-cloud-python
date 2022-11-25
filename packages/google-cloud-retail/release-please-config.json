@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "extra-files": [
+        "google/cloud/retail/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2beta.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2alpha.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
+      ]
+    }
+  },
+  "release-type": "python",
+  "plugins": [
+    {
+      "type": "sentence-case"
+    }
+  ],
+  "initial-version": "0.1.0"
+}

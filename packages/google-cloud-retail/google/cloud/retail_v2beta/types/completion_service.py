@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.retail_v2beta.types import common
@@ -49,7 +51,7 @@ class CompleteQueryRequest(proto.Message):
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
-        language_codes (Sequence[str]):
+        language_codes (MutableSequence[str]):
             Note that this field applies for ``user-data`` dataset only.
             For requests with ``cloud-retail`` dataset, setting this
             field has no effect.
@@ -102,31 +104,31 @@ class CompleteQueryRequest(proto.Message):
             higher, it will be capped by 20.
     """
 
-    catalog = proto.Field(
+    catalog: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    query = proto.Field(
+    query: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    visitor_id = proto.Field(
+    visitor_id: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    language_codes = proto.RepeatedField(
+    language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    device_type = proto.Field(
+    device_type: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    dataset = proto.Field(
+    dataset: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    max_suggestions = proto.Field(
+    max_suggestions: int = proto.Field(
         proto.INT32,
         number=5,
     )
@@ -136,7 +138,7 @@ class CompleteQueryResponse(proto.Message):
     r"""Response of the auto-complete query.
 
     Attributes:
-        completion_results (Sequence[google.cloud.retail_v2beta.types.CompleteQueryResponse.CompletionResult]):
+        completion_results (MutableSequence[google.cloud.retail_v2beta.types.CompleteQueryResponse.CompletionResult]):
             Results of the matching suggestions. The
             result list is ordered and the first result is
             top suggestion.
@@ -145,7 +147,7 @@ class CompleteQueryResponse(proto.Message):
             [UserEvent.completion_detail][google.cloud.retail.v2beta.UserEvent.completion_detail]
             for search events resulting from this completion, which
             enables accurate attribution of complete model performance.
-        recent_search_results (Sequence[google.cloud.retail_v2beta.types.CompleteQueryResponse.RecentSearchResult]):
+        recent_search_results (MutableSequence[google.cloud.retail_v2beta.types.CompleteQueryResponse.RecentSearchResult]):
             Matched recent searches of this user. The maximum number of
             recent searches is 10. This field is a restricted feature.
             Contact Retail Search support team if you are interested in
@@ -177,7 +179,7 @@ class CompleteQueryResponse(proto.Message):
         Attributes:
             suggestion (str):
                 The suggestion for the query.
-            attributes (Mapping[str, google.cloud.retail_v2beta.types.CustomAttribute]):
+            attributes (MutableMapping[str, google.cloud.retail_v2beta.types.CustomAttribute]):
                 Custom attributes for the suggestion term.
 
                 -  For "user-data", the attributes are additional custom
@@ -189,11 +191,11 @@ class CompleteQueryResponse(proto.Message):
                    is imported properly.
         """
 
-        suggestion = proto.Field(
+        suggestion: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        attributes = proto.MapField(
+        attributes: MutableMapping[str, common.CustomAttribute] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
@@ -208,21 +210,21 @@ class CompleteQueryResponse(proto.Message):
                 The recent search query.
         """
 
-        recent_search = proto.Field(
+        recent_search: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    completion_results = proto.RepeatedField(
+    completion_results: MutableSequence[CompletionResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CompletionResult,
     )
-    attribution_token = proto.Field(
+    attribution_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    recent_search_results = proto.RepeatedField(
+    recent_search_results: MutableSequence[RecentSearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=RecentSearchResult,

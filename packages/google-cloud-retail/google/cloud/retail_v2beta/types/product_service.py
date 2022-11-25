@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -81,16 +83,16 @@ class CreateProductRequest(proto.Message):
             error is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    product = proto.Field(
+    product: gcr_product.Product = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gcr_product.Product,
     )
-    product_id = proto.Field(
+    product_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -117,7 +119,7 @@ class GetProductRequest(proto.Message):
             exist, a NOT_FOUND error is returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -162,17 +164,17 @@ class UpdateProductRequest(proto.Message):
             created. In this situation, ``update_mask`` is ignored.
     """
 
-    product = proto.Field(
+    product: gcr_product.Product = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_product.Product,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -212,7 +214,7 @@ class DeleteProductRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -305,23 +307,23 @@ class ListProductsRequest(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    read_mask = proto.Field(
+    read_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=5,
         message=field_mask_pb2.FieldMask,
@@ -334,7 +336,7 @@ class ListProductsResponse(proto.Message):
     method.
 
     Attributes:
-        products (Sequence[google.cloud.retail_v2beta.types.Product]):
+        products (MutableSequence[google.cloud.retail_v2beta.types.Product]):
             The [Product][google.cloud.retail.v2beta.Product]s.
         next_page_token (str):
             A token that can be sent as
@@ -347,12 +349,12 @@ class ListProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(
+    products: MutableSequence[gcr_product.Product] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcr_product.Product,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -453,22 +455,22 @@ class SetInventoryRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product] is not found.
     """
 
-    inventory = proto.Field(
+    inventory: gcr_product.Product = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcr_product.Product,
     )
-    set_mask = proto.Field(
+    set_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-    set_time = proto.Field(
+    set_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -530,7 +532,7 @@ class AddFulfillmentPlacesRequest(proto.Message):
 
             This field directly corresponds to
             [Product.fulfillment_info.type][google.cloud.retail.v2beta.FulfillmentInfo.type].
-        place_ids (Sequence[str]):
+        place_ids (MutableSequence[str]):
             Required. The IDs for this
             [type][google.cloud.retail.v2beta.AddFulfillmentPlacesRequest.type],
             such as the store IDs for "pickup-in-store" or the region
@@ -562,24 +564,24 @@ class AddFulfillmentPlacesRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product] is not found.
     """
 
-    product = proto.Field(
+    product: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    place_ids = proto.RepeatedField(
+    place_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    add_time = proto.Field(
+    add_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -619,7 +621,7 @@ class AddLocalInventoriesRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product], regardless of
             whether or not it exists, a PERMISSION_DENIED error is
             returned.
-        local_inventories (Sequence[google.cloud.retail_v2beta.types.LocalInventory]):
+        local_inventories (MutableSequence[google.cloud.retail_v2beta.types.LocalInventory]):
             Required. A list of inventory information at
             difference places. Each place is identified by
             its place ID. At most 3000 inventories are
@@ -658,26 +660,26 @@ class AddLocalInventoriesRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product] is not found.
     """
 
-    product = proto.Field(
+    product: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    local_inventories = proto.RepeatedField(
+    local_inventories: MutableSequence[common.LocalInventory] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=common.LocalInventory,
     )
-    add_mask = proto.Field(
+    add_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
     )
-    add_time = proto.Field(
+    add_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -719,7 +721,7 @@ class RemoveLocalInventoriesRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product], regardless of
             whether or not it exists, a PERMISSION_DENIED error is
             returned.
-        place_ids (Sequence[str]):
+        place_ids (MutableSequence[str]):
             Required. A list of place IDs to have their
             inventory deleted. At most 3000 place IDs are
             allowed per request.
@@ -738,20 +740,20 @@ class RemoveLocalInventoriesRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product] is not found.
     """
 
-    product = proto.Field(
+    product: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    place_ids = proto.RepeatedField(
+    place_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    remove_time = proto.Field(
+    remove_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -815,7 +817,7 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
 
             This field directly corresponds to
             [Product.fulfillment_info.type][google.cloud.retail.v2beta.FulfillmentInfo.type].
-        place_ids (Sequence[str]):
+        place_ids (MutableSequence[str]):
             Required. The IDs for this
             [type][google.cloud.retail.v2beta.RemoveFulfillmentPlacesRequest.type],
             such as the store IDs for "pickup-in-store" or the region
@@ -842,24 +844,24 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
             [Product][google.cloud.retail.v2beta.Product] is not found.
     """
 
-    product = proto.Field(
+    product: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    place_ids = proto.RepeatedField(
+    place_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    remove_time = proto.Field(
+    remove_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=5,
     )

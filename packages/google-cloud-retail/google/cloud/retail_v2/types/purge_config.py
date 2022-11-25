@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -72,15 +74,15 @@ class PurgeUserEventsRequest(proto.Message):
             deleting any user events.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    force = proto.Field(
+    force: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
@@ -97,7 +99,7 @@ class PurgeUserEventsResponse(proto.Message):
             of the operation.
     """
 
-    purged_events_count = proto.Field(
+    purged_events_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
