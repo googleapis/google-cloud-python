@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -177,9 +187,9 @@ class ResourceSettingsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ResourceSettingsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the resource settings service client.
@@ -223,11 +233,11 @@ class ResourceSettingsServiceAsyncClient:
 
     async def list_settings(
         self,
-        request: Union[resource_settings.ListSettingsRequest, dict] = None,
+        request: Optional[Union[resource_settings.ListSettingsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSettingsAsyncPager:
         r"""Lists all the settings that are available on the Cloud resource
@@ -261,7 +271,7 @@ class ResourceSettingsServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.resourcesettings_v1.types.ListSettingsRequest, dict]):
+            request (Optional[Union[google.cloud.resourcesettings_v1.types.ListSettingsRequest, dict]]):
                 The request object. The request for ListSettings.
             parent (:class:`str`):
                 Required. The Cloud resource that parents the setting.
@@ -352,11 +362,11 @@ class ResourceSettingsServiceAsyncClient:
 
     async def get_setting(
         self,
-        request: Union[resource_settings.GetSettingRequest, dict] = None,
+        request: Optional[Union[resource_settings.GetSettingRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource_settings.Setting:
         r"""Gets a setting.
@@ -391,7 +401,7 @@ class ResourceSettingsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcesettings_v1.types.GetSettingRequest, dict]):
+            request (Optional[Union[google.cloud.resourcesettings_v1.types.GetSettingRequest, dict]]):
                 The request object. The request for GetSetting.
             name (:class:`str`):
                 Required. The name of the setting to get. See
@@ -465,10 +475,10 @@ class ResourceSettingsServiceAsyncClient:
 
     async def update_setting(
         self,
-        request: Union[resource_settings.UpdateSettingRequest, dict] = None,
+        request: Optional[Union[resource_settings.UpdateSettingRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource_settings.Setting:
         r"""Updates a setting.
@@ -514,7 +524,7 @@ class ResourceSettingsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.resourcesettings_v1.types.UpdateSettingRequest, dict]):
+            request (Optional[Union[google.cloud.resourcesettings_v1.types.UpdateSettingRequest, dict]]):
                 The request object. The request for UpdateSetting.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

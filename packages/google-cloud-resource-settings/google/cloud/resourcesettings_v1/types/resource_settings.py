@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -88,26 +90,26 @@ class Setting(proto.Message):
             for more details.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metadata = proto.Field(
+    metadata: "SettingMetadata" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="SettingMetadata",
     )
-    local_value = proto.Field(
+    local_value: "Value" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="Value",
     )
-    effective_value = proto.Field(
+    effective_value: "Value" = proto.Field(
         proto.MESSAGE,
         number=9,
         message="Value",
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -148,24 +150,24 @@ class SettingMetadata(proto.Message):
         STRING_SET = 3
         ENUM_VALUE = 4
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    read_only = proto.Field(
+    read_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    data_type = proto.Field(
+    data_type: DataType = proto.Field(
         proto.ENUM,
         number=4,
         enum=DataType,
     )
-    default_value = proto.Field(
+    default_value: "Value" = proto.Field(
         proto.MESSAGE,
         number=5,
         message="Value",
@@ -207,11 +209,11 @@ class Value(proto.Message):
         a maximum of 50 strings in the string set.
 
         Attributes:
-            values (Sequence[str]):
+            values (MutableSequence[str]):
                 The strings in the set
         """
 
-        values = proto.RepeatedField(
+        values: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
@@ -226,28 +228,28 @@ class Value(proto.Message):
                 The value of this enum
         """
 
-        value = proto.Field(
+        value: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    boolean_value = proto.Field(
+    boolean_value: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="value",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="value",
     )
-    string_set_value = proto.Field(
+    string_set_value: StringSet = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="value",
         message=StringSet,
     )
-    enum_value = proto.Field(
+    enum_value: EnumValue = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="value",
@@ -276,19 +278,19 @@ class ListSettingsRequest(proto.Message):
             The SettingView for this request.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    view = proto.Field(
+    view: "SettingView" = proto.Field(
         proto.ENUM,
         number=4,
         enum="SettingView",
@@ -299,7 +301,7 @@ class ListSettingsResponse(proto.Message):
     r"""The response from ListSettings.
 
     Attributes:
-        settings (Sequence[google.cloud.resourcesettings_v1.types.Setting]):
+        settings (MutableSequence[google.cloud.resourcesettings_v1.types.Setting]):
             A list of settings that are available at the
             specified Cloud resource.
         next_page_token (str):
@@ -311,12 +313,12 @@ class ListSettingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    settings = proto.RepeatedField(
+    settings: MutableSequence["Setting"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Setting",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -334,11 +336,11 @@ class GetSettingRequest(proto.Message):
             The SettingView for this request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "SettingView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="SettingView",
@@ -355,7 +357,7 @@ class UpdateSettingRequest(proto.Message):
             field requirements.
     """
 
-    setting = proto.Field(
+    setting: "Setting" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Setting",

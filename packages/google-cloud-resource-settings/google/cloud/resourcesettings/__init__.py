@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.resourcesettings import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.resourcesettings_v1.services.resource_settings_service.async_client import (
     ResourceSettingsServiceAsyncClient,
