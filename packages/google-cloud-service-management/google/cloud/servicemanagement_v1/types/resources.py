@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.api import config_change_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -46,11 +48,11 @@ class ManagedService(proto.Message):
             service.
     """
 
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    producer_project_id = proto.Field(
+    producer_project_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -61,10 +63,10 @@ class OperationMetadata(proto.Message):
     resource.
 
     Attributes:
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             The full name of the resources that this
             operation is directly associated with.
-        steps (Sequence[google.cloud.servicemanagement_v1.types.OperationMetadata.Step]):
+        steps (MutableSequence[google.cloud.servicemanagement_v1.types.OperationMetadata.Step]):
             Detailed status information for each step.
             The order is undetermined.
         progress_percentage (int):
@@ -95,30 +97,30 @@ class OperationMetadata(proto.Message):
                 The status code.
         """
 
-        description = proto.Field(
+        description: str = proto.Field(
             proto.STRING,
             number=2,
         )
-        status = proto.Field(
+        status: "OperationMetadata.Status" = proto.Field(
             proto.ENUM,
             number=4,
             enum="OperationMetadata.Status",
         )
 
-    resource_names = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    steps = proto.RepeatedField(
+    steps: MutableSequence[Step] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=Step,
     )
-    progress_percentage = proto.Field(
+    progress_percentage: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -143,16 +145,16 @@ class Diagnostic(proto.Message):
         WARNING = 0
         ERROR = 1
 
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    kind = proto.Field(
+    kind: Kind = proto.Field(
         proto.ENUM,
         number=2,
         enum=Kind,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -168,16 +170,16 @@ class ConfigSource(proto.Message):
             message, typically assigned by the client for
             tracking purpose. If empty, the server may
             choose to generate one instead.
-        files (Sequence[google.cloud.servicemanagement_v1.types.ConfigFile]):
+        files (MutableSequence[google.cloud.servicemanagement_v1.types.ConfigFile]):
             Set of source configuration files that are used to generate
             a service configuration (``google.api.Service``).
     """
 
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    files = proto.RepeatedField(
+    files: MutableSequence["ConfigFile"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ConfigFile",
@@ -207,15 +209,15 @@ class ConfigFile(proto.Message):
         FILE_DESCRIPTOR_SET_PROTO = 4
         PROTO_FILE = 6
 
-    file_path = proto.Field(
+    file_path: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    file_contents = proto.Field(
+    file_contents: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    file_type = proto.Field(
+    file_type: FileType = proto.Field(
         proto.ENUM,
         number=4,
         enum=FileType,
@@ -232,7 +234,7 @@ class ConfigRef(proto.Message):
             name}/configs/{config id}".
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -245,7 +247,7 @@ class ChangeReport(proto.Message):
     between two service configurations.
 
     Attributes:
-        config_changes (Sequence[google.api.config_change_pb2.ConfigChange]):
+        config_changes (MutableSequence[google.api.config_change_pb2.ConfigChange]):
             List of changes between two service configurations. The
             changes will be alphabetically sorted based on the
             identifier of each change. A ConfigChange identifier is a
@@ -253,7 +255,9 @@ class ChangeReport(proto.Message):
             visibility.rules[selector='LibraryService.CreateBook'].restriction
     """
 
-    config_changes = proto.RepeatedField(
+    config_changes: MutableSequence[
+        config_change_pb2.ConfigChange
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=config_change_pb2.ConfigChange,
@@ -354,7 +358,7 @@ class Rollout(proto.Message):
             }
 
         Attributes:
-            percentages (Mapping[str, float]):
+            percentages (MutableMapping[str, float]):
                 Maps service configuration IDs to their
                 corresponding traffic percentage. Key is the
                 service configuration ID, Value is the traffic
@@ -362,7 +366,7 @@ class Rollout(proto.Message):
                 the sum must equal to 100.0.
         """
 
-        percentages = proto.MapField(
+        percentages: MutableMapping[str, float] = proto.MapField(
             proto.STRING,
             proto.DOUBLE,
             number=1,
@@ -375,37 +379,37 @@ class Rollout(proto.Message):
 
         """
 
-    rollout_id = proto.Field(
+    rollout_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    created_by = proto.Field(
+    created_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    status = proto.Field(
+    status: RolloutStatus = proto.Field(
         proto.ENUM,
         number=4,
         enum=RolloutStatus,
     )
-    traffic_percent_strategy = proto.Field(
+    traffic_percent_strategy: TrafficPercentStrategy = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="strategy",
         message=TrafficPercentStrategy,
     )
-    delete_service_strategy = proto.Field(
+    delete_service_strategy: DeleteServiceStrategy = proto.Field(
         proto.MESSAGE,
         number=200,
         oneof="strategy",
         message=DeleteServiceStrategy,
     )
-    service_name = proto.Field(
+    service_name: str = proto.Field(
         proto.STRING,
         number=8,
     )

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -34,6 +44,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api import auth_pb2  # type: ignore
 from google.api import backend_pb2  # type: ignore
 from google.api import billing_pb2  # type: ignore
+from google.api import client_pb2  # type: ignore
 from google.api import context_pb2  # type: ignore
 from google.api import control_pb2  # type: ignore
 from google.api import documentation_pb2  # type: ignore
@@ -186,9 +197,9 @@ class ServiceManagerAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ServiceManagerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the service manager client.
@@ -232,12 +243,12 @@ class ServiceManagerAsyncClient:
 
     async def list_services(
         self,
-        request: Union[servicemanager.ListServicesRequest, dict] = None,
+        request: Optional[Union[servicemanager.ListServicesRequest, dict]] = None,
         *,
-        producer_project_id: str = None,
-        consumer_id: str = None,
+        producer_project_id: Optional[str] = None,
+        consumer_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists managed services.
@@ -272,7 +283,7 @@ class ServiceManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.ListServicesRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.ListServicesRequest, dict]]):
                 The request object. Request message for `ListServices`
                 method.
             producer_project_id (:class:`str`):
@@ -356,11 +367,11 @@ class ServiceManagerAsyncClient:
 
     async def get_service(
         self,
-        request: Union[servicemanager.GetServiceRequest, dict] = None,
+        request: Optional[Union[servicemanager.GetServiceRequest, dict]] = None,
         *,
-        service_name: str = None,
+        service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ManagedService:
         r"""Gets a managed service. Authentication is required
@@ -393,7 +404,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.GetServiceRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.GetServiceRequest, dict]]):
                 The request object. Request message for `GetService`
                 method.
             service_name (:class:`str`):
@@ -463,11 +474,11 @@ class ServiceManagerAsyncClient:
 
     async def create_service(
         self,
-        request: Union[servicemanager.CreateServiceRequest, dict] = None,
+        request: Optional[Union[servicemanager.CreateServiceRequest, dict]] = None,
         *,
-        service: resources.ManagedService = None,
+        service: Optional[resources.ManagedService] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new managed service.
@@ -512,7 +523,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.CreateServiceRequest, dict]]):
                 The request object. Request message for CreateService
                 method.
             service (:class:`google.cloud.servicemanagement_v1.types.ManagedService`):
@@ -582,11 +593,11 @@ class ServiceManagerAsyncClient:
 
     async def delete_service(
         self,
-        request: Union[servicemanager.DeleteServiceRequest, dict] = None,
+        request: Optional[Union[servicemanager.DeleteServiceRequest, dict]] = None,
         *,
-        service_name: str = None,
+        service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a managed service. This method will change the service
@@ -629,7 +640,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.DeleteServiceRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.DeleteServiceRequest, dict]]):
                 The request object. Request message for DeleteService
                 method.
             service_name (:class:`str`):
@@ -717,11 +728,11 @@ class ServiceManagerAsyncClient:
 
     async def undelete_service(
         self,
-        request: Union[servicemanager.UndeleteServiceRequest, dict] = None,
+        request: Optional[Union[servicemanager.UndeleteServiceRequest, dict]] = None,
         *,
-        service_name: str = None,
+        service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Revives a previously deleted managed service. The
@@ -763,7 +774,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.UndeleteServiceRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.UndeleteServiceRequest, dict]]):
                 The request object. Request message for UndeleteService
                 method.
             service_name (:class:`str`):
@@ -844,11 +855,11 @@ class ServiceManagerAsyncClient:
 
     async def list_service_configs(
         self,
-        request: Union[servicemanager.ListServiceConfigsRequest, dict] = None,
+        request: Optional[Union[servicemanager.ListServiceConfigsRequest, dict]] = None,
         *,
-        service_name: str = None,
+        service_name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceConfigsAsyncPager:
         r"""Lists the history of the service configuration for a
@@ -882,7 +893,7 @@ class ServiceManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest, dict]]):
                 The request object. Request message for
                 ListServiceConfigs method.
             service_name (:class:`str`):
@@ -964,13 +975,13 @@ class ServiceManagerAsyncClient:
 
     async def get_service_config(
         self,
-        request: Union[servicemanager.GetServiceConfigRequest, dict] = None,
+        request: Optional[Union[servicemanager.GetServiceConfigRequest, dict]] = None,
         *,
-        service_name: str = None,
-        config_id: str = None,
-        view: servicemanager.GetServiceConfigRequest.ConfigView = None,
+        service_name: Optional[str] = None,
+        config_id: Optional[str] = None,
+        view: Optional[servicemanager.GetServiceConfigRequest.ConfigView] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
         r"""Gets a service configuration (version) for a managed
@@ -1004,7 +1015,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.GetServiceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.GetServiceConfigRequest, dict]]):
                 The request object. Request message for GetServiceConfig
                 method.
             service_name (:class:`str`):
@@ -1041,25 +1052,35 @@ class ServiceManagerAsyncClient:
 
         Returns:
             google.api.service_pb2.Service:
-                Service is the root object of Google service configuration schema. It
-                   describes basic information about a service, such as
-                   the name and the title, and delegates other aspects
-                   to sub-sections. Each sub-section is either a proto
+                Service is the root object of Google API service configuration (service
+                   config). It describes the basic information about a
+                   logical service, such as the service name and the
+                   user-facing title, and delegates other aspects to
+                   sub-sections. Each sub-section is either a proto
                    message or a repeated proto message that configures a
-                   specific aspect, such as auth. See each proto message
-                   definition for details.
+                   specific aspect, such as auth. For more information,
+                   see each proto message definition.
 
                    Example:
 
                       type: google.api.Service name:
                       calendar.googleapis.com title: Google Calendar API
                       apis: - name: google.calendar.v3.Calendar
-                      authentication: providers: - id:
-                      google_calendar_auth jwks_uri:
-                      https://www.googleapis.com/oauth2/v1/certs issuer:
-                      https://securetoken.google.com rules: - selector:
-                      "*" requirements: provider_id:
-                      google_calendar_auth
+
+                      visibility:
+                         rules: - selector: "google.calendar.v3.*"
+                         restriction: PREVIEW
+
+                      backend:
+                         rules: - selector: "google.calendar.v3.*"
+                         address: calendar.example.com
+
+                      authentication:
+                         providers: - id: google_calendar_auth jwks_uri:
+                         https://www.googleapis.com/oauth2/v1/certs
+                         issuer: https://securetoken.google.com rules: -
+                         selector: "*" requirements: provider_id:
+                         google_calendar_auth
 
         """
         # Create or coerce a protobuf request object.
@@ -1115,12 +1136,14 @@ class ServiceManagerAsyncClient:
 
     async def create_service_config(
         self,
-        request: Union[servicemanager.CreateServiceConfigRequest, dict] = None,
+        request: Optional[
+            Union[servicemanager.CreateServiceConfigRequest, dict]
+        ] = None,
         *,
-        service_name: str = None,
-        service_config: service_pb2.Service = None,
+        service_name: Optional[str] = None,
+        service_config: Optional[service_pb2.Service] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
         r"""Creates a new service configuration (version) for a managed
@@ -1160,7 +1183,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest, dict]]):
                 The request object. Request message for
                 CreateServiceConfig method.
             service_name (:class:`str`):
@@ -1187,25 +1210,35 @@ class ServiceManagerAsyncClient:
 
         Returns:
             google.api.service_pb2.Service:
-                Service is the root object of Google service configuration schema. It
-                   describes basic information about a service, such as
-                   the name and the title, and delegates other aspects
-                   to sub-sections. Each sub-section is either a proto
+                Service is the root object of Google API service configuration (service
+                   config). It describes the basic information about a
+                   logical service, such as the service name and the
+                   user-facing title, and delegates other aspects to
+                   sub-sections. Each sub-section is either a proto
                    message or a repeated proto message that configures a
-                   specific aspect, such as auth. See each proto message
-                   definition for details.
+                   specific aspect, such as auth. For more information,
+                   see each proto message definition.
 
                    Example:
 
                       type: google.api.Service name:
                       calendar.googleapis.com title: Google Calendar API
                       apis: - name: google.calendar.v3.Calendar
-                      authentication: providers: - id:
-                      google_calendar_auth jwks_uri:
-                      https://www.googleapis.com/oauth2/v1/certs issuer:
-                      https://securetoken.google.com rules: - selector:
-                      "*" requirements: provider_id:
-                      google_calendar_auth
+
+                      visibility:
+                         rules: - selector: "google.calendar.v3.*"
+                         restriction: PREVIEW
+
+                      backend:
+                         rules: - selector: "google.calendar.v3.*"
+                         address: calendar.example.com
+
+                      authentication:
+                         providers: - id: google_calendar_auth jwks_uri:
+                         https://www.googleapis.com/oauth2/v1/certs
+                         issuer: https://securetoken.google.com rules: -
+                         selector: "*" requirements: provider_id:
+                         google_calendar_auth
 
         """
         # Create or coerce a protobuf request object.
@@ -1256,13 +1289,13 @@ class ServiceManagerAsyncClient:
 
     async def submit_config_source(
         self,
-        request: Union[servicemanager.SubmitConfigSourceRequest, dict] = None,
+        request: Optional[Union[servicemanager.SubmitConfigSourceRequest, dict]] = None,
         *,
-        service_name: str = None,
-        config_source: resources.ConfigSource = None,
-        validate_only: bool = None,
+        service_name: Optional[str] = None,
+        config_source: Optional[resources.ConfigSource] = None,
+        validate_only: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new service configuration (version) for a managed
@@ -1310,7 +1343,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest, dict]]):
                 The request object. Request message for
                 SubmitConfigSource method.
             service_name (:class:`str`):
@@ -1411,12 +1444,14 @@ class ServiceManagerAsyncClient:
 
     async def list_service_rollouts(
         self,
-        request: Union[servicemanager.ListServiceRolloutsRequest, dict] = None,
+        request: Optional[
+            Union[servicemanager.ListServiceRolloutsRequest, dict]
+        ] = None,
         *,
-        service_name: str = None,
-        filter: str = None,
+        service_name: Optional[str] = None,
+        filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceRolloutsAsyncPager:
         r"""Lists the history of the service configuration
@@ -1452,7 +1487,7 @@ class ServiceManagerAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest, dict]]):
                 The request object. Request message for
                 'ListServiceRollouts'
             service_name (:class:`str`):
@@ -1550,12 +1585,12 @@ class ServiceManagerAsyncClient:
 
     async def get_service_rollout(
         self,
-        request: Union[servicemanager.GetServiceRolloutRequest, dict] = None,
+        request: Optional[Union[servicemanager.GetServiceRolloutRequest, dict]] = None,
         *,
-        service_name: str = None,
-        rollout_id: str = None,
+        service_name: Optional[str] = None,
+        rollout_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Rollout:
         r"""Gets a service configuration
@@ -1589,7 +1624,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest, dict]]):
                 The request object. Request message for
                 GetServiceRollout method.
             service_name (:class:`str`):
@@ -1675,12 +1710,14 @@ class ServiceManagerAsyncClient:
 
     async def create_service_rollout(
         self,
-        request: Union[servicemanager.CreateServiceRolloutRequest, dict] = None,
+        request: Optional[
+            Union[servicemanager.CreateServiceRolloutRequest, dict]
+        ] = None,
         *,
-        service_name: str = None,
-        rollout: resources.Rollout = None,
+        service_name: Optional[str] = None,
+        rollout: Optional[resources.Rollout] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new service configuration rollout. Based on
@@ -1732,7 +1769,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest, dict]]):
                 The request object. Request message for
                 'CreateServiceRollout'
             service_name (:class:`str`):
@@ -1823,12 +1860,14 @@ class ServiceManagerAsyncClient:
 
     async def generate_config_report(
         self,
-        request: Union[servicemanager.GenerateConfigReportRequest, dict] = None,
+        request: Optional[
+            Union[servicemanager.GenerateConfigReportRequest, dict]
+        ] = None,
         *,
-        new_config: any_pb2.Any = None,
-        old_config: any_pb2.Any = None,
+        new_config: Optional[any_pb2.Any] = None,
+        old_config: Optional[any_pb2.Any] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
         r"""Generates and returns a report (errors, warnings and changes
@@ -1870,7 +1909,7 @@ class ServiceManagerAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest, dict]):
+            request (Optional[Union[google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest, dict]]):
                 The request object. Request message for
                 GenerateConfigReport method.
             new_config (:class:`google.protobuf.any_pb2.Any`):

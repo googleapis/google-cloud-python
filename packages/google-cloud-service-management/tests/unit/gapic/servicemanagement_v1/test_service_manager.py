@@ -27,6 +27,7 @@ import math
 from google.api import auth_pb2  # type: ignore
 from google.api import backend_pb2  # type: ignore
 from google.api import billing_pb2  # type: ignore
+from google.api import client_pb2  # type: ignore
 from google.api import context_pb2  # type: ignore
 from google.api import control_pb2  # type: ignore
 from google.api import documentation_pb2  # type: ignore
@@ -64,6 +65,7 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import api_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import source_context_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import type_pb2  # type: ignore
