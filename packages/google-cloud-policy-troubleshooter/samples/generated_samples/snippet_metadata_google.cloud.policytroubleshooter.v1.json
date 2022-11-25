@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-policy-troubleshooter"
+    "name": "google-cloud-policy-troubleshooter",
+    "version": "0.1.0"
   },
   "snippets": [
     {

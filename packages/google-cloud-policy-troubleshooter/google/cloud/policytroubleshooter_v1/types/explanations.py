@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import proto  # type: ignore
@@ -78,15 +80,15 @@ class AccessTuple(proto.Message):
             https://cloud.google.com/iam/help/roles/reference.
     """
 
-    principal = proto.Field(
+    principal: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    full_resource_name = proto.Field(
+    full_resource_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    permission = proto.Field(
+    permission: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -123,7 +125,7 @@ class ExplainedPolicy(proto.Message):
             The IAM policy attached to the resource.
             If the sender of the request does not have
             access to the policy, this field is empty.
-        binding_explanations (Sequence[google.cloud.policytroubleshooter_v1.types.BindingExplanation]):
+        binding_explanations (MutableSequence[google.cloud.policytroubleshooter_v1.types.BindingExplanation]):
             Details about how each binding in the policy
             affects the member's ability, or inability, to
             use the permission for the resource.
@@ -138,26 +140,26 @@ class ExplainedPolicy(proto.Message):
             policy, this field is omitted.
     """
 
-    access = proto.Field(
+    access: "AccessState" = proto.Field(
         proto.ENUM,
         number=1,
         enum="AccessState",
     )
-    full_resource_name = proto.Field(
+    full_resource_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=3,
         message=policy_pb2.Policy,
     )
-    binding_explanations = proto.RepeatedField(
+    binding_explanations: MutableSequence["BindingExplanation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="BindingExplanation",
     )
-    relevance = proto.Field(
+    relevance: "HeuristicRelevance" = proto.Field(
         proto.ENUM,
         number=5,
         enum="HeuristicRelevance",
@@ -194,7 +196,7 @@ class BindingExplanation(proto.Message):
             The relevance of the permission's existence,
             or nonexistence, in the role to the overall
             determination for the entire policy.
-        memberships (Mapping[str, google.cloud.policytroubleshooter_v1.types.BindingExplanation.AnnotatedMembership]):
+        memberships (MutableMapping[str, google.cloud.policytroubleshooter_v1.types.BindingExplanation.AnnotatedMembership]):
             Indicates whether each member in the binding includes the
             member specified in the request, either directly or
             indirectly. Each key identifies a member in the binding, and
@@ -256,48 +258,48 @@ class BindingExplanation(proto.Message):
                 overall determination for the binding.
         """
 
-        membership = proto.Field(
+        membership: "BindingExplanation.Membership" = proto.Field(
             proto.ENUM,
             number=1,
             enum="BindingExplanation.Membership",
         )
-        relevance = proto.Field(
+        relevance: "HeuristicRelevance" = proto.Field(
             proto.ENUM,
             number=2,
             enum="HeuristicRelevance",
         )
 
-    access = proto.Field(
+    access: "AccessState" = proto.Field(
         proto.ENUM,
         number=1,
         enum="AccessState",
     )
-    role = proto.Field(
+    role: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    role_permission = proto.Field(
+    role_permission: RolePermission = proto.Field(
         proto.ENUM,
         number=3,
         enum=RolePermission,
     )
-    role_permission_relevance = proto.Field(
+    role_permission_relevance: "HeuristicRelevance" = proto.Field(
         proto.ENUM,
         number=4,
         enum="HeuristicRelevance",
     )
-    memberships = proto.MapField(
+    memberships: MutableMapping[str, AnnotatedMembership] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message=AnnotatedMembership,
     )
-    relevance = proto.Field(
+    relevance: "HeuristicRelevance" = proto.Field(
         proto.ENUM,
         number=6,
         enum="HeuristicRelevance",
     )
-    condition = proto.Field(
+    condition: expr_pb2.Expr = proto.Field(
         proto.MESSAGE,
         number=7,
         message=expr_pb2.Expr,

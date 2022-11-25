@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.policytroubleshooter_v1.types import explanations
@@ -36,7 +38,7 @@ class TroubleshootIamPolicyRequest(proto.Message):
             member has a permission for a resource.
     """
 
-    access_tuple = proto.Field(
+    access_tuple: explanations.AccessTuple = proto.Field(
         proto.MESSAGE,
         number=1,
         message=explanations.AccessTuple,
@@ -53,7 +55,7 @@ class TroubleshootIamPolicyResponse(proto.Message):
             specified permission for the specified resource,
             based on evaluating all of the applicable IAM
             policies.
-        explained_policies (Sequence[google.cloud.policytroubleshooter_v1.types.ExplainedPolicy]):
+        explained_policies (MutableSequence[google.cloud.policytroubleshooter_v1.types.ExplainedPolicy]):
             List of IAM policies that were evaluated to
             check the member's permissions, with annotations
             to indicate how each policy contributed to the
@@ -68,12 +70,14 @@ class TroubleshootIamPolicyResponse(proto.Message):
             https://cloud.google.com/iam/help/resource-hierarchy.
     """
 
-    access = proto.Field(
+    access: explanations.AccessState = proto.Field(
         proto.ENUM,
         number=1,
         enum=explanations.AccessState,
     )
-    explained_policies = proto.RepeatedField(
+    explained_policies: MutableSequence[
+        explanations.ExplainedPolicy
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=explanations.ExplainedPolicy,

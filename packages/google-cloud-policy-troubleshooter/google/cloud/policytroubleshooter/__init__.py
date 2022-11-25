@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.policytroubleshooter import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.policytroubleshooter_v1.services.iam_checker.async_client import (
     IamCheckerAsyncClient,
