@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -161,9 +171,9 @@ class DatastoreAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DatastoreTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the datastore client.
@@ -207,13 +217,13 @@ class DatastoreAsyncClient:
 
     async def lookup(
         self,
-        request: Union[datastore.LookupRequest, dict] = None,
+        request: Optional[Union[datastore.LookupRequest, dict]] = None,
         *,
-        project_id: str = None,
-        read_options: datastore.ReadOptions = None,
-        keys: Sequence[entity.Key] = None,
+        project_id: Optional[str] = None,
+        read_options: Optional[datastore.ReadOptions] = None,
+        keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.LookupResponse:
         r"""Looks up entities by key.
@@ -245,7 +255,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.LookupRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.LookupRequest, dict]]):
                 The request object. The request for
                 [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
             project_id (:class:`str`):
@@ -260,7 +270,7 @@ class DatastoreAsyncClient:
                 This corresponds to the ``read_options`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            keys (:class:`Sequence[google.cloud.datastore_v1.types.Key]`):
+            keys (:class:`MutableSequence[google.cloud.datastore_v1.types.Key]`):
                 Required. Keys of entities to look
                 up.
 
@@ -339,10 +349,10 @@ class DatastoreAsyncClient:
 
     async def run_query(
         self,
-        request: Union[datastore.RunQueryRequest, dict] = None,
+        request: Optional[Union[datastore.RunQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RunQueryResponse:
         r"""Queries for entities.
@@ -374,7 +384,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.RunQueryRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.RunQueryRequest, dict]]):
                 The request object. The request for
                 [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -431,10 +441,10 @@ class DatastoreAsyncClient:
 
     async def run_aggregation_query(
         self,
-        request: Union[datastore.RunAggregationQueryRequest, dict] = None,
+        request: Optional[Union[datastore.RunAggregationQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RunAggregationQueryResponse:
         r"""Runs an aggregation query.
@@ -466,7 +476,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.RunAggregationQueryRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.RunAggregationQueryRequest, dict]]):
                 The request object. The request for
                 [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -523,11 +533,11 @@ class DatastoreAsyncClient:
 
     async def begin_transaction(
         self,
-        request: Union[datastore.BeginTransactionRequest, dict] = None,
+        request: Optional[Union[datastore.BeginTransactionRequest, dict]] = None,
         *,
-        project_id: str = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.BeginTransactionResponse:
         r"""Begins a new transaction.
@@ -559,7 +569,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.BeginTransactionRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.BeginTransactionRequest, dict]]):
                 The request object. The request for
                 [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
             project_id (:class:`str`):
@@ -627,14 +637,14 @@ class DatastoreAsyncClient:
 
     async def commit(
         self,
-        request: Union[datastore.CommitRequest, dict] = None,
+        request: Optional[Union[datastore.CommitRequest, dict]] = None,
         *,
-        project_id: str = None,
-        mode: datastore.CommitRequest.Mode = None,
-        transaction: bytes = None,
-        mutations: Sequence[datastore.Mutation] = None,
+        project_id: Optional[str] = None,
+        mode: Optional[datastore.CommitRequest.Mode] = None,
+        transaction: Optional[bytes] = None,
+        mutations: Optional[MutableSequence[datastore.Mutation]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.CommitResponse:
         r"""Commits a transaction, optionally creating, deleting
@@ -668,7 +678,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.CommitRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.CommitRequest, dict]]):
                 The request object. The request for
                 [Datastore.Commit][google.datastore.v1.Datastore.Commit].
             project_id (:class:`str`):
@@ -694,7 +704,7 @@ class DatastoreAsyncClient:
                 This corresponds to the ``transaction`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            mutations (:class:`Sequence[google.cloud.datastore_v1.types.Mutation]`):
+            mutations (:class:`MutableSequence[google.cloud.datastore_v1.types.Mutation]`):
                 The mutations to perform.
 
                 When mode is ``TRANSACTIONAL``, mutations affecting a
@@ -777,12 +787,12 @@ class DatastoreAsyncClient:
 
     async def rollback(
         self,
-        request: Union[datastore.RollbackRequest, dict] = None,
+        request: Optional[Union[datastore.RollbackRequest, dict]] = None,
         *,
-        project_id: str = None,
-        transaction: bytes = None,
+        project_id: Optional[str] = None,
+        transaction: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RollbackResponse:
         r"""Rolls back a transaction.
@@ -815,7 +825,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.RollbackRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.RollbackRequest, dict]]):
                 The request object. The request for
                 [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
             project_id (:class:`str`):
@@ -893,12 +903,12 @@ class DatastoreAsyncClient:
 
     async def allocate_ids(
         self,
-        request: Union[datastore.AllocateIdsRequest, dict] = None,
+        request: Optional[Union[datastore.AllocateIdsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        keys: Sequence[entity.Key] = None,
+        project_id: Optional[str] = None,
+        keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.AllocateIdsResponse:
         r"""Allocates IDs for the given keys, which is useful for
@@ -931,7 +941,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.AllocateIdsRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.AllocateIdsRequest, dict]]):
                 The request object. The request for
                 [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
             project_id (:class:`str`):
@@ -941,7 +951,7 @@ class DatastoreAsyncClient:
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            keys (:class:`Sequence[google.cloud.datastore_v1.types.Key]`):
+            keys (:class:`MutableSequence[google.cloud.datastore_v1.types.Key]`):
                 Required. A list of keys with
                 incomplete key paths for which to
                 allocate IDs. No key may be
@@ -1010,12 +1020,12 @@ class DatastoreAsyncClient:
 
     async def reserve_ids(
         self,
-        request: Union[datastore.ReserveIdsRequest, dict] = None,
+        request: Optional[Union[datastore.ReserveIdsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        keys: Sequence[entity.Key] = None,
+        project_id: Optional[str] = None,
+        keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.ReserveIdsResponse:
         r"""Prevents the supplied keys' IDs from being
@@ -1048,7 +1058,7 @@ class DatastoreAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.datastore_v1.types.ReserveIdsRequest, dict]):
+            request (Optional[Union[google.cloud.datastore_v1.types.ReserveIdsRequest, dict]]):
                 The request object. The request for
                 [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
             project_id (:class:`str`):
@@ -1058,7 +1068,7 @@ class DatastoreAsyncClient:
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            keys (:class:`Sequence[google.cloud.datastore_v1.types.Key]`):
+            keys (:class:`MutableSequence[google.cloud.datastore_v1.types.Key]`):
                 Required. A list of keys with
                 complete key paths whose numeric IDs
                 should not be auto-allocated.
@@ -1136,10 +1146,10 @@ class DatastoreAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1190,10 +1200,10 @@ class DatastoreAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1244,10 +1254,10 @@ class DatastoreAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1299,10 +1309,10 @@ class DatastoreAsyncClient:
 
     async def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.

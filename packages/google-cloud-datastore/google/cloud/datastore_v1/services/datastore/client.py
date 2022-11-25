@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -59,7 +70,7 @@ class DatastoreClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DatastoreTransport]:
         """Returns an appropriate transport class.
 
@@ -319,8 +330,8 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatastoreTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DatastoreTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the datastore client.
@@ -334,7 +345,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
             transport (Union[str, DatastoreTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -364,6 +375,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -416,13 +428,13 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def lookup(
         self,
-        request: Union[datastore.LookupRequest, dict] = None,
+        request: Optional[Union[datastore.LookupRequest, dict]] = None,
         *,
-        project_id: str = None,
-        read_options: datastore.ReadOptions = None,
-        keys: Sequence[entity.Key] = None,
+        project_id: Optional[str] = None,
+        read_options: Optional[datastore.ReadOptions] = None,
+        keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.LookupResponse:
         r"""Looks up entities by key.
@@ -469,7 +481,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
                 This corresponds to the ``read_options`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            keys (Sequence[google.cloud.datastore_v1.types.Key]):
+            keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
                 Required. Keys of entities to look
                 up.
 
@@ -538,10 +550,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def run_query(
         self,
-        request: Union[datastore.RunQueryRequest, dict] = None,
+        request: Optional[Union[datastore.RunQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RunQueryResponse:
         r"""Queries for entities.
@@ -621,10 +633,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def run_aggregation_query(
         self,
-        request: Union[datastore.RunAggregationQueryRequest, dict] = None,
+        request: Optional[Union[datastore.RunAggregationQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RunAggregationQueryResponse:
         r"""Runs an aggregation query.
@@ -704,11 +716,11 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def begin_transaction(
         self,
-        request: Union[datastore.BeginTransactionRequest, dict] = None,
+        request: Optional[Union[datastore.BeginTransactionRequest, dict]] = None,
         *,
-        project_id: str = None,
+        project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.BeginTransactionResponse:
         r"""Begins a new transaction.
@@ -808,14 +820,14 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def commit(
         self,
-        request: Union[datastore.CommitRequest, dict] = None,
+        request: Optional[Union[datastore.CommitRequest, dict]] = None,
         *,
-        project_id: str = None,
-        mode: datastore.CommitRequest.Mode = None,
-        transaction: bytes = None,
-        mutations: Sequence[datastore.Mutation] = None,
+        project_id: Optional[str] = None,
+        mode: Optional[datastore.CommitRequest.Mode] = None,
+        transaction: Optional[bytes] = None,
+        mutations: Optional[MutableSequence[datastore.Mutation]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.CommitResponse:
         r"""Commits a transaction, optionally creating, deleting
@@ -875,7 +887,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
                 This corresponds to the ``transaction`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            mutations (Sequence[google.cloud.datastore_v1.types.Mutation]):
+            mutations (MutableSequence[google.cloud.datastore_v1.types.Mutation]):
                 The mutations to perform.
 
                 When mode is ``TRANSACTIONAL``, mutations affecting a
@@ -958,12 +970,12 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def rollback(
         self,
-        request: Union[datastore.RollbackRequest, dict] = None,
+        request: Optional[Union[datastore.RollbackRequest, dict]] = None,
         *,
-        project_id: str = None,
-        transaction: bytes = None,
+        project_id: Optional[str] = None,
+        transaction: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.RollbackResponse:
         r"""Rolls back a transaction.
@@ -1074,12 +1086,12 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def allocate_ids(
         self,
-        request: Union[datastore.AllocateIdsRequest, dict] = None,
+        request: Optional[Union[datastore.AllocateIdsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        keys: Sequence[entity.Key] = None,
+        project_id: Optional[str] = None,
+        keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.AllocateIdsResponse:
         r"""Allocates IDs for the given keys, which is useful for
@@ -1122,7 +1134,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            keys (Sequence[google.cloud.datastore_v1.types.Key]):
+            keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
                 Required. A list of keys with
                 incomplete key paths for which to
                 allocate IDs. No key may be
@@ -1191,12 +1203,12 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def reserve_ids(
         self,
-        request: Union[datastore.ReserveIdsRequest, dict] = None,
+        request: Optional[Union[datastore.ReserveIdsRequest, dict]] = None,
         *,
-        project_id: str = None,
-        keys: Sequence[entity.Key] = None,
+        project_id: Optional[str] = None,
+        keys: Optional[MutableSequence[entity.Key]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastore.ReserveIdsResponse:
         r"""Prevents the supplied keys' IDs from being
@@ -1239,7 +1251,7 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            keys (Sequence[google.cloud.datastore_v1.types.Key]):
+            keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
                 Required. A list of keys with
                 complete key paths whose numeric IDs
                 should not be auto-allocated.
@@ -1320,10 +1332,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1374,10 +1386,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1428,10 +1440,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
@@ -1483,10 +1495,10 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
 
     def cancel_operation(
         self,
-        request: operations_pb2.CancelOperationRequest = None,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.

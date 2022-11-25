@@ -86,6 +86,7 @@ for library in get_staging_dirs(datastore_admin_default_version, "datastore_admi
         "",
     )
 
+    s.move(library / f"google/cloud/datastore_admin", excludes=["**/gapic_version.py"])
     s.move(library / f"google/cloud/datastore_admin_{library.name}")
     s.move(library / "tests")
     s.move(library / "scripts")
@@ -102,7 +103,7 @@ templated_files = common.py_library(
 )
 s.move(
     templated_files,
-    excludes=["docs/multiprocessing.rst", ".coveragerc", ".github/CODEOOWNERS"],
+    excludes=["docs/multiprocessing.rst", ".coveragerc", ".github/CODEOOWNERS", ".github/release-please.yml"],
 )
 
 python.py_samples(skip_readmes=True)

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity as gd_entity
@@ -83,21 +85,21 @@ class EntityResult(proto.Message):
         PROJECTION = 2
         KEY_ONLY = 3
 
-    entity = proto.Field(
+    entity: gd_entity.Entity = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gd_entity.Entity,
     )
-    version = proto.Field(
+    version: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
     )
-    cursor = proto.Field(
+    cursor: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
@@ -107,19 +109,19 @@ class Query(proto.Message):
     r"""A query for entities.
 
     Attributes:
-        projection (Sequence[google.cloud.datastore_v1.types.Projection]):
+        projection (MutableSequence[google.cloud.datastore_v1.types.Projection]):
             The projection to return. Defaults to
             returning all properties.
-        kind (Sequence[google.cloud.datastore_v1.types.KindExpression]):
+        kind (MutableSequence[google.cloud.datastore_v1.types.KindExpression]):
             The kinds to query (if empty, returns
             entities of all kinds). Currently at most 1 kind
             may be specified.
         filter (google.cloud.datastore_v1.types.Filter):
             The filter to apply.
-        order (Sequence[google.cloud.datastore_v1.types.PropertyOrder]):
+        order (MutableSequence[google.cloud.datastore_v1.types.PropertyOrder]):
             The order to apply to the query results (if
             empty, order is unspecified).
-        distinct_on (Sequence[google.cloud.datastore_v1.types.PropertyReference]):
+        distinct_on (MutableSequence[google.cloud.datastore_v1.types.PropertyReference]):
             The properties to make distinct. The query
             results will contain the first result for each
             distinct combination of values for the given
@@ -145,44 +147,44 @@ class Query(proto.Message):
             Must be >= 0 if specified.
     """
 
-    projection = proto.RepeatedField(
+    projection: MutableSequence["Projection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Projection",
     )
-    kind = proto.RepeatedField(
+    kind: MutableSequence["KindExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="KindExpression",
     )
-    filter = proto.Field(
+    filter: "Filter" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Filter",
     )
-    order = proto.RepeatedField(
+    order: MutableSequence["PropertyOrder"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="PropertyOrder",
     )
-    distinct_on = proto.RepeatedField(
+    distinct_on: MutableSequence["PropertyReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="PropertyReference",
     )
-    start_cursor = proto.Field(
+    start_cursor: bytes = proto.Field(
         proto.BYTES,
         number=7,
     )
-    end_cursor = proto.Field(
+    end_cursor: bytes = proto.Field(
         proto.BYTES,
         number=8,
     )
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT32,
         number=10,
     )
-    limit = proto.Field(
+    limit: wrappers_pb2.Int32Value = proto.Field(
         proto.MESSAGE,
         number=12,
         message=wrappers_pb2.Int32Value,
@@ -201,7 +203,7 @@ class AggregationQuery(proto.Message):
             Nested query for aggregation
 
             This field is a member of `oneof`_ ``query_type``.
-        aggregations (Sequence[google.cloud.datastore_v1.types.AggregationQuery.Aggregation]):
+        aggregations (MutableSequence[google.cloud.datastore_v1.types.AggregationQuery.Aggregation]):
             Optional. Series of aggregations to apply over the results
             of the ``nested_query``.
 
@@ -290,30 +292,30 @@ class AggregationQuery(proto.Message):
                     -  Must be non-negative when present.
             """
 
-            up_to = proto.Field(
+            up_to: wrappers_pb2.Int64Value = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 message=wrappers_pb2.Int64Value,
             )
 
-        count = proto.Field(
+        count: "AggregationQuery.Aggregation.Count" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="operator",
             message="AggregationQuery.Aggregation.Count",
         )
-        alias = proto.Field(
+        alias: str = proto.Field(
             proto.STRING,
             number=7,
         )
 
-    nested_query = proto.Field(
+    nested_query: "Query" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="query_type",
         message="Query",
     )
-    aggregations = proto.RepeatedField(
+    aggregations: MutableSequence[Aggregation] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=Aggregation,
@@ -328,7 +330,7 @@ class KindExpression(proto.Message):
             The name of the kind.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -344,7 +346,7 @@ class PropertyReference(proto.Message):
             a property name path.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -358,7 +360,7 @@ class Projection(proto.Message):
             The property to project.
     """
 
-    property = proto.Field(
+    property: "PropertyReference" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PropertyReference",
@@ -381,12 +383,12 @@ class PropertyOrder(proto.Message):
         ASCENDING = 1
         DESCENDING = 2
 
-    property = proto.Field(
+    property: "PropertyReference" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PropertyReference",
     )
-    direction = proto.Field(
+    direction: Direction = proto.Field(
         proto.ENUM,
         number=2,
         enum=Direction,
@@ -414,13 +416,13 @@ class Filter(proto.Message):
             This field is a member of `oneof`_ ``filter_type``.
     """
 
-    composite_filter = proto.Field(
+    composite_filter: "CompositeFilter" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="filter_type",
         message="CompositeFilter",
     )
-    property_filter = proto.Field(
+    property_filter: "PropertyFilter" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="filter_type",
@@ -435,7 +437,7 @@ class CompositeFilter(proto.Message):
     Attributes:
         op (google.cloud.datastore_v1.types.CompositeFilter.Operator):
             The operator for combining multiple filters.
-        filters (Sequence[google.cloud.datastore_v1.types.Filter]):
+        filters (MutableSequence[google.cloud.datastore_v1.types.Filter]):
             The list of filters to combine.
 
             Requires:
@@ -448,12 +450,12 @@ class CompositeFilter(proto.Message):
         OPERATOR_UNSPECIFIED = 0
         AND = 1
 
-    op = proto.Field(
+    op: Operator = proto.Field(
         proto.ENUM,
         number=1,
         enum=Operator,
     )
-    filters = proto.RepeatedField(
+    filters: MutableSequence["Filter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Filter",
@@ -485,17 +487,17 @@ class PropertyFilter(proto.Message):
         HAS_ANCESTOR = 11
         NOT_IN = 13
 
-    property = proto.Field(
+    property: "PropertyReference" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PropertyReference",
     )
-    op = proto.Field(
+    op: Operator = proto.Field(
         proto.ENUM,
         number=2,
         enum=Operator,
     )
-    value = proto.Field(
+    value: gd_entity.Value = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gd_entity.Value,
@@ -515,14 +517,14 @@ class GqlQuery(proto.Message):
             and instead must bind all values. For example,
             ``SELECT * FROM Kind WHERE a = 'string literal'`` is not
             allowed, while ``SELECT * FROM Kind WHERE a = @value`` is.
-        named_bindings (Mapping[str, google.cloud.datastore_v1.types.GqlQueryParameter]):
+        named_bindings (MutableMapping[str, google.cloud.datastore_v1.types.GqlQueryParameter]):
             For each non-reserved named binding site in the query
             string, there must be a named parameter with that name, but
             not necessarily the inverse.
 
             Key must match regex ``[A-Za-z_$][A-Za-z_$0-9]*``, must not
             match regex ``__.*__``, and must not be ``""``.
-        positional_bindings (Sequence[google.cloud.datastore_v1.types.GqlQueryParameter]):
+        positional_bindings (MutableSequence[google.cloud.datastore_v1.types.GqlQueryParameter]):
             Numbered binding site @1 references the first numbered
             parameter, effectively using 1-based indexing, rather than
             the usual 0.
@@ -532,21 +534,21 @@ class GqlQuery(proto.Message):
             true.
     """
 
-    query_string = proto.Field(
+    query_string: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allow_literals = proto.Field(
+    allow_literals: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    named_bindings = proto.MapField(
+    named_bindings: MutableMapping[str, "GqlQueryParameter"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
         message="GqlQueryParameter",
     )
-    positional_bindings = proto.RepeatedField(
+    positional_bindings: MutableSequence["GqlQueryParameter"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="GqlQueryParameter",
@@ -575,13 +577,13 @@ class GqlQueryParameter(proto.Message):
             This field is a member of `oneof`_ ``parameter_type``.
     """
 
-    value = proto.Field(
+    value: gd_entity.Value = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="parameter_type",
         message=gd_entity.Value,
     )
-    cursor = proto.Field(
+    cursor: bytes = proto.Field(
         proto.BYTES,
         number=3,
         oneof="parameter_type",
@@ -600,7 +602,7 @@ class QueryResultBatch(proto.Message):
             result. Will be set when ``skipped_results`` != 0.
         entity_result_type (google.cloud.datastore_v1.types.EntityResult.ResultType):
             The result type for every entity in ``entity_results``.
-        entity_results (Sequence[google.cloud.datastore_v1.types.EntityResult]):
+        entity_results (MutableSequence[google.cloud.datastore_v1.types.EntityResult]):
             The results for this batch.
         end_cursor (bytes):
             A cursor that points to the position after
@@ -641,38 +643,38 @@ class QueryResultBatch(proto.Message):
         MORE_RESULTS_AFTER_CURSOR = 4
         NO_MORE_RESULTS = 3
 
-    skipped_results = proto.Field(
+    skipped_results: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    skipped_cursor = proto.Field(
+    skipped_cursor: bytes = proto.Field(
         proto.BYTES,
         number=3,
     )
-    entity_result_type = proto.Field(
+    entity_result_type: "EntityResult.ResultType" = proto.Field(
         proto.ENUM,
         number=1,
         enum="EntityResult.ResultType",
     )
-    entity_results = proto.RepeatedField(
+    entity_results: MutableSequence["EntityResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="EntityResult",
     )
-    end_cursor = proto.Field(
+    end_cursor: bytes = proto.Field(
         proto.BYTES,
         number=4,
     )
-    more_results = proto.Field(
+    more_results: MoreResultsType = proto.Field(
         proto.ENUM,
         number=5,
         enum=MoreResultsType,
     )
-    snapshot_version = proto.Field(
+    snapshot_version: int = proto.Field(
         proto.INT64,
         number=7,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,

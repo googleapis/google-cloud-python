@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import struct_pb2  # type: ignore
@@ -65,15 +67,15 @@ class PartitionId(proto.Message):
             which the entities belong.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    namespace_id = proto.Field(
+    namespace_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -92,7 +94,7 @@ class Key(proto.Message):
             currently identified by a project ID and
             namespace ID. Queries are scoped to a single
             partition.
-        path (Sequence[google.cloud.datastore_v1.types.Key.PathElement]):
+        path (MutableSequence[google.cloud.datastore_v1.types.Key.PathElement]):
             The entity path. An entity path consists of one or more
             elements composed of a kind and a string or numerical
             identifier, which identify entities. The first element
@@ -158,27 +160,27 @@ class Key(proto.Message):
                 This field is a member of `oneof`_ ``id_type``.
         """
 
-        kind = proto.Field(
+        kind: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        id = proto.Field(
+        id: int = proto.Field(
             proto.INT64,
             number=2,
             oneof="id_type",
         )
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=3,
             oneof="id_type",
         )
 
-    partition_id = proto.Field(
+    partition_id: "PartitionId" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="PartitionId",
     )
-    path = proto.RepeatedField(
+    path: MutableSequence[PathElement] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=PathElement,
@@ -189,13 +191,13 @@ class ArrayValue(proto.Message):
     r"""An array value.
 
     Attributes:
-        values (Sequence[google.cloud.datastore_v1.types.Value]):
+        values (MutableSequence[google.cloud.datastore_v1.types.Value]):
             Values in the array. The order of values in an array is
             preserved as long as all values have identical settings for
             'exclude_from_indexes'.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence["Value"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Value",
@@ -279,72 +281,72 @@ class Value(proto.Message):
             indexes including those defined explicitly.
     """
 
-    null_value = proto.Field(
+    null_value: struct_pb2.NullValue = proto.Field(
         proto.ENUM,
         number=11,
         oneof="value_type",
         enum=struct_pb2.NullValue,
     )
-    boolean_value = proto.Field(
+    boolean_value: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="value_type",
     )
-    integer_value = proto.Field(
+    integer_value: int = proto.Field(
         proto.INT64,
         number=2,
         oneof="value_type",
     )
-    double_value = proto.Field(
+    double_value: float = proto.Field(
         proto.DOUBLE,
         number=3,
         oneof="value_type",
     )
-    timestamp_value = proto.Field(
+    timestamp_value: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="value_type",
         message=timestamp_pb2.Timestamp,
     )
-    key_value = proto.Field(
+    key_value: "Key" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="value_type",
         message="Key",
     )
-    string_value = proto.Field(
+    string_value: str = proto.Field(
         proto.STRING,
         number=17,
         oneof="value_type",
     )
-    blob_value = proto.Field(
+    blob_value: bytes = proto.Field(
         proto.BYTES,
         number=18,
         oneof="value_type",
     )
-    geo_point_value = proto.Field(
+    geo_point_value: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="value_type",
         message=latlng_pb2.LatLng,
     )
-    entity_value = proto.Field(
+    entity_value: "Entity" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="value_type",
         message="Entity",
     )
-    array_value = proto.Field(
+    array_value: "ArrayValue" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="value_type",
         message="ArrayValue",
     )
-    meaning = proto.Field(
+    meaning: int = proto.Field(
         proto.INT32,
         number=14,
     )
-    exclude_from_indexes = proto.Field(
+    exclude_from_indexes: bool = proto.Field(
         proto.BOOL,
         number=19,
     )
@@ -365,7 +367,7 @@ class Entity(proto.Message):
             example, an entity in ``Value.entity_value`` may have no
             key). An entity's kind is its key path's last element's
             kind, or null if it has no key.
-        properties (Mapping[str, google.cloud.datastore_v1.types.Value]):
+        properties (MutableMapping[str, google.cloud.datastore_v1.types.Value]):
             The entity's properties. The map's keys are property names.
             A property name matching regex ``__.*__`` is reserved. A
             reserved property name is forbidden in certain documented
@@ -373,12 +375,12 @@ class Entity(proto.Message):
             characters. The name cannot be ``""``.
     """
 
-    key = proto.Field(
+    key: "Key" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Key",
     )
-    properties = proto.MapField(
+    properties: MutableMapping[str, "Value"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,

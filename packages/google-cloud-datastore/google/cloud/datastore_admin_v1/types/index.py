@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -38,7 +40,7 @@ class Index(proto.Message):
         ancestor (google.cloud.datastore_admin_v1.types.Index.AncestorMode):
             Required. The index's ancestor mode. Must not be
             ANCESTOR_MODE_UNSPECIFIED.
-        properties (Sequence[google.cloud.datastore_admin_v1.types.Index.IndexedProperty]):
+        properties (MutableSequence[google.cloud.datastore_admin_v1.types.Index.IndexedProperty]):
             Required. An ordered sequence of property
             names and their index attributes.
         state (google.cloud.datastore_admin_v1.types.Index.State):
@@ -78,39 +80,39 @@ class Index(proto.Message):
                 DIRECTION_UNSPECIFIED.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        direction = proto.Field(
+        direction: "Index.Direction" = proto.Field(
             proto.ENUM,
             number=2,
             enum="Index.Direction",
         )
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    index_id = proto.Field(
+    index_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    kind = proto.Field(
+    kind: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    ancestor = proto.Field(
+    ancestor: AncestorMode = proto.Field(
         proto.ENUM,
         number=5,
         enum=AncestorMode,
     )
-    properties = proto.RepeatedField(
+    properties: MutableSequence[IndexedProperty] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=IndexedProperty,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,

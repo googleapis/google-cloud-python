@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import aggregation_result
@@ -63,24 +65,24 @@ class LookupRequest(proto.Message):
             string '' to refer the default database.
         read_options (google.cloud.datastore_v1.types.ReadOptions):
             The options for this lookup request.
-        keys (Sequence[google.cloud.datastore_v1.types.Key]):
+        keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
             Required. Keys of entities to look up.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    read_options = proto.Field(
+    read_options: "ReadOptions" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ReadOptions",
     )
-    keys = proto.RepeatedField(
+    keys: MutableSequence[entity.Key] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=entity.Key,
@@ -92,15 +94,15 @@ class LookupResponse(proto.Message):
     [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
 
     Attributes:
-        found (Sequence[google.cloud.datastore_v1.types.EntityResult]):
+        found (MutableSequence[google.cloud.datastore_v1.types.EntityResult]):
             Entities found as ``ResultType.FULL`` entities. The order of
             results in this field is undefined and has no relation to
             the order of the keys in the input.
-        missing (Sequence[google.cloud.datastore_v1.types.EntityResult]):
+        missing (MutableSequence[google.cloud.datastore_v1.types.EntityResult]):
             Entities not found as ``ResultType.KEY_ONLY`` entities. The
             order of results in this field is undefined and has no
             relation to the order of the keys in the input.
-        deferred (Sequence[google.cloud.datastore_v1.types.Key]):
+        deferred (MutableSequence[google.cloud.datastore_v1.types.Key]):
             A list of keys that were not looked up due to
             resource constraints. The order of results in
             this field is undefined and has no relation to
@@ -110,22 +112,22 @@ class LookupResponse(proto.Message):
             found missing.
     """
 
-    found = proto.RepeatedField(
+    found: MutableSequence[gd_query.EntityResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gd_query.EntityResult,
     )
-    missing = proto.RepeatedField(
+    missing: MutableSequence[gd_query.EntityResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gd_query.EntityResult,
     )
-    deferred = proto.RepeatedField(
+    deferred: MutableSequence[entity.Key] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=entity.Key,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
@@ -171,31 +173,31 @@ class RunQueryRequest(proto.Message):
             This field is a member of `oneof`_ ``query_type``.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    partition_id = proto.Field(
+    partition_id: entity.PartitionId = proto.Field(
         proto.MESSAGE,
         number=2,
         message=entity.PartitionId,
     )
-    read_options = proto.Field(
+    read_options: "ReadOptions" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ReadOptions",
     )
-    query = proto.Field(
+    query: gd_query.Query = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="query_type",
         message=gd_query.Query,
     )
-    gql_query = proto.Field(
+    gql_query: gd_query.GqlQuery = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="query_type",
@@ -215,12 +217,12 @@ class RunQueryResponse(proto.Message):
             was set.
     """
 
-    batch = proto.Field(
+    batch: gd_query.QueryResultBatch = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gd_query.QueryResultBatch,
     )
-    query = proto.Field(
+    query: gd_query.Query = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gd_query.Query,
@@ -266,31 +268,31 @@ class RunAggregationQueryRequest(proto.Message):
             This field is a member of `oneof`_ ``query_type``.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    partition_id = proto.Field(
+    partition_id: entity.PartitionId = proto.Field(
         proto.MESSAGE,
         number=2,
         message=entity.PartitionId,
     )
-    read_options = proto.Field(
+    read_options: "ReadOptions" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ReadOptions",
     )
-    aggregation_query = proto.Field(
+    aggregation_query: gd_query.AggregationQuery = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="query_type",
         message=gd_query.AggregationQuery,
     )
-    gql_query = proto.Field(
+    gql_query: gd_query.GqlQuery = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="query_type",
@@ -311,12 +313,12 @@ class RunAggregationQueryResponse(proto.Message):
             was set.
     """
 
-    batch = proto.Field(
+    batch: aggregation_result.AggregationResultBatch = proto.Field(
         proto.MESSAGE,
         number=1,
         message=aggregation_result.AggregationResultBatch,
     )
-    query = proto.Field(
+    query: gd_query.AggregationQuery = proto.Field(
         proto.MESSAGE,
         number=2,
         message=gd_query.AggregationQuery,
@@ -340,15 +342,15 @@ class BeginTransactionRequest(proto.Message):
             Options for a new transaction.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    transaction_options = proto.Field(
+    transaction_options: "TransactionOptions" = proto.Field(
         proto.MESSAGE,
         number=10,
         message="TransactionOptions",
@@ -364,7 +366,7 @@ class BeginTransactionResponse(proto.Message):
             The transaction identifier (always present).
     """
 
-    transaction = proto.Field(
+    transaction: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -388,15 +390,15 @@ class RollbackRequest(proto.Message):
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    transaction = proto.Field(
+    transaction: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
@@ -435,7 +437,7 @@ class CommitRequest(proto.Message):
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 
             This field is a member of `oneof`_ ``transaction_selector``.
-        mutations (Sequence[google.cloud.datastore_v1.types.Mutation]):
+        mutations (MutableSequence[google.cloud.datastore_v1.types.Mutation]):
             The mutations to perform.
 
             When mode is ``TRANSACTIONAL``, mutations affecting a single
@@ -458,25 +460,25 @@ class CommitRequest(proto.Message):
         TRANSACTIONAL = 1
         NON_TRANSACTIONAL = 2
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    mode = proto.Field(
+    mode: Mode = proto.Field(
         proto.ENUM,
         number=5,
         enum=Mode,
     )
-    transaction = proto.Field(
+    transaction: bytes = proto.Field(
         proto.BYTES,
         number=1,
         oneof="transaction_selector",
     )
-    mutations = proto.RepeatedField(
+    mutations: MutableSequence["Mutation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="Mutation",
@@ -488,7 +490,7 @@ class CommitResponse(proto.Message):
     [Datastore.Commit][google.datastore.v1.Datastore.Commit].
 
     Attributes:
-        mutation_results (Sequence[google.cloud.datastore_v1.types.MutationResult]):
+        mutation_results (MutableSequence[google.cloud.datastore_v1.types.MutationResult]):
             The result of performing the mutations.
             The i-th mutation result corresponds to the i-th
             mutation in the request.
@@ -500,16 +502,16 @@ class CommitResponse(proto.Message):
             non-transactional commits.
     """
 
-    mutation_results = proto.RepeatedField(
+    mutation_results: MutableSequence["MutationResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="MutationResult",
     )
-    index_updates = proto.Field(
+    index_updates: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    commit_time = proto.Field(
+    commit_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
@@ -529,21 +531,21 @@ class AllocateIdsRequest(proto.Message):
             the request.
             '(default)' is not allowed; please use empty
             string '' to refer the default database.
-        keys (Sequence[google.cloud.datastore_v1.types.Key]):
+        keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
             Required. A list of keys with incomplete key
             paths for which to allocate IDs. No key may be
             reserved/read-only.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    keys = proto.RepeatedField(
+    keys: MutableSequence[entity.Key] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=entity.Key,
@@ -555,13 +557,13 @@ class AllocateIdsResponse(proto.Message):
     [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
 
     Attributes:
-        keys (Sequence[google.cloud.datastore_v1.types.Key]):
+        keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
             The keys specified in the request (in the
             same order), each with its key path completed
             with a newly allocated ID.
     """
 
-    keys = proto.RepeatedField(
+    keys: MutableSequence[entity.Key] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=entity.Key,
@@ -581,21 +583,21 @@ class ReserveIdsRequest(proto.Message):
             the request.
             '(default)' is not allowed; please use empty
             string '' to refer the default database.
-        keys (Sequence[google.cloud.datastore_v1.types.Key]):
+        keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
             Required. A list of keys with complete key
             paths whose numeric IDs should not be
             auto-allocated.
     """
 
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    database_id = proto.Field(
+    database_id: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    keys = proto.RepeatedField(
+    keys: MutableSequence[entity.Key] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=entity.Key,
@@ -660,36 +662,36 @@ class Mutation(proto.Message):
             This field is a member of `oneof`_ ``conflict_detection_strategy``.
     """
 
-    insert = proto.Field(
+    insert: entity.Entity = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="operation",
         message=entity.Entity,
     )
-    update = proto.Field(
+    update: entity.Entity = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="operation",
         message=entity.Entity,
     )
-    upsert = proto.Field(
+    upsert: entity.Entity = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="operation",
         message=entity.Entity,
     )
-    delete = proto.Field(
+    delete: entity.Key = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="operation",
         message=entity.Key,
     )
-    base_version = proto.Field(
+    base_version: int = proto.Field(
         proto.INT64,
         number=8,
         oneof="conflict_detection_strategy",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="conflict_detection_strategy",
@@ -726,21 +728,21 @@ class MutationResult(proto.Message):
             strategy field is not set in the mutation.
     """
 
-    key = proto.Field(
+    key: entity.Key = proto.Field(
         proto.MESSAGE,
         number=3,
         message=entity.Key,
     )
-    version = proto.Field(
+    version: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    conflict_detected = proto.Field(
+    conflict_detected: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
@@ -783,18 +785,18 @@ class ReadOptions(proto.Message):
         STRONG = 1
         EVENTUAL = 2
 
-    read_consistency = proto.Field(
+    read_consistency: ReadConsistency = proto.Field(
         proto.ENUM,
         number=1,
         oneof="consistency_type",
         enum=ReadConsistency,
     )
-    transaction = proto.Field(
+    transaction: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="consistency_type",
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="consistency_type",
@@ -839,7 +841,7 @@ class TransactionOptions(proto.Message):
                 being retried.
         """
 
-        previous_transaction = proto.Field(
+        previous_transaction: bytes = proto.Field(
             proto.BYTES,
             number=1,
         )
@@ -853,19 +855,19 @@ class TransactionOptions(proto.Message):
                 This may not be older than 60 seconds.
         """
 
-        read_time = proto.Field(
+        read_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
             message=timestamp_pb2.Timestamp,
         )
 
-    read_write = proto.Field(
+    read_write: ReadWrite = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="mode",
         message=ReadWrite,
     )
-    read_only = proto.Field(
+    read_only: ReadOnly = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="mode",

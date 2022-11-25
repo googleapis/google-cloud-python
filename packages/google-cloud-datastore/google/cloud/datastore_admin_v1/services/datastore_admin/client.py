@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -61,7 +72,7 @@ class DatastoreAdminClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[DatastoreAdminTransport]:
         """Returns an appropriate transport class.
 
@@ -369,8 +380,8 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatastoreAdminTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, DatastoreAdminTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the datastore admin client.
@@ -384,7 +395,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
             transport (Union[str, DatastoreAdminTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -414,6 +425,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -466,14 +478,14 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     def export_entities(
         self,
-        request: Union[datastore_admin.ExportEntitiesRequest, dict] = None,
+        request: Optional[Union[datastore_admin.ExportEntitiesRequest, dict]] = None,
         *,
-        project_id: str = None,
-        labels: Mapping[str, str] = None,
-        entity_filter: datastore_admin.EntityFilter = None,
-        output_url_prefix: str = None,
+        project_id: Optional[str] = None,
+        labels: Optional[MutableMapping[str, str]] = None,
+        entity_filter: Optional[datastore_admin.EntityFilter] = None,
+        output_url_prefix: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports a copy of all or a subset of entities from
@@ -529,7 +541,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Mapping[str, str]):
+            labels (MutableMapping[str, str]):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -646,14 +658,14 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     def import_entities(
         self,
-        request: Union[datastore_admin.ImportEntitiesRequest, dict] = None,
+        request: Optional[Union[datastore_admin.ImportEntitiesRequest, dict]] = None,
         *,
-        project_id: str = None,
-        labels: Mapping[str, str] = None,
-        input_url: str = None,
-        entity_filter: datastore_admin.EntityFilter = None,
+        project_id: Optional[str] = None,
+        labels: Optional[MutableMapping[str, str]] = None,
+        input_url: Optional[str] = None,
+        entity_filter: Optional[datastore_admin.EntityFilter] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Imports entities into Google Cloud Datastore.
@@ -706,7 +718,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Mapping[str, str]):
+            labels (MutableMapping[str, str]):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -824,10 +836,10 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     def create_index(
         self,
-        request: Union[datastore_admin.CreateIndexRequest, dict] = None,
+        request: Optional[Union[datastore_admin.CreateIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates the specified index. A newly created index's initial
@@ -935,10 +947,10 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     def delete_index(
         self,
-        request: Union[datastore_admin.DeleteIndexRequest, dict] = None,
+        request: Optional[Union[datastore_admin.DeleteIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an existing index. An index can only be deleted if it is
@@ -1048,10 +1060,10 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     def get_index(
         self,
-        request: Union[datastore_admin.GetIndexRequest, dict] = None,
+        request: Optional[Union[datastore_admin.GetIndexRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> index.Index:
         r"""Gets an index.
@@ -1131,10 +1143,10 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     def list_indexes(
         self,
-        request: Union[datastore_admin.ListIndexesRequest, dict] = None,
+        request: Optional[Union[datastore_admin.ListIndexesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIndexesPager:
         r"""Lists the indexes that match the specified filters.

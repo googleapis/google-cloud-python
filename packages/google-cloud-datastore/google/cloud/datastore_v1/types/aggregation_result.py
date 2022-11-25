@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity
@@ -37,7 +39,7 @@ class AggregationResult(proto.Message):
     fields present for each result.
 
     Attributes:
-        aggregate_properties (Mapping[str, google.cloud.datastore_v1.types.Value]):
+        aggregate_properties (MutableMapping[str, google.cloud.datastore_v1.types.Value]):
             The result of the aggregation functions, ex:
             ``COUNT(*) AS total_entities``.
 
@@ -48,7 +50,7 @@ class AggregationResult(proto.Message):
             the query.
     """
 
-    aggregate_properties = proto.MapField(
+    aggregate_properties: MutableMapping[str, entity.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
@@ -61,7 +63,7 @@ class AggregationResultBatch(proto.Message):
     query.
 
     Attributes:
-        aggregation_results (Sequence[google.cloud.datastore_v1.types.AggregationResult]):
+        aggregation_results (MutableSequence[google.cloud.datastore_v1.types.AggregationResult]):
             The aggregation results for this batch.
         more_results (google.cloud.datastore_v1.types.QueryResultBatch.MoreResultsType):
             The state of the query after the current batch. Only
@@ -76,17 +78,17 @@ class AggregationResultBatch(proto.Message):
             for all preceding batches.
     """
 
-    aggregation_results = proto.RepeatedField(
+    aggregation_results: MutableSequence["AggregationResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AggregationResult",
     )
-    more_results = proto.Field(
+    more_results: query.QueryResultBatch.MoreResultsType = proto.Field(
         proto.ENUM,
         number=2,
         enum=query.QueryResultBatch.MoreResultsType,
     )
-    read_time = proto.Field(
+    read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,

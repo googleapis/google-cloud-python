@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 
@@ -57,7 +59,7 @@ class MigrationStateEvent(proto.Message):
             The new state of the migration.
     """
 
-    state = proto.Field(
+    state: "MigrationState" = proto.Field(
         proto.ENUM,
         number=1,
         enum="MigrationState",
@@ -109,7 +111,7 @@ class MigrationProgressEvent(proto.Message):
                 the ``REDIRECT_WRITES`` step.
         """
 
-        concurrency_mode = proto.Field(
+        concurrency_mode: "MigrationProgressEvent.ConcurrencyMode" = proto.Field(
             proto.ENUM,
             number=1,
             enum="MigrationProgressEvent.ConcurrencyMode",
@@ -123,24 +125,24 @@ class MigrationProgressEvent(proto.Message):
                 Ths concurrency mode for this database.
         """
 
-        concurrency_mode = proto.Field(
+        concurrency_mode: "MigrationProgressEvent.ConcurrencyMode" = proto.Field(
             proto.ENUM,
             number=1,
             enum="MigrationProgressEvent.ConcurrencyMode",
         )
 
-    step = proto.Field(
+    step: "MigrationStep" = proto.Field(
         proto.ENUM,
         number=1,
         enum="MigrationStep",
     )
-    prepare_step_details = proto.Field(
+    prepare_step_details: PrepareStepDetails = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="step_details",
         message=PrepareStepDetails,
     )
-    redirect_writes_step_details = proto.Field(
+    redirect_writes_step_details: RedirectWritesStepDetails = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="step_details",
