@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -40,7 +42,7 @@ class Endpoint(proto.Message):
         port (int):
             Optional. Service Directory will reject values outside of
             [0, 65535].
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations for the endpoint. This data can be
             consumed by service clients. Restrictions:
 
@@ -67,19 +69,19 @@ class Endpoint(proto.Message):
                to the same location in Service Directory.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    address = proto.Field(
+    address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,

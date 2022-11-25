@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -68,7 +79,7 @@ class RegistrationServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RegistrationServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -408,8 +419,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RegistrationServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, RegistrationServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the registration service client.
@@ -423,7 +434,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             transport (Union[str, RegistrationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -453,6 +464,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -505,13 +517,15 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def create_namespace(
         self,
-        request: Union[registration_service.CreateNamespaceRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.CreateNamespaceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        namespace: gcs_namespace.Namespace = None,
-        namespace_id: str = None,
+        parent: Optional[str] = None,
+        namespace: Optional[gcs_namespace.Namespace] = None,
+        namespace_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_namespace.Namespace:
         r"""Creates a namespace, and returns the new Namespace.
@@ -637,11 +651,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def list_namespaces(
         self,
-        request: Union[registration_service.ListNamespacesRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.ListNamespacesRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNamespacesPager:
         r"""Lists all namespaces.
@@ -753,11 +769,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def get_namespace(
         self,
-        request: Union[registration_service.GetNamespaceRequest, dict] = None,
+        request: Optional[Union[registration_service.GetNamespaceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> namespace.Namespace:
         r"""Gets a namespace.
@@ -857,12 +873,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def update_namespace(
         self,
-        request: Union[registration_service.UpdateNamespaceRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.UpdateNamespaceRequest, dict]
+        ] = None,
         *,
-        namespace: gcs_namespace.Namespace = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        namespace: Optional[gcs_namespace.Namespace] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_namespace.Namespace:
         r"""Updates a namespace.
@@ -970,11 +988,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def delete_namespace(
         self,
-        request: Union[registration_service.DeleteNamespaceRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.DeleteNamespaceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a namespace. This also deletes all services
@@ -1061,13 +1081,15 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def create_service(
         self,
-        request: Union[registration_service.CreateServiceRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.CreateServiceRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        service: gcs_service.Service = None,
-        service_id: str = None,
+        parent: Optional[str] = None,
+        service: Optional[gcs_service.Service] = None,
+        service_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_service.Service:
         r"""Creates a service, and returns the new Service.
@@ -1192,11 +1214,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def list_services(
         self,
-        request: Union[registration_service.ListServicesRequest, dict] = None,
+        request: Optional[Union[registration_service.ListServicesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""Lists all services belonging to a namespace.
@@ -1308,11 +1330,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def get_service(
         self,
-        request: Union[registration_service.GetServiceRequest, dict] = None,
+        request: Optional[Union[registration_service.GetServiceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Service:
         r"""Gets a service.
@@ -1415,12 +1437,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def update_service(
         self,
-        request: Union[registration_service.UpdateServiceRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.UpdateServiceRequest, dict]
+        ] = None,
         *,
-        service: gcs_service.Service = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        service: Optional[gcs_service.Service] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_service.Service:
         r"""Updates a service.
@@ -1528,11 +1552,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def delete_service(
         self,
-        request: Union[registration_service.DeleteServiceRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.DeleteServiceRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a service. This also deletes all endpoints
@@ -1619,13 +1645,15 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def create_endpoint(
         self,
-        request: Union[registration_service.CreateEndpointRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.CreateEndpointRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        endpoint: gcs_endpoint.Endpoint = None,
-        endpoint_id: str = None,
+        parent: Optional[str] = None,
+        endpoint: Optional[gcs_endpoint.Endpoint] = None,
+        endpoint_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_endpoint.Endpoint:
         r"""Creates a endpoint, and returns the new Endpoint.
@@ -1749,11 +1777,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def list_endpoints(
         self,
-        request: Union[registration_service.ListEndpointsRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.ListEndpointsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEndpointsPager:
         r"""Lists all endpoints.
@@ -1865,11 +1895,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def get_endpoint(
         self,
-        request: Union[registration_service.GetEndpointRequest, dict] = None,
+        request: Optional[Union[registration_service.GetEndpointRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> endpoint.Endpoint:
         r"""Gets a endpoint.
@@ -1970,12 +2000,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def update_endpoint(
         self,
-        request: Union[registration_service.UpdateEndpointRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.UpdateEndpointRequest, dict]
+        ] = None,
         *,
-        endpoint: gcs_endpoint.Endpoint = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        endpoint: Optional[gcs_endpoint.Endpoint] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_endpoint.Endpoint:
         r"""Updates a endpoint.
@@ -2082,11 +2114,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def delete_endpoint(
         self,
-        request: Union[registration_service.DeleteEndpointRequest, dict] = None,
+        request: Optional[
+            Union[registration_service.DeleteEndpointRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a endpoint.
@@ -2172,10 +2206,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM Policy for a resource (namespace or
@@ -2315,10 +2349,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM Policy for a resource (namespace or
@@ -2458,10 +2492,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests IAM permissions for a resource (namespace or

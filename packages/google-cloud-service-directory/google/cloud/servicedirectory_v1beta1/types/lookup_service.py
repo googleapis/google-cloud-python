@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
@@ -86,15 +88,15 @@ class ResolveServiceRequest(proto.Message):
             Filtering <https://aip.dev/160>`__.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    max_endpoints = proto.Field(
+    max_endpoints: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    endpoint_filter = proto.Field(
+    endpoint_filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -109,7 +111,7 @@ class ResolveServiceResponse(proto.Message):
 
     """
 
-    service = proto.Field(
+    service: gcs_service.Service = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_service.Service,

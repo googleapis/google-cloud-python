@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.servicedirectory_v1.types import endpoint
@@ -35,7 +37,7 @@ class Service(proto.Message):
         name (str):
             Immutable. The resource name for the service in the format
             ``projects/*/locations/*/namespaces/*/services/*``.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Optional. Annotations for the service. This data can be
             consumed by service clients. Restrictions:
 
@@ -60,23 +62,23 @@ class Service(proto.Message):
                Note: This field is equivalent to the 'metadata' field in
                the v1beta1 API. They have the same syntax and read/write
                to the same location in Service Directory.
-        endpoints (Sequence[google.cloud.servicedirectory_v1.types.Endpoint]):
+        endpoints (MutableSequence[google.cloud.servicedirectory_v1.types.Endpoint]):
             Output only. Endpoints associated with this
             service. Returned on LookupService.Resolve.
             Control plane clients should use
             RegistrationService.ListEndpoints.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    endpoints = proto.RepeatedField(
+    endpoints: MutableSequence[endpoint.Endpoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=endpoint.Endpoint,

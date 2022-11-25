@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -162,9 +172,9 @@ class LookupServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, LookupServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the lookup service client.
@@ -208,10 +218,10 @@ class LookupServiceAsyncClient:
 
     async def resolve_service(
         self,
-        request: Union[lookup_service.ResolveServiceRequest, dict] = None,
+        request: Optional[Union[lookup_service.ResolveServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> lookup_service.ResolveServiceResponse:
         r"""Returns a
@@ -246,7 +256,7 @@ class LookupServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.servicedirectory_v1beta1.types.ResolveServiceRequest, dict]):
+            request (Optional[Union[google.cloud.servicedirectory_v1beta1.types.ResolveServiceRequest, dict]]):
                 The request object. The request message for
                 [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
                 Looks up a service by its name, returns the service and

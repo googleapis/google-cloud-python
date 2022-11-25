@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -33,18 +35,18 @@ class Namespace(proto.Message):
         name (str):
             Immutable. The resource name for the namespace in the format
             ``projects/*/locations/*/namespaces/*``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Resource labels associated with
             this Namespace. No more than 64 user labels can
             be associated with a given resource.  Label keys
             and values can be no longer than 63 characters.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -36,7 +38,7 @@ class Service(proto.Message):
         name (str):
             Immutable. The resource name for the service in the format
             ``projects/*/locations/*/namespaces/*/services/*``.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Optional. Metadata for the service. This data can be
             consumed by service clients.
 
@@ -64,7 +66,7 @@ class Service(proto.Message):
             Note: This field is equivalent to the ``annotations`` field
             in the v1 API. They have the same syntax and read/write to
             the same location in Service Directory.
-        endpoints (Sequence[google.cloud.servicedirectory_v1beta1.types.Endpoint]):
+        endpoints (MutableSequence[google.cloud.servicedirectory_v1beta1.types.Endpoint]):
             Output only. Endpoints associated with this service.
             Returned on
             [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
@@ -81,26 +83,26 @@ class Service(proto.Message):
             of this timestamp.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    endpoints = proto.RepeatedField(
+    endpoints: MutableSequence[endpoint.Endpoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=endpoint.Endpoint,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -47,7 +49,7 @@ class Endpoint(proto.Message):
         port (int):
             Optional. Service Directory rejects values outside of
             ``[0, 65535]``.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             Optional. Metadata for the endpoint. This data can be
             consumed by service clients.
 
@@ -92,33 +94,33 @@ class Endpoint(proto.Message):
             was last updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    address = proto.Field(
+    address: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,

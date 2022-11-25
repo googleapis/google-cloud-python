@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -66,15 +68,15 @@ class CreateNamespaceRequest(proto.Message):
             set.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    namespace_id = proto.Field(
+    namespace_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    namespace = proto.Field(
+    namespace: gcs_namespace.Namespace = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcs_namespace.Namespace,
@@ -130,23 +132,23 @@ class ListNamespacesRequest(proto.Message):
             name in ascending order.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -157,7 +159,7 @@ class ListNamespacesResponse(proto.Message):
     [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1.RegistrationService.ListNamespaces].
 
     Attributes:
-        namespaces (Sequence[google.cloud.servicedirectory_v1.types.Namespace]):
+        namespaces (MutableSequence[google.cloud.servicedirectory_v1.types.Namespace]):
             The list of namespaces.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -169,12 +171,12 @@ class ListNamespacesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    namespaces = proto.RepeatedField(
+    namespaces: MutableSequence[gcs_namespace.Namespace] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_namespace.Namespace,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -190,7 +192,7 @@ class GetNamespaceRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -208,12 +210,12 @@ class UpdateNamespaceRequest(proto.Message):
             this request.
     """
 
-    namespace = proto.Field(
+    namespace: gcs_namespace.Namespace = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_namespace.Namespace,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -230,7 +232,7 @@ class DeleteNamespaceRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -256,15 +258,15 @@ class CreateServiceRequest(proto.Message):
             Required. A service  with initial fields set.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_id = proto.Field(
+    service_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    service = proto.Field(
+    service: gcs_service.Service = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcs_service.Service,
@@ -314,23 +316,23 @@ class ListServicesRequest(proto.Message):
             Optional. The order to list result by.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -341,7 +343,7 @@ class ListServicesResponse(proto.Message):
     [RegistrationService.ListServices][google.cloud.servicedirectory.v1.RegistrationService.ListServices].
 
     Attributes:
-        services (Sequence[google.cloud.servicedirectory_v1.types.Service]):
+        services (MutableSequence[google.cloud.servicedirectory_v1.types.Service]):
             The list of services.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -353,12 +355,12 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence[gcs_service.Service] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_service.Service,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -376,7 +378,7 @@ class GetServiceRequest(proto.Message):
             Required. The name of the service to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -394,12 +396,12 @@ class UpdateServiceRequest(proto.Message):
             this request.
     """
 
-    service = proto.Field(
+    service: gcs_service.Service = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_service.Service,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -415,7 +417,7 @@ class DeleteServiceRequest(proto.Message):
             Required. The name of the service to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -441,15 +443,15 @@ class CreateEndpointRequest(proto.Message):
             Required. A endpoint with initial fields set.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    endpoint_id = proto.Field(
+    endpoint_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    endpoint = proto.Field(
+    endpoint: gcs_endpoint.Endpoint = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcs_endpoint.Endpoint,
@@ -504,23 +506,23 @@ class ListEndpointsRequest(proto.Message):
             Optional. The order to list result by.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -531,7 +533,7 @@ class ListEndpointsResponse(proto.Message):
     [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1.RegistrationService.ListEndpoints].
 
     Attributes:
-        endpoints (Sequence[google.cloud.servicedirectory_v1.types.Endpoint]):
+        endpoints (MutableSequence[google.cloud.servicedirectory_v1.types.Endpoint]):
             The list of endpoints.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -543,12 +545,12 @@ class ListEndpointsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    endpoints = proto.RepeatedField(
+    endpoints: MutableSequence[gcs_endpoint.Endpoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_endpoint.Endpoint,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -565,7 +567,7 @@ class GetEndpointRequest(proto.Message):
             Required. The name of the endpoint to get.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -583,12 +585,12 @@ class UpdateEndpointRequest(proto.Message):
             this request.
     """
 
-    endpoint = proto.Field(
+    endpoint: gcs_endpoint.Endpoint = proto.Field(
         proto.MESSAGE,
         number=1,
         message=gcs_endpoint.Endpoint,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -604,7 +606,7 @@ class DeleteEndpointRequest(proto.Message):
             Required. The name of the endpoint to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
