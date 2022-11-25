@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -81,7 +83,7 @@ class Environment(proto.Message):
             Output only. Port to which clients can
             connect to initiate SSH sessions with the
             environment.
-        public_keys (Sequence[str]):
+        public_keys (MutableSequence[str]):
             Output only. Public keys associated with the
             environment. Clients can connect to this
             environment via SSH only if they possess a
@@ -99,40 +101,40 @@ class Environment(proto.Message):
         RUNNING = 3
         DELETING = 4
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    id = proto.Field(
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    docker_image = proto.Field(
+    docker_image: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=4,
         enum=State,
     )
-    web_host = proto.Field(
+    web_host: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    ssh_username = proto.Field(
+    ssh_username: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    ssh_host = proto.Field(
+    ssh_host: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    ssh_port = proto.Field(
+    ssh_port: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    public_keys = proto.RepeatedField(
+    public_keys: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
@@ -149,7 +151,7 @@ class GetEnvironmentRequest(proto.Message):
             ``users/someone@example.com/environments/default``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -186,20 +188,20 @@ class StartEnvironmentRequest(proto.Message):
             in Cloud Shell without having to log in. This
             code can be updated later by calling
             AuthorizeEnvironment.
-        public_keys (Sequence[str]):
+        public_keys (MutableSequence[str]):
             Public keys that should be added to the
             environment before it is started.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    access_token = proto.Field(
+    access_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    public_keys = proto.RepeatedField(
+    public_keys: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -226,19 +228,19 @@ class AuthorizeEnvironmentRequest(proto.Message):
             received the request.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    access_token = proto.Field(
+    access_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    id_token = proto.Field(
+    id_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
@@ -282,7 +284,7 @@ class StartEnvironmentMetadata(proto.Message):
         AWAITING_COMPUTE_RESOURCES = 4
         FINISHED = 3
 
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
@@ -299,7 +301,7 @@ class StartEnvironmentResponse(proto.Message):
             Environment that was started.
     """
 
-    environment = proto.Field(
+    environment: "Environment" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Environment",
@@ -324,11 +326,11 @@ class AddPublicKeyRequest(proto.Message):
             encoded with Base64.
     """
 
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -343,7 +345,7 @@ class AddPublicKeyResponse(proto.Message):
             Key that was added to the environment.
     """
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -369,11 +371,11 @@ class RemovePublicKeyRequest(proto.Message):
             environment.
     """
 
-    environment = proto.Field(
+    environment: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -410,8 +412,9 @@ class CloudShellErrorDetails(proto.Message):
         CLOUD_SHELL_DISABLED = 2
         TOS_VIOLATION = 4
         QUOTA_EXCEEDED = 5
+        ENVIRONMENT_UNAVAILABLE = 6
 
-    code = proto.Field(
+    code: CloudShellErrorCode = proto.Field(
         proto.ENUM,
         number=1,
         enum=CloudShellErrorCode,

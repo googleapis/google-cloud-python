@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -171,9 +181,9 @@ class CloudShellServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudShellServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cloud shell service client.
@@ -217,11 +227,11 @@ class CloudShellServiceAsyncClient:
 
     async def get_environment(
         self,
-        request: Union[cloudshell.GetEnvironmentRequest, dict] = None,
+        request: Optional[Union[cloudshell.GetEnvironmentRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudshell.Environment:
         r"""Gets an environment. Returns NOT_FOUND if the environment does
@@ -254,7 +264,7 @@ class CloudShellServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.shell_v1.types.GetEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.shell_v1.types.GetEnvironmentRequest, dict]]):
                 The request object. Request message for
                 [GetEnvironment][google.cloud.shell.v1.CloudShellService.GetEnvironment].
             name (:class:`str`):
@@ -337,10 +347,10 @@ class CloudShellServiceAsyncClient:
 
     async def start_environment(
         self,
-        request: Union[cloudshell.StartEnvironmentRequest, dict] = None,
+        request: Optional[Union[cloudshell.StartEnvironmentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts an existing environment, allowing clients to
@@ -382,7 +392,7 @@ class CloudShellServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.shell_v1.types.StartEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.shell_v1.types.StartEnvironmentRequest, dict]]):
                 The request object. Request message for
                 [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -438,10 +448,10 @@ class CloudShellServiceAsyncClient:
 
     async def authorize_environment(
         self,
-        request: Union[cloudshell.AuthorizeEnvironmentRequest, dict] = None,
+        request: Optional[Union[cloudshell.AuthorizeEnvironmentRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Sends OAuth credentials to a running environment on
@@ -480,7 +490,7 @@ class CloudShellServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.shell_v1.types.AuthorizeEnvironmentRequest, dict]):
+            request (Optional[Union[google.cloud.shell_v1.types.AuthorizeEnvironmentRequest, dict]]):
                 The request object. Request message for
                 [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -535,10 +545,10 @@ class CloudShellServiceAsyncClient:
 
     async def add_public_key(
         self,
-        request: Union[cloudshell.AddPublicKeyRequest, dict] = None,
+        request: Optional[Union[cloudshell.AddPublicKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Adds a public SSH key to an environment, allowing clients with
@@ -576,7 +586,7 @@ class CloudShellServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.shell_v1.types.AddPublicKeyRequest, dict]):
+            request (Optional[Union[google.cloud.shell_v1.types.AddPublicKeyRequest, dict]]):
                 The request object. Request message for
                 [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -633,10 +643,10 @@ class CloudShellServiceAsyncClient:
 
     async def remove_public_key(
         self,
-        request: Union[cloudshell.RemovePublicKeyRequest, dict] = None,
+        request: Optional[Union[cloudshell.RemovePublicKeyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Removes a public SSH key from an environment. Clients will no
@@ -674,7 +684,7 @@ class CloudShellServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.shell_v1.types.RemovePublicKeyRequest, dict]):
+            request (Optional[Union[google.cloud.shell_v1.types.RemovePublicKeyRequest, dict]]):
                 The request object. Request message for
                 [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
