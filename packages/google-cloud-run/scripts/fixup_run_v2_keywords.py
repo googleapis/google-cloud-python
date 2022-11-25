@@ -39,16 +39,27 @@ def partition(
 class runCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_job': ('parent', 'job', 'job_id', 'validate_only', ),
         'create_service': ('parent', 'service', 'service_id', 'validate_only', ),
+        'delete_execution': ('name', 'validate_only', 'etag', ),
+        'delete_job': ('name', 'validate_only', 'etag', ),
         'delete_revision': ('name', 'validate_only', 'etag', ),
         'delete_service': ('name', 'validate_only', 'etag', ),
+        'get_execution': ('name', ),
         'get_iam_policy': ('resource', 'options', ),
+        'get_job': ('name', ),
         'get_revision': ('name', ),
         'get_service': ('name', ),
+        'get_task': ('name', ),
+        'list_executions': ('parent', 'page_size', 'page_token', 'show_deleted', ),
+        'list_jobs': ('parent', 'page_size', 'page_token', 'show_deleted', ),
         'list_revisions': ('parent', 'page_size', 'page_token', 'show_deleted', ),
         'list_services': ('parent', 'page_size', 'page_token', 'show_deleted', ),
+        'list_tasks': ('parent', 'page_size', 'page_token', 'show_deleted', ),
+        'run_job': ('name', 'validate_only', 'etag', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
+        'update_job': ('job', 'validate_only', 'allow_missing', ),
         'update_service': ('service', 'validate_only', 'allow_missing', ),
     }
 

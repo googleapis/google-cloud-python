@@ -13,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.api import launch_stage_pb2  # type: ignore
-from google.cloud.run_v2.types import condition
-from google.cloud.run_v2.types import k8s_min
-from google.cloud.run_v2.types import vendor_settings
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.run_v2.types import condition, k8s_min, vendor_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -45,7 +44,7 @@ class GetRevisionRequest(proto.Message):
             projects/{project}/locations/{location}/services/{service}/revisions/{revision}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -72,19 +71,19 @@ class ListRevisionsRequest(proto.Message):
             resources along with active ones.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -94,7 +93,7 @@ class ListRevisionsResponse(proto.Message):
     r"""Response message containing a list of Revisions.
 
     Attributes:
-        revisions (Sequence[google.cloud.run_v2.types.Revision]):
+        revisions (MutableSequence[google.cloud.run_v2.types.Revision]):
             The resulting list of Revisions.
         next_page_token (str):
             A token indicating there are more items than page_size. Use
@@ -105,12 +104,12 @@ class ListRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    revisions = proto.RepeatedField(
+    revisions: MutableSequence["Revision"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Revision",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -137,15 +136,15 @@ class DeleteRevisionRequest(proto.Message):
             detect modification conflict during updates.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -169,7 +168,7 @@ class Revision(proto.Message):
             Output only. A number that monotonically
             increases every time the user modifies the
             desired state.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             KRM-style labels for the resource.
             User-provided labels are shared with Google's
             billing system, so they can be used to filter,
@@ -183,7 +182,7 @@ class Revision(proto.Message):
             'run.googleapis.com' or 'serving.knative.dev'
             namespaces. Those labels are read-only, and user
             changes will not be preserved.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time.
@@ -224,10 +223,10 @@ class Revision(proto.Message):
             service account represents the identity of the
             running revision, and determines what
             permissions the revision has.
-        containers (Sequence[google.cloud.run_v2.types.Container]):
+        containers (MutableSequence[google.cloud.run_v2.types.Container]):
             Holds the single container that defines the
             unit of execution for this Revision.
-        volumes (Sequence[google.cloud.run_v2.types.Volume]):
+        volumes (MutableSequence[google.cloud.run_v2.types.Volume]):
             A list of Volumes to make available to
             containers.
         execution_environment (google.cloud.run_v2.types.ExecutionEnvironment):
@@ -243,7 +242,7 @@ class Revision(proto.Message):
             is still in progress. See comments in
             ``Service.reconciling`` for additional information on
             reconciliation process in Cloud Run.
-        conditions (Sequence[google.cloud.run_v2.types.Condition]):
+        conditions (MutableSequence[google.cloud.run_v2.types.Condition]):
             Output only. The Condition of this Revision,
             containing its readiness status, and detailed
             error information in case it did not reach a
@@ -262,117 +261,117 @@ class Revision(proto.Message):
             detect modification conflict during updates.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    generation = proto.Field(
+    generation: int = proto.Field(
         proto.INT64,
         number=3,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    launch_stage = proto.Field(
+    launch_stage: launch_stage_pb2.LaunchStage = proto.Field(
         proto.ENUM,
         number=10,
         enum=launch_stage_pb2.LaunchStage,
     )
-    service = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    scaling = proto.Field(
+    scaling: vendor_settings.RevisionScaling = proto.Field(
         proto.MESSAGE,
         number=12,
         message=vendor_settings.RevisionScaling,
     )
-    vpc_access = proto.Field(
+    vpc_access: vendor_settings.VpcAccess = proto.Field(
         proto.MESSAGE,
         number=13,
         message=vendor_settings.VpcAccess,
     )
-    max_instance_request_concurrency = proto.Field(
+    max_instance_request_concurrency: int = proto.Field(
         proto.INT32,
         number=34,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=15,
         message=duration_pb2.Duration,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=16,
     )
-    containers = proto.RepeatedField(
+    containers: MutableSequence[k8s_min.Container] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
         message=k8s_min.Container,
     )
-    volumes = proto.RepeatedField(
+    volumes: MutableSequence[k8s_min.Volume] = proto.RepeatedField(
         proto.MESSAGE,
         number=18,
         message=k8s_min.Volume,
     )
-    execution_environment = proto.Field(
+    execution_environment: vendor_settings.ExecutionEnvironment = proto.Field(
         proto.ENUM,
         number=20,
         enum=vendor_settings.ExecutionEnvironment,
     )
-    encryption_key = proto.Field(
+    encryption_key: str = proto.Field(
         proto.STRING,
         number=21,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=30,
     )
-    conditions = proto.RepeatedField(
+    conditions: MutableSequence[condition.Condition] = proto.RepeatedField(
         proto.MESSAGE,
         number=31,
         message=condition.Condition,
     )
-    observed_generation = proto.Field(
+    observed_generation: int = proto.Field(
         proto.INT64,
         number=32,
     )
-    log_uri = proto.Field(
+    log_uri: str = proto.Field(
         proto.STRING,
         number=33,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=99,
     )

@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from pathlib import Path
+import shutil
+
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
@@ -20,15 +24,20 @@ from synthtool.languages import python
 # Copy the generated client from the owl-bot staging directory
 # ----------------------------------------------------------------------------
 
-default_version = "v2"
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
 for library in s.get_staging_dirs(default_version):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
 
-    excludes=["google/cloud/run/", "setup.py", "README.rst"]
     # See https://github.com/googleapis/gapic-generator-python/issues/825
-    excludes.extend(["docs/index.rst", "docs/run_v2/services.rst"])
-    s.move(library, excludes=excludes)
-
+    s.move([library], excludes=["**/gapic_version.py", "docs/index.rst", "docs/run_v2/services.rst"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -36,14 +45,14 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
     microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"])
 
 python.py_samples(skip_readmes=True)
 
-# ----------------------------------------------------------------------------
-# Run blacken session
-# ----------------------------------------------------------------------------
-
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

@@ -13,15 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.api import launch_stage_pb2  # type: ignore
-from google.cloud.run_v2.types import condition
-from google.cloud.run_v2.types import revision_template
-from google.cloud.run_v2.types import traffic_target
-from google.cloud.run_v2.types import vendor_settings
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.run_v2.types import (
+    condition,
+    revision_template,
+    traffic_target,
+    vendor_settings,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -42,15 +45,16 @@ class CreateServiceRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The location and project in which this
-            service should be created. Format:
-            projects/{project}/locations/{location} Only
+            Required. The location and project in which
+            this service should be created. Format:
+            projects/{project}/locations/{location}, where
+            {project} can be project id or number. Only
             lowercase characters, digits, and hyphens.
         service (google.cloud.run_v2.types.Service):
             Required. The Service instance to create.
         service_id (str):
             Required. The unique identifier for the Service. It must
-            begin with letter, and may not end with hyphen; must contain
+            begin with letter, and cannot end with hyphen; must contain
             fewer than 50 characters. The name of the service becomes
             {parent}/services/{service_id}.
         validate_only (bool):
@@ -60,20 +64,20 @@ class CreateServiceRequest(proto.Message):
             resources.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service = proto.Field(
+    service: "Service" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Service",
     )
-    service_id = proto.Field(
+    service_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -97,16 +101,16 @@ class UpdateServiceRequest(proto.Message):
             call if this is set to true.
     """
 
-    service = proto.Field(
+    service: "Service" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Service",
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    allow_missing = proto.Field(
+    allow_missing: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -119,8 +123,9 @@ class ListServicesRequest(proto.Message):
         parent (str):
             Required. The location and project to list
             resources on. Location must be a valid GCP
-            region, and may not be the "-" wildcard. Format:
-            projects/{project}/locations/{location}
+            region, and cannot be the "-" wildcard. Format:
+            projects/{project}/locations/{location}, where
+            {project} can be project id or number.
         page_size (int):
             Maximum number of Services to return in this
             call.
@@ -132,19 +137,19 @@ class ListServicesRequest(proto.Message):
             resources along with active ones.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    show_deleted = proto.Field(
+    show_deleted: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -154,7 +159,7 @@ class ListServicesResponse(proto.Message):
     r"""Response message containing a list of Services.
 
     Attributes:
-        services (Sequence[google.cloud.run_v2.types.Service]):
+        services (MutableSequence[google.cloud.run_v2.types.Service]):
             The resulting list of Services.
         next_page_token (str):
             A token indicating there are more items than page_size. Use
@@ -165,12 +170,12 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence["Service"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Service",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -183,10 +188,11 @@ class GetServiceRequest(proto.Message):
         name (str):
             Required. The full name of the Service.
             Format:
-            projects/{project}/locations/{location}/services/{service}
+            projects/{project}/locations/{location}/services/{service},
+            where {project} can be project id or number.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -199,7 +205,8 @@ class DeleteServiceRequest(proto.Message):
         name (str):
             Required. The full name of the Service.
             Format:
-            projects/{project}/locations/{location}/services/{service}
+            projects/{project}/locations/{location}/services/{service},
+            where {project} can be project id or number.
         validate_only (bool):
             Indicates that the request should be
             validated without actually deleting any
@@ -210,15 +217,15 @@ class DeleteServiceRequest(proto.Message):
             modification conflict during updates.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    validate_only = proto.Field(
+    validate_only: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -255,7 +262,7 @@ class Service(proto.Message):
             unlike v1, this is an int64 value. As with most Google APIs,
             its JSON representation will be a ``string`` instead of an
             ``integer``.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Map of string keys and values that can be
             used to organize and categorize objects.
             User-provided labels are shared with Google's
@@ -270,7 +277,7 @@ class Service(proto.Message):
             'run.googleapis.com' or 'serving.knative.dev'
             namespaces. Those labels are read-only, and user
             changes will not be preserved.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             Unstructured key value map that may be set by
             external tools to store and arbitrary metadata.
             They are not queryable and should be preserved
@@ -315,7 +322,7 @@ class Service(proto.Message):
         template (google.cloud.run_v2.types.RevisionTemplate):
             Required. The template used to create
             revisions for this Service.
-        traffic (Sequence[google.cloud.run_v2.types.TrafficTarget]):
+        traffic (MutableSequence[google.cloud.run_v2.types.TrafficTarget]):
             Specifies how to distribute traffic over a collection of
             Revisions belonging to the Service. If traffic is empty or
             not provided, defaults to 100% traffic to the latest
@@ -333,7 +340,7 @@ class Service(proto.Message):
             did not reach a serving state. See comments in
             ``reconciling`` for additional information on reconciliation
             process in Cloud Run.
-        conditions (Sequence[google.cloud.run_v2.types.Condition]):
+        conditions (MutableSequence[google.cloud.run_v2.types.Condition]):
             Output only. The Conditions of all other associated
             sub-resources. They contain additional diagnostics
             information in case the Service does not reach its Serving
@@ -347,7 +354,7 @@ class Service(proto.Message):
             Output only. Name of the last created revision. See comments
             in ``reconciling`` for additional information on
             reconciliation process in Cloud Run.
-        traffic_statuses (Sequence[google.cloud.run_v2.types.TrafficTargetStatus]):
+        traffic_statuses (MutableSequence[google.cloud.run_v2.types.TrafficTargetStatus]):
             Output only. Detailed status information for corresponding
             traffic targets. See comments in ``reconciling`` for
             additional information on reconciliation process in Cloud
@@ -389,129 +396,131 @@ class Service(proto.Message):
             detect modification conflict during updates.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    uid = proto.Field(
+    uid: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    generation = proto.Field(
+    generation: int = proto.Field(
         proto.INT64,
         number=4,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=6,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    delete_time = proto.Field(
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    creator = proto.Field(
+    creator: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    last_modifier = proto.Field(
+    last_modifier: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    client = proto.Field(
+    client: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    client_version = proto.Field(
+    client_version: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    ingress = proto.Field(
+    ingress: vendor_settings.IngressTraffic = proto.Field(
         proto.ENUM,
         number=15,
         enum=vendor_settings.IngressTraffic,
     )
-    launch_stage = proto.Field(
+    launch_stage: launch_stage_pb2.LaunchStage = proto.Field(
         proto.ENUM,
         number=16,
         enum=launch_stage_pb2.LaunchStage,
     )
-    binary_authorization = proto.Field(
+    binary_authorization: vendor_settings.BinaryAuthorization = proto.Field(
         proto.MESSAGE,
         number=17,
         message=vendor_settings.BinaryAuthorization,
     )
-    template = proto.Field(
+    template: revision_template.RevisionTemplate = proto.Field(
         proto.MESSAGE,
         number=18,
         message=revision_template.RevisionTemplate,
     )
-    traffic = proto.RepeatedField(
+    traffic: MutableSequence[traffic_target.TrafficTarget] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message=traffic_target.TrafficTarget,
     )
-    observed_generation = proto.Field(
+    observed_generation: int = proto.Field(
         proto.INT64,
         number=30,
     )
-    terminal_condition = proto.Field(
+    terminal_condition: condition.Condition = proto.Field(
         proto.MESSAGE,
         number=31,
         message=condition.Condition,
     )
-    conditions = proto.RepeatedField(
+    conditions: MutableSequence[condition.Condition] = proto.RepeatedField(
         proto.MESSAGE,
         number=32,
         message=condition.Condition,
     )
-    latest_ready_revision = proto.Field(
+    latest_ready_revision: str = proto.Field(
         proto.STRING,
         number=33,
     )
-    latest_created_revision = proto.Field(
+    latest_created_revision: str = proto.Field(
         proto.STRING,
         number=34,
     )
-    traffic_statuses = proto.RepeatedField(
+    traffic_statuses: MutableSequence[
+        traffic_target.TrafficTargetStatus
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=35,
         message=traffic_target.TrafficTargetStatus,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=36,
     )
-    reconciling = proto.Field(
+    reconciling: bool = proto.Field(
         proto.BOOL,
         number=98,
     )
-    etag = proto.Field(
+    etag: str = proto.Field(
         proto.STRING,
         number=99,
     )

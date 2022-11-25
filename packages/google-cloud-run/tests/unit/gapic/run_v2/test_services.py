@@ -22,45 +22,27 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
 from google.api import launch_stage_pb2  # type: ignore
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
-from google.api_core import operations_v1
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.cloud.run_v2.services.services import ServicesAsyncClient
-from google.cloud.run_v2.services.services import ServicesClient
-from google.cloud.run_v2.services.services import pagers
-from google.cloud.run_v2.services.services import transports
-from google.cloud.run_v2.types import condition
-from google.cloud.run_v2.types import k8s_min
-from google.cloud.run_v2.types import revision_template
-from google.cloud.run_v2.types import service
-from google.cloud.run_v2.types import service as gcr_service
-from google.cloud.run_v2.types import traffic_target
-from google.cloud.run_v2.types import vendor_settings
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -68,9 +50,27 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.cloud.run_v2.services.services import (
+    ServicesAsyncClient,
+    ServicesClient,
+    pagers,
+    transports,
+)
+from google.cloud.run_v2.types import condition, k8s_min, revision_template
+from google.cloud.run_v2.types import service
+from google.cloud.run_v2.types import service as gcr_service
+from google.cloud.run_v2.types import traffic_target, vendor_settings
 
 
 def client_cert_source_callback():
@@ -780,7 +780,7 @@ def test_create_service_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = gcr_service.CreateServiceRequest(
-        {"parent": "projects/sample1/locations/sample2"}
+        **{"parent": "projects/sample1/locations/sample2"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1057,7 +1057,7 @@ def test_get_service_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = service.GetServiceRequest(
-        {"name": "projects/sample1/locations/sample2/sample3"}
+        **{"name": "projects/sample1/locations/sample2/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1252,7 +1252,7 @@ def test_list_services_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = service.ListServicesRequest(
-        {"parent": "projects/sample1/locations/sample2"}
+        **{"parent": "projects/sample1/locations/sample2"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1628,7 +1628,7 @@ def test_update_service_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = gcr_service.UpdateServiceRequest(
-        {"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+        **{"service": {"name": "projects/sample1/locations/sample2/sample3"}}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1819,7 +1819,7 @@ def test_delete_service_routing_parameters():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = service.DeleteServiceRequest(
-        {"name": "projects/sample1/locations/sample2/sample3"}
+        **{"name": "projects/sample1/locations/sample2/sample3"}
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2518,6 +2518,7 @@ def test_create_service_rest(request_type):
                             ],
                         },
                         "tcp_socket": {"port": 453},
+                        "grpc": {"port": 453, "service": "service_value"},
                     },
                     "startup_probe": {},
                 }
@@ -2850,6 +2851,7 @@ def test_create_service_rest_bad_request(
                             ],
                         },
                         "tcp_socket": {"port": 453},
+                        "grpc": {"port": 453, "service": "service_value"},
                     },
                     "startup_probe": {},
                 }
@@ -3694,6 +3696,7 @@ def test_update_service_rest(request_type):
                             ],
                         },
                         "tcp_socket": {"port": 453},
+                        "grpc": {"port": 453, "service": "service_value"},
                     },
                     "startup_probe": {},
                 }
@@ -4005,6 +4008,7 @@ def test_update_service_rest_bad_request(
                             ],
                         },
                         "tcp_socket": {"port": 453},
+                        "grpc": {"port": 453, "service": "service_value"},
                     },
                     "startup_probe": {},
                 }

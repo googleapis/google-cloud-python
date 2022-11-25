@@ -13,87 +13,157 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.run import gapic_version as package_version
 
-from .services.revisions import RevisionsClient
-from .services.revisions import RevisionsAsyncClient
-from .services.services import ServicesClient
-from .services.services import ServicesAsyncClient
+__version__ = package_version.__version__
 
+
+from .services.executions import ExecutionsAsyncClient, ExecutionsClient
+from .services.jobs import JobsAsyncClient, JobsClient
+from .services.revisions import RevisionsAsyncClient, RevisionsClient
+from .services.services import ServicesAsyncClient, ServicesClient
+from .services.tasks import TasksAsyncClient, TasksClient
 from .types.condition import Condition
-from .types.k8s_min import CloudSqlInstance
-from .types.k8s_min import Container
-from .types.k8s_min import ContainerPort
-from .types.k8s_min import EnvVar
-from .types.k8s_min import EnvVarSource
-from .types.k8s_min import HTTPGetAction
-from .types.k8s_min import HTTPHeader
-from .types.k8s_min import Probe
-from .types.k8s_min import ResourceRequirements
-from .types.k8s_min import SecretKeySelector
-from .types.k8s_min import SecretVolumeSource
-from .types.k8s_min import TCPSocketAction
-from .types.k8s_min import VersionToPath
-from .types.k8s_min import Volume
-from .types.k8s_min import VolumeMount
-from .types.revision import DeleteRevisionRequest
-from .types.revision import GetRevisionRequest
-from .types.revision import ListRevisionsRequest
-from .types.revision import ListRevisionsResponse
-from .types.revision import Revision
+from .types.execution import (
+    DeleteExecutionRequest,
+    Execution,
+    GetExecutionRequest,
+    ListExecutionsRequest,
+    ListExecutionsResponse,
+)
+from .types.execution_template import ExecutionTemplate
+from .types.job import (
+    CreateJobRequest,
+    DeleteJobRequest,
+    ExecutionReference,
+    GetJobRequest,
+    Job,
+    ListJobsRequest,
+    ListJobsResponse,
+    RunJobRequest,
+    UpdateJobRequest,
+)
+from .types.k8s_min import (
+    CloudSqlInstance,
+    Container,
+    ContainerPort,
+    EnvVar,
+    EnvVarSource,
+    GRPCAction,
+    HTTPGetAction,
+    HTTPHeader,
+    Probe,
+    ResourceRequirements,
+    SecretKeySelector,
+    SecretVolumeSource,
+    TCPSocketAction,
+    VersionToPath,
+    Volume,
+    VolumeMount,
+)
+from .types.revision import (
+    DeleteRevisionRequest,
+    GetRevisionRequest,
+    ListRevisionsRequest,
+    ListRevisionsResponse,
+    Revision,
+)
 from .types.revision_template import RevisionTemplate
-from .types.service import CreateServiceRequest
-from .types.service import DeleteServiceRequest
-from .types.service import GetServiceRequest
-from .types.service import ListServicesRequest
-from .types.service import ListServicesResponse
-from .types.service import Service
-from .types.service import UpdateServiceRequest
-from .types.traffic_target import TrafficTarget
-from .types.traffic_target import TrafficTargetStatus
-from .types.traffic_target import TrafficTargetAllocationType
-from .types.vendor_settings import BinaryAuthorization
-from .types.vendor_settings import RevisionScaling
-from .types.vendor_settings import VpcAccess
-from .types.vendor_settings import ExecutionEnvironment
-from .types.vendor_settings import IngressTraffic
+from .types.service import (
+    CreateServiceRequest,
+    DeleteServiceRequest,
+    GetServiceRequest,
+    ListServicesRequest,
+    ListServicesResponse,
+    Service,
+    UpdateServiceRequest,
+)
+from .types.task import (
+    GetTaskRequest,
+    ListTasksRequest,
+    ListTasksResponse,
+    Task,
+    TaskAttemptResult,
+)
+from .types.task_template import TaskTemplate
+from .types.traffic_target import (
+    TrafficTarget,
+    TrafficTargetAllocationType,
+    TrafficTargetStatus,
+)
+from .types.vendor_settings import (
+    BinaryAuthorization,
+    ExecutionEnvironment,
+    IngressTraffic,
+    RevisionScaling,
+    VpcAccess,
+)
 
 __all__ = (
+    "ExecutionsAsyncClient",
+    "JobsAsyncClient",
     "RevisionsAsyncClient",
     "ServicesAsyncClient",
+    "TasksAsyncClient",
     "BinaryAuthorization",
     "CloudSqlInstance",
     "Condition",
     "Container",
     "ContainerPort",
+    "CreateJobRequest",
     "CreateServiceRequest",
+    "DeleteExecutionRequest",
+    "DeleteJobRequest",
     "DeleteRevisionRequest",
     "DeleteServiceRequest",
     "EnvVar",
     "EnvVarSource",
+    "Execution",
     "ExecutionEnvironment",
+    "ExecutionReference",
+    "ExecutionTemplate",
+    "ExecutionsClient",
+    "GRPCAction",
+    "GetExecutionRequest",
+    "GetJobRequest",
     "GetRevisionRequest",
     "GetServiceRequest",
+    "GetTaskRequest",
     "HTTPGetAction",
     "HTTPHeader",
     "IngressTraffic",
+    "Job",
+    "JobsClient",
+    "ListExecutionsRequest",
+    "ListExecutionsResponse",
+    "ListJobsRequest",
+    "ListJobsResponse",
     "ListRevisionsRequest",
     "ListRevisionsResponse",
     "ListServicesRequest",
     "ListServicesResponse",
+    "ListTasksRequest",
+    "ListTasksResponse",
     "Probe",
     "ResourceRequirements",
     "Revision",
     "RevisionScaling",
     "RevisionTemplate",
     "RevisionsClient",
+    "RunJobRequest",
     "SecretKeySelector",
     "SecretVolumeSource",
     "Service",
     "ServicesClient",
     "TCPSocketAction",
+    "Task",
+    "TaskAttemptResult",
+    "TaskTemplate",
+    "TasksClient",
     "TrafficTarget",
     "TrafficTargetAllocationType",
     "TrafficTargetStatus",
+    "UpdateJobRequest",
     "UpdateServiceRequest",
     "VersionToPath",
     "Volume",

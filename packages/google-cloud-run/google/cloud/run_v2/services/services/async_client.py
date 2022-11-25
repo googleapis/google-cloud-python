@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -35,20 +45,20 @@ from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.run_v2.services.services import pagers
-from google.cloud.run_v2.types import condition
-from google.cloud.run_v2.types import revision_template
-from google.cloud.run_v2.types import service
-from google.cloud.run_v2.types import service as gcr_service
-from google.cloud.run_v2.types import traffic_target
-from google.cloud.run_v2.types import vendor_settings
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import ServicesTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ServicesGrpcAsyncIOTransport
+
+from google.cloud.run_v2.services.services import pagers
+from google.cloud.run_v2.types import condition, revision_template
+from google.cloud.run_v2.types import service
+from google.cloud.run_v2.types import service as gcr_service
+from google.cloud.run_v2.types import traffic_target, vendor_settings
+
 from .client import ServicesClient
+from .transports.base import DEFAULT_CLIENT_INFO, ServicesTransport
+from .transports.grpc_asyncio import ServicesGrpcAsyncIOTransport
 
 
 class ServicesAsyncClient:
@@ -173,9 +183,9 @@ class ServicesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ServicesTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the services client.
@@ -219,13 +229,13 @@ class ServicesAsyncClient:
 
     async def create_service(
         self,
-        request: Union[gcr_service.CreateServiceRequest, dict] = None,
+        request: Optional[Union[gcr_service.CreateServiceRequest, dict]] = None,
         *,
-        parent: str = None,
-        service: gcr_service.Service = None,
-        service_id: str = None,
+        parent: Optional[str] = None,
+        service: Optional[gcr_service.Service] = None,
+        service_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Service in a given project and
@@ -263,15 +273,17 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.CreateServiceRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.CreateServiceRequest, dict]]):
                 The request object. Request message for creating a
                 Service.
             parent (:class:`str`):
-                The location and project in which
-                this service should be created. Format:
-                projects/{project}/locations/{location}
-                Only lowercase characters, digits, and
-                hyphens.
+                Required. The location and project in
+                which this service should be created.
+                Format:
+                projects/{project}/locations/{location},
+                where {project} can be project id or
+                number. Only lowercase characters,
+                digits, and hyphens.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -285,7 +297,7 @@ class ServicesAsyncClient:
                 should not be set.
             service_id (:class:`str`):
                 Required. The unique identifier for the Service. It must
-                begin with letter, and may not end with hyphen; must
+                begin with letter, and cannot end with hyphen; must
                 contain fewer than 50 characters. The name of the
                 service becomes {parent}/services/{service_id}.
 
@@ -367,11 +379,11 @@ class ServicesAsyncClient:
 
     async def get_service(
         self,
-        request: Union[service.GetServiceRequest, dict] = None,
+        request: Optional[Union[service.GetServiceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Service:
         r"""Gets information about a Service.
@@ -403,13 +415,15 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.GetServiceRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.GetServiceRequest, dict]]):
                 The request object. Request message for obtaining a
                 Service by its full name.
             name (:class:`str`):
                 Required. The full name of the
                 Service. Format:
-                projects/{project}/locations/{location}/services/{service}
+                projects/{project}/locations/{location}/services/{service},
+                where {project} can be project id or
+                number.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -486,14 +500,14 @@ class ServicesAsyncClient:
 
     async def list_services(
         self,
-        request: Union[service.ListServicesRequest, dict] = None,
+        request: Optional[Union[service.ListServicesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
-        r"""List Services.
+        r"""Lists Services.
 
         .. code-block:: python
 
@@ -523,15 +537,17 @@ class ServicesAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.ListServicesRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.ListServicesRequest, dict]]):
                 The request object. Request message for retrieving a
                 list of Services.
             parent (:class:`str`):
                 Required. The location and project to
                 list resources on. Location must be a
-                valid GCP region, and may not be the "-"
+                valid GCP region, and cannot be the "-"
                 wildcard. Format:
-                projects/{project}/locations/{location}
+                projects/{project}/locations/{location},
+                where {project} can be project id or
+                number.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -613,11 +629,11 @@ class ServicesAsyncClient:
 
     async def update_service(
         self,
-        request: Union[gcr_service.UpdateServiceRequest, dict] = None,
+        request: Optional[Union[gcr_service.UpdateServiceRequest, dict]] = None,
         *,
-        service: gcr_service.Service = None,
+        service: Optional[gcr_service.Service] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a Service.
@@ -652,7 +668,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.UpdateServiceRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.UpdateServiceRequest, dict]]):
                 The request object. Request message for updating a
                 service.
             service (:class:`google.cloud.run_v2.types.Service`):
@@ -733,11 +749,11 @@ class ServicesAsyncClient:
 
     async def delete_service(
         self,
-        request: Union[service.DeleteServiceRequest, dict] = None,
+        request: Optional[Union[service.DeleteServiceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a Service.
@@ -775,13 +791,15 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.DeleteServiceRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.DeleteServiceRequest, dict]]):
                 The request object. Request message to delete a Service
                 by its full name.
             name (:class:`str`):
                 Required. The full name of the
                 Service. Format:
-                projects/{project}/locations/{location}/services/{service}
+                projects/{project}/locations/{location}/services/{service},
+                where {project} can be project id or
+                number.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -857,15 +875,15 @@ class ServicesAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Get the IAM Access Control policy currently in effect
-        for the given Cloud Run Service. This result does not
-        include any inherited policies.
+        r"""Gets the IAM Access Control policy currently in
+        effect for the given Cloud Run Service. This result does
+        not include any inherited policies.
 
         .. code-block:: python
 
@@ -895,7 +913,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1002,10 +1020,10 @@ class ServicesAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM Access control policy for the specified
@@ -1039,7 +1057,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1146,10 +1164,10 @@ class ServicesAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on the
@@ -1186,7 +1204,7 @@ class ServicesAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1232,10 +1250,10 @@ class ServicesAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -1286,10 +1304,10 @@ class ServicesAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1340,10 +1358,10 @@ class ServicesAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.

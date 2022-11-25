@@ -16,15 +16,25 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -35,17 +45,16 @@ from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.run_v2.services.revisions import pagers
-from google.cloud.run_v2.types import condition
-from google.cloud.run_v2.types import k8s_min
-from google.cloud.run_v2.types import revision
-from google.cloud.run_v2.types import vendor_settings
 from google.longrunning import operations_pb2
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import RevisionsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import RevisionsGrpcAsyncIOTransport
+
+from google.cloud.run_v2.services.revisions import pagers
+from google.cloud.run_v2.types import condition, k8s_min, revision, vendor_settings
+
 from .client import RevisionsClient
+from .transports.base import DEFAULT_CLIENT_INFO, RevisionsTransport
+from .transports.grpc_asyncio import RevisionsGrpcAsyncIOTransport
 
 
 class RevisionsAsyncClient:
@@ -172,9 +181,9 @@ class RevisionsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, RevisionsTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the revisions client.
@@ -218,11 +227,11 @@ class RevisionsAsyncClient:
 
     async def get_revision(
         self,
-        request: Union[revision.GetRevisionRequest, dict] = None,
+        request: Optional[Union[revision.GetRevisionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> revision.Revision:
         r"""Gets information about a Revision.
@@ -254,7 +263,7 @@ class RevisionsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.GetRevisionRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.GetRevisionRequest, dict]]):
                 The request object. Request message for obtaining a
                 Revision by its full name.
             name (:class:`str`):
@@ -324,14 +333,14 @@ class RevisionsAsyncClient:
 
     async def list_revisions(
         self,
-        request: Union[revision.ListRevisionsRequest, dict] = None,
+        request: Optional[Union[revision.ListRevisionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRevisionsAsyncPager:
-        r"""List Revisions from a given Service, or from a given
+        r"""Lists Revisions from a given Service, or from a given
         location.
 
         .. code-block:: python
@@ -362,7 +371,7 @@ class RevisionsAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.ListRevisionsRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.ListRevisionsRequest, dict]]):
                 The request object. Request message for retrieving a
                 list of Revisions.
             parent (:class:`str`):
@@ -443,14 +452,14 @@ class RevisionsAsyncClient:
 
     async def delete_revision(
         self,
-        request: Union[revision.DeleteRevisionRequest, dict] = None,
+        request: Optional[Union[revision.DeleteRevisionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Delete a Revision.
+        r"""Deletes a Revision.
 
         .. code-block:: python
 
@@ -483,7 +492,7 @@ class RevisionsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.DeleteRevisionRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.DeleteRevisionRequest, dict]]):
                 The request object. Request message for deleting a
                 retired Revision. Revision lifecycle is usually managed
                 by making changes to the parent Service. Only retired
@@ -563,10 +572,10 @@ class RevisionsAsyncClient:
 
     async def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -617,10 +626,10 @@ class RevisionsAsyncClient:
 
     async def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -671,10 +680,10 @@ class RevisionsAsyncClient:
 
     async def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.

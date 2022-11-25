@@ -13,8 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .condition import (
-    Condition,
+from .condition import Condition
+from .execution import (
+    DeleteExecutionRequest,
+    Execution,
+    GetExecutionRequest,
+    ListExecutionsRequest,
+    ListExecutionsResponse,
+)
+from .execution_template import ExecutionTemplate
+from .job import (
+    CreateJobRequest,
+    DeleteJobRequest,
+    ExecutionReference,
+    GetJobRequest,
+    Job,
+    ListJobsRequest,
+    ListJobsResponse,
+    RunJobRequest,
+    UpdateJobRequest,
 )
 from .k8s_min import (
     CloudSqlInstance,
@@ -22,6 +39,7 @@ from .k8s_min import (
     ContainerPort,
     EnvVar,
     EnvVarSource,
+    GRPCAction,
     HTTPGetAction,
     HTTPHeader,
     Probe,
@@ -40,9 +58,7 @@ from .revision import (
     ListRevisionsResponse,
     Revision,
 )
-from .revision_template import (
-    RevisionTemplate,
-)
+from .revision_template import RevisionTemplate
 from .service import (
     CreateServiceRequest,
     DeleteServiceRequest,
@@ -52,26 +68,50 @@ from .service import (
     Service,
     UpdateServiceRequest,
 )
+from .task import (
+    GetTaskRequest,
+    ListTasksRequest,
+    ListTasksResponse,
+    Task,
+    TaskAttemptResult,
+)
+from .task_template import TaskTemplate
 from .traffic_target import (
     TrafficTarget,
-    TrafficTargetStatus,
     TrafficTargetAllocationType,
+    TrafficTargetStatus,
 )
 from .vendor_settings import (
     BinaryAuthorization,
-    RevisionScaling,
-    VpcAccess,
     ExecutionEnvironment,
     IngressTraffic,
+    RevisionScaling,
+    VpcAccess,
 )
 
 __all__ = (
     "Condition",
+    "DeleteExecutionRequest",
+    "Execution",
+    "GetExecutionRequest",
+    "ListExecutionsRequest",
+    "ListExecutionsResponse",
+    "ExecutionTemplate",
+    "CreateJobRequest",
+    "DeleteJobRequest",
+    "ExecutionReference",
+    "GetJobRequest",
+    "Job",
+    "ListJobsRequest",
+    "ListJobsResponse",
+    "RunJobRequest",
+    "UpdateJobRequest",
     "CloudSqlInstance",
     "Container",
     "ContainerPort",
     "EnvVar",
     "EnvVarSource",
+    "GRPCAction",
     "HTTPGetAction",
     "HTTPHeader",
     "Probe",
@@ -95,6 +135,12 @@ __all__ = (
     "ListServicesResponse",
     "Service",
     "UpdateServiceRequest",
+    "GetTaskRequest",
+    "ListTasksRequest",
+    "ListTasksResponse",
+    "Task",
+    "TaskAttemptResult",
+    "TaskTemplate",
     "TrafficTarget",
     "TrafficTargetStatus",
     "TrafficTargetAllocationType",

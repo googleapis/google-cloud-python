@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import RevisionsClient
 from .async_client import RevisionsAsyncClient
+from .client import RevisionsClient
 
 __all__ = (
     "RevisionsClient",

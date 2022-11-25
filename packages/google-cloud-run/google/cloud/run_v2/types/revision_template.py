@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.run_v2.types import k8s_min
-from google.cloud.run_v2.types import vendor_settings
-from google.protobuf import duration_pb2  # type: ignore
-
+from google.cloud.run_v2.types import k8s_min, vendor_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -37,9 +37,9 @@ class RevisionTemplate(proto.Message):
             The unique name for the revision. If this
             field is omitted, it will be automatically
             generated based on the Service name.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             KRM-style labels for the resource.
-        annotations (Mapping[str, str]):
+        annotations (MutableMapping[str, str]):
             KRM-style annotations for the resource.
         scaling (google.cloud.run_v2.types.RevisionScaling):
             Scaling settings for this Revision.
@@ -58,10 +58,10 @@ class RevisionTemplate(proto.Message):
             permissions the revision has. If not provided,
             the revision will use the project's default
             service account.
-        containers (Sequence[google.cloud.run_v2.types.Container]):
+        containers (MutableSequence[google.cloud.run_v2.types.Container]):
             Holds the single container that defines the
             unit of execution for this Revision.
-        volumes (Sequence[google.cloud.run_v2.types.Volume]):
+        volumes (MutableSequence[google.cloud.run_v2.types.Volume]):
             A list of Volumes to make available to
             containers.
         execution_environment (google.cloud.run_v2.types.ExecutionEnvironment):
@@ -77,59 +77,59 @@ class RevisionTemplate(proto.Message):
             serving instance can receive.
     """
 
-    revision = proto.Field(
+    revision: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=2,
     )
-    annotations = proto.MapField(
+    annotations: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    scaling = proto.Field(
+    scaling: vendor_settings.RevisionScaling = proto.Field(
         proto.MESSAGE,
         number=4,
         message=vendor_settings.RevisionScaling,
     )
-    vpc_access = proto.Field(
+    vpc_access: vendor_settings.VpcAccess = proto.Field(
         proto.MESSAGE,
         number=6,
         message=vendor_settings.VpcAccess,
     )
-    timeout = proto.Field(
+    timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    containers = proto.RepeatedField(
+    containers: MutableSequence[k8s_min.Container] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=k8s_min.Container,
     )
-    volumes = proto.RepeatedField(
+    volumes: MutableSequence[k8s_min.Volume] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=k8s_min.Volume,
     )
-    execution_environment = proto.Field(
+    execution_environment: vendor_settings.ExecutionEnvironment = proto.Field(
         proto.ENUM,
         number=13,
         enum=vendor_settings.ExecutionEnvironment,
     )
-    encryption_key = proto.Field(
+    encryption_key: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    max_instance_request_concurrency = proto.Field(
+    max_instance_request_concurrency: int = proto.Field(
         proto.INT32,
         number=15,
     )

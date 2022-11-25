@@ -16,18 +16,29 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -38,15 +49,14 @@ from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.run_v2.services.revisions import pagers
-from google.cloud.run_v2.types import condition
-from google.cloud.run_v2.types import k8s_min
-from google.cloud.run_v2.types import revision
-from google.cloud.run_v2.types import vendor_settings
 from google.longrunning import operations_pb2
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import RevisionsTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.run_v2.services.revisions import pagers
+from google.cloud.run_v2.types import condition, k8s_min, revision, vendor_settings
+
+from .transports.base import DEFAULT_CLIENT_INFO, RevisionsTransport
 from .transports.grpc import RevisionsGrpcTransport
 from .transports.grpc_asyncio import RevisionsGrpcAsyncIOTransport
 from .transports.rest import RevisionsRestTransport
@@ -67,7 +77,7 @@ class RevisionsClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[RevisionsTransport]:
         """Returns an appropriate transport class.
 
@@ -451,8 +461,8 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RevisionsTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, RevisionsTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the revisions client.
@@ -469,7 +479,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -499,6 +509,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -551,11 +562,11 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
 
     def get_revision(
         self,
-        request: Union[revision.GetRevisionRequest, dict] = None,
+        request: Optional[Union[revision.GetRevisionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> revision.Revision:
         r"""Gets information about a Revision.
@@ -665,14 +676,14 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
 
     def list_revisions(
         self,
-        request: Union[revision.ListRevisionsRequest, dict] = None,
+        request: Optional[Union[revision.ListRevisionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRevisionsPager:
-        r"""List Revisions from a given Service, or from a given
+        r"""Lists Revisions from a given Service, or from a given
         location.
 
         .. code-block:: python
@@ -792,14 +803,14 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
 
     def delete_revision(
         self,
-        request: Union[revision.DeleteRevisionRequest, dict] = None,
+        request: Optional[Union[revision.DeleteRevisionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Delete a Revision.
+        r"""Deletes a Revision.
 
         .. code-block:: python
 
@@ -933,10 +944,10 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
 
     def list_operations(
         self,
-        request: operations_pb2.ListOperationsRequest = None,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
@@ -987,10 +998,10 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
 
     def get_operation(
         self,
-        request: operations_pb2.GetOperationRequest = None,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -1041,10 +1052,10 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
 
     def delete_operation(
         self,
-        request: operations_pb2.DeleteOperationRequest = None,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation.

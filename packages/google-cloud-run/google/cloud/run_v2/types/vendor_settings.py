@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -55,7 +56,8 @@ class VpcAccess(proto.Message):
         connector (str):
             VPC Access connector name.
             Format:
-            projects/{project}/locations/{location}/connectors/{connector}
+            projects/{project}/locations/{location}/connectors/{connector},
+            where {project} can be project id or number.
         egress (google.cloud.run_v2.types.VpcAccess.VpcEgress):
             Traffic VPC egress settings.
     """
@@ -66,11 +68,11 @@ class VpcAccess(proto.Message):
         ALL_TRAFFIC = 1
         PRIVATE_RANGES_ONLY = 2
 
-    connector = proto.Field(
+    connector: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    egress = proto.Field(
+    egress: VpcEgress = proto.Field(
         proto.ENUM,
         number=2,
         enum=VpcEgress,
@@ -96,12 +98,12 @@ class BinaryAuthorization(proto.Message):
             https://cloud.google.com/binary-authorization/docs/using-breakglass
     """
 
-    use_default = proto.Field(
+    use_default: bool = proto.Field(
         proto.BOOL,
         number=1,
         oneof="binauthz_method",
     )
-    breakglass_justification = proto.Field(
+    breakglass_justification: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -119,11 +121,11 @@ class RevisionScaling(proto.Message):
             resource should have.
     """
 
-    min_instance_count = proto.Field(
+    min_instance_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    max_instance_count = proto.Field(
+    max_instance_count: int = proto.Field(
         proto.INT32,
         number=2,
     )

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
+from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -125,42 +125,42 @@ class Condition(proto.Message):
         NON_ZERO_EXIT_CODE = 2
         CANCELLED = 3
 
-    type_ = proto.Field(
+    type_: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    message = proto.Field(
+    message: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    last_transition_time = proto.Field(
+    last_transition_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(
+    severity: Severity = proto.Field(
         proto.ENUM,
         number=5,
         enum=Severity,
     )
-    reason = proto.Field(
+    reason: CommonReason = proto.Field(
         proto.ENUM,
         number=6,
         oneof="reasons",
         enum=CommonReason,
     )
-    revision_reason = proto.Field(
+    revision_reason: RevisionReason = proto.Field(
         proto.ENUM,
         number=9,
         oneof="reasons",
         enum=RevisionReason,
     )
-    execution_reason = proto.Field(
+    execution_reason: ExecutionReason = proto.Field(
         proto.ENUM,
         number=11,
         oneof="reasons",
