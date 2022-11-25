@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.api import auth_pb2  # type: ignore
 from google.api import documentation_pb2  # type: ignore
 from google.api import endpoint_pb2  # type: ignore
@@ -67,20 +69,20 @@ class Service(proto.Message):
             for use by the consumer.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    config = proto.Field(
+    config: "ServiceConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ServiceConfig",
     )
-    state = proto.Field(
+    state: "State" = proto.Field(
         proto.ENUM,
         number=4,
         enum="State",
@@ -98,7 +100,7 @@ class ServiceConfig(proto.Message):
             ``calendar.googleapis.com``.
         title (str):
             The product title for this service.
-        apis (Sequence[google.protobuf.api_pb2.Api]):
+        apis (MutableSequence[google.protobuf.api_pb2.Api]):
             A list of API interfaces exported by this
             service. Contains only the names, versions, and
             method names of the interfaces.
@@ -113,10 +115,10 @@ class ServiceConfig(proto.Message):
         usage (google.api.usage_pb2.Usage):
             Configuration controlling usage of this
             service.
-        endpoints (Sequence[google.api.endpoint_pb2.Endpoint]):
+        endpoints (MutableSequence[google.api.endpoint_pb2.Endpoint]):
             Configuration for network endpoints. Contains
             only the names and aliases of the endpoints.
-        monitored_resources (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
+        monitored_resources (MutableSequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             Defines the monitored resources used by this service. This
             is required by the
             [Service.monitoring][google.api.Service.monitoring] and
@@ -127,50 +129,52 @@ class ServiceConfig(proto.Message):
             'producer_destinations' field.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    title = proto.Field(
+    title: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    apis = proto.RepeatedField(
+    apis: MutableSequence[api_pb2.Api] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=api_pb2.Api,
     )
-    documentation = proto.Field(
+    documentation: documentation_pb2.Documentation = proto.Field(
         proto.MESSAGE,
         number=6,
         message=documentation_pb2.Documentation,
     )
-    quota = proto.Field(
+    quota: quota_pb2.Quota = proto.Field(
         proto.MESSAGE,
         number=10,
         message=quota_pb2.Quota,
     )
-    authentication = proto.Field(
+    authentication: auth_pb2.Authentication = proto.Field(
         proto.MESSAGE,
         number=11,
         message=auth_pb2.Authentication,
     )
-    usage = proto.Field(
+    usage: usage_pb2.Usage = proto.Field(
         proto.MESSAGE,
         number=15,
         message=usage_pb2.Usage,
     )
-    endpoints = proto.RepeatedField(
+    endpoints: MutableSequence[endpoint_pb2.Endpoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=18,
         message=endpoint_pb2.Endpoint,
     )
-    monitored_resources = proto.RepeatedField(
+    monitored_resources: MutableSequence[
+        monitored_resource_pb2.MonitoredResourceDescriptor
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=25,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-    monitoring = proto.Field(
+    monitoring: monitoring_pb2.Monitoring = proto.Field(
         proto.MESSAGE,
         number=28,
         message=monitoring_pb2.Monitoring,
@@ -182,12 +186,12 @@ class OperationMetadata(proto.Message):
     operation.
 
     Attributes:
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             The full name of the resources that this
             operation is directly associated with.
     """
 
-    resource_names = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -162,9 +172,9 @@ class ServiceUsageAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ServiceUsageTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the service usage client.
@@ -208,10 +218,10 @@ class ServiceUsageAsyncClient:
 
     async def enable_service(
         self,
-        request: Union[serviceusage.EnableServiceRequest, dict] = None,
+        request: Optional[Union[serviceusage.EnableServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Enable a service so that it can be used with a
@@ -247,7 +257,7 @@ class ServiceUsageAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.service_usage_v1.types.EnableServiceRequest, dict]):
+            request (Optional[Union[google.cloud.service_usage_v1.types.EnableServiceRequest, dict]]):
                 The request object. Request message for the
                 `EnableService` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -304,10 +314,10 @@ class ServiceUsageAsyncClient:
 
     async def disable_service(
         self,
-        request: Union[serviceusage.DisableServiceRequest, dict] = None,
+        request: Optional[Union[serviceusage.DisableServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Disable a service so that it can no longer be used with a
@@ -349,7 +359,7 @@ class ServiceUsageAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.service_usage_v1.types.DisableServiceRequest, dict]):
+            request (Optional[Union[google.cloud.service_usage_v1.types.DisableServiceRequest, dict]]):
                 The request object. Request message for the
                 `DisableService` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -406,10 +416,10 @@ class ServiceUsageAsyncClient:
 
     async def get_service(
         self,
-        request: Union[serviceusage.GetServiceRequest, dict] = None,
+        request: Optional[Union[serviceusage.GetServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Service:
         r"""Returns the service configuration and enabled state
@@ -441,7 +451,7 @@ class ServiceUsageAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.service_usage_v1.types.GetServiceRequest, dict]):
+            request (Optional[Union[google.cloud.service_usage_v1.types.GetServiceRequest, dict]]):
                 The request object. Request message for the `GetService`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -486,10 +496,10 @@ class ServiceUsageAsyncClient:
 
     async def list_services(
         self,
-        request: Union[serviceusage.ListServicesRequest, dict] = None,
+        request: Optional[Union[serviceusage.ListServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""List all services available to the specified project, and the
@@ -534,7 +544,7 @@ class ServiceUsageAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.service_usage_v1.types.ListServicesRequest, dict]):
+            request (Optional[Union[google.cloud.service_usage_v1.types.ListServicesRequest, dict]]):
                 The request object. Request message for the
                 `ListServices` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -590,10 +600,10 @@ class ServiceUsageAsyncClient:
 
     async def batch_enable_services(
         self,
-        request: Union[serviceusage.BatchEnableServicesRequest, dict] = None,
+        request: Optional[Union[serviceusage.BatchEnableServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Enable multiple services on a project. The operation is atomic:
@@ -631,7 +641,7 @@ class ServiceUsageAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.service_usage_v1.types.BatchEnableServicesRequest, dict]):
+            request (Optional[Union[google.cloud.service_usage_v1.types.BatchEnableServicesRequest, dict]]):
                 The request object. Request message for the
                 `BatchEnableServices` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -688,10 +698,10 @@ class ServiceUsageAsyncClient:
 
     async def batch_get_services(
         self,
-        request: Union[serviceusage.BatchGetServicesRequest, dict] = None,
+        request: Optional[Union[serviceusage.BatchGetServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> serviceusage.BatchGetServicesResponse:
         r"""Returns the service configurations and enabled states
@@ -723,7 +733,7 @@ class ServiceUsageAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.service_usage_v1.types.BatchGetServicesRequest, dict]):
+            request (Optional[Union[google.cloud.service_usage_v1.types.BatchGetServicesRequest, dict]]):
                 The request object. Request message for the
                 `BatchGetServices` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

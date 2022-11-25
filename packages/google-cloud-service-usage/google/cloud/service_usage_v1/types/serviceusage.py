@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.service_usage_v1.types import resources
@@ -53,7 +55,7 @@ class EnableServiceRequest(proto.Message):
             ``123`` is the project number.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -69,7 +71,7 @@ class EnableServiceResponse(proto.Message):
             The new state of the service after enabling.
     """
 
-    service = proto.Field(
+    service: resources.Service = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Service,
@@ -110,15 +112,15 @@ class DisableServiceRequest(proto.Message):
         SKIP = 1
         CHECK = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    disable_dependent_services = proto.Field(
+    disable_dependent_services: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    check_if_service_has_usage = proto.Field(
+    check_if_service_has_usage: CheckIfServiceHasUsage = proto.Field(
         proto.ENUM,
         number=3,
         enum=CheckIfServiceHasUsage,
@@ -135,7 +137,7 @@ class DisableServiceResponse(proto.Message):
             The new state of the service after disabling.
     """
 
-    service = proto.Field(
+    service: resources.Service = proto.Field(
         proto.MESSAGE,
         number=1,
         message=resources.Service,
@@ -155,7 +157,7 @@ class GetServiceRequest(proto.Message):
             ``123`` is the project number.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -183,19 +185,19 @@ class ListServicesRequest(proto.Message):
             ``state:DISABLED``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -205,7 +207,7 @@ class ListServicesResponse(proto.Message):
     r"""Response message for the ``ListServices`` method.
 
     Attributes:
-        services (Sequence[google.cloud.service_usage_v1.types.Service]):
+        services (MutableSequence[google.cloud.service_usage_v1.types.Service]):
             The available services for the requested
             project.
         next_page_token (str):
@@ -217,12 +219,12 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(
+    services: MutableSequence[resources.Service] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Service,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -240,7 +242,7 @@ class BatchEnableServicesRequest(proto.Message):
 
             The ``BatchEnableServices`` method currently only supports
             projects.
-        service_ids (Sequence[str]):
+        service_ids (MutableSequence[str]):
             The identifiers of the services to enable on
             the project.
             A valid identifier would be:
@@ -256,11 +258,11 @@ class BatchEnableServicesRequest(proto.Message):
             changes will occur.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    service_ids = proto.RepeatedField(
+    service_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -272,9 +274,9 @@ class BatchEnableServicesResponse(proto.Message):
     returned Operation when that operation is done.
 
     Attributes:
-        services (Sequence[google.cloud.service_usage_v1.types.Service]):
+        services (MutableSequence[google.cloud.service_usage_v1.types.Service]):
             The new state of the services after enabling.
-        failures (Sequence[google.cloud.service_usage_v1.types.BatchEnableServicesResponse.EnableFailure]):
+        failures (MutableSequence[google.cloud.service_usage_v1.types.BatchEnableServicesResponse.EnableFailure]):
             If allow_partial_success is true, and one or more services
             could not be enabled, this field contains the details about
             each failure.
@@ -292,21 +294,21 @@ class BatchEnableServicesResponse(proto.Message):
                 could not be enabled.
         """
 
-        service_id = proto.Field(
+        service_id: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        error_message = proto.Field(
+        error_message: str = proto.Field(
             proto.STRING,
             number=2,
         )
 
-    services = proto.RepeatedField(
+    services: MutableSequence[resources.Service] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Service,
     )
-    failures = proto.RepeatedField(
+    failures: MutableSequence[EnableFailure] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=EnableFailure,
@@ -323,7 +325,7 @@ class BatchGetServicesRequest(proto.Message):
             this field. An example name would be: ``projects/123`` where
             ``123`` is the project number. The ``BatchGetServices``
             method currently only supports projects.
-        names (Sequence[str]):
+        names (MutableSequence[str]):
             Names of the services to retrieve.
 
             An example name would be:
@@ -332,11 +334,11 @@ class BatchGetServicesRequest(proto.Message):
             maximum of 30 services at a time.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    names = proto.RepeatedField(
+    names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -346,11 +348,11 @@ class BatchGetServicesResponse(proto.Message):
     r"""Response message for the ``BatchGetServices`` method.
 
     Attributes:
-        services (Sequence[google.cloud.service_usage_v1.types.Service]):
+        services (MutableSequence[google.cloud.service_usage_v1.types.Service]):
             The requested Service states.
     """
 
-    services = proto.RepeatedField(
+    services: MutableSequence[resources.Service] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.Service,

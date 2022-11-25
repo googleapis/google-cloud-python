@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -59,7 +70,7 @@ class ServiceUsageClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[ServiceUsageTransport]:
         """Returns an appropriate transport class.
 
@@ -318,8 +329,8 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ServiceUsageTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, ServiceUsageTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the service usage client.
@@ -333,7 +344,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
             transport (Union[str, ServiceUsageTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -363,6 +374,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -415,10 +427,10 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def enable_service(
         self,
-        request: Union[serviceusage.EnableServiceRequest, dict] = None,
+        request: Optional[Union[serviceusage.EnableServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Enable a service so that it can be used with a
@@ -512,10 +524,10 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def disable_service(
         self,
-        request: Union[serviceusage.DisableServiceRequest, dict] = None,
+        request: Optional[Union[serviceusage.DisableServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Disable a service so that it can no longer be used with a
@@ -615,10 +627,10 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def get_service(
         self,
-        request: Union[serviceusage.GetServiceRequest, dict] = None,
+        request: Optional[Union[serviceusage.GetServiceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Service:
         r"""Returns the service configuration and enabled state
@@ -696,10 +708,10 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def list_services(
         self,
-        request: Union[serviceusage.ListServicesRequest, dict] = None,
+        request: Optional[Union[serviceusage.ListServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""List all services available to the specified project, and the
@@ -801,10 +813,10 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def batch_enable_services(
         self,
-        request: Union[serviceusage.BatchEnableServicesRequest, dict] = None,
+        request: Optional[Union[serviceusage.BatchEnableServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Enable multiple services on a project. The operation is atomic:
@@ -900,10 +912,10 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def batch_get_services(
         self,
-        request: Union[serviceusage.BatchGetServicesRequest, dict] = None,
+        request: Optional[Union[serviceusage.BatchGetServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> serviceusage.BatchGetServicesResponse:
         r"""Returns the service configurations and enabled states
