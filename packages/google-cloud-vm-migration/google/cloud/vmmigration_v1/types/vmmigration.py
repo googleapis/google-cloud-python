@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -169,12 +171,12 @@ class ReplicationCycle(proto.Message):
             cycle.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=5,
     )
@@ -190,7 +192,7 @@ class ReplicationSync(proto.Message):
             source that finished replication.
     """
 
-    last_sync_time = proto.Field(
+    last_sync_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
@@ -249,9 +251,9 @@ class MigratingVm(proto.Message):
             any. The group is represented by the full path of the
             appropriate [Group][google.cloud.vmmigration.v1.Group]
             resource.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels of the migrating VM.
-        recent_clone_jobs (Sequence[google.cloud.vmmigration_v1.types.CloneJob]):
+        recent_clone_jobs (MutableSequence[google.cloud.vmmigration_v1.types.CloneJob]):
             Output only. The recent [clone
             jobs][google.cloud.vmmigration.v1.CloneJob] performed on the
             migrating VM. This field holds the vm's last completed clone
@@ -262,7 +264,7 @@ class MigratingVm(proto.Message):
             Output only. Provides details on the state of
             the Migrating VM in case of an error in
             replication.
-        recent_cutover_jobs (Sequence[google.cloud.vmmigration_v1.types.CutoverJob]):
+        recent_cutover_jobs (MutableSequence[google.cloud.vmmigration_v1.types.CutoverJob]):
             Output only. The recent cutover jobs
             performed on the migrating VM. This field holds
             the vm's last completed cutover job and the vm's
@@ -287,83 +289,83 @@ class MigratingVm(proto.Message):
         FINALIZED = 12
         ERROR = 13
 
-    compute_engine_target_defaults = proto.Field(
+    compute_engine_target_defaults: "ComputeEngineTargetDefaults" = proto.Field(
         proto.MESSAGE,
         number=26,
         oneof="target_vm_defaults",
         message="ComputeEngineTargetDefaults",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_vm_id = proto.Field(
+    source_vm_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    policy = proto.Field(
+    policy: "SchedulePolicy" = proto.Field(
         proto.MESSAGE,
         number=8,
         message="SchedulePolicy",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    last_sync = proto.Field(
+    last_sync: "ReplicationSync" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="ReplicationSync",
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=23,
         enum=State,
     )
-    state_time = proto.Field(
+    state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=22,
         message=timestamp_pb2.Timestamp,
     )
-    current_sync_info = proto.Field(
+    current_sync_info: "ReplicationCycle" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="ReplicationCycle",
     )
-    group = proto.Field(
+    group: str = proto.Field(
         proto.STRING,
         number=15,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    recent_clone_jobs = proto.RepeatedField(
+    recent_clone_jobs: MutableSequence["CloneJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
         message="CloneJob",
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=19,
         message=status_pb2.Status,
     )
-    recent_cutover_jobs = proto.RepeatedField(
+    recent_cutover_jobs: MutableSequence["CutoverJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=20,
         message="CutoverJob",
@@ -422,37 +424,37 @@ class CloneJob(proto.Message):
         CANCELLING = 6
         ADAPTING_OS = 7
 
-    compute_engine_target_details = proto.Field(
+    compute_engine_target_details: "ComputeEngineTargetDetails" = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=22,
         message=timestamp_pb2.Timestamp,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=12,
         enum=State,
     )
-    state_time = proto.Field(
+    state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=17,
         message=status_pb2.Status,
@@ -509,46 +511,46 @@ class CutoverJob(proto.Message):
         ACTIVE = 6
         ADAPTING_OS = 7
 
-    compute_engine_target_details = proto.Field(
+    compute_engine_target_details: "ComputeEngineTargetDetails" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
         message=timestamp_pb2.Timestamp,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=5,
         enum=State,
     )
-    state_time = proto.Field(
+    state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    progress_percent = proto.Field(
+    progress_percent: int = proto.Field(
         proto.INT32,
         number=13,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=9,
         message=status_pb2.Status,
     )
-    state_message = proto.Field(
+    state_message: str = proto.Field(
         proto.STRING,
         number=10,
     )
@@ -584,20 +586,20 @@ class CreateCloneJobRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    clone_job_id = proto.Field(
+    clone_job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    clone_job = proto.Field(
+    clone_job: "CloneJob" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CloneJob",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -611,7 +613,7 @@ class CancelCloneJobRequest(proto.Message):
             Required. The clone job id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -648,23 +650,23 @@ class ListCloneJobsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -674,13 +676,13 @@ class ListCloneJobsResponse(proto.Message):
     r"""Response message for 'ListCloneJobs' request.
 
     Attributes:
-        clone_jobs (Sequence[google.cloud.vmmigration_v1.types.CloneJob]):
+        clone_jobs (MutableSequence[google.cloud.vmmigration_v1.types.CloneJob]):
             Output only. The list of clone jobs response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -689,16 +691,16 @@ class ListCloneJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    clone_jobs = proto.RepeatedField(
+    clone_jobs: MutableSequence["CloneJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CloneJob",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -712,7 +714,7 @@ class GetCloneJobRequest(proto.Message):
             Required. The name of the CloneJob.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -736,38 +738,38 @@ class Source(proto.Message):
             Output only. The create time timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time timestamp.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             The labels of the source.
         description (str):
             User-provided description of the source.
     """
 
-    vmware = proto.Field(
+    vmware: "VmwareSourceDetails" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="source_details",
         message="VmwareSourceDetails",
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -792,19 +794,19 @@ class VmwareSourceDetails(proto.Message):
             for the vcenter.
     """
 
-    username = proto.Field(
+    username: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    password = proto.Field(
+    password: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    vcenter_ip = proto.Field(
+    vcenter_ip: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    thumbprint = proto.Field(
+    thumbprint: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -878,65 +880,65 @@ class DatacenterConnector(proto.Message):
         FAILED = 3
         ACTIVE = 4
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    registration_id = proto.Field(
+    registration_id: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    bucket = proto.Field(
+    bucket: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=7,
         enum=State,
     )
-    state_time = proto.Field(
+    state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=11,
         message=status_pb2.Status,
     )
-    appliance_infrastructure_version = proto.Field(
+    appliance_infrastructure_version: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    appliance_software_version = proto.Field(
+    appliance_software_version: str = proto.Field(
         proto.STRING,
         number=14,
     )
-    available_versions = proto.Field(
+    available_versions: "AvailableUpdates" = proto.Field(
         proto.MESSAGE,
         number=15,
         message="AvailableUpdates",
     )
-    upgrade_status = proto.Field(
+    upgrade_status: "UpgradeStatus" = proto.Field(
         proto.MESSAGE,
         number=16,
         message="UpgradeStatus",
@@ -968,26 +970,26 @@ class UpgradeStatus(proto.Message):
         FAILED = 2
         SUCCEEDED = 3
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    previous_version = proto.Field(
+    previous_version: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1008,12 +1010,12 @@ class AvailableUpdates(proto.Message):
             version using the API or m4c CLI.
     """
 
-    new_deployable_appliance = proto.Field(
+    new_deployable_appliance: "ApplianceVersion" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="ApplianceVersion",
     )
-    in_place_update = proto.Field(
+    in_place_update: "ApplianceVersion" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ApplianceVersion",
@@ -1036,19 +1038,19 @@ class ApplianceVersion(proto.Message):
             release notes.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    critical = proto.Field(
+    critical: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    release_notes_uri = proto.Field(
+    release_notes_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1081,23 +1083,23 @@ class ListSourcesRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -1107,13 +1109,13 @@ class ListSourcesResponse(proto.Message):
     r"""Response message for 'ListSources' request.
 
     Attributes:
-        sources (Sequence[google.cloud.vmmigration_v1.types.Source]):
+        sources (MutableSequence[google.cloud.vmmigration_v1.types.Source]):
             Output only. The list of sources response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -1122,16 +1124,16 @@ class ListSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sources = proto.RepeatedField(
+    sources: MutableSequence["Source"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Source",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1145,7 +1147,7 @@ class GetSourceRequest(proto.Message):
             Required. The Source name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1181,20 +1183,20 @@ class CreateSourceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_id = proto.Field(
+    source_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source = proto.Field(
+    source: "Source" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Source",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1233,17 +1235,17 @@ class UpdateSourceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    source = proto.Field(
+    source: "Source" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Source",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -1275,11 +1277,11 @@ class DeleteSourceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1298,11 +1300,11 @@ class FetchInventoryRequest(proto.Message):
             Using this flag will make the call slower.
     """
 
-    source = proto.Field(
+    source: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    force_refresh = proto.Field(
+    force_refresh: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -1360,52 +1362,52 @@ class VmwareVmDetails(proto.Message):
         EFI = 1
         BIOS = 2
 
-    vm_id = proto.Field(
+    vm_id: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    datacenter_id = proto.Field(
+    datacenter_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    datacenter_description = proto.Field(
+    datacenter_description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    uuid = proto.Field(
+    uuid: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    power_state = proto.Field(
+    power_state: PowerState = proto.Field(
         proto.ENUM,
         number=6,
         enum=PowerState,
     )
-    cpu_count = proto.Field(
+    cpu_count: int = proto.Field(
         proto.INT32,
         number=7,
     )
-    memory_mb = proto.Field(
+    memory_mb: int = proto.Field(
         proto.INT32,
         number=8,
     )
-    disk_count = proto.Field(
+    disk_count: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    committed_storage_mb = proto.Field(
+    committed_storage_mb: int = proto.Field(
         proto.INT64,
         number=12,
     )
-    guest_description = proto.Field(
+    guest_description: str = proto.Field(
         proto.STRING,
         number=11,
     )
-    boot_option = proto.Field(
+    boot_option: BootOption = proto.Field(
         proto.ENUM,
         number=13,
         enum=BootOption,
@@ -1416,11 +1418,11 @@ class VmwareVmsDetails(proto.Message):
     r"""VmwareVmsDetails describes VMs in vCenter.
 
     Attributes:
-        details (Sequence[google.cloud.vmmigration_v1.types.VmwareVmDetails]):
+        details (MutableSequence[google.cloud.vmmigration_v1.types.VmwareVmDetails]):
             The details of the vmware VMs.
     """
 
-    details = proto.RepeatedField(
+    details: MutableSequence["VmwareVmDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="VmwareVmDetails",
@@ -1446,13 +1448,13 @@ class FetchInventoryResponse(proto.Message):
             cache).
     """
 
-    vmware_vms = proto.Field(
+    vmware_vms: "VmwareVmsDetails" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="SourceVms",
         message="VmwareVmsDetails",
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -1491,7 +1493,7 @@ class UtilizationReport(proto.Message):
         vm_count (int):
             Output only. Total number of VMs included in
             the report.
-        vms (Sequence[google.cloud.vmmigration_v1.types.VmUtilizationInfo]):
+        vms (MutableSequence[google.cloud.vmmigration_v1.types.VmUtilizationInfo]):
             List of utilization information per VM. When sent as part of
             the request, the "vm_id" field is used in order to specify
             which VMs to include in the report. In that case all other
@@ -1512,49 +1514,49 @@ class UtilizationReport(proto.Message):
         MONTH = 2
         YEAR = 3
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=3,
         enum=State,
     )
-    state_time = proto.Field(
+    state_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=5,
         message=status_pb2.Status,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    time_frame = proto.Field(
+    time_frame: TimeFrame = proto.Field(
         proto.ENUM,
         number=7,
         enum=TimeFrame,
     )
-    frame_end_time = proto.Field(
+    frame_end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    vm_count = proto.Field(
+    vm_count: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    vms = proto.RepeatedField(
+    vms: MutableSequence["VmUtilizationInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="VmUtilizationInfo",
@@ -1578,17 +1580,17 @@ class VmUtilizationInfo(proto.Message):
             Utilization metrics for this VM.
     """
 
-    vmware_vm_details = proto.Field(
+    vmware_vm_details: "VmwareVmDetails" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="VmDetails",
         message="VmwareVmDetails",
     )
-    vm_id = proto.Field(
+    vm_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    utilization = proto.Field(
+    utilization: "VmUtilizationMetrics" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="VmUtilizationMetrics",
@@ -1622,35 +1624,35 @@ class VmUtilizationMetrics(proto.Message):
             per second.
     """
 
-    cpu_max_percent = proto.Field(
+    cpu_max_percent: int = proto.Field(
         proto.INT32,
         number=9,
     )
-    cpu_average_percent = proto.Field(
+    cpu_average_percent: int = proto.Field(
         proto.INT32,
         number=10,
     )
-    memory_max_percent = proto.Field(
+    memory_max_percent: int = proto.Field(
         proto.INT32,
         number=11,
     )
-    memory_average_percent = proto.Field(
+    memory_average_percent: int = proto.Field(
         proto.INT32,
         number=12,
     )
-    disk_io_rate_max_kbps = proto.Field(
+    disk_io_rate_max_kbps: int = proto.Field(
         proto.INT64,
         number=13,
     )
-    disk_io_rate_average_kbps = proto.Field(
+    disk_io_rate_average_kbps: int = proto.Field(
         proto.INT64,
         number=14,
     )
-    network_throughput_max_kbps = proto.Field(
+    network_throughput_max_kbps: int = proto.Field(
         proto.INT64,
         number=15,
     )
-    network_throughput_average_kbps = proto.Field(
+    network_throughput_average_kbps: int = proto.Field(
         proto.INT64,
         number=16,
     )
@@ -1685,28 +1687,28 @@ class ListUtilizationReportsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "UtilizationReportView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="UtilizationReportView",
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1716,13 +1718,13 @@ class ListUtilizationReportsResponse(proto.Message):
     r"""Response message for 'ListUtilizationReports' request.
 
     Attributes:
-        utilization_reports (Sequence[google.cloud.vmmigration_v1.types.UtilizationReport]):
+        utilization_reports (MutableSequence[google.cloud.vmmigration_v1.types.UtilizationReport]):
             Output only. The list of reports.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -1731,16 +1733,16 @@ class ListUtilizationReportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    utilization_reports = proto.RepeatedField(
+    utilization_reports: MutableSequence["UtilizationReport"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="UtilizationReport",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1757,11 +1759,11 @@ class GetUtilizationReportRequest(proto.Message):
             Defaults to FULL
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "UtilizationReportView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="UtilizationReportView",
@@ -1803,20 +1805,20 @@ class CreateUtilizationReportRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    utilization_report = proto.Field(
+    utilization_report: "UtilizationReport" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="UtilizationReport",
     )
-    utilization_report_id = proto.Field(
+    utilization_report_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1848,11 +1850,11 @@ class DeleteUtilizationReportRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1862,13 +1864,13 @@ class ListDatacenterConnectorsResponse(proto.Message):
     r"""Response message for 'ListDatacenterConnectors' request.
 
     Attributes:
-        datacenter_connectors (Sequence[google.cloud.vmmigration_v1.types.DatacenterConnector]):
+        datacenter_connectors (MutableSequence[google.cloud.vmmigration_v1.types.DatacenterConnector]):
             Output only. The list of sources response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -1877,16 +1879,16 @@ class ListDatacenterConnectorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    datacenter_connectors = proto.RepeatedField(
+    datacenter_connectors: MutableSequence["DatacenterConnector"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DatacenterConnector",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1901,7 +1903,7 @@ class GetDatacenterConnectorRequest(proto.Message):
             DatacenterConnector.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1940,20 +1942,20 @@ class CreateDatacenterConnectorRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    datacenter_connector_id = proto.Field(
+    datacenter_connector_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    datacenter_connector = proto.Field(
+    datacenter_connector: "DatacenterConnector" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="DatacenterConnector",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -1985,11 +1987,11 @@ class DeleteDatacenterConnectorRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2021,11 +2023,11 @@ class UpgradeApplianceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    datacenter_connector = proto.Field(
+    datacenter_connector: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2062,23 +2064,23 @@ class ListDatacenterConnectorsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -2102,16 +2104,16 @@ class ComputeEngineTargetDefaults(proto.Message):
             with.
         machine_type (str):
             The machine type to create the VM with.
-        network_tags (Sequence[str]):
+        network_tags (MutableSequence[str]):
             A map of network tags to associate with the
             VM.
-        network_interfaces (Sequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
+        network_interfaces (MutableSequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
             List of NICs connected to this VM.
         service_account (str):
             The service account to associate the VM with.
         disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
             The disk type to use in the VM.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A map of labels to associate with the VM.
         license_type (google.cloud.vmmigration_v1.types.ComputeEngineLicenseType):
             The license type to use in OS adaptation.
@@ -2128,92 +2130,92 @@ class ComputeEngineTargetDefaults(proto.Message):
         boot_option (google.cloud.vmmigration_v1.types.ComputeEngineBootOption):
             Output only. The VM Boot Option, as set in
             the source vm.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
-        additional_licenses (Sequence[str]):
+        additional_licenses (MutableSequence[str]):
             Additional licenses to assign to the VM.
         hostname (str):
             The hostname to assign to the VM.
     """
 
-    vm_name = proto.Field(
+    vm_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_project = proto.Field(
+    target_project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    machine_type_series = proto.Field(
+    machine_type_series: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    network_tags = proto.RepeatedField(
+    network_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    network_interfaces = proto.RepeatedField(
+    network_interfaces: MutableSequence["NetworkInterface"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="NetworkInterface",
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    disk_type = proto.Field(
+    disk_type: "ComputeEngineDiskType" = proto.Field(
         proto.ENUM,
         number=9,
         enum="ComputeEngineDiskType",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    license_type = proto.Field(
+    license_type: "ComputeEngineLicenseType" = proto.Field(
         proto.ENUM,
         number=11,
         enum="ComputeEngineLicenseType",
     )
-    applied_license = proto.Field(
+    applied_license: "AppliedLicense" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AppliedLicense",
     )
-    compute_scheduling = proto.Field(
+    compute_scheduling: "ComputeScheduling" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="ComputeScheduling",
     )
-    secure_boot = proto.Field(
+    secure_boot: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    boot_option = proto.Field(
+    boot_option: "ComputeEngineBootOption" = proto.Field(
         proto.ENUM,
         number=15,
         enum="ComputeEngineBootOption",
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    additional_licenses = proto.RepeatedField(
+    additional_licenses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=18,
     )
@@ -2235,16 +2237,16 @@ class ComputeEngineTargetDetails(proto.Message):
             with.
         machine_type (str):
             The machine type to create the VM with.
-        network_tags (Sequence[str]):
+        network_tags (MutableSequence[str]):
             A map of network tags to associate with the
             VM.
-        network_interfaces (Sequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
+        network_interfaces (MutableSequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
             List of NICs connected to this VM.
         service_account (str):
             The service account to associate the VM with.
         disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
             The disk type to use in the VM.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             A map of labels to associate with the VM.
         license_type (google.cloud.vmmigration_v1.types.ComputeEngineLicenseType):
             The license type to use in OS adaptation.
@@ -2260,92 +2262,92 @@ class ComputeEngineTargetDetails(proto.Message):
             boot option is EFI.
         boot_option (google.cloud.vmmigration_v1.types.ComputeEngineBootOption):
             The VM Boot Option, as set in the source vm.
-        metadata (Mapping[str, str]):
+        metadata (MutableMapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
-        additional_licenses (Sequence[str]):
+        additional_licenses (MutableSequence[str]):
             Additional licenses to assign to the VM.
         hostname (str):
             The hostname to assign to the VM.
     """
 
-    vm_name = proto.Field(
+    vm_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    zone = proto.Field(
+    zone: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    machine_type_series = proto.Field(
+    machine_type_series: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    machine_type = proto.Field(
+    machine_type: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    network_tags = proto.RepeatedField(
+    network_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    network_interfaces = proto.RepeatedField(
+    network_interfaces: MutableSequence["NetworkInterface"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="NetworkInterface",
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    disk_type = proto.Field(
+    disk_type: "ComputeEngineDiskType" = proto.Field(
         proto.ENUM,
         number=9,
         enum="ComputeEngineDiskType",
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=10,
     )
-    license_type = proto.Field(
+    license_type: "ComputeEngineLicenseType" = proto.Field(
         proto.ENUM,
         number=11,
         enum="ComputeEngineLicenseType",
     )
-    applied_license = proto.Field(
+    applied_license: "AppliedLicense" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="AppliedLicense",
     )
-    compute_scheduling = proto.Field(
+    compute_scheduling: "ComputeScheduling" = proto.Field(
         proto.MESSAGE,
         number=13,
         message="ComputeScheduling",
     )
-    secure_boot = proto.Field(
+    secure_boot: bool = proto.Field(
         proto.BOOL,
         number=14,
     )
-    boot_option = proto.Field(
+    boot_option: "ComputeEngineBootOption" = proto.Field(
         proto.ENUM,
         number=15,
         enum="ComputeEngineBootOption",
     )
-    metadata = proto.MapField(
+    metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
     )
-    additional_licenses = proto.RepeatedField(
+    additional_licenses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
-    hostname = proto.Field(
+    hostname: str = proto.Field(
         proto.STRING,
         number=18,
     )
@@ -2367,19 +2369,19 @@ class NetworkInterface(proto.Message):
             The external IP to define in the NIC.
     """
 
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subnetwork = proto.Field(
+    subnetwork: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    internal_ip = proto.Field(
+    internal_ip: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    external_ip = proto.Field(
+    external_ip: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -2405,12 +2407,12 @@ class AppliedLicense(proto.Message):
         PAYG = 2
         BYOL = 3
 
-    type_ = proto.Field(
+    type_: Type = proto.Field(
         proto.ENUM,
         number=1,
         enum=Type,
     )
-    os_license = proto.Field(
+    os_license: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -2427,7 +2429,7 @@ class SchedulingNodeAffinity(proto.Message):
         operator (google.cloud.vmmigration_v1.types.SchedulingNodeAffinity.Operator):
             The operator to use for the node resources specified in the
             ``values`` parameter.
-        values (Sequence[str]):
+        values (MutableSequence[str]):
             Corresponds to the label values of Node
             resource.
     """
@@ -2440,16 +2442,16 @@ class SchedulingNodeAffinity(proto.Message):
         IN = 1
         NOT_IN = 2
 
-    key = proto.Field(
+    key: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    operator = proto.Field(
+    operator: Operator = proto.Field(
         proto.ENUM,
         number=2,
         enum=Operator,
     )
-    values = proto.RepeatedField(
+    values: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -2472,7 +2474,7 @@ class ComputeScheduling(proto.Message):
             under scheduling. It was changed to an enum (instead of a
             boolean) to match the default value in Compute Engine which
             is automatic restart.
-        node_affinities (Sequence[google.cloud.vmmigration_v1.types.SchedulingNodeAffinity]):
+        node_affinities (MutableSequence[google.cloud.vmmigration_v1.types.SchedulingNodeAffinity]):
             A set of node affinity and anti-affinity
             configurations for sole tenant nodes.
         min_node_cpus (int):
@@ -2496,22 +2498,22 @@ class ComputeScheduling(proto.Message):
         AUTOMATIC_RESTART = 1
         NO_AUTOMATIC_RESTART = 2
 
-    on_host_maintenance = proto.Field(
+    on_host_maintenance: OnHostMaintenance = proto.Field(
         proto.ENUM,
         number=1,
         enum=OnHostMaintenance,
     )
-    restart_type = proto.Field(
+    restart_type: RestartType = proto.Field(
         proto.ENUM,
         number=5,
         enum=RestartType,
     )
-    node_affinities = proto.RepeatedField(
+    node_affinities: MutableSequence["SchedulingNodeAffinity"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="SchedulingNodeAffinity",
     )
-    min_node_cpus = proto.Field(
+    min_node_cpus: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -2531,12 +2533,12 @@ class SchedulePolicy(proto.Message):
             fully function on Compute Engine.
     """
 
-    idle_duration = proto.Field(
+    idle_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=1,
         message=duration_pb2.Duration,
     )
-    skip_os_adaptation = proto.Field(
+    skip_os_adaptation: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -2572,20 +2574,20 @@ class CreateMigratingVmRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    migrating_vm_id = proto.Field(
+    migrating_vm_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    migrating_vm = proto.Field(
+    migrating_vm: "MigratingVm" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="MigratingVm",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -2622,27 +2624,27 @@ class ListMigratingVmsRequest(proto.Message):
             migrating VM.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    view = proto.Field(
+    view: "MigratingVmView" = proto.Field(
         proto.ENUM,
         number=6,
         enum="MigratingVmView",
@@ -2653,14 +2655,14 @@ class ListMigratingVmsResponse(proto.Message):
     r"""Response message for 'ListMigratingVms' request.
 
     Attributes:
-        migrating_vms (Sequence[google.cloud.vmmigration_v1.types.MigratingVm]):
+        migrating_vms (MutableSequence[google.cloud.vmmigration_v1.types.MigratingVm]):
             Output only. The list of Migrating VMs
             response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -2669,16 +2671,16 @@ class ListMigratingVmsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migrating_vms = proto.RepeatedField(
+    migrating_vms: MutableSequence["MigratingVm"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MigratingVm",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -2695,11 +2697,11 @@ class GetMigratingVmRequest(proto.Message):
             migrating VM.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    view = proto.Field(
+    view: "MigratingVmView" = proto.Field(
         proto.ENUM,
         number=2,
         enum="MigratingVmView",
@@ -2739,17 +2741,17 @@ class UpdateMigratingVmRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    migrating_vm = proto.Field(
+    migrating_vm: "MigratingVm" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="MigratingVm",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -2763,7 +2765,7 @@ class DeleteMigratingVmRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2777,7 +2779,7 @@ class StartMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(
+    migrating_vm: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2795,7 +2797,7 @@ class PauseMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(
+    migrating_vm: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2813,7 +2815,7 @@ class ResumeMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(
+    migrating_vm: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2831,7 +2833,7 @@ class FinalizeMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(
+    migrating_vm: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2863,24 +2865,24 @@ class TargetProject(proto.Message):
             resource was updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
@@ -2895,7 +2897,7 @@ class GetTargetProjectRequest(proto.Message):
             Required. The TargetProject name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2928,23 +2930,23 @@ class ListTargetProjectsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -2954,13 +2956,13 @@ class ListTargetProjectsResponse(proto.Message):
     r"""Response message for 'ListTargetProjects' call.
 
     Attributes:
-        target_projects (Sequence[google.cloud.vmmigration_v1.types.TargetProject]):
+        target_projects (MutableSequence[google.cloud.vmmigration_v1.types.TargetProject]):
             Output only. The list of target response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -2969,16 +2971,16 @@ class ListTargetProjectsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_projects = proto.RepeatedField(
+    target_projects: MutableSequence["TargetProject"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TargetProject",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -3014,20 +3016,20 @@ class CreateTargetProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    target_project_id = proto.Field(
+    target_project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    target_project = proto.Field(
+    target_project: "TargetProject" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TargetProject",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -3066,17 +3068,17 @@ class UpdateTargetProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    target_project = proto.Field(
+    target_project: "TargetProject" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="TargetProject",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -3108,11 +3110,11 @@ class DeleteTargetProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -3136,25 +3138,25 @@ class Group(proto.Message):
             group which can be updated.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -3187,23 +3189,23 @@ class ListGroupsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -3213,13 +3215,13 @@ class ListGroupsResponse(proto.Message):
     r"""Response message for 'ListGroups' request.
 
     Attributes:
-        groups (Sequence[google.cloud.vmmigration_v1.types.Group]):
+        groups (MutableSequence[google.cloud.vmmigration_v1.types.Group]):
             Output only. The list of groups response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -3228,16 +3230,16 @@ class ListGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    groups = proto.RepeatedField(
+    groups: MutableSequence["Group"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Group",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -3251,7 +3253,7 @@ class GetGroupRequest(proto.Message):
             Required. The group name.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -3287,20 +3289,20 @@ class CreateGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    group_id = proto.Field(
+    group_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    group = proto.Field(
+    group: "Group" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Group",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -3339,17 +3341,17 @@ class UpdateGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    group = proto.Field(
+    group: "Group" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="Group",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -3381,11 +3383,11 @@ class DeleteGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -3402,11 +3404,11 @@ class AddGroupMigrationRequest(proto.Message):
             The full path name of the MigratingVm to add.
     """
 
-    group = proto.Field(
+    group: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    migrating_vm = proto.Field(
+    migrating_vm: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -3426,11 +3428,11 @@ class RemoveGroupMigrationRequest(proto.Message):
             The MigratingVm to remove.
     """
 
-    group = proto.Field(
+    group: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    migrating_vm = proto.Field(
+    migrating_vm: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -3470,20 +3472,20 @@ class CreateCutoverJobRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    cutover_job_id = proto.Field(
+    cutover_job_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cutover_job = proto.Field(
+    cutover_job: "CutoverJob" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="CutoverJob",
     )
-    request_id = proto.Field(
+    request_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -3497,7 +3499,7 @@ class CancelCutoverJobRequest(proto.Message):
             Required. The cutover job id
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -3534,23 +3536,23 @@ class ListCutoverJobsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -3560,14 +3562,14 @@ class ListCutoverJobsResponse(proto.Message):
     r"""Response message for 'ListCutoverJobs' request.
 
     Attributes:
-        cutover_jobs (Sequence[google.cloud.vmmigration_v1.types.CutoverJob]):
+        cutover_jobs (MutableSequence[google.cloud.vmmigration_v1.types.CutoverJob]):
             Output only. The list of cutover jobs
             response.
         next_page_token (str):
             Output only. A token, which can be sent as ``page_token`` to
             retrieve the next page. If this field is omitted, there are
             no subsequent pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.
     """
@@ -3576,16 +3578,16 @@ class ListCutoverJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cutover_jobs = proto.RepeatedField(
+    cutover_jobs: MutableSequence["CutoverJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CutoverJob",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -3599,7 +3601,7 @@ class GetCutoverJobRequest(proto.Message):
             Required. The name of the CutoverJob.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -3635,33 +3637,33 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_message = proto.Field(
+    status_message: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    requested_cancellation = proto.Field(
+    requested_cancellation: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -3680,7 +3682,7 @@ class MigrationError(proto.Message):
         action_item (google.rpc.error_details_pb2.LocalizedMessage):
             Output only. Suggested action for solving the
             error.
-        help_links (Sequence[google.rpc.error_details_pb2.Link]):
+        help_links (MutableSequence[google.rpc.error_details_pb2.Link]):
             Output only. URL(s) pointing to additional
             information on handling the current error.
         error_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -3700,27 +3702,27 @@ class MigrationError(proto.Message):
         UTILIZATION_REPORT_ERROR = 8
         APPLIANCE_UPGRADE_ERROR = 9
 
-    code = proto.Field(
+    code: ErrorCode = proto.Field(
         proto.ENUM,
         number=1,
         enum=ErrorCode,
     )
-    error_message = proto.Field(
+    error_message: error_details_pb2.LocalizedMessage = proto.Field(
         proto.MESSAGE,
         number=2,
         message=error_details_pb2.LocalizedMessage,
     )
-    action_item = proto.Field(
+    action_item: error_details_pb2.LocalizedMessage = proto.Field(
         proto.MESSAGE,
         number=3,
         message=error_details_pb2.LocalizedMessage,
     )
-    help_links = proto.RepeatedField(
+    help_links: MutableSequence[error_details_pb2.Help.Link] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=error_details_pb2.Help.Link,
     )
-    error_time = proto.Field(
+    error_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,

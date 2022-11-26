@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-vm-migration"
+    "name": "google-cloud-vm-migration",
+    "version": "0.1.0"
   },
   "snippets": [
     {

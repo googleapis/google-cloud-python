@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -184,9 +194,9 @@ class VmMigrationAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, VmMigrationTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the vm migration client.
@@ -230,11 +240,11 @@ class VmMigrationAsyncClient:
 
     async def list_sources(
         self,
-        request: Union[vmmigration.ListSourcesRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListSourcesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists Sources in a given project and location.
@@ -268,7 +278,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListSourcesRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListSourcesRequest, dict]]):
                 The request object. Request message for 'ListSources'
                 request.
             parent (:class:`str`):
@@ -346,11 +356,11 @@ class VmMigrationAsyncClient:
 
     async def get_source(
         self,
-        request: Union[vmmigration.GetSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetSourceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.Source:
         r"""Gets details of a single Source.
@@ -382,7 +392,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetSourceRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetSourceRequest, dict]]):
                 The request object. Request message for 'GetSource'
                 request.
             name (:class:`str`):
@@ -448,13 +458,13 @@ class VmMigrationAsyncClient:
 
     async def create_source(
         self,
-        request: Union[vmmigration.CreateSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateSourceRequest, dict]] = None,
         *,
-        parent: str = None,
-        source: vmmigration.Source = None,
-        source_id: str = None,
+        parent: Optional[str] = None,
+        source: Optional[vmmigration.Source] = None,
+        source_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Source in a given project and location.
@@ -491,7 +501,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateSourceRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateSourceRequest, dict]]):
                 The request object. Request message for 'CreateSource'
                 request.
             parent (:class:`str`):
@@ -579,12 +589,12 @@ class VmMigrationAsyncClient:
 
     async def update_source(
         self,
-        request: Union[vmmigration.UpdateSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateSourceRequest, dict]] = None,
         *,
-        source: vmmigration.Source = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        source: Optional[vmmigration.Source] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Source.
@@ -619,7 +629,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.UpdateSourceRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.UpdateSourceRequest, dict]]):
                 The request object. Update message for 'UpdateSources'
                 request.
             source (:class:`google.cloud.vmmigration_v1.types.Source`):
@@ -708,11 +718,11 @@ class VmMigrationAsyncClient:
 
     async def delete_source(
         self,
-        request: Union[vmmigration.DeleteSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteSourceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Source.
@@ -748,7 +758,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.DeleteSourceRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.DeleteSourceRequest, dict]]):
                 The request object. Request message for 'DeleteSource'
                 request.
             name (:class:`str`):
@@ -830,11 +840,11 @@ class VmMigrationAsyncClient:
 
     async def fetch_inventory(
         self,
-        request: Union[vmmigration.FetchInventoryRequest, dict] = None,
+        request: Optional[Union[vmmigration.FetchInventoryRequest, dict]] = None,
         *,
-        source: str = None,
+        source: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.FetchInventoryResponse:
         r"""List remote source's inventory of VMs.
@@ -872,7 +882,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.FetchInventoryRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.FetchInventoryRequest, dict]]):
                 The request object. Request message for
                 [fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory].
             source (:class:`str`):
@@ -936,11 +946,13 @@ class VmMigrationAsyncClient:
 
     async def list_utilization_reports(
         self,
-        request: Union[vmmigration.ListUtilizationReportsRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.ListUtilizationReportsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUtilizationReportsAsyncPager:
         r"""Lists Utilization Reports of the given Source.
@@ -974,7 +986,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListUtilizationReportsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListUtilizationReportsRequest, dict]]):
                 The request object. Request message for
                 'ListUtilizationReports' request.
             parent (:class:`str`):
@@ -1052,11 +1064,11 @@ class VmMigrationAsyncClient:
 
     async def get_utilization_report(
         self,
-        request: Union[vmmigration.GetUtilizationReportRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetUtilizationReportRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
@@ -1088,7 +1100,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetUtilizationReportRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetUtilizationReportRequest, dict]]):
                 The request object. Request message for
                 'GetUtilizationReport' request.
             name (:class:`str`):
@@ -1155,13 +1167,15 @@ class VmMigrationAsyncClient:
 
     async def create_utilization_report(
         self,
-        request: Union[vmmigration.CreateUtilizationReportRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.CreateUtilizationReportRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        utilization_report: vmmigration.UtilizationReport = None,
-        utilization_report_id: str = None,
+        parent: Optional[str] = None,
+        utilization_report: Optional[vmmigration.UtilizationReport] = None,
+        utilization_report_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new UtilizationReport.
@@ -1198,7 +1212,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateUtilizationReportRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateUtilizationReportRequest, dict]]):
                 The request object. Request message for
                 'CreateUtilizationReport' request.
             parent (:class:`str`):
@@ -1295,11 +1309,13 @@ class VmMigrationAsyncClient:
 
     async def delete_utilization_report(
         self,
-        request: Union[vmmigration.DeleteUtilizationReportRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.DeleteUtilizationReportRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Utilization Report.
@@ -1335,7 +1351,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.DeleteUtilizationReportRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.DeleteUtilizationReportRequest, dict]]):
                 The request object. Request message for
                 'DeleteUtilizationReport' request.
             name (:class:`str`):
@@ -1419,11 +1435,13 @@ class VmMigrationAsyncClient:
 
     async def list_datacenter_connectors(
         self,
-        request: Union[vmmigration.ListDatacenterConnectorsRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.ListDatacenterConnectorsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatacenterConnectorsAsyncPager:
         r"""Lists DatacenterConnectors in a given Source.
@@ -1457,7 +1475,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListDatacenterConnectorsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListDatacenterConnectorsRequest, dict]]):
                 The request object. Request message for
                 'ListDatacenterConnectors' request.
             parent (:class:`str`):
@@ -1535,11 +1553,13 @@ class VmMigrationAsyncClient:
 
     async def get_datacenter_connector(
         self,
-        request: Union[vmmigration.GetDatacenterConnectorRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.GetDatacenterConnectorRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
@@ -1571,7 +1591,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetDatacenterConnectorRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetDatacenterConnectorRequest, dict]]):
                 The request object. Request message for
                 'GetDatacenterConnector' request.
             name (:class:`str`):
@@ -1641,13 +1661,15 @@ class VmMigrationAsyncClient:
 
     async def create_datacenter_connector(
         self,
-        request: Union[vmmigration.CreateDatacenterConnectorRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.CreateDatacenterConnectorRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        datacenter_connector: vmmigration.DatacenterConnector = None,
-        datacenter_connector_id: str = None,
+        parent: Optional[str] = None,
+        datacenter_connector: Optional[vmmigration.DatacenterConnector] = None,
+        datacenter_connector_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new DatacenterConnector in a given Source.
@@ -1684,7 +1706,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateDatacenterConnectorRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateDatacenterConnectorRequest, dict]]):
                 The request object. Request message for
                 'CreateDatacenterConnector' request.
             parent (:class:`str`):
@@ -1782,11 +1804,13 @@ class VmMigrationAsyncClient:
 
     async def delete_datacenter_connector(
         self,
-        request: Union[vmmigration.DeleteDatacenterConnectorRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.DeleteDatacenterConnectorRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DatacenterConnector.
@@ -1822,7 +1846,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.DeleteDatacenterConnectorRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.DeleteDatacenterConnectorRequest, dict]]):
                 The request object. Request message for
                 'DeleteDatacenterConnector' request.
             name (:class:`str`):
@@ -1906,10 +1930,10 @@ class VmMigrationAsyncClient:
 
     async def upgrade_appliance(
         self,
-        request: Union[vmmigration.UpgradeApplianceRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpgradeApplianceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Upgrades the appliance relate to this
@@ -1946,7 +1970,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.UpgradeApplianceRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.UpgradeApplianceRequest, dict]]):
                 The request object. Request message for
                 'UpgradeAppliance' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2004,13 +2028,13 @@ class VmMigrationAsyncClient:
 
     async def create_migrating_vm(
         self,
-        request: Union[vmmigration.CreateMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateMigratingVmRequest, dict]] = None,
         *,
-        parent: str = None,
-        migrating_vm: vmmigration.MigratingVm = None,
-        migrating_vm_id: str = None,
+        parent: Optional[str] = None,
+        migrating_vm: Optional[vmmigration.MigratingVm] = None,
+        migrating_vm_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new MigratingVm in a given Source.
@@ -2047,7 +2071,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateMigratingVmRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateMigratingVmRequest, dict]]):
                 The request object. Request message for
                 'CreateMigratingVm' request.
             parent (:class:`str`):
@@ -2135,11 +2159,11 @@ class VmMigrationAsyncClient:
 
     async def list_migrating_vms(
         self,
-        request: Union[vmmigration.ListMigratingVmsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListMigratingVmsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigratingVmsAsyncPager:
         r"""Lists MigratingVms in a given Source.
@@ -2173,7 +2197,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListMigratingVmsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListMigratingVmsRequest, dict]]):
                 The request object. Request message for
                 'LisMigratingVmsRequest' request.
             parent (:class:`str`):
@@ -2251,11 +2275,11 @@ class VmMigrationAsyncClient:
 
     async def get_migrating_vm(
         self,
-        request: Union[vmmigration.GetMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetMigratingVmRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
@@ -2287,7 +2311,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetMigratingVmRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetMigratingVmRequest, dict]]):
                 The request object. Request message for 'GetMigratingVm'
                 request.
             name (:class:`str`):
@@ -2354,12 +2378,12 @@ class VmMigrationAsyncClient:
 
     async def update_migrating_vm(
         self,
-        request: Union[vmmigration.UpdateMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateMigratingVmRequest, dict]] = None,
         *,
-        migrating_vm: vmmigration.MigratingVm = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        migrating_vm: Optional[vmmigration.MigratingVm] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single MigratingVm.
@@ -2394,7 +2418,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.UpdateMigratingVmRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.UpdateMigratingVmRequest, dict]]):
                 The request object. Request message for
                 'UpdateMigratingVm' request.
             migrating_vm (:class:`google.cloud.vmmigration_v1.types.MigratingVm`):
@@ -2483,11 +2507,11 @@ class VmMigrationAsyncClient:
 
     async def delete_migrating_vm(
         self,
-        request: Union[vmmigration.DeleteMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteMigratingVmRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single MigratingVm.
@@ -2523,7 +2547,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.DeleteMigratingVmRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.DeleteMigratingVmRequest, dict]]):
                 The request object. Request message for
                 'DeleteMigratingVm' request.
             name (:class:`str`):
@@ -2607,11 +2631,11 @@ class VmMigrationAsyncClient:
 
     async def start_migration(
         self,
-        request: Union[vmmigration.StartMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.StartMigrationRequest, dict]] = None,
         *,
-        migrating_vm: str = None,
+        migrating_vm: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Starts migration for a VM. Starts the process of
@@ -2649,7 +2673,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.StartMigrationRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.StartMigrationRequest, dict]]):
                 The request object. Request message for
                 'StartMigrationRequest' request.
             migrating_vm (:class:`str`):
@@ -2728,10 +2752,10 @@ class VmMigrationAsyncClient:
 
     async def resume_migration(
         self,
-        request: Union[vmmigration.ResumeMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.ResumeMigrationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Resumes a migration for a VM. When called on a paused
@@ -2772,7 +2796,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ResumeMigrationRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ResumeMigrationRequest, dict]]):
                 The request object. Request message for
                 'ResumeMigration' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2830,10 +2854,10 @@ class VmMigrationAsyncClient:
 
     async def pause_migration(
         self,
-        request: Union[vmmigration.PauseMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.PauseMigrationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Pauses a migration for a VM. If cycle tasks are
@@ -2872,7 +2896,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.PauseMigrationRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.PauseMigrationRequest, dict]]):
                 The request object. Request message for 'PauseMigration'
                 request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2930,11 +2954,11 @@ class VmMigrationAsyncClient:
 
     async def finalize_migration(
         self,
-        request: Union[vmmigration.FinalizeMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.FinalizeMigrationRequest, dict]] = None,
         *,
-        migrating_vm: str = None,
+        migrating_vm: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Marks a migration as completed, deleting migration
@@ -2972,7 +2996,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.FinalizeMigrationRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.FinalizeMigrationRequest, dict]]):
                 The request object. Request message for
                 'FinalizeMigration' request.
             migrating_vm (:class:`str`):
@@ -3051,13 +3075,13 @@ class VmMigrationAsyncClient:
 
     async def create_clone_job(
         self,
-        request: Union[vmmigration.CreateCloneJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateCloneJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        clone_job: vmmigration.CloneJob = None,
-        clone_job_id: str = None,
+        parent: Optional[str] = None,
+        clone_job: Optional[vmmigration.CloneJob] = None,
+        clone_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initiates a Clone of a specific migrating VM.
@@ -3094,7 +3118,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateCloneJobRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateCloneJobRequest, dict]]):
                 The request object. Request message for 'CreateCloneJob'
                 request.
             parent (:class:`str`):
@@ -3194,11 +3218,11 @@ class VmMigrationAsyncClient:
 
     async def cancel_clone_job(
         self,
-        request: Union[vmmigration.CancelCloneJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CancelCloneJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initiates the cancellation of a running clone job.
@@ -3234,7 +3258,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CancelCloneJobRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CancelCloneJobRequest, dict]]):
                 The request object. Request message for 'CancelCloneJob'
                 request.
             name (:class:`str`):
@@ -3309,11 +3333,11 @@ class VmMigrationAsyncClient:
 
     async def list_clone_jobs(
         self,
-        request: Union[vmmigration.ListCloneJobsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListCloneJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCloneJobsAsyncPager:
         r"""Lists CloneJobs of a given migrating VM.
@@ -3347,7 +3371,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListCloneJobsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListCloneJobsRequest, dict]]):
                 The request object. Request message for
                 'ListCloneJobsRequest' request.
             parent (:class:`str`):
@@ -3425,11 +3449,11 @@ class VmMigrationAsyncClient:
 
     async def get_clone_job(
         self,
-        request: Union[vmmigration.GetCloneJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetCloneJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
@@ -3461,7 +3485,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetCloneJobRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetCloneJobRequest, dict]]):
                 The request object. Request message for 'GetCloneJob'
                 request.
             name (:class:`str`):
@@ -3537,13 +3561,13 @@ class VmMigrationAsyncClient:
 
     async def create_cutover_job(
         self,
-        request: Union[vmmigration.CreateCutoverJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateCutoverJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        cutover_job: vmmigration.CutoverJob = None,
-        cutover_job_id: str = None,
+        parent: Optional[str] = None,
+        cutover_job: Optional[vmmigration.CutoverJob] = None,
+        cutover_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initiates a Cutover of a specific migrating VM.
@@ -3582,7 +3606,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateCutoverJobRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateCutoverJobRequest, dict]]):
                 The request object. Request message for
                 'CreateCutoverJob' request.
             parent (:class:`str`):
@@ -3672,11 +3696,11 @@ class VmMigrationAsyncClient:
 
     async def cancel_cutover_job(
         self,
-        request: Union[vmmigration.CancelCutoverJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CancelCutoverJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initiates the cancellation of a running cutover job.
@@ -3712,7 +3736,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CancelCutoverJobRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CancelCutoverJobRequest, dict]]):
                 The request object. Request message for
                 'CancelCutoverJob' request.
             name (:class:`str`):
@@ -3787,11 +3811,11 @@ class VmMigrationAsyncClient:
 
     async def list_cutover_jobs(
         self,
-        request: Union[vmmigration.ListCutoverJobsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListCutoverJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCutoverJobsAsyncPager:
         r"""Lists CutoverJobs of a given migrating VM.
@@ -3825,7 +3849,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListCutoverJobsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListCutoverJobsRequest, dict]]):
                 The request object. Request message for
                 'ListCutoverJobsRequest' request.
             parent (:class:`str`):
@@ -3903,11 +3927,11 @@ class VmMigrationAsyncClient:
 
     async def get_cutover_job(
         self,
-        request: Union[vmmigration.GetCutoverJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetCutoverJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
@@ -3939,7 +3963,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetCutoverJobRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetCutoverJobRequest, dict]]):
                 The request object. Request message for 'GetCutoverJob'
                 request.
             name (:class:`str`):
@@ -4007,11 +4031,11 @@ class VmMigrationAsyncClient:
 
     async def list_groups(
         self,
-        request: Union[vmmigration.ListGroupsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListGroupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsAsyncPager:
         r"""Lists Groups in a given project and location.
@@ -4045,7 +4069,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListGroupsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListGroupsRequest, dict]]):
                 The request object. Request message for 'ListGroups'
                 request.
             parent (:class:`str`):
@@ -4123,11 +4147,11 @@ class VmMigrationAsyncClient:
 
     async def get_group(
         self,
-        request: Union[vmmigration.GetGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.Group:
         r"""Gets details of a single Group.
@@ -4159,7 +4183,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetGroupRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetGroupRequest, dict]]):
                 The request object. Request message for 'GetGroup'
                 request.
             name (:class:`str`):
@@ -4224,13 +4248,13 @@ class VmMigrationAsyncClient:
 
     async def create_group(
         self,
-        request: Union[vmmigration.CreateGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateGroupRequest, dict]] = None,
         *,
-        parent: str = None,
-        group: vmmigration.Group = None,
-        group_id: str = None,
+        parent: Optional[str] = None,
+        group: Optional[vmmigration.Group] = None,
+        group_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Group in a given project and location.
@@ -4267,7 +4291,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateGroupRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateGroupRequest, dict]]):
                 The request object. Request message for 'CreateGroup'
                 request.
             parent (:class:`str`):
@@ -4355,12 +4379,12 @@ class VmMigrationAsyncClient:
 
     async def update_group(
         self,
-        request: Union[vmmigration.UpdateGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateGroupRequest, dict]] = None,
         *,
-        group: vmmigration.Group = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        group: Optional[vmmigration.Group] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Group.
@@ -4395,7 +4419,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.UpdateGroupRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.UpdateGroupRequest, dict]]):
                 The request object. Update message for 'UpdateGroups'
                 request.
             group (:class:`google.cloud.vmmigration_v1.types.Group`):
@@ -4484,11 +4508,11 @@ class VmMigrationAsyncClient:
 
     async def delete_group(
         self,
-        request: Union[vmmigration.DeleteGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Group.
@@ -4524,7 +4548,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.DeleteGroupRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.DeleteGroupRequest, dict]]):
                 The request object. Request message for 'DeleteGroup'
                 request.
             name (:class:`str`):
@@ -4606,11 +4630,11 @@ class VmMigrationAsyncClient:
 
     async def add_group_migration(
         self,
-        request: Union[vmmigration.AddGroupMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.AddGroupMigrationRequest, dict]] = None,
         *,
-        group: str = None,
+        group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Adds a MigratingVm to a Group.
@@ -4646,7 +4670,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.AddGroupMigrationRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.AddGroupMigrationRequest, dict]]):
                 The request object. Request message for
                 'AddGroupMigration' request.
             group (:class:`str`):
@@ -4723,11 +4747,11 @@ class VmMigrationAsyncClient:
 
     async def remove_group_migration(
         self,
-        request: Union[vmmigration.RemoveGroupMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.RemoveGroupMigrationRequest, dict]] = None,
         *,
-        group: str = None,
+        group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Removes a MigratingVm from a Group.
@@ -4763,7 +4787,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.RemoveGroupMigrationRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.RemoveGroupMigrationRequest, dict]]):
                 The request object. Request message for
                 'RemoveMigration' request.
             group (:class:`str`):
@@ -4838,11 +4862,11 @@ class VmMigrationAsyncClient:
 
     async def list_target_projects(
         self,
-        request: Union[vmmigration.ListTargetProjectsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListTargetProjectsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTargetProjectsAsyncPager:
         r"""Lists TargetProjects in a given project.
@@ -4879,7 +4903,7 @@ class VmMigrationAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.ListTargetProjectsRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.ListTargetProjectsRequest, dict]]):
                 The request object. Request message for
                 'ListTargetProjects' call.
             parent (:class:`str`):
@@ -4957,11 +4981,11 @@ class VmMigrationAsyncClient:
 
     async def get_target_project(
         self,
-        request: Union[vmmigration.GetTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetTargetProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.TargetProject:
         r"""Gets details of a single TargetProject.
@@ -4996,7 +5020,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.GetTargetProjectRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.GetTargetProjectRequest, dict]]):
                 The request object. Request message for
                 'GetTargetProject' call.
             name (:class:`str`):
@@ -5061,13 +5085,13 @@ class VmMigrationAsyncClient:
 
     async def create_target_project(
         self,
-        request: Union[vmmigration.CreateTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateTargetProjectRequest, dict]] = None,
         *,
-        parent: str = None,
-        target_project: vmmigration.TargetProject = None,
-        target_project_id: str = None,
+        parent: Optional[str] = None,
+        target_project: Optional[vmmigration.TargetProject] = None,
+        target_project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new TargetProject in a given project.
@@ -5107,7 +5131,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.CreateTargetProjectRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.CreateTargetProjectRequest, dict]]):
                 The request object. Request message for
                 'CreateTargetProject' request.
             parent (:class:`str`):
@@ -5195,12 +5219,12 @@ class VmMigrationAsyncClient:
 
     async def update_target_project(
         self,
-        request: Union[vmmigration.UpdateTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateTargetProjectRequest, dict]] = None,
         *,
-        target_project: vmmigration.TargetProject = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        target_project: Optional[vmmigration.TargetProject] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single TargetProject.
@@ -5238,7 +5262,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.UpdateTargetProjectRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.UpdateTargetProjectRequest, dict]]):
                 The request object. Update message for
                 'UpdateTargetProject' request.
             target_project (:class:`google.cloud.vmmigration_v1.types.TargetProject`):
@@ -5327,11 +5351,11 @@ class VmMigrationAsyncClient:
 
     async def delete_target_project(
         self,
-        request: Union[vmmigration.DeleteTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteTargetProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single TargetProject.
@@ -5370,7 +5394,7 @@ class VmMigrationAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.vmmigration_v1.types.DeleteTargetProjectRequest, dict]):
+            request (Optional[Union[google.cloud.vmmigration_v1.types.DeleteTargetProjectRequest, dict]]):
                 The request object. Request message for
                 'DeleteTargetProject' request.
             name (:class:`str`):

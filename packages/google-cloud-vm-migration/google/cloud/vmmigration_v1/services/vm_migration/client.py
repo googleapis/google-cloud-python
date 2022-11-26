@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -63,7 +74,7 @@ class VmMigrationClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[VmMigrationTransport]:
         """Returns an appropriate transport class.
 
@@ -506,8 +517,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VmMigrationTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, VmMigrationTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the vm migration client.
@@ -521,7 +532,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             transport (Union[str, VmMigrationTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -551,6 +562,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -603,11 +615,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_sources(
         self,
-        request: Union[vmmigration.ListSourcesRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListSourcesRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesPager:
         r"""Lists Sources in a given project and location.
@@ -719,11 +731,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_source(
         self,
-        request: Union[vmmigration.GetSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetSourceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.Source:
         r"""Gets details of a single Source.
@@ -821,13 +833,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_source(
         self,
-        request: Union[vmmigration.CreateSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateSourceRequest, dict]] = None,
         *,
-        parent: str = None,
-        source: vmmigration.Source = None,
-        source_id: str = None,
+        parent: Optional[str] = None,
+        source: Optional[vmmigration.Source] = None,
+        source_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Source in a given project and location.
@@ -952,12 +964,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def update_source(
         self,
-        request: Union[vmmigration.UpdateSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateSourceRequest, dict]] = None,
         *,
-        source: vmmigration.Source = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        source: Optional[vmmigration.Source] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Source.
@@ -1081,11 +1093,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def delete_source(
         self,
-        request: Union[vmmigration.DeleteSourceRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteSourceRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Source.
@@ -1203,11 +1215,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def fetch_inventory(
         self,
-        request: Union[vmmigration.FetchInventoryRequest, dict] = None,
+        request: Optional[Union[vmmigration.FetchInventoryRequest, dict]] = None,
         *,
-        source: str = None,
+        source: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.FetchInventoryResponse:
         r"""List remote source's inventory of VMs.
@@ -1309,11 +1321,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_utilization_reports(
         self,
-        request: Union[vmmigration.ListUtilizationReportsRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.ListUtilizationReportsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUtilizationReportsPager:
         r"""Lists Utilization Reports of the given Source.
@@ -1425,11 +1439,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_utilization_report(
         self,
-        request: Union[vmmigration.GetUtilizationReportRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetUtilizationReportRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
@@ -1528,13 +1542,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_utilization_report(
         self,
-        request: Union[vmmigration.CreateUtilizationReportRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.CreateUtilizationReportRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        utilization_report: vmmigration.UtilizationReport = None,
-        utilization_report_id: str = None,
+        parent: Optional[str] = None,
+        utilization_report: Optional[vmmigration.UtilizationReport] = None,
+        utilization_report_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new UtilizationReport.
@@ -1670,11 +1686,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def delete_utilization_report(
         self,
-        request: Union[vmmigration.DeleteUtilizationReportRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.DeleteUtilizationReportRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Utilization Report.
@@ -1796,11 +1814,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_datacenter_connectors(
         self,
-        request: Union[vmmigration.ListDatacenterConnectorsRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.ListDatacenterConnectorsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatacenterConnectorsPager:
         r"""Lists DatacenterConnectors in a given Source.
@@ -1914,11 +1934,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_datacenter_connector(
         self,
-        request: Union[vmmigration.GetDatacenterConnectorRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.GetDatacenterConnectorRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
@@ -2020,13 +2042,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_datacenter_connector(
         self,
-        request: Union[vmmigration.CreateDatacenterConnectorRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.CreateDatacenterConnectorRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        datacenter_connector: vmmigration.DatacenterConnector = None,
-        datacenter_connector_id: str = None,
+        parent: Optional[str] = None,
+        datacenter_connector: Optional[vmmigration.DatacenterConnector] = None,
+        datacenter_connector_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new DatacenterConnector in a given Source.
@@ -2163,11 +2187,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def delete_datacenter_connector(
         self,
-        request: Union[vmmigration.DeleteDatacenterConnectorRequest, dict] = None,
+        request: Optional[
+            Union[vmmigration.DeleteDatacenterConnectorRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single DatacenterConnector.
@@ -2289,10 +2315,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def upgrade_appliance(
         self,
-        request: Union[vmmigration.UpgradeApplianceRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpgradeApplianceRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Upgrades the appliance relate to this
@@ -2388,13 +2414,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_migrating_vm(
         self,
-        request: Union[vmmigration.CreateMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateMigratingVmRequest, dict]] = None,
         *,
-        parent: str = None,
-        migrating_vm: vmmigration.MigratingVm = None,
-        migrating_vm_id: str = None,
+        parent: Optional[str] = None,
+        migrating_vm: Optional[vmmigration.MigratingVm] = None,
+        migrating_vm_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new MigratingVm in a given Source.
@@ -2519,11 +2545,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_migrating_vms(
         self,
-        request: Union[vmmigration.ListMigratingVmsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListMigratingVmsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigratingVmsPager:
         r"""Lists MigratingVms in a given Source.
@@ -2635,11 +2661,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_migrating_vm(
         self,
-        request: Union[vmmigration.GetMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetMigratingVmRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
@@ -2738,12 +2764,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def update_migrating_vm(
         self,
-        request: Union[vmmigration.UpdateMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateMigratingVmRequest, dict]] = None,
         *,
-        migrating_vm: vmmigration.MigratingVm = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        migrating_vm: Optional[vmmigration.MigratingVm] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single MigratingVm.
@@ -2867,11 +2893,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def delete_migrating_vm(
         self,
-        request: Union[vmmigration.DeleteMigratingVmRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteMigratingVmRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single MigratingVm.
@@ -2991,11 +3017,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def start_migration(
         self,
-        request: Union[vmmigration.StartMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.StartMigrationRequest, dict]] = None,
         *,
-        migrating_vm: str = None,
+        migrating_vm: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts migration for a VM. Starts the process of
@@ -3112,10 +3138,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def resume_migration(
         self,
-        request: Union[vmmigration.ResumeMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.ResumeMigrationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Resumes a migration for a VM. When called on a paused
@@ -3215,10 +3241,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def pause_migration(
         self,
-        request: Union[vmmigration.PauseMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.PauseMigrationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Pauses a migration for a VM. If cycle tasks are
@@ -3316,11 +3342,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def finalize_migration(
         self,
-        request: Union[vmmigration.FinalizeMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.FinalizeMigrationRequest, dict]] = None,
         *,
-        migrating_vm: str = None,
+        migrating_vm: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Marks a migration as completed, deleting migration
@@ -3437,13 +3463,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_clone_job(
         self,
-        request: Union[vmmigration.CreateCloneJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateCloneJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        clone_job: vmmigration.CloneJob = None,
-        clone_job_id: str = None,
+        parent: Optional[str] = None,
+        clone_job: Optional[vmmigration.CloneJob] = None,
+        clone_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a Clone of a specific migrating VM.
@@ -3580,11 +3606,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def cancel_clone_job(
         self,
-        request: Union[vmmigration.CancelCloneJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CancelCloneJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running clone job.
@@ -3695,11 +3721,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_clone_jobs(
         self,
-        request: Union[vmmigration.ListCloneJobsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListCloneJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCloneJobsPager:
         r"""Lists CloneJobs of a given migrating VM.
@@ -3811,11 +3837,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_clone_job(
         self,
-        request: Union[vmmigration.GetCloneJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetCloneJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
@@ -3923,13 +3949,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_cutover_job(
         self,
-        request: Union[vmmigration.CreateCutoverJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateCutoverJobRequest, dict]] = None,
         *,
-        parent: str = None,
-        cutover_job: vmmigration.CutoverJob = None,
-        cutover_job_id: str = None,
+        parent: Optional[str] = None,
+        cutover_job: Optional[vmmigration.CutoverJob] = None,
+        cutover_job_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a Cutover of a specific migrating VM.
@@ -4058,11 +4084,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def cancel_cutover_job(
         self,
-        request: Union[vmmigration.CancelCutoverJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.CancelCutoverJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running cutover job.
@@ -4173,11 +4199,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_cutover_jobs(
         self,
-        request: Union[vmmigration.ListCutoverJobsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListCutoverJobsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCutoverJobsPager:
         r"""Lists CutoverJobs of a given migrating VM.
@@ -4289,11 +4315,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_cutover_job(
         self,
-        request: Union[vmmigration.GetCutoverJobRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetCutoverJobRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
@@ -4393,11 +4419,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_groups(
         self,
-        request: Union[vmmigration.ListGroupsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListGroupsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsPager:
         r"""Lists Groups in a given project and location.
@@ -4509,11 +4535,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_group(
         self,
-        request: Union[vmmigration.GetGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.Group:
         r"""Gets details of a single Group.
@@ -4610,13 +4636,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_group(
         self,
-        request: Union[vmmigration.CreateGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateGroupRequest, dict]] = None,
         *,
-        parent: str = None,
-        group: vmmigration.Group = None,
-        group_id: str = None,
+        parent: Optional[str] = None,
+        group: Optional[vmmigration.Group] = None,
+        group_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Group in a given project and location.
@@ -4741,12 +4767,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def update_group(
         self,
-        request: Union[vmmigration.UpdateGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateGroupRequest, dict]] = None,
         *,
-        group: vmmigration.Group = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        group: Optional[vmmigration.Group] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single Group.
@@ -4870,11 +4896,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def delete_group(
         self,
-        request: Union[vmmigration.DeleteGroupRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteGroupRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Group.
@@ -4992,11 +5018,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def add_group_migration(
         self,
-        request: Union[vmmigration.AddGroupMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.AddGroupMigrationRequest, dict]] = None,
         *,
-        group: str = None,
+        group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Adds a MigratingVm to a Group.
@@ -5109,11 +5135,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def remove_group_migration(
         self,
-        request: Union[vmmigration.RemoveGroupMigrationRequest, dict] = None,
+        request: Optional[Union[vmmigration.RemoveGroupMigrationRequest, dict]] = None,
         *,
-        group: str = None,
+        group: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Removes a MigratingVm from a Group.
@@ -5224,11 +5250,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def list_target_projects(
         self,
-        request: Union[vmmigration.ListTargetProjectsRequest, dict] = None,
+        request: Optional[Union[vmmigration.ListTargetProjectsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTargetProjectsPager:
         r"""Lists TargetProjects in a given project.
@@ -5343,11 +5369,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def get_target_project(
         self,
-        request: Union[vmmigration.GetTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.GetTargetProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.TargetProject:
         r"""Gets details of a single TargetProject.
@@ -5447,13 +5473,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def create_target_project(
         self,
-        request: Union[vmmigration.CreateTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.CreateTargetProjectRequest, dict]] = None,
         *,
-        parent: str = None,
-        target_project: vmmigration.TargetProject = None,
-        target_project_id: str = None,
+        parent: Optional[str] = None,
+        target_project: Optional[vmmigration.TargetProject] = None,
+        target_project_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new TargetProject in a given project.
@@ -5581,12 +5607,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def update_target_project(
         self,
-        request: Union[vmmigration.UpdateTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.UpdateTargetProjectRequest, dict]] = None,
         *,
-        target_project: vmmigration.TargetProject = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        target_project: Optional[vmmigration.TargetProject] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single TargetProject.
@@ -5713,11 +5739,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     def delete_target_project(
         self,
-        request: Union[vmmigration.DeleteTargetProjectRequest, dict] = None,
+        request: Optional[Union[vmmigration.DeleteTargetProjectRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single TargetProject.
