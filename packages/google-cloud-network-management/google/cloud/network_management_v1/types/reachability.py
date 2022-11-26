@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -71,23 +73,23 @@ class ListConnectivityTestsRequest(proto.Message):
             Field to use to sort the list.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -97,12 +99,12 @@ class ListConnectivityTestsResponse(proto.Message):
     r"""Response for the ``ListConnectivityTests`` method.
 
     Attributes:
-        resources (Sequence[google.cloud.network_management_v1.types.ConnectivityTest]):
+        resources (MutableSequence[google.cloud.network_management_v1.types.ConnectivityTest]):
             List of Connectivity Tests.
         next_page_token (str):
             Page token to fetch the next set of
             Connectivity Tests.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached (when querying all
             locations with ``-``).
     """
@@ -111,16 +113,18 @@ class ListConnectivityTestsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources = proto.RepeatedField(
+    resources: MutableSequence[
+        connectivity_test.ConnectivityTest
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=connectivity_test.ConnectivityTest,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    unreachable = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -135,7 +139,7 @@ class GetConnectivityTestRequest(proto.Message):
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -162,15 +166,15 @@ class CreateConnectivityTestRequest(proto.Message):
             Required. A ``ConnectivityTest`` resource
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    test_id = proto.Field(
+    test_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: connectivity_test.ConnectivityTest = proto.Field(
         proto.MESSAGE,
         number=3,
         message=connectivity_test.ConnectivityTest,
@@ -188,12 +192,12 @@ class UpdateConnectivityTestRequest(proto.Message):
             Required. Only fields specified in update_mask are updated.
     """
 
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    resource = proto.Field(
+    resource: connectivity_test.ConnectivityTest = proto.Field(
         proto.MESSAGE,
         number=2,
         message=connectivity_test.ConnectivityTest,
@@ -209,7 +213,7 @@ class DeleteConnectivityTestRequest(proto.Message):
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -224,7 +228,7 @@ class RerunConnectivityTestRequest(proto.Message):
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -253,33 +257,33 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    status_detail = proto.Field(
+    status_detail: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    cancel_requested = proto.Field(
+    cancel_requested: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
-    api_version = proto.Field(
+    api_version: str = proto.Field(
         proto.STRING,
         number=7,
     )

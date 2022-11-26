@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -180,9 +190,9 @@ class ReachabilityServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ReachabilityServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the reachability service client.
@@ -226,11 +236,13 @@ class ReachabilityServiceAsyncClient:
 
     async def list_connectivity_tests(
         self,
-        request: Union[reachability.ListConnectivityTestsRequest, dict] = None,
+        request: Optional[
+            Union[reachability.ListConnectivityTestsRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectivityTestsAsyncPager:
         r"""Lists all Connectivity Tests owned by a project.
@@ -263,7 +275,7 @@ class ReachabilityServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.network_management_v1.types.ListConnectivityTestsRequest, dict]):
+            request (Optional[Union[google.cloud.network_management_v1.types.ListConnectivityTestsRequest, dict]]):
                 The request object. Request for the
                 `ListConnectivityTests` method.
             parent (:class:`str`):
@@ -340,11 +352,11 @@ class ReachabilityServiceAsyncClient:
 
     async def get_connectivity_test(
         self,
-        request: Union[reachability.GetConnectivityTestRequest, dict] = None,
+        request: Optional[Union[reachability.GetConnectivityTestRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> connectivity_test.ConnectivityTest:
         r"""Gets the details of a specific Connectivity Test.
@@ -376,7 +388,7 @@ class ReachabilityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.network_management_v1.types.GetConnectivityTestRequest, dict]):
+            request (Optional[Union[google.cloud.network_management_v1.types.GetConnectivityTestRequest, dict]]):
                 The request object. Request for the
                 `GetConnectivityTest` method.
             name (:class:`str`):
@@ -443,13 +455,15 @@ class ReachabilityServiceAsyncClient:
 
     async def create_connectivity_test(
         self,
-        request: Union[reachability.CreateConnectivityTestRequest, dict] = None,
+        request: Optional[
+            Union[reachability.CreateConnectivityTestRequest, dict]
+        ] = None,
         *,
-        parent: str = None,
-        test_id: str = None,
-        resource: connectivity_test.ConnectivityTest = None,
+        parent: Optional[str] = None,
+        test_id: Optional[str] = None,
+        resource: Optional[connectivity_test.ConnectivityTest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Connectivity Test. After you create a test, the
@@ -503,7 +517,7 @@ class ReachabilityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.network_management_v1.types.CreateConnectivityTestRequest, dict]):
+            request (Optional[Union[google.cloud.network_management_v1.types.CreateConnectivityTestRequest, dict]]):
                 The request object. Request for the
                 `CreateConnectivityTest` method.
             parent (:class:`str`):
@@ -603,12 +617,14 @@ class ReachabilityServiceAsyncClient:
 
     async def update_connectivity_test(
         self,
-        request: Union[reachability.UpdateConnectivityTestRequest, dict] = None,
+        request: Optional[
+            Union[reachability.UpdateConnectivityTestRequest, dict]
+        ] = None,
         *,
-        update_mask: field_mask_pb2.FieldMask = None,
-        resource: connectivity_test.ConnectivityTest = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        resource: Optional[connectivity_test.ConnectivityTest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the configuration of an existing ``ConnectivityTest``.
@@ -662,7 +678,7 @@ class ReachabilityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.network_management_v1.types.UpdateConnectivityTestRequest, dict]):
+            request (Optional[Union[google.cloud.network_management_v1.types.UpdateConnectivityTestRequest, dict]]):
                 The request object. Request for the
                 `UpdateConnectivityTest` method.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
@@ -751,10 +767,12 @@ class ReachabilityServiceAsyncClient:
 
     async def rerun_connectivity_test(
         self,
-        request: Union[reachability.RerunConnectivityTestRequest, dict] = None,
+        request: Optional[
+            Union[reachability.RerunConnectivityTestRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Rerun an existing ``ConnectivityTest``. After the user triggers
@@ -803,7 +821,7 @@ class ReachabilityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.network_management_v1.types.RerunConnectivityTestRequest, dict]):
+            request (Optional[Union[google.cloud.network_management_v1.types.RerunConnectivityTestRequest, dict]]):
                 The request object. Request for the
                 `RerunConnectivityTest` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -859,11 +877,13 @@ class ReachabilityServiceAsyncClient:
 
     async def delete_connectivity_test(
         self,
-        request: Union[reachability.DeleteConnectivityTestRequest, dict] = None,
+        request: Optional[
+            Union[reachability.DeleteConnectivityTestRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific ``ConnectivityTest``.
@@ -899,7 +919,7 @@ class ReachabilityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.network_management_v1.types.DeleteConnectivityTestRequest, dict]):
+            request (Optional[Union[google.cloud.network_management_v1.types.DeleteConnectivityTestRequest, dict]]):
                 The request object. Request for the
                 `DeleteConnectivityTest` method.
             name (:class:`str`):

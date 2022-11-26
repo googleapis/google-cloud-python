@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -61,7 +63,7 @@ class Trace(proto.Message):
             model. If there are multiple traces starting from different
             source locations, then the endpoint_info may be different
             between traces.
-        steps (Sequence[google.cloud.network_management_v1.types.Step]):
+        steps (MutableSequence[google.cloud.network_management_v1.types.Step]):
             A trace of a test contains multiple steps
             from the initial state to the final state
             (delivered, dropped, forwarded, or aborted).
@@ -71,12 +73,12 @@ class Trace(proto.Message):
             and avoid reordering or sorting them.
     """
 
-    endpoint_info = proto.Field(
+    endpoint_info: "EndpointInfo" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="EndpointInfo",
     )
-    steps = proto.RepeatedField(
+    steps: MutableSequence["Step"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Step",
@@ -214,108 +216,108 @@ class Step(proto.Message):
         ABORT = 19
         VIEWER_PERMISSION_MISSING = 20
 
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    state = proto.Field(
+    state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
     )
-    causes_drop = proto.Field(
+    causes_drop: bool = proto.Field(
         proto.BOOL,
         number=3,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    instance = proto.Field(
+    instance: "InstanceInfo" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="step_info",
         message="InstanceInfo",
     )
-    firewall = proto.Field(
+    firewall: "FirewallInfo" = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="step_info",
         message="FirewallInfo",
     )
-    route = proto.Field(
+    route: "RouteInfo" = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="step_info",
         message="RouteInfo",
     )
-    endpoint = proto.Field(
+    endpoint: "EndpointInfo" = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="step_info",
         message="EndpointInfo",
     )
-    forwarding_rule = proto.Field(
+    forwarding_rule: "ForwardingRuleInfo" = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="step_info",
         message="ForwardingRuleInfo",
     )
-    vpn_gateway = proto.Field(
+    vpn_gateway: "VpnGatewayInfo" = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="step_info",
         message="VpnGatewayInfo",
     )
-    vpn_tunnel = proto.Field(
+    vpn_tunnel: "VpnTunnelInfo" = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="step_info",
         message="VpnTunnelInfo",
     )
-    deliver = proto.Field(
+    deliver: "DeliverInfo" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="step_info",
         message="DeliverInfo",
     )
-    forward = proto.Field(
+    forward: "ForwardInfo" = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="step_info",
         message="ForwardInfo",
     )
-    abort = proto.Field(
+    abort: "AbortInfo" = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="step_info",
         message="AbortInfo",
     )
-    drop = proto.Field(
+    drop: "DropInfo" = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="step_info",
         message="DropInfo",
     )
-    load_balancer = proto.Field(
+    load_balancer: "LoadBalancerInfo" = proto.Field(
         proto.MESSAGE,
         number=16,
         oneof="step_info",
         message="LoadBalancerInfo",
     )
-    network = proto.Field(
+    network: "NetworkInfo" = proto.Field(
         proto.MESSAGE,
         number=17,
         oneof="step_info",
         message="NetworkInfo",
     )
-    gke_master = proto.Field(
+    gke_master: "GKEMasterInfo" = proto.Field(
         proto.MESSAGE,
         number=18,
         oneof="step_info",
         message="GKEMasterInfo",
     )
-    cloud_sql_instance = proto.Field(
+    cloud_sql_instance: "CloudSQLInstanceInfo" = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="step_info",
@@ -341,41 +343,41 @@ class InstanceInfo(proto.Message):
             Internal IP address of the network interface.
         external_ip (str):
             External IP address of the network interface.
-        network_tags (Sequence[str]):
+        network_tags (MutableSequence[str]):
             Network tags configured on the instance.
         service_account (str):
             Service account authorized for the instance.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    interface = proto.Field(
+    interface: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    internal_ip = proto.Field(
+    internal_ip: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    external_ip = proto.Field(
+    external_ip: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    network_tags = proto.RepeatedField(
+    network_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    service_account = proto.Field(
+    service_account: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -394,15 +396,15 @@ class NetworkInfo(proto.Message):
             The IP range that matches the test.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    matched_ip_range = proto.Field(
+    matched_ip_range: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -433,11 +435,11 @@ class FirewallInfo(proto.Message):
             rule is associated with. This field is not
             applicable to hierarchical firewall policy
             rules.
-        target_tags (Sequence[str]):
+        target_tags (MutableSequence[str]):
             The target tags defined by the VPC firewall
             rule. This field is not applicable to
             hierarchical firewall policy rules.
-        target_service_accounts (Sequence[str]):
+        target_service_accounts (MutableSequence[str]):
             The target service accounts specified by the
             firewall rule.
         policy (str):
@@ -455,43 +457,43 @@ class FirewallInfo(proto.Message):
         VPC_FIREWALL_RULE = 2
         IMPLIED_VPC_FIREWALL_RULE = 3
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    direction = proto.Field(
+    direction: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    action = proto.Field(
+    action: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    priority = proto.Field(
+    priority: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    target_tags = proto.RepeatedField(
+    target_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
-    target_service_accounts = proto.RepeatedField(
+    target_service_accounts: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    policy = proto.Field(
+    policy: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    firewall_rule_type = proto.Field(
+    firewall_rule_type: FirewallRuleType = proto.Field(
         proto.ENUM,
         number=10,
         enum=FirewallRuleType,
@@ -522,7 +524,7 @@ class RouteInfo(proto.Message):
             URI of a Compute Engine network.
         priority (int):
             Priority of the route.
-        instance_tags (Sequence[str]):
+        instance_tags (MutableSequence[str]):
             Instance tags of the route.
     """
 
@@ -551,41 +553,41 @@ class RouteInfo(proto.Message):
         NEXT_HOP_ILB = 10
         NEXT_HOP_ROUTER_APPLIANCE = 11
 
-    route_type = proto.Field(
+    route_type: RouteType = proto.Field(
         proto.ENUM,
         number=8,
         enum=RouteType,
     )
-    next_hop_type = proto.Field(
+    next_hop_type: NextHopType = proto.Field(
         proto.ENUM,
         number=9,
         enum=NextHopType,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    dest_ip_range = proto.Field(
+    dest_ip_range: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    next_hop = proto.Field(
+    next_hop: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    priority = proto.Field(
+    priority: int = proto.Field(
         proto.INT32,
         number=6,
     )
-    instance_tags = proto.RepeatedField(
+    instance_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
     )
@@ -615,31 +617,31 @@ class ForwardingRuleInfo(proto.Message):
             Balancer.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    matched_protocol = proto.Field(
+    matched_protocol: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    matched_port_range = proto.Field(
+    matched_port_range: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    vip = proto.Field(
+    vip: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -654,7 +656,7 @@ class LoadBalancerInfo(proto.Message):
         health_check_uri (str):
             URI of the health check for the load
             balancer.
-        backends (Sequence[google.cloud.network_management_v1.types.LoadBalancerBackend]):
+        backends (MutableSequence[google.cloud.network_management_v1.types.LoadBalancerBackend]):
             Information for the loadbalancer backends.
         backend_type (google.cloud.network_management_v1.types.LoadBalancerInfo.BackendType):
             Type of load balancer's backend
@@ -680,26 +682,26 @@ class LoadBalancerInfo(proto.Message):
         BACKEND_SERVICE = 1
         TARGET_POOL = 2
 
-    load_balancer_type = proto.Field(
+    load_balancer_type: LoadBalancerType = proto.Field(
         proto.ENUM,
         number=1,
         enum=LoadBalancerType,
     )
-    health_check_uri = proto.Field(
+    health_check_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    backends = proto.RepeatedField(
+    backends: MutableSequence["LoadBalancerBackend"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="LoadBalancerBackend",
     )
-    backend_type = proto.Field(
+    backend_type: BackendType = proto.Field(
         proto.ENUM,
         number=4,
         enum=BackendType,
     )
-    backend_uri = proto.Field(
+    backend_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -719,10 +721,10 @@ class LoadBalancerBackend(proto.Message):
         health_check_firewall_state (google.cloud.network_management_v1.types.LoadBalancerBackend.HealthCheckFirewallState):
             State of the health check firewall
             configuration.
-        health_check_allowing_firewall_rules (Sequence[str]):
+        health_check_allowing_firewall_rules (MutableSequence[str]):
             A list of firewall rule URIs allowing probes
             from health check IP ranges.
-        health_check_blocking_firewall_rules (Sequence[str]):
+        health_check_blocking_firewall_rules (MutableSequence[str]):
             A list of firewall rule URIs blocking probes
             from health check IP ranges.
     """
@@ -733,24 +735,24 @@ class LoadBalancerBackend(proto.Message):
         CONFIGURED = 1
         MISCONFIGURED = 2
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    health_check_firewall_state = proto.Field(
+    health_check_firewall_state: HealthCheckFirewallState = proto.Field(
         proto.ENUM,
         number=3,
         enum=HealthCheckFirewallState,
     )
-    health_check_allowing_firewall_rules = proto.RepeatedField(
+    health_check_allowing_firewall_rules: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
-    health_check_blocking_firewall_rules = proto.RepeatedField(
+    health_check_blocking_firewall_rules: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -780,27 +782,27 @@ class VpnGatewayInfo(proto.Message):
             gateway is configured.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    vpn_tunnel_uri = proto.Field(
+    vpn_tunnel_uri: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -845,39 +847,39 @@ class VpnTunnelInfo(proto.Message):
         POLICY_BASED = 2
         DYNAMIC = 3
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_gateway = proto.Field(
+    source_gateway: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    remote_gateway = proto.Field(
+    remote_gateway: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    remote_gateway_ip = proto.Field(
+    remote_gateway_ip: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    source_gateway_ip = proto.Field(
+    source_gateway_ip: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    routing_type = proto.Field(
+    routing_type: RoutingType = proto.Field(
         proto.ENUM,
         number=9,
         enum=RoutingType,
@@ -911,31 +913,31 @@ class EndpointInfo(proto.Message):
             to.
     """
 
-    source_ip = proto.Field(
+    source_ip: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    destination_ip = proto.Field(
+    destination_ip: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    protocol = proto.Field(
+    protocol: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    source_port = proto.Field(
+    source_port: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    destination_port = proto.Field(
+    destination_port: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    source_network_uri = proto.Field(
+    source_network_uri: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    destination_network_uri = proto.Field(
+    destination_network_uri: str = proto.Field(
         proto.STRING,
         number=7,
     )
@@ -961,12 +963,12 @@ class DeliverInfo(proto.Message):
         GKE_MASTER = 4
         CLOUD_SQL_INSTANCE = 5
 
-    target = proto.Field(
+    target: Target = proto.Field(
         proto.ENUM,
         number=1,
         enum=Target,
     )
-    resource_uri = proto.Field(
+    resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -994,12 +996,12 @@ class ForwardInfo(proto.Message):
         IMPORTED_CUSTOM_ROUTE_NEXT_HOP = 5
         CLOUD_SQL_INSTANCE = 6
 
-    target = proto.Field(
+    target: Target = proto.Field(
         proto.ENUM,
         number=1,
         enum=Target,
     )
-    resource_uri = proto.Field(
+    resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1013,7 +1015,7 @@ class AbortInfo(proto.Message):
             Causes that the analysis is aborted.
         resource_uri (str):
             URI of the resource that caused the abort.
-        projects_missing_permission (Sequence[str]):
+        projects_missing_permission (MutableSequence[str]):
             List of project IDs that the user has specified in the
             request but does not have permission to access network
             configs. Analysis is aborted in this case with the
@@ -1039,16 +1041,16 @@ class AbortInfo(proto.Message):
         MISMATCHED_DESTINATION_NETWORK = 14
         UNSUPPORTED = 15
 
-    cause = proto.Field(
+    cause: Cause = proto.Field(
         proto.ENUM,
         number=1,
         enum=Cause,
     )
-    resource_uri = proto.Field(
+    resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    projects_missing_permission = proto.RepeatedField(
+    projects_missing_permission: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1089,12 +1091,12 @@ class DropInfo(proto.Message):
         GOOGLE_MANAGED_SERVICE_NO_PEERING = 20
         CLOUD_SQL_INSTANCE_NO_IP_ADDRESS = 21
 
-    cause = proto.Field(
+    cause: Cause = proto.Field(
         proto.ENUM,
         number=1,
         enum=Cause,
     )
-    resource_uri = proto.Field(
+    resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -1115,19 +1117,19 @@ class GKEMasterInfo(proto.Message):
             External IP address of a GKE cluster master.
     """
 
-    cluster_uri = proto.Field(
+    cluster_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    cluster_network_uri = proto.Field(
+    cluster_network_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    internal_ip = proto.Field(
+    internal_ip: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    external_ip = proto.Field(
+    external_ip: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -1154,27 +1156,27 @@ class CloudSQLInstanceInfo(proto.Message):
             running.
     """
 
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    uri = proto.Field(
+    uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    network_uri = proto.Field(
+    network_uri: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    internal_ip = proto.Field(
+    internal_ip: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    external_ip = proto.Field(
+    external_ip: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    region = proto.Field(
+    region: str = proto.Field(
         proto.STRING,
         number=7,
     )

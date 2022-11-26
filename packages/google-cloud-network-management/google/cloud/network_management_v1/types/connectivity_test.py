@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -93,7 +95,7 @@ class ConnectivityTest(proto.Message):
         protocol (str):
             IP Protocol of the test. When not provided,
             "TCP" is assumed.
-        related_projects (Sequence[str]):
+        related_projects (MutableSequence[str]):
             Other projects that may be relevant for
             reachability analysis. This is applicable to
             scenarios where a test can cross project
@@ -101,7 +103,7 @@ class ConnectivityTest(proto.Message):
         display_name (str):
             Output only. The display name of a
             Connectivity Test.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user-provided
             metadata.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -117,52 +119,52 @@ class ConnectivityTest(proto.Message):
             an existing test.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source = proto.Field(
+    source: "Endpoint" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="Endpoint",
     )
-    destination = proto.Field(
+    destination: "Endpoint" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="Endpoint",
     )
-    protocol = proto.Field(
+    protocol: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    related_projects = proto.RepeatedField(
+    related_projects: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=8,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    reachability_details = proto.Field(
+    reachability_details: "ReachabilityDetails" = proto.Field(
         proto.MESSAGE,
         number=12,
         message="ReachabilityDetails",
@@ -218,36 +220,36 @@ class Endpoint(proto.Message):
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
 
-    ip_address = proto.Field(
+    ip_address: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    port = proto.Field(
+    port: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    instance = proto.Field(
+    instance: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    gke_master_cluster = proto.Field(
+    gke_master_cluster: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    cloud_sql_instance = proto.Field(
+    cloud_sql_instance: str = proto.Field(
         proto.STRING,
         number=8,
     )
-    network = proto.Field(
+    network: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    network_type = proto.Field(
+    network_type: NetworkType = proto.Field(
         proto.ENUM,
         number=5,
         enum=NetworkType,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=6,
     )
@@ -266,7 +268,7 @@ class ReachabilityDetails(proto.Message):
         error (google.rpc.status_pb2.Status):
             The details of a failure or a cancellation of
             reachability analysis.
-        traces (Sequence[google.cloud.network_management_v1.types.Trace]):
+        traces (MutableSequence[google.cloud.network_management_v1.types.Trace]):
             Result may contain a list of traces if a test
             has multiple possible paths in the network, such
             as when destination endpoint is a load balancer
@@ -281,22 +283,22 @@ class ReachabilityDetails(proto.Message):
         AMBIGUOUS = 4
         UNDETERMINED = 5
 
-    result = proto.Field(
+    result: Result = proto.Field(
         proto.ENUM,
         number=1,
         enum=Result,
     )
-    verify_time = proto.Field(
+    verify_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
         message=status_pb2.Status,
     )
-    traces = proto.RepeatedField(
+    traces: MutableSequence[trace.Trace] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=trace.Trace,

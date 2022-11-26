@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.network_management import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.network_management_v1.services.reachability_service.async_client import (
     ReachabilityServiceAsyncClient,
