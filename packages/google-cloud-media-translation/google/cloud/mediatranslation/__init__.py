@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.mediatranslation import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.async_client import (
     SpeechTranslationServiceAsyncClient,

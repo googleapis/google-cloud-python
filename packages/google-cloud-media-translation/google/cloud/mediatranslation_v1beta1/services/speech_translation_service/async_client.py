@@ -22,6 +22,8 @@ from typing import (
     Awaitable,
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Sequence,
     Tuple,
@@ -174,9 +176,9 @@ class SpeechTranslationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SpeechTranslationServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the speech translation service client.
@@ -220,12 +222,12 @@ class SpeechTranslationServiceAsyncClient:
 
     def streaming_translate_speech(
         self,
-        requests: AsyncIterator[
-            media_translation.StreamingTranslateSpeechRequest
+        requests: Optional[
+            AsyncIterator[media_translation.StreamingTranslateSpeechRequest]
         ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[media_translation.StreamingTranslateSpeechResponse]]:
         r"""Performs bidirectional streaming speech translation:

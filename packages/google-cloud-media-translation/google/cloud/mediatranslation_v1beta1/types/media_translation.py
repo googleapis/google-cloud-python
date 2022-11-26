@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -96,23 +98,23 @@ class TranslateSpeechConfig(proto.Message):
             model.
     """
 
-    audio_encoding = proto.Field(
+    audio_encoding: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    source_language_code = proto.Field(
+    source_language_code: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    target_language_code = proto.Field(
+    target_language_code: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -147,12 +149,12 @@ class StreamingTranslateSpeechConfig(proto.Message):
             previous response is true).
     """
 
-    audio_config = proto.Field(
+    audio_config: "TranslateSpeechConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TranslateSpeechConfig",
     )
-    single_utterance = proto.Field(
+    single_utterance: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
@@ -197,13 +199,13 @@ class StreamingTranslateSpeechRequest(proto.Message):
             This field is a member of `oneof`_ ``streaming_request``.
     """
 
-    streaming_config = proto.Field(
+    streaming_config: "StreamingTranslateSpeechConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="streaming_request",
         message="StreamingTranslateSpeechConfig",
     )
-    audio_content = proto.Field(
+    audio_content: bytes = proto.Field(
         proto.BYTES,
         number=2,
         oneof="streaming_request",
@@ -240,16 +242,16 @@ class StreamingTranslateSpeechResult(proto.Message):
                 the transcript and corresponding audio.
         """
 
-        translation = proto.Field(
+        translation: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        is_final = proto.Field(
+        is_final: bool = proto.Field(
             proto.BOOL,
             number=2,
         )
 
-    text_translation_result = proto.Field(
+    text_translation_result: TextTranslationResult = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="result",
@@ -279,17 +281,17 @@ class StreamingTranslateSpeechResponse(proto.Message):
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 
-    error = proto.Field(
+    error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
     )
-    result = proto.Field(
+    result: "StreamingTranslateSpeechResult" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="StreamingTranslateSpeechResult",
     )
-    speech_event_type = proto.Field(
+    speech_event_type: SpeechEventType = proto.Field(
         proto.ENUM,
         number=3,
         enum=SpeechEventType,
