@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -154,9 +164,9 @@ class TextToSpeechAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TextToSpeechTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the text to speech client.
@@ -200,11 +210,11 @@ class TextToSpeechAsyncClient:
 
     async def list_voices(
         self,
-        request: Union[cloud_tts.ListVoicesRequest, dict] = None,
+        request: Optional[Union[cloud_tts.ListVoicesRequest, dict]] = None,
         *,
-        language_code: str = None,
+        language_code: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.ListVoicesResponse:
         r"""Returns a list of Voice supported for synthesis.
@@ -235,7 +245,7 @@ class TextToSpeechAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.texttospeech_v1beta1.types.ListVoicesRequest, dict]):
+            request (Optional[Union[google.cloud.texttospeech_v1beta1.types.ListVoicesRequest, dict]]):
                 The request object. The top-level message sent by the
                 client for the `ListVoices` method.
             language_code (:class:`str`):
@@ -302,13 +312,13 @@ class TextToSpeechAsyncClient:
 
     async def synthesize_speech(
         self,
-        request: Union[cloud_tts.SynthesizeSpeechRequest, dict] = None,
+        request: Optional[Union[cloud_tts.SynthesizeSpeechRequest, dict]] = None,
         *,
-        input: cloud_tts.SynthesisInput = None,
-        voice: cloud_tts.VoiceSelectionParams = None,
-        audio_config: cloud_tts.AudioConfig = None,
+        input: Optional[cloud_tts.SynthesisInput] = None,
+        voice: Optional[cloud_tts.VoiceSelectionParams] = None,
+        audio_config: Optional[cloud_tts.AudioConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:
         r"""Synthesizes speech synchronously: receive results
@@ -352,7 +362,7 @@ class TextToSpeechAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest, dict]):
+            request (Optional[Union[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest, dict]]):
                 The request object. The top-level message sent by the
                 client for the `SynthesizeSpeech` method.
             input (:class:`google.cloud.texttospeech_v1beta1.types.SynthesisInput`):

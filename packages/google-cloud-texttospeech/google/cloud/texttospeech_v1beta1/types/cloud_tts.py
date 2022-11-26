@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -74,7 +76,7 @@ class ListVoicesRequest(proto.Message):
             (Norwegian Bokmal) voices will be returned.
     """
 
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -84,11 +86,11 @@ class ListVoicesResponse(proto.Message):
     r"""The message returned to the client by the ``ListVoices`` method.
 
     Attributes:
-        voices (Sequence[google.cloud.texttospeech_v1beta1.types.Voice]):
+        voices (MutableSequence[google.cloud.texttospeech_v1beta1.types.Voice]):
             The list of voices.
     """
 
-    voices = proto.RepeatedField(
+    voices: MutableSequence["Voice"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Voice",
@@ -99,7 +101,7 @@ class Voice(proto.Message):
     r"""Description of a voice supported by the TTS service.
 
     Attributes:
-        language_codes (Sequence[str]):
+        language_codes (MutableSequence[str]):
             The languages that this voice supports, expressed as
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tags (e.g. "en-US", "es-419", "cmn-tw").
@@ -113,20 +115,20 @@ class Voice(proto.Message):
             voice.
     """
 
-    language_codes = proto.RepeatedField(
+    language_codes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ssml_gender = proto.Field(
+    ssml_gender: "SsmlVoiceGender" = proto.Field(
         proto.ENUM,
         number=3,
         enum="SsmlVoiceGender",
     )
-    natural_sample_rate_hertz = proto.Field(
+    natural_sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=4,
     )
@@ -146,7 +148,7 @@ class SynthesizeSpeechRequest(proto.Message):
         audio_config (google.cloud.texttospeech_v1beta1.types.AudioConfig):
             Required. The configuration of the
             synthesized audio.
-        enable_time_pointing (Sequence[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.TimepointType]):
+        enable_time_pointing (MutableSequence[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.TimepointType]):
             Whether and what timepoints are returned in
             the response.
     """
@@ -158,22 +160,22 @@ class SynthesizeSpeechRequest(proto.Message):
         TIMEPOINT_TYPE_UNSPECIFIED = 0
         SSML_MARK = 1
 
-    input = proto.Field(
+    input: "SynthesisInput" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="SynthesisInput",
     )
-    voice = proto.Field(
+    voice: "VoiceSelectionParams" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="VoiceSelectionParams",
     )
-    audio_config = proto.Field(
+    audio_config: "AudioConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="AudioConfig",
     )
-    enable_time_pointing = proto.RepeatedField(
+    enable_time_pointing: MutableSequence[TimepointType] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=TimepointType,
@@ -208,12 +210,12 @@ class SynthesisInput(proto.Message):
             This field is a member of `oneof`_ ``input_source``.
     """
 
-    text = proto.Field(
+    text: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="input_source",
     )
-    ssml = proto.Field(
+    ssml: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="input_source",
@@ -256,20 +258,20 @@ class VoiceSelectionParams(proto.Message):
             the custom voice matching the specified configuration.
     """
 
-    language_code = proto.Field(
+    language_code: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    ssml_gender = proto.Field(
+    ssml_gender: "SsmlVoiceGender" = proto.Field(
         proto.ENUM,
         number=3,
         enum="SsmlVoiceGender",
     )
-    custom_voice = proto.Field(
+    custom_voice: "CustomVoiceParams" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="CustomVoiceParams",
@@ -314,7 +316,7 @@ class AudioConfig(proto.Message):
             quality), unless the specified sample rate is not supported
             for the encoding chosen, in which case it will fail the
             request and return [google.rpc.Code.INVALID_ARGUMENT][].
-        effects_profile_id (Sequence[str]):
+        effects_profile_id (MutableSequence[str]):
             Optional. Input only. An identifier which selects 'audio
             effects' profiles that are applied on (post synthesized)
             text to speech. Effects are applied on top of each other in
@@ -323,28 +325,28 @@ class AudioConfig(proto.Message):
             for current supported profile ids.
     """
 
-    audio_encoding = proto.Field(
+    audio_encoding: "AudioEncoding" = proto.Field(
         proto.ENUM,
         number=1,
         enum="AudioEncoding",
     )
-    speaking_rate = proto.Field(
+    speaking_rate: float = proto.Field(
         proto.DOUBLE,
         number=2,
     )
-    pitch = proto.Field(
+    pitch: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )
-    volume_gain_db = proto.Field(
+    volume_gain_db: float = proto.Field(
         proto.DOUBLE,
         number=4,
     )
-    sample_rate_hertz = proto.Field(
+    sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=5,
     )
-    effects_profile_id = proto.RepeatedField(
+    effects_profile_id: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -371,11 +373,11 @@ class CustomVoiceParams(proto.Message):
         REALTIME = 1
         OFFLINE = 2
 
-    model = proto.Field(
+    model: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reported_usage = proto.Field(
+    reported_usage: ReportedUsage = proto.Field(
         proto.ENUM,
         number=3,
         enum=ReportedUsage,
@@ -394,7 +396,7 @@ class SynthesizeSpeechResponse(proto.Message):
             include the WAV header. Note: as with all bytes fields,
             protobuffers use a pure binary representation, whereas JSON
             representations use base64.
-        timepoints (Sequence[google.cloud.texttospeech_v1beta1.types.Timepoint]):
+        timepoints (MutableSequence[google.cloud.texttospeech_v1beta1.types.Timepoint]):
             A link between a position in the original request input and
             a corresponding time in the output audio. It's only
             supported via ``<mark>`` of SSML input.
@@ -402,16 +404,16 @@ class SynthesizeSpeechResponse(proto.Message):
             The audio metadata of ``audio_content``.
     """
 
-    audio_content = proto.Field(
+    audio_content: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    timepoints = proto.RepeatedField(
+    timepoints: MutableSequence["Timepoint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="Timepoint",
     )
-    audio_config = proto.Field(
+    audio_config: "AudioConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="AudioConfig",
@@ -431,11 +433,11 @@ class Timepoint(proto.Message):
             synthesized audio.
     """
 
-    mark_name = proto.Field(
+    mark_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    time_seconds = proto.Field(
+    time_seconds: float = proto.Field(
         proto.DOUBLE,
         number=3,
     )

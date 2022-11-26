@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -55,7 +66,7 @@ class TextToSpeechClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TextToSpeechTransport]:
         """Returns an appropriate transport class.
 
@@ -330,8 +341,8 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TextToSpeechTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, TextToSpeechTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the text to speech client.
@@ -345,7 +356,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             transport (Union[str, TextToSpeechTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -375,6 +386,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -427,11 +439,11 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
     def list_voices(
         self,
-        request: Union[cloud_tts.ListVoicesRequest, dict] = None,
+        request: Optional[Union[cloud_tts.ListVoicesRequest, dict]] = None,
         *,
-        language_code: str = None,
+        language_code: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.ListVoicesResponse:
         r"""Returns a list of Voice supported for synthesis.
@@ -529,13 +541,13 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
     def synthesize_speech(
         self,
-        request: Union[cloud_tts.SynthesizeSpeechRequest, dict] = None,
+        request: Optional[Union[cloud_tts.SynthesizeSpeechRequest, dict]] = None,
         *,
-        input: cloud_tts.SynthesisInput = None,
-        voice: cloud_tts.VoiceSelectionParams = None,
-        audio_config: cloud_tts.AudioConfig = None,
+        input: Optional[cloud_tts.SynthesisInput] = None,
+        voice: Optional[cloud_tts.VoiceSelectionParams] = None,
+        audio_config: Optional[cloud_tts.AudioConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:
         r"""Synthesizes speech synchronously: receive results

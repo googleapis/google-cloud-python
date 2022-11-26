@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.texttospeech import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.text_to_speech import TextToSpeechAsyncClient, TextToSpeechClient
 from .types.cloud_tts import (
